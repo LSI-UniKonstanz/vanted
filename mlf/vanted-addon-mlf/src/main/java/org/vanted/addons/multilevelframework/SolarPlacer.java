@@ -12,6 +12,12 @@ import java.util.Map.Entry;
 import static org.AttributeHelper.getPositionX;
 import static org.AttributeHelper.getPositionY;
 
+/**
+ * Corresponding placer to the {@link SolarMerger}.
+ * Places moons and planets on the paths between the suns they belong to.
+ * (Or the barycenter of the positions, in case they lie on several paths).
+ * If the planets or moons don't lie on any paths, they are placed randomly.
+ */
 public class SolarPlacer implements Placer {
     /**
      * @author Gordian
@@ -40,13 +46,11 @@ public class SolarPlacer implements Placer {
 
         @SuppressWarnings("unchecked") final Set<Node> suns = (Set<Node>) getElement(top, SolarMerger.SUNS_KEY);
         @SuppressWarnings("unchecked") Set<Node> allPlanets = (Set<Node>) getElement(top, SolarMerger.PLANETS_KEY);
-        if (allPlanets == null) {
-            allPlanets = Collections.emptySet();
-        }
-        @SuppressWarnings("unchecked") Map<Node, Set<Node>> sunToPlanets = (HashMap<Node, Set<Node>>) getElement(top,
+        if (allPlanets == null) { allPlanets = Collections.emptySet(); }
+        @SuppressWarnings("unchecked") Map<Node, Set<Node>> sunToPlanets = (Map<Node, Set<Node>>) getElement(top,
                 SolarMerger.SUN_TO_PLANETS_KEY);
         if (sunToPlanets == null) { sunToPlanets = Collections.emptyMap(); }
-        @SuppressWarnings("unchecked") Map<Node, Set<Node>> planetToMoons = (HashMap<Node, Set<Node>>) getElement(top,
+        @SuppressWarnings("unchecked") Map<Node, Set<Node>> planetToMoons = (Map<Node, Set<Node>>) getElement(top,
                 SolarMerger.PLANET_TO_MOONS_KEY);
         if (planetToMoons == null) { planetToMoons = Collections.emptyMap(); }
 
@@ -97,8 +101,17 @@ public class SolarPlacer implements Placer {
             Collection<?extends Node> innerNodes = sunToSolarSystem.get(planetToSun.get(planet)).getInnerNodes();
             // calculate the amount of inter-solar-system connections
             Set<Node> neighbors = planet.getNeighbors(); // all neighbors
+            // if the planet has a moon, the moon's neighbors need to be treated similarly to neighbors for the planet
+            // e.g. S -- P -- M -- P -- S or S -- P -- M -- M -- P -- S
+            Set<Node> moonsNeighbors = new HashSet<>();
+            if (planetToMoons.containsKey(planet)) {
+                for (Node moon : planetToMoons.get(planet)) {
+                    moonsNeighbors.addAll(moon.getNeighbors());
+                }
+            }
+            moonsNeighbors.removeAll(innerNodes);
             neighbors.removeAll(innerNodes); // remove all intra-solar-system bodies
-            int interSolarSystemNeighborCount = neighbors.size(); // number of inter-solar-system connections
+            int interSolarSystemNeighborCount = neighbors.size() + moonsNeighbors.size(); // number of inter-solar-system connections
 
             if (interSolarSystemNeighborCount == 0) { // no inter-solar-system connections. Place Planets randomly around sun
                 singlePlanets.add(planet);
@@ -112,19 +125,40 @@ public class SolarPlacer implements Placer {
                     double lambda;
                     Vector2d otherSun;
                     if (suns.contains(neighbor)) { // neighbor is a sun
+                        // S -- P -- S
                         lambda = 1.0 / 2.0;
                         otherSun = AttributeHelper.getPositionVec2d(neighbor);
                     } else if (allPlanets.contains(neighbor)) { // neighbor is a planet
+                        // S -- P -- P -- S
                         lambda = 1.0 / 3.0;
                         otherSun = AttributeHelper.getPositionVec2d(planetToSun.get(neighbor));
                     } else if (allMoons.contains(neighbor)) { // neighbor is a moon
+                        // S -- P -- M -- P -- S
                         lambda = 1.0 / 4.0;
                         otherSun = AttributeHelper.getPositionVec2d(planetToSun.get(moonToPlanet.get(neighbor)));
                     } else {
-                        throw new IllegalStateException("neighbor is neither sun, planet nor moon (?) wtf");
+                        throw new IllegalStateException("neighbor is neither sun, planet nor moon");
                     }
                     planetPositionX += sunX + (lambda * (otherSun.x - sunX));
                     planetPositionY += sunY + (lambda * (otherSun.y - sunY));
+                }
+                for (Node moonNeighbor : moonsNeighbors) {
+                    double lambda;
+                    Vector2d otherSun;
+                    if (allPlanets.contains(moonNeighbor)) { // neighbor is a planet
+                        // S -- P -- M -- P -- S
+                        lambda = 1.0 / 4.0;
+                        otherSun = AttributeHelper.getPositionVec2d(planetToSun.get(moonNeighbor));
+                    } else if (allMoons.contains(moonNeighbor)) { // neighbor is a moon
+                        // S -- P -- M -- M -- P -- S
+                        lambda = 1.0 / 5.0;
+                        otherSun = AttributeHelper.getPositionVec2d(planetToSun.get(moonToPlanet.get(moonNeighbor)));
+                    } else {
+                        throw new IllegalStateException("moon's neighbor is neither planet nor moon");
+                    }
+                    planetPositionX += sunX + (lambda * (otherSun.x - sunX));
+                    planetPositionY += sunY + (lambda * (otherSun.y - sunY));
+
                 }
                 AttributeHelper.setPosition(planet, planetPositionX / interSolarSystemNeighborCount,
                         planetPositionY / interSolarSystemNeighborCount);
@@ -186,10 +220,12 @@ public class SolarPlacer implements Placer {
                     double lambda;
                     Vector2d otherSun;
                     if (allPlanets.contains(neighbor)) {
-                        lambda = 1.0 / 4.0;
+                        // S -- P -- M -- P -- S
+                        lambda = 2.0 / 4.0;
                         otherSun = AttributeHelper.getPositionVec2d(planetToSun.get(neighbor));
                     } else if (allMoons.contains(neighbor)) {
-                        lambda = 1.0 / 5.0;
+                        // S -- P -- M -- M -- P -- S
+                        lambda = 2.0 / 5.0;
                         otherSun = AttributeHelper.getPositionVec2d(planetToSun.get(moonToPlanet.get(neighbor)));
                     } else {
                         throw new IllegalStateException("moon's neighbor is neither planet nor moon");
