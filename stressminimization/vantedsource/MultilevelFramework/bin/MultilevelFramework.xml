@@ -10,7 +10,7 @@
     <plugindesc>
         <name>Multilevel Layout Framework</name>
         <main>org.vanted.addons.MultilevelFramework.MultilevelFrameworkAddon</main>
-        <version>0.1</version>
+        <version>1.0</version>
         <compatibility>2.5.0</compatibility>
 	<available>https://git.uni-konstanz.de/kn/swp2019/team-2.1</available>
     </plugindesc>
