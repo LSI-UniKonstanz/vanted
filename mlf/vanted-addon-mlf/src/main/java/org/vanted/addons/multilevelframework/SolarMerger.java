@@ -22,7 +22,6 @@ public class SolarMerger implements Merger {
 
     // keys to store the information for the SolarPlacer
     public final static String SUNS_KEY = "SOLAR_MERGER_SUNS_SET";
-    public final static String MOONS_KEY = "SOLAR_MERGER_MOONS_SET";
     public final static String PLANETS_KEY = "SOLAR_MERGER_PLANETS_SET";
     public final static String SUN_TO_PLANETS_KEY = "SOLAR_MERGER_SUN_TO_PLANETS_SET";
     public final static String PLANET_TO_MOONS_KEY = "SOLAR_MERGER_PLANET_TO_MOONS_SET";

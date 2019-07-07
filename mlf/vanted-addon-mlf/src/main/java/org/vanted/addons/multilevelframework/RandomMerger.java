@@ -50,13 +50,14 @@ public class RandomMerger implements Merger {
      * Array of parameters that will be displayed in the GUI.
      */
     private Parameter[] parameters = {
-            new DoubleParameter(coarseningFactor, COARSENING_FACTOR_NAME,
+            // VANTED parameters only has 3 relevant digits anyway
+            new DoubleParameter(coarseningFactor, 0.001, 0.999, COARSENING_FACTOR_NAME,
                     "The random merger will aim to reduce the number of nodes in each level by this factor."
                             + " It must be between 0 and 1."),
-            new IntegerParameter(minNumberOfNodesPerLevel, MIN_LEVEL_NODE_NUM_NAME,
+            new IntegerParameter(minNumberOfNodesPerLevel, 0, Integer.MAX_VALUE, MIN_LEVEL_NODE_NUM_NAME,
                     "The minimum number of nodes per level. If there are less nodes than this number on "
                             + "a level, the random merger will terminate."),
-            new IntegerParameter(maxNumberOfIterations, MAX_NAM_ITERATIONS_NAME,
+            new IntegerParameter(maxNumberOfIterations, 0, Integer.MAX_VALUE, MAX_NAM_ITERATIONS_NAME,
                     "The random merger will stop after this number of iterations, regardless of whether the"
                             + " other termination criteria are met."),
             new BooleanParameter(useWeights, USE_WEIGHTS_NAME,

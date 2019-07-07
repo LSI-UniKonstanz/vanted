@@ -173,7 +173,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         } else {
             merger = MlfHelper.tryMakingNewInstance(this.nonInteractiveMerger);
             placer = MlfHelper.tryMakingNewInstance(this.nonInteractivePlacer);
-            algorithm = MlfHelper.tryMakingNewInstance(this.layoutAlgorithms.get(this.nonInteractiveAlgorithm));
+            algorithm = this.layoutAlgorithms.get(this.nonInteractiveAlgorithm);
         }
         final List<?extends CoarsenedGraph>[] connectedComponents = new List[1];
 
