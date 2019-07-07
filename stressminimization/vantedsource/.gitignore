@@ -2,8 +2,3 @@
 
 # ignoring compiled addons
 **/target/
-
-# ignoring projects
-Multilevel/*
-StressMinimization/*
-StressMinimizationTests/*
