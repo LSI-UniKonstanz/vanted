@@ -83,7 +83,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
     /** The default constant scale factor for the calculated weight between two nodes. */
     static final double WEIGHT_SCALING_FACTOR_DEFAULT = 1.0;
     /** The default power of the distance for the calculated weight between two nodes. */
-    static final double WEIGHT_POWER_DEFAULT = -2.0;
+    static final double WEIGHT_POWER_DEFAULT = -1.0;
     // looks
     /** Whether to remove edge bends by default.*/
     static final Boolean REMOVE_EDGE_BENDS_DEFAULT = Boolean.TRUE;
