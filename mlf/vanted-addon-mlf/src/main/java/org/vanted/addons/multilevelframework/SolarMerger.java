@@ -76,7 +76,9 @@ public class SolarMerger implements Merger {
     }
 
     /**
-     *  Builds Levels for the multilevel Graph.
+     *  Builds coarsening Levels for a multilevel Graph by using the Solar Merger as described by Jürgen Hachul.
+     *
+     * @param multilevelGraph the MultilevelGraph for which coarsening levels are to be created
      */
     @Override
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
@@ -106,6 +108,14 @@ public class SolarMerger implements Merger {
      * Builds a Galaxy for the current multilevel consisting of several solar
      * Systems. Each solar System has a sun, planets(dist 1 to the sun) and one or
      * no moon(1+1 dist to sun) for each planet.
+     *
+     * First a set of Suns is created. Following that all neighbors of the suns are mapped to them as planets.
+     * The remaining nodes are mapped as moons to their neighboring planet.
+     * The sun, its planets and their moons are added as inner nodes of a MergedNode to a new CoarseningLevel.
+     * The edges the inner nodes have to nodes outside the solar system are added as Edges between MergedNodes
+     * to the new CoarseningLevel.
+     *
+     * @param multilevelGraph the MultilevelGraph which buildCoarseningLevels works on
      */
     void processGalaxy(MultilevelGraph multilevelGraph) {
 
@@ -259,7 +269,7 @@ public class SolarMerger implements Merger {
 
     /**
      * determines suns for the solarSystems which will represent the current level
-     * of the multiLevelGraph
+     * of the multiLevelGraph.
      *
      * @param baseLevel the level current of the multilevel framework
      * @return sunList a List of the central Nodes of the solar systems
