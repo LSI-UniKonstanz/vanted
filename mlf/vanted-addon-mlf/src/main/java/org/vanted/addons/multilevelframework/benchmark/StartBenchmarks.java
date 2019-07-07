@@ -100,7 +100,7 @@ public class StartBenchmarks {
                     mfl.benchmarkMode = true;
                     final Graph graph = MainFrame.getInstance().getGraph(path.toFile());
                     graph.getNodes().forEach(n -> AttributeHelper.setPosition(n, 0, 0));
-                    if (config[2].toString().matches("Force") && graph.getNumberOfNodes() > FORCE_DIRECTED_MAX) {
+                    if (config[2].toString().matches("Force.*") && graph.getNumberOfNodes() > FORCE_DIRECTED_MAX) {
                         runningTimeMs = Long.MAX_VALUE;
                         break;
                     }

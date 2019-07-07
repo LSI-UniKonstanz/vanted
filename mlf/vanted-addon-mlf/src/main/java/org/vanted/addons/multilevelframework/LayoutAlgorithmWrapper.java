@@ -84,7 +84,8 @@ public class LayoutAlgorithmWrapper {
                     + "for ThreadSafeAlgorithms.");
         }
         this.threadSafeGUI = threadSafeGUI;
-        this.guiName = guiName == null ? algorithm.getName() : guiName;
+        this.guiName = guiName == null ?
+                Objects.toString(algorithm.getName(), algorithm.getClass().getSimpleName()) : guiName;
         if (this.guiName.trim().isEmpty()) {
             throw new IllegalArgumentException("Cannot initialize LayoutAlgorithmWrapper with empty name.");
         }
@@ -213,6 +214,7 @@ public class LayoutAlgorithmWrapper {
      * Find all currently available layout algorithms.
      *
      * @return A {@link Map} of {@link LayoutAlgorithmWrapper}s. The maps keys are the {@link Algorithm}s' names.
+     * Only returns algorithms whose names are contained in {@link LayoutAlgorithmWrapper#WHITELIST}.
      * Note that the Multilevel Framework Algorithm itself (i.e. instances of {@link MultilevelFrameworkLayouter}
      * is excluded from this list.
      * @author Gordian
