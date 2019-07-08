@@ -233,6 +233,9 @@ public class SolarPlacerTest {
                 getPositionY(n4), 0.00001);
     }
 
+    /**
+     * @author Gordian
+     */
     @Test
     public void reduceCoarseningLevelNoMoons() {
         // 1 -- 2 -- 3
