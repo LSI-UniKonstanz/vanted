@@ -358,6 +358,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 // prepare (set helper attribute)
                 int posCC = 0;
                 ConcurrentMap<Node, Vector2d> move = new ConcurrentHashMap<>();
+                state.graph.getListenerManager().transactionStarted(this);
                 for (List<Node> component : connectedComponents) {
                     // Set positions attribute for hopefully better handling
                     state.status = "Preparing connected components for algorithm."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status + " (n = " + component.size() + ")");}
@@ -379,6 +380,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                         }
                     }
                 }
+                state.graph.getListenerManager().transactionFinished(this);
                 if (state.doAnimations) {
                     if (state.moveIntoView) {
                         ConnectedComponentsHelper.layoutConnectedComponents(connectComponentList, connectedComponentListPos, state.intermediateUndoable);
@@ -466,9 +468,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 
                 state.status = "Postprocessing..."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
                 // finish (remove helper attribute)
+                state.graph.getListenerManager().transactionStarted(this);
                 for (Node node : pureNodes) {
                     node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
                 }
+                state.graph.getListenerManager().transactionFinished(this);
 
                 if (!state.doAnimations) { // => !intermediateUndoable
                     state.graph.getListenerManager().transactionStarted(this);
@@ -497,6 +501,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 }
                 // debug stuff
                 if (state.debugEnabled) {
+                    state.status = "Debug calculations..."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
                     state.debugIterations = iteration-1;
 
                     state.debugCumulativeStress = 0.0;
@@ -1176,6 +1181,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
             if (state.stressEpsilon != Double.NEGATIVE_INFINITY) { // only calculate if necessary
                 if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial stress..."));}
                 this.currentStress = StressMinimizationLayout.calculateStress(this.currentPositions, this.distances, this.weights);
+            } else {
+                this.currentStress = Double.NaN; // no stress set
             }
             this.hasStopped = false;
             if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Preprocessing finished."));}
