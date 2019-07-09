@@ -28,6 +28,8 @@ import org.vanted.addons.MultilevelFramework.MultilevelGraph.MultilevelParentGra
 import org.vanted.addons.MultilevelFramework.MultilevelGraph.MultilevelParentNodeAttribute;
 import org.vanted.addons.MultilevelFramework.Placement.PlacementAlgorithm;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
+
 /**
  * Layout algorithm for large graphs. Uses a merging, placing and layouting
  * algorithm. Merges nodes together level for level until a certain graph size
@@ -170,7 +172,11 @@ public class MultilevelLayoutAlgorithm extends BackgroundAlgorithm {
 			} else if (a instanceof PlacementAlgorithm) {
 				placers.add(a);
 			} else if (a.isLayoutAlgorithm() && LayoutersWhitelist.getLayouters().contains(a.getName())) {
-				layouters.add(a);
+				if (a instanceof PatternSpringembedder) {
+					layouters.add(new ForceDirectedWrapper());
+				} else {
+					layouters.add(a);
+				}
 			}
 		}
 
