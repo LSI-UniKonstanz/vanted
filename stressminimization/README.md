@@ -2,9 +2,30 @@
 
 Repository für Team 2.1  - Java Projekt VANTED Erweiterung durch Layoutverfahren für große Graphen
 
-# Orga
+# Documentation
 
-Wöchentliche Treffen **Donnerstags um 17:00 Uhr in P601**
+The getting started guide for the stress minimization plugin can be found in Documentation/StressMinimization alongside with the generated javadoc files.
+
+The same documentation for the multilevel framework is located in the Documentation/MultilevelFramwork directory.
+
+# Binaries
+
+Compiled addon jar files for both addons can be found in the vantedsource/StressMinimization and vantedsource/MultilevelFramework directories, respectively.
+
+# License
+
+This project is licensed at the terms of the GNU General Public License Version 3. Please refer to the LICENSE.txt file for details.
+
+Licenses and notice files of the used libraries, as well as an library overview are located in the Licenses directory.
+
+# Benchmarks and Tests
+
+StressMinimization benchmarks are placed at orga/benchmarks. Several benchmarks for different development stages exist, however some of these benchmarks are flawed due to a bug in the benchmark code unknown at creation time.
+
+A smaller selection of benchmarks for the Multilevel Framework is located alongside it's documentation in Documentation/MultilevelFramework. 
+
+Benchmarking code is contained in vantedsource/StressMinimizationTests and vantedsource/MultilevelTests. Unit tests can also be found in these directories.
+
 
 ## Schedule
 
