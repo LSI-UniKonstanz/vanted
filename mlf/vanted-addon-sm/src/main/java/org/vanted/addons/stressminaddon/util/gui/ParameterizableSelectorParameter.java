@@ -464,12 +464,13 @@ public class ParameterizableSelectorParameter extends JPanel {
                                                   final Selection selection,
                                                   final String name, final String description) {
         Objects.requireNonNull(describableParameterizableList);
-        if (!describableParameterizableList.isEmpty() && ( 0 > initialSelection || initialSelection >= describableParameterizableList.size() )) {
-            throw new IndexOutOfBoundsException("'initialSelection' must point in 'describableParameterizableList'!");
+        final ArrayList<T> list = new ArrayList<>(describableParameterizableList); // create copy for synchronization
+        if (!list.isEmpty() && ( 0 > initialSelection || initialSelection >= describableParameterizableList.size() )) {
+            throw new IndexOutOfBoundsException("'initialSelection' must point in 'list'!");
         }
         Map<String, Parameterizable> parameterizable = new LinkedHashMap<>();
         Map<String, String> descriptions = new HashMap<>();
-        for (T item : describableParameterizableList) {
+        for (T item : list) {
             if (item.getName() == null) {
                 throw new IllegalArgumentException("The names of the provided 'Describable's may not be null!: " + item);
             }
@@ -477,7 +478,7 @@ public class ParameterizableSelectorParameter extends JPanel {
             descriptions.put(item.getName(), item.getDescription());
         }
         return new JComponentParameter(new ParameterizableSelectorParameter(
-                describableParameterizableList.isEmpty() ? "" : describableParameterizableList.get(initialSelection).getName(),
+                list.isEmpty() ? "" : describableParameterizableList.get(initialSelection).getName(),
                 parameterizable, descriptions, selection), name, description);
     }
 }

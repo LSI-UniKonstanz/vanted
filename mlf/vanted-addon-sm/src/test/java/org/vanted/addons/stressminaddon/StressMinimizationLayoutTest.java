@@ -479,8 +479,8 @@ public class StressMinimizationLayoutTest {
         System.setErr(oldErr);
         iterAlgBox.setSelectedIndex(0);
         assertFalse("Exception printed iteration position algorithm", stream.toString().trim().isEmpty());
-        initialPlacers.removeLast();
-        positionAlgorithms.removeLast();
+        initialPlacers.remove(ip);
+        positionAlgorithms.remove(ipa);
     }
 
     /**
@@ -657,8 +657,8 @@ public class StressMinimizationLayoutTest {
         assertTrue("ipa name in list", StressMinimizationLayout.getIterativePositionAlgorithmNames().contains(ipa.getName()));
 
         assertNotSame("parameters updated", parameters, sm.getParameters());
-        initialPlacers.removeLast();
-        positionAlgorithms.removeLast();
+        initialPlacers.remove(ip);
+        positionAlgorithms.remove(ipa);
     }
     /** Dummy {@link InitialPlacer} for test {@link #registers()}. @author Jannik */
     static class DummyInitialPlacer implements InitialPlacer {

@@ -62,9 +62,12 @@ public enum  ShortestDistanceAlgorithm {
         public void run() {
             // stores distances to all nodes from startNode
             double[] distances = new double[numberNodes];
-            // all distances are -1 in the beginning
-            for (int i = 0; i < numberNodes; i++) { // TODO maybe initialize faster with System.arraycopy()
-                distances[i] = Double.POSITIVE_INFINITY;
+            // fast fill with +Infinity (see https://stackoverflow.com/questions/9128737/fastest-way-to-set-all-values-of-an-array/25508988#25508988)
+            if (numberNodes > 0) {
+                distances[0] = Double.POSITIVE_INFINITY;
+            }
+            for (int i = 1; i < numberNodes; i += i) {
+                System.arraycopy(distances, 0, distances, i, ((numberNodes - i) < i) ? (numberNodes - i) : i);
             }
 
             int posStartNode = start.getInteger(StressMinimizationLayout.INDEX_ATTRIBUTE);
@@ -97,9 +100,7 @@ public enum  ShortestDistanceAlgorithm {
                 }
             }
             // copy distances to resultMatrix for node start
-            for (int i = 0; i < posStartNode; i++) {
-                results.set(posStartNode, i, distances[i]);
-            }
+            results.setHalfRow(posStartNode, distances);
         }
     }
 
@@ -127,8 +128,8 @@ public enum  ShortestDistanceAlgorithm {
             executor = Executors.newFixedThreadPool(Math.min(Runtime.getRuntime().availableProcessors(), numberOfNodes));
         }
         ArrayList<Callable<Object>> todo = new ArrayList<>(numberOfNodes);
-        for (Node n : nodes) {
-            todo.add(Executors.callable(new BFSRunnable(n, resultMatrix, maxDepth)));
+        for (int node = 1; node < numberOfNodes; node++) { // the first node has no saved row.
+            todo.add(Executors.callable(new BFSRunnable(nodes.get(node), resultMatrix, maxDepth)));
         }
 
         try {

@@ -103,14 +103,14 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
      * Contains the registered initial placers.
      * New initial placers can be registered using the {@link #registerInitialPlacer(InitialPlacer)} method.
      */
-    static final LinkedList<InitialPlacer> initialPlacers = new LinkedList<>();
+    static final List<InitialPlacer> initialPlacers = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * Contains the registered iterative algorithms.
      * New initial placers can be registered using the {@link #registerIterativePositionAlgorithm(IterativePositionAlgorithm)}
      * method.
      */
-    static final LinkedList<IterativePositionAlgorithm> positionAlgorithms = new LinkedList<>();
+    static final List<IterativePositionAlgorithm> positionAlgorithms = Collections.synchronizedList(new ArrayList<>());
 
 
     /** Contains the parameters of this {@link StressMinimizationLayout}. */
@@ -198,7 +198,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
      * @author Jannik
      */
     public static List<String> getInitialPlacerNames() {
-        return initialPlacers.stream().map(Describable::getName).collect(Collectors.toList());
+        synchronized (initialPlacers) {
+            return initialPlacers.stream().map(Describable::getName).collect(Collectors.toList());
+        }
     }
 
     /**
@@ -207,7 +209,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
      * @author Jannik
      */
     public static List<String> getIterativePositionAlgorithmNames() {
-        return positionAlgorithms.stream().map(Describable::getName).collect(Collectors.toList());
+        synchronized (positionAlgorithms) {
+            return positionAlgorithms.stream().map(Describable::getName).collect(Collectors.toList());
+        }
     }
 
     /*
@@ -358,7 +362,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 // prepare (set helper attribute)
                 int posCC = 0;
                 ConcurrentMap<Node, Vector2d> move = new ConcurrentHashMap<>();
-                state.graph.getListenerManager().transactionStarted(this);
+                state.graph.getListenerManager().transactionStarted(state);
                 for (List<Node> component : connectedComponents) {
                     // Set positions attribute for hopefully better handling
                     state.status = "Preparing connected components for algorithm."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status + " (n = " + component.size() + ")");}
@@ -380,18 +384,18 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                         }
                     }
                 }
-                state.graph.getListenerManager().transactionFinished(this);
+                state.graph.getListenerManager().transactionFinished(state);
                 if (state.doAnimations) {
                     if (state.moveIntoView) {
                         ConnectedComponentsHelper.layoutConnectedComponents(connectComponentList, connectedComponentListPos, state.intermediateUndoable);
                     } else if (state.intermediateUndoable) {
                         GraphHelper.applyUndoableNodePositionUpdate(new HashMap<>(move), "Initial layout");
                     } else {
-                        state.graph.getListenerManager().transactionStarted(this);
+                        state.graph.getListenerManager().transactionStarted(state);
                         for (Map.Entry<Node, Vector2d> entry : move.entrySet()) {
                             AttributeHelper.setPosition(entry.getKey(), entry.getValue());
                         }
-                        state.graph.getListenerManager().transactionFinished(this);
+                        state.graph.getListenerManager().transactionFinished(state);
                     }
                 }
                 state.status = "Finished preparing"; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
@@ -455,11 +459,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                         if (state.intermediateUndoable) {
                             GraphHelper.applyUndoableNodePositionUpdate(new HashMap<>(move), "Do iteration " + iteration);
                         } else {
-                            state.graph.getListenerManager().transactionStarted(this);
+                            state.graph.getListenerManager().transactionStarted(state);
                             for (Map.Entry<Node, Vector2d> entry : move.entrySet()) {
                                 AttributeHelper.setPosition(entry.getKey(), entry.getValue());
                             }
-                            state.graph.getListenerManager().transactionFinished(this);
+                            state.graph.getListenerManager().transactionFinished(state);
                         }
                     }
                 }
@@ -468,20 +472,20 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 
                 state.status = "Postprocessing..."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
                 // finish (remove helper attribute)
-                state.graph.getListenerManager().transactionStarted(this);
+                state.graph.getListenerManager().transactionStarted(state);
                 for (Node node : pureNodes) {
                     node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
                 }
-                state.graph.getListenerManager().transactionFinished(this);
+                state.graph.getListenerManager().transactionFinished(state);
 
                 if (!state.doAnimations) { // => !intermediateUndoable
-                    state.graph.getListenerManager().transactionStarted(this);
+                    state.graph.getListenerManager().transactionStarted(state);
                     for (WorkUnit unit : workUnits) { // prepare for layout connected components
                         for (int idx = 0; idx < unit.nodes.size(); idx++) {
                             AttributeHelper.setPosition(unit.nodes.get(idx), unit.currentPositions.get(idx));
                         }
                     }
-                    state.graph.getListenerManager().transactionFinished(this);
+                    state.graph.getListenerManager().transactionFinished(state);
                 }
 
                 if (!state.doAnimations || !state.moveIntoView) { // else already moved
@@ -489,16 +493,17 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 }
                 // create only one undo (or nothing in compatibility mode)
                 if (!compatibilityMLF && !state.intermediateUndoable) {
-                    state.graph.getListenerManager().transactionStarted(this);
+                    state.graph.getListenerManager().transactionStarted(state);
                     for (int idx = 0; idx < pureNodes.size(); idx++) {
                         Node node = pureNodes.get(idx);
                         move.put(node, AttributeHelper.getPositionVec2d(node));
                         // reset to old position so that only undo has correct starting positions
                         AttributeHelper.setPosition(node, oldPositions.get(idx));
                     }
-                    state.graph.getListenerManager().transactionFinished(this);
+                    state.graph.getListenerManager().transactionFinished(state);
                     GraphHelper.applyUndoableNodePositionUpdate(new HashMap<>(move), "Stress Minimization");
                 }
+
                 // debug stuff
                 if (state.debugEnabled) {
                     state.status = "Debug calculations..."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
@@ -516,7 +521,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 System.out.println(state.startTime + " SM: " + (state.status = "Finished.") + " Took " + (state.startTime / 1000.0) + "s");
 
             } finally {
-                // release lock
+                // release locks
+                state.graph.getListenerManager().transactionFinished(state, true);
                 state.graph.removeAttribute(StressMinimizationLayout.WORKING_ATTRIBUTE);
             }
         };

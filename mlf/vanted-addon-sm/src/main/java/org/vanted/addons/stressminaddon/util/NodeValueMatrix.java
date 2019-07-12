@@ -5,7 +5,11 @@ import java.util.function.DoubleUnaryOperator;
 
 /**
  * An object that stores a specific double value to a pair of nodes.
- * The matrix is always symmetrical, a square matrix and has a 0 value diagonal.
+ * The matrix is always symmetrical, a square matrix and has a 0 value diagonal.<br>
+ * <br>
+ * Only the methods {@link #set(int, int, double)} and {@link #setHalfRow(int, double[])}
+ * are synchronized so every other operation has to be performed in a <code>synchronized</code> block
+ * if parallelism is desired.
  *
  * @author Jannik
  */
@@ -77,16 +81,16 @@ public class NodeValueMatrix implements Cloneable {
      * @author Jannik
      */
     public final double get(final int row, final int col) {
-        //assert 0 <= row && row < dimension : "Index of 'row' out of bounds: 0 <= " + row + "<= " + (dimension-1);
-        //assert 0 <= col && col < dimension : "Index of 'col' out of bounds: 0 <= " + col + "<= " + (dimension-1);
-        if (row < 0 || row > dimension-1)
-            throw new IndexOutOfBoundsException("Index of 'row' out of bounds: 0 <= row <= " + (dimension-1));
-        if (col < 0 || col > dimension-1)
-            throw new IndexOutOfBoundsException("Index of 'col' out of bounds: 0 <= col <= " + (dimension-1));
+        assert 0 <= row && row < dimension : "Index of 'row' out of bounds: 0 <= " + row + "<= " + (dimension-1);
+        assert 0 <= col && col < dimension : "Index of 'col' out of bounds: 0 <= " + col + "<= " + (dimension-1);
+        //if (row < 0 || row > dimension-1)
+        //    throw new IndexOutOfBoundsException("Index of 'row' out of bounds: 0 <= row <= " + (dimension-1));
+        //if (col < 0 || col > dimension-1)
+        //    throw new IndexOutOfBoundsException("Index of 'col' out of bounds: 0 <= col <= " + (dimension-1));
         // get the value
-        if (row == col)     return 0; // the diagonal is always 0
-        else if (row > col) return this.values[row-1][col]; // the first row is not saved
-        else                return this.values[col-1][row]; // the matrix is symmetrical
+        if        (row > col)    return this.values[row-1][col]; // the first row is not saved
+        else if   (row < col)    return this.values[col-1][row]; // the matrix is symmetrical
+        else    /*(row == col)*/ return 0; // the diagonal is always 0
     }
     
     /**
@@ -123,17 +127,40 @@ public class NodeValueMatrix implements Cloneable {
      * @author Jannik
      */
     public synchronized void set(final int row, final int col, final double value) {
-        //assert 0 <= row && row < dimension : "Index of 'row' out of bounds: 0 <= " + row + "<= " + (dimension-1);
-        //assert 0 <= col && col < dimension : "Index of 'col' out of bounds: 0 <= " + col + "<= " + (dimension-1);
-        if (row < 0 || row > dimension-1)
-            throw new IndexOutOfBoundsException("Index 'row' out of bounds: 0 <= row <= " + (dimension-1));
-        if (col < 0 || col > dimension-1)
-            throw new IndexOutOfBoundsException("Index 'col' out of bounds: 0 <= col <= " + (dimension-1));
-        if (row == col)
-            throw new UnsupportedOperationException("The diagonal may not be set (row==col)");
+        assert 0 <= row && row < dimension : "Index of 'row' out of bounds: 0 <= " + row + "<= " + (dimension-1);
+        assert 0 <= col && col < dimension : "Index of 'col' out of bounds: 0 <= " + col + "<= " + (dimension-1);
+        assert row != col : "The diagonal may not be set (row==col)";
+        //if (row < 0 || row > dimension-1)
+        //    throw new IndexOutOfBoundsException("Index 'row' out of bounds: 0 <= row <= " + (dimension-1));
+        //if (col < 0 || col > dimension-1)
+        //    throw new IndexOutOfBoundsException("Index 'col' out of bounds: 0 <= col <= " + (dimension-1));
+        //if (row == col)
+        //    throw new UnsupportedOperationException("The diagonal may not be set (row==col)");
+
         // set the value
-        else if (row > col) this.values[row-1][col] = value; // the first row is not saved
-        else                this.values[col-1][row] = value; // the matrix is symmetrical
+        if   (row > col) this.values[row-1][col] = value; // the first row is not saved
+        else             this.values[col-1][row] = value; // the matrix is symmetrical
+    }
+
+    /**
+     * Sets a complete part of a row (until the middle <code>(row, row)</code>) in one go.
+     * Can be used to gain speed if a row until the middle has to be set.<br>
+     * This method is optimized for speed and therefore will not throw customized exceptions
+     * if invalid parameters are provided.
+     *
+     * @param row the row beginning from 1 and a maximum of {@code dimension-1}<br>
+     *            <code>0</code> is not supported
+     * @param rowData the data to be written to the row.<br>
+     *                Exactly <code>row</code> elements are copied from it, so the caller must
+     *                ensure a sufficient size.
+     * @throws IndexOutOfBoundsException
+     *      if <code>row</code> is not between 1 and a maximum of {@code dimension-1}
+     *      or <code>rowData</code> does not provide at least <code>row</code> elements.
+     *
+     * @author Jannik
+     */
+    public synchronized void setHalfRow(final int row, final double[] rowData) {
+        System.arraycopy(rowData, 0, this.values[row-1], 0, row);
     }
 
     /**

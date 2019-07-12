@@ -79,6 +79,22 @@ public class NodeValueMatrixTest {
     }
 
     /**
+     * Test the method {@link NodeValueMatrix#setHalfRow(int, double[])}
+     * @author Jannik
+     */
+    @Test
+    public void setHalfRow() {
+        int row = 1 + rand.nextInt(DIMENSION-1);
+        double[] data = rand.doubles().limit(row).toArray();
+
+        matrix.setHalfRow(row, data);
+        for (int col = 0; col < row; col++) {
+            assertEquals("Row Col " + col + " set", data[col], matrix.get(row, col), 0.0);
+        }
+
+    }
+
+    /**
      * Test the method {@link NodeValueMatrix#apply(DoubleUnaryOperator)}
      * @author Jannik
      */
@@ -113,14 +129,17 @@ public class NodeValueMatrixTest {
         }
         // test index out of bounds
         try {
-            try {matrix.get(-1,0); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
-            try {matrix.set(-1,0, Double.NaN); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
+            try {matrix.get(-1,0); fail("No exception thrown");} catch (AssertionError e) {isExpectedAssertion(e);}
+            try {matrix.set(-1,0, Double.NaN); fail("No exception thrown");} catch (AssertionError e) {isExpectedAssertion(e);}
             try {matrix.apply(x -> x, -1,0); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.apply(x -> x, 0, DIMENSION); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.apply(x -> x, -1,0, new int[DIMENSION]); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.apply(x -> x, 0, DIMENSION, new int[DIMENSION]); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
-            try {matrix.get(0, DIMENSION); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
-            try {matrix.set(0, DIMENSION, Double.NaN); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
+            try {matrix.get(0, DIMENSION); fail("No exception thrown");} catch (AssertionError e) {isExpectedAssertion(e);}
+            try {matrix.set(0, DIMENSION, Double.NaN); fail("No exception thrown");} catch (AssertionError e) {isExpectedAssertion(e);}
+            try {matrix.setHalfRow(-1, new double[0]); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
+            try {matrix.setHalfRow(DIMENSION, new double[0]); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
+            try {matrix.setHalfRow(0, new double[0]); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
         } catch (Throwable t) {
             if ("No exception thrown".equals(t.getMessage())) {
                 throw t;
@@ -132,7 +151,8 @@ public class NodeValueMatrixTest {
             int i = rand.nextInt(DIMENSION);
             matrix.set(i, i, Double.NaN);
             fail("No exception thrown");
-        } catch (UnsupportedOperationException e) {
+        } catch (AssertionError e) {
+            isExpectedAssertion(e);
         } catch (Throwable t) {
             if ("No exception thrown".equals(t.getMessage())) {
                 throw t;
@@ -170,6 +190,16 @@ public class NodeValueMatrixTest {
                 throw t;
             }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
+        }
+    }
+
+    /**
+     * Check no exception thrown. Throws it again, if it is the "No exception thrown" assertion.
+     * @author Jannik
+     */
+    private static void isExpectedAssertion(AssertionError t) {
+        if ("No exception thrown".equals(t.getMessage())) {
+            throw t;
         }
     }
 

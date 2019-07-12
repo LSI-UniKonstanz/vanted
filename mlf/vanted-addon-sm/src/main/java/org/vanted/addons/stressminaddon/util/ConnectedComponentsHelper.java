@@ -414,13 +414,16 @@ public enum ConnectedComponentsHelper {
             Graph graph = newNodePositions.keySet().iterator().next().getGraph();
             Object lock = new Object();
             graph.getListenerManager().transactionStarted(lock);
-            for (Map.Entry<Node, Vector2d> entry : newNodePositions.entrySet()) {
-                AttributeHelper.setPosition(entry.getKey(), entry.getValue());
+            try {
+                for (Map.Entry<Node, Vector2d> entry : newNodePositions.entrySet()) {
+                    AttributeHelper.setPosition(entry.getKey(), entry.getValue());
+                }
+                for (Map.Entry<CoordinateAttribute, Vector2d> entry : newBendPositions.entrySet()) {
+                    entry.getKey().setCoordinate(entry.getValue().x, entry.getValue().y);
+                }
+            } finally {
+                graph.getListenerManager().transactionFinished(lock);
             }
-            for (Map.Entry<CoordinateAttribute, Vector2d> entry : newBendPositions.entrySet()) {
-                entry.getKey().setCoordinate(entry.getValue().x, entry.getValue().y);
-            }
-            graph.getListenerManager().transactionFinished(lock);
         }
     }
 
