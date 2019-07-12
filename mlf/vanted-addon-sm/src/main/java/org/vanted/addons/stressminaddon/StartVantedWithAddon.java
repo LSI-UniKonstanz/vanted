@@ -30,7 +30,7 @@ public class StartVantedWithAddon {
      *      the name of the addon xml file.
      */
     public static String getAddonName() {
-        return "Add-on-Stress-Minimization.xml";
+        return "Add-On-Stress-Minimization.xml";
     }
 
 }

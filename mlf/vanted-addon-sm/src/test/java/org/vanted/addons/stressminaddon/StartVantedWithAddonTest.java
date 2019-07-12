@@ -41,6 +41,6 @@ public class StartVantedWithAddonTest {
     @Test
     public void getAddonName() {
         assertEquals("Addon name",
-                "Add-on-Stress-Minimization.xml", StartVantedWithAddon.getAddonName());
+                "Add-On-Stress-Minimization.xml", StartVantedWithAddon.getAddonName());
     }
 }

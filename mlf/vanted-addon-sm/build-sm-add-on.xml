@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Stress Minimization Add-on Jar file for VANTED">
+<project default="create_run_jar" name="Create Stress Minimization add-on Jar file for VANTED">
 
 	<!-- Note: A built VANTED fat jar must be available at '../VANTED/target/jar'! -->
 
 	<property name="jar.dest.path" value="target/jar" />
-	<property name="target.name" value="Add-on-Stress-Minimization.jar" />
+	<property name="target.name" value="Add-On-Stress-Minimization.jar" />
 
 	<target name="create_run_jar" depends="compile">
 		<!-- This can be used to keep all old versions of your Add-on instead of 

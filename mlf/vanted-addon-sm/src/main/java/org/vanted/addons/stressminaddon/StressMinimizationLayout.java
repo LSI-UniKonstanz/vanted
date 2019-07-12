@@ -565,14 +565,14 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                         0.0, Double.MAX_VALUE, 0.0001,
                         USE_STRESS_EPSILON_DEFAULT, "Used", "Not used",
                         "Stress change",
-                        "<html>Stop the iterations if the change in stress is smaller than smaller than this value.<br>" +
+                        "<html>Stop the iterations if the change in stress is lower than this value.<br>" +
                                 "The algorithm will only stop on this criterion, if this is enabled.</html>"),
                 EnableableNumberParameter.canBeEnabledDisabled(POSITION_CHANGE_EPSILON_DEFAULT,
                         0.0, Double.MAX_VALUE, 0.0001,
                         USE_POSITION_CHANGE_EPSILON_DEFAULT, "Used", "Not used",
                         "Position change",
-                        "<html>Stop the iterations if the maximum change in positions of the nodes is smaller " +
-                                "than smaller than this value.<br>" +
+                        "<html>Stop the iterations if the maximum change in positions of the nodes is lower" +
+                                "than this value.<br>" +
                                 "The algorithm will only stop on this criterion, if this is enabled.</html>"),
                 EnableableNumberParameter.canBeEnabledDisabled(MAX_ITERATIONS_DEFAULT,
                         0, Integer.MAX_VALUE, 1,
@@ -581,7 +581,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                         "<html>Stop after provided number of iterations.<br>" +
                                 "The algorithm will only stop on this criterion, if this is enabled.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>Weights</u></html>",
-                        "<html>The weight function is used to determine how much distance nodes can influence each other.</html>"), //hacky section header
+                        "<html>The weight function is used to determine how much distant nodes can influence each other.</html>"), //hacky section header
                 EnableableNumberParameter.alwaysEnabled(WEIGHT_SCALING_FACTOR_DEFAULT, 0.0, Double.MAX_VALUE, 0.5,
                         "Scaling factor", "<html>The constant factor &alpha; used in the weight function that derives a weight<br>" +
                                 "between two given nodes <i>i</i> and <i>j</i> from their graph theoretical distance &delta;.<br>" +
@@ -606,8 +606,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                         "Edge scaling factor", "<html>The amount of space that the algorithm tries to ensure between two nodes<br>" +
                                 "(length of the edges) as faction of the size of the largest node encountered.</html>"),
                 EnableableNumberParameter.alwaysEnabled(EDGE_LENGTH_MINIMUM_DEFAULT, 0.0, Double.MAX_VALUE, 1.0,
-                        "Edge length minimum", "<html>The amount of space that the algorithm at least tries to ensure between two nodes.<br>" +
-                                "This value will be used if the scaled length (see above) is smaller than it.</html>"),
+                        "Edge length minimum", "<html>The minimum amount of space that the algorithm tries to ensure between two nodes.<br>" +
+                                "This value will be used if the scaled length (see above) is smaller than itself.</html>"),
                 new BooleanParameter(REMOVE_EDGE_BENDS_DEFAULT, "Remove edge bends",
                         "<html>Remove edge bends before starting the algorithm.<br><b>Highly recommended</b> because the algorithm does not " +
                                 "move edge bends.<br>Always undoable as extra undo.</html>"),
@@ -618,13 +618,13 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                         "<html>Whether every iteration should update the node positions.<br>" +
                                 "May impact performance. Should be disabled on slow machines.</html>"),
                 new BooleanParameter(MOVE_INTO_VIEW_DEFAULT, "Move into view",
-                        "<html>Whether every iteration should try layout the graph so that the animation is more readable.<br>" +
+                        "<html>Whether every iteration should try layouting the graph so that the animation is more readable.<br>" +
                                 "Takes only effect if “Animate iterations” is enabled.<br>" +
                                 "May impact performance even more. Should be disabled on slow machines.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>Parallelism (advanced)</u></html>",
                         "<html>Sets threading options for running.<br><b>Should not be changed by inexperienced users.</b></html>"), //hacky section header
                 new BooleanParameter(BACKGROUND_TASK_DEFAULT, "Run in background",
-                        "<html>Create a background task and run the algorithm from there.<br>" +
+                        "<html>Create a background task and run the algorithm from there. Disabling it may increase performance.<br>" +
                                 "<b>Highly recommended:</b> If this is disabled <i>VANTED</i> will freeze until the algorithm is complete.</html>"),
                 new BooleanParameter(MULTIPLE_THREADS_DEFAULT, "Use parallelism",
                         "<html>Create multiple threads to run the algorithm from.<br>" +
