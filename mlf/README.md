@@ -62,4 +62,4 @@ Bevor der Build-Prozess gestartet wird, müssen folgende Voraussetzungen erfüll
   (es kann von [hier](https://bitbucket.org/vanted_dev/vanted-lib-repository/src/master/) heruntergeladen werden)
 * Zusätzlich muss noch VANTED kompiliert sein und unter `VANTED/target/jar/vanted-fatjar-ver2.6.5-build-[...].jar`
   gespeichert sein (VANTED kann mittels der `build.xml` im VANTED-Verzeichnis gebaut werden).
-* Für einen Bau in IntelliJ haben wir diese [Anleitung](Literature/build-With-Intelij.md) verfasst.)
+* Für einen Bau in IntelliJ haben wir diese [Anleitung](Literature/build_with_intellij.md) verfasst.)
