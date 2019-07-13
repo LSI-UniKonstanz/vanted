@@ -11,7 +11,7 @@ import org.graffiti.graph.Graph;
 public class BenchmarkSierpinskyTriangles extends StressMinimizationBenchmarkSuite {
 
 	private static final int START_DEPTH = 3;
-	private static final int GENERATE_UP_TO_DEPTH = 8;
+	private static final int GENERATE_UP_TO_DEPTH = 10;
 
 	@Override
 	protected String getBenchmarkSuiteName() {

@@ -7,10 +7,10 @@ import org.vanted.addons.stressminimization.StressMinimizationLayout;
 public abstract class StressMinimizationBenchmarkSuite extends AlgorithmBenchmarkSuite {
 
 	/**
-	 * Set the number of landmarks to use for benchmarking. Set to Integer.MAX_VALUE
-	 * to turn of landmarking.
+	 * Set the number of landmarks to use for benchmarking.
+	 * Set to Integer.MAX_VALUE to turn of landmarking.
 	 */
-	protected int numberOfLandmarks = Integer.MAX_VALUE;
+	protected int numberOfLandmarks = 100;
 
 	@Override
 	protected Algorithm createAlgorithm() {
