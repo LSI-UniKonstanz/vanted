@@ -5,6 +5,7 @@ import java.util.List;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 import org.vanted.addons.stressminimization.StartVantedWithStressMinAddon;
 
@@ -62,6 +63,17 @@ public abstract class AlgorithmBenchmarkSuite {
 	protected abstract Algorithm createAlgorithm();
 
 	/**
+	 * Returns parameters for one execution of the algorithm.
+	 * This method is executed during each single benchmark.
+	 * You should call algorithm.getParameters() in your implementation
+	 * if you decide to override this method.
+	 * @return An array of parameters for algorithm execution
+	 */
+	protected Parameter[] getAlgorithmParameters(Algorithm algorithm) {
+		return algorithm.getParameters();
+	}
+
+	/**
 	 * Creates the graphs that shawl be benchmarked.
 	 * @return A list of graphs, names, warmup rounds and rounds for each graph.
 	 */
@@ -88,7 +100,7 @@ public abstract class AlgorithmBenchmarkSuite {
 
 				algorithm.attach(graph, new Selection(""));
 				algorithm.check();
-				algorithm.setParameters( algorithm.getParameters() );
+				algorithm.setParameters( getAlgorithmParameters(algorithm) );
 
 				algorithm.execute();
 
