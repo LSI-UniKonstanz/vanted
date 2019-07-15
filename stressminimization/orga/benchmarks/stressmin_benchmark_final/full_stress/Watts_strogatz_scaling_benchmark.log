@@ -1,0 +1,152 @@
+Starting VANTED...
+Welcome! About to start the application...
+2019-07-13 17:42:17 DEBUG ScanForUpdate:131 - waiting for update scan until app has started
+2019-07-13 17:42:17 DEBUG Main:205 - installing max os x handlers
+================================================================================
+Watts Strogatz Network Benchmark Suite
+Setting up...
+Trying to load Add-ons... 
+Plugin name Stress Minimization Add-on already defined/plugin already loaded!
+Loading of plugin Stress Minimization Add-on not finished (time-out).
+Add-on Stress-Minimization-Addon.jar processed
+Add-ons loaded in 8ms
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 100; e = 200)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 524.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 100; e = 200)
+Results: [129, 128, 125, 127, 120, 119, 121, 138, 148, 121, 122, 121, 120, 123, 121, 122, 123, 135, 151, 123, 124, 123, 124, 138, 121, 101, 96, 122, 123, 128, 121, 100, 122, 120, 124, 120, 125, 118, 123, 123, 122, 124, 166, 132, 132, 132, 124, 126, 125, 127]
+Overall runtime: 6243.0ms
+Mean runtime: 124.86ms; standard deviation: 10.875679289129483ms
+Min: 96ms; Median: 123.0ms; Max: 166ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 200; e = 400)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 1086.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 200; e = 400)
+Results: [465, 496, 456, 450, 453, 453, 473, 449, 456, 447, 451, 478, 454, 462, 462, 457, 489, 455, 456, 456, 453, 463, 506, 472, 463, 451, 454, 464, 471, 454, 460, 466, 458, 455, 482, 451, 452, 451, 444, 448, 477, 447, 454, 468, 465, 450, 452, 466, 460, 484]
+Overall runtime: 23059.0ms
+Mean runtime: 461.18ms; standard deviation: 12.997984459138271ms
+Min: 444ms; Median: 456.0ms; Max: 506ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 300; e = 600)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 1450.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 300; e = 600)
+Results: [984, 972, 978, 975, 972, 976, 976, 987, 1001, 977, 980, 982, 982, 978, 987, 989, 980, 996, 997, 983, 987, 998, 990, 993, 996, 988, 992, 1018, 1026, 1000, 993, 1002, 991, 991, 994, 995, 997, 1002, 1030, 1004, 997, 1000, 1006, 1007, 1011, 1007, 1013, 1021, 1043, 1009]
+Overall runtime: 49753.0ms
+Mean runtime: 995.06ms; standard deviation: 15.26749488292038ms
+Min: 972ms; Median: 993.5ms; Max: 1043ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 400; e = 800)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 1386.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 400; e = 800)
+Results: [1773, 1923, 1856, 1831, 1812, 1752, 1771, 1786, 1824, 1800, 1755, 1762, 1766, 1866, 1754, 1773, 1782, 1749, 1781, 1788, 1730, 1740, 1726, 1737, 1814, 1774, 1745, 1766, 1742, 1776, 1826, 1780, 1756, 1773, 1758, 1844, 1776, 1768, 1827, 1803, 1777, 1836, 1786, 1778, 1768, 1782, 1805, 1806, 1766, 1785]
+Overall runtime: 89254.0ms
+Mean runtime: 1785.08ms; standard deviation: 37.45762405705946ms
+Min: 1726ms; Median: 1776.5ms; Max: 1923ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 500; e = 1000)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 515.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 500; e = 1000)
+Results: [2788, 2727, 2731, 2768, 2768, 2728, 2783, 2824, 2728, 2724, 2763, 2796, 2767, 2821, 2805, 2749, 2755, 2787, 2820, 2744, 2769, 2836, 2801, 2814, 2808, 2849, 2783, 2787, 2876, 2809, 2794, 2819, 2844, 2790, 2794, 2844, 2850, 2783, 2785, 2826, 2784, 2811, 2807, 2963, 2811, 2811, 2881, 2794, 2809, 2806]
+Overall runtime: 139914.0ms
+Mean runtime: 2798.28ms; standard deviation: 43.288354092065ms
+Min: 2724ms; Median: 2795.0ms; Max: 2963ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 600; e = 1200)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 462.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 600; e = 1200)
+Results: [4137, 3995, 4101, 4031, 3983, 4033, 4077, 4010, 4021, 3992, 4151, 4074, 4045, 3997, 4035, 4097, 4075, 4082, 4062, 4013, 4226, 4098, 4101, 4074, 4121, 4142, 4049, 4197, 4045, 4082, 4186, 4131, 4101, 4050, 4169, 4066, 4048, 4154, 4093, 4212, 4078, 4045, 4207, 4080, 4163, 4182, 4140, 4126, 4144, 4321]
+Overall runtime: 204842.0ms
+Mean runtime: 4096.84ms; standard deviation: 69.38136925717161ms
+Min: 3983ms; Median: 4082.0ms; Max: 4321ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 700; e = 1400)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 671.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 700; e = 1400)
+Results: [5577, 5622, 5494, 5557, 5626, 5630, 5787, 5793, 5660, 5543, 5590, 5618, 5607, 5529, 5621, 5676, 5729, 5659, 5572, 5661, 5631, 5750, 5574, 5683, 5727, 5611, 5649, 5625, 5744, 5676, 5679, 5645, 5644, 5709, 5583, 5739, 5707, 5638, 5605, 5669, 5670, 5688, 5707, 5641, 5799, 5684, 5678, 5753, 5843, 5660]
+Overall runtime: 282962.0ms
+Mean runtime: 5659.24ms; standard deviation: 71.6085358040506ms
+Min: 5494ms; Median: 5659.5ms; Max: 5843ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 800; e = 1600)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 403.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 800; e = 1600)
+Results: [7488, 7294, 7279, 7422, 7442, 7279, 7233, 7424, 7417, 7308, 7429, 7374, 7422, 7382, 7628, 7348, 7361, 7372, 7594, 7370, 7514, 7473, 7614, 7454, 7520, 7559, 7649, 7426, 7580, 7393, 7529, 7510, 7677, 7407, 7542, 7614, 7530, 7428, 7618, 7504, 7483, 7433, 7589, 7692, 7565, 7633, 7497, 7668, 7496, 7502]
+Overall runtime: 373965.0ms
+Mean runtime: 7479.3ms; standard deviation: 112.4130330522222ms
+Min: 7233ms; Median: 7485.5ms; Max: 7692ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 900; e = 1800)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 673.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 900; e = 1800)
+Results: [9503, 9342, 9306, 9589, 9457, 9455, 9450, 9477, 9336, 9443, 9562, 9413, 9436, 9555, 9638, 9426, 9396, 9609, 9378, 9467, 9664, 9596, 9623, 9709, 9564, 9824, 9837, 9589, 9620, 9796, 9697, 9563, 9687, 9581, 9501, 9518, 9793, 9514, 9522, 9740, 9578, 9644, 9578, 9781, 9657, 9649, 9731, 9774, 9677, 9822]
+Overall runtime: 479067.0ms
+Mean runtime: 9581.34ms; standard deviation: 136.88821863111522ms
+Min: 9306ms; Median: 9579.5ms; Max: 9837ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Watts Strogatz Network (n = 1000; e = 2000)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 622.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Watts Strogatz Network (n = 1000; e = 2000)
+Results: [11711, 11740, 11634, 11670, 11505, 11677, 11700, 11549, 11756, 11664, 11584, 11854, 11842, 11864, 11819, 11672, 11627, 11908, 11968, 11553, 11595, 11880, 12006, 12237, 12493, 12429, 12183, 12177, 12288, 12425, 11911, 11774, 12127, 11794, 11728, 11914, 12041, 11868, 11729, 11949, 11791, 11865, 11925, 12191, 11923, 12329, 12222, 12320, 11817, 11952]
+Overall runtime: 595180.0ms
+Mean runtime: 11903.6ms; standard deviation: 251.4348424542629ms
+Min: 11505ms; Median: 11864.5ms; Max: 12493ms
+--------------------------------------------------------------------------------

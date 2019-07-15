@@ -1,0 +1,124 @@
+Starting VANTED...
+Welcome! About to start the application...
+2019-07-13 19:11:59 DEBUG Main:205 - installing max os x handlers
+2019-07-13 19:11:59 DEBUG ScanForUpdate:131 - waiting for update scan until app has started
+================================================================================
+Sierpisky Triangle Benchmark Suite
+Setting up...
+Trying to load Add-ons... 
+Plugin name Stress Minimization Add-on already defined/plugin already loaded!
+Loading of plugin Stress Minimization Add-on not finished (time-out).
+Add-on Stress-Minimization-Addon.jar processed
+Add-ons loaded in 9ms
+--------------------------------------------------------------------------------
+Starting Benchmark: Sierpisky triangle (depth: 3; n = 42; e = 81)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 990.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Sierpisky triangle (depth: 3; n = 42; e = 81)
+Results: [14, 12, 13, 13, 13, 485, 12, 13, 11, 13, 12, 12, 12, 13, 12, 12, 11, 12, 11, 12, 11, 11, 12, 12, 11, 11, 12, 12, 12, 12, 11, 13, 12, 12, 14, 11, 11, 12, 13, 12, 13, 12, 11, 13, 12, 11, 12, 11, 13, 12]
+Overall runtime: 1075.0ms
+Mean runtime: 21.5ms; standard deviation: 66.21910600423416ms
+Min: 11ms; Median: 12.0ms; Max: 485ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Sierpisky triangle (depth: 4; n = 123; e = 243)
+Warmup rounds: 15, Rounds: 38
+Running carbage collection.
+Warmup: 15 rounds.
+OS Name: Mac OS X, Total available Memory: 1354.0 MiB, Available CPUs: 4
+Benchmark: 38 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Sierpisky triangle (depth: 4; n = 123; e = 243)
+Results: [68, 69, 68, 70, 66, 67, 67, 68, 67, 69, 67, 72, 68, 69, 69, 68, 70, 70, 71, 75, 68, 69, 69, 68, 69, 69, 68, 71, 69, 70, 69, 69, 70, 70, 70, 91, 69, 70]
+Overall runtime: 2646.0ms
+Mean runtime: 69.63157894736842ms; standard deviation: 3.8485886177962008ms
+Min: 66ms; Median: 69.0ms; Max: 91ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Sierpisky triangle (depth: 5; n = 366; e = 729)
+Warmup rounds: 12, Rounds: 30
+Running carbage collection.
+Warmup: 12 rounds.
+OS Name: Mac OS X, Total available Memory: 1412.5 MiB, Available CPUs: 4
+Benchmark: 30 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Sierpisky triangle (depth: 5; n = 366; e = 729)
+Results: [111, 120, 115, 114, 122, 119, 143, 118, 123, 118, 118, 116, 115, 113, 115, 114, 114, 115, 115, 117, 120, 118, 118, 119, 116, 119, 117, 118, 117, 123]
+Overall runtime: 3540.0ms
+Mean runtime: 118.0ms; standard deviation: 5.41602560309064ms
+Min: 111ms; Median: 117.5ms; Max: 143ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Sierpisky triangle (depth: 6; n = 1095; e = 2187)
+Warmup rounds: 10, Rounds: 25
+Running carbage collection.
+Warmup: 10 rounds.
+OS Name: Mac OS X, Total available Memory: 1309.5 MiB, Available CPUs: 4
+Benchmark: 25 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Sierpisky triangle (depth: 6; n = 1095; e = 2187)
+Results: [271, 259, 263, 261, 272, 272, 271, 271, 275, 273, 286, 297, 284, 310, 323, 287, 301, 286, 287, 296, 290, 296, 303, 303, 296]
+Overall runtime: 7133.0ms
+Mean runtime: 285.32ms; standard deviation: 16.024281575159616ms
+Min: 259ms; Median: 286.0ms; Max: 323ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Sierpisky triangle (depth: 7; n = 3282; e = 6561)
+Warmup rounds: 9, Rounds: 22
+Running carbage collection.
+Warmup: 9 rounds.
+OS Name: Mac OS X, Total available Memory: 1355.5 MiB, Available CPUs: 4
+Benchmark: 22 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Sierpisky triangle (depth: 7; n = 3282; e = 6561)
+Results: [838, 843, 842, 832, 837, 814, 808, 873, 876, 906, 918, 923, 892, 932, 929, 991, 980, 1012, 983, 1012, 983, 1028]
+Overall runtime: 20052.0ms
+Mean runtime: 911.4545454545455ms; standard deviation: 69.4384798173091ms
+Min: 808ms; Median: 912.0ms; Max: 1028ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Sierpisky triangle (depth: 8; n = 9843; e = 19683)
+Warmup rounds: 8, Rounds: 19
+Running carbage collection.
+Warmup: 8 rounds.
+OS Name: Mac OS X, Total available Memory: 1494.0 MiB, Available CPUs: 4
+Benchmark: 19 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Sierpisky triangle (depth: 8; n = 9843; e = 19683)
+Results: [2603, 2695, 2763, 2812, 2777, 2720, 2894, 2975, 2893, 2830, 2982, 2926, 3116, 3102, 3033, 3056, 3095, 3018, 3078]
+Overall runtime: 55368.0ms
+Mean runtime: 2914.1052631578946ms; standard deviation: 150.72173549706272ms
+Min: 2603ms; Median: 2926.0ms; Max: 3116ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Sierpisky triangle (depth: 9; n = 29526; e = 59049)
+Warmup rounds: 7, Rounds: 17
+Running carbage collection.
+Warmup: 7 rounds.
+OS Name: Mac OS X, Total available Memory: 2088.0 MiB, Available CPUs: 4
+Benchmark: 17 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Sierpisky triangle (depth: 9; n = 29526; e = 59049)
+Results: [11780, 12100, 12457, 12976, 12664, 12929, 12581, 13420, 13154, 13619, 13312, 13543, 13186, 14223, 14044, 14372, 13874]
+Overall runtime: 224234.0ms
+Mean runtime: 13190.235294117647ms; standard deviation: 707.6927323776948ms
+Min: 11780ms; Median: 13186.0ms; Max: 14372ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: Sierpisky triangle (depth: 10; n = 88575; e = 177147)
+Warmup rounds: 6, Rounds: 15
+Running carbage collection.
+Warmup: 6 rounds.
+OS Name: Mac OS X, Total available Memory: 2656.0 MiB, Available CPUs: 4
+Benchmark: 15 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: Sierpisky triangle (depth: 10; n = 88575; e = 177147)
+Results: [55140, 54383, 56237, 57251, 58368, 55955, 58273, 56915, 60573, 58833, 60900, 58990, 60920, 58982, 63451]
+Overall runtime: 875171.0ms
+Mean runtime: 58344.73333333333ms; standard deviation: 2375.2401834106986ms
+Min: 54383ms; Median: 58368.0ms; Max: 63451ms
+--------------------------------------------------------------------------------

@@ -1,0 +1,96 @@
+Starting VANTED...
+Welcome! About to start the application...
+2019-07-13 15:33:44 DEBUG Main:205 - installing max os x handlers
+2019-07-13 15:33:44 DEBUG ScanForUpdate:131 - waiting for update scan until app has started
+================================================================================
+Standard graphs benchmark suite: (n = 500)
+Setting up...
+Trying to load Add-ons... 
+Plugin name Stress Minimization Add-on already defined/plugin already loaded!
+Loading of plugin Stress Minimization Add-on not finished (time-out).
+Add-on Stress-Minimization-Addon.jar processed
+Add-ons loaded in 32ms
+--------------------------------------------------------------------------------
+Starting Benchmark: star graph (n = 500)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 1382.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: star graph (n = 500)
+Results: [374, 435, 384, 354, 343, 338, 362, 365, 368, 348, 378, 396, 333, 340, 336, 382, 362, 335, 365, 404, 353, 360, 379, 357, 346, 351, 354, 388, 368, 336, 372, 388, 361, 372, 398, 354, 360, 414, 409, 404, 394, 392, 354, 387, 421, 379, 359, 360, 421, 368]
+Overall runtime: 18561.0ms
+Mean runtime: 371.22ms; standard deviation: 24.626238039944305ms
+Min: 333ms; Median: 366.5ms; Max: 435ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: wheel graph (n = 500)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 607.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: wheel graph (n = 500)
+Results: [518, 496, 662, 518, 451, 476, 483, 476, 456, 493, 465, 469, 532, 521, 513, 515, 554, 499, 480, 499, 508, 514, 523, 563, 550, 578, 573, 528, 520, 542, 542, 519, 550, 536, 530, 534, 538, 528, 522, 519, 557, 565, 545, 571, 547, 558, 601, 545, 540, 537]
+Overall runtime: 26359.0ms
+Mean runtime: 527.18ms; standard deviation: 37.71932661116845ms
+Min: 451ms; Median: 528.0ms; Max: 662ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: complete graph (n = 500)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 302.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: complete graph (n = 500)
+Results: [62804, 50002, 52514, 50223, 52699, 53195, 54941, 53203, 53671, 51514, 56605, 54538, 56826, 54670, 56644, 54367, 57189, 55429, 57310, 55260, 57163, 58744, 59825, 58102, 59976, 58390, 59848, 57544, 57311, 56345, 64011, 59408, 60985, 59055, 61759, 59147, 61196, 58709, 60233, 58291, 57567, 56102, 63339, 61695, 62628, 61293, 63031, 61482, 62635, 61112]
+Overall runtime: 2890530.0ms
+Mean runtime: 57810.6ms; standard deviation: 3517.2640674251347ms
+Min: 50002ms; Median: 57834.5ms; Max: 64011ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: line graph (n = 500)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 357.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: line graph (n = 500)
+Results: [2839, 2750, 2786, 2737, 2739, 2779, 2763, 2716, 2719, 2876, 2739, 2747, 2755, 2768, 2793, 2725, 2799, 2729, 2738, 2721, 2751, 2711, 2746, 2742, 2812, 2725, 2720, 2782, 2710, 2726, 2765, 2786, 2740, 2726, 2813, 2727, 2733, 2739, 2825, 2729, 2840, 2779, 2790, 2745, 2789, 2789, 2750, 2776, 2741, 2780]
+Overall runtime: 138005.0ms
+Mean runtime: 2760.1ms; standard deviation: 37.093530433217055ms
+Min: 2710ms; Median: 2748.5ms; Max: 2876ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: barabasis albert graph (n = 500)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 506.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: barabasis albert graph (n = 500)
+Results: [2962, 2935, 2959, 2994, 2977, 2997, 2980, 2947, 2985, 2979, 3038, 3087, 2993, 3079, 3008, 2999, 3040, 3012, 3001, 3055, 3040, 3034, 3052, 3111, 3076, 3025, 3163, 3018, 3074, 3061, 3023, 3025, 3063, 3047, 3065, 3010, 3090, 3018, 3049, 3095, 3041, 3132, 3111, 3073, 3056, 3077, 3102, 3085, 3057, 3139]
+Overall runtime: 152039.0ms
+Mean runtime: 3040.78ms; standard deviation: 50.31591795843538ms
+Min: 2935ms; Median: 3040.5ms; Max: 3163ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: watts strogatz graph (n = 500)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 404.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: watts strogatz graph (n = 500)
+Results: [2949, 2869, 2838, 2905, 2908, 2836, 2846, 2951, 2865, 2836, 2911, 2980, 2868, 2898, 2922, 2875, 2930, 2901, 2881, 2885, 2912, 2995, 2919, 2895, 2946, 2942, 2892, 2924, 3029, 2898, 2948, 2945, 2952, 3058, 2944, 2922, 2900, 2935, 2950, 2897, 2907, 2983, 2914, 2914, 2964, 3063, 2940, 2985, 2996, 2926]
+Overall runtime: 146249.0ms
+Mean runtime: 2924.98ms; standard deviation: 50.350169811034405ms
+Min: 2836ms; Median: 2920.5ms; Max: 3063ms
+--------------------------------------------------------------------------------
