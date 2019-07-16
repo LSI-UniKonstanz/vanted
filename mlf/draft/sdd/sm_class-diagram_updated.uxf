@@ -117,7 +117,7 @@ m1=1
 --
 + get(row: int, col : int) : double
 + set(row: int, col : int, value : double)
-+ apply(operator : Funktion)</panel_attributes>
++ apply(operator : Function)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

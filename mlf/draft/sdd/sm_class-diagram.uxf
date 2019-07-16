@@ -46,12 +46,12 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>530</x>
+      <x>500</x>
       <y>200</y>
-      <w>100</w>
+      <w>170</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>Algorithm</panel_attributes>
+    <panel_attributes>Algorithm &lt;&lt;interface&gt;&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -76,8 +76,8 @@
     <panel_attributes>ShortestPaths
 --
 --
-+ getShortestPaths(ArrayList&lt;Node&gt; nodes) : NodeValueMatrix
-- getShortestPathFrom(ArrayList&lt;Node&gt; nodes, Node n)</panel_attributes>
++ getShortestPaths(nodes : ArrayList&lt;Node&gt;) : NodeValueMatrix
+- getShortestPathFrom(nodes : ArrayList&lt;Node&gt;, n : Node)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -104,7 +104,7 @@
     <panel_attributes>IterativePositionAlgorithm &lt;&lt;interface&gt;&gt;
 --
 --
-+ updatePositions(Graph g, NodeMatrix dist)</panel_attributes>
++ updatePositions(g: Graph, dist : NodeMatrix)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -126,13 +126,13 @@ m1=1
     <coordinates>
       <x>470</x>
       <y>530</y>
-      <w>250</w>
+      <w>270</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>NodeValueMatrix
 --
 --
-+ get(Node v1, Node v2): double</panel_attributes>
++ get(v1 : Node, v2 : Node) : double</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -151,29 +151,29 @@ m1=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>130</x>
+      <x>120</x>
       <y>470</y>
-      <w>250</w>
+      <w>260</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>InitialPlacer &lt;&lt;interface&gt;&gt;
 --
 --
-+ setupInitialPlacement(Graph g)</panel_attributes>
++ setupInitialPlacement(g : Graph)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
+      <x>230</x>
       <y>390</y>
-      <w>200</w>
+      <w>210</w>
       <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 r1=initialPlacer
 m1=1</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0;180.0;10.0</additional_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0;190.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
