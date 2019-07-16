@@ -17,7 +17,8 @@ Benchmarks. Für die Qualitätsmetriken wurden die Graphen in den Archiven
 und `StressMinimization-Add-On/Graphen/benchmarks_sm_brief.tar.xz` verwendet.
 Die anderen Archive enthalten ältere, nicht ausgewertete Benchmarks.
 
-# Hardware Spezifikationen des benutzen Testrechners
+# Hardware-Spezifikationen des benuzten Testrechners
+```
 system         81BG (LENOVO_MT_81BG_BU_idea_FM_ideapad 320-15IKB)
 memory         128KiB BIOS
 processor      Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
@@ -26,4 +27,4 @@ memory         1MiB L2 cache
 memory         12GiB System Memory
 memory         4GiB SODIMM DDR4 Synchronous Unbuffered (Unregistered) 2133 MHz (0,5 ns)
 memory         8GiB SODIMM DDR4 Synchronous Unbuffered (Unregistered) 2133 MHz (0,5 ns)
-
+```
