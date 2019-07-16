@@ -1,0 +1,10 @@
+Name,00tiny.gml,3elt.gml,4elt.gml,add20.gml,add32.gml,big_path.gml,crack.gml,sierpinski_04.gml,sierpinski_06.gml,sierpinski_07.gml,sierpinski_08.gml,test_strogatz.gml
+Random Merger/Random Placer/Null-Layout,31,1226,2383,439,582,74,1328,36,102,327,1004,314
+Solar Merger/Random Placer/Null-Layout,5,496,1931,215,428,100,1066,20,83,295,1029,351
+Solar Merger/Solar Placer/Null-Layout,5,527,2103,259,459,64,1132,19,89,270,1060,361
+Random Merger/Random Placer/Stress Minimization,30,90865,1625909,25536,264194,35595,383479,117,2120,24015,319281,97138
+Solar Merger/Random Placer/Stress Minimization,12,51429,1064014,10901,128530,28244,278655,88,1543,16954,226996,67190
+Solar Merger/Solar Placer/Stress Minimization,17,54311,1399102,11717,180322,28058,279044,54,1482,15773,237306,76006
+Random Merger/Random Placer/Force Directed (custom),6474,n.a.,n.a.,406027,n.a.,140099,n.a.,26589,161751,598070,n.a.,802513
+Solar Merger/Random Placer/Force Directed (custom),6177,n.a.,n.a.,191038,n.a.,80594,n.a.,11054,72473,349152,n.a.,555840
+Solar Merger/Solar Placer/Force Directed (custom),6096,n.a.,n.a.,192399,n.a.,79607,n.a.,11464,72383,349133,n.a.,558698
