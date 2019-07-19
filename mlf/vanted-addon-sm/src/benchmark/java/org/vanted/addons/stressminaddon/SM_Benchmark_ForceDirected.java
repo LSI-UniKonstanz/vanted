@@ -1,18 +1,20 @@
 package org.vanted.addons.stressminaddon;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.fd_edge_routing.ForceDirectedEdgeLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import org.graffiti.editor.LoadSetting;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.selection.Selection;
 import org.junit.Test;
-import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+//import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 /**
  * Run benchmarks for ForceDirected in VANTED.
@@ -88,7 +90,13 @@ public class SM_Benchmark_ForceDirected {
                 }
                 Thread.sleep(2 * 1000);
 
-                BlockingForceDirected forceDirected = new BlockingForceDirected();
+                // BlockingForceDirected forceDirected = new BlockingForceDirected();
+                // uncomment this if you want to use a changed version of the ForceDirected in the GUI.
+                // The MLF addon must be included as a library for this to work.
+
+                ForceDirectedEdgeLayout forceDirected = new ForceDirectedEdgeLayout();
+                // This will maybe not be executed while blocking
+
                 forceDirected.attach(MainFrame.getInstance().getActiveEditorSession().getGraph(),
                         MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection());
 

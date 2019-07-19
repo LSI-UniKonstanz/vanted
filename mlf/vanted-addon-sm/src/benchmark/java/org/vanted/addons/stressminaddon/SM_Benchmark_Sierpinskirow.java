@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
- * Benchamark that tests different deep class off sierpinski triangle.
+ * Benchmark that tests different deep class off sierpinski triangle.
  * Save the data in a csv-format(runtime_ms,linecrossing,iterations,stress)
  *
  * @author rene

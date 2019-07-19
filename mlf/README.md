@@ -2,8 +2,8 @@
 
 Repository für Team 2.2  - Java Projekt VANTED Erweiterung durch Layoutverfahren für große Graphen
 
-Die Benutzerhandbücher finden sich [hier](Abgaben/Dokumente/Benutzerhanbücher).
-Die Benchmark-Auswertungen [hier](Abgaben/Benchmark-Ergebnisse/).
+Die Benutzerhandbücher finden sich [hier](Abgaben/Dokumente/Benutzerhanbücher) und
+die Benchmark-Auswertungen [hier](Abgaben/Benchmark-Ergebnisse/).
 
 ## Hinweise zum Multilevel Framework Add-On
 
