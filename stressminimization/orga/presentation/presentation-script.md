@@ -26,6 +26,10 @@
 
 # Design
 
+    * Auslagerung des Stress Optimizers (Gleichungssystemlösers)
+
 # Architektur
+
+    * Verwendung des Apache Math Frameworks im Stress Optimierungsverfahren: u.A. Nutzung eines spezialisieren Gleichungslösungsverfahrens
 
 # Demo
