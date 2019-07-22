@@ -75,3 +75,11 @@
   
 
 # Demo
+
+    * Stress Min
+        - Helikopter (300 landmarks)
+    * Multilevel
+        - barabasi albert 1 (Solar, StressMin)
+    * Beide
+        - Konstanz graph
+
