@@ -350,8 +350,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 }
                 state.status = "Got connected components. (" + connectedComponents.size() + ")"; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
 
-                // TODO add random initial layout
-
                 List<WorkUnit> workUnits = new ArrayList<>(connectedComponents.size());
                 if (state.debugEnabled) {
                     state.debugWorkUnits = workUnits;
@@ -1169,12 +1167,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
             this.nodes = nodes;
             this.state = state;
             if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate distances..."));}
-            this.distances = ShortestDistanceAlgorithm.calculateShortestPaths(nodes, Integer.MAX_VALUE, state.multipleThreads); // TODO make configurable
+            this.distances = ShortestDistanceAlgorithm.calculateShortestPaths(nodes, Integer.MAX_VALUE, state.multipleThreads);
             if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate scaling factor..."));}
             final double scalingFactor = Math.max(
                     ConnectedComponentsHelper.getMaxNodeSize(nodes)*state.edgeScalingFactor, state.edgeLengthMinimum);
             // scale for better display
-            // TODO maybe place this after initial layout to prevent over scaling
             this.distances.apply(x -> x*scalingFactor);
 
             if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial layout..."));}

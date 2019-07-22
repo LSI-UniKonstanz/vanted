@@ -94,32 +94,32 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
     }
 
     /**
-     * Gets a list of {@link Parameter}s this {@link IntuitiveIterativePositionAlgorithm}
-     * provides.
+     * Return an empty array of list {@link Parameter}s for
+     * this {@link IntuitiveIterativePositionAlgorithm}, because
+     * it does not provide any arguments.
      *
-     * @return gets a list of Parameters this class provides.
+     * @return an empty list of Parameters.
      * @author Jannik
      * @see Algorithm#getParameters()
      */
     @Override
     public Parameter[] getParameters() {
-        // TODO implement settings
-        return new Parameter[0];
+        return new Parameter[0]; // empty
     }
 
     /**
      * Provides a list of {@link Parameter}s that should be accepted by
      * the {@link IntuitiveIterativePositionAlgorithm}.<br>
-     * This setter should only be called if the {@link IntuitiveIterativePositionAlgorithm}
-     * not currently used by the top level algorithm.
+     * Because this algorithm does not have any {@link Parameter}s, this
+     * method will do nothing.
      *
-     * @param parameters the parameters to be set.
+     * @param parameters the parameters to be set. Will be ignored.
      * @author Jannik
      * @see Algorithm#setParameters(Parameter[])
      */
     @Override
     public void setParameters(Parameter[] parameters) {
-        // TODO implement settings
+        // no-op
     }
 
     /**
