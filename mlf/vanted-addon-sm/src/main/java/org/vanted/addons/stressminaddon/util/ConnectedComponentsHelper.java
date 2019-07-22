@@ -114,7 +114,7 @@ public enum ConnectedComponentsHelper {
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
      * @see ConnectedComponentsHelper#layoutConnectedComponents(Set, double, double, double, double, boolean)
      *
-     * @author Jannik
+     * @author Jannik, Christian Klukas
      */
     public static void layoutConnectedComponents(final Set<List<Node>> connectedComponents, final boolean isUndoable) {
         ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents,
@@ -155,7 +155,7 @@ public enum ConnectedComponentsHelper {
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
      * @see ConnectedComponentsHelper#layoutConnectedComponents(Set, double, double, double, double, boolean)
      *
-     * @author Jannik
+     * @author Jannik, Christian Klukas
      */
     public static void layoutConnectedComponents(final List<List<Node>> connectedComponents, final List<List<Vector2d>> connectedComponentPositions, final boolean isUndoable) {
         ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, connectedComponentPositions,
@@ -195,7 +195,7 @@ public enum ConnectedComponentsHelper {
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
      * @see ConnectedComponentsHelper#getConnectedComponentBounds(List, List, double, double, double, double)
      *
-     * @author Jannik
+     * @author Jannik, Christian Klukas
      */
     public static void layoutConnectedComponents(final Set<List<Node>> connectedComponents,
                                                  final double marginFractionWidth, final double marginFractionHeight,
@@ -244,7 +244,7 @@ public enum ConnectedComponentsHelper {
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
      * @see ConnectedComponentsHelper#getConnectedComponentBounds(List, List, double, double, double, double)
      *
-     * @author Jannik
+     * @author Jannik, Christian Klukas
      */
     public static void layoutConnectedComponents(final List<List<Node>> connectedComponents,
                                                  final List<List<Vector2d>> connectedComponentPositions,
@@ -376,53 +376,57 @@ public enum ConnectedComponentsHelper {
             // #######################################################################################
             // assign node position
             for (int i = 0; i < connectedComponentsCopy.size(); i++) {
-                Rectangle2D.Double rect = componentsBoundsWithAnchor[i]; // faster access
-                List<Node> connectedComponent = connectedComponentsCopy.get(i);
-                List<Vector2d> connectedComponentPos = connectedComponentPositionsCopy == null ? null : connectedComponentPositionsCopy.get(i);
+                if (bestComponentOffsets[i] != null) {
+                    Rectangle2D.Double rect = componentsBoundsWithAnchor[i]; // faster access
+                    List<Node> connectedComponent = connectedComponentsCopy.get(i);
+                    List<Vector2d> connectedComponentPos = connectedComponentPositionsCopy == null ? null : connectedComponentPositionsCopy.get(i);
 
-                double shiftX = bestComponentOffsets[i].x - rect.x;
-                double shiftY = bestComponentOffsets[i].y - rect.y;
+                    double shiftX = bestComponentOffsets[i].x - rect.x;
+                    double shiftY = bestComponentOffsets[i].y - rect.y;
 
-                Set<Edge> conComponentEdges = new HashSet<>();
-                // move nodes
-                for (int idx = 0; idx < connectedComponent.size(); idx++) {
-                    Node node = connectedComponent.get(idx);
-                    Vector2d pos = connectedComponentPos == null ?
-                            AttributeHelper.getPositionVec2d(node) : connectedComponentPos.get(idx);
-                    pos.x += shiftX;
-                    pos.y += shiftY;
-                    newNodePositions.put(node, pos);
-                    // prepare edges
-                    conComponentEdges.addAll(node.getEdges());
-                }
+                    Set<Edge> conComponentEdges = new HashSet<>();
+                    // move nodes
+                    for (int idx = 0; idx < connectedComponent.size(); idx++) {
+                        Node node = connectedComponent.get(idx);
+                        Vector2d pos = connectedComponentPos == null ?
+                                AttributeHelper.getPositionVec2d(node) : connectedComponentPos.get(idx);
+                        pos.x += shiftX;
+                        pos.y += shiftY;
+                        newNodePositions.put(node, pos);
+                        // prepare edges
+                        conComponentEdges.addAll(node.getEdges());
+                    }
 
-                // move edge bends
-                // TODO maybe interpolate bend position if edge leads outside of connected component
-                for (Edge edge : conComponentEdges) {
-                    for (CoordinateAttribute bendCA : AttributeHelper.getEdgeBendCoordinateAttributes(edge)) {
-                        Vector2d pos = new Vector2d(bendCA.getX() + shiftX, bendCA.getY() + shiftY);
-                        newBendPositions.put(bendCA, pos);
+                    // move edge bends
+                    // TODO maybe interpolate bend position if edge leads outside of connected component
+                    for (Edge edge : conComponentEdges) {
+                        for (CoordinateAttribute bendCA : AttributeHelper.getEdgeBendCoordinateAttributes(edge)) {
+                            Vector2d pos = new Vector2d(bendCA.getX() + shiftX, bendCA.getY() + shiftY);
+                            newBendPositions.put(bendCA, pos);
+                        }
                     }
                 }
             }
         }
         // do move
-        if (isUndoable) {
-            GraphHelper.applyUndoableNodeAndBendPositionUpdate(
-                    newNodePositions, newBendPositions, "Layout connected components");
-        } else {
-            Graph graph = newNodePositions.keySet().iterator().next().getGraph();
-            Object lock = new Object();
-            graph.getListenerManager().transactionStarted(lock);
-            try {
-                for (Map.Entry<Node, Vector2d> entry : newNodePositions.entrySet()) {
-                    AttributeHelper.setPosition(entry.getKey(), entry.getValue());
+        if (!newNodePositions.isEmpty()) {
+            if (isUndoable) {
+                GraphHelper.applyUndoableNodeAndBendPositionUpdate(
+                        newNodePositions, newBendPositions, "Layout connected components");
+            } else {
+                Graph graph = newNodePositions.keySet().iterator().next().getGraph();
+                Object lock = new Object();
+                graph.getListenerManager().transactionStarted(lock);
+                try {
+                    for (Map.Entry<Node, Vector2d> entry : newNodePositions.entrySet()) {
+                        AttributeHelper.setPosition(entry.getKey(), entry.getValue());
+                    }
+                    for (Map.Entry<CoordinateAttribute, Vector2d> entry : newBendPositions.entrySet()) {
+                        entry.getKey().setCoordinate(entry.getValue().x, entry.getValue().y);
+                    }
+                } finally {
+                    graph.getListenerManager().transactionFinished(lock);
                 }
-                for (Map.Entry<CoordinateAttribute, Vector2d> entry : newBendPositions.entrySet()) {
-                    entry.getKey().setCoordinate(entry.getValue().x, entry.getValue().y);
-                }
-            } finally {
-                graph.getListenerManager().transactionFinished(lock);
             }
         }
     }
@@ -468,7 +472,7 @@ public enum ConnectedComponentsHelper {
      *
      * @throws IllegalArgumentException if any fraction is negative.
      *
-     * @author Jannik
+     * @author Jannik, Christian Klukas
      */
     public static Rectangle2D.Double getConnectedComponentBounds(final List<Node> connectedComponent, final List<Vector2d> connectedComponentPositions,
                                                                  final double marginFractionWidth, final double marginFractionHeight,
