@@ -19016,7 +19016,7 @@
 											"top": 150,
 											"width": 156.74267578125,
 											"height": 13,
-											"text": "Optimize Stress Function"
+											"text": "Optimize Stress"
 										},
 										{
 											"_type": "LabelView",
@@ -19939,7 +19939,7 @@
 											"top": 255,
 											"width": 143.736328125,
 											"height": 13,
-											"text": "Placement Algorithms"
+											"text": "Coarsening Algorithms"
 										},
 										{
 											"_type": "LabelView",
@@ -20213,7 +20213,7 @@
 											"top": 383,
 											"width": 143.736328125,
 											"height": 13,
-											"text": "Placement Algorithms"
+											"text": "Coarsening Algorithms"
 										},
 										{
 											"_type": "LabelView",
@@ -20743,7 +20743,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFqvKSq5+eH6iE="
 					},
-					"name": "Optimize Stress Function"
+					"name": "Optimize Stress"
 				},
 				{
 					"_type": "UMLInterface",
@@ -20767,7 +20767,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFqvKSq5+eH6iE="
 					},
-					"name": "Placement Algorithms",
+					"name": "Coarsening Algorithms",
 					"ownedElements": [
 						{
 							"_type": "UMLDependency",
