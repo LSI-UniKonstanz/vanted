@@ -198,9 +198,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
      * @author Jannik
      */
     public static List<String> getInitialPlacerNames() {
-        synchronized (initialPlacers) {
-            return initialPlacers.stream().map(Describable::getName).collect(Collectors.toList());
-        }
+        synchronized (initialPlacers) { return initialPlacers.stream().map(Describable::getName).collect(Collectors.toList()); }
     }
 
     /**
@@ -209,9 +207,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
      * @author Jannik
      */
     public static List<String> getIterativePositionAlgorithmNames() {
-        synchronized (positionAlgorithms) {
-            return positionAlgorithms.stream().map(Describable::getName).collect(Collectors.toList());
-        }
+        synchronized (positionAlgorithms) { return positionAlgorithms.stream().map(Describable::getName).collect(Collectors.toList()); }
     }
 
     /*
@@ -469,18 +465,39 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 
 
                 state.status = "Postprocessing..."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
-                // finish (remove helper attribute)
+                boolean allFinite = true; // will be set to true if one of the position values was NaN, or positive or negative infinity
+                // finish (remove helper attribute) and remove NaNs
                 state.graph.getListenerManager().transactionStarted(state);
                 for (Node node : pureNodes) {
                     node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
+                    final Vector2d position = AttributeHelper.getPositionVec2d(node);
+                    if (!Double.isFinite(position.x)) {
+                        allFinite = false;
+                        position.x = 0;
+                    }
+                    if (!Double.isFinite(position.y)) {
+                        allFinite = false;
+                        position.y = 0;
+                    }
+                    AttributeHelper.setPosition(node, position);
                 }
                 state.graph.getListenerManager().transactionFinished(state);
 
                 if (!state.doAnimations) { // => !intermediateUndoable
+                    Vector2d position;
                     state.graph.getListenerManager().transactionStarted(state);
                     for (WorkUnit unit : workUnits) { // prepare for layout connected components
                         for (int idx = 0; idx < unit.nodes.size(); idx++) {
-                            AttributeHelper.setPosition(unit.nodes.get(idx), unit.currentPositions.get(idx));
+                            position = unit.currentPositions.get(idx);
+                            if (!Double.isFinite(position.x)) {
+                                allFinite = false;
+                                position.x = 0;
+                            }
+                            if (!Double.isFinite(position.y)) {
+                                allFinite = false;
+                                position.y = 0;
+                            }
+                            AttributeHelper.setPosition(unit.nodes.get(idx), position);
                         }
                     }
                     state.graph.getListenerManager().transactionFinished(state);
@@ -506,6 +523,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 if (state.debugEnabled) {
                     state.status = "Debug calculations..."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
                     state.debugIterations = iteration-1;
+                    state.debugAllFinite = allFinite;
 
                     state.debugCumulativeStress = 0.0;
                     final int allNodes = pureNodes.size();
@@ -514,9 +532,16 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 
                     }
                 }
+                if (!allFinite) {
+                    System.err.println("SM: Some non-finite values (NaN, +/-Infinity) were encountered!");
+                    if (!state.debugEnabled) {
+                        MainFrame.getInstance().showMessageDialog("Some non-finite values (NaN, +/-Infinity) were encountered!\n" +
+                                "Maybe choose some different values for the weight function or edge length.");
+                    }
+                }
 
                 state.startTime = System.currentTimeMillis() - state.startTime;
-                System.out.println(state.startTime + " SM: " + (state.status = "Finished.") + " Took " + (state.startTime / 1000.0) + "s");
+                System.out.println((state.debugOutput ? state.startTime + " " : "" ) + "SM: " + (state.status = "Finished.") + " Took " + (state.startTime / 1000.0) + "s");
 
             } finally {
                 // release locks
@@ -1021,9 +1046,14 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
          * Defaults to <code>true</code> and must be disabled for every state separately.
          */
         boolean debugOutput;
-        /** The number of iterations after the algorithm is finished. */
+        /** The number of iterations after the algorithm is finished. Only set if debug mode is active. */
         int debugIterations;
-        /** A list containing all work units. Only set if debug mode is active */
+        /**
+         * Whether all position values were finite (non-infinite and non-NaN).
+         * Only set if debug mode is active. Defaults to <code>true</code>.
+         */
+        boolean debugAllFinite;
+        /** A list containing all work units. Only set if debug mode is active. */
         List<WorkUnit> debugWorkUnits;
         /** The cumulated stress value after the algorithm is finished. Only set if debug mode is active. */
         double debugCumulativeStress;
@@ -1057,6 +1087,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
             if (debugEnabled) {debugOutput = true;}
             debugIterations = -1;
             debugCumulativeStress = Double.NaN;
+            debugAllFinite = true;
         }
 
         /**

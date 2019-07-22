@@ -363,9 +363,46 @@ public class StressMinimizationLayoutTest {
             }
         }
 
-        assertNotNull(w); // a pop-up should have opened
+        assertNotNull("Pop-up: already running", w); // a pop-up should have opened
         w.dispose();
         System.out.flush();
+
+        // SM with non finite values (user notification)
+        original = GRAPH_1;
+        workCopy = ((Graph) original.copy());
+        state = sm.state;
+        state.backgroundTask = false;
+        state.weightScalingFactor = Double.POSITIVE_INFINITY;
+        state.debugEnabled = false; // to ensure user pop-up
+        state.doAnimations = false; // every entry should be checked
+        sm.attach(workCopy, emptySelection);
+        sm.execute();
+        System.out.flush();
+        Thread.sleep(500);
+
+        Window w2 = null;
+        for (Window window : Window.getWindows()) {
+            if (window instanceof JDialog && window != w) {
+                w2 = window;
+                break;
+            }
+        }
+
+        assertNotNull("Pop-up: non-finite", w2); // a (different) pop-up should have opened
+        w2.dispose();
+        System.out.flush();
+
+        // SM with non finite values (user notification)
+        workCopy = ((Graph) original.copy());
+        state = sm.state;
+        state.backgroundTask = false;
+        state.weightScalingFactor = Double.POSITIVE_INFINITY;
+        state.debugEnabled = true; // only debug-write
+        state.doAnimations = true; // also check animated entries
+        sm.attach(workCopy, emptySelection);
+        sm.execute();
+
+        assertFalse("Non-finite values", state.debugAllFinite);
     }
 
     /**
@@ -481,6 +518,7 @@ public class StressMinimizationLayoutTest {
         assertFalse("Exception printed iteration position algorithm", stream.toString().trim().isEmpty());
         initialPlacers.remove(ip);
         positionAlgorithms.remove(ipa);
+
     }
 
     /**
