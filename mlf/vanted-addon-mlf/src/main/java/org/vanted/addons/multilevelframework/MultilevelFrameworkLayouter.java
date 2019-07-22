@@ -226,6 +226,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                             connectedComponents[0], i, graph.getName());
                     bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
+                    // uncomment the following line to display the coarsening levels as frames in VANTED
 //                    display(componentMLG.getTopLevel());
                     // force directed sometimes takes tens of seconds to "layout" a single node
                     if (componentMLG.getTopLevel().getNumberOfNodes() >= 2) {
@@ -243,6 +244,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
                 bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                         connectedComponents[0], i, graph.getName());
+                // uncomment the following line to display the connected component (bottom level) as a frame in VANTED
 //                display(componentMLG.getTopLevel());
                 algorithm.execute(componentMLG.getTopLevel(), emptySelection);
                 if (removeOverlaps) { removeOverlaps(componentMLG.getTopLevel()); }

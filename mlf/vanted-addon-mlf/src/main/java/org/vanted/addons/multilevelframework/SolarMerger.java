@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 
+/**
+ * Implements the Solar Merger as described by Jürgen Hachul (but without the target edge length calculation.)
+ */
 public class SolarMerger implements Merger {
     final static String MIN_NODES_NAME = "Minimum number of nodes";
     final static String MAX_LEVEL_FACTOR_NAME = "Maximum level factor";
@@ -75,9 +78,11 @@ public class SolarMerger implements Merger {
     }
 
     /**
-     *  Builds coarsening Levels for a multilevel Graph by using the Solar Merger as described by Jürgen Hachul.
+     * Builds coarsening Levels for a multilevel Graph by using the Solar Merger as described by Jürgen Hachul.
+     * Note that we do not calculate target edge lengths.
      *
      * @param multilevelGraph the MultilevelGraph for which coarsening levels are to be created
+     * @author Tobias
      */
     @Override
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
@@ -115,6 +120,7 @@ public class SolarMerger implements Merger {
      * to the new CoarseningLevel.
      *
      * @param multilevelGraph the MultilevelGraph which buildCoarseningLevels works on
+     * @author Tobias, Gordian
      */
     void processGalaxy(MultilevelGraph multilevelGraph) {
 
@@ -150,7 +156,6 @@ public class SolarMerger implements Merger {
         // Add the remaining neighbors of the Planets as moons
         for (Node planet : allPlanets) {
             Set<Node> moons = planet.getNeighbors();
-            // TODO the closest planet to each moon should be used
             // prevent the sun and the planets to become their own moons
             moons.removeAll(alreadyUsed);
             alreadyUsed.addAll(moons);
@@ -181,7 +186,6 @@ public class SolarMerger implements Merger {
             // Adding moons for each planet
             for (Node planet : planets) {
                 Set<Node> moons = planetsToMoons.get(planet);
-                // Todo Edges have to be calculated, weights have to be calculated
                 if (moons != null) {
                     innerNodes.addAll(moons);
                 }
@@ -272,6 +276,7 @@ public class SolarMerger implements Merger {
      *
      * @param baseLevel the level current of the multilevel framework
      * @return sunList a List of the central Nodes of the solar systems
+     * @author Tobias, Gordian
      */
     Set<Node> findSuns(Graph baseLevel) {
         final long startTime = System.nanoTime();

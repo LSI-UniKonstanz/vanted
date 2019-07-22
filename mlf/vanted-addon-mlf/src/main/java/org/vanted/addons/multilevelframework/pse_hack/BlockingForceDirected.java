@@ -1334,7 +1334,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
                 try {
                     options.runStatus = 2; // idle
 //                    MainFrame.showMessage("Spring Embedder - IDLE", MessageType.INFO, 10000);
-                    Thread.sleep(1); // TODO: decreased this to from 50 to 1ms to make it run faster
+                    Thread.sleep(1); // decreased this to from 50 to 1ms to make it run faster
                 } catch (InterruptedException e) {
 //                     ignore (no problem)
                 }

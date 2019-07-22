@@ -12,8 +12,6 @@ import org.graffiti.graph.Node;
 import java.util.*;
 import java.util.stream.Collectors;
 
-// TODO: maybe extract the relevant methods to an interface
-
 /**
  * A {@link Node} implementation that represents several nodes in a coarsening level within {@link MultilevelGraph}.
  *
@@ -177,7 +175,6 @@ public class MergedNode extends AdjListNode {
      * @author Gordian, Tobias
      */
     private void updateLabel() {
-        // TODO: maybe display a nicer label if the represented nodes are unlabeled
         String label = this.nodes.stream()
                 .map(n -> {
                     if (n instanceof MergedNode) {

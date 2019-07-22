@@ -13,7 +13,9 @@ import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 
 
 /**
- * {@link Merger} that randomly merges edges.
+ * {@link Merger} that randomly merges edges. Note that the default setting is not to merge completely randomly.
+ * Starting from the second level, the {@link RandomMerger} will prefer merging {@link MergedNode}s with low weight.
+ * This can be changed through the setting {@link RandomMerger#useWeights}.
  */
 public class RandomMerger implements Merger {
 
@@ -131,14 +133,16 @@ public class RandomMerger implements Merger {
     }
 
     /**
-     * builds the coarsening levels for the graph depending on parameters. These Parameters shrinkRatio
-     * and mergesPer Step determine how the top coarsening level compares in size to the complete graph
-     * how the each coarsening step simplifies the last.
+     * Builds the coarsening levels for the graph depending on parameters. The parameters
+     * {@link RandomMerger#coarseningFactor}, {@link RandomMerger#minNumberOfNodesPerLevel},
+     * {@link RandomMerger#maxNumberOfIterations}, {@link RandomMerger#useWeights},
+     * {@link RandomMerger#considerEdgeWeights} affect the coarsening process.
+     * Consult the comments above their declaration for more information.
      *
-     * @param multilevelGraph The multilevelGraph which the coarsening is performed on
-     *                        The {@link MultilevelGraph} that contains the original graph to build
+     * @param multilevelGraph The multilevelGraph which the coarsening is performed on.
+     *                        The {@link MultilevelGraph} that contains the original graph.
      *
-     * @author tobias
+     * @author Tobias
      */
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
 

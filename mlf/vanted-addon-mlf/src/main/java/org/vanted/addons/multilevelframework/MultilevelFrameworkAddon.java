@@ -25,7 +25,6 @@ public class MultilevelFrameworkAddon extends AddonAdapter {
     @Override
     public ImageIcon getIcon() {
         try {
-            // TODO maybe edit the logo
             return new ImageIcon(GravistoService.getResource(this.getClass(), ICON_NAME, "png"));
         } catch (Exception e) {
             return super.getIcon();
