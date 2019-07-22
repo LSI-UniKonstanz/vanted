@@ -22,6 +22,11 @@ haben, um die Kompatibilität mit dem MLF sicherzustellen.
 Da das Package `benchmark` nicht Teil des Add-Ons ist, gibt es für dieses
 ebenfalls keine Unit-Tests.
 
+Die Coverage-Ermittlung wurde mittels des IntelliJ-IDEA Standard-Coverage-Runner
+„IntelliJ IDEA, Sampling“ durchgeführt. Dieser ermittelt nur Zeilen-Coverage, und
+ist schneller, darum könnte es sein, dass sich die Werte ändern wenn eine andere
+Einstellung gewählt wird.
+
 ### Assertions
 
 Um das Add-On zu benutzen oder die Performance zu testen müssen unbedingt 
@@ -52,6 +57,9 @@ werden.
 
 Nur Klassen in `src/main`, also diejenigen die Teil des Add-Ons sind, wurden
 getestet.
+
+Es wurden die gleiche Coverage-Methode wie für das Multilevel-Framework benutzt.
+Darum fallen die gleichen Besonderheiten an.
 
 ## Bauen der JAR-Datei
 
