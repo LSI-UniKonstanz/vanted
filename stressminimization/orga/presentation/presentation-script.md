@@ -7,22 +7,23 @@
 	* Stress berechnet sich aus der Abweichung des Abstandes zweier Knoten im layout zur Distanz der Knoten im Graph
 	* Wir Minimieren den Stress durch ein iteratives Verfahren 
 	* In jedem Schritt bestimmen wir durch Lösen eines Gleichungssystems ein verbessertes Layout. 
-	* Weil dieser Vorgang (full stress) verlangt alle Distanzen im Graph zu bestimmen benutzen wir ein Verfahren bei dem nur wenige Knoten betrachtet werden um für Graphen mit mehr als ungefähr 3000 Knoten ein layout zu berechnen (landmark).
-	* Hierfür werden bestimmte Knoten ausgewählt und nur für diese Knoten mit dem full stress Verfahren ein layout berechnet.
-	* Alle anderen Knoten werden auf mit den Distanzen gewichteten Mittelpunkten zwischen den Landmarks plaziert. 
+	* Landmarks bei Großen Graphen
 
 ## Multilevel Framework
 
-# Planung
+	* Im Zentrum steht das Schrittweise zusammenfassen des ursprungsgraphen zu leichter layoutbaren graphen
+	* Multilevel besteht aud drei Phasen: coarsening,layouting und placement
+	* COARSENING: Zusammenfügen der Knoten zu kleinerem Graph (Wiederholen bis kleiner nicht möglich)
+	* LAYOUTING: Ausrichten des entstandenen Graphen
+	* PLACEMENT: Knoten werden nahe ihres Repräsentanten schrittweise wieder eingefügt bis Ursprungsgraph erreicht
 
-    * Haben uns aufgeteilt in Teilgruppen: jede Teilgruppe bearbeitet ein Addon (bzw am Anfang hat sich einer mit der Hintergrundausführung beschäftigt)
-    * damit wurde Spezialisierung der Gruppen auf ein Thema erreicht
-    * die Aufgaben Formulierung wurden individuell in Issues und gemeinsam bei den wöchentlichen Teffen formuliert
-    * Koordination wie weit jeder ist und was noch zu machen ist auch bei wöchentlichen Treffen
-    * wir hatten einzelnen Phasen festgelegt die zu erreichen waren (und wurden): 
-        * Bis zum ersten Milestone sollte das Software Requirement Document und Software Design Document fertig gestellt, die Klassenstruktur implementiert und Test-Cases formuiert sein (Milestone 1) 
-        * Dann sollten fertige optimierbare Implementierungen von Multilevel und Stressmin und Benchmarks definiert sein (Milestone 2) 
-        * zuletzt sollte eine verbesserte Implementerung fertig gestellt und die Software getestet werden (Milestone 3)	
+
+# Planung
+	* Bis zum ersten Milestone sollte das Software Requirement Document und Software Design Document fertig gestellt, die Klassenstruktur implementiert und Test-Cases formuiert sein (Milestone 1) 
+	* Dann sollten fertige optimierbare Implementierungen von Multilevel und Stressmin und Benchmarks definiert sein (Milestone 2) 
+	* zuletzt sollte eine verbesserte Implementerung fertig gestellt und die Software getestet werden (Milestone 3)	
+	* Aufteilung in Gruppen die je nach Aufgabenlage neu festgelegt wurden
+	* Aufgabenverteilung Über Issues im  Git
 
 ​	
 # Anforderungen
@@ -32,21 +33,45 @@
 	* Für das Multilevel Framework die Anforderung mehre Auswahlmöglichkeiten für Placement & Coarsening Algorithmen zu haben
 	* Bei beiden Algorithmen sollte die asymphtotische Laufzeitschranke in der Implementierung erreicht werden und auch ansonsten sollten die Implementierungen möglichst schnell sein
 
-# Design
-
-    * Auslagerung des Stress Optimizers (Gleichungssystemlösers)
-
 # Architektur
 
+	* Stressmin Optimizer für Stress Minimization
+	* Multilevel Coarsening und Placement algorithmen
+	* Beide nutzen mehrere Funktionen von Vanted selbst
+
+# Design Background
+
     * zur Hintergrundausführung und der Interaktivität haben wir zwei Pattern verwendet:
-    * Zum einen das Delegate-Pattern, welches "Verhalten" eines Objektes deligiert
+    * Zum einen das Delegate-Pattern
     	- In dem Klassendiagram deligiert BackgroundExecutionAlgorithm andere Objekte
-    	- delgiert an GraphHelper, das updaten des Graphen, mit den neuen Koordinaten auf der Benutzeroberfläche, oder das öffnen von Fenstern mit den Multilevel Graph Levels.
-    	- desweitern das updaten der Beschreibung an die MainFrame Klasse
-    	- sowie das starten, stoppen und pausieren, des Algorithmus (Multilevel oder Stressmin), wenn der Start-, Stop- oder Pausebutton gedrückt wurde
-    * Zum anderen das Observer-Pattern, um andere Klassen zu informieren, wenn eine Klasse Aktualisierungen besitzt:
-    	- in diesem Fall wird die BackgroundExecutionAlgorithm Klasse informiert, wenn es neue Aktualisierungen in der Algorithmus Klasse gibt 
-    	- Diese Aktualisierungen sind hier zum Beispiel der Status oder ein neues Layout bzw. Levels des Multilevel Graphen
-    * Verwendung des Apache Math Frameworks im Stress Optimierungsverfahren: u.A. Nutzung eines spezialisieren Gleichungslösungsverfahrens
+    	- Starten, Stoppen und Pausieren, des Algorithmus (Multilevel oder Stressmin), auf Knopfdruck
+    * Zum anderen das Observer-Pattern
+	- um andere Klassen zu informieren, wenn eine Klasse Aktualisierungen besitzt
+
+# Design Stressmin 
+	* Landmarks für graphen mit >3000 Knoten
+		- Platzierung der anderen Knoten um die Landmarks
+	* IndexNodeSet
+		- Bidirektionale Zuweisung von Indizes und Knoten
+		- Konstante Zeit (Anders als Hashmap)
+		- Ermöglicht z.B. Mengenschnitt in Konstanter Zeit
+	* Apache Math wird für Matritzenrehnungen in jedem Iterationsschritt genutzt
+
+# Design Multilevel
+
+	* Multilevel-Graph-Datenstruktur: 
+		- speichert alle durch coarsening erzeugten graphen als in VANTED nutzbare Graphen
+		- Jeder Knoten hat Attribute die Informationen zu Eltern/Kindern enthalten
+
+	* Abstrakte Klassen zum erstellen von Placement und Coarsening-algorithmen:
+		- erweiterbarkeit ist zentral
+		- mithilfe dieser Komponente lassen sich coarsening und placement algorithmen erstellen die vom Framework genutzt werden können
+		- Die klassen enthalten jeweils Helferfunktionen die sicheren Zugriff auf die Multileveldatenstruktur erlauben.
+
+	* Multilevel Layout algorithmus
+		- Steuert den Ablauf des multilevel verfahrens 
+		- Erkennt welche layoutverfahren zulässig sind über eine Whitelist
+		- erlaubt das Hinzufügen von weiteren layoutverfahren durch hinzufügen zur Whitelist
+  
 
 # Demo
