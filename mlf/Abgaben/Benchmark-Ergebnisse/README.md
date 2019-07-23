@@ -4,6 +4,9 @@ Die Zeiten sind jeweils in ms gemessen. Die ODS-Datei enthält die CSV-Dateien
 als Tabellen zusammen mit ein paar darauf basierenden Diagrammen.
 Die ODGF-Vergleiche wurden mit vergleichbaren Einstellungen durchgeführt.
 
+Bei den Benchmarks mit dem SM-Add-On wurden für diese die Animationen
+und vergleichbare Einstellungen ausgeschaltet.
+
 # Qualitätsmetriken
 Die Dateien `*qualitymetrics*` enthalten die beiden Qualitätsmetriken
 `Kantenkreuzungen` und `Stress`. Die Stressermittlung ging von den

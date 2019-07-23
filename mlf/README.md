@@ -41,6 +41,9 @@ die Performance bei manchen Graphen um einen Faktor von 20 (!).
 
 ## Hinweise zum Stress Minimization Add-On
 
+Um mehr Debug-Ausgaben zu sehen kann die Hauptklasse `StartVantedWithAddon` mit
+`--debug` als erstes Argument ausgeführt werden.
+
 ### Test Coverage
 
 Einige Unit-Tests gehen davon aus, dass Assertions aktiviert sind (JVM Flag: `-ea`).
