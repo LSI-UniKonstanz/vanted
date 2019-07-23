@@ -3,11 +3,13 @@ package org.vanted.addons.MultilevelFramework;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.AttributeHelper;
+import org.Vector2d;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.Algorithm;
@@ -28,6 +30,7 @@ import org.vanted.addons.MultilevelFramework.MultilevelGraph.MultilevelParentGra
 import org.vanted.addons.MultilevelFramework.MultilevelGraph.MultilevelParentNodeAttribute;
 import org.vanted.addons.MultilevelFramework.Placement.PlacementAlgorithm;
 
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 
 /**
@@ -223,7 +226,7 @@ public class MultilevelLayoutAlgorithm extends BackgroundAlgorithm {
 		// PREPROCESSING
 		setStatus(BackgroundStatus.RUNNING);
 		if (initializeAllNodesAtSamePosition) {
-			setAllNodesToPosition(new Point2D.Double(100.0, 100.0));
+			setAllNodesToPosition(new Vector2d(10, 10));
 		}
 		MultilevelGraph multilevelGraph = new MultilevelGraph(graph, selection);
 		setProgress(0.001);
@@ -331,10 +334,12 @@ public class MultilevelLayoutAlgorithm extends BackgroundAlgorithm {
 	 * 
 	 * @param position position the nodes will have
 	 */
-	private void setAllNodesToPosition(Point2D position) {
+	private void setAllNodesToPosition(Vector2d position) {
+		HashMap<Node, Vector2d> positions = new HashMap<Node, Vector2d>();
 		for (Node n : selection.getNodes()) {
-			AttributeHelper.setPosition(n, position);
+			positions.put(n, position);
 		}
+		GraphHelper.applyUndoableNodePositionUpdate(positions, "");
 	}
 
 	/**
@@ -344,12 +349,14 @@ public class MultilevelLayoutAlgorithm extends BackgroundAlgorithm {
 	 * @param factor
 	 */
 	private void scaleAllNodePositions(Selection s, double factor) {
+		HashMap<Node, Vector2d> positions = new HashMap<Node, Vector2d>();
 		System.out.println("Scaling by factor " + factor);
 		for (Node n : s.getNodes()) {
 			Point2D currentPosition = AttributeHelper.getPosition(n);
-			Point2D newPosition = new Point2D.Double(currentPosition.getX() * factor, currentPosition.getY() * factor);
-			AttributeHelper.setPosition(n, newPosition);
+			Vector2d newPosition = new Vector2d(currentPosition.getX() * factor, currentPosition.getY() * factor);
+			positions.put(n, newPosition);
 		}
+		GraphHelper.applyUndoableNodePositionUpdate(positions, "");
 	}
 
 	@Override

@@ -1,12 +1,14 @@
 package org.vanted.addons.MultilevelFramework.Placement;
 
+import java.util.HashMap;
 import java.util.Random;
 
-import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
+
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 /**
  * Places each node at the position of its parent with a small random offset.
@@ -39,13 +41,16 @@ public class ZeroPlacementAlgorithm extends AbstractPlacementAlgorithm {
 
 	@Override
 	public void execute() {
+		HashMap<Node, Vector2d> positions = new HashMap<Node, Vector2d>();
 		for (Node n : selection.getNodes()) {
 			Random rand = new Random();
 			Vector2d parentPosition = getParentPosition(n);
 			parentPosition.x += (rand.nextDouble() * 2.0 - 1.0) * maxOffset;
 			parentPosition.y += (rand.nextDouble() * 2.0 - 1.0) * maxOffset;
-			AttributeHelper.setPosition(n, parentPosition);
+			positions.put(n, parentPosition);
 		}
+
+		GraphHelper.applyUndoableNodePositionUpdate(positions, "");
 	}
 
 }

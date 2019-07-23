@@ -1,12 +1,16 @@
 package org.vanted.addons.MultilevelFramework.Placement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 import org.AttributeHelper;
+import org.Vector2d;
 import org.graffiti.graph.Node;
+
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 /**
  * Places each node randomly.
@@ -19,6 +23,8 @@ public class RandomPlacementAlgorithm extends AbstractPlacementAlgorithm {
 	 */
 	@Override
 	public void execute() {
+		HashMap<Node, Vector2d> positions = new HashMap<Node, Vector2d>();
+
 		List<Node> NodeList = new ArrayList<Node>();
 		for (Node n : selection.getNodes()) {
 			NodeList.add(n);
@@ -49,9 +55,9 @@ public class RandomPlacementAlgorithm extends AbstractPlacementAlgorithm {
 		for (Node n : NodeList) {
 			double posX = positionGenerator.nextDouble() * fieldSizeX;// calculate random positions for each node
 			double posY = positionGenerator.nextDouble() * fieldSizeY;
-			AttributeHelper.setPosition(n, posX, posY);
+			positions.put(n, new Vector2d(posX, posY));
 		}
-
+		GraphHelper.applyUndoableNodePositionUpdate(positions, "");
 	}
 
 	@Override

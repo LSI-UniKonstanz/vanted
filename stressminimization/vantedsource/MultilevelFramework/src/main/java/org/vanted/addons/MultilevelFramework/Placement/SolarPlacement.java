@@ -2,10 +2,12 @@ package org.vanted.addons.MultilevelFramework.Placement;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
 import org.AttributeHelper;
+import org.Vector2d;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
@@ -13,6 +15,8 @@ import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.MultilevelFramework.Coarsening.SolarDistanceAttribute;
 import org.vanted.addons.MultilevelFramework.Coarsening.SolarMergerSunAttribute;
+
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 /**
  * Places the nodes according to a Solar-Placement-Algorithm. only works
@@ -111,10 +115,15 @@ public class SolarPlacement extends AbstractPlacementAlgorithm {
 				}
 			}
 
+			HashMap<Node, Vector2d> positions = new HashMap<Node, Vector2d>();
 			for (Node n : suns) {// assigning position for suns
 				AttributeHelper.setPosition(n, getParentPosition(n));
+				positions.put(n, getParentPosition(n));
 
 			}
+			GraphHelper.applyUndoableNodePositionUpdate(positions, "");
+
+			positions = new HashMap<Node, Vector2d>();
 
 			for (Node n : borderObjects) { // assigning positions for the borderobjects
 				int iterations = 0;
@@ -142,7 +151,7 @@ public class SolarPlacement extends AbstractPlacementAlgorithm {
 				if (iterations != 0) {
 					posX /= iterations;
 					posY /= iterations;
-					AttributeHelper.setPosition(n, posX, posY);
+					positions.put(n, new Vector2d(posX, posY));
 
 				}
 			}
@@ -192,11 +201,12 @@ public class SolarPlacement extends AbstractPlacementAlgorithm {
 						Random offset = new Random();
 						posX = posX + (offset.nextDouble() * 10);
 						posY = posY + (offset.nextDouble() * 10);
-						AttributeHelper.setPosition(n, posX, posY);
+						positions.put(n, new Vector2d(posX, posY));
 
 					}
 				}
 			}
+			GraphHelper.applyUndoableNodePositionUpdate(positions, "");
 		} else {// zero placement in case SolarMergerCoarsenig was not used
 			ZeroPlacementAlgorithm alg = new ZeroPlacementAlgorithm();
 			alg.attach(graph, selection);
