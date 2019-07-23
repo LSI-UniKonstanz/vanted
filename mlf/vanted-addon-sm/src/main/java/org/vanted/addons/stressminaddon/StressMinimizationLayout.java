@@ -302,8 +302,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 state.doAnimations = false;
                 state.moveIntoView = false;
                 state.backgroundTask = false;
-                if (state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
-                        state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
+                if (!state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) ||
+                        !state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
                     state.initialPlacer = new NullPlacer(); // we are not at top level
                 }
                 if (!state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL) ||
@@ -324,6 +324,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 state.startTime = System.currentTimeMillis();
 
                 state.status = "Start (n = " + pureNodes.size() + ")"; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
+                if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state);}
                 // remove bends
                 if (state.removeEdgeBends) {
                     GraphHelper.removeBendsBetweenSelectedNodes(pureNodes, true);
@@ -1141,6 +1142,39 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
          */
         @Override
         public boolean pluginWaitsForUser() {/* No op*/return false;}
+
+        /**
+         * @return a string representation of the {@link State}.
+         * @author IntelliJ
+         */
+        @Override
+        public String toString() {
+            return "State{" + "graph=" + graph +
+                    ", startTime=" + startTime +
+                    ", status='" + status + '\'' +
+                    ", keepRunning=" + keepRunning +
+                    ", positionAlgorithm=" + positionAlgorithm.getClass().getSimpleName() + ": " + positionAlgorithm.toString() +
+                    ", initialPlacer=" + initialPlacer.getClass().getSimpleName() + ": " + initialPlacer.toString() +
+                    ", stressEpsilon=" + stressEpsilon +
+                    ", positionChangeEpsilon=" + positionChangeEpsilon +
+                    ", maxIterations=" + maxIterations +
+                    ", edgeScalingFactor=" + edgeScalingFactor +
+                    ", edgeLengthMinimum=" + edgeLengthMinimum +
+                    ", weightScalingFactor=" + weightScalingFactor +
+                    ", weightPower=" + weightPower +
+                    ", removeEdgeBends=" + removeEdgeBends +
+                    ", intermediateUndoable=" + intermediateUndoable +
+                    ", doAnimations=" + doAnimations +
+                    ", moveIntoView=" + moveIntoView +
+                    ", backgroundTask=" + backgroundTask +
+                    ", multipleThreads=" + multipleThreads +
+                    ", debugEnabled=" + debugEnabled +
+                    ", debugOutput=" + debugOutput +
+                    ", debugIterations=" + debugIterations +
+                    ", debugWorkUnits=" + debugWorkUnits +
+                    ", debugCumulativeStress=" + debugCumulativeStress +
+                    '}';
+        }
 
         /**
          * Does nothing because plugin does not wait for user.
