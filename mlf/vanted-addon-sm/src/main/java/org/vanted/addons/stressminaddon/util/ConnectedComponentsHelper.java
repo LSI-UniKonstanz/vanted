@@ -293,7 +293,6 @@ public enum ConnectedComponentsHelper {
             }
 
             // move edge bends
-            // TODO maybe interpolate bend position if edge leads outside of connected component
             for (Edge edge : conComponentEdges) {
                 for (CoordinateAttribute bendCA : AttributeHelper.getEdgeBendCoordinateAttributes(edge)) {
                     Vector2d pos = new Vector2d(bendCA.getX() + shiftX, bendCA.getY() + shiftY);
@@ -398,7 +397,6 @@ public enum ConnectedComponentsHelper {
                     }
 
                     // move edge bends
-                    // TODO maybe interpolate bend position if edge leads outside of connected component
                     for (Edge edge : conComponentEdges) {
                         for (CoordinateAttribute bendCA : AttributeHelper.getEdgeBendCoordinateAttributes(edge)) {
                             Vector2d pos = new Vector2d(bendCA.getX() + shiftX, bendCA.getY() + shiftY);
