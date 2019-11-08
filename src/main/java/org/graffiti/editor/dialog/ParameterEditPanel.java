@@ -92,6 +92,9 @@ public class ParameterEditPanel extends JPanel {
 		// Scale paramters HTML texts
 		if (this.parameters != null)
 			for (Parameter param : this.parameters) {
+				if (param == null)
+					continue;
+				
 				param.setDescription(HTMLScaleSupport.scaleText(param.getDescription()));
 				if (param.getValue() instanceof String)
 					param.setValue(HTMLScaleSupport.scaleText((String) param.getValue()));
