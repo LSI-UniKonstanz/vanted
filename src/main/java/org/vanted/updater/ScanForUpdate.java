@@ -6,7 +6,6 @@ package org.vanted.updater;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -203,7 +202,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 		// get a list of all paths to the jars in the classpath and their md5
 		List<Pair<String, String>> jarMd5Pairs = CalcClassPathJarsMd5.getJarMd5Pairs();
 
-		Map<String, String> mapMd5FromUpdateLocation = getMd5FromUpdateLocation(new URL(URL_UPDATEMD5_FILESTRING));
+		Map<String, String> mapMd5FromUpdateLocation = getMd5FromUpdateLocation(URL_UPDATEMD5_FILESTRING);
 		// now sort them into core and lib jars
 		Map<String, String> mapJarMd5PairsInstalledCore = new HashMap<String, String>();
 		Map<String, String> mapJarMd5PairsInstalledLibs = new HashMap<String, String>();
@@ -220,16 +219,15 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 		}
 
 		StringBuffer msgbuffer = new StringBuffer();
-
 		InputStream inputstreamURL = null;
-		URL updateURL = new URL(URL_UPDATE_FILESTRING);
 
 		try {
+			HttpHttpsURL updateURL = new HttpHttpsURL(URL_UPDATE_FILESTRING);
 			inputstreamURL = updateURL.openStream();
-		} catch (FileNotFoundException e1) {
+		} catch (IOException io) {
 			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
-				e1.printStackTrace();
-			ErrorMsg.addErrorMessage("Update file not found at location: " + e1.getMessage());
+				io.printStackTrace();
+			ErrorMsg.addErrorMessage("Update file not found at location: " + io.getMessage());
 			return;
 		}
 
@@ -238,7 +236,6 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 		boolean readingMessageAttribute = false;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputstreamURL));
 		String line;
-
 		while ((line = reader.readLine()) != null) {
 			line = line.trim();
 			if (line.equals("//")) {
@@ -582,11 +579,12 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 	 * @return Map with key:jar file name -> value: md5sum
 	 * @throws IOException
 	 */
-	private static Map<String, String> getMd5FromUpdateLocation(URL md5fileurl) throws IOException {
+	private static Map<String, String> getMd5FromUpdateLocation(String md5fileurl) throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
 
-		InputStream openStream = md5fileurl.openStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(openStream));
+		HttpHttpsURL md5URL = new HttpHttpsURL(md5fileurl);
+		InputStream inputStream = md5URL.openStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 		String line;
 		while ((line = reader.readLine()) != null) {
 			if (line.indexOf("*") > 0) {

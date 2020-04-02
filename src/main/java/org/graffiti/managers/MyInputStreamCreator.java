@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
+import org.vanted.updater.HttpHttpsURL;
+
 public class MyInputStreamCreator {
 
 	private String absolutePath;
@@ -36,9 +38,9 @@ public class MyInputStreamCreator {
 		}
 		if (file != null)
 			return new FileInputStream(file);
-		if (url != null)
-			return url.openStream();
+		if (url != null) {
+			return new HttpHttpsURL(url.toExternalForm()).openStream();
+		}
 		return null;
 	}
-
 }

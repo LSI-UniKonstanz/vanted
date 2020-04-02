@@ -5,25 +5,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.io.resources.IOurl;
+import org.vanted.updater.HttpHttpsURL;
 
 public class WebDirectoryFileListAccess {
 
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @vanted.revision 2.7.0
+	 */
 	public static Collection<PathwayWebLinkItem> getMetaCropListItems() throws IOException {
 		ArrayList<PathwayWebLinkItem> result = new ArrayList<PathwayWebLinkItem>();
 		String address = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/metacrop/";
-		String pref = address;
-
-		// Create a URL for the desired page
-		URL url = new URL(address);
-
 		// Read all the text returned by the server
+		HttpHttpsURL url = new HttpHttpsURL(address);
 		BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+		String pref = url.getURL();
 		String str;
 		while ((str = in.readLine()) != null) {
 			// str is one line of text; readLine() strips the newline character(s)
@@ -43,45 +45,28 @@ public class WebDirectoryFileListAccess {
 		return result;
 	}
 
+	/**
+	 * @param webAddress
+	 * @param validExtensions
+	 * @param showGraphExtensions
+	 * @return
+	 * @throws IOException
+	 * @vanted.revision 2.7.0
+	 */
 	public static Collection<PathwayWebLinkItem> getWebDirectoryFileListItems(String webAddress,
 			String[] validExtensions, boolean showGraphExtensions) throws IOException {
 		ArrayList<PathwayWebLinkItem> result = new ArrayList<PathwayWebLinkItem>();
 		String address = webAddress;
-		String pref = address;
-
-		// Create a URL for the desired page
-		URL url = new URL(address);
 		HttpURLConnection connection = null;
 		BufferedReader in = null;
-		try {
-			connection = (HttpURLConnection) url.openConnection();
-			int code = connection.getResponseCode();
-			InputStream stream = connection.getErrorStream();
-
-			// There has been connection error, build user notification
-			if (stream != null) {
-				in = new BufferedReader(new InputStreamReader(stream));
-				String message = "";
-				String s = null;
-				while ((s = in.readLine()) != null)
-					message += s;
-				// determine type of error
-				if (code > 499)
-					s = code + " Server Error";
-				else if (code > 399)
-					s = code + " Client Error";
-				else
-					s = code + " Connection Error";
-				// report error to the user
-				MainFrame.showMessageDialog(message.substring(message.indexOf("<html>")), s);
-				// lastly, close any open streams, connections
-				stream.close();
-				connection.disconnect();
-
+		try {		
+			// Create a URL for the desired page
+			HttpHttpsURL url = new HttpHttpsURL(address);
+			connection = url.openConnection();
+			if (connection == null)
 				return null;
-			}
-
-			stream = connection.getInputStream();
+			String pref = url.getURL();
+			InputStream stream = connection.getInputStream();
 			// Read all the text returned by the server
 			in = new BufferedReader(new InputStreamReader(stream));
 			String str;

@@ -20,6 +20,7 @@ import org.ReleaseInfo;
 import org.StringManipulationTools;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
+import org.vanted.updater.HttpHttpsURL;
 
 public class CachedWebDownload {
 
@@ -75,7 +76,8 @@ public class CachedWebDownload {
 
 	private static void downloadFile(URL url, File targetFile) throws IOException {
 		MainFrame.showMessage("Download " + url.toExternalForm() + "...", MessageType.INFO);
-		InputStream in = url.openStream();
+		HttpHttpsURL httphttpsUrl = new HttpHttpsURL(url.toExternalForm());
+		InputStream in = httphttpsUrl.openStream();
 		OutputStream out = new FileOutputStream(targetFile);
 		// Transfer bytes from in to out
 		byte[] buf = new byte[1024];

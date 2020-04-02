@@ -82,7 +82,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 			paramsA.add("<h1>My Pathway Website</h1>");
 			paramsB.add("Website-Description//");
 			paramsB.add(
-					"VANTED graph to website export. VANTED is available at <a href=\"http://kim25.wwwdns.kim.uni-konstanz.de/vanted/\" target=\"_blank\">http://kim25.wwwdns.kim.uni-konstanz.de/vanted/</a>.");
+					"VANTED graph to website export. VANTED is available at <a href=\"http://www.vanted.org\" target=\"_blank\">www.vanted.org</a>.");
 			paramsC.add("Footer//");
 			paramsC.add("<small>Copyright (c) " + Calendar.getInstance().get(Calendar.YEAR)
 					+ " by NAME OF INSTITUTION.</small>");

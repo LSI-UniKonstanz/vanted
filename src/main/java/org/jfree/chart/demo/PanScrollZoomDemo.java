@@ -156,6 +156,8 @@ public class PanScrollZoomDemo extends JFrame
 		recalcScrollBar(chart.getPlot());
 
 		this.chartPanel = new ChartPanel(chart) {
+			private static final long serialVersionUID = 1L;
+
 			public void autoRangeBoth() {
 				System.out.println("Use 'Fit all' button");
 			}
@@ -175,6 +177,9 @@ public class PanScrollZoomDemo extends JFrame
 		//this.chartPanel.setPopupMenu(null);
 
 		getContentPane().add(this.chartPanel);
+		
+		plot = chart.getPlot();
+		info = chartPanel.getChartRenderingInfo();
 	}
 
 	/**
@@ -675,6 +680,9 @@ public class PanScrollZoomDemo extends JFrame
 		}
 	}
 
+	
+	public Plot plot;
+	public ChartRenderingInfo info;
 	/**
 	 * Handles a mouse clicked event, in this case by ignoring it.
 	 * 
@@ -682,7 +690,11 @@ public class PanScrollZoomDemo extends JFrame
 	 *            the event.
 	 */
 	public void mouseClicked(final MouseEvent event) {
-		// ignored
+		// ignored		
+		if (!chartPanel.getScaledDataArea().contains(event.getPoint()))
+			return;
+		
+		//TODO handling if events within the chart
 	}
 
 	/**

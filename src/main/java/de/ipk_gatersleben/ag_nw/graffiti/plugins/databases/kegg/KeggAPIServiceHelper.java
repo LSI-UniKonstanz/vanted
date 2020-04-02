@@ -22,8 +22,8 @@ import java.util.concurrent.RecursiveAction;
 import javax.swing.JComponent;
 
 import org.HelperClass;
-import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
+import org.vanted.updater.HttpHttpsURL;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.FileDownloadStatusInformationProvider;
 
@@ -59,8 +59,8 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 	 *
 	 */
 	enum KoEntryKey {
-		ENTRY("ENTRY"), NAME("NAME"), DEFINITION("DEFINITION"), PATHWAY("PATHWAY"), BRITE("BRITE"), DBLINKS(
-				"DBLINKS"), REFERENCE("REFERENCE"), GENES("GENES");
+		ENTRY("ENTRY"), NAME("NAME"), DEFINITION("DEFINITION"), PATHWAY("PATHWAY"), BRITE("BRITE"), DBLINKS("DBLINKS"),
+		REFERENCE("REFERENCE"), GENES("GENES");
 
 		String name;
 
@@ -151,8 +151,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 	/**
 	 * Retrieves an array of KO entries for a given KO id
 	 * 
-	 * @param KO
-	 *            id (K number)
+	 * @param KO id (K number)
 	 * @return
 	 */
 	public List<KoEntry> getEntriesByKO(String koId) {
@@ -278,9 +277,9 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 			}
 
 			try {
-				URL url = new URL(str.toString());
-				HttpURLConnection openConnection = (HttpURLConnection) url.openConnection();
-				if (openConnection.getResponseCode() == HttpStatus.SC_OK) {
+				HttpHttpsURL url = new HttpHttpsURL(str.toString());
+				HttpURLConnection openConnection = url.openConnection();
+				if (openConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(openConnection.getInputStream()));
 					String line;
 					while ((line = reader.readLine()) != null) {
@@ -293,10 +292,8 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 					}
 				}
 			} catch (MalformedURLException e) {
-				
 				e.printStackTrace();
 			} catch (IOException e) {
-				
 				e.printStackTrace();
 			}
 
@@ -368,19 +365,13 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 				i++;
 			}
 
-			try {
-				url = new URL(buf.toString());
-			} catch (MalformedURLException e) {
-				
-				e.printStackTrace();
-			}
-
 			/*
 			 * read the result, create a buffer and call a method to handle the result.
 			 */
 			try {
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				if (conn.getResponseCode() == HttpStatus.SC_OK) {
+				HttpHttpsURL url = new HttpHttpsURL(buf.toString());
+				HttpURLConnection conn = url.openConnection();
+				if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					InputStream is = conn.getInputStream();
 					byte[] buffer = new byte[1000];
 					int len;
@@ -391,7 +382,6 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 					splitResult(bos.toByteArray(), synchronizedList);
 				}
 			} catch (IOException e) {
-				
 				e.printStackTrace();
 			}
 
@@ -523,7 +513,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 					curKoEntry.addBriteEntry(briteHierarchy.getName(),
 							briteHierarchy.getEntriesMap().get(curKoEntry.getKoID()));
 				} catch (IOException e) {
-					
+
 					e.printStackTrace();
 				}
 			}

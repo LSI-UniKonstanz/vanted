@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -71,6 +70,7 @@ import org.graffiti.graphics.LabelAttribute;
 import org.graffiti.graphics.LineModeAttribute;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.graphics.NodeLabelAttribute;
+import org.vanted.updater.HttpHttpsURL;
 
 /**
  * Attribute Helper Class - Makes it more easy to work with graph/node
@@ -3039,9 +3039,7 @@ public class AttributeHelper implements HelperClass {
 		ArrayList<String> result = new ArrayList<String>();
 		try {
 			urlText = getEncodedUrl(urlText);
-			// Create a URL for the desired page
-			URL url = new URL(urlText);
-
+			HttpHttpsURL url = new HttpHttpsURL(urlText);
 			// Read all the text returned by the server
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 			String str;
@@ -3051,8 +3049,6 @@ public class AttributeHelper implements HelperClass {
 				result.add(str);
 			}
 			in.close();
-		} catch (MalformedURLException e) {
-			ErrorMsg.addErrorMessage(e);
 		} catch (IOException e) {
 			ErrorMsg.addErrorMessage(e);
 		}

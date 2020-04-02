@@ -56,7 +56,6 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 
 	@Override
 	public String getPreferencesAlternativeName() {
-		// TODO Auto-generated method stub
 		return "MetaCrop";
 	}
 
