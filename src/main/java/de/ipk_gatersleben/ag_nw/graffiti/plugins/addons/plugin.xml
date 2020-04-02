@@ -14,6 +14,6 @@
 		<version>0.1.0</version>
 		<feedname>Add-ons</feedname>
 		<feedurl>//kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/feed.xml</feedurl>
-		<available>//www.vanted.org</available>
+		<available>http://www.vanted.org</available>
 	</plugindesc>
 </plugin>
