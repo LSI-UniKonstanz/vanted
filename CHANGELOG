@@ -4,8 +4,8 @@
 <ul>
 <li>Minimum Java 8 compatibility</li>
 <li>Clustering bugfixes</li>
+<li>HTTPS server connections</li>
 <li>Add-on Manager and Pane revamped</li>
-<li>DPI Scaling adjusted</li>
 <li>Undo/Redo additions</li>
 <li>Usability improvements, such as</br>
 	<ul>
@@ -15,6 +15,7 @@
 		</ul>
 </li>
 <li>Standard format is GML</li>
+<li>Resolve HTTP-HTTPS redirects automatically</li>
 <li>Internal API improvements</li>
 <li>Replaced non-API Sun references</li>
 </ul>
