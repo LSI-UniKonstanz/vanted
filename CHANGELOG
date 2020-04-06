@@ -1,21 +1,22 @@
 <h3>Changelog</h3>
 
-<h4>VANTED v2.7.0 release (??/??/2019)</h4>
+<h4>VANTED v2.7.0 release (??/04/2020)</h4>
 <ul>
 <li>Minimum Java 8 compatibility</li>
-<li>Clustering bugfixes</li>
+<li>Bugfixes: Clustering</li>
+<li>RIMAS server migration</li>
 <li>HTTPS server connections</li>
-<li>Add-on Manager and Pane revamped</li>
+<li>Resolve HTTP-HTTPS redirecting</li>
+<li>Add-on Manager and Pane revamp</li>
 <li>Undo/Redo additions</li>
-<li>Usability improvements, such as</br>
+<li>Usability improvements:</br>
 	<ul>
-		<li>Menu frontend updates</li>
+		<li>Menu updates</li>
 		<li>First graph window fits in pane</li>
 		<li>Undo limit increased to 20 operations</li>
-		</ul>
+	</ul>
 </li>
 <li>Standard format is GML</li>
-<li>Resolve HTTP-HTTPS redirects automatically</li>
 <li>Internal API improvements</li>
 <li>Replaced non-API Sun references</li>
 </ul>
