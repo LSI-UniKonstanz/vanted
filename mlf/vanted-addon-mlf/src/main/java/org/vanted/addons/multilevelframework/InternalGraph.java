@@ -9,6 +9,7 @@ import java.util.*;
  * A subclass of {@link AdjListGraph} used by the {@link MultilevelGraph} implementation.
  * It cannot use {@link AdjListGraph} since some of the functionality it needs is not provided by
  * {@link AdjListGraph}'s public interface.
+ * TODO (bm review) naming
  */
 class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     /**
@@ -26,7 +27,7 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
      */
     @Override
     public Edge doAddEdge(Node source, Node target, boolean directed) {
-        this.checkUndirected(directed);
+        this.checkUndirected(directed); // TODO (review bm) needed? performance impact? check only once?
         return super.doAddEdge(source, target, false);
     }
 

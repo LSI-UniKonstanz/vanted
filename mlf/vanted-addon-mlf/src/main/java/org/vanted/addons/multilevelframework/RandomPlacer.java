@@ -71,6 +71,8 @@ public class RandomPlacer implements Placer {
      * @author Katze, Gordian
      */
     @Override
+    // todo (review bm): separation of concerns: layout algorithm should only layout!
+    // 2.2
     public void reduceCoarseningLevel(MultilevelGraph multilevelGraph) {
         CoarsenedGraph cg = multilevelGraph.popCoarseningLevel();
         Collection<? extends MergedNode> allMergedNodes = cg.getMergedNodes();
@@ -79,6 +81,7 @@ public class RandomPlacer implements Placer {
 
 
         long startTime = System.nanoTime();
+        // todo (review bm) stuff like this should not have to be part of the placer implementation
         multilevelGraph.getTopLevel().getListenerManager().transactionStarted(this);
         for (MergedNode mergedNode : allMergedNodes) {
             Collection<? extends Node> innerNodes = mergedNode.getInnerNodes();
@@ -111,6 +114,7 @@ public class RandomPlacer implements Placer {
         }
         multilevelGraph.getTopLevel().getListenerManager().transactionFinished(this);
         long endTime = System.nanoTime();
+        // todo (bm review) should be handled by logger?
         System.out.println("RandomPlacer took " + NANOSECONDS.toMillis(endTime - startTime) + " ms.");
 
     }

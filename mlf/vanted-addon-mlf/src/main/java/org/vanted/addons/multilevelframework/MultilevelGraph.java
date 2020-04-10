@@ -149,6 +149,7 @@ public class MultilevelGraph {
     /**
      * Adds an undirected {@link AdjListEdge} to the topmost level (i.e. the one returned by
      * {@link MultilevelGraph#getTopLevel()}) connecting two {@link MergedNode}s.
+     * todo (review bm) naming
      *
      * @param source The edge's source. Must not be {@code null}.
      * @param target The edge's target. Must not be {@code null}.
