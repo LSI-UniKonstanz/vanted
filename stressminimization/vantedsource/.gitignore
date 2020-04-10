@@ -1,8 +1,0 @@
-/.metadata/
-
-# ignoring compiled addons
-**/target/
-
-# ignore compiled java files
-**/*.class
-

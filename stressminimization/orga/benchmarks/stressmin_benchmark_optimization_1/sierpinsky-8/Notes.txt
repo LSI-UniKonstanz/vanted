@@ -1,6 +1,0 @@
-Execution with ui updates,
-stopped when 10% of initial stress was reached
-
-Runtime: about 450 seconds (7 a half minutes)
-Memory: about 4GB
-Iterations: 15

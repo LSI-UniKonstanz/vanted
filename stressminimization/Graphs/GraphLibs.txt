@@ -1,3 +1,0 @@
-https://hog.grinvin.org/ -- house of graphs
-http://graphdrawing.org/data.html -- Rome and At&T libraries are old libraries with mainly small graphs - your code should be able to easily handle those
-http://konect.uni-koblenz.de/ -- Konect has several large to huge graphs
