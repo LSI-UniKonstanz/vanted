@@ -1,6 +1,12 @@
 package org.vanted.addons.multilevelframework;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.NullLayoutAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.expand_no_overlapp.NoOverlappLayoutAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid.GridLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid_placement.GridPlacementAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.HandlesAlgorithmData;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
@@ -21,6 +27,8 @@ import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.vanted.addons.multilevelframework.MlfHelper.tryMakingNewInstance;
 
@@ -50,9 +58,31 @@ public class LayoutAlgorithmWrapper {
     // cache the GUI
     private JComponent oldThreadSafeGUI = null;
 
-    final static List<String> WHITELIST = Arrays.asList("Circle", "Grid Layout", "Stress Minimization",
+    /**
+     * Layout algorithms that can be used with the MLF framework. Layout algorithms can only be used in an MLF if
+     * they have the following properties:
+     * <ul>
+     * <li>The MLF must have some way to determine that the layout algorithm is done</li>
+     * <li>The layout algorithm must not require it graph to be rendered in a `View`</li>
+     * </ul>
+     * Other layout algorithms can register themselves via the static method TODO
+     */
+     static Set<Class<? extends Algorithm>> layoutAlgWhitelist = Stream.of(
+            CircleLayouterAlgorithm.class,
+            GridLayouterAlgorithm.class,
+            GridPlacementAlgorithm.class,
+            NullLayoutAlgorithm.class,
+            RandomLayouterAlgorithm.class,
+            NoOverlappLayoutAlgorithm.class
+            // todo (integrate-busy): include forcedirected algorithm when busy waiting wrapper is integrated
+     ).collect(Collectors.toSet());
+     static List<String> WHITELIST = Arrays.asList("Circle", "Grid Layout", "Stress Minimization",
             "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps", BlockingForceDirected.springName
             /*, "Force Directed (\"parameter\" GUI)"*/);
+
+     static public void registerLayoutAlgorithm(Class<? extends Algorithm> newAlg ) {
+         layoutAlgWhitelist.add(newAlg);
+     }
 
     /**
      * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only. It's package-private so it can
@@ -212,9 +242,9 @@ public class LayoutAlgorithmWrapper {
 
     /**
      * Find all currently available layout algorithms.
-     *
+     * todo: update documentation
      * @return A {@link Map} of {@link LayoutAlgorithmWrapper}s. The maps keys are the {@link Algorithm}s' names.
-     * Only returns algorithms whose names are contained in {@link LayoutAlgorithmWrapper#WHITELIST}.
+     * Only returns algorithms whose names are contained in {@link LayoutAlgorithmWrapper#layoutAlgWhitelist}.
      * Note that the Multilevel Framework Algorithm itself (i.e. instances of {@link MultilevelFrameworkLayouter}
      * is excluded from this list.
      * @author Gordian
@@ -231,24 +261,17 @@ public class LayoutAlgorithmWrapper {
                     // some algorithms seem to have no name
                     .filter(a -> a.getName() != null && !a.getName().trim().isEmpty())
                     .forEach(a -> {
-                        // ThreadSafeAlgorithms such as PatternSpringembedder have two GUIs, so they appear twice
-                        if (a instanceof ThreadSafeAlgorithm) {
-                            final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
-                            if (WHITELIST.contains(alternateName)) {
-                                result.put(alternateName, new LayoutAlgorithmWrapper(alternateName,
-                                        tryMakingNewInstance(a), true));
-                            }
-                            final String parameterName = a.getName() + " (\"parameter\" GUI)";
-                            if (WHITELIST.contains(parameterName)) {
-                                result.put(parameterName, new LayoutAlgorithmWrapper(parameterName,
-                                        tryMakingNewInstance(a), false));
-                            }
-                        } else if (WHITELIST.contains(a.getName())) {
-                            result.put(a.getName(), new LayoutAlgorithmWrapper(null,
-                                    tryMakingNewInstance(a), false));
-                        }
+                        if ( ! layoutAlgWhitelist.contains(a.getClass()) ) return;
+                        result.put(a.getName(),
+                                new LayoutAlgorithmWrapper(
+                                        a.getName(),
+                                        tryMakingNewInstance(a),
+                                        (a instanceof ThreadSafeAlgorithm)
+                                )
+                        );
                     });
         }
+        // todo (integrate-busy): remove this when busy-waiting version of forcedirected is integrated
         final BlockingForceDirected bfd = new BlockingForceDirected();
         result.put(bfd.getName(), new LayoutAlgorithmWrapper(bfd.getName(), bfd, true));
         return Collections.unmodifiableMap(result);
