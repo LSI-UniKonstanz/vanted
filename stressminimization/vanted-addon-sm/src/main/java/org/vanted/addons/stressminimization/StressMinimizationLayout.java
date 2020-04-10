@@ -297,7 +297,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
 
 		for (IndexedNodeSet component : components) {
-
+			// todo (review bm) weird control flow; should be split up into more methods
 			setStatusDescription("Stress Minimization: layouting next component");
 
 			// if too few nodes shawl be layout, our preprocessing does not make sense
@@ -306,7 +306,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				setStatusDescription("Stress Minimization: preprocessing");
 				if (waitIfPausedAndCheckStop()) { return; }
 
-				StressMinimizationLayout preLayout = new StressMinimizationLayout();
+				// todo (review bm) naming of classes is confusing
+				// todo (review bm) naming of variables
+				// todo (review bm) class creates new instance of itself here? why?
+				StressMinimizationLayout preLayout = new StressMinimizationLayout(); // layout algorithm
 				StressMinimizationImplementation pre = new StressMinimizationImplementation(
 						component,
 						preLayout,
@@ -328,6 +331,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			setStatusDescription("Stress Minimization: starting core process");
 			if (waitIfPausedAndCheckStop()) { return; }
 
+			// todo (review bm) pretty bad style...
 			StressMinimizationImplementation impl = new StressMinimizationImplementation(
 					component,
 					this,

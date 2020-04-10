@@ -94,6 +94,7 @@ class StressMinimizationImplementation {
 
 	}
 
+	// todo (review bm) landmarks variant lacks documentation or citation
 	private void calcLandmarked(int numberOfLandmarks) {
 
 		callingLayout.setStatusDescription("Stress Minimization: selecting landmarks");
@@ -148,6 +149,7 @@ class StressMinimizationImplementation {
 		// remove the scaling that is done at the end of the layout process
 		// scaling down the positions also
 		// makes this algorithm work better with results from other algorithms
+		// todo (review bm) o.0
 		selectedNodesLayout = unscaleLayout(selectedNodesLayout);
 
 		// StressMajorizationLayoutCalculator isn't working well with layouts
@@ -160,19 +162,25 @@ class StressMinimizationImplementation {
 			}
 		}
 
+		// todo (review bm) need pause functionality?
 		if (callingLayout.waitIfPausedAndCheckStop()) { return; }
 		callingLayout.setStatusDescription("Stress Minimization: optimizing layout - preprocessing...");
 
+		// todo (review bm) same bad style -- dont need to instantiate a class, set parameters in constructor and
+		//   then call a method with "no" arguments -- this introduces unnecessary statefulness
+		// todo (review bm) naming
 		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(selectedNodesLayout, selectedToSelectedDistances, weights);
 
+		// todo (review bm) complete mess of local and instance variables
 		final double initialStress = optim.calcStress();
 		final double stressThreshold = initialStress * (initialStressPercentage / 100);
 		int iterationCount = 0;
 		double newStress, prevStress = initialStress;
 		RealMatrix prevLayout = selectedNodesLayout;
 		boolean terminate = false;
-		do {
 
+		do { // todo (review bm) main loop of iterative optimisation
+			 // todo (review bm) formulation seems overly complicated
 			iterationCount += 1;
 
 			if (callingLayout.waitIfPausedAndCheckStop()) { return; }
@@ -432,6 +440,7 @@ class StressMinimizationImplementation {
 		return newLayout;
 	}
 
+	// todo (review bm) separation of concerns
 	private void setLayout(final IndexedNodeSet landmarks, final RealMatrix landmarksToAllDistances, final RealMatrix landmarkLayout) {
 
 		Supplier<HashMap<Node, Vector2d>> layoutSupplier = () -> {

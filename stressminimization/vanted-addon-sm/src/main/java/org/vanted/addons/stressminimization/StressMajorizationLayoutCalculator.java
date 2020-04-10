@@ -120,6 +120,7 @@ class StressMajorizationLayoutCalculator {
 	 * $$
 	 * @return The stress of the current layout.
 	 */
+	// todo (review bm) this could be pure
 	public double calcStress() {
 
 		double stress = 0;
@@ -151,7 +152,7 @@ class StressMajorizationLayoutCalculator {
 	// ===========================================
 	// Implementation using localized optimization
 	// ===========================================
-
+	// todo (review bm) unused code
 	private RealMatrix localizedOptimizationLayout() {
 
 		RealMatrix X = layout.copy();
@@ -193,6 +194,7 @@ class StressMajorizationLayoutCalculator {
 	// Implementation using Conjugate Gradient
 	// =======================================
 
+	// todo (review bm) parameters?! compeletely scattered across all these embedded classes
 	private RealMatrix conjugateGradientLayout() {
 
 		final double CONVERGENCE_EPSILON = 1e-3;
@@ -248,28 +250,25 @@ class StressMajorizationLayoutCalculator {
 		}
 
 		private class ObjectiveFunction implements MultivariateFunction {
-
 			private RealMatrix LZZaT;
-
 			public ObjectiveFunction(int a) {
 				this.LZZaT = LZZ.getColumnMatrix(a).transpose();
 			}
-
 			/**
 			 * Calculates the value of a function whose gradient is LW * Xa - LZ^T * Za
 			 */
 			@Override
 			public double value(double[] suggestedLayout) {
-
 				// variable naming after paper, see class javadoc
 				RealMatrix Xa = new BlockRealMatrix(n, 1);
 				Xa.setColumn(0, suggestedLayout);
-
+				// todo (review bm) what is this formula? where is it from?
+				//  -> we want to find the minimum of the quadratic form f'(X) whose derivative (gradient)
+				//     is L^w*X^(a) - L^Z*Z^(a) (our system)
+				//     because then f'(X) = 0 = L^w*X^(a) - L^Z*Z^(a), i.e. this solves the system
 				// 1/2 * Xa^T * LW * Xa - (LZ*Za)^T * Xa
 				return 0.5 * (Xa.transpose().multiply(LW).multiply(Xa)).getEntry(0, 0) - ( LZZaT.multiply(Xa) ).getEntry(0, 0);
-
 			}
-
 		}
 
 		// MARK: Gradient function

@@ -30,7 +30,7 @@ public class IndexedNodeSet implements Iterable<Integer> {
 
 	/**
 	 * The basis of this Set.
-	 * This list contains a all nodes that can be added to this set.
+	 * This list contains a all nodes that *can* be added to this set.
 	 */
 	protected final List<Node> allNodes;
 
@@ -77,6 +77,7 @@ public class IndexedNodeSet implements Iterable<Integer> {
 
 	// ==================
 	// MARK: construction
+	// todo (review bm) remove stuff like this
 	// ==================
 
 	/**
@@ -104,6 +105,7 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * Union, intersection and other methods
 	 * can be executed very fast between this set and the subset.
 	 */
+	// todo (review bm) rename?
 	public IndexedNodeSet emptySubset() {
 		return new IndexedNodeSet(this, new BitSet(allNodes.size()));
 	}
@@ -173,14 +175,17 @@ public class IndexedNodeSet implements Iterable<Integer> {
 		IndexedNodeSet neighbors = emptySubset();
 		for (Node neighbor : node.getNeighbors()) {
 
+			// todo (review bm) since this is only about the contains check, we can rewrite this more clearly
+			// index of neighbouring node in base set (all nodes that are considered in this alg)
 			int neighborIndex;
 			try {
 				neighborIndex = getIndex(neighbor);
 			} catch (NotIndexedException ex) {
-				// node is not contained in allNodes
+				// node is not contained in allNodes (the base set of nodes we consider, e.g. the selection)
 				continue;
 			}
-
+			// giving the index to this method basically flips the corresponding bit in the vector
+			// that describes membership to the `neighbours` set.
 			neighbors.add(neighborIndex);
 
 		}
@@ -395,8 +400,9 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 */
 	private void indexNodes() {
 
-		// specify that the added attributes shawl not be saved
+		// specify that the added attributes shall not be saved
 		AttributeManager.getInstance().addUnwrittenAttribute(identifier);
+		// todo (review bm) does not seem to work? i get errors when saving the graph after SM execution
 
 		for (int i = 0; i < allNodes.size(); i += 1) {
 			allNodes.get(i).addAttribute(new IndexAttribute(i, identifier), "");
