@@ -198,7 +198,7 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
      */
     private void checkUndirected(boolean directed) {
         if (directed) {
-            throw new IllegalArgumentException("Levels of MultilevelGraph must only contain directed edges.");
+            throw new IllegalArgumentException("Levels of MultilevelGraph must only contain undirected edges.");
         }
     }
 
