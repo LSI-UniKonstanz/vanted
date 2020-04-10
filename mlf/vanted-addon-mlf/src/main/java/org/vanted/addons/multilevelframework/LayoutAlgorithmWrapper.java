@@ -60,11 +60,11 @@ public class LayoutAlgorithmWrapper {
      *
      * @param guiName       The name the algorithm has in the GUI. This can be different from
      *                      {@link Algorithm#getName()}, because some algorithms are shown twice in the list of
-     *                      algorithms because they provide two different GUI's (see {@code threadSafeGUI} below).
+     *                      algorithms because they provide two different GUI's (see {@code useThreadSafeGUI} below).
      *                      If this is {@code null}, the name returned by {@link Algorithm#getName()} will be used.
      * @param algorithm     The {@link Algorithm} to wrap. Must not be {@code null} and must be a layout algorithm
      *                      (i.e. {@link Algorithm#isLayoutAlgorithm()} must return {@code true}.
-     * @param threadSafeGUI Some algorithms such as {@link de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder}
+     * @param useThreadSafeGUI Some algorithms such as {@link de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder}
      *                      provide a second GUI through
      *                      {@link ThreadSafeAlgorithm#setControlInterface(ThreadSafeOptions, JComponent)}.
      *                      This one will be used if this parameter is set to {@code true}, otherwise the default
@@ -74,16 +74,16 @@ public class LayoutAlgorithmWrapper {
      *                      {@code false}.
      * @author Gordian
      */
-    LayoutAlgorithmWrapper(String guiName, Algorithm algorithm, boolean threadSafeGUI) {
+    LayoutAlgorithmWrapper(String guiName, Algorithm algorithm, boolean useThreadSafeGUI) {
         this.algorithm = Objects.requireNonNull(algorithm);
         if (!this.algorithm.isLayoutAlgorithm()) {
             throw new IllegalArgumentException("LayoutAlgorithmWrapper only works with layout algorithms.");
         }
-        if (threadSafeGUI && !(this.algorithm instanceof ThreadSafeAlgorithm)) {
-            throw new IllegalArgumentException("LayoutAlgorithmWrapper can only use the threadSafeGUI option "
+        if (useThreadSafeGUI && !(this.algorithm instanceof ThreadSafeAlgorithm)) {
+            throw new IllegalArgumentException("LayoutAlgorithmWrapper can only use the useThreadSafeGUI option "
                     + "for ThreadSafeAlgorithms.");
         }
-        this.threadSafeGUI = threadSafeGUI;
+        this.threadSafeGUI = useThreadSafeGUI;
         this.guiName = guiName == null ?
                 Objects.toString(algorithm.getName(), algorithm.getClass().getSimpleName()) : guiName;
         if (this.guiName.trim().isEmpty()) {
