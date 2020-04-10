@@ -6,6 +6,11 @@ import org.graffiti.plugin.parameter.Parameter;
  * Implementing classes provide and can accept different
  * {@link Parameter}s.
  *
+ * todo (review bm) this is more general than `Algorithm` because `Algorithm`s other properties are irrelevant
+ *   or belong to the MLF algorithm object
+ * todo (review bm) this would be a supertype of `Algorithm` -- the proper way would be to integrate this into
+ *   the vanted core.
+ *
  * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
  * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(Parameter[])
  *

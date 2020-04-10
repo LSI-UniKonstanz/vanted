@@ -36,6 +36,9 @@ public enum ConnectedComponentsHelper {
      *
      * @author Christian Klukas, Jannik
      */
+    // todo (review bm) why return a list? from usages it doesnt seem like order is meaningful
+    // todo (review bm) computes a DFS on the subgraph induced by `workingSet`. last encountered neighbour will become
+    //   active node for next iteration.
     public static Set<List<Node>> getConnectedComponents(final Collection<Node> workingSet) {
         Set<Set<Node>> nodeSetSet = new HashSet<>();
 
@@ -68,6 +71,7 @@ public enum ConnectedComponentsHelper {
                 Set<Node> neighbors = current.getNeighbors();
 
                 // add all new refSets
+                // push all eligible neighbours to queue
                 for (Node neighbor : neighbors) {
                     if (!connectedComponent.contains(neighbor) && !nodesToProcess.contains(neighbor) &&
                             allNodes.contains(neighbor)) { // new neighbour found that is in working set
@@ -490,6 +494,7 @@ public enum ConnectedComponentsHelper {
         final Vector2d zeroSize = new Vector2d(0, 0); // use in case of error
 
         Vector2d position, size;
+        // todo (bm review) no foreach / stream formulation possible?
         for (int idx = 0; idx < connectedComponent.size(); idx++) {
             Node node = connectedComponent.get(idx);
             position = connectedComponentPositions == null ?

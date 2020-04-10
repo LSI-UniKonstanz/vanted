@@ -369,6 +369,8 @@ public class ParameterizableSelectorParameter extends JPanel {
      * Creates a new parameter (which is a {@link JPanel}) that holds a {@link JComboBox} that allows the
      * user to select different {@link Parameterizable}s and packs it in the returned {@link JComponentParameter}.
      *
+     * todo (review bm) this is a factory method and should go somewhere else
+     *
      * @param initialSelection
      *      the element to select initially in the JComboBox.
      *      If <code>displayNameParameterizableMap</code> is empty this will be ignored.
@@ -408,6 +410,8 @@ public class ParameterizableSelectorParameter extends JPanel {
      * The used descriptions will be automatically derived from the given {@link Parameterizable}s, if they are
      * instances of {@link Describable}.
      *
+     * todo (review bm) this is a factory method and should go somewhere else
+     *
      * @param initialSelection
      *      the element to select initially in the JComboBox.
      *      If <code>displayNameParameterizableMap</code> is empty this will be ignored.
@@ -444,6 +448,8 @@ public class ParameterizableSelectorParameter extends JPanel {
      * Creates a new parameter (which is a {@link JPanel}) that holds a {@link JComboBox} that allows the
      * user to select different {@link Parameterizable}s and packs it in the returned {@link JComponentParameter}.
      * The used names descriptions will be automatically derived from the given {@link Parameterizable}s.
+     *
+     * todo (review bm) this is a factory method and should go somewhere else
      *
      * @param initialSelection
      *      the index of the element to select initially in the JComboBox.

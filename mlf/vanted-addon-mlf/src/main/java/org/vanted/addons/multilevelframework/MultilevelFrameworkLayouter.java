@@ -23,10 +23,12 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
 import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
+import org.vanted.addons.multilevelframework.review.RandomPlacer21;
 import org.vanted.addons.multilevelframework.sm_util.ConnectedComponentsHelper;
 import org.vanted.addons.multilevelframework.sm_util.gui.ParameterizableSelectorParameter;
 
 import javax.swing.*;
+import javax.swing.plaf.multi.MultiLabelUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
@@ -46,6 +48,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     // default values
     private final static String DEFAULT_ALGORITHM = BlockingForceDirected.springName;
+    // TODO (bm review) unnecessary instantiation
     private final static String DEFAULT_PLACER = new RandomPlacer().getName();
     private final static String DEFAULT_MERGER = new RandomMerger().getName();
     private boolean randomTop = true;
@@ -55,6 +58,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     // Default names of the attributes that indicate to the algorithms that the graphs they work on
     // coarsened graph instead of the original graph. The algorithm can use this for optimizations.
     // Currently only used by Stress Minimization.
+    // TODO (bm review) these final fields should be put somewhere else
+    // TODO (bm review) dont really need these
     private final static String COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_LEVEL";
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
     private final static String COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH
@@ -81,16 +86,21 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      */
     public boolean benchmarkMode = false;
     // merger, placer and algorithm to use in non-interactive (benchmark) mode
+    // TODO (bm review) configuration should go somewhere else
     public Merger nonInteractiveMerger = null;
     public Placer nonInteractivePlacer = null;
     public String nonInteractiveAlgorithm = null;
 
     // add the default mergers and placers
+    // todo (review bm) this static initialiser is a cool thing but it is not
+    //  easy to see when exactly this will be modified (quick lookup says when class is "initialised")
     static {
         MultilevelFrameworkLayouter.mergers.add(new SolarMerger());
         MultilevelFrameworkLayouter.mergers.add(new RandomMerger());
         MultilevelFrameworkLayouter.placers.add(new RandomPlacer());
         MultilevelFrameworkLayouter.placers.add(new SolarPlacer());
+        // added by review bm
+        MultilevelFrameworkLayouter.placers.add(new RandomPlacer21());
     }
 
     public MultilevelFrameworkLayouter() {
@@ -166,7 +176,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         final Merger merger;
         final Placer placer;
         final LayoutAlgorithmWrapper algorithm;
-        if (!this.benchmarkMode) { // otherwise the caller needs to set those values
+        if (!this.benchmarkMode) { // otherwise the caller needs to set those values todo (bm review) not done?
             merger = this.getSelectedMergerCopyAndSetParameters();
             placer = this.getSelectedPlacerCopyAndSetParameters();
             algorithm = this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
@@ -191,6 +201,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         // if not, indicate that the MLF is running on the graph
         graph.setBoolean(WORKING_ATTRIBUTE_PATH, true);
 
+
         System.out.println("Running MLF using " + merger.getName() + ", " + placer.getName() + ", "
                 + algorithm.getAlgorithm().getName());
 
@@ -210,6 +221,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 if (bts.isStopped) { bts.status = -1; return; }
                 MultilevelGraph componentMLG = new MultilevelGraph(cg);
                 merger.buildCoarseningLevels(componentMLG);
+                // TODO (bm review) would like componentMLG.coarsen(merger) better.
 
                 // keep track of how many nodes coarsening levels there were at the start (for the progress bar)
                 final int numLevelsAtStart = componentMLG.getNumberOfLevels();
@@ -235,11 +247,13 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     if (removeOverlaps) { removeOverlaps(componentMLG.getTopLevel()); }
                     placer.reduceCoarseningLevel(componentMLG);
                     // indicate that this is a coarsened graph to allow for optimizations in the level layouter
+                    // TODO (bm review) needed? i think any other level than the 1st one would be coarsened by construction
                     componentMLG.getTopLevel().setBoolean(COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
                     if (bts.isStopped) { bts.status = -1; return; }
                 }
 
                 // indicate that this is the bottom level
+                // TODO (bm review) naming -- what is top/bottom?
                 componentMLG.getTopLevel().setBoolean(COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
                 bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
                 bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
@@ -253,10 +267,12 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             }
         };
 
+        // this will be invoked when MLF is done
+        // TODO (bm review) documentation -- what are these
+        // todo (review bm) position this piece of code somewhere else
         final Runnable finishSwingTask = () -> {
             // apply position updates
             HashMap<Node, Vector2d> nodes2newPositions = new HashMap<>();
-
             for (CoarsenedGraph cg : connectedComponents[0]) {
                 for (MergedNode mn : cg.getMergedNodes()) {
                     final Node representedNode = mn.getInnerNodes().iterator().next();
@@ -264,10 +280,11 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     nodes2newPositions.put(representedNode, AttributeHelper.getPositionVec2d(mn));
                 }
             }
-
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
+            // layout connected components
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
-//            ConnectedComponentLayout.layoutConnectedComponents(graph);
+            // ConnectedComponentLayout.layoutConnectedComponents(graph);
+            // todo: replace this with new functionality from 2.1
             ConnectedComponentsHelper.layoutConnectedComponents(ConnectedComponentsHelper.getConnectedComponents(
                     getSelectedOrAllNodes(graph, selection)), true);
             graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
@@ -456,6 +473,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      *     the {@link Merger} selected by the user and set it up using the parameters specified by the user through
      *     the GUI.
      * @author Gordian
+     * TODO (bm review) naming
      */
     private Merger getSelectedMergerCopyAndSetParameters() {
         final Merger merger = MlfHelper.tryMakingNewInstance((Merger) this.mergerPSP.getSelectedParameterizable());
@@ -468,6 +486,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      * @return
      *     the {@link Placer} selected by the user and set it up using the parameters specified by the user through
      *     the GUI.
+     * TODO (bm review) naming
      * @author Gordian
      */
     private Placer getSelectedPlacerCopyAndSetParameters() {
@@ -662,6 +681,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 /**
  * @author Gordian
  * @see BackgroundTaskStatusProvider
+ * TODO (review bm) should go somewhere else?
  */
 class MLFBackgroundTaskStatus implements BackgroundTaskStatusProvider {
     /**

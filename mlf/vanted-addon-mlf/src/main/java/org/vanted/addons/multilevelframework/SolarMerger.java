@@ -109,6 +109,9 @@ public class SolarMerger implements Merger {
     }
 
     /**
+     * todo (bm review) naming: should be "for the current top level"?
+     * todo (bm review) separation of concerns: housekeeping/assembly on/of MLG datastructure should be distinct
+     *  from merger implementation
      * Builds a Galaxy for the current multilevel consisting of several solar
      * Systems. Each solar System has a sun, planets(dist 1 to the sun) and one or
      * no moon(1+1 dist to sun) for each planet.

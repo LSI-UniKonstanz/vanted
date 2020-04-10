@@ -19,6 +19,7 @@ import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
  */
 public class RandomMerger implements Merger {
 
+    // todo (review bm) necessary?
     final static String COARSENING_FACTOR_NAME     = "Coarsening Factor";
     final static String MIN_LEVEL_NODE_NUM_NAME    = "Minimum number of nodes per level";
     final static String MAX_NAM_ITERATIONS_NAME    = "Maximum number of iterations";
@@ -38,6 +39,7 @@ public class RandomMerger implements Merger {
     int maxNumberOfIterations = 100;
 
     // prefer merging MergedNodes that don't already represent lots of nodes
+    // TODO (review bm) are both this and `considerEdgeWeights` expressed in UI?
     boolean useWeights = true;
 
     // the path at which edge weights are stored see MlfHelper.getEdgeWeight
@@ -161,6 +163,7 @@ public class RandomMerger implements Merger {
             }
         }
 
+        // todo (review bm) should be printed through logger, if even
         final long endTime = System.nanoTime();
         System.out.println("Built coarsening levels in: " +
                 TimeUnit.NANOSECONDS.toMillis(endTime - startTime) + " ms.");
@@ -194,6 +197,8 @@ public class RandomMerger implements Merger {
      *                      nodes with low weight (note that this requires {@link MergedNode}s)
      * @author Tobias
      */
+    // todo (review bm) separation of concerns
+    // 2.2
     private void buildLevel(double coarseningPerLevel, MultilevelGraph mlg, boolean sortByWeights){
         Graph baseLevel = mlg.getTopLevel();
 
@@ -232,8 +237,9 @@ public class RandomMerger implements Merger {
             if (!node2nodeSet.containsKey(source) || !node2nodeSet.containsKey(target)) {
                 if (node2nodeSet.containsKey(source)) {
                     // the source node being already in the HashMap
-                    node2nodeSet.get(source).add(target);
-                    node2nodeSet.put(target, node2nodeSet.get(source));
+                    node2nodeSet.get(source).add(target); // (bm) add target node to set of src node
+                    node2nodeSet.put(target, node2nodeSet.get(source)); // (bm) set Set of target node to be same contents as set of src node
+                        // (bm) i.e. both src and tgt node now map to the "same" set
                 } else if (node2nodeSet.containsKey(target)) {
                     // the target node being already in the HashMap
                     node2nodeSet.get(target).add(source);
