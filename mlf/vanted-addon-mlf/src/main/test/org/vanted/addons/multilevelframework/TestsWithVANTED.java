@@ -109,12 +109,10 @@ public class TestsWithVANTED {
      * @author Gordian
      */
     @Test
-    @Deprecated
     public void getGUI() throws InvocationTargetException, InterruptedException {
         assertNotNull(LayoutAlgorithmWrapper.getLayoutAlgorithms().get("Circle").getGUI());
-        // todo (integrate-busy): reenable test when busywaiting forcedirected is integrated
-//        SwingUtilities.invokeAndWait(() -> assertNotNull(LayoutAlgorithmWrapper.getLayoutAlgorithms()
-//                .get(BlockingForceDirected.springName).getGUI()));
+        SwingUtilities.invokeAndWait(() -> assertNotNull(LayoutAlgorithmWrapper.getLayoutAlgorithms()
+                .get(BlockingForceDirected.springName).getGUI()));
         assertNull(new LayoutAlgorithmWrapper("Dummy", new Algorithm() { // "empty" algorithm
             @Override public String getName() { return ""; }
             @Override public void setParameters(Parameter[] params) { }
@@ -338,7 +336,7 @@ public class TestsWithVANTED {
     public void getLayoutAlgorithms() {
         assertTrue("More than half of the whitelist not found",
                 LayoutAlgorithmWrapper.getLayoutAlgorithms().size()
-                        > LayoutAlgorithmWrapper.layoutAlgWhitelist.size() / 2);
+                        > LayoutAlgorithmWrapper.WHITELIST.size() / 2);
     }
 
     /**
