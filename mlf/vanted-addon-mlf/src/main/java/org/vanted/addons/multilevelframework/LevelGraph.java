@@ -6,14 +6,11 @@ import org.graffiti.graph.*;
 import java.util.*;
 
 /**
- * A subclass of {@link AdjListGraph} used by the {@link MultilevelGraph} implementation.
- * It cannot use {@link AdjListGraph} since some of the functionality it needs is not provided by
- * {@link AdjListGraph}'s public interface.
- * TODO (bm review) naming
+ * Represents a single level of a {@link MultilevelGraph}.
  */
-class InternalGraph extends AdjListGraph implements CoarsenedGraph {
+class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     /**
-     * Store "object attributes" associated with this level. (See {@link InternalGraph#setObject(String, Object)}).
+     * Store "object attributes" associated with this level. (See {@link LevelGraph#setObject(String, Object)}).
      * Lazily initialized as it is not always needed.
      */
     private HashMap<String, Object> objectAttributes;
@@ -129,7 +126,7 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * {@link InternalGraph}'s are always undirected.
+     * {@link LevelGraph}'s are always undirected.
      *
      * @return {@code false}.
      * @author Gordian
@@ -140,7 +137,7 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * {@link InternalGraph}'s are always undirected.
+     * {@link LevelGraph}'s are always undirected.
      *
      * @param directed Must be {@code false}.
      * @author Gordian
@@ -152,7 +149,7 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * {@link InternalGraph}'s are always undirected.
+     * {@link LevelGraph}'s are always undirected.
      *
      * @param directed Must be {@code false}.
      * @author Gordian
@@ -181,7 +178,7 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     /**
      * @param node Must be an instance of {@link MergedNode}. The {@link MergedNode}'s
      *             {@link MergedNode#getInnerNodes()} method must not return any nodes already
-     *             represented by a {@link MergedNode} of this graph (returned by {@link InternalGraph#getNodes()}).
+     *             represented by a {@link MergedNode} of this graph (returned by {@link LevelGraph#getNodes()}).
      * @return The copied node.
      * @author Gordian
      */

@@ -17,7 +17,7 @@ public class MultilevelGraph {
     /**
      * Contains the coarsening levels. The highest index corresponds to the "coarsest" level.
      */
-    private final ArrayList<InternalGraph> levels;
+    private final ArrayList<LevelGraph> levels;
     private final Graph originalGraph;
 
     /**
@@ -50,7 +50,7 @@ public class MultilevelGraph {
      */
     public int getTotalNumberOfNodes() {
         int result = this.originalGraph.getNumberOfNodes();
-        for (InternalGraph g : this.levels) {
+        for (LevelGraph g : this.levels) {
             result += g.getNumberOfNodes();
         }
         return result;
@@ -84,7 +84,7 @@ public class MultilevelGraph {
         if (!this.levels.isEmpty() && !this.isComplete()) {
             throw new IllegalStateException("Multilevel cannot add a new coarsening level if there are unrepresented nodes.");
         }
-        this.levels.add(new InternalGraph());
+        this.levels.add(new LevelGraph());
 
         // set a nicer name for the coarsened graph
         String original_name = this.originalGraph.getName();
@@ -169,7 +169,7 @@ public class MultilevelGraph {
      * @return the topmost (i.e. "coarsest") coarsening level.
      * @author Gordian
      */
-    private InternalGraph topInternalLevel() {
+    private LevelGraph topInternalLevel() {
         if (this.levels.isEmpty()) {
             throw new UnsupportedOperationException("MultilevelGraph cannot modify the original graph.");
         }

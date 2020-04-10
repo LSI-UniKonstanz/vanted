@@ -8,7 +8,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import org.AttributeHelper;
 import org.Vector2d;
-import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -719,7 +718,7 @@ public class TestsWithVANTED {
         Graph g = new AdjListGraph();
         MultilevelGraph mlg = new MultilevelGraph(g);
         mlg.newCoarseningLevel();
-        InternalGraph ig = (InternalGraph) mlg.getTopLevel();
+        LevelGraph ig = (LevelGraph) mlg.getTopLevel();
         final String myObj = ":(){ :|:& };:";
         ig.setObject("test key", myObj);
         assertSame(myObj, SolarPlacer.getElement(ig, "test key"));
@@ -732,7 +731,7 @@ public class TestsWithVANTED {
     public void getElementFail() {
         MultilevelGraph mlg = new MultilevelGraph(new AdjListGraph());
         mlg.newCoarseningLevel();
-        InternalGraph ig = (InternalGraph) mlg.getTopLevel();
+        LevelGraph ig = (LevelGraph) mlg.getTopLevel();
         SolarPlacer.getElement(ig, "non-existent key.....");
     }
 }

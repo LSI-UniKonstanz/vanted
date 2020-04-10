@@ -42,7 +42,7 @@ public class SolarPlacer implements Placer {
     @Override
     public void reduceCoarseningLevel(MultilevelGraph multilevelGraph) {
 
-        final InternalGraph top = (InternalGraph) multilevelGraph.popCoarseningLevel();
+        final LevelGraph top = (LevelGraph) multilevelGraph.popCoarseningLevel();
 
         @SuppressWarnings("unchecked") final Set<Node> suns = (Set<Node>) getElement(top, SolarMerger.SUNS_KEY);
         @SuppressWarnings("unchecked") Set<Node> allPlanets = (Set<Node>) getElement(top, SolarMerger.PLANETS_KEY);
@@ -262,14 +262,14 @@ public class SolarPlacer implements Placer {
      * Get an object attribute. Throws an exception if it
      * doesn't work.
      *
-     * @param internalGraph The {@link InternalGraph} to get the attribute from.
+     * @param levelGraph The {@link LevelGraph} to get the attribute from.
      *                      Must not be {@code null}.
      * @param key           The key to get.
-     * @return the object returned by {@link InternalGraph#getObject(String)}.
+     * @return the object returned by {@link LevelGraph#getObject(String)}.
      * @author Gordian
      */
-    static Object getElement(InternalGraph internalGraph, String key) {
-        return internalGraph.getObject(key).orElseThrow(() -> {
+    static Object getElement(LevelGraph levelGraph, String key) {
+        return levelGraph.getObject(key).orElseThrow(() -> {
             MainFrame.getInstance().showMessageDialog("SolarPlacer can only be run on graphs merged by Solar Merger.");
             return new IllegalArgumentException("SolarPlacer can only be run on graphs merged by Solar Merger.");
         });

@@ -67,7 +67,7 @@ public class RandomPlacer implements Placer {
      * {@link MultilevelGraph} randomly around their average Position
      *
      * @param multilevelGraph the coarsened Graph. Needs to contain at least one
-     *                        {@link InternalGraph}
+     *                        {@link LevelGraph}
      * @author Katze, Gordian
      */
     @Override

@@ -31,12 +31,12 @@ public enum MlfHelper {
             return Collections.emptyList();
         }
 
-        ArrayList<InternalGraph> graphList = new ArrayList<>();
+        ArrayList<LevelGraph> graphList = new ArrayList<>();
         HashMap<Node, Node> sourceGraphNode2connectedGraphNode = new HashMap<>();
         while (!selection.isEmpty()) {
             Node startNode = selection.iterator().next();
             Set<Node> connectedNodes = getConnectedNodes(startNode, selection);
-            InternalGraph connectedComponentGraph = new InternalGraph();
+            LevelGraph connectedComponentGraph = new LevelGraph();
             for (Node n : connectedNodes) {
                 MergedNode newNode = new MergedNode(connectedComponentGraph, Collections.singleton(n));
                 connectedComponentGraph.doAddNode(newNode);

@@ -239,7 +239,7 @@ public class SolarMerger implements Merger {
         }
 
         // Preparing HashMaps and HashSets for the solarMerger
-        InternalGraph top = (InternalGraph) multilevelGraph.getTopLevel();
+        LevelGraph top = (LevelGraph) multilevelGraph.getTopLevel();
         top.setObject(SUNS_KEY, suns);
         top.setObject(PLANETS_KEY, allPlanets);
         top.setObject(SUN_TO_PLANETS_KEY, sunsToPlanets);

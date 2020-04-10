@@ -2,7 +2,6 @@ package org.vanted.addons.multilevelframework;
 
 import org.AttributeHelper;
 import org.graffiti.graph.AdjListGraph;
-import org.graffiti.graph.AdjListNode;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.junit.Test;
@@ -129,10 +128,10 @@ public class SolarPlacerTest {
         MergedNode sun1 = mlg.addNode(new HashSet<>(Arrays.asList(n1, n2, n4)));
         assertTrue(mlg.isComplete());
 
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.SUNS_KEY, suns);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.SUN_TO_PLANETS_KEY, sun2planet);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANETS_KEY, planets);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANET_TO_MOONS_KEY, planet2moon);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.SUNS_KEY, suns);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.SUN_TO_PLANETS_KEY, sun2planet);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANETS_KEY, planets);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANET_TO_MOONS_KEY, planet2moon);
 
         SolarPlacer sp = new SolarPlacer();
         double n10x = getPositionX(n10);
@@ -208,10 +207,10 @@ public class SolarPlacerTest {
         MergedNode sun6 = mlg.addNode(new HashSet<>(Arrays.asList(n4, n5, n6)));
         assertTrue(mlg.isComplete());
 
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.SUNS_KEY, suns);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.SUN_TO_PLANETS_KEY, sun2planet);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANETS_KEY, planets);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANET_TO_MOONS_KEY, planet2moon);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.SUNS_KEY, suns);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.SUN_TO_PLANETS_KEY, sun2planet);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANETS_KEY, planets);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANET_TO_MOONS_KEY, planet2moon);
 
         new SolarPlacer().reduceCoarseningLevel(mlg);
 
@@ -261,10 +260,10 @@ public class SolarPlacerTest {
         MergedNode sun3 = mlg.addNode(Collections.singleton(n3));
         assertTrue(mlg.isComplete());
 
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.SUNS_KEY, suns);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.SUN_TO_PLANETS_KEY, sun2planet);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANETS_KEY, planets);
-        ((InternalGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANET_TO_MOONS_KEY, planet2moon);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.SUNS_KEY, suns);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.SUN_TO_PLANETS_KEY, sun2planet);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANETS_KEY, planets);
+        ((LevelGraph) mlg.getTopLevel()).setObject(SolarMerger.PLANET_TO_MOONS_KEY, planet2moon);
 
         new SolarPlacer().reduceCoarseningLevel(mlg);
 

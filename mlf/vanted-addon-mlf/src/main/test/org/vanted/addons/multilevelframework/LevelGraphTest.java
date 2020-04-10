@@ -17,16 +17,16 @@ import static org.junit.Assert.*;
 
 /**
  * @author Gordian
- * @see InternalGraph
+ * @see LevelGraph
  */
-public class InternalGraphTest {
+public class LevelGraphTest {
 
-    InternalGraph ig;
+    LevelGraph ig;
     MergedNode n1, n2;
 
     @Before
     public void setUp() {
-        this.ig = new InternalGraph();
+        this.ig = new LevelGraph();
         this.n1 = this.ig.createNode();
         this.n2 = this.ig.createNode();
         this.ig.doAddNode(this.n1);
@@ -111,7 +111,7 @@ public class InternalGraphTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void addGraph() {
-        this.ig.addGraph(new InternalGraph()); // this should work
+        this.ig.addGraph(new LevelGraph()); // this should work
         AdjListGraph a = new AdjListGraph();
         a.addNode();
         a.setDirected(false);
@@ -147,7 +147,7 @@ public class InternalGraphTest {
     @Test
     public void testGetMergedNodes() {
         assertEquals(new HashSet<Node>(Arrays.asList(this.n1, this.n2)), new HashSet<Node>(this.ig.getMergedNodes()));
-        assertTrue(new InternalGraph().getMergedNodes().isEmpty());
+        assertTrue(new LevelGraph().getMergedNodes().isEmpty());
     }
 
 }
