@@ -18,7 +18,13 @@ public class MultilevelFrameworkAddon extends AddonAdapter {
     @Override
     protected void initializeAddon() {
         this.algorithms = new Algorithm[]{
-                new MultilevelFrameworkLayouter(),
+                // The list of MLF-compatible (whitelisted) algorithms is assembled
+                // during plugin initialisation (cf DefaultPluginManager). Further, it finds the
+                // layout algorithm by using core methods to iterate over all plugins.
+                // Consequently, registering a layout algorithm here (in this addon) would not
+                // make it usable in the MLF. For this, use
+                // LayoutAlgorithmWrapper#getSuppliedLayoutAlgs
+                new MultilevelFrameworkLayouter()
         };
     }
 

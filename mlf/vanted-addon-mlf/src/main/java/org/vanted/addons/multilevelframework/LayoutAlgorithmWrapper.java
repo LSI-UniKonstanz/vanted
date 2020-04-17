@@ -11,16 +11,14 @@ import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.managers.EditComponentManager;
 import org.graffiti.managers.pluginmgr.PluginEntry;
-import org.graffiti.plugin.algorithm.Algorithm;
-import org.graffiti.plugin.algorithm.PreconditionException;
-import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
-import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+import org.graffiti.plugin.algorithm.*;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
-import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.vanted.addons.multilevelframework.MlfHelper.tryMakingNewInstance;
 
@@ -61,8 +59,7 @@ public class LayoutAlgorithmWrapper {
      * in development.
      */
     final static List<String> layoutAlgWhitelist = Arrays.asList("Circle", "Grid Layout", "Stress Minimization",
-            "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps", BlockingForceDirected.springName
-            /*, "Force Directed (\"parameter\" GUI)"*/);
+            "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps");
 
     /**
      * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only. It's package-private so it can
@@ -134,8 +131,108 @@ public class LayoutAlgorithmWrapper {
     }
 
     /**
-     * Execute the layout algorithm with the given {@link Graph} and {@link Selection}.
-     * Note that this is in an early stage and hasn't been thoroughly tested.
+     * Find all currently available layout algorithms and returns those whitelisted.
+     *
+     * @return A {@link Map} of {@link LayoutAlgorithmWrapper}s. The maps keys are the {@link
+     * Algorithm}s' names. Only returns algorithms whose names are contained in {@link
+     * LayoutAlgorithmWrapper#layoutAlgWhitelist}. Note that the Multilevel Framework Algorithm
+     * itself (i.e. instances of {@link MultilevelFrameworkLayouter} is excluded from this list.
+     * @author Gordian
+     */
+    public static Map<String, LayoutAlgorithmWrapper> getLayoutAlgorithms() {
+        try {
+            return Stream.concat(
+                    getSuppliedLayoutAlgs().entrySet().stream(),
+                    getPluginLayoutAlgs().entrySet().stream()
+            ).collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    Map.Entry::getValue
+            ));
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException("Name collision in supplied layout algorithms");
+        }
+
+    }
+
+    /**
+     * @return the "GUI name", see the constructor ({@link LayoutAlgorithmWrapper#LayoutAlgorithmWrapper(String,
+     * Algorithm, boolean)}) for details
+     * @author Gordian
+     */
+    public String getGUIName() {
+        return this.guiName;
+    }
+
+    /**
+     * @return the wrapped {@link Algorithm}
+     * @author Gordian
+     */
+    public Algorithm getAlgorithm() {
+        return this.algorithm;
+    }
+
+    /**
+     * Explicitly add other algorithms via symbolic reference, e.g. some provided by this addon
+     *
+     * @return A map from algorithm name to wrapper instance.
+     * @see MultilevelFrameworkAddon#initializeAddon()
+     */
+    public static Map<String, LayoutAlgorithmWrapper> getSuppliedLayoutAlgs() {
+        Map<String, LayoutAlgorithmWrapper> layoutAlgs = new HashMap<>();
+        // in fact, we would only require a Class<Algorithm> and not an instance
+        AbstractAlgorithm forceDirectedWrapper = new ForceDirectedLayoutWrapper();
+        layoutAlgs.put(
+                forceDirectedWrapper.getName(),
+                new LayoutAlgorithmWrapper(forceDirectedWrapper.getName(),
+                        tryMakingNewInstance(forceDirectedWrapper),
+                        false
+                )
+        );
+        return layoutAlgs;
+    }
+
+    /**
+     * Find layout algorithms supplied by plugins.
+     *
+     * @return A map from algorithm name to wrapper instance
+     * @see LayoutAlgorithmWrapper
+     */
+    public static Map<String, LayoutAlgorithmWrapper> getPluginLayoutAlgs() {
+        Collection<PluginEntry> entries = GravistoService.getInstance().getMainFrame().getPluginManager().getPluginEntries();
+        Map<String, LayoutAlgorithmWrapper> layoutAlgs = new HashMap<>();
+        for (PluginEntry pe : entries) {
+            Algorithm[] algorithms = pe.getPlugin().getAlgorithms();
+            Arrays.stream(algorithms)
+                    .filter(Algorithm::isLayoutAlgorithm)
+                    // the multilevel framework should not apply itself at the different levels
+                    .filter(a -> !(a instanceof MultilevelFrameworkLayouter))
+                    // some algorithms seem to have no name
+                    .filter(a -> a.getName() != null && !a.getName().trim().isEmpty())
+                    .forEach(a -> {
+                        // ThreadSafeAlgorithms such as PatternSpringembedder have two GUIs, so they appear twice
+                        if (a instanceof ThreadSafeAlgorithm) {
+                            final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
+                            if (layoutAlgWhitelist.contains(alternateName)) {
+                                layoutAlgs.put(alternateName, new LayoutAlgorithmWrapper(alternateName,
+                                        tryMakingNewInstance(a), true));
+                            }
+                            final String parameterName = a.getName() + " (\"parameter\" GUI)";
+                            if (layoutAlgWhitelist.contains(parameterName)) {
+                                layoutAlgs.put(parameterName, new LayoutAlgorithmWrapper(parameterName,
+                                        tryMakingNewInstance(a), false));
+                            }
+                        } else if (layoutAlgWhitelist.contains(a.getName())) {
+                            layoutAlgs.put(a.getName(), new LayoutAlgorithmWrapper(null,
+                                    tryMakingNewInstance(a), false));
+                        }
+                    });
+        }
+        return layoutAlgs;
+    }
+
+    /**
+     * Execute the layout algorithm with the given {@link Graph} and {@link Selection}. Note that
+     * this is in an early stage and hasn't been thoroughly tested.
      *
      * @param graph     The {@link Graph}. Must not be {@code null}.
      * @param selection The {@link Selection}. Must not be {@code null}.
@@ -165,10 +262,11 @@ public class LayoutAlgorithmWrapper {
                 ((ThreadSafeAlgorithm) this.algorithm).executeThreadSafe(this.threadSafeOptions);
                 // this fixes IndexOutOfBoundsExceptions that occur when the levels are displayed
                 // and seems to work more reliably otherwise as well
-                if (this.algorithm instanceof BlockingForceDirected || this.algorithm instanceof PatternSpringembedder) {
+                if (this.algorithm instanceof PatternSpringembedder) {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException ignored) {}
+                    } catch (InterruptedException ignored) {
+                    }
                 }
                 return;
             } catch (Exception e) {
@@ -201,67 +299,6 @@ public class LayoutAlgorithmWrapper {
             // maybe the next level will work...
             assert false : "Precondition check failed.";
         }
-    }
-
-    /**
-     * @return the "GUI name", see the constructor
-     * ({@link LayoutAlgorithmWrapper#LayoutAlgorithmWrapper(String, Algorithm, boolean)}) for details
-     * @author Gordian
-     */
-    public String getGUIName() {
-        return this.guiName;
-    }
-
-    /**
-     * @return the wrapped {@link Algorithm}
-     * @author Gordian
-     */
-    public Algorithm getAlgorithm() {
-        return this.algorithm;
-    }
-
-    /**
-     * Find all currently available layout algorithms.
-     *
-     * @return A {@link Map} of {@link LayoutAlgorithmWrapper}s. The maps keys are the {@link Algorithm}s' names.
-     * Only returns algorithms whose names are contained in {@link LayoutAlgorithmWrapper#layoutAlgWhitelist}.
-     * Note that the Multilevel Framework Algorithm itself (i.e. instances of {@link MultilevelFrameworkLayouter}
-     * is excluded from this list.
-     * @author Gordian
-     */
-    public static Map<String, LayoutAlgorithmWrapper> getLayoutAlgorithms() {
-        Collection<PluginEntry> entries = GravistoService.getInstance().getMainFrame().getPluginManager().getPluginEntries();
-        Map<String, LayoutAlgorithmWrapper> result = new HashMap<>();
-        for (PluginEntry pe : entries) {
-            Algorithm[] algorithms = pe.getPlugin().getAlgorithms();
-            Arrays.stream(algorithms)
-                    .filter(Algorithm::isLayoutAlgorithm)
-                    // the multilevel framework should not apply itself at the different levels
-                    .filter(a -> !(a instanceof MultilevelFrameworkLayouter))
-                    // some algorithms seem to have no name
-                    .filter(a -> a.getName() != null && !a.getName().trim().isEmpty())
-                    .forEach(a -> {
-                        // ThreadSafeAlgorithms such as PatternSpringembedder have two GUIs, so they appear twice
-                        if (a instanceof ThreadSafeAlgorithm) {
-                            final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
-                            if (layoutAlgWhitelist.contains(alternateName)) {
-                                result.put(alternateName, new LayoutAlgorithmWrapper(alternateName,
-                                        tryMakingNewInstance(a), true));
-                            }
-                            final String parameterName = a.getName() + " (\"parameter\" GUI)";
-                            if (layoutAlgWhitelist.contains(parameterName)) {
-                                result.put(parameterName, new LayoutAlgorithmWrapper(parameterName,
-                                        tryMakingNewInstance(a), false));
-                            }
-                        } else if (layoutAlgWhitelist.contains(a.getName())) {
-                            result.put(a.getName(), new LayoutAlgorithmWrapper(null,
-                                    tryMakingNewInstance(a), false));
-                        }
-                    });
-        }
-        final BlockingForceDirected bfd = new BlockingForceDirected();
-        result.put(bfd.getName(), new LayoutAlgorithmWrapper(bfd.getName(), bfd, true));
-        return Collections.unmodifiableMap(result);
     }
 
     /**

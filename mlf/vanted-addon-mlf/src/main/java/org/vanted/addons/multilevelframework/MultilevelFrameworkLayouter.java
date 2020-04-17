@@ -2,6 +2,7 @@ package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.no_overlapp_as_tim.NoOverlappLayoutAlgorithmAS;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider;
@@ -22,13 +23,11 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
-import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 import org.vanted.addons.multilevelframework.review.RandomPlacer21;
 import org.vanted.addons.multilevelframework.sm_util.ConnectedComponentsHelper;
 import org.vanted.addons.multilevelframework.sm_util.gui.ParameterizableSelectorParameter;
 
 import javax.swing.*;
-import javax.swing.plaf.multi.MultiLabelUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
@@ -47,7 +46,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private static List<Placer> placers = Collections.synchronizedList(new ArrayList<>());
 
     // default values
-    private final static String DEFAULT_ALGORITHM = BlockingForceDirected.springName;
+    private final static String DEFAULT_ALGORITHM = (new PatternSpringembedder()).getName();
     // TODO (bm review) unnecessary instantiation
     private final static String DEFAULT_PLACER = new RandomPlacer().getName();
     private final static String DEFAULT_MERGER = new RandomMerger().getName();
@@ -597,7 +596,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         if (!this.layoutAlgorithms.containsKey(this.lastSelectedAlgorithm)) {
             MainFrame.showMessageDialog("Algorithm \"" + this.layoutAlgorithms + "\" doesn't seem to exist.",
                     "Error");
-            this.lastSelectedAlgorithm = this.layoutAlgorithms.keySet().contains(this.lastSelectedAlgorithm) ?
+            this.lastSelectedAlgorithm = this.layoutAlgorithms.containsKey(this.lastSelectedAlgorithm) ?
                     this.lastSelectedAlgorithm : this.layoutAlgorithms.keySet().iterator().next();
         }
 

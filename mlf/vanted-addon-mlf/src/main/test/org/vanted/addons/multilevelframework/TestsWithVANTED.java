@@ -19,7 +19,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
 import java.awt.*;
@@ -112,17 +111,52 @@ public class TestsWithVANTED {
     public void getGUI() throws InvocationTargetException, InterruptedException {
         assertNotNull(LayoutAlgorithmWrapper.getLayoutAlgorithms().get("Circle").getGUI());
         SwingUtilities.invokeAndWait(() -> assertNotNull(LayoutAlgorithmWrapper.getLayoutAlgorithms()
-                .get(BlockingForceDirected.springName).getGUI()));
+                .get(new PatternSpringembedder().getName()).getGUI()));
         assertNull(new LayoutAlgorithmWrapper("Dummy", new Algorithm() { // "empty" algorithm
-            @Override public String getName() { return ""; }
-            @Override public void setParameters(Parameter[] params) { }
-            @Override public Parameter[] getParameters() { return null; }
-            @Override public void attach(Graph g, Selection selection) { }
-            @Override public void check() throws PreconditionException { } @Override public void execute() { }
-            @Override public void reset() { }
-            @Override public String getCategory() { return "Layout"; }
-            @Override public Set<Category> getSetCategory() { return null; }
-            @Override public String getMenuCategory() { return null; }
+            @Override
+            public String getName() {
+                return "";
+            }
+
+            @Override
+            public void setParameters(Parameter[] params) {
+            }
+
+            @Override
+            public Parameter[] getParameters() {
+                return null;
+            }
+
+            @Override
+            public void attach(Graph g, Selection selection) {
+            }
+
+            @Override
+            public void check() throws PreconditionException {
+            }
+
+            @Override
+            public void execute() {
+            }
+
+            @Override
+            public void reset() {
+            }
+
+            @Override
+            public String getCategory() {
+                return "Layout";
+            }
+
+            @Override
+            public Set<Category> getSetCategory() {
+                return null;
+            }
+
+            @Override
+            public String getMenuCategory() {
+                return null;
+            }
             @Override public boolean isLayoutAlgorithm() { return true; }
             @Override public boolean showMenuIcon() { return false; }
             @Override public KeyStroke getAcceleratorKeyStroke() { return null; }
@@ -164,12 +198,15 @@ public class TestsWithVANTED {
         g.addEdge(n1, n2, false);
         g.addEdge(n2, n3, false);
         g.addEdge(n1, n3, false);
-        for (Node n : g.getNodes()) { AttributeHelper.setPosition(n, 0, 0); }
+        for (Node n : g.getNodes()) {
+            AttributeHelper.setPosition(n, 0, 0);
+        }
         LayoutAlgorithmWrapper law = LayoutAlgorithmWrapper.getLayoutAlgorithms().get("Circle");
         law.execute(g, new Selection());
         assertTrue(g.getNodes().stream()
                 .anyMatch(n -> AttributeHelper.getPositionX(n) != 0 || AttributeHelper.getPositionY(n) != 0));
-        LayoutAlgorithmWrapper law2 = LayoutAlgorithmWrapper.getLayoutAlgorithms().get(BlockingForceDirected.springName);
+        LayoutAlgorithmWrapper law2 =
+                LayoutAlgorithmWrapper.getLayoutAlgorithms().get(new PatternSpringembedder().getName());
         AttributeHelper.setPosition(n1, 100, 100);
         AttributeHelper.setPosition(n2, 200, 200);
         AttributeHelper.setPosition(n3, 200, 180);
@@ -194,8 +231,11 @@ public class TestsWithVANTED {
         g.addEdge(n1, n2, false);
         g.addEdge(n2, n3, false);
         g.addEdge(n1, n3, false);
-        for (Node n : g.getNodes()) { AttributeHelper.setPosition(n, 0, 0); }
-        LayoutAlgorithmWrapper law = LayoutAlgorithmWrapper.getLayoutAlgorithms().get(BlockingForceDirected.springName);
+        for (Node n : g.getNodes()) {
+            AttributeHelper.setPosition(n, 0, 0);
+        }
+        LayoutAlgorithmWrapper law =
+                LayoutAlgorithmWrapper.getLayoutAlgorithms().get(new PatternSpringembedder().getName());
         AttributeHelper.setPosition(n1, 100, 100);
         AttributeHelper.setPosition(n2, 200, 200);
         AttributeHelper.setPosition(n3, 200, 180);
@@ -336,7 +376,7 @@ public class TestsWithVANTED {
     public void getLayoutAlgorithms() {
         assertTrue("More than half of the whitelist not found",
                 LayoutAlgorithmWrapper.getLayoutAlgorithms().size()
-                        > LayoutAlgorithmWrapper.WHITELIST.size() / 2);
+                        > LayoutAlgorithmWrapper.layoutAlgWhitelist.size() / 2);
     }
 
     /**
