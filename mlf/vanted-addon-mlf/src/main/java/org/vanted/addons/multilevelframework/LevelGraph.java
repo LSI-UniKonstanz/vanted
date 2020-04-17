@@ -93,9 +93,6 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     public MergedNode createNode(Set<Node> nodes) {
         this.setModified(true);
         MergedNode res = new MergedNode(this, nodes);
-        assert this.checkNoOverlappingMergedNodes(res) :
-                "MultilevelGraph cannot contain multiple MergedNodes representing "
-                        + "the same nodes in the underlying graph.";
         return res;
     }
 
@@ -185,9 +182,6 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     @Override
     public Node addNodeCopy(Node node) {
         this.checkMergedNode(node);
-        assert this.checkNoOverlappingMergedNodes((MergedNode) node) :
-                "MultilevelGraph cannot contain multiple MergedNodes representing "
-                        + "the same nodes in the underlying graph.";
         return super.addNodeCopy(node);
     }
 

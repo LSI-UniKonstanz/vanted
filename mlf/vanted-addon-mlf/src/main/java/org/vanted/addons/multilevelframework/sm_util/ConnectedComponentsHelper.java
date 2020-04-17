@@ -258,9 +258,6 @@ public enum ConnectedComponentsHelper {
         // #######################################################################################
         // preprocessing
 
-        Objects.requireNonNull(connectedComponents);
-        assert checkPositions(connectedComponents, connectedComponentPositions);
-
         // make copy of lists to prevent sorting from tempering with their order
         List<List<Node>> connectedComponentsCopy = new ArrayList<>(connectedComponents);
         List<List<Vector2d>> connectedComponentPositionsCopy =

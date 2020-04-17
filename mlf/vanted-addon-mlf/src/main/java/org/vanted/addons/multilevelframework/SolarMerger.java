@@ -244,33 +244,6 @@ public class SolarMerger implements Merger {
         top.setObject(PLANETS_KEY, allPlanets);
         top.setObject(SUN_TO_PLANETS_KEY, sunsToPlanets);
         top.setObject(PLANET_TO_MOONS_KEY, planetsToMoons);
-
-        // color the nodes in a the debug version, when asserts are enabled
-        // also assert we didn't loose any nodes
-        assert ((Supplier<Boolean>) (() -> {
-            sunsToPlanets.forEach((sun, planets) -> {
-                AttributeHelper.setFillColor(sun, Color.YELLOW);
-                for (Node planet : planets) {
-                    AttributeHelper.setFillColor(planet, Color.BLUE);
-                    Set<Node> moons = planetsToMoons.get(planet);
-                    if (moons != null) {
-                        for (Node moon : planetsToMoons.get(planet)) {
-                            AttributeHelper.setFillColor(moon, Color.LIGHT_GRAY);
-                        }
-                    }
-                }
-            });
-            Set<Node> unrepresentedNodes = new HashSet<>(baseLevel.getNodes());
-            unrepresentedNodes.removeAll(multilevelGraph.getTopLevel().getNodes().stream().flatMap(n -> {
-                MergedNode mn = (MergedNode) n;
-                return mn.getInnerNodes().stream();
-            }).collect(Collectors.toSet()));
-            return unrepresentedNodes.isEmpty();
-        })).get() : "Some nodes have been lost (not represented in the top level).";
-
-        // Asserting that newly introduced graph is still connected
-        assert GraphHelper.getConnectedComponents(multilevelGraph.getTopLevel().getNodes())
-                .size() == 1 : "Graph isn't connected anymore";
     }
 
     /**

@@ -295,9 +295,6 @@ public class LayoutAlgorithmWrapper {
         } catch (PreconditionException e) {
             e.printStackTrace();
             MainFrame.showMessageDialog(e.getMessage(), "Multilevel Framework Error");
-            // in the release version (if asserts are disabled) just show the message go on,
-            // maybe the next level will work...
-            assert false : "Precondition check failed.";
         }
     }
 

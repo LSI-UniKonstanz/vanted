@@ -288,9 +288,6 @@ public class RandomMerger implements Merger {
             }
         }
 
-        // asserting that all nodes have been added to the next coarseningLevel
-        assert mlg.isComplete(): "Representation of nodes is incomplete";
-
         // adding the edges to the new top level
         for(Edge i : edges) {
             MergedNode source = node2mergedNode.get(i.getSource());

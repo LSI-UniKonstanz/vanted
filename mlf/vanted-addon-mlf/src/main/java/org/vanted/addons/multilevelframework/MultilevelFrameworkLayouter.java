@@ -275,7 +275,6 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             for (CoarsenedGraph cg : connectedComponents[0]) {
                 for (MergedNode mn : cg.getMergedNodes()) {
                     final Node representedNode = mn.getInnerNodes().iterator().next();
-                    assert mn.getInnerNodes().size() == 1 : "More than one node represented in level 0";
                     nodes2newPositions.put(representedNode, AttributeHelper.getPositionVec2d(mn));
                 }
             }
