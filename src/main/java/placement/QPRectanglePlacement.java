@@ -28,7 +28,6 @@ import java.util.Observer;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
-@SuppressWarnings("unchecked")
 abstract class Chunk<T extends Chunk<?>> {
 	T conj;
 

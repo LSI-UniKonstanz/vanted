@@ -56,13 +56,13 @@ public class DemoResources_es extends ListResourceBundle {
 			{ "about.title", "Acerca..." }, { "about.version.label", "Versi�n" },
 
 			// menu labels...
-			{ "menu.file", "Archivo" }, { "menu.file.mnemonic", new Character('F') },
+			{ "menu.file", "Archivo" }, { "menu.file.mnemonic", Character.valueOf('F') },
 
-			{ "menu.file.exit", "Salida" }, { "menu.file.exit.mnemonic", new Character('x') },
+			{ "menu.file.exit", "Salida" }, { "menu.file.exit.mnemonic", Character.valueOf('x') },
 
-			{ "menu.help", "Ayuda" }, { "menu.help.mnemonic", new Character('H') },
+			{ "menu.help", "Ayuda" }, { "menu.help.mnemonic", Character.valueOf('H') },
 
-			{ "menu.help.about", "Acerca..." }, { "menu.help.about.mnemonic", new Character('A') },
+			{ "menu.help.about", "Acerca..." }, { "menu.help.about.mnemonic", Character.valueOf('A') },
 
 			// dialog messages...
 			{ "dialog.exit.title", "Confirme salida..." }, { "dialog.exit.message", "Estas seguro que quieres salir?" },
