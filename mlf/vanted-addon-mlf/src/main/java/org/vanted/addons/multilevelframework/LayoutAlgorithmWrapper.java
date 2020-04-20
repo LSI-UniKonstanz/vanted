@@ -382,4 +382,13 @@ public class LayoutAlgorithmWrapper {
                 ", guiName='" + guiName + '\'' +
                 '}';
     }
+
+    /**
+     * Execute the algorithm, assuming an empty selection todo: pull this up to interface?
+     *
+     * @param graph
+     */
+    public void execute(Graph graph) {
+        this.execute(graph, new Selection());
+    }
 }

@@ -23,6 +23,9 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
+import org.vanted.addons.indexednodes.IndexedComponent;
+import org.vanted.addons.indexednodes.IndexedGraphOperations;
+import org.vanted.addons.indexednodes.IndexedNodeSet;
 import org.vanted.addons.multilevelframework.review.RandomPlacer21;
 import org.vanted.addons.multilevelframework.sm_util.ConnectedComponentsHelper;
 import org.vanted.addons.multilevelframework.sm_util.gui.ParameterizableSelectorParameter;
@@ -63,6 +66,10 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
     private final static String COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH
             = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
+    /**
+     * Setting this attribute on a graph will indicate that it is currently part of an MLF run. This
+     * is to prevent invoking the algorithm twice on the same graph.
+     */
     final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
 
     // fields for the GUI objects / the parameter system
@@ -149,6 +156,72 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     }
 
     /**
+     * Does the same thing as {@link AbstractAlgorithm#getSelectedOrAllNodes()} which cannot be used
+     * here because that uses instance variables which is not safe it the user runs the algorithm
+     * multiples times at the same time on different graphs with different settings.
+     *
+     * @param graph     The {@link Graph} to use. Must not be {@code null}.
+     * @param selection The {@link Selection} to use. May be {@code null}.
+     * @return All nodes if the selection is empty or {@code null}, or the selected nodes otherwise.
+     * @see AbstractAlgorithm#getSelectedOrAllNodes()
+     */
+    private static Collection<Node> getSelectedOrAllNodes(Graph graph, Selection selection) {
+        if (selection == null || selection.getNodes().size() <= 0) {
+            return graph.getNodes();
+        } else {
+            return selection.getNodes();
+        }
+    }
+
+    /**
+     * Make a status message for the GUI.
+     *
+     * @param totalLevels         The total number of coarsening levels.
+     * @param currentLevel        The current level.
+     * @param connectedComponents The connected components of the current graph. Must not be {@code
+     *                            null}.
+     * @param current             The index of the connected component that is currently being laid
+     *                            out.
+     * @param graphName           The graph's name. Must not be {@code null}.
+     * @return the status message.
+     * @author Gordian
+     */
+    static String makeStatusMessage(int totalLevels, int currentLevel, int totalComponents,
+                                    int currentComponent, String graphName) {
+        return "Laying out level "
+                + currentLevel
+                + " (out of " + totalLevels + ")"
+                + " of connected component "
+                + currentComponent
+                + " (out of " + totalComponents + ") of graph \""
+                + graphName + "\"";
+    }
+
+    /**
+     * Create a percentage for the GUI. Calculates the progress for the current connected
+     * component.
+     *
+     * @param mlg                   The {@link MultilevelGraph}. Must not be {@code null}.
+     * @param connectedComponents   The list of connected components for the graph that is currently
+     *                              being processed.
+     * @param currentIndex          The index of the connected component that is currently being
+     *                              processed.
+     * @param numberOfLevelsAtStart The total number of coarsening levels.
+     * @return the calculated progress
+     * @author Gordian
+     */
+    static double calculateProgress(MultilevelGraph mlg, int numComponents,
+                                    int currentIndex, int numberOfLevelsAtStart) {
+        if (numberOfLevelsAtStart == 0 || numComponents == 0) {
+            return -1;
+        }
+        // calculate the progress as the percentage of nodes and connected components already processed
+        return 100.0 * (1 - (double) mlg.getNumberOfLevels() / numberOfLevelsAtStart)
+                * (currentIndex + 1.0)
+                / numComponents;
+    }
+
+    /**
      * Performs the layout.
      * Can be executed on multiple graphs at the same time (by calling attach, execute, attach, execute...),
      * but only if the {@link Algorithm} used for the levels supports thread safe execution
@@ -174,19 +247,16 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         final boolean randomTop = this.randomTop;
         final Merger merger;
         final Placer placer;
-        final LayoutAlgorithmWrapper algorithm;
+        final LayoutAlgorithmWrapper layouter;
         if (!this.benchmarkMode) { // otherwise the caller needs to set those values todo (bm review) not done?
             merger = this.getSelectedMergerCopyAndSetParameters();
             placer = this.getSelectedPlacerCopyAndSetParameters();
-            algorithm = this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
+            layouter = this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
         } else {
             merger = MlfHelper.tryMakingNewInstance(this.nonInteractiveMerger);
             placer = MlfHelper.tryMakingNewInstance(this.nonInteractivePlacer);
-            algorithm = this.layoutAlgorithms.get(this.nonInteractiveAlgorithm);
+            layouter = this.layoutAlgorithms.get(this.nonInteractiveAlgorithm);
         }
-        final List<?extends CoarsenedGraph>[] connectedComponents = new List[1];
-
-        final MLFBackgroundTaskStatus bts = new MLFBackgroundTaskStatus();
 
         // check if the graph is currently being worked on by another MLF instance/thread
         // this is necessary to prevent the user from double clicking the layout button to start the layout twice
@@ -200,25 +270,46 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         // if not, indicate that the MLF is running on the graph
         graph.setBoolean(WORKING_ATTRIBUTE_PATH, true);
 
-
+        // todo: use logger
         System.out.println("Running MLF using " + merger.getName() + ", " + placer.getName() + ", "
-                + algorithm.getAlgorithm().getName());
+                + layouter.getAlgorithm().getName());
 
-        final Runnable backgroundTask = () -> {
+        // remember the base level (of each component) to later access its nodes and, in
+        // particular, their new positions
+        List<LevelGraph> componentBaseLevels = new LinkedList<>();
+
+        final MLFBackgroundTaskStatus bts = new MLFBackgroundTaskStatus();
+        // this is where all the work happens
+        final Runnable mainTask = () -> {
             if (removeBends) {
                 GraphHelper.removeAllBends(graph, true);
             }
-            // split the subgraph induced by the selection into connected components
-            connectedComponents[0] = MlfHelper.calculateConnectedComponentsOfSelection(
-                            new HashSet<>(getSelectedOrAllNodes(graph, selection)));
 
-            final Selection emptySelection = new Selection();
+            // the connected components of the subgraph induced by the selection, of the
+            // entire graph if there is no selection.
+            List<IndexedComponent> components = IndexedGraphOperations.getComponents(
+                    IndexedNodeSet.setOfAllIn(
+                            getSelectedOrAllNodes(graph, selection)
+                    )
+            );
 
+
+            int currentComponentIndex = 0;
             // layout each connected component
-            for (int i = 0; i < connectedComponents[0].size(); i++) {
-                final CoarsenedGraph cg = connectedComponents[0].get(i);
-                if (bts.isStopped) { bts.status = -1; return; }
-                MultilevelGraph componentMLG = new MultilevelGraph(cg);
+            for (IndexedComponent component : components) {
+                currentComponentIndex++;
+                if (bts.stopRequested) {
+                    bts.status = -1;
+                    return;
+                }
+
+                // we run the MLF on each CC separately -- hence one MultilevelGraph per CC
+                LevelGraph componentBaseLevel = LevelGraph.fromIndexedComponent(component);
+                componentBaseLevels.add(componentBaseLevel);
+                MultilevelGraph componentMLG = new MultilevelGraph(
+                        componentBaseLevel
+                );
+
                 merger.buildCoarseningLevels(componentMLG);
                 // TODO (bm review) would like componentMLG.coarsen(merger) better.
 
@@ -229,85 +320,91 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 // indicate that this is the top level
                 componentMLG.getTopLevel().setBoolean(COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
 
-                if (bts.isStopped) { bts.status = -1; return; }
+                if (bts.stopRequested) {
+                    bts.status = -1;
+                    return;
+                }
+                reportStatus(bts, numLevelsAtStart, componentMLG, components, currentComponentIndex);
 
-                if (randomTop) { randomLayout(componentMLG.getTopLevel()); }
+                if (randomTop) {
+                    randomLayout(componentMLG.getTopLevel());
+                }
 
                 while (componentMLG.getNumberOfLevels() > 1) {
-                    bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
-                            connectedComponents[0], i, graph.getName());
-                    bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
-                    // uncomment the following line to display the coarsening levels as frames in VANTED
-//                    display(componentMLG.getTopLevel());
                     // force directed sometimes takes tens of seconds to "layout" a single node
                     if (componentMLG.getTopLevel().getNumberOfNodes() >= 2) {
-                        algorithm.execute(componentMLG.getTopLevel(), emptySelection);
+                        layouter.execute(componentMLG.getTopLevel());
                     }
-                    if (removeOverlaps) { removeOverlaps(componentMLG.getTopLevel()); }
+                    if (removeOverlaps) {
+                        removeOverlaps(componentMLG.getTopLevel());
+                    }
                     placer.reduceCoarseningLevel(componentMLG);
                     // indicate that this is a coarsened graph to allow for optimizations in the level layouter
                     // TODO (bm review) needed? i think any other level than the 1st one would be coarsened by construction
                     componentMLG.getTopLevel().setBoolean(COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
-                    if (bts.isStopped) { bts.status = -1; return; }
+                    if (bts.stopRequested) {
+                        bts.status = -1;
+                        return;
+                    }
+                    reportStatus(bts, numLevelsAtStart, componentMLG, components, currentComponentIndex);
                 }
 
                 // indicate that this is the bottom level
                 // TODO (bm review) naming -- what is top/bottom?
                 componentMLG.getTopLevel().setBoolean(COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
-                bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
-                bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
-                        connectedComponents[0], i, graph.getName());
-                // uncomment the following line to display the connected component (bottom level) as a frame in VANTED
-//                display(componentMLG.getTopLevel());
-                algorithm.execute(componentMLG.getTopLevel(), emptySelection);
-                if (removeOverlaps) { removeOverlaps(componentMLG.getTopLevel()); }
-                bts.statusMessage = "Finished laying out the levels";
-                bts.status = -1;
+
+                reportStatus(bts, numLevelsAtStart, componentMLG, components, currentComponentIndex);
+
+                layouter.execute(componentMLG.getTopLevel());
+
+                if (removeOverlaps) {
+                    removeOverlaps(componentMLG.getTopLevel());
+                }
+
+                reportDone(bts);
+            }
+        };
+
+        // a wrapper around the main task to handle exceptions
+        final Runnable attributeSafeTask = () -> {
+            try {
+                mainTask.run();
+            } catch (Exception e) { // need to remove the "MLF running" attribute
+                // make sure the running attribute is removed if an exception is thrown
+                graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
+                throw e; // rethrow
             }
         };
 
         // this will be invoked when MLF is done
-        // TODO (bm review) documentation -- what are these
         // todo (review bm) position this piece of code somewhere else
         final Runnable finishSwingTask = () -> {
-            // apply position updates
+            // apply position updates, i.e. use positions from MergedNodes
             HashMap<Node, Vector2d> nodes2newPositions = new HashMap<>();
-            for (CoarsenedGraph cg : connectedComponents[0]) {
-                for (MergedNode mn : cg.getMergedNodes()) {
+
+            for (LevelGraph comp : componentBaseLevels) {
+                for (MergedNode mn : comp.getMergedNodes()) {
+                    // if this is the base level, a MergedNode only represents a single node
                     final Node representedNode = mn.getInnerNodes().iterator().next();
                     nodes2newPositions.put(representedNode, AttributeHelper.getPositionVec2d(mn));
                 }
             }
+
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
-            // layout connected components
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
+
+            // layout connected components
             // ConnectedComponentLayout.layoutConnectedComponents(graph);
             // todo: replace this with new functionality from 2.1
+            // todo: do not re-compute CCs
             ConnectedComponentsHelper.layoutConnectedComponents(ConnectedComponentsHelper.getConnectedComponents(
                     getSelectedOrAllNodes(graph, selection)), true);
             graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
         };
 
-        if (this.benchmarkMode) { // this is basically only useful for benchmarking
-            backgroundTask.run();
-            try {
-                SwingUtilities.invokeAndWait(finishSwingTask);
-            } catch (InterruptedException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        } else { // the normal case, when the algorithm is executed interactively
-            // make sure the running attribute is removed if an exception is thrown
-            final Runnable tryBackgroundTask = () -> {
-                try {
-                    backgroundTask.run();
-                } catch (Exception e) { // need to remove the "MLF running" attribute
-                    graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
-                    throw e; // rethrow
-                }
-            };
-            BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running",
-                    tryBackgroundTask, finishSwingTask, bts);
-        }
+        // actually issue the job to be executed
+        BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running",
+                attributeSafeTask, finishSwingTask, bts);
     }
 
     /**
@@ -319,28 +416,14 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         return this.parameters;
     }
 
-    /**
-     * Does the same thing as {@link AbstractAlgorithm#getSelectedOrAllNodes()} which cannot be used here
-     * because that uses instance variables which is not safe it the user runs the algorithm multiples times at the
-     * same time on different graphs with different settings.
-     * @param graph
-     *      The {@link Graph} to use. Must not be {@code null}.
-     * @param selection
-     *      The {@link Selection} to use. May be {@code null}.
-     * @return
-     *      All nodes if the selection is empty or {@code null} or the selected nodes otherwise.
-     * @see AbstractAlgorithm#getSelectedOrAllNodes()
-     */
-    private static Collection<Node> getSelectedOrAllNodes(Graph graph, Selection selection) {
-        if (selection == null || selection.getNodes().size() <= 0) {
-            return graph.getNodes();
-        } else {
-            return selection.getNodes();
-        }
+    private void reportDone(MLFBackgroundTaskStatus bts) {
+        bts.statusMessage = "Finished laying out the levels";
+        bts.status = -1;
     }
 
     /**
      * Sets the parameters to the given array.
+     *
      * @param params The new parameters.
      * @see Algorithm#setParameters(Parameter[])
      */
@@ -436,34 +519,16 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             SwingUtilities.invokeAndWait(() -> {
                 MainFrame.getInstance().showGraph(graph, null, LoadSetting.VIEW_CHOOSER_NEVER);
             });
-        } catch (InterruptedException | InvocationTargetException ignored) { }
+        } catch (InterruptedException | InvocationTargetException ignored) {
+        }
     }
 
-    /**
-     * Make a status message for the GUI.
-     * @param totalLevels
-     *      The total number of coarsening levels.
-     * @param level
-     *      The current level.
-     * @param connectedComponents
-     *      The connected components of the current graph. Must not be {@code null}.
-     * @param current
-     *      The index of the connected component that is currently being laid out.
-     * @param graphName
-     *      The graph's name. Must not be {@code null}.
-     * @return
-     *      the status message.
-     * @author Gordian
-     */
-    static String makeStatusMessage(int totalLevels, int level, List<?extends CoarsenedGraph> connectedComponents,
-                                     int current, String graphName) {
-        return "Laying out level "
-                + level
-                + " (out of " + totalLevels + ")"
-                + " of connected component "
-                + (current + 1)
-                + " (out of " + connectedComponents.size() + ") of graph \""
-                + graphName + "\"";
+    private void reportStatus(MLFBackgroundTaskStatus bts, int numLevelsAtStart, MultilevelGraph componentMLG, List<IndexedComponent> components, int currentComponentIndex) {
+        bts.statusMessage = makeStatusMessage(numLevelsAtStart,
+                componentMLG.getNumberOfLevels(), components.size(),
+                currentComponentIndex, graph.getName());
+        bts.status = calculateProgress(componentMLG, components.size(),
+                currentComponentIndex, numLevelsAtStart);
     }
 
     /**
@@ -494,27 +559,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         return placer;
     }
 
-    /**
-     * Create a percentage for the GUI. Calculates the progress for the current connected component.
-     * @param mlg
-     *      The {@link MultilevelGraph}. Must not be {@code null}.
-     * @param connectedComponents
-     *      The list of connected components for the graph that is currently being processed.
-     * @param currentIndex
-     *      The index of the connected component that is currently being processed.
-     * @param numberOfLevelsAtStart
-     *      The total number of coarsening levels.
-     * @return
-     *      the calculated progress
-     * @author Gordian
-     */
-    static double calculateProgress(MultilevelGraph mlg, List<?extends CoarsenedGraph> connectedComponents,
-                                     int currentIndex, int numberOfLevelsAtStart) {
-        if (numberOfLevelsAtStart == 0 || connectedComponents.size() == 0) { return -1; }
-        // calculate the progress as the percentage of nodes and connected components already processed
-        return 100.0 * (1 - (double) mlg.getNumberOfLevels() / numberOfLevelsAtStart)
-                * (currentIndex + 1.0)
-                / connectedComponents.size();
+    private void stopTaskIfRequested(MLFBackgroundTaskStatus bts) {
+
     }
 
     /**
@@ -685,7 +731,7 @@ class MLFBackgroundTaskStatus implements BackgroundTaskStatusProvider {
     /**
      * This is set to {@code true} if the user clicks the stop button.
      */
-    boolean isStopped = false;
+    boolean stopRequested = false;
     /**
      * Current state of the progress bar.
      */
@@ -718,12 +764,15 @@ class MLFBackgroundTaskStatus implements BackgroundTaskStatusProvider {
     /**
      * @see org.BackgroundTaskStatusProvider#getCurrentStatusMessage2()
      */
-    @Override public String getCurrentStatusMessage2() { return null; }
+    @Override
+    public String getCurrentStatusMessage2() {
+        return null;
+    }
 
     /**
      * @see org.BackgroundTaskStatusProvider#pleaseStop()
      */
-    @Override public void pleaseStop() { this.isStopped = true; }
+    @Override public void pleaseStop() { this.stopRequested = true; }
 
     /**
      * @see org.BackgroundTaskStatusProvider#pluginWaitsForUser()

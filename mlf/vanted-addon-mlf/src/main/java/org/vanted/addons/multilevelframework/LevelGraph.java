@@ -2,6 +2,7 @@ package org.vanted.addons.multilevelframework;
 
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.graph.*;
+import org.vanted.addons.indexednodes.IndexedComponent;
 
 import java.util.*;
 
@@ -10,27 +11,57 @@ import java.util.*;
  */
 class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     /**
-     * Store "object attributes" associated with this level. (See {@link LevelGraph#setObject(String, Object)}).
-     * Lazily initialized as it is not always needed.
+     * Store "object attributes" associated with this level. (See {@link
+     * LevelGraph#setObject(String, Object)}). Lazily initialized as it is not always needed.
      */
     private HashMap<String, Object> objectAttributes;
 
+
     /**
-     * This method just calls the superclass' method with the same signature.
-     * Note that {@code false} must be passed to the {@code directed} parameter.
+     * Construct a new LevelGraph from the given component.
+     *
+     * @param component
+     * @return
+     */
+    public static LevelGraph fromIndexedComponent(IndexedComponent component) {
+        // an alternative to one node-loop and one edge-loop would be to iterate through
+        // the graph in a BFS. However, this requires calls to Node.getNeighbours which are
+        // expensive
+        LevelGraph graph = new LevelGraph();
+        // will need references to new mergedNodes to create edges in the new graph.
+        Map<Integer, MergedNode> index2NewNode = new Hashtable<>();
+        for (int node : component.nodes) {
+            MergedNode mnode = new MergedNode(graph,
+                    Collections.singleton(component.nodes.get(node)));
+            graph.doAddNode(mnode);
+            index2NewNode.put(node, mnode);
+        }
+        for (int[] edge : component.edges) {
+            graph.doAddEdge(
+                    index2NewNode.get(edge[0]),
+                    index2NewNode.get(edge[1]),
+                    false
+            );
+        }
+        return graph;
+    }
+
+    /**
+     * This method just calls the superclass' method with the same signature. Note that {@code
+     * false} must be passed to the {@code directed} parameter.
      *
      * @author Gordian
      * @see AdjListGraph#doAddEdge(Node, Node, boolean)
      */
     @Override
     public Edge doAddEdge(Node source, Node target, boolean directed) {
-        this.checkUndirected(directed); // TODO (review bm) needed? performance impact? check only once?
+        this.checkUndirected(directed);
         return super.doAddEdge(source, target, false);
     }
 
     /**
-     * This method just calls the superclass' method with the same signature.
-     * Note that {@code false} must be passed to the {@code directed} parameter.
+     * This method just calls the superclass' method with the same signature. Note that {@code
+     * false} must be passed to the {@code directed} parameter.
      *
      * @author Gordian
      * @see AdjListGraph#doAddEdge(Node, Node, boolean, CollectionAttribute)
@@ -51,9 +82,6 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     @Override
     public void doAddNode(Node node) {
         this.checkMergedNode(node);
-        assert this.checkNoOverlappingMergedNodes((MergedNode) node) :
-                "MultilevelGraph cannot contain multiple MergedNodes representing "
-                        + "the same nodes in the underlying graph.";
         super.doAddNode(node);
     }
 
@@ -97,7 +125,8 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * This just calls the superclass' method of the same signature, but makes sure that the edge is undirected.
+     * This just calls the superclass' method of the same signature, but makes sure that the edge is
+     * undirected.
      *
      * @param directed Must be {@code false}.
      * @author Gordian
@@ -110,7 +139,8 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * This just calls the superclass' method of the same signature, but makes sure that the edge is undirected.
+     * This just calls the superclass' method of the same signature, but makes sure that the edge is
+     * undirected.
      *
      * @param directed Must be {@code false}.
      * @author Gordian
@@ -173,9 +203,10 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * @param node Must be an instance of {@link MergedNode}. The {@link MergedNode}'s
-     *             {@link MergedNode#getInnerNodes()} method must not return any nodes already
-     *             represented by a {@link MergedNode} of this graph (returned by {@link LevelGraph#getNodes()}).
+     * @param node Must be an instance of {@link MergedNode}. The {@link MergedNode}'s {@link
+     *             MergedNode#getInnerNodes()} method must not return any nodes already represented
+     *             by a {@link MergedNode} of this graph (returned by {@link
+     *             LevelGraph#getNodes()}).
      * @return The copied node.
      * @author Gordian
      */
@@ -209,9 +240,11 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * Checks whether there are multiple {@link MergedNode}s which represent the same nodes in the underlying graph.
+     * Checks whether there are multiple {@link MergedNode}s which represent the same nodes in the
+     * underlying graph.
      *
-     * @param ref If not {@code null}, this parameter will also be checked for overlaps with the existing nodes.
+     * @param ref If not {@code null}, this parameter will also be checked for overlaps with the
+     *            existing nodes.
      * @author Gordian
      */
     public boolean checkNoOverlappingMergedNodes(MergedNode ref) {
@@ -242,12 +275,11 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * Add an object attribute to the graph. Works similar to the attributes in
-     * {@link org.graffiti.attributes.Attributable}.
-     * @param key
-     *      The key at which the object is stored. Must not be {@code null}.
-     * @param value
-     *      The value to store. Must not be {@code null}.
+     * Add an object attribute to the graph. Works similar to the attributes in {@link
+     * org.graffiti.attributes.Attributable}.
+     *
+     * @param key   The key at which the object is stored. Must not be {@code null}.
+     * @param value The value to store. Must not be {@code null}.
      * @author Gordian
      */
     public void setObject(String key, Object value) {
@@ -258,10 +290,10 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * @param key
-     *      The key to retrieve. If this is {@code null}, {@link Optional#empty()} will be returned.
-     * @return
-     *      The object stored at {@code key}, as an {@link Optional}. This method will never return {@code null}.
+     * @param key The key to retrieve. If this is {@code null}, {@link Optional#empty()} will be
+     *            returned.
+     * @return The object stored at {@code key}, as an {@link Optional}. This method will never
+     * return {@code null}.
      * @author Gordian
      */
     public Optional<Object> getObject(String key) {

@@ -1,6 +1,5 @@
 package org.vanted.addons.multilevelframework;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -36,9 +35,9 @@ public class MLFBackgroundTaskStatusTest {
 
     @Test
     public void pleaseStop() {
-        assertFalse(this.bts.isStopped);
+        assertFalse(this.bts.stopRequested);
         this.bts.pleaseStop();
-        assertTrue(this.bts.isStopped);
+        assertTrue(this.bts.stopRequested);
     }
 
     @Test public void pluginWaitsForUser() { assertFalse(this.bts.pluginWaitsForUser()); }
@@ -47,9 +46,9 @@ public class MLFBackgroundTaskStatusTest {
     public void pleaseContinueRun() {
         // this method should do nothing in the current implementation
         this.bts.pleaseContinueRun();
-        assertFalse(this.bts.isStopped);
+        assertFalse(this.bts.stopRequested);
         this.bts.pleaseStop();
         this.bts.pleaseContinueRun();
-        assertTrue(this.bts.isStopped);
+        assertTrue(this.bts.stopRequested);
     }
 }

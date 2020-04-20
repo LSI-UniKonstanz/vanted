@@ -54,13 +54,39 @@ public class LevelGraphTest {
     public void doAddNode() {
         // create a node with an invalid node class
         Node nope = new AbstractNode(this.ig) {
-            @Override public int compareTo(GraphElement o) { return 0; }
-            @Override public Iterator<Edge> getDirectedInEdgesIterator() { return null; }
-            @Override public Iterator<Edge> getDirectedOutEdgesIterator() { return null; }
-            @Override public Iterator<Edge> getEdgesIterator() { return null; }
-            @Override public Iterator<Edge> getUndirectedEdgesIterator() { return null; }
-            @Override public void setGraph(Graph graph) { }
-            @Override public int getDegree() { return 0; }
+            @Override
+            public int compareTo(GraphElement o) {
+                return 0;
+            }
+
+            @Override
+            public Iterator<Edge> getDirectedInEdgesIterator() {
+                return null;
+            }
+
+            @Override
+            public Iterator<Edge> getDirectedOutEdgesIterator() {
+                return null;
+            }
+
+            @Override
+            public Iterator<Edge> getEdgesIterator() {
+                return null;
+            }
+
+            @Override
+            public Iterator<Edge> getUndirectedEdgesIterator() {
+                return null;
+            }
+
+            @Override
+            public void setGraph(Graph graph) {
+            }
+
+            @Override
+            public int getDegree() {
+                return 0;
+            }
         };
         // this fails because InternalGraph only supports MergedNodes
         this.ig.doAddNode(nope);
