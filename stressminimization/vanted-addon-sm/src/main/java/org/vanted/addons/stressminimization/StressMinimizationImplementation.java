@@ -13,8 +13,8 @@ import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.graffiti.graph.Node;
-import org.vanted.addons.stressminimization.primitives.BasicGraphOperations;
-import org.vanted.addons.stressminimization.primitives.IndexedNodeSet;
+import org.vanted.addons.indexednodes.IndexedGraphOperations;
+import org.vanted.addons.indexednodes.IndexedNodeSet;
 
 class StressMinimizationImplementation {
 
@@ -349,7 +349,7 @@ class StressMinimizationImplementation {
 	 * @return the distance vector from the from node to all others
 	 */
 	public RealVector calcDistances(final int fromIndex) {
-		return BasicGraphOperations.calcDistances(fromIndex, nodes);
+		return IndexedGraphOperations.calcDistances(fromIndex, nodes);
 	}
 
 	/**

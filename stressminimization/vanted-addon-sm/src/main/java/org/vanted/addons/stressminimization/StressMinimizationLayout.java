@@ -1,14 +1,9 @@
 package org.vanted.addons.stressminimization;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-
-import javax.swing.JLabel;
-
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import org.Vector2d;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Node;
@@ -17,15 +12,14 @@ import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
+import org.vanted.addons.indexednodes.IndexedComponent;
+import org.vanted.addons.indexednodes.IndexedGraphOperations;
+import org.vanted.addons.indexednodes.IndexedNodeSet;
 import org.vanted.addons.stressminimization.parameters.LandmarkParameter;
 import org.vanted.addons.stressminimization.parameters.SliderParameter;
-import org.vanted.addons.stressminimization.primitives.BasicGraphOperations;
-import org.vanted.addons.stressminimization.primitives.IndexedNodeSet;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
+import javax.swing.*;
+import java.util.*;
 
 /**
  * Layout algorithm performing a stress minimization layout process.
@@ -290,28 +284,30 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		IndexedNodeSet workNodes = IndexedNodeSet.setOfAllIn(workNodesCollection);
 
 		setStatusDescription("Stress Minimization: calculating components");
-		List<IndexedNodeSet> components = BasicGraphOperations.getComponents(workNodes);
+		List<IndexedComponent> components = IndexedGraphOperations.getComponents(workNodes);
 
 		// NOTE: applying the final nodes position updates in this class
 		// has the benefit, that the algorithm is more easy usable by the Multilevel Framework
 		HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
 
-		for (IndexedNodeSet component : components) {
+		for (IndexedComponent component : components) {
 			// todo (review bm) weird control flow; should be split up into more methods
 			setStatusDescription("Stress Minimization: layouting next component");
 
 			// if too few nodes shawl be layout, our preprocessing does not make sense
 			if (!disableLandmarkPreprocessing && Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) {
-				
+
 				setStatusDescription("Stress Minimization: preprocessing");
-				if (waitIfPausedAndCheckStop()) { return; }
+				if (waitIfPausedAndCheckStop()) {
+					return;
+				}
 
 				// todo (review bm) naming of classes is confusing
 				// todo (review bm) naming of variables
 				// todo (review bm) class creates new instance of itself here? why?
 				StressMinimizationLayout preLayout = new StressMinimizationLayout(); // layout algorithm
 				StressMinimizationImplementation pre = new StressMinimizationImplementation(
-						component,
+						component.nodes,
 						preLayout,
 						PREPROCESSING_NUMBER_OF_LANDMARKS,
 						alpha,
@@ -333,7 +329,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			// todo (review bm) pretty bad style...
 			StressMinimizationImplementation impl = new StressMinimizationImplementation(
-					component,
+					component.nodes,
 					this,
 					numberOfLandmarks,
 					alpha,
@@ -341,7 +337,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 					initialStressPercentage,
 					minimumNodeMovementThreshold,
 					iterationsThreshold
-					);
+			);
 
 			impl.calculateLayout();
 

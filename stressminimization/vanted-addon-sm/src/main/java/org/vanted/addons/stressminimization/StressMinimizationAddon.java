@@ -3,11 +3,11 @@ package org.vanted.addons.stressminimization;
 
 import org.graffiti.attributes.AttributeDescription;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.vanted.addons.indexednodes.IndexAttribute;
 import org.vanted.addons.stressminimization.parameters.LandmarkParameter;
 import org.vanted.addons.stressminimization.parameters.LandmarkSliderComponent;
 import org.vanted.addons.stressminimization.parameters.SliderComponent;
 import org.vanted.addons.stressminimization.parameters.SliderParameter;
-import org.vanted.addons.stressminimization.primitives.IndexAttribute;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonAdapter;
 

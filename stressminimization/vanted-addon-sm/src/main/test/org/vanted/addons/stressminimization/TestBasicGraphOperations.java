@@ -7,8 +7,9 @@ import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.junit.Test;
-import org.vanted.addons.stressminimization.primitives.BasicGraphOperations;
-import org.vanted.addons.stressminimization.primitives.IndexedNodeSet;
+import org.vanted.addons.indexednodes.IndexedComponent;
+import org.vanted.addons.indexednodes.IndexedGraphOperations;
+import org.vanted.addons.indexednodes.IndexedNodeSet;
 
 /**
  * General test cases for BasicGraphOperations
@@ -25,7 +26,7 @@ public class TestBasicGraphOperations {
 			g.addEdge(n, m, false);
 			n = m;
 		}
-		RealVector test = BasicGraphOperations.calcDistances(g.getNodes().get(0), IndexedNodeSet.setOfAllIn(g.getNodes()));
+		RealVector test = IndexedGraphOperations.calcDistances(g.getNodes().get(0), IndexedNodeSet.setOfAllIn(g.getNodes()));
 		for (int i = 0; i <= 10; i++) {
 			assert (test.getEntry(i) == i);
 		}
@@ -37,7 +38,7 @@ public class TestBasicGraphOperations {
 			Node m = g.addNode();
 			g.addEdge(n, m, false);
 		}
-		RealVector test2 = BasicGraphOperations.calcDistances(g.getNodes().get(0), IndexedNodeSet.setOfAllIn(g.getNodes()));
+		RealVector test2 = IndexedGraphOperations.calcDistances(g.getNodes().get(0), IndexedNodeSet.setOfAllIn(g.getNodes()));
 		for (int i = 1; i <= 10; i++) {
 			assert (test2.getEntry(i) == 1);
 		}
@@ -48,7 +49,7 @@ public class TestBasicGraphOperations {
 		for (int i = 0; i < 10; i++) {
 			g.addNode();
 		}
-		RealVector test3 = BasicGraphOperations.calcDistances(g.getNodes().get(0), IndexedNodeSet.setOfAllIn(g.getNodes()));
+		RealVector test3 = IndexedGraphOperations.calcDistances(g.getNodes().get(0), IndexedNodeSet.setOfAllIn(g.getNodes()));
 		System.out.println(test3.toString());
 		for (int i = 1; i <= 10; i++) {
 			assert (test3.getEntry(i) == Double.POSITIVE_INFINITY);
@@ -63,7 +64,7 @@ public class TestBasicGraphOperations {
 		for (int i = 0; i < 10; i++) {
 			g.addNode();
 		}
-		List<IndexedNodeSet> list = BasicGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
+		List<IndexedComponent> list = IndexedGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
 
 		//We should have 10 components
 		assert (list.size() == 10);
@@ -74,12 +75,12 @@ public class TestBasicGraphOperations {
 
 		//Connect 2 Nodes. Now there should be 9 components
 		g.addEdge(g.getNodes().get(2), g.getNodes().get(3), false);
-		list = BasicGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
+		list = IndexedGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
 		assert (list.size() == 9);
 
 		//Test for empty graph
 		g = new AdjListGraph();
-		list = BasicGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
+		list = IndexedGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
 		assert (list.size() == 0);
 
 	}
