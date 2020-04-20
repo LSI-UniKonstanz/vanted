@@ -18,7 +18,7 @@ import org.ErrorMsg;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 

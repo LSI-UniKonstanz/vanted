@@ -21,9 +21,9 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.ReleaseInfo;
 import org.graffiti.plugin.XMLHelper;
-import org.jdom.Attribute;
-import org.jdom.Element;
-import org.jdom.JDOMException;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -447,9 +447,9 @@ public class Experiment implements ExperimentInterface {
 	// return getExperiment(list);
 	// }
 
-	public static ExperimentInterface getExperiment(List<org.jdom.Document> documents) {
+	public static ExperimentInterface getExperiment(List<org.jdom2.Document> documents) {
 		List<Experiment> results = new ArrayList<Experiment>();
-		for (org.jdom.Document doc : documents)
+		for (org.jdom2.Document doc : documents)
 			results.add(Substance.getData(doc.getRootElement()));
 
 		if (results.size() == 0)
@@ -466,7 +466,7 @@ public class Experiment implements ExperimentInterface {
 		}
 	}
 
-	public static Experiment getExperimentFromJDOM(org.jdom.Document doc) {
+	public static Experiment getExperimentFromJDOM(org.jdom2.Document doc) {
 		Experiment e = Substance.getData(doc.getRootElement());
 		if (e.isEmpty()) {
 			Element temp = doc.getRootElement().getChild("experiment").getChild("experimentname");
@@ -616,57 +616,22 @@ public class Experiment implements ExperimentInterface {
 		getHeader().fillAttributeMap(attributeValueMap, Experiment.getNumberOfMeasurementValues(this));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
-	 * .MappingDataEntity#getStringOfChildren(java.lang.StringBuilder)
-	 */
 	public void getStringOfChildren(StringBuilder r) {
 		// empty
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
-	 * .MappingDataEntity#getXMLAttributeString(java.lang.StringBuilder)
-	 */
 	public void getXMLAttributeString(StringBuilder r) {
 		// empty
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
-	 * .MappingDataEntity#setAttribute(org.jdom.Attribute)
-	 */
 	public void setAttribute(Attribute attr) {
 		// empty
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
-	 * .MappingDataEntity#setData(org.jdom.Element)
-	 */
 	public boolean setData(Element xmlElement) {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
-	 * .MappingDataEntity#setDataOfChildElement(org.jdom.Element)
-	 */
 	public void setDataOfChildElement(Element childElement) {
 		// empty
 	}

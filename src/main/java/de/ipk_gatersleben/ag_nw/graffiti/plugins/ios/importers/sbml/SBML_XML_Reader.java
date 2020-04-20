@@ -24,9 +24,9 @@ import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.io.AbstractInputSerializer;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLError;
 import org.sbml.jsbml.SBMLErrorLog;
@@ -49,7 +49,6 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 
 	public SBML_XML_Reader() {
 		// System.out.println("SBML_XML_Reader with layout constructor");
-		// TODO Auto-generated constructor stub
 	}
 
 	public static void doValidateSBMLOnLoad(boolean validate) {

@@ -13,7 +13,7 @@ import org.AttributeHelper;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.LabelAttribute;
-import org.jdom.Element;
+import org.jdom2.Element;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.kgmlColor;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.kgmlGraphicsType;

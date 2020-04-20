@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.ErrorMsg;
 import org.StringManipulationTools;
-import org.jdom.Attribute;
-import org.jdom.Element;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 public class Sample implements SampleInterface {
 
@@ -146,12 +146,10 @@ public class Sample implements SampleInterface {
 	}
 
 	public boolean setData(Element sampleElement) {
-		@SuppressWarnings("unchecked") // update jdom lib to get rid of it
 		List<Attribute> attributeList = sampleElement.getAttributes();
 		for (Attribute a : attributeList) {
 			setAttribute(a);
 		}
-		@SuppressWarnings("unchecked") // update jdom lib to get rid of it
 		List<Element> childrenList = sampleElement.getChildren();
 		for (Element childElement : childrenList) {
 			setDataOfChildElement(childElement);

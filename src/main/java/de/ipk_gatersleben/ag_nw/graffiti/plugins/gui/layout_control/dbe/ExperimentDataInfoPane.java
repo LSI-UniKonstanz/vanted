@@ -56,7 +56,7 @@ import org.graffiti.plugin.XMLHelper;
 import org.graffiti.plugin.view.View;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 import org.w3c.dom.Document;
 
 import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;

@@ -34,10 +34,10 @@ import org.graffiti.graphics.LabelAttribute;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.graphics.NodeLabelAttribute;
 import org.graffiti.plugin.io.AbstractInputSerializer;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 /**
  * @author Christian Klukas (edited version without VANTED class dependencies)

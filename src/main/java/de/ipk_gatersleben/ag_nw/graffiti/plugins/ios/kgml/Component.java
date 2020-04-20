@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.jdom.Attribute;
-import org.jdom.Element;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.IdRef;
 
@@ -26,7 +26,6 @@ public class Component {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Element getKgmlComponentElement(IdRef compRef) {
 		Element result = new Element("component");
 		result.getAttributes().add(new Attribute("id", compRef.getValue()));

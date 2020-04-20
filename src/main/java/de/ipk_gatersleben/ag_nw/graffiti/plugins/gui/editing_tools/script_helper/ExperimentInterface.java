@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.xml.transform.TransformerException;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 
 public interface ExperimentInterface extends List<SubstanceInterface>, Cloneable, MappingDataEntity {
 

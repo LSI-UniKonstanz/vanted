@@ -24,7 +24,6 @@ import javax.swing.JDialog;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
-import org.StringManipulationTools;
 import org.Vector2d;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.event.ListenerManager;
@@ -32,10 +31,10 @@ import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.EntryType;
@@ -306,10 +305,9 @@ public class Pathway {
 	public static Pathway getPathwayFromKGML(InputStream in) {
 		Pathway result = null;
 		try {
-			SAXBuilder builder = new SAXBuilder(false);
+			SAXBuilder builder = new SAXBuilder();
 			Document doc;
 			try {
-				builder.setValidation(false);
 				builder.setExpandEntities(false);
 				// xerces tries to validate the kgml against the dtd
 				// but this works only with Internet connection
@@ -340,10 +338,9 @@ public class Pathway {
 	public static Pathway getPathwayFromKGML(Reader in) {
 		Pathway result = null;
 		try {
-			SAXBuilder builder = new SAXBuilder(false);
+			SAXBuilder builder = new SAXBuilder();
 			Document doc;
 			try {
-				builder.setValidation(false);
 				builder.setExpandEntities(false);
 				doc = builder.build(in);
 				Element kgmlRoot = doc.getRootElement();
@@ -758,12 +755,12 @@ public class Pathway {
 		graph.setModified(false);
 	}
 
-	private String prettify(String s) {
-		if (s != null) {
-			s = StringManipulationTools.stringReplace(s, "/", "_");
-		}
-		return s;
-	}
+//	private String prettify(String s) {
+//		if (s != null) {
+//			s = StringManipulationTools.stringReplace(s, "/", "_");
+//		}
+//		return s;
+//	}
 
 	private void processDefaultNodePosition(Node node) {
 		if (node.getDegree() >= 2) {

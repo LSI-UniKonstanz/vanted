@@ -7,10 +7,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe;
 
 import org.graffiti.plugin.XMLHelper;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.output.DOMOutputter;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.output.DOMOutputter;
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
@@ -27,7 +27,7 @@ public class JDOM2DOM {
 		return domDoc.getDocumentElement();
 	}
 
-	public static org.w3c.dom.Document getDOMfromJDOM(org.jdom.Document doc) throws JDOMException {
+	public static org.w3c.dom.Document getDOMfromJDOM(org.jdom2.Document doc) throws JDOMException {
 		Element e = doc.getRootElement();
 		Element clone = (Element) e.clone();
 		Document jdomDoc = new Document();
@@ -37,7 +37,7 @@ public class JDOM2DOM {
 
 	}
 
-	public static org.jdom.Document getJDOMfromDOM(org.w3c.dom.Document doc) {
+	public static org.jdom2.Document getJDOMfromDOM(org.w3c.dom.Document doc) {
 		return XMLHelper.getJDOMfromDOM(doc);
 	}
 }

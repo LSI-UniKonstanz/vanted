@@ -19,7 +19,7 @@ import org.Vector2d;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
-import org.jdom.Element;
+import org.jdom2.Element;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.EntryType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.Id;
