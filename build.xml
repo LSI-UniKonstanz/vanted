@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create-vanted-core-jar" name="Create vanted-core Jar for Project VANTED">
-
-	<!-- ANT 1.7 is required -->
-	
 	<property name="buildnumber.file" value="src/main/resources/build.number"/>
 	<property name="jar.dest.path" value="target/jar"/>
 	
@@ -47,13 +44,13 @@
 	<target name="compile" depends="nextbuildnumber, init">
 		
 		
-		<javac target="1.8" source="1.8" destdir="target/classes" encoding="utf-8">
+		<javac target="13" source="13" destdir="target/classes" encoding="utf-8">
 			<src path="src/main/java" />
 			<!-- ignore symbol file due to compiling errors when trying to find somting 
 				inside com.sun.image.codec.jpeg.* http://www.javaroots.com/2013/01/javac-error-using-classes-from-rtjar.html -->
 			<compilerarg value="-XDignore.symbol.file" />
 			<classpath>
-				<fileset dir="../vanted-lib-repository">
+				<fileset dir="../vanted-libraries">
 					<include name="**/*.jar" />
 				</fileset>
 
@@ -103,7 +100,7 @@
 			figure out if jars provide same packages/classes in different verions -->
 		
 		<jar destfile="${jar.dest.path}/dependencies-all.jar">
-		    <zipgroupfileset dir="../vanted-lib-repository">
+		    <zipgroupfileset dir="../vanted-libraries">
 		        <include name="**/*.jar"/>
 		    </zipgroupfileset>
 		    
