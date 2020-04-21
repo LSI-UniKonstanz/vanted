@@ -41,11 +41,11 @@ import org.SystemInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
+import com.rometools.rome.feed.synd.SyndContent;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
 
 import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
@@ -355,9 +355,8 @@ public class NewsHelper implements HelperClass {
 								ErrorMsg.addErrorMessage(e);
 								continue;
 							}
-							SyndFeedInput input = new SyndFeedInput();
 							try {
-								SyndFeed feed = input.build(new XmlReader(feedUrl));
+								SyndFeed feed = new SyndFeedInput().build(new XmlReader(feedUrl));
 								for (Object o : feed.getEntries()) {
 									if (o instanceof SyndEntry) {
 										SyndEntry se = (SyndEntry) o;

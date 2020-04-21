@@ -48,7 +48,6 @@
 	<classpathentry kind="lib" path="/vanted-libraries/poi-ooxml-3.7-20101029.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/poi-ooxml-schemas-3.7-20101029.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/poi-scratchpad-3.7-20101029.jar"/>
-	<classpathentry kind="lib" path="/vanted-libraries/rome-0.8.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/saaj.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/saxpath.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/secondstring-20030401.jar"/>
@@ -66,6 +65,7 @@
 	<classpathentry kind="lib" path="/vanted-libraries/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/xmlgraphics-commons-2.2.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/xstream-1.3.1.jar"/>
+	<classpathentry kind="lib" path="/vanted-libraries/rome-1.12.2.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/jdom-2.0.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
