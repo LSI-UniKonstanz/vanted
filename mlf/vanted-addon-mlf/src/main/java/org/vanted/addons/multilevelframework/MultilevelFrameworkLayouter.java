@@ -274,7 +274,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         System.out.println("Running MLF using " + merger.getName() + ", " + placer.getName() + ", "
                 + layouter.getAlgorithm().getName());
 
-        // remember the base level (of each component) to later access its nodes and, in
+        // remember the base level (of each induced component) to later access its nodes and, in
         // particular, their new positions
         List<LevelGraph> componentBaseLevels = new LinkedList<>();
 
@@ -303,10 +303,13 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     return;
                 }
 
-                // we run the MLF on each CC separately -- hence one MultilevelGraph per CC
                 LevelGraph componentBaseLevel = LevelGraph.fromIndexedComponent(component);
                 componentBaseLevels.add(componentBaseLevel);
+                // we run the MLF on each CC separately -- hence one MultilevelGraph per CC
                 MultilevelGraph componentMLG = new MultilevelGraph(
+                        // todo: to avoid constructing entirely new graphs,
+                        //   but still support operating only on induced subgraphs,
+                        //   we would need a proper data structure for that
                         componentBaseLevel
                 );
 
@@ -331,7 +334,6 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 }
 
                 while (componentMLG.getNumberOfLevels() > 1) {
-                    // force directed sometimes takes tens of seconds to "layout" a single node
                     if (componentMLG.getTopLevel().getNumberOfNodes() >= 2) {
                         layouter.execute(componentMLG.getTopLevel());
                     }
@@ -384,7 +386,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
             for (LevelGraph comp : componentBaseLevels) {
                 for (MergedNode mn : comp.getMergedNodes()) {
-                    // if this is the base level, a MergedNode only represents a single node
+                    // if this is the base level, a MergedNode represents a single node
+                    // that is also part of the displayed graph. So, applying the position
+                    // update to that node layouts the actual displayed graph.
                     final Node representedNode = mn.getInnerNodes().iterator().next();
                     nodes2newPositions.put(representedNode, AttributeHelper.getPositionVec2d(mn));
                 }
@@ -393,12 +397,14 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
 
-            // layout connected components
-            // ConnectedComponentLayout.layoutConnectedComponents(graph);
-            // todo: replace this with new functionality from 2.1
-            // todo: do not re-compute CCs
-            ConnectedComponentsHelper.layoutConnectedComponents(ConnectedComponentsHelper.getConnectedComponents(
-                    getSelectedOrAllNodes(graph, selection)), true);
+            // position connected components in the view.
+            // todo: get rid of duplicate code (ConnectedComponentsHelper)
+            Set<List<Node>> componentsByNodes = new HashSet<>(); // todo better DS?
+            componentBaseLevels.forEach((cpt) -> componentsByNodes.add(cpt.getNodes()));
+            ConnectedComponentsHelper.layoutConnectedComponents(
+                    componentsByNodes,
+                    true
+            );
             graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
         };
 
