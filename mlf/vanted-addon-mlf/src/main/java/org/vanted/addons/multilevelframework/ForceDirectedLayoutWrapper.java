@@ -64,6 +64,7 @@ public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
 
     @Override
     public void execute() {
+        System.out.println("force directed wrapper execute start");
         ThreadSafeOptions options = MyNonInteractiveSpringEmb.getNewThreadSafeOptionsWithDefaultSettings();
         options.temp_alpha = 0.98;// not sure why this is helpful but patternspringembedder does it too
         // The class ThreadSafeOptions is a horrible mess!
@@ -90,7 +91,7 @@ public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
 
             }
         }
-
+        System.out.println("force directed wrapper execute end");
     }
 
     public Parameter[] getParameters() {
