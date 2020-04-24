@@ -97,9 +97,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 		abort = false;
 		BioModelsWSClient client = createClient();
 		String[] resultIds = null;
-
 		List<SimpleModel> resultSimpleModels = null;
-
 		try {
 			switch (type) {
 			case NAME:
@@ -129,7 +127,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 			default:
 			}
 			if (resultIds != null)
-				resultSimpleModels = client.getSimpleModelsByIds(resultIds);
+				resultSimpleModels = client.getSimpleModelsByIds(resultIds); //biomodels-wslib throws parsing exception (non-UTF8 encoding)
 			if (!isAbort())
 				notifyResultSimpleModelListeners(type, resultSimpleModels);
 		} catch (BioModelsWSException e) {

@@ -1244,12 +1244,6 @@ public class MainFrame extends JFrame
 		if (zoomListeners != null)
 			this.zoomListeners.add(view);
 
-		// Only for one (active) view, 1+ views
-		// (e.g. detached case) shouldn't zoom: either already zoomed or hidden => NPE
-		if (getActiveEditorSession().getViews().size() == 1)
-			// Aligns graph elements right into frame viewport
-			ZoomFitChangeComponent.zoomRegion(false);
-
 		if (returnGraffitiFrame)
 			return frame;
 		else
