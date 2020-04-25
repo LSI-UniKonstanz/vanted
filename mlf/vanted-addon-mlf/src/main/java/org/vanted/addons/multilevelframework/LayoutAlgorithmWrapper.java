@@ -121,7 +121,7 @@ public class LayoutAlgorithmWrapper {
             }
             tsa.reset();
         }
-        JComponent res = getParameterGUI(this.algorithm, dummyGraph, dummySelection);
+        JComponent res = getParameterGUI(this.algorithm);
         if (res != null) {
             return res;
         } else {
@@ -323,7 +323,7 @@ public class LayoutAlgorithmWrapper {
      * @return a GUI built by {@link ParameterEditPanel}
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.PreferencesDialog#initAlgorithmPreferencesPanel(JDialog, Algorithm, Graph, Selection, HandlesAlgorithmData, boolean)
      */
-    private JComponent getParameterGUI(Algorithm algorithm, Graph graph, Selection selection) {
+    private JComponent getParameterGUI(Algorithm algorithm) {
         // adapted from PreferencesDialog.initAlgorithmPreferencesPanel
         JPanel progressAndStatus = new JPanel();
         double border = 5;
@@ -343,14 +343,14 @@ public class LayoutAlgorithmWrapper {
         final EditComponentManager editComponentManager = MainFrame.getInstance().getEditComponentManager();
 
         ParameterEditPanel paramPanel;
-        algorithm.attach(graph, selection);
+        algorithm.attach(LayoutAlgorithmWrapper.dummyGraph, LayoutAlgorithmWrapper.dummySelection);
         if (this.oldGUI != null) {
             this.algorithm.setParameters(this.oldGUI.getUpdatedParameters());
             return this.oldGUI;
         }
         this.getParametersCalled = true;
         if (algorithm.getParameters() != null) {
-            paramPanel = new ParameterEditPanel(algorithm.getParameters(), editComponentManager.getEditComponents(), selection,
+            paramPanel = new ParameterEditPanel(algorithm.getParameters(), editComponentManager.getEditComponents(), LayoutAlgorithmWrapper.dummySelection,
                     algorithm.getName(), true, algorithm.getName());
             JScrollPane sp = new JScrollPane(paramPanel);
             sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
