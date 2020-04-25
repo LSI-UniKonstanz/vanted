@@ -180,12 +180,12 @@ public class LayoutAlgorithmWrapper {
     public static Map<String, LayoutAlgorithmWrapper> getSuppliedLayoutAlgs() {
         Map<String, LayoutAlgorithmWrapper> layoutAlgs = new HashMap<>();
         // in fact, we would only require a Class<Algorithm> and not an instance
-        AbstractAlgorithm forceDirectedWrapper = new ForceDirectedLayoutWrapper();
+        Algorithm forceDirectedWrapper = new ForceDirectedLayoutWrapper();
         layoutAlgs.put(
                 forceDirectedWrapper.getName(),
                 new LayoutAlgorithmWrapper(forceDirectedWrapper.getName(),
                         tryMakingNewInstance(forceDirectedWrapper),
-                        false
+                        true
                 )
         );
         return layoutAlgs;

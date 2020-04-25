@@ -1,12 +1,10 @@
 package org.vanted.addons.multilevelframework;
 
+import java.awt.event.ActionEvent;
 import java.util.Set;
 
 import org.graffiti.graph.Graph;
-import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
-import org.graffiti.plugin.algorithm.Category;
-import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
-import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+import org.graffiti.plugin.algorithm.*;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
@@ -18,6 +16,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.myOp;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
+
+import javax.swing.*;
 
 /**
  * Wrapper class to enable usage of the PatternspringEmbedder (a.k.a. force-directed layout)
@@ -34,7 +34,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  *
  * @see LayoutAlgorithmWrapper#layoutAlgWhitelist
  */
-public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
+public class ForceDirectedLayoutWrapper extends ThreadSafeAlgorithm {
 
     ThreadSafeAlgorithm forceDirectedAlg;
 
@@ -47,14 +47,10 @@ public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
     private boolean borderForce;
     private boolean gridForce;
     private boolean nodeOverlap;
+    private ActionEvent actionEvent;
 
     public ForceDirectedLayoutWrapper() {
         forceDirectedAlg = new PatternSpringembedder();
-    }
-
-    @Override
-    public boolean activeForView(View v) {
-        return false;
     }
 
     @Override
@@ -62,10 +58,7 @@ public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
         return forceDirectedAlg.getName();
     }
 
-    @Override
-    public void execute() {
-        System.out.println("force directed wrapper execute start");
-        ThreadSafeOptions options = MyNonInteractiveSpringEmb.getNewThreadSafeOptionsWithDefaultSettings();
+    private void executeWithOptions(ThreadSafeOptions options) {
         options.temp_alpha = 0.98;// not sure why this is helpful but patternspringembedder does it too
         // The class ThreadSafeOptions is a horrible mess!
         options.setDval(myOp.DvalIndexSliderZeroLength, zeroLength);
@@ -78,7 +71,10 @@ public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
         options.setBval(6, gridForce);
         options.doFinishRemoveOverlapp = nodeOverlap;
 
-        MyNonInteractiveSpringEmb mse = new MyNonInteractiveSpringEmb(graph, selection, options);
+        MyNonInteractiveSpringEmb mse = new MyNonInteractiveSpringEmb(
+                options.getGraphInstance(),
+                options.getSelection(),
+                options);
         BackgroundTaskHelper bth = new BackgroundTaskHelper(mse, mse, forceDirectedAlg.getName(), forceDirectedAlg.getName(),
                 true, false);
         bth.startWork(forceDirectedAlg);
@@ -91,7 +87,12 @@ public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
 
             }
         }
-        System.out.println("force directed wrapper execute end");
+    }
+
+    @Override
+    public void execute() {
+        ThreadSafeOptions options = MyNonInteractiveSpringEmb.getNewThreadSafeOptionsWithDefaultSettings();
+        this.executeWithOptions(options);
     }
 
     public Parameter[] getParameters() {
@@ -133,9 +134,12 @@ public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
     }
 
     public void attach(Graph g, Selection s) {
-        graph = g;
-        selection = s;
         forceDirectedAlg.attach(g, s);
+    }
+
+    @Override
+    public void check() throws PreconditionException {
+
     }
 
     public void reset() {
@@ -164,4 +168,28 @@ public class ForceDirectedLayoutWrapper extends AbstractEditorAlgorithm {
         return forceDirectedAlg.getDescription();
     }
 
+    @Override
+    public ActionEvent getActionEvent() {
+        return this.actionEvent;
+    }
+
+    @Override
+    public void setActionEvent(ActionEvent a) {
+        this.actionEvent = a;
+    }
+
+    @Override
+    public boolean setControlInterface(ThreadSafeOptions options, JComponent jc) {
+        return this.forceDirectedAlg.setControlInterface(options, jc);
+    }
+
+    @Override
+    public void executeThreadSafe(ThreadSafeOptions options) {
+        this.executeWithOptions(options);
+    }
+
+    @Override
+    public void resetDataCache(ThreadSafeOptions options) {
+        // todo
+    }
 }
