@@ -24,9 +24,6 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
      * @return
      */
     public static LevelGraph fromIndexedComponent(IndexedComponent component) {
-        // an alternative to one node-loop and one edge-loop would be to iterate through
-        // the graph in a BFS. However, this requires calls to Node.getNeighbours which are
-        // expensive
         LevelGraph graph = new LevelGraph();
         // will need references to new mergedNodes to create edges in the new graph.
         Map<Integer, MergedNode> index2NewNode = new Hashtable<>();
