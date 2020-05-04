@@ -38,15 +38,16 @@ import java.util.*;
 
 /**
  * Main class of the MLF add-on that contains the method that actually performs the layout.
- * @see AbstractEditorAlgorithm
+ *
  * @author Gordian
+ * @see AbstractEditorAlgorithm
  */
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     // store the available mergers, placers and algorithms
     private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
-    private static List<Merger> mergers = Collections.synchronizedList(new ArrayList<>());
-    private static List<Placer> placers = Collections.synchronizedList(new ArrayList<>());
+    private static final List<Merger> mergers = Collections.synchronizedList(new ArrayList<>());
+    private static final List<Placer> placers = Collections.synchronizedList(new ArrayList<>());
 
     // default values
     private final static String DEFAULT_ALGORITHM = (new PatternSpringembedder()).getName();
@@ -661,11 +662,13 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 .sorted().toArray(String[]::new));
         this.algorithmListComboBox.addActionListener(this::changeSelectedAlgorithm);
 
-        JComponentParameter algorithmList = new JComponentParameter(this.algorithmListComboBox,
+        // combo box / dropdown to pick layout algorithm
+        JComponentParameter layoutAlgorithm = new JComponentParameter(this.algorithmListComboBox,
                 "Level Layout Algorithm",
                 "Layout Algorithm to be run on each level of the coarsened graph.");
         this.algorithmListComboBox.setSelectedItem(this.lastSelectedAlgorithm);
 
+        // button "set up layout algorithm"
         if (this.setUpLayoutAlgorithmButton != null) {
             for (ActionListener actionListener : this.setUpLayoutAlgorithmButton.getActionListeners()) {
                 this.setUpLayoutAlgorithmButton.removeActionListener(actionListener);
@@ -716,7 +719,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 "The placer determines how the nodes contained within merged nodes are placed back into"
                         + " the graph during the uncoarsening process.");
 
-        this.parameters = new Parameter[]{algorithmList, setUpLayoutAlgorithmButtonParameter,
+        this.parameters = new Parameter[]{layoutAlgorithm, setUpLayoutAlgorithmButtonParameter,
                 randomLayoutParameter, removeBendsParameter, removeOverlapsParameter, mergerPSP, placerPSP};
 
         this.randomTopParameterIndex = ArrayUtils.indexOf(this.parameters, randomLayoutParameter);

@@ -165,7 +165,6 @@ public enum MlfHelper {
      * This is useful, for example if the MLF runs on multiple graphs at the same time but the
      * algorithms/mergers/placers it uses aren't thread safe.
      * If a new instance cannot be created, there's nothing that can be done except reusing the old one.
-     * (For all existing mergers, placers and algorithms this doesn't happen though.)
      * @param t
      *      The object to duplicate.
      * @param <T>

@@ -38,14 +38,20 @@ public class LayoutAlgorithmWrapper {
     // this boolean is to choose which one to use
     private boolean threadSafeGUI = false;
     /**
-     * layout algorithms that can be used with the MLF. They are identified by their return value of `getName`.
+     * Layout algorithms that can be used with the MLF. They are identified by their
+     * return value of <code>getName</code>.
      * Layout algorithms can only be used in an MLF if they have the following properties:
      * <ul>
      * <li>The MLF must have some way to determine that the layout algorithm is done</li>
      * <li>The layout algorithm must not require it graph to be rendered in a `View`</li>
      * </ul>
-     * We can not have symbolic class references because this would induce a java dependency to that new algorithm
-     * in development.
+     * For further criteria, see the filters in {@link #getPluginLayoutAlgs()}.
+     * <p>
+     * The reason why strings are listed here is to avoid actual dependencies (in the
+     * Java sense) on other packages.
+     * <p>
+     * To include algorithms which are available in the namespace, use
+     * {@link #getSuppliedLayoutAlgs()}.
      */
     final static List<String> layoutAlgWhitelist = Arrays.asList("Circle", "Grid Layout",
             "Stress Minimization" + " (\"parameter\" GUI)",
@@ -172,7 +178,7 @@ public class LayoutAlgorithmWrapper {
     }
 
     /**
-     * Explicitly add other algorithms via symbolic reference, e.g. some provided by this addon
+     * Explicitly add other algorithms via symbolic reference
      *
      * @return A map from algorithm name to wrapper instance.
      * @see MultilevelFrameworkAddon#initializeAddon()
@@ -180,6 +186,7 @@ public class LayoutAlgorithmWrapper {
     public static Map<String, LayoutAlgorithmWrapper> getSuppliedLayoutAlgs() {
         Map<String, LayoutAlgorithmWrapper> layoutAlgs = new HashMap<>();
         // in fact, we would only require a Class<Algorithm> and not an instance
+        // add force-directed (provided by VANTED core)
         Algorithm forceDirectedWrapper = new ForceDirectedLayoutWrapper();
         layoutAlgs.put(
                 forceDirectedWrapper.getName(),
@@ -310,6 +317,7 @@ public class LayoutAlgorithmWrapper {
      */
     private static JComponent getThreadsafeGUI(ThreadSafeAlgorithm alg, ThreadSafeOptions options) {
         JPanel pluginContent = new JPanel();
+        // `setControlInterface` actively modifies `pluginContent`
         if (alg.setControlInterface(options, pluginContent)) {
             JScrollPane sp = new JScrollPane(pluginContent);
             sp.setBorder(null);
