@@ -37,17 +37,6 @@ public class LayoutAlgorithmWrapper {
     // ThreadSafeAlgorithm.setControlInterface
     // this boolean is to choose which one to use
     private boolean threadSafeGUI = false;
-    // because of this, those algorithms also have to have two names, because the user can choose which version
-    // to use from the list of algorithms
-    private String guiName;
-    // stores the last returned parameter GUI so the parameters can be retrieved
-    private ParameterEditPanel oldGUI = null;
-    // keeps track of whether or not the "thread safe" GUI was called
-    // if not, it needs to be generated because it starts a timer that affects the algorithm's execution
-    private boolean getThreadSafeGUITimerStarted = false;
-    // cache the GUI
-    private JComponent oldThreadSafeGUI = null;
-
     /**
      * layout algorithms that can be used with the MLF. They are identified by their return value of `getName`.
      * Layout algorithms can only be used in an MLF if they have the following properties:
@@ -58,8 +47,19 @@ public class LayoutAlgorithmWrapper {
      * We can not have symbolic class references because this would induce a java dependency to that new algorithm
      * in development.
      */
-    final static List<String> layoutAlgWhitelist = Arrays.asList("Circle", "Grid Layout", "Stress Minimization",
+    final static List<String> layoutAlgWhitelist = Arrays.asList("Circle", "Grid Layout",
+            "Stress Minimization" + " (\"parameter\" GUI)",
             "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps");
+    // stores the last returned parameter GUI so the parameters can be retrieved
+    private ParameterEditPanel oldGUI = null;
+    // keeps track of whether or not the "thread safe" GUI was called
+    // if not, it needs to be generated because it starts a timer that affects the algorithm's execution
+    private boolean getThreadSafeGUITimerStarted = false;
+    // cache the GUI
+    private JComponent oldThreadSafeGUI = null;
+    // because of this, those algorithms also have to have two names, because the user can choose which version
+    // to use from the list of algorithms
+    private final String guiName;
 
     /**
      * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only. It's package-private so it can
