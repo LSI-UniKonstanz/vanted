@@ -205,23 +205,23 @@ class StressMajorizationLayoutCalculator {
 				// these values
 				new SimpleValueChecker(CONVERGENCE_EPSILON, CONVERGENCE_EPSILON),
 				LINE_SEARCH_EPSILON, LINE_SEARCH_EPSILON, LINE_SEARCH_EPSILON
-				);
+		);
 
 		RealMatrix newLayout = layout.createMatrix(n, d);
 		EquationSystemOptimizationFunctionSupplier supplier = new EquationSystemOptimizationFunctionSupplier();
 
-		for (int a = 0; a < d; a += 1) {
+		for (int j = 0; j < d; j += 1) {
 
 			PointValuePair minimum = optimizer.optimize(
 					MaxEval.unlimited(),
 					MaxIter.unlimited(),
-					new InitialGuess(layout.getColumn(a)),
-					new ObjectiveFunction(supplier.getObjectiveFunction(a)),
-					new ObjectiveFunctionGradient(supplier.getGradient(a)),
+					new InitialGuess(layout.getColumn(j)),
+					new ObjectiveFunction(supplier.getObjectiveFunction(j)),
+					new ObjectiveFunctionGradient(supplier.getGradient(j)),
 					GoalType.MINIMIZE
-					);
+			);
 
-			newLayout.setColumn(a, minimum.getPoint());
+			newLayout.setColumn(j, minimum.getPoint());
 
 		}
 
@@ -236,7 +236,8 @@ class StressMajorizationLayoutCalculator {
 	 */
 	private class EquationSystemOptimizationFunctionSupplier {
 
-		private RealMatrix LZZ;
+		private final RealMatrix LZZ;
+
 		public EquationSystemOptimizationFunctionSupplier() {
 			this.LZZ = LZ.multiply(layout);
 		}
@@ -250,10 +251,12 @@ class StressMajorizationLayoutCalculator {
 		}
 
 		private class ObjectiveFunction implements MultivariateFunction {
-			private RealMatrix LZZaT;
+			private final RealMatrix LZZaT;
+
 			public ObjectiveFunction(int a) {
 				this.LZZaT = LZZ.getColumnMatrix(a).transpose();
 			}
+
 			/**
 			 * Calculates the value of a function whose gradient is LW * Xa - LZ^T * Za
 			 */
@@ -267,14 +270,14 @@ class StressMajorizationLayoutCalculator {
 				//     is L^w*X^(a) - L^Z*Z^(a) (our system)
 				//     because then f'(X) = 0 = L^w*X^(a) - L^Z*Z^(a), i.e. this solves the system
 				// 1/2 * Xa^T * LW * Xa - (LZ*Za)^T * Xa
-				return 0.5 * (Xa.transpose().multiply(LW).multiply(Xa)).getEntry(0, 0) - ( LZZaT.multiply(Xa) ).getEntry(0, 0);
+				return 0.5 * (Xa.transpose().multiply(LW).multiply(Xa)).getEntry(0, 0) - ( LZZaT.multiply(Xa)).getEntry(0, 0);
 			}
 		}
 
 		// MARK: Gradient function
 		private class Gradient implements MultivariateVectorFunction {
 
-			private RealMatrix LZZa;
+			private final RealMatrix LZZa;
 
 			public Gradient(int a) {
 				this.LZZa = LZZ.getColumnMatrix(a);

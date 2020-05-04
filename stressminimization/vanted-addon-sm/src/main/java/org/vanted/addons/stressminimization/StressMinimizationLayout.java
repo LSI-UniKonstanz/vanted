@@ -294,7 +294,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			// todo (review bm) weird control flow; should be split up into more methods
 			setStatusDescription("Stress Minimization: layouting next component");
 
-			// if too few nodes shawl be layout, our preprocessing does not make sense
+			// if too few nodes shall be laid out, our preprocessing does not make sense
 			if (!disableLandmarkPreprocessing && Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) {
 
 				setStatusDescription("Stress Minimization: preprocessing");

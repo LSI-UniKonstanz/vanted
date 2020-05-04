@@ -67,19 +67,16 @@ class StressMinimizationImplementation {
 	 * Calculates an optimized layout for this instances nodes.
 	 */
 	void calculateLayout() {
+		if (callingLayout.waitIfPausedAndCheckStop()) {
+			return;
+		}
 
-		boolean noLandmarking = this.numberOfLandmarks >= n;
-
-		if (callingLayout.waitIfPausedAndCheckStop()) { return; }
-
-		if (noLandmarking) {
-
-			calcFullStressModel();
-
+		// this is merely a sanity check. If/how landmarks are used will be done
+		// via the algorithm parameters / GUI.
+		if (this.numberOfLandmarks >= n) {
+			calcOnAllNodes();
 		} else {
-
 			calcLandmarked(this.numberOfLandmarks);
-
 		}
 	}
 
@@ -163,14 +160,15 @@ class StressMinimizationImplementation {
 		}
 
 		// todo (review bm) need pause functionality?
-		if (callingLayout.waitIfPausedAndCheckStop()) { return; }
+		if (callingLayout.waitIfPausedAndCheckStop()) {
+			return;
+		}
 		callingLayout.setStatusDescription("Stress Minimization: optimizing layout - preprocessing...");
 
 		// todo (review bm) same bad style -- dont need to instantiate a class, set parameters in constructor and
 		//   then call a method with "no" arguments -- this introduces unnecessary statefulness
 		// todo (review bm) naming
 		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(selectedNodesLayout, selectedToSelectedDistances, weights);
-
 		// todo (review bm) complete mess of local and instance variables
 		final double initialStress = optim.calcStress();
 		final double stressThreshold = initialStress * (initialStressPercentage / 100);
@@ -182,7 +180,6 @@ class StressMinimizationImplementation {
 		do { // todo (review bm) main loop of iterative optimisation
 			 // todo (review bm) formulation seems overly complicated
 			iterationCount += 1;
-
 			if (callingLayout.waitIfPausedAndCheckStop()) { return; }
 
 			selectedNodesLayout = optim.calcOptimizedLayout();
@@ -190,12 +187,9 @@ class StressMinimizationImplementation {
 			newStress = optim.calcStress();
 
 			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, selectedNodesLayout, iterationCount, stressThreshold);
-
 			callingLayout.setIterationProgress(newStress, initialStress, iterationCount);
-
 			prevLayout = selectedNodesLayout;
 			prevStress = newStress;
-
 		} while (!terminate);
 
 		callingLayout.setIterationProgress(newStress, initialStress, iterationCount);
@@ -203,9 +197,6 @@ class StressMinimizationImplementation {
 
 	}
 
-	// =================
-	// MARK: termination
-	// =================
 
 	/**
 	 * Checks all termination criteria.
@@ -330,12 +321,14 @@ class StressMinimizationImplementation {
 
 		RealMatrix distances = new BlockRealMatrix(n, n);
 
-		for(int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++) {
 			RealVector dist = calcDistances(i);
 			distances.setRowVector(i, dist);
 			distances.setColumnVector(i, dist);
 
-			if (callingLayout.waitIfPausedAndCheckStop()) { return null; }
+			if (callingLayout.waitIfPausedAndCheckStop()) {
+				return null;
+			}
 			callingLayout.setDistancesProgress(i / n);
 
 		}
@@ -389,9 +382,6 @@ class StressMinimizationImplementation {
 		return weights;
 	}
 
-	// ======================
-	// MARK: layout utilities
-	// ======================
 
 	private RealMatrix getLayout(IndexedNodeSet nodes, int d) {
 
