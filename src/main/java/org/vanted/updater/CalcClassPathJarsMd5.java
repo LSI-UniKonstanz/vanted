@@ -42,11 +42,7 @@ public class CalcClassPathJarsMd5 {
 		try {
 			MessageDigest.getInstance("MD5");
 			Path jarpath;
-			// Skip vanted/target/classes directory
-			final String omitPath = "target" + File.separatorChar + "classes";
-			for (String jarString : getClasspathEntries()) {				
-				if (jarString.endsWith(omitPath))
-					continue;
+			for (String jarString : getClasspathEntries()) {
 				
 				try (InputStream is = Files.newInputStream(jarpath = Paths.get(jarString),
 						StandardOpenOption.READ)) {
