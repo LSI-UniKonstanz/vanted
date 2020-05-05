@@ -118,7 +118,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 
 		ClassLoader cl = this.getClass().getClassLoader();
 		// String path = this.getClass().getPackage().getName().replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_alpha_16x16.png"));
+		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_16x16.png"));
 		info.setIcon(icon);
 		KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
 		info.setAccelerator(f1);
