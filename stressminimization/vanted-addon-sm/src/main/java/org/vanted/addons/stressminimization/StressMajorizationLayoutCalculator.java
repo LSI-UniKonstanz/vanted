@@ -353,6 +353,7 @@ class StressMajorizationLayoutCalculator {
 			for (int j = 0; j < LZ.getColumnDimension(); j += 1) {
 				if (i != j) {
 					double distance = Z.getRowVector(i).getDistance(Z.getRowVector(j));
+					// delta_ij := w_ij*d_ij in [Gans]
 					double value = -w.getEntry(i, j) * d.getEntry(i, j) * inv(distance);
 
 					LZ.setEntry(i, j, value);

@@ -1,13 +1,15 @@
 package org.vanted.addons.stressminimization;
 
+import org.Vector2d;
+import org.graffiti.graph.Node;
+import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+
+import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.function.Supplier;
-
-import org.Vector2d;
-import org.graffiti.graph.Node;
-import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 
 /**
  * Algorithm which runs in the background and
@@ -148,6 +150,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 		this.stopped = true;
 	}
 
+
 	@Override
 	public void reset() {
 		super.reset();
@@ -165,6 +168,10 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	public double getProgress() {
 		return progress;
 	}
+
+
+	public abstract JComponent getParameterUI();
+
 
 	public String getStatusDescription() {
 		return statusDescription;
