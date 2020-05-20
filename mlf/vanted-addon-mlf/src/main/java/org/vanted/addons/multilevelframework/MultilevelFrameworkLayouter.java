@@ -7,16 +7,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouter
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider;
 import org.AttributeHelper;
+import org.JMButton;
 import org.Vector2d;
 import org.apache.commons.lang.ArrayUtils;
 import org.graffiti.editor.LoadSetting;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.graffiti.plugin.algorithm.AbstractAlgorithm;
-import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
-import org.graffiti.plugin.algorithm.Algorithm;
-import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.algorithm.*;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -42,7 +40,7 @@ import java.util.*;
  * @author Gordian
  * @see AbstractEditorAlgorithm
  */
-public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
+public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
 
     // store the available mergers, placers and algorithms
     private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
@@ -54,9 +52,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     // TODO (bm review) unnecessary instantiation
     private final static String DEFAULT_PLACER = new RandomPlacer().getName();
     private final static String DEFAULT_MERGER = new RandomMerger().getName();
-    private boolean randomTop = true;
-    private boolean removeBends = false;
-    private boolean removeOverlaps = false;
+    private final boolean randomTop = true;
+    private final boolean removeBends = false;
+    private final boolean removeOverlaps = false;
 
     // Default names of the attributes that indicate to the algorithms that the graphs they work on
     // coarsened graph instead of the original graph. The algorithm can use this for optimizations.
@@ -79,17 +77,17 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
     private String lastSelectedPlacer = DEFAULT_PLACER;
     private String lastSelectedMerger = DEFAULT_MERGER;
-    private int randomTopParameterIndex = 0;
-    private int removeBendsParameterIndex = 0;
-    private int removeOverlapsParameterIndex = 0;
-    private int mergerPSPIndex = 0;
-    private int placerPSPIndex = 0;
+    private final int randomTopParameterIndex = 0;
+    private final int removeBendsParameterIndex = 0;
+    private final int removeOverlapsParameterIndex = 0;
+    private final int mergerPSPIndex = 0;
+    private final int placerPSPIndex = 0;
     private ParameterizableSelectorParameter mergerPSP;
     private ParameterizableSelectorParameter placerPSP;
 
     /**
-     * Set this to true to make execute() block until it is finished and use the specified mergers instead of the ones
-     * selected through the GUI.
+     * Set this to true to make execute() block until it is finished and use the specified mergers instead of
+     * the ones selected through the GUI.
      */
     public boolean benchmarkMode = false;
     // merger, placer and algorithm to use in non-interactive (benchmark) mode
@@ -110,6 +108,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         MultilevelFrameworkLayouter.placers.add(new RandomPlacer21());
     }
 
+    private Graph graph;
+    private Selection selection;
+
     public MultilevelFrameworkLayouter() {
         super();
         this.setUpParameters();
@@ -123,13 +124,24 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         return "<html><b>Multilevel Framework</b></html>";
     }
 
+    @Override
+    public ActionEvent getActionEvent() {
+        return null;
+    }
+
+    @Override
+    public void setActionEvent(ActionEvent a) {
+
+    }
+
     /**
      * Calls {@code super.reset()} and updates the parameters.
+     *
      * @see super#reset()
      */
     @Override
     public void reset() {
-        super.reset();
+        // super.reset();
         this.updateParameters();
     }
 
@@ -420,12 +432,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     @Override
     public Parameter[] getParameters() {
         this.updateParameters();
-        return this.parameters;
-    }
-
-    private void reportDone(MLFBackgroundTaskStatus bts) {
-        bts.statusMessage = "Finished laying out the levels";
-        bts.status = -1;
+        // todo will be replaced
+        // return this.parameters;
+        return null;
     }
 
     /**
@@ -436,12 +445,26 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      */
     @Override
     public void setParameters(Parameter[] params) {
+        // todo: replace functionality
+/*
         this.parameters = params;
         this.randomTop = (Boolean) this.parameters[this.randomTopParameterIndex].getValue();
         this.removeBends = (Boolean) this.parameters[this.removeBendsParameterIndex].getValue();
         this.removeOverlaps = (Boolean) this.parameters[this.removeOverlapsParameterIndex].getValue();
         this.mergerPSP = (ParameterizableSelectorParameter) this.parameters[this.mergerPSPIndex].getValue();
         this.placerPSP = (ParameterizableSelectorParameter) this.parameters[this.placerPSPIndex].getValue();
+*/
+    }
+
+    private void reportDone(MLFBackgroundTaskStatus bts) {
+        bts.statusMessage = "Finished laying out the levels";
+        bts.status = -1;
+    }
+
+    @Override
+    public void attach(Graph g, Selection selection) {
+        this.graph = g;
+        this.selection = selection;
     }
 
     /*
@@ -452,21 +475,24 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         return "Layout";
     }
 
+    @Override
+    public Set<Category> getSetCategory() {
+        return null;
+    }
+
+    @Override
+    public String getMenuCategory() {
+        return null;
+    }
+
     /**
      * This makes sure the algorithm is moved to the layout-tab of VANTED
+     *
      * @return {@code true}
      */
     @Override
     public boolean isLayoutAlgorithm() {
         return true;
-    }
-
-    /**
-     * @see org.graffiti.plugin.algorithm.EditorAlgorithm#activeForView(View)
-     */
-    @Override
-    public boolean activeForView(View v) {
-        return v != null;
     }
 
 
@@ -719,6 +745,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 "The placer determines how the nodes contained within merged nodes are placed back into"
                         + " the graph during the uncoarsening process.");
 
+        // todo: entire method will be replaced
+/*
         this.parameters = new Parameter[]{layoutAlgorithm, setUpLayoutAlgorithmButtonParameter,
                 randomLayoutParameter, removeBendsParameter, removeOverlapsParameter, mergerPSP, placerPSP};
 
@@ -727,6 +755,36 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         this.removeOverlapsParameterIndex = ArrayUtils.indexOf(this.parameters, removeOverlapsParameter);
         this.mergerPSPIndex = ArrayUtils.indexOf(this.parameters, mergerPSP);
         this.placerPSPIndex = ArrayUtils.indexOf(this.parameters, placerPSP);
+*/
+    }
+
+    @Override
+    public boolean setControlInterface(ThreadSafeOptions __, JComponent jc) {
+
+        // todo: create "model" object containing UI elements
+
+        JTextField p = new JTextField("foo");
+        jc.add(p);
+        jc.validate();
+
+        //initialization of start and pause button
+        JMButton startButton = new JMButton("Layout Network");
+        startButton.addActionListener(e -> {
+            this.execute();
+        });
+        jc.add(startButton);
+
+        return true;
+    }
+
+    @Override
+    public void executeThreadSafe(ThreadSafeOptions options) {
+        this.execute();
+    }
+
+    @Override
+    public void resetDataCache(ThreadSafeOptions options) {
+
     }
 }
 
