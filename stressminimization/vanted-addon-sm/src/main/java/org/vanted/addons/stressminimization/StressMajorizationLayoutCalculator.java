@@ -213,6 +213,7 @@ class StressMajorizationLayoutCalculator {
 		for (int j = 0; j < d; j += 1) {
 
 			PointValuePair minimum = optimizer.optimize(
+					// todo (review bm) should we set maximum values here?
 					MaxEval.unlimited(),
 					MaxIter.unlimited(),
 					new InitialGuess(layout.getColumn(j)),

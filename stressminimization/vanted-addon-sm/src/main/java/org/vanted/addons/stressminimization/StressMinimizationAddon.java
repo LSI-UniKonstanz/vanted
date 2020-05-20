@@ -19,17 +19,18 @@ public class StressMinimizationAddon extends AddonAdapter {
 	@Override
 	protected void initializeAddon() {
 
-		this.algorithms = new Algorithm[] {
+		this.algorithms = new Algorithm[]{
 				new BackgroundExecutionAlgorithm(new StressMinimizationLayout())
 		};
 
 		valueEditComponents.put(SliderParameter.class, SliderComponent.class);
 		valueEditComponents.put(LandmarkParameter.class, LandmarkSliderComponent.class);
 
+		// todo (review bm) needed? does SM even use Indexed structures?
 		this.attributes = new Class[1];
 		this.attributes[0] = IndexAttribute.class;
 
-		this.attributeDescriptions = new AttributeDescription[] {
+		this.attributeDescriptions = new AttributeDescription[]{
 				new AttributeDescription(
 						"StressMinimizationIndexAttribute",
 						IndexAttribute.class,

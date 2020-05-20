@@ -80,19 +80,19 @@ class StressMinimizationImplementation {
 		}
 	}
 
-	private void calcFullStressModel() {
-
+	private void calcOnAllNodes() {
 		callingLayout.setStatusDescription("Stress Minimization: calculating distances");
-
-		RealMatrix allDistances = calcDistances(nodes);
-		if (allDistances == null) { return; } // calcDistances did abort because algorithm was stopped
-
+		RealMatrix allDistances = calcPairwiseDistances(nodes);
+		if (allDistances == null) {
+			return;
+		} // calcDistances did abort because algorithm was stopped
 		calcLayoutForSelectedNodes(nodes, allDistances, allDistances);
-
 	}
 
 	// todo (review bm) landmarks variant lacks documentation or citation
 	private void calcLandmarked(int numberOfLandmarks) {
+
+		System.out.println("baz");
 
 		callingLayout.setStatusDescription("Stress Minimization: selecting landmarks");
 
@@ -152,6 +152,8 @@ class StressMinimizationImplementation {
 		// StressMajorizationLayoutCalculator isn't working well with layouts
 		// in which too many nodes are placed to the same
 		// position. We add some "noise" to avoid this case
+		// todo (review bm) do this not always but only when variance is actually
+		//   small -- we can determine this somewhere else, dont have to do it here
 		for (int i = 0; i < selectedNodes.size(); i += 1) {
 			for (int a = 0; a < d; a += 1) {
 				double noisyPosition = selectedNodesLayout.getEntry(i, a) + Math.random() * 0.01 - 0.005;
@@ -314,10 +316,12 @@ class StressMinimizationImplementation {
 
 	/**
 	 * Calculates the distance matrix of the given nodes set.
-	 * @param nodes A list of nodes. For these nodes the distances to the other nodes in the set will be calculated.
+	 *
+	 * @param nodes A list of nodes. For these nodes the distances to the other nodes in the set will be
+	 *              calculated.
 	 * @return the distance matrix
 	 */
-	public RealMatrix calcDistances(final IndexedNodeSet nodes) {
+	public RealMatrix calcPairwiseDistances(final IndexedNodeSet nodes) {
 
 		RealMatrix distances = new BlockRealMatrix(n, n);
 
