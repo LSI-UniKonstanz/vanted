@@ -54,7 +54,7 @@ public class LayoutAlgorithmWrapper {
      * {@link #getSuppliedLayoutAlgs()}.
      */
     final static List<String> layoutAlgWhitelist = Arrays.asList("Circle", "Grid Layout",
-            "Stress Minimization" + " (\"parameter\" GUI)",
+            "Stress Minimization" + " (\"thread-safe\" GUI)",
             "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps");
     // stores the last returned parameter GUI so the parameters can be retrieved
     private ParameterEditPanel oldGUI = null;
