@@ -159,29 +159,29 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 		this.status = null;
 		this.progress = 0.0;
 		this.layout = null;
-	}
+    }
 
-	public BackgroundStatus getStatus() {
-		return status;
-	}
+    public BackgroundStatus getStatus() {
+        return status;
+    }
 
-	public double getProgress() {
-		return progress;
-	}
-
-
-	public abstract JComponent getParameterUI();
+    public double getProgress() {
+        return progress;
+    }
 
 
-	public String getStatusDescription() {
-		return statusDescription;
-	}
+    public abstract JComponent getParameterUI();
 
-	public Supplier<HashMap<Node, Vector2d>> getLayout() {
-		return layout;
-	}
 
-	public boolean isPaused() {
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    public Supplier<HashMap<Node, Vector2d>> getLayout() {
+        return layout;
+    }
+
+    public boolean isPaused() {
 		return paused;
 	}
 
