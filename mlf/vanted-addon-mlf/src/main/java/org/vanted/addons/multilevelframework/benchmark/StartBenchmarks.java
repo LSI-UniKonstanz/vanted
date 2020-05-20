@@ -6,7 +6,6 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.selection.Selection;
 import org.vanted.addons.multilevelframework.*;
-import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
 import java.io.OutputStream;
@@ -42,10 +41,7 @@ public class StartBenchmarks {
             {new SolarMerger(),  new SolarPlacer(),  "Null-Layout"},
             {new RandomMerger(), new RandomPlacer(), "Stress Minimization"},
             {new SolarMerger(),  new RandomPlacer(), "Stress Minimization"},
-            {new SolarMerger(),  new SolarPlacer(),  "Stress Minimization"},
-            {new RandomMerger(), new RandomPlacer(), new BlockingForceDirected().getName()},
-            {new SolarMerger(),  new RandomPlacer(), new BlockingForceDirected().getName()},
-            {new SolarMerger(),  new SolarPlacer(),  new BlockingForceDirected().getName()},
+            {new SolarMerger(), new SolarPlacer(), "Stress Minimization"}
     };
 
     /**
