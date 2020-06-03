@@ -101,35 +101,37 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
     @Override
     public JComponent getParameterUI() {
 
-        // StressMinParamModel paramUIElems = new StressMinParamModel();
-        StressMinParamModel paramUIElems = this.parameterModel;
+		// for debug purposes, the below line can be replaced with
+		// StressMinParamModel paramUIElems = new StressMinParamModel();
+		// then, hot swapping can be used to update the display of the UI.
+		StressMinParamModel paramUIElems = this.parameterModel;
 
-        JPanel mainPanel = new JPanel();
+		JPanel mainPanel = new JPanel();
 
-        SingleFiledLayout sfl = new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 1);
-        mainPanel.setLayout(sfl);
+		SingleFiledLayout sfl = new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 1);
+		mainPanel.setLayout(sfl);
 
-        final FolderPanel preprocessingFolder = new FolderPanel("Preprocessing", false,
-                true, false, null);
-        preprocessingFolder.addComp(paramUIElems.initialLayoutRadioGroup);
-        preprocessingFolder.layoutRows();
-        mainPanel.add(preprocessingFolder);
+		final FolderPanel preprocessingFolder = new FolderPanel("Preprocessing", false,
+				true, false, null);
+		preprocessingFolder.addComp(paramUIElems.initialLayoutRadioGroup);
+		preprocessingFolder.layoutRows();
+		mainPanel.add(preprocessingFolder);
 
-        final FolderPanel methodFolder = new FolderPanel("Method", false, true, false, null);
-        methodFolder.addComp(paramUIElems.methodRadioGroup);
-        methodFolder.addComp(paramUIElems.methodAlphaGroup);
-        methodFolder.layoutRows();
-        mainPanel.add(methodFolder);
+		final FolderPanel methodFolder = new FolderPanel("Method", false, true, false, null);
+		methodFolder.addComp(paramUIElems.methodRadioGroup);
+		methodFolder.addComp(paramUIElems.methodAlphaGroup);
+		methodFolder.layoutRows();
+		mainPanel.add(methodFolder);
 
-        final FolderPanel terminationFolder = new FolderPanel("Termination", false, true, false, null);
-        // todo: add components
-        terminationFolder.addComp(paramUIElems.terminationStressChangeGroup);
-        terminationFolder.addComp(paramUIElems.terminationCheckboxGroup);
-        terminationFolder.layoutRows();
-        mainPanel.add(terminationFolder);
+		final FolderPanel terminationFolder = new FolderPanel("Termination criteria", false, true, false,
+				null);
+		terminationFolder.addComp(paramUIElems.terminationStressChangeGroup);
+		terminationFolder.addComp(paramUIElems.terminationCheckboxGroup);
+		terminationFolder.layoutRows();
+		mainPanel.add(terminationFolder);
 
-        return mainPanel;
-    }
+		return mainPanel;
+	}
 
     // TODO: "remove"
 
@@ -278,55 +280,21 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
         HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
 
         for (IndexedComponent component : components) {
-            // todo (review bm) weird control flow; should be split up into more methods
-            setStatusDescription("Stress Minimization: layouting next component");
-
-            // if too few nodes shall be laid out, our preprocessing does not make sense
-/*
-			if (!params.landMarkPreprocessing.getBoolean() && Math.min(params.numberOfLandmarks.getInteger(),
-					component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) {
-
-				setStatusDescription("Stress Minimization: preprocessing");
-				if (waitIfPausedAndCheckStop()) {
-					return;
-				}
-
-				// todo (review bm) naming of classes is confusing
-				// todo (review bm) naming of variables
-				// todo (review bm) class creates new instance of itself here? why?
-				StressMinimizationLayout preLayout = new StressMinimizationLayout(); // layout algorithm
-				StressMinimizationImplementation pre = new StressMinimizationImplementation(
-						component.nodes,
-						preLayout,
-						PREPROCESSING_NUMBER_OF_LANDMARKS,
-						(int) params.alpha.getValue(),
-						-4,
-						0,
-						0,
-						75
-				);
-
-				pre.calculateLayout();
-				if (preLayout.getLayout() != null) {
-					GraphHelper.applyUndoableNodePositionUpdate(preLayout.getLayout().get(), "Stress Minimization Preprocessing");
-					setLayout(preLayout.getLayout());
-				}
+			if (waitIfPausedAndCheckStop()) {
+				return;
 			}
-*/
 
-            setStatusDescription("Stress Minimization: starting core process");
-            if (waitIfPausedAndCheckStop()) {
-                return;
-            }
+			// todo (review bm) weird control flow; should be split up into more methods
 
-            int numberOfLandmarks =
-                    (int) Math.floor(component.size() * params.methodRadioGroup.getSliderValuePos());
-            numberOfLandmarks = Math.min(2, numberOfLandmarks);
+			setStatusDescription("Stress Minimization: layouting next component");
 
-            int nodeMovementThreshold = (params.terminationCheckboxGroup.nodeThresholdActive()) ?
-                    params.terminationCheckboxGroup.getNodeMovementThreshold() : 0;
-            int iterThreshold = (params.terminationCheckboxGroup.iterThresholdActive()) ?
-                    params.terminationCheckboxGroup.getMaxIterations() : Integer.MAX_VALUE;
+			int numberOfLandmarks = (int) Math.floor(component.size() * params.methodRadioGroup.getSliderValuePos());
+			numberOfLandmarks = Math.min(2, numberOfLandmarks);
+
+			int nodeMovementThreshold = (params.terminationCheckboxGroup.nodeThresholdActive()) ?
+					params.terminationCheckboxGroup.getNodeMovementThreshold() : 0;
+			int iterThreshold = (params.terminationCheckboxGroup.iterThresholdActive()) ?
+					params.terminationCheckboxGroup.getMaxIterations() : Integer.MAX_VALUE;
 
             // todo (review bm) pretty bad style...
             StressMinimizationImplementation impl = new StressMinimizationImplementation(
@@ -339,7 +307,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
                     nodeMovementThreshold,
 					iterThreshold
 			);
-
 			impl.calculateLayout();
 
 			if (getLayout() != null) {
@@ -367,9 +334,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		setStatus(BackgroundStatus.FINISHED);
 	}
 
-	// =========================
-	// MARK: threading utilities
-	// =========================
 
 	/**
 	 * Helper function that combines waiting and checking if stopped.
@@ -427,10 +391,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		super.stop();
 	}
 
-	// ======================
-	// MARK: progress display
-	// ======================
-
+	// todo (review bm) does this still make sense?
 	// the first 10% are reserved for distance calculation
 	// the remaining 90% are used for stress progress
 

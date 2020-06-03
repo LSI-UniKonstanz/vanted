@@ -27,6 +27,7 @@ import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -423,6 +424,8 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 		jc.setLayout(sfl);
 		jc.add(algorithm.getParameterUI());
+
+		jc.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 /*
 		//add parameter panel to component

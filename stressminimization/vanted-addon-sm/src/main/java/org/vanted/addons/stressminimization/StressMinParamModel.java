@@ -29,7 +29,7 @@ public class StressMinParamModel {
         @Override
         public String toString() {
             if (this == useDisplayed) {
-                return "Use displayed layout";
+                return "Use currently displayed layout";
             } else {
                 return "Use random initial layout";
             }
@@ -161,12 +161,14 @@ public class StressMinParamModel {
     }
 
     public class MethodAlphaGroup extends JPanel {
-        JSlider slider = new JSlider();
 
+        JSpinner spinner;
         MethodAlphaGroup() {
 
+            this.setBackground(null);
+
             GridBagLayout gridBagLayout = new GridBagLayout();
-            gridBagLayout.columnWidths = new int[]{0, 30, 35, 32};
+            gridBagLayout.columnWidths = new int[]{0, 5, 58, 32};
             gridBagLayout.rowHeights = new int[]{20, 0, 0};
             gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0};
             gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
@@ -187,13 +189,20 @@ public class StressMinParamModel {
             gbc_lblNewLabel.gridy = 1;
             add(lblNewLabel, gbc_lblNewLabel);
 
-            GridBagConstraints gbc_slider = new GridBagConstraints();
-            gbc_slider.anchor = GridBagConstraints.SOUTH;
-            gbc_slider.fill = GridBagConstraints.HORIZONTAL;
-            gbc_slider.insets = new Insets(0, 0, 0, 5);
-            gbc_slider.gridx = 2;
-            gbc_slider.gridy = 1;
-            add(slider, gbc_slider);
+            Component horizontalGlue_1 = Box.createHorizontalGlue();
+            GridBagConstraints gbc_horizontalGlue_1 = new GridBagConstraints();
+            gbc_horizontalGlue_1.insets = new Insets(0, 0, 0, 5);
+            gbc_horizontalGlue_1.gridx = 1;
+            gbc_horizontalGlue_1.gridy = 1;
+            add(horizontalGlue_1, gbc_horizontalGlue_1);
+
+            spinner = new JSpinner(new SpinnerNumberModel(-2, -2, 0, 1));
+            GridBagConstraints gbc_spinner = new GridBagConstraints();
+            gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
+            gbc_spinner.insets = new Insets(0, 0, 0, 5);
+            gbc_spinner.gridx = 2;
+            gbc_spinner.gridy = 1;
+            add(spinner, gbc_spinner);
 
             Component horizontalGlue = Box.createHorizontalGlue();
             GridBagConstraints gbc_horizontalGlue = new GridBagConstraints();
@@ -202,46 +211,15 @@ public class StressMinParamModel {
             gbc_horizontalGlue.gridy = 1;
             add(horizontalGlue, gbc_horizontalGlue);
 
-
-            // do not overwrite this on paste
-            setBackground(null);
-            slider.setBackground(null);
-            slider.setMinimum(0);
-            slider.setMaximum(2);
-            slider.setValue(1);
-            Dictionary sliderLabels = new Hashtable();
-            sliderLabels.put(0, new JLabel("0"));
-            sliderLabels.put(1, new JLabel("-1"));
-            sliderLabels.put(2, new JLabel("-2"));
-            slider.setLabelTable(sliderLabels);
-            slider.setPaintLabels(true);
-            slider.setPaintTicks(false);
-
-            /*this.setBorder(new EmptyBorder(15, 0, 0, 0));
-            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            this.setBackground(null);
-            JLabel label = new JLabel("Weight exponent:");
-            label.setAlignmentX(LEFT_ALIGNMENT);
-            label.setBackground(null);
-            this.add(label);
-            slider.setAlignmentX(LEFT_ALIGNMENT);
-            slider.setMaximumSize(new Dimension(125, Short.MAX_VALUE));
-            slider.setBorder(new EmptyBorder(5, 0, 0, 35));
-            slider.setBackground(null);
-            slider.setMinimum(0);
-            slider.setMaximum(2);
-            slider.setLabelTable(slider.createStandardLabels(1));
-            slider.setPaintLabels(true);
-            slider.setPaintTicks(true);
-            this.add(slider);*/
-        }
-
-        public int getSliderValue() {
-            return slider.getValue();
         }
 
         public int getAlpha() {
-            return slider.getValue();
+            try {
+                spinner.commitEdit();
+            } catch (ParseException e) {
+                MainFrame.showMessage("Error parsing alpha value", MessageType.ERROR);
+            }
+            return (int) spinner.getValue();
         }
     }
 
@@ -279,17 +257,23 @@ public class StressMinParamModel {
             labels.put(-6, new JLabel("10\u207b\u2076"));
             labels.put(-4, new JLabel("10\u207b\u2074"));
             labels.put(-2, new JLabel("10\u207b\u00B2"));
+
+            JLabel label = new JLabel("Stress change threshold:");
+            label.setAlignmentX(LEFT_ALIGNMENT);
+            slider.setAlignmentX(LEFT_ALIGNMENT);
             slider.setMinimum(-9);
             slider.setMaximum(-1);
             slider.setMajorTickSpacing(1);
             slider.setLabelTable(labels);
             slider.setPaintLabels(true);
+            slider.setPaintTicks(true);
+            slider.setBackground(null);
+            slider.setBorder(new EmptyBorder(0, 5, 0, 0));
+
             this.setBackground(null);
-            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            LabeledSlider withLabel = new LabeledSlider("Stress change threshold (always active):", slider);
-            withLabel.setAlignmentX(LEFT_ALIGNMENT);
-            // todo: construct this specific slider here
-            this.add(withLabel);
+            this.setLayout(new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.LEFT, 5));
+            this.add(label);
+            this.add(slider);
         }
 
         public double getValue() {
@@ -355,13 +339,10 @@ public class StressMinParamModel {
             gbc_spinner_1.gridy = 2;
             add(spinner_1, gbc_spinner_1);
 
-            // do not overwrite this when pasting
 
             spinner_1.setValue(100);
-
             movementCheckbox.addItemListener(e -> spinner.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
             iterCheckbox.addItemListener(e -> spinner_1.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
-
             setBackground(null);
             movementCheckbox.setBackground(null);
             iterCheckbox.setBackground(null);
@@ -394,96 +375,5 @@ public class StressMinParamModel {
         }
 
     }
-
-/*
-    // todo: update names and descriptions to be more informative
-
-    public IntegerParameter numberOfLandmarks = new LandmarkParameter(
-            100,
-            10, // values below this give no more significant speed up
-            1000, // values above this consume to much time in the current implementation
-            "Landmarks Count",
-            "The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes. You may turn off this option by selecting all nodes as landmarks."
-    );
-
-    public BooleanParameter landMarkPreprocessing = new BooleanParameter(
-            false,
-            "Disable landmark preprocessing",
-            "Turn of landmark preprocessing. In general this preprocessing speeds up execution, but will slow it down if you have an optimized initial layout (since that may be destroyed) or if you are using this layouter in a multilevel framework."
-    );
-
-    private SliderParameter createEpsilonParam() {
-        Dictionary dict = new Hashtable();
-        dict.put(-9, new JLabel("0"));
-        dict.put(-8, new JLabel("10\u207b\u2078"));
-        dict.put(-6, new JLabel("10\u207b\u2076"));
-        dict.put(-4, new JLabel("10\u207b\u2074"));
-        dict.put(-2, new JLabel("10\u207b\u00B2"));
-        return (new SliderParameter(
-                -4,
-                "Stress change threshold",
-                "Change in stress of succeeding layouts threshold. If the change is below this threshold the layouter will terminate. Low values will give better layouts, but computation will consume more time.",
-                -8, -1, false, true, dict
-        ));
-    }
-    public SliderParameter stressChangeThreshold = createEpsilonParam();
-
-    public DoubleParameter minimumNodeMovementThreshold = new DoubleParameter(
-            0.0,
-            0.0,
-            1.0,
-            0.05,
-            "Node movement threshold",
-            "Minimum required movement of any node for continuation of computation. If all nodes move less than this value in an iteration, execution is terminated."
-    );
-
-    public SliderParameter initialStressPercentage = createStressPercentageParam();
-
-    private SliderParameter createStressPercentageParam() {
-        Dictionary stressDict = new Hashtable();
-        stressDict.put(0, new JLabel("0%"));
-        stressDict.put(50, new JLabel("50%"));
-        stressDict.put(100, new JLabel("100%"));
-        return (new SliderParameter(
-                0,
-                "Initial stress percentage threshold",
-                "If the stress of a layout falls below this percentage of the stress on the beginning of the core process (after any preprocessing), execution is terminated.",
-                0,100, false, false, stressDict
-        ));
-    }
-
-    public SliderParameter iterationsThreshold = createIterationsThresholdParam();
-
-    private SliderParameter createIterationsThresholdParam() {
-        Dictionary iterDict = new Hashtable();
-        iterDict.put(25, new JLabel("25"));
-        iterDict.put(50, new JLabel("50"));
-        iterDict.put(75, new JLabel("75"));
-        iterDict.put(100, new JLabel("100"));
-        iterDict.put(125, new JLabel("\u221e"));
-        return (new SliderParameter(
-                75,
-                "Maximum number of iterations",
-                "Maximum number of iterations after which algorithm excution will be terminated.",
-                25, 124, true, false, iterDict
-        ));
-    }
-
-    public SliderParameter alpha = new SliderParameter(
-            2,
-            "Weight Factor",
-            "Sets the importance of correct distance placement of more distanced nodes. A high value indicates that nodes with a high distance to one individual node will have less impact of the placement of this node, while nodes with a low distance will have a bigger impact.",
-            0,2
-    );
-
-    @Deprecated
-    public BooleanParameter randomInitial() {
-        return new BooleanParameter(
-                false,
-                "Random initial layout",
-                "Use a random layout as initial layout rather than the present layout."
-        );
-    }*/
-
 
 }
