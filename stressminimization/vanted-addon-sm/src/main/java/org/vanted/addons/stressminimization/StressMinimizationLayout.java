@@ -7,6 +7,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouter
 import org.Vector2d;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -268,7 +269,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			setStatusDescription("Stress Minimization: randomizing input layout");
 
-			RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
+			Algorithm rla = new RandomLayouterAlgorithm();
 			rla.attach(graph, selection);
 			rla.execute();
 		}
