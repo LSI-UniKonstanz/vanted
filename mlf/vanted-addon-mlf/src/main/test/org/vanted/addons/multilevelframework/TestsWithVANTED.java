@@ -21,13 +21,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -563,28 +564,6 @@ public class TestsWithVANTED {
         assertTrue(g.getBoolean(MultilevelFrameworkLayouter.WORKING_ATTRIBUTE_PATH));
     }
 
-    /**
-     * @author Gordian
-     */
-    @Test
-    public void clickSetUpLayoutAlgorithmButton() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
-        Field lastSelectedAlgorithm = MultilevelFrameworkLayouter.class.getDeclaredField("lastSelectedAlgorithm");
-        lastSelectedAlgorithm.setAccessible(true);
-        lastSelectedAlgorithm.set(mfl, "Random");
-        Window[] windowsBefore = Window.getWindows();
-        new Thread(() -> mfl.clickSetUpLayoutAlgorithmButton(null)).start();
-        Thread.sleep(100);
-        Window[] windowsAfter = Window.getWindows();
-        assertTrue(windowsAfter.length > windowsBefore.length);
-        assertTrue(Arrays.stream(windowsAfter).anyMatch(w -> w instanceof JDialog
-                && ((JDialog)w).getTitle().toLowerCase().contains("set up")
-                && ((JDialog)w).getTitle().toLowerCase().contains("random")));
-    }
-
-    /**
-     * @author Gordian
-     */
     @Test
     public void setParameters() {
         MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();

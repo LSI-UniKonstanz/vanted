@@ -2,21 +2,19 @@ package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.no_overlapp_as_tim.NoOverlappLayoutAlgorithmAS;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider;
+import info.clearthought.layout.SingleFiledLayout;
 import org.AttributeHelper;
+import org.FolderPanel;
 import org.JMButton;
 import org.Vector2d;
-import org.apache.commons.lang.ArrayUtils;
 import org.graffiti.editor.LoadSetting;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.*;
-import org.graffiti.plugin.parameter.BooleanParameter;
-import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
@@ -24,13 +22,11 @@ import org.graffiti.session.Session;
 import org.vanted.addons.indexednodes.IndexedComponent;
 import org.vanted.addons.indexednodes.IndexedGraphOperations;
 import org.vanted.addons.indexednodes.IndexedNodeSet;
-import org.vanted.addons.multilevelframework.review.RandomPlacer21;
 import org.vanted.addons.multilevelframework.sm_util.ConnectedComponentsHelper;
-import org.vanted.addons.multilevelframework.sm_util.gui.ParameterizableSelectorParameter;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -43,18 +39,13 @@ import java.util.*;
 public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
 
     // store the available mergers, placers and algorithms
-    private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
-    private static final List<Merger> mergers = Collections.synchronizedList(new ArrayList<>());
-    private static final List<Placer> placers = Collections.synchronizedList(new ArrayList<>());
-
-    // default values
-    private final static String DEFAULT_ALGORITHM = (new PatternSpringembedder()).getName();
-    // TODO (bm review) unnecessary instantiation
-    private final static String DEFAULT_PLACER = new RandomPlacer().getName();
-    private final static String DEFAULT_MERGER = new RandomMerger().getName();
-    private final boolean randomTop = true;
-    private final boolean removeBends = false;
-    private final boolean removeOverlaps = false;
+    public static final List<Merger> mergers = Collections.synchronizedList(new ArrayList<>());
+    public static final List<Placer> placers = Collections.synchronizedList(new ArrayList<>());
+    /**
+     * Setting this attribute on a graph will indicate that it is currently part of an MLF run. This is to
+     * prevent invoking the algorithm twice on the same graph.
+     */
+    final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
 
     // Default names of the attributes that indicate to the algorithms that the graphs they work on
     // coarsened graph instead of the original graph. The algorithm can use this for optimizations.
@@ -65,36 +56,6 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
     private final static String COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH
             = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
-    /**
-     * Setting this attribute on a graph will indicate that it is currently part of an MLF run. This
-     * is to prevent invoking the algorithm twice on the same graph.
-     */
-    final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
-
-    // fields for the GUI objects / the parameter system
-    private JComboBox<String> algorithmListComboBox;
-    private JButton setUpLayoutAlgorithmButton;
-    private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
-    private String lastSelectedPlacer = DEFAULT_PLACER;
-    private String lastSelectedMerger = DEFAULT_MERGER;
-    private final int randomTopParameterIndex = 0;
-    private final int removeBendsParameterIndex = 0;
-    private final int removeOverlapsParameterIndex = 0;
-    private final int mergerPSPIndex = 0;
-    private final int placerPSPIndex = 0;
-    private ParameterizableSelectorParameter mergerPSP;
-    private ParameterizableSelectorParameter placerPSP;
-
-    /**
-     * Set this to true to make execute() block until it is finished and use the specified mergers instead of
-     * the ones selected through the GUI.
-     */
-    public boolean benchmarkMode = false;
-    // merger, placer and algorithm to use in non-interactive (benchmark) mode
-    // TODO (bm review) configuration should go somewhere else
-    public Merger nonInteractiveMerger = null;
-    public Placer nonInteractivePlacer = null;
-    public String nonInteractiveAlgorithm = null;
 
     // add the default mergers and placers
     // todo (review bm) this static initialiser is a cool thing but it is not
@@ -104,16 +65,29 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
         MultilevelFrameworkLayouter.mergers.add(new RandomMerger());
         MultilevelFrameworkLayouter.placers.add(new RandomPlacer());
         MultilevelFrameworkLayouter.placers.add(new SolarPlacer());
-        // added by review bm
-        MultilevelFrameworkLayouter.placers.add(new RandomPlacer21());
     }
+
+    /**
+     * Set this to true to make execute() block until it is finished and use the specified mergers instead of
+     * the ones selected through the GUI.
+     */
+    public boolean benchmarkMode = false;
+    // merger, placer and algorithm to use in non-interactive (benchmark) mode
+    public Merger nonInteractiveMerger = null;
+    public Placer nonInteractivePlacer = null;
+    public String nonInteractiveAlgorithm = null;
 
     private Graph graph;
     private Selection selection;
 
+    /**
+     * Contains the Swing UI components for the configuration (a.k.a "parameters"). At the same time, these
+     * are used as a "model" (in the MVC sense).
+     */
+    private final MLFParamModel parameterModel = new MLFParamModel();
+
     public MultilevelFrameworkLayouter() {
         super();
-        this.setUpParameters();
     }
 
     /**
@@ -142,7 +116,6 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
     @Override
     public void reset() {
         // super.reset();
-        this.updateParameters();
     }
 
     /**
@@ -153,25 +126,40 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
     }
 
     /**
-     * Checks, if a graph was given and that the radius is positive.
-     *
-     * @throws PreconditionException if no graph was given during algorithm invocation or the
-     *                               number of nodes is zero or negative
+     * Make a status message for the GUI.
+     * <p>
+     * todo (review bm) javadoc
      */
-    @Override
-    public void check() throws PreconditionException {
-        if (graph == null) {
-            throw new PreconditionException("Cannot run Multilevel Framework Layouter on null graph.");
-        }
-        if (graph.getNumberOfNodes() <= 0) {
-            throw new PreconditionException("The graph is empty. Cannot run Multilevel Framework Layouter.");
-        }
+    static String makeStatusMessage(int totalLevels, int currentLevel, int totalComponents,
+                                    int currentComponent, String graphName) {
+        return "Laying out level "
+                + currentLevel
+                + " (out of " + totalLevels + ")"
+                + " of connected component "
+                + currentComponent
+                + " (out of " + totalComponents + ") of graph \""
+                + graphName + "\"";
     }
 
     /**
-     * Does the same thing as {@link AbstractAlgorithm#getSelectedOrAllNodes()} which cannot be used
-     * here because that uses instance variables which is not safe it the user runs the algorithm
-     * multiples times at the same time on different graphs with different settings.
+     * Create a percentage for the GUI. Calculates the progress for the current connected component. todo
+     * (review bm) javadoc
+     */
+    static double calculateProgress(MultilevelGraph mlg, int numComponents,
+                                    int currentIndex, int numberOfLevelsAtStart) {
+        if (numberOfLevelsAtStart == 0 || numComponents == 0) {
+            return -1;
+        }
+        // calculate the progress as the percentage of nodes and connected components already processed
+        return 100.0 * (1 - (double) mlg.getNumberOfLevels() / numberOfLevelsAtStart)
+                * (currentIndex + 1.0)
+                / numComponents;
+    }
+
+    /**
+     * Does the same thing as {@link AbstractAlgorithm#getSelectedOrAllNodes()} which cannot be used here
+     * because that uses instance variables which is not safe it the user runs the algorithm multiples times
+     * at the same time on different graphs with different settings.
      *
      * @param graph     The {@link Graph} to use. Must not be {@code null}.
      * @param selection The {@link Selection} to use. May be {@code null}.
@@ -187,51 +175,29 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
     }
 
     /**
-     * Make a status message for the GUI.
+     * Checks, if a graph was given and that the radius is positive.
      *
-     * @param totalLevels         The total number of coarsening levels.
-     * @param currentLevel        The current level.
-     * @param connectedComponents The connected components of the current graph. Must not be {@code
-     *                            null}.
-     * @param current             The index of the connected component that is currently being laid
-     *                            out.
-     * @param graphName           The graph's name. Must not be {@code null}.
-     * @return the status message.
-     * @author Gordian
+     * @throws PreconditionException if no graph was given during algorithm invocation or the number of nodes
+     *                               is zero or negative
      */
-    static String makeStatusMessage(int totalLevels, int currentLevel, int totalComponents,
-                                    int currentComponent, String graphName) {
-        return "Laying out level "
-                + currentLevel
-                + " (out of " + totalLevels + ")"
-                + " of connected component "
-                + currentComponent
-                + " (out of " + totalComponents + ") of graph \""
-                + graphName + "\"";
+    @Override
+    public void check() throws PreconditionException {
+        if (graph == null) {
+            throw new PreconditionException("Cannot run Multilevel Framework Layouter on null graph.");
+        }
+        if (graph.getNumberOfNodes() <= 0) {
+            throw new PreconditionException("The graph is empty. Cannot run Multilevel Framework Layouter.");
+        }
     }
 
-    /**
-     * Create a percentage for the GUI. Calculates the progress for the current connected
-     * component.
-     *
-     * @param mlg                   The {@link MultilevelGraph}. Must not be {@code null}.
-     * @param connectedComponents   The list of connected components for the graph that is currently
-     *                              being processed.
-     * @param currentIndex          The index of the connected component that is currently being
-     *                              processed.
-     * @param numberOfLevelsAtStart The total number of coarsening levels.
-     * @return the calculated progress
-     * @author Gordian
-     */
-    static double calculateProgress(MultilevelGraph mlg, int numComponents,
-                                    int currentIndex, int numberOfLevelsAtStart) {
-        if (numberOfLevelsAtStart == 0 || numComponents == 0) {
-            return -1;
-        }
-        // calculate the progress as the percentage of nodes and connected components already processed
-        return 100.0 * (1 - (double) mlg.getNumberOfLevels() / numberOfLevelsAtStart)
-                * (currentIndex + 1.0)
-                / numComponents;
+    @Override
+    public Parameter[] getParameters() {
+        return new Parameter[0];
+    }
+
+    @Override
+    public void setParameters(Parameter[] params) {
+
     }
 
     /**
@@ -253,33 +219,32 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
         final View oldView = oldSession.getActiveView();
         // all settings need to be stored as local variables, because the user might want to execute on multiple
         // graphs at the same time with different settings, which would change the instance variables
-        final Graph graph = this.graph;
+        // todo (review bm) cannot really guarantee that this is the case right now, check this
         final Selection selection = this.selection;
-        final boolean removeBends = this.removeBends;
-        final boolean removeOverlaps = this.removeOverlaps;
-        final boolean randomTop = this.randomTop;
+        final boolean removeBends = true; // todo: remove
+        final boolean removeOverlaps = true; // todo: remove
+        final boolean randomTop = this.parameterModel.layoutAlgGroup.isRandomTop();
         final Merger merger;
         final Placer placer;
         final LayoutAlgorithmWrapper layouter;
         if (!this.benchmarkMode) { // otherwise the caller needs to set those values todo (bm review) not done?
             merger = this.getSelectedMergerCopyAndSetParameters();
             placer = this.getSelectedPlacerCopyAndSetParameters();
-            layouter = this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
+            layouter = this.parameterModel.layoutAlgGroup.getSelected();
         } else {
             merger = MlfHelper.tryMakingNewInstance(this.nonInteractiveMerger);
             placer = MlfHelper.tryMakingNewInstance(this.nonInteractivePlacer);
-            layouter = this.layoutAlgorithms.get(this.nonInteractiveAlgorithm);
+            layouter = this.parameterModel.layoutAlgGroup.getSelected();
         }
 
         // check if the graph is currently being worked on by another MLF instance/thread
         // this is necessary to prevent the user from double clicking the layout button to start the layout twice
         // (VANTED does nothing to prevent this)
         if (graph.getAttributes().getCollection().containsKey(WORKING_ATTRIBUTE_PATH)
-            && graph.getBoolean(WORKING_ATTRIBUTE_PATH)) {
+                && graph.getBoolean(WORKING_ATTRIBUTE_PATH)) {
             MainFrame.getInstance().showMessageDialog("Cannot run MLF twice on the same graph at the same time!");
             return;
         }
-
         // if not, indicate that the MLF is running on the graph
         graph.setBoolean(WORKING_ATTRIBUTE_PATH, true);
 
@@ -426,36 +391,6 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
                 attributeSafeTask, finishSwingTask, bts);
     }
 
-    /**
-     * @return the parameter array
-     */
-    @Override
-    public Parameter[] getParameters() {
-        this.updateParameters();
-        // todo will be replaced
-        // return this.parameters;
-        return null;
-    }
-
-    /**
-     * Sets the parameters to the given array.
-     *
-     * @param params The new parameters.
-     * @see Algorithm#setParameters(Parameter[])
-     */
-    @Override
-    public void setParameters(Parameter[] params) {
-        // todo: replace functionality
-/*
-        this.parameters = params;
-        this.randomTop = (Boolean) this.parameters[this.randomTopParameterIndex].getValue();
-        this.removeBends = (Boolean) this.parameters[this.removeBendsParameterIndex].getValue();
-        this.removeOverlaps = (Boolean) this.parameters[this.removeOverlapsParameterIndex].getValue();
-        this.mergerPSP = (ParameterizableSelectorParameter) this.parameters[this.mergerPSPIndex].getValue();
-        this.placerPSP = (ParameterizableSelectorParameter) this.parameters[this.placerPSPIndex].getValue();
-*/
-    }
-
     private void reportDone(MLFBackgroundTaskStatus bts) {
         bts.statusMessage = "Finished laying out the levels";
         bts.status = -1;
@@ -572,9 +507,8 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
      * TODO (bm review) naming
      */
     private Merger getSelectedMergerCopyAndSetParameters() {
-        final Merger merger = MlfHelper.tryMakingNewInstance((Merger) this.mergerPSP.getSelectedParameterizable());
-        this.lastSelectedMerger = merger.getName();
-        merger.setParameters(this.mergerPSP.getUpdatedParameters());
+        final Merger merger = MlfHelper.tryMakingNewInstance(this.parameterModel.mergerGroup.getSelected());
+        merger.setParameters(this.parameterModel.mergerGroup.getUpdatedParameters());
         return merger;
     }
 
@@ -586,60 +520,15 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
      * @author Gordian
      */
     private Placer getSelectedPlacerCopyAndSetParameters() {
-        final Placer placer = MlfHelper.tryMakingNewInstance((Placer) this.placerPSP.getSelectedParameterizable());
-        this.lastSelectedPlacer = placer.getName();
-        placer.setParameters(this.placerPSP.getUpdatedParameters());
+        final Placer placer = MlfHelper.tryMakingNewInstance(this.parameterModel.placerGroup.getSelected());
+        placer.setParameters(this.parameterModel.placerGroup.getUpdatedParameters());
         return placer;
     }
 
     private void stopTaskIfRequested(MLFBackgroundTaskStatus bts) {
-
+        // something todo here?
     }
 
-    /**
-     * The handler that gets called if the "Set up Layouter" button was clicked.
-     * @param ignored
-     *      Ignored.
-     * @author Gordian
-     */
-    void clickSetUpLayoutAlgorithmButton(ActionEvent ignored) {
-        final LayoutAlgorithmWrapper current = this.layoutAlgorithms.get(this.lastSelectedAlgorithm);
-        final JComponent gui = current.getGUI();
-        if (gui != null) {
-            JOptionPane.showMessageDialog(MainFrame.getInstance(), gui,
-                    "Set up " + this.lastSelectedAlgorithm, JOptionPane.PLAIN_MESSAGE);
-        }
-    }
-
-    /**
-     * The handler that gets called if the user changes to a different layout algorithm for the levels.
-     * @param ignored
-     *      Ignored.
-     * @author Gordian
-     */
-    private void changeSelectedAlgorithm(ActionEvent ignored) {
-        final String selected = (String) this.algorithmListComboBox.getSelectedItem();
-        if (selected == null) {
-            return;
-        }
-        this.lastSelectedAlgorithm = selected;
-    }
-
-    /**
-     * Create the parameter objects.
-     * @author Gordian
-     */
-    private void setUpParameters() {
-        this.layoutAlgorithms = new HashMap<>();
-        this.updateParameters();
-    }
-
-    /**
-     * Apply a random layout to the given graph.
-     * @param graph
-     *      The graph to layout. Must not be {@code null}.
-     * @author Gordian
-     */
     static void randomLayout(Graph graph) {
         final RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
         rla.attach(graph, new Selection());
@@ -658,122 +547,42 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
         noOverlapAlgorithm.execute();
     }
 
-    /**
-     * Updates the parameter object. Among other things this puts new {@link Merger}s, {@link Algorithm}s
-     * or {@link Placer}s into the GUI.
-     * @author Gordian
-     */
-    private void updateParameters() {
-        Map<String, LayoutAlgorithmWrapper> tmp = LayoutAlgorithmWrapper.getLayoutAlgorithms();
-        for (Map.Entry<String, LayoutAlgorithmWrapper> e : tmp.entrySet()) {
-            if (!this.layoutAlgorithms.containsKey(e.getKey())) {
-                this.layoutAlgorithms.put(e.getKey(), e.getValue());
-            }
-        }
-        // the algorithm that used to be selected no longer exists
-        if (!this.layoutAlgorithms.containsKey(this.lastSelectedAlgorithm)) {
-            MainFrame.showMessageDialog("Algorithm \"" + this.layoutAlgorithms + "\" doesn't seem to exist.",
-                    "Error");
-            this.lastSelectedAlgorithm = this.layoutAlgorithms.containsKey(this.lastSelectedAlgorithm) ?
-                    this.lastSelectedAlgorithm : this.layoutAlgorithms.keySet().iterator().next();
-        }
-
-        // combobox that lets the user choose an algorithm
-        if (this.algorithmListComboBox != null) {
-            for (ActionListener actionListener : this.algorithmListComboBox.getActionListeners()) {
-                this.algorithmListComboBox.removeActionListener(actionListener);
-            }
-        }
-        this.algorithmListComboBox = new JComboBox<>(this.layoutAlgorithms.keySet().stream()
-                .sorted().toArray(String[]::new));
-        this.algorithmListComboBox.addActionListener(this::changeSelectedAlgorithm);
-
-        // combo box / dropdown to pick layout algorithm
-        JComponentParameter layoutAlgorithm = new JComponentParameter(this.algorithmListComboBox,
-                "Level Layout Algorithm",
-                "Layout Algorithm to be run on each level of the coarsened graph.");
-        this.algorithmListComboBox.setSelectedItem(this.lastSelectedAlgorithm);
-
-        // button "set up layout algorithm"
-        if (this.setUpLayoutAlgorithmButton != null) {
-            for (ActionListener actionListener : this.setUpLayoutAlgorithmButton.getActionListeners()) {
-                this.setUpLayoutAlgorithmButton.removeActionListener(actionListener);
-            }
-        }
-        this.setUpLayoutAlgorithmButton = new JButton("Set up layout algorithm");
-        this.setUpLayoutAlgorithmButton.addActionListener(this::clickSetUpLayoutAlgorithmButton);
-
-        JComponentParameter setUpLayoutAlgorithmButtonParameter =
-                new JComponentParameter(this.setUpLayoutAlgorithmButton, "",
-                        "Click the button to change the parameters of the layout algorithm.");
-
-        BooleanParameter randomLayoutParameter = new BooleanParameter(this.randomTop,
-                "Random init on top",
-                "Do an random layout on the top (i.e. coarsest) coarsening level");
-
-        BooleanParameter removeBendsParameter = new BooleanParameter(this.removeBends,
-                "Remove edge bends",
-                "Remove all edge bends from the graph");
-
-        BooleanParameter removeOverlapsParameter = new BooleanParameter(this.removeOverlaps,
-                "Remove overlaps",
-                "Remove overlaps using VANTED's builtin no-overlap-algorithm after each level.");
-
-
-        // needs to be a copy as the synchronized list "mergers" cannot be iterated over without a synchronized
-        // block
-        ArrayList<Merger> tmpMergers = new ArrayList<>(MultilevelFrameworkLayouter.mergers);
-        tmpMergers.sort(Comparator.comparing(Merger::getName));
-        // select the default or last selected merger
-        int mergerIndex = tmpMergers.stream()
-                .filter(m -> m.getName().equals(this.lastSelectedMerger))
-                .map(tmpMergers::indexOf).findAny().orElse(0);
-        JComponentParameter mergerPSP = ParameterizableSelectorParameter.getFromList(mergerIndex,
-                tmpMergers, this.selection, "Choose the merger",
-                "The merger is used to merge multiple nodes into one in order " +
-                        "to create the coarsening levels.");
-
-        // see above
-        ArrayList<Placer> tmpPlacers = new ArrayList<>(MultilevelFrameworkLayouter.placers);
-        tmpPlacers.sort(Comparator.comparing(Placer::getName));
-        // select the default or last selected placer
-        int placerIndex = tmpPlacers.stream()
-                .filter(p -> p.getName().equals(this.lastSelectedPlacer))
-                .map(tmpPlacers::indexOf).findAny().orElse(0);
-        JComponentParameter placerPSP = ParameterizableSelectorParameter.getFromList(placerIndex,
-                tmpPlacers, this.selection, "Choose the placer",
-                "The placer determines how the nodes contained within merged nodes are placed back into"
-                        + " the graph during the uncoarsening process.");
-
-        // todo: entire method will be replaced
-/*
-        this.parameters = new Parameter[]{layoutAlgorithm, setUpLayoutAlgorithmButtonParameter,
-                randomLayoutParameter, removeBendsParameter, removeOverlapsParameter, mergerPSP, placerPSP};
-
-        this.randomTopParameterIndex = ArrayUtils.indexOf(this.parameters, randomLayoutParameter);
-        this.removeBendsParameterIndex = ArrayUtils.indexOf(this.parameters, removeBendsParameter);
-        this.removeOverlapsParameterIndex = ArrayUtils.indexOf(this.parameters, removeOverlapsParameter);
-        this.mergerPSPIndex = ArrayUtils.indexOf(this.parameters, mergerPSP);
-        this.placerPSPIndex = ArrayUtils.indexOf(this.parameters, placerPSP);
-*/
-    }
-
     @Override
     public boolean setControlInterface(ThreadSafeOptions __, JComponent jc) {
 
-        // todo: create "model" object containing UI elements
+        this.graph = MainFrame.getInstance().getActiveEditorSession().getGraph();
+        this.selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
 
-        JTextField p = new JTextField("foo");
-        jc.add(p);
-        jc.validate();
+        MLFParamModel paramUIElems = this.parameterModel;
+        // MLFParamModel paramUIElems = new MLFParamModel(); // debug only
 
-        //initialization of start and pause button
+        jc.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+
         JMButton startButton = new JMButton("Layout Network");
-        startButton.addActionListener(e -> {
-            this.execute();
-        });
+        startButton.addActionListener(e -> this.execute());
         jc.add(startButton);
 
+        SingleFiledLayout sfl = new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 1);
+        jc.setLayout(sfl);
+
+        final FolderPanel layoutFolder = new FolderPanel("Level layout", false, true, false, null);
+        layoutFolder.addComp(paramUIElems.layoutAlgGroup);
+        layoutFolder.layoutRows();
+        jc.add(layoutFolder);
+
+        final FolderPanel mergerFolder = new FolderPanel("Merging", false, true, false, null);
+        mergerFolder.addComp(paramUIElems.mergerGroup);
+        mergerFolder.layoutRows();
+        jc.add(mergerFolder);
+
+        final FolderPanel placerFolder = new FolderPanel("Placing", false, true, false, null);
+        placerFolder.addComp(paramUIElems.placerGroup);
+        placerFolder.layoutRows();
+        jc.add(placerFolder);
+
+
+        jc.validate();
         return true;
     }
 

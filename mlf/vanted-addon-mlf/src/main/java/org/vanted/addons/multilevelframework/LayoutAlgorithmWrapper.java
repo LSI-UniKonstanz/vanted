@@ -105,35 +105,42 @@ public class LayoutAlgorithmWrapper {
     }
 
     /**
-     * @return the GUI where the user can set parameters for the algorithm.
-     * @author Gordian
+     * Find layout algorithms supplied by plugins.
+     *
+     * @return A map from algorithm name to wrapper instance
+     * @see LayoutAlgorithmWrapper
      */
-    public JComponent getGUI() {
-        if (this.algorithm instanceof ThreadSafeAlgorithm && this.threadSafeGUI) {
-            ThreadSafeAlgorithm tsa = (ThreadSafeAlgorithm) this.algorithm;
-            if (this.threadSafeOptions == null) {
-                this.threadSafeOptions = new ThreadSafeOptions();
-            }
-            if (this.oldThreadSafeGUI == null) {
-                this.oldThreadSafeGUI = LayoutAlgorithmWrapper.getThreadsafeGUI(tsa, this.threadSafeOptions);
-            }
-            this.getThreadSafeGUITimerStarted = true;
-            if (this.oldThreadSafeGUI == null) {
-                this.threadSafeOptions = null;
-                this.threadSafeGUI = false;
-                this.getParametersCalled = false;
-            } else {
-                return this.oldThreadSafeGUI;
-            }
-            tsa.reset();
+    public static Map<String, LayoutAlgorithmWrapper> getPluginLayoutAlgs() {
+        Collection<PluginEntry> entries = GravistoService.getInstance().getMainFrame().getPluginManager().getPluginEntries();
+        Map<String, LayoutAlgorithmWrapper> layoutAlgs = new HashMap<>();
+        for (PluginEntry pe : entries) {
+            Algorithm[] algorithms = pe.getPlugin().getAlgorithms();
+            Arrays.stream(algorithms)
+                    .filter(Algorithm::isLayoutAlgorithm)
+                    // the multilevel framework should not apply itself at the different levels
+                    .filter(a -> !(a instanceof MultilevelFrameworkLayouter))
+                    // some algorithms seem to have no name
+                    .filter(a -> a.getName() != null && !a.getName().trim().isEmpty())
+                    .forEach(a -> {
+                        // ThreadSafeAlgorithms such as PatternSpringembedder have two GUIs, so they appear twice
+                        if (a instanceof ThreadSafeAlgorithm) {
+                            final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
+                            if (layoutAlgWhitelist.contains(alternateName)) {
+                                layoutAlgs.put(a.getName(), new LayoutAlgorithmWrapper(a.getName(),
+                                        tryMakingNewInstance(a), true));
+                            }
+                            final String parameterName = a.getName() + " (\"parameter\" GUI)";
+                            if (layoutAlgWhitelist.contains(parameterName)) {
+                                layoutAlgs.put(parameterName, new LayoutAlgorithmWrapper(parameterName,
+                                        tryMakingNewInstance(a), false));
+                            }
+                        } else if (layoutAlgWhitelist.contains(a.getName())) {
+                            layoutAlgs.put(a.getName(), new LayoutAlgorithmWrapper(null,
+                                    tryMakingNewInstance(a), false));
+                        }
+                    });
         }
-        JComponent res = getParameterGUI(this.algorithm);
-        if (res != null) {
-            return res;
-        } else {
-            MainFrame.showMessageDialog("Could not get GUI for algorithm: " + this.algorithm.getName() + ".", "Error");
-            return null;
-        }
+        return layoutAlgs;
     }
 
     /**
@@ -199,42 +206,35 @@ public class LayoutAlgorithmWrapper {
     }
 
     /**
-     * Find layout algorithms supplied by plugins.
-     *
-     * @return A map from algorithm name to wrapper instance
-     * @see LayoutAlgorithmWrapper
+     * @return the GUI where the user can set parameters for the algorithm.
+     * @author Gordian
      */
-    public static Map<String, LayoutAlgorithmWrapper> getPluginLayoutAlgs() {
-        Collection<PluginEntry> entries = GravistoService.getInstance().getMainFrame().getPluginManager().getPluginEntries();
-        Map<String, LayoutAlgorithmWrapper> layoutAlgs = new HashMap<>();
-        for (PluginEntry pe : entries) {
-            Algorithm[] algorithms = pe.getPlugin().getAlgorithms();
-            Arrays.stream(algorithms)
-                    .filter(Algorithm::isLayoutAlgorithm)
-                    // the multilevel framework should not apply itself at the different levels
-                    .filter(a -> !(a instanceof MultilevelFrameworkLayouter))
-                    // some algorithms seem to have no name
-                    .filter(a -> a.getName() != null && !a.getName().trim().isEmpty())
-                    .forEach(a -> {
-                        // ThreadSafeAlgorithms such as PatternSpringembedder have two GUIs, so they appear twice
-                        if (a instanceof ThreadSafeAlgorithm) {
-                            final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
-                            if (layoutAlgWhitelist.contains(alternateName)) {
-                                layoutAlgs.put(alternateName, new LayoutAlgorithmWrapper(alternateName,
-                                        tryMakingNewInstance(a), true));
-                            }
-                            final String parameterName = a.getName() + " (\"parameter\" GUI)";
-                            if (layoutAlgWhitelist.contains(parameterName)) {
-                                layoutAlgs.put(parameterName, new LayoutAlgorithmWrapper(parameterName,
-                                        tryMakingNewInstance(a), false));
-                            }
-                        } else if (layoutAlgWhitelist.contains(a.getName())) {
-                            layoutAlgs.put(a.getName(), new LayoutAlgorithmWrapper(null,
-                                    tryMakingNewInstance(a), false));
-                        }
-                    });
+    public JComponent getGUI() {
+        if (this.algorithm instanceof ThreadSafeAlgorithm && this.threadSafeGUI) {
+            ThreadSafeAlgorithm tsa = (ThreadSafeAlgorithm) this.algorithm;
+            if (this.threadSafeOptions == null) {
+                this.threadSafeOptions = new ThreadSafeOptions();
+            }
+            if (this.oldThreadSafeGUI == null) {
+                this.oldThreadSafeGUI = LayoutAlgorithmWrapper.getThreadsafeGUI(tsa, this.threadSafeOptions);
+            }
+            this.getThreadSafeGUITimerStarted = true;
+            if (this.oldThreadSafeGUI == null) {
+                this.threadSafeOptions = null;
+                this.threadSafeGUI = false;
+                this.getParametersCalled = false;
+            } else {
+                return this.oldThreadSafeGUI;
+            }
+            tsa.reset();
         }
-        return layoutAlgs;
+        JComponent res = getParameterGUI(this.algorithm);
+        // todo: needed?
+        if (res != null) {
+            res.setBackground(null);
+        }
+        // MainFrame.showMessageDialog("Could not get GUI for algorithm: " + this.algorithm.getName() + ".", "Error");
+        return res;
     }
 
     /**
