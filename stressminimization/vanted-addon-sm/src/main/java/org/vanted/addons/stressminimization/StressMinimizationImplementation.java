@@ -105,8 +105,6 @@ class StressMinimizationImplementation {
 	// todo (review bm) landmarks variant lacks documentation or citation
 	private void calcLandmarked(int numberOfLandmarks) {
 
-		System.out.println("baz");
-
 		callingLayout.setStatusDescription("Stress Minimization: selecting landmarks");
 
 		RealMatrix landmarkToLandmarkDistances = new BlockRealMatrix(numberOfLandmarks, numberOfLandmarks);
