@@ -30,17 +30,17 @@ import java.util.List;
  */
 public class StressMinimizationLayout extends BackgroundAlgorithm {
 
-    private static final int PREPROCESSING_NUMBER_OF_LANDMARKS = 100;
+	private static final int PREPROCESSING_NUMBER_OF_LANDMARKS = 100;
 
-    /**
-     * Creates a new StressMinimizationLayout instance.
-     */
-    public StressMinimizationLayout() {
-        super();
-    }
+	/**
+	 * Creates a new StressMinimizationLayout instance.
+	 */
+	public StressMinimizationLayout() {
+		super();
+	}
 
-    @Override
-    public String getName() {
+	@Override
+	public String getName() {
 		return "Stress Minimization";
 	}
 
@@ -71,35 +71,35 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	 */
 	@Override
 	public void check() throws PreconditionException {
-        super.check();
+		super.check();
 
-        if (graph.isEmpty()) {
-            throw new PreconditionException("Stress Minimization Layout cannot work on empty graphs");
-        }
+		if (graph.isEmpty()) {
+			throw new PreconditionException("Stress Minimization Layout cannot work on empty graphs");
+		}
 
-    }
+	}
 
-    private static final String NUMBER_OF_LANDMARKS_NAME = "Landmarks Count";
-    private static final int NUMBER_OF_LANDMARKS_DEFAULT_VALUE = 100;
-    private final int numberOfLandmarks = NUMBER_OF_LANDMARKS_DEFAULT_VALUE;
+	private static final String NUMBER_OF_LANDMARKS_NAME = "Landmarks Count";
+	private static final int NUMBER_OF_LANDMARKS_DEFAULT_VALUE = 100;
+	private final int numberOfLandmarks = NUMBER_OF_LANDMARKS_DEFAULT_VALUE;
 
-    private static final String RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME = "Randomize initial layout.";
-    private static final boolean RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE = false;
-    private final boolean randomizeInputLayout = RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE;
+	private static final String RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME = "Randomize initial layout.";
+	private static final boolean RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE = false;
+	private final boolean randomizeInputLayout = RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE;
 
-    private static final String ALPHA_PARAMETER_NAME = "Weight Factor";
-    private static final int ALPHA_DEFAULT_VALUE = 2;
-    private final int alpha = ALPHA_DEFAULT_VALUE;
-    private static final String STRESS_CHANGE_EPSILON_PARAMETER_NAME = "Stress Change Threshold";
-    private final double stressChangeEpsilon = 1e-4;
-    /**
-     * This is the stateful object representing the current configuration of the parameters. In this sense, it
-     * is akin to ThreadSafeOptions.
-     */
-    private final StressMinParamModel parameterModel = new StressMinParamModel();
+	private static final String ALPHA_PARAMETER_NAME = "Weight Factor";
+	private static final int ALPHA_DEFAULT_VALUE = 2;
+	private final int alpha = ALPHA_DEFAULT_VALUE;
+	private static final String STRESS_CHANGE_EPSILON_PARAMETER_NAME = "Stress Change Threshold";
 
-    @Override
-    public JComponent getParameterUI() {
+	/**
+	 * This is the stateful object representing the current configuration of the parameters. In this sense, it
+	 * is akin to ThreadSafeOptions.
+	 */
+	private final StressMinParamModel parameterModel = new StressMinParamModel();
+
+	@Override
+	public JComponent getParameterUI() {
 
 		// for debug purposes, the below line can be replaced with
 		// StressMinParamModel paramUIElems = new StressMinParamModel();
@@ -133,29 +133,28 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		return mainPanel;
 	}
 
-    // TODO: "remove"
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    @Deprecated
-    public Parameter[] getParameters() {
-        List<Parameter> params = new ArrayList<>();
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
+	@Deprecated
+	public Parameter[] getParameters() {
+		List<Parameter> params = new ArrayList<>();
 
-        params.add(new LandmarkParameter(
-                numberOfLandmarks,
-                10, // values below this give no more significant speed up
-                1000, // values above this consume to much time in the current implementation
-                NUMBER_OF_LANDMARKS_NAME,
+		params.add(new LandmarkParameter(
+				numberOfLandmarks,
+				10, // values below this give no more significant speed up
+				1000, // values above this consume to much time in the current implementation
+				NUMBER_OF_LANDMARKS_NAME,
 				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes. You may turn off this option by selecting all nodes as landmarks."
 		));
 
 		params.add(new BooleanParameter(
-                true,
-                "disable landmark preproc",
-                "Turn of landmark preprocessing. In general this preprocessing speeds up execution, but will slow it down if you have an optimized initial layout (since that may be destroyed) or if you are using this layouter in a multilevel framework."
+				true,
+				"disable landmark preproc",
+				"Turn of landmark preprocessing. In general this preprocessing speeds up execution, but will slow it down if you have an optimized initial layout (since that may be destroyed) or if you are using this layouter in a multilevel framework."
 		));
 
 		//MAKE STUFF HERE
@@ -173,12 +172,12 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		));
 
 		params.add(new DoubleParameter(
-                0.0,
-                0.0,
-                1.0,
-                0.05,
-                "node mov thresh",
-                "Minimum required movement of any node for continuation of computation. If all nodes move less than this value in an iteration, execution is terminated."
+				0.0,
+				0.0,
+				1.0,
+				0.05,
+				"node mov thresh",
+				"Minimum required movement of any node for continuation of computation. If all nodes move less than this value in an iteration, execution is terminated."
 		));
 
 
@@ -187,10 +186,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		stressDict.put(50, new JLabel("50%"));
 		stressDict.put(100, new JLabel("100%"));
 		params.add(new SliderParameter(
-                0,
-                "stress thresh",
-                "If the stress of a layout falls below this percentage of the stress on the beginning of the core process (after any preprocessing), execution is terminated.",
-                0, 100, false, false, stressDict
+				0,
+				"stress thresh",
+				"If the stress of a layout falls below this percentage of the stress on the beginning of the core process (after any preprocessing), execution is terminated.",
+				0, 100, false, false, stressDict
 		));
 
 		Dictionary iterDict = new Hashtable();
@@ -200,36 +199,35 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		iterDict.put(100, new JLabel("100"));
 		iterDict.put(125, new JLabel("\u221e"));
 		params.add(new SliderParameter(
-                75,
-                "max iters",
-                "Maximum number of iterations after which algorithm excution will be terminated.",
-                25, 124, true, false, iterDict
+				75,
+				"max iters",
+				"Maximum number of iterations after which algorithm excution will be terminated.",
+				25, 124, true, false, iterDict
 		));
 
 		params.add(new SliderParameter(
-                alpha,
-                ALPHA_PARAMETER_NAME,
-                "Sets the importance of correct distance placement of more distanced nodes. A high value indicates that nodes with a high distance to one individual node will have less impact of the placement of this node, while nodes with a low distance will have a bigger impact.",
-                0, 2
-        ));
+				alpha,
+				ALPHA_PARAMETER_NAME,
+				"Sets the importance of correct distance placement of more distanced nodes. A high value indicates that nodes with a high distance to one individual node will have less impact of the placement of this node, while nodes with a low distance will have a bigger impact.",
+				0, 2
+		));
 
-        params.add(new BooleanParameter(
-                randomizeInputLayout,
-                RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME,
-                "Use a random layout as initial layout rather than the present layout."
-        ));
+		params.add(new BooleanParameter(
+				randomizeInputLayout,
+				RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME,
+				"Use a random layout as initial layout rather than the present layout."
+		));
 
-        return params.toArray(new Parameter[0]);
-    }
+		return params.toArray(new Parameter[0]);
+	}
 
-    // TODO: remove
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public void setParameters(Parameter[] params) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	@Deprecated
+	public void setParameters(Parameter[] params) {
 		return;
 	}
 
@@ -248,65 +246,74 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	 * {@inheritDoc}
 	 */
 	@Override
-    public void execute() {
+	public void execute() {
 
-        setStatus(BackgroundStatus.RUNNING);
-        setStatusDescription("Stress Minimization: starting...");
+		setStatus(BackgroundStatus.RUNNING);
+		setStatusDescription("Stress Minimization: starting...");
 
-        StressMinParamModel params = this.parameterModel;
+		StressMinParamModel params = this.parameterModel;
 
-        if (params.initialLayoutRadioGroup.getSelected() == StressMinParamModel.InitialLayoutOption.useRandom) {
-            setStatusDescription("Stress Minimization: randomizing input layout");
-            RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
-            rla.attach(graph, selection);
-            rla.execute();
-        }
+		if (params.initialLayoutRadioGroup.getSelected() == StressMinParamModel.InitialLayoutOption.useRandom) {
+			setStatusDescription("Stress Minimization: randomizing input layout");
+			RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
+			rla.attach(graph, selection);
+			rla.execute();
+		}
 
-        Collection<Node> workNodesCollection;
+		Collection<Node> workNodesCollection;
 
-        if (selection.isEmpty()) {
-            workNodesCollection = graph.getNodes();
-        } else {
-            workNodesCollection = selection.getNodes();
-        }
+		if (selection.isEmpty()) {
+			workNodesCollection = graph.getNodes();
+		} else {
+			workNodesCollection = selection.getNodes();
+		}
 
-        IndexedNodeSet workNodes = IndexedNodeSet.setOfAllIn(workNodesCollection);
+		IndexedNodeSet workNodes = IndexedNodeSet.setOfAllIn(workNodesCollection);
 
-        setStatusDescription("Stress Minimization: calculating components");
-        List<IndexedComponent> components = IndexedGraphOperations.getComponents(workNodes);
+		setStatusDescription("Stress Minimization: calculating components");
+		List<IndexedComponent> components = IndexedGraphOperations.getComponents(workNodes);
 
-        // NOTE: applying the final nodes position updates in this class
-        // has the benefit that the algorithm is more easy usable by the Multilevel Framework
-        HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
+		// NOTE: applying the final nodes position updates in this class
+		// has the benefit that the algorithm is more easy usable by the Multilevel Framework
+		HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
 
         for (IndexedComponent component : components) {
 			if (waitIfPausedAndCheckStop()) {
 				return;
 			}
+			setStatusDescription("Stress Minimization: layouting next component");
 
 			// todo (review bm) weird control flow; should be split up into more methods
 
-			setStatusDescription("Stress Minimization: layouting next component");
+			boolean useLandmarks = params.methodRadioGroup.useLandmarks();
 
-			int numberOfLandmarks = (int) Math.floor(component.size() * params.methodRadioGroup.getSliderValuePos());
-			numberOfLandmarks = Math.min(2, numberOfLandmarks);
+			int numberOfLandmarks =
+					(int) Math.floor(component.size() * params.methodRadioGroup.getSliderValuePos());
+			numberOfLandmarks = Math.min(component.size(), numberOfLandmarks);
+			if (numberOfLandmarks >= component.size()) {
+				// do not do landmarked layout if all nodes are selected as landmarks
+				useLandmarks = false;
+			}
+			numberOfLandmarks = Math.max(2, numberOfLandmarks);
 
 			int nodeMovementThreshold = (params.terminationCheckboxGroup.nodeThresholdActive()) ?
 					params.terminationCheckboxGroup.getNodeMovementThreshold() : 0;
 			int iterThreshold = (params.terminationCheckboxGroup.iterThresholdActive()) ?
 					params.terminationCheckboxGroup.getMaxIterations() : Integer.MAX_VALUE;
 
-            // todo (review bm) pretty bad style...
-            StressMinimizationImplementation impl = new StressMinimizationImplementation(
-                    component.nodes,
-                    this,
-                    numberOfLandmarks,
-                    params.methodAlphaGroup.getAlpha(),
-                    params.terminationStressChangeGroup.getValue(),
-                    0, // todo
-                    nodeMovementThreshold,
+			// todo (review bm) pretty bad style...
+			StressMinimizationImplementation impl = new StressMinimizationImplementation(
+					component.nodes,
+					this,
+					useLandmarks,
+					numberOfLandmarks,
+					params.methodAlphaGroup.getAlpha(),
+					params.terminationStressChangeGroup.getValue(),
+					0, // todo
+					nodeMovementThreshold,
 					iterThreshold
 			);
+
 			impl.calculateLayout();
 
 			if (getLayout() != null) {

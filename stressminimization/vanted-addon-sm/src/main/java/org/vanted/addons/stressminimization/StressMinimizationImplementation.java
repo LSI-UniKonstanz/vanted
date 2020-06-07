@@ -1,12 +1,5 @@
 package org.vanted.addons.stressminimization;
 
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.DoubleUnaryOperator;
-import java.util.function.Supplier;
-
 import org.AttributeHelper;
 import org.Vector2d;
 import org.apache.commons.math3.linear.BlockRealMatrix;
@@ -15,6 +8,13 @@ import org.apache.commons.math3.linear.RealVector;
 import org.graffiti.graph.Node;
 import org.vanted.addons.indexednodes.IndexedGraphOperations;
 import org.vanted.addons.indexednodes.IndexedNodeSet;
+
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.Supplier;
 
 class StressMinimizationImplementation {
 
@@ -30,22 +30,35 @@ class StressMinimizationImplementation {
 	private final double initialStressPercentage;
 	private final double minimumNodeMovementThreshold;
 	private final double iterationsThreshold;
+	private final boolean useLandmarks;
 
 	/**
-	 * Creates a new StressMinimizationImplementation working on the given list of nodes
-	 * and using callingLayout for pausing and stopping behavior
-	 * @param nodes The nodes to layout.
-	 * @param callingLayout The StressMinimizationLayout instance creating this instance
+	 * Creates a new StressMinimizationImplementation working on the given list of nodes and using
+	 * callingLayout for pausing and stopping behavior
+	 *
+	 * @param nodes                        The nodes to layout.
+	 * @param callingLayout                The StressMinimizationLayout instance creating this instance
 	 * @param numberOfLandmarks
-	 * @param alpha alpha exponent for weighting.
-	 * @param stressChangeEpsilon Stress change threshold below which execution will be terminated
-	 * @param initialStressPercentage The initial stress percentage below which execution will be terminated
-	 * @param minimumNodeMovementThreshold The minimum node movement threshold below which execution will be terminated
-	 * @param iterationsThreshold The maximal number of iterations above which execution will be terminated
+	 * @param alpha                        alpha exponent for weighting.
+	 * @param stressChangeEpsilon          Stress change threshold below which execution will be terminated
+	 * @param initialStressPercentage      The initial stress percentage below which execution will be
+	 *                                     terminated
+	 * @param minimumNodeMovementThreshold The minimum node movement threshold below which execution will be
+	 *                                     terminated
+	 * @param iterationsThreshold          The maximal number of iterations above which execution will be
+	 *                                     terminated
 	 */
-	public StressMinimizationImplementation(IndexedNodeSet nodes, StressMinimizationLayout callingLayout,
-			int numberOfLandmarks, int alpha, double stressChangeEpsilon, double initialStressPercentage,
-			double minimumNodeMovementThreshold, double iterationsThreshold) {
+	public StressMinimizationImplementation(
+			IndexedNodeSet nodes,
+			StressMinimizationLayout callingLayout,
+			boolean useLandmarks,
+			int numberOfLandmarks,
+			int alpha,
+			double stressChangeEpsilon,
+			double initialStressPercentage,
+			double minimumNodeMovementThreshold,
+			double iterationsThreshold
+	) {
 		super();
 
 		this.callingLayout = callingLayout;
@@ -53,6 +66,7 @@ class StressMinimizationImplementation {
 		this.nodes = nodes.setOfContainedNodesWithOwnIndices();
 		this.n = this.nodes.size();
 
+		this.useLandmarks = useLandmarks;
 		this.numberOfLandmarks = numberOfLandmarks;
 		this.alpha = alpha;
 		this.stressChangeEpsilon = stressChangeEpsilon;
@@ -60,7 +74,6 @@ class StressMinimizationImplementation {
 		this.minimumNodeMovementThreshold = minimumNodeMovementThreshold;
 		this.iterationsThreshold = iterationsThreshold;
 	}
-
 
 
 	/**
@@ -71,12 +84,12 @@ class StressMinimizationImplementation {
 			return;
 		}
 
-		// this is merely a sanity check. If/how landmarks are used will be done
-		// via the algorithm parameters / GUI.
-		if (this.numberOfLandmarks >= n) {
-			calcOnAllNodes();
-		} else {
+		if (useLandmarks) {
+		    // sanity check
+			if (this.numberOfLandmarks >= n) return;
 			calcLandmarked(this.numberOfLandmarks);
+		} else {
+			calcOnAllNodes();
 		}
 	}
 
@@ -91,8 +104,6 @@ class StressMinimizationImplementation {
 
 	// todo (review bm) landmarks variant lacks documentation or citation
 	private void calcLandmarked(int numberOfLandmarks) {
-
-		System.out.println("baz");
 
 		callingLayout.setStatusDescription("Stress Minimization: selecting landmarks");
 

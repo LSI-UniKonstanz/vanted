@@ -9,7 +9,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * This is the "model" (in a stateful sense) representing the current settings of the algorithm.
@@ -100,10 +103,15 @@ public class StressMinParamModel {
             this.setMaximum(100);
             this.setMinorTickSpacing(5);
             this.setMajorTickSpacing(25);
-            this.setLabelTable(this.createStandardLabels(25));
+            Dictionary sliderLabels = new Hashtable();
+            sliderLabels.put(0, new JLabel("0%"));
+            sliderLabels.put(25, new JLabel("25%"));
+            sliderLabels.put(50, new JLabel("50%"));
+            sliderLabels.put(75, new JLabel("75%"));
+            sliderLabels.put(100, new JLabel("100%"));
+            this.setLabelTable(sliderLabels);
             this.setPaintLabels(true);
             this.setPaintTicks(true);
-            // TODO: put % sign on labels
         }
     }
 
@@ -143,8 +151,8 @@ public class StressMinParamModel {
             percSlider.setEnabled(radios.enumRadioMap.get(MethodOption.landmarksOnly).isSelected());
         }
 
-        public MethodOption getSelected() {
-            return radios.getSelected();
+        public boolean useLandmarks() {
+            return (radios.getSelected() == MethodOption.landmarksOnly);
         }
 
         public double getSliderValue() {
@@ -161,6 +169,7 @@ public class StressMinParamModel {
     }
 
     public class MethodAlphaGroup extends JPanel {
+        JSlider slider = new JSlider();
 
         JSpinner spinner;
         MethodAlphaGroup() {
@@ -211,6 +220,22 @@ public class StressMinParamModel {
             gbc_horizontalGlue.gridy = 1;
             add(horizontalGlue, gbc_horizontalGlue);
 
+            setBackground(null);
+            slider.setBackground(null);
+            slider.setMinimum(0);
+            slider.setMaximum(2);
+            slider.setValue(1);
+            Dictionary sliderLabels = new Hashtable();
+            sliderLabels.put(0, new JLabel("0"));
+            sliderLabels.put(1, new JLabel("-1"));
+            sliderLabels.put(2, new JLabel("-2"));
+            slider.setLabelTable(sliderLabels);
+            slider.setPaintLabels(true);
+            slider.setPaintTicks(false);
+        }
+
+        public int getSliderValue() {
+            return slider.getValue();
         }
 
         public int getAlpha() {
@@ -252,15 +277,12 @@ public class StressMinParamModel {
 
         TerminationStressChangeGroup() {
             Dictionary labels = new Hashtable();
-            labels.put(-9, new JLabel("0"));
-            labels.put(-8, new JLabel("10\u207b\u2078"));
-            labels.put(-6, new JLabel("10\u207b\u2076"));
-            labels.put(-4, new JLabel("10\u207b\u2074"));
-            labels.put(-2, new JLabel("10\u207b\u00B2"));
-
-            JLabel label = new JLabel("Stress change threshold:");
-            label.setAlignmentX(LEFT_ALIGNMENT);
-            slider.setAlignmentX(LEFT_ALIGNMENT);
+            // see https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts#Superscripts_and_subscripts_block
+            labels.put(-9, new JLabel("10\u207b\u2079"));
+            labels.put(-7, new JLabel("10\u207b\u2077"));
+            labels.put(-5, new JLabel("10\u207b\u2075"));
+            labels.put(-3, new JLabel("10\u207b\u00B3"));
+            labels.put(-1, new JLabel("10\u207b\u00B9"));
             slider.setMinimum(-9);
             slider.setMaximum(-1);
             slider.setMajorTickSpacing(1);
@@ -270,23 +292,27 @@ public class StressMinParamModel {
             slider.setBackground(null);
             slider.setBorder(new EmptyBorder(0, 5, 0, 0));
 
+            slider.setValue(-7);
             this.setBackground(null);
-            this.setLayout(new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.LEFT, 5));
-            this.add(label);
-            this.add(slider);
+            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            LabeledSlider withLabel = new LabeledSlider("Stress change threshold (always active):", slider);
+            withLabel.setAlignmentX(LEFT_ALIGNMENT);
+            // todo: construct this specific slider here
+            this.add(withLabel);
         }
 
         public double getValue() {
             int val = slider.getValue();
             if (val == -9) return 0;
-            else return Math.pow(10, -slider.getValue());
+                // note that values are negative
+            else return Math.pow(10, slider.getValue());
         }
     }
 
     public class TerminationCheckboxGroup extends JPanel {
 
-        JSpinner spinner = new JSpinner();
-        JSpinner spinner_1 = new JSpinner();
+        JSpinner nodeMovementSpinner = new JSpinner();
+        JSpinner iterationsSpinner = new JSpinner();
         JCheckBox movementCheckbox = new JCheckBox("Node movement threshold:");
         JCheckBox iterCheckbox = new JCheckBox("Max. number of iterations:");
 
@@ -314,14 +340,14 @@ public class StressMinParamModel {
             gbc_chckbxNewCheckBox.gridy = 1;
             add(movementCheckbox, gbc_chckbxNewCheckBox);
 
-            spinner.setEnabled(false);
-            spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(10)));
-            GridBagConstraints gbc_spinner = new GridBagConstraints();
-            gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
-            gbc_spinner.insets = new Insets(0, 0, 5, 5);
-            gbc_spinner.gridx = 2;
-            gbc_spinner.gridy = 1;
-            add(spinner, gbc_spinner);
+            nodeMovementSpinner.setEnabled(false);
+            nodeMovementSpinner.setModel(new SpinnerNumberModel(0, 0, null, 10));
+            GridBagConstraints gbc_nodeMovementSpinner = new GridBagConstraints();
+            gbc_nodeMovementSpinner.fill = GridBagConstraints.HORIZONTAL;
+            gbc_nodeMovementSpinner.insets = new Insets(0, 0, 5, 5);
+            gbc_nodeMovementSpinner.gridx = 2;
+            gbc_nodeMovementSpinner.gridy = 1;
+            add(nodeMovementSpinner, gbc_nodeMovementSpinner);
 
             GridBagConstraints gbc_chckbxNewCheckBox_1 = new GridBagConstraints();
             gbc_chckbxNewCheckBox_1.anchor = GridBagConstraints.WEST;
@@ -330,19 +356,20 @@ public class StressMinParamModel {
             gbc_chckbxNewCheckBox_1.gridy = 2;
             add(iterCheckbox, gbc_chckbxNewCheckBox_1);
 
-            spinner_1.setEnabled(false);
-            spinner_1.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(10)));
-            GridBagConstraints gbc_spinner_1 = new GridBagConstraints();
-            gbc_spinner_1.fill = GridBagConstraints.HORIZONTAL;
-            gbc_spinner_1.insets = new Insets(0, 0, 0, 5);
-            gbc_spinner_1.gridx = 2;
-            gbc_spinner_1.gridy = 2;
-            add(spinner_1, gbc_spinner_1);
+            iterationsSpinner.setEnabled(false);
+            iterationsSpinner.setModel(new SpinnerNumberModel(0, 0, null, 10));
+            GridBagConstraints gbc_iterationsSpinner = new GridBagConstraints();
+            gbc_iterationsSpinner.fill = GridBagConstraints.HORIZONTAL;
+            gbc_iterationsSpinner.insets = new Insets(0, 0, 0, 5);
+            gbc_iterationsSpinner.gridx = 2;
+            gbc_iterationsSpinner.gridy = 2;
+            add(iterationsSpinner, gbc_iterationsSpinner);
 
+            iterationsSpinner.setValue(100);
 
-            spinner_1.setValue(100);
-            movementCheckbox.addItemListener(e -> spinner.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
-            iterCheckbox.addItemListener(e -> spinner_1.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
+            movementCheckbox.addItemListener(e -> nodeMovementSpinner.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
+            iterCheckbox.addItemListener(e -> iterationsSpinner.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
+
             setBackground(null);
             movementCheckbox.setBackground(null);
             iterCheckbox.setBackground(null);
@@ -358,22 +385,21 @@ public class StressMinParamModel {
 
         public int getNodeMovementThreshold() {
             try {
-                spinner.commitEdit();
+                nodeMovementSpinner.commitEdit();
             } catch (ParseException e) {
                 MainFrame.showMessage("Error parsing node movement threshold", MessageType.ERROR);
             }
-            return (int) spinner.getValue();
+            return (int) nodeMovementSpinner.getValue();
         }
 
         public int getMaxIterations() {
             try {
-                spinner_1.commitEdit();
+                iterationsSpinner.commitEdit();
             } catch (ParseException e) {
                 MainFrame.showMessage("Error parsing max iterations", MessageType.ERROR);
             }
-            return (int) spinner_1.getValue();
+            return (int) iterationsSpinner.getValue();
         }
 
     }
-
 }
