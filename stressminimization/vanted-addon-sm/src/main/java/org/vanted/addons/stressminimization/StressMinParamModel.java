@@ -305,10 +305,8 @@ public class StressMinParamModel {
         }
 
         public double getValue() {
-            int val = slider.getValue();
-            if (val == -9) return 0;
-                // note that values are negative
-            else return Math.pow(10, slider.getValue());
+            // note that values are negative
+            return Math.pow(10, slider.getValue());
         }
     }
 
