@@ -321,6 +321,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			int numberOfLandmarks =
 					(int) Math.floor(component.size() * params.methodRadioGroup.getSliderValuePos());
+			numberOfLandmarks = Math.max(component.size(), numberOfLandmarks);
 			numberOfLandmarks = Math.min(2, numberOfLandmarks);
 
 			int nodeMovementThreshold = (params.terminationCheckboxGroup.nodeThresholdActive()) ?
@@ -332,6 +333,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			StressMinimizationImplementation impl = new StressMinimizationImplementation(
 					component.nodes,
 					this,
+					params.methodRadioGroup.useLandmarks(),
 					numberOfLandmarks,
 					params.methodAlphaGroup.getAlpha(),
 					params.terminationStressChangeGroup.getValue(),

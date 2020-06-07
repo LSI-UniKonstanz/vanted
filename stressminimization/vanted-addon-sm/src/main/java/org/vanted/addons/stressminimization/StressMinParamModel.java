@@ -147,6 +147,10 @@ public class StressMinParamModel {
             return radios.getSelected();
         }
 
+        public boolean useLandmarks() {
+            return (radios.getSelected() == MethodOption.landmarksOnly);
+        }
+
         public double getSliderValue() {
             return (double) percSlider.getValue() / 100;
         }
