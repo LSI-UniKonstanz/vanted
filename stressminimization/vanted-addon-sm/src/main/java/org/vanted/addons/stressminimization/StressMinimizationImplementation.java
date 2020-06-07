@@ -27,7 +27,6 @@ class StressMinimizationImplementation {
 	private final int numberOfLandmarks;
 	private final int alpha;
 	private final double stressChangeEpsilon;
-	private final double initialStressPercentage;
 	private final double minimumNodeMovementThreshold;
 	private final double iterationsThreshold;
 	private final boolean useLandmarks;
@@ -41,8 +40,6 @@ class StressMinimizationImplementation {
 	 * @param numberOfLandmarks
 	 * @param alpha                        alpha exponent for weighting.
 	 * @param stressChangeEpsilon          Stress change threshold below which execution will be terminated
-	 * @param initialStressPercentage      The initial stress percentage below which execution will be
-	 *                                     terminated
 	 * @param minimumNodeMovementThreshold The minimum node movement threshold below which execution will be
 	 *                                     terminated
 	 * @param iterationsThreshold          The maximal number of iterations above which execution will be
@@ -55,7 +52,6 @@ class StressMinimizationImplementation {
 			int numberOfLandmarks,
 			int alpha,
 			double stressChangeEpsilon,
-			double initialStressPercentage,
 			double minimumNodeMovementThreshold,
 			double iterationsThreshold
 	) {
@@ -70,7 +66,6 @@ class StressMinimizationImplementation {
 		this.numberOfLandmarks = numberOfLandmarks;
 		this.alpha = alpha;
 		this.stressChangeEpsilon = stressChangeEpsilon;
-		this.initialStressPercentage = initialStressPercentage;
 		this.minimumNodeMovementThreshold = minimumNodeMovementThreshold;
 		this.iterationsThreshold = iterationsThreshold;
 	}
@@ -185,8 +180,7 @@ class StressMinimizationImplementation {
 				selectedToSelectedDistances,
 				weights);
 		// todo (review bm) complete mess of local and instance variables
-		final double initialStress = optim.calcStress();
-		final double stressThreshold = initialStress * (initialStressPercentage / 100);
+		final double initialStress = optimiser.calcStress();
 		int iterationCount = 0;
 		double newStress, prevStress = initialStress;
 		RealMatrix prevLayout = selectedNodesLayout;
@@ -203,7 +197,7 @@ class StressMinimizationImplementation {
 			setLayout(selectedNodes, selectedToAllDistances, selectedNodesLayout);
 			newStress = optimiser.calcStress();
 
-			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, selectedNodesLayout, iterationCount, stressThreshold);
+			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, selectedNodesLayout, iterationCount);
 			callingLayout.setIterationProgress(newStress, initialStress, iterationCount);
 			prevLayout = selectedNodesLayout;
 			prevStress = newStress;
@@ -216,23 +210,21 @@ class StressMinimizationImplementation {
 
 
 	/**
-	 * Checks all termination criteria.
-	 * If one criterion meets the input values the method will return true,
+	 * Checks all termination criteria. If one criterion meets the input values the method will return true,
 	 * indicating the algorithm to terminate.
-	 * @param prevStress Stress of the previous layout
-	 * @param newStress Stress of the updated layout
-	 * @param layout The new layout
-	 * @param interationCount Number of iterations done so far
-	 * @param stressThreshold stress threshold
+	 *
+	 * @param prevStress     Stress of the previous layout
+	 * @param newStress      Stress of the updated layout
+	 * @param prevLayout     previous layout
+	 * @param newLayout      The new layout
+	 * @param iterationCount Number of iterations done so far
 	 * @return Whether one criterion was met.
 	 */
-	private boolean checkTerminationCriteria(double prevStress, double newStress, RealMatrix prevLayout, RealMatrix newLayout, long iterationCount, double stressThreshold) {
+	private boolean checkTerminationCriteria(double prevStress, double newStress, RealMatrix prevLayout, RealMatrix newLayout, long iterationCount) {
 
 		boolean terminate = false;
 
 		terminate |= (prevStress - newStress) / prevStress < stressChangeEpsilon;
-
-		terminate |= newStress <= stressThreshold;
 
 		terminate |= iterationCount >= iterationsThreshold;
 
