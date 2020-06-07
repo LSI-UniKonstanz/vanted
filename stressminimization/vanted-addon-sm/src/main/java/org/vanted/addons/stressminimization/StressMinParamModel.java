@@ -103,7 +103,13 @@ public class StressMinParamModel {
             this.setMaximum(100);
             this.setMinorTickSpacing(5);
             this.setMajorTickSpacing(25);
-            this.setLabelTable(this.createStandardLabels(25));
+            Dictionary sliderLabels = new Hashtable();
+            sliderLabels.put(0, new JLabel("0%"));
+            sliderLabels.put(25, new JLabel("25%"));
+            sliderLabels.put(50, new JLabel("50%"));
+            sliderLabels.put(75, new JLabel("75%"));
+            sliderLabels.put(100, new JLabel("100%"));
+            this.setLabelTable(sliderLabels);
             this.setPaintLabels(true);
             this.setPaintTicks(true);
         }
