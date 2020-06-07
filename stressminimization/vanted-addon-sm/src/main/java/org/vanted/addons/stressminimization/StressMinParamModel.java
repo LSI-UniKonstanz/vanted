@@ -206,6 +206,7 @@ public class StressMinParamModel {
             add(horizontalGlue_1, gbc_horizontalGlue_1);
 
             spinner = new JSpinner(new SpinnerNumberModel(-2, -2, 0, 1));
+            spinner.setValue(-2);
             GridBagConstraints gbc_spinner = new GridBagConstraints();
             gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
             gbc_spinner.insets = new Insets(0, 0, 0, 5);
