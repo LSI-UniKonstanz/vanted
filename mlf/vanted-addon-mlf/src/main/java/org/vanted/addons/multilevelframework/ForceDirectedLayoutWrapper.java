@@ -60,16 +60,6 @@ public class ForceDirectedLayoutWrapper extends ThreadSafeAlgorithm {
 
     private void executeWithOptions(ThreadSafeOptions options) {
         options.temp_alpha = 0.98;// not sure why this is helpful but patternspringembedder does it too
-        // The class ThreadSafeOptions is a horrible mess!
-        options.setDval(myOp.DvalIndexSliderZeroLength, zeroLength);
-        options.setDval(myOp.DvalIndexSliderStiffness, stiffness);
-        options.setDval(myOp.DvalIndexSliderHorForce, horForce);
-        options.setDval(myOp.DvalIndexSliderVertForce, vertForce);
-        options.doMultiplyByNodeDegree = considerNodeDegree;
-        options.temperature_max_move = progress;
-        options.borderForce = borderForce;
-        options.setBval(6, gridForce);
-        options.doFinishRemoveOverlapp = nodeOverlap;
 
         MyNonInteractiveSpringEmb mse = new MyNonInteractiveSpringEmb(
                 options.getGraphInstance(),
@@ -92,6 +82,17 @@ public class ForceDirectedLayoutWrapper extends ThreadSafeAlgorithm {
     @Override
     public void execute() {
         ThreadSafeOptions options = MyNonInteractiveSpringEmb.getNewThreadSafeOptionsWithDefaultSettings();
+        // set additional parameters not covered by forceDirectedAlg.getParameters, .setParameters
+        // (which would populate the ThreadSafeOptions with the values of the parameteres)
+        options.setDval(myOp.DvalIndexSliderZeroLength, zeroLength);
+        options.setDval(myOp.DvalIndexSliderStiffness, stiffness);
+        options.setDval(myOp.DvalIndexSliderHorForce, horForce);
+        options.setDval(myOp.DvalIndexSliderVertForce, vertForce);
+        options.doMultiplyByNodeDegree = considerNodeDegree;
+        options.temperature_max_move = progress;
+        options.borderForce = borderForce;
+        options.setBval(6, gridForce);
+        options.doFinishRemoveOverlapp = nodeOverlap;
         this.executeWithOptions(options);
     }
 
