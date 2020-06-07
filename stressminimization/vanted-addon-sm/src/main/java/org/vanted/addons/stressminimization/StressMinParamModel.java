@@ -244,7 +244,7 @@ public class StressMinParamModel {
             } catch (ParseException e) {
                 MainFrame.showMessage("Error parsing alpha value", MessageType.ERROR);
             }
-            return (int) spinner.getValue();
+            return (int) spinner.getValue() * (-1);
         }
     }
 
