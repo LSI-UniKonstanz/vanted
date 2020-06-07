@@ -319,10 +319,16 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				return;
 			}
 
+			boolean useLandmarks = params.methodRadioGroup.useLandmarks();
+
 			int numberOfLandmarks =
 					(int) Math.floor(component.size() * params.methodRadioGroup.getSliderValuePos());
-			numberOfLandmarks = Math.max(component.size(), numberOfLandmarks);
-			numberOfLandmarks = Math.min(2, numberOfLandmarks);
+			numberOfLandmarks = Math.min(component.size(), numberOfLandmarks);
+			if (numberOfLandmarks >= component.size()) {
+				// do not do landmarked layout if all nodes are selected as landmarks
+				useLandmarks = false;
+			}
+			numberOfLandmarks = Math.max(2, numberOfLandmarks);
 
 			int nodeMovementThreshold = (params.terminationCheckboxGroup.nodeThresholdActive()) ?
 					params.terminationCheckboxGroup.getNodeMovementThreshold() : 0;
@@ -333,7 +339,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			StressMinimizationImplementation impl = new StressMinimizationImplementation(
 					component.nodes,
 					this,
-					params.methodRadioGroup.useLandmarks(),
+					useLandmarks,
 					numberOfLandmarks,
 					params.methodAlphaGroup.getAlpha(),
 					params.terminationStressChangeGroup.getValue(),
