@@ -256,16 +256,18 @@ public class StressMinParamModel {
 
         TerminationStressChangeGroup() {
             Dictionary labels = new Hashtable();
-            labels.put(-9, new JLabel("0"));
-            labels.put(-8, new JLabel("10\u207b\u2078"));
-            labels.put(-6, new JLabel("10\u207b\u2076"));
-            labels.put(-4, new JLabel("10\u207b\u2074"));
-            labels.put(-2, new JLabel("10\u207b\u00B2"));
+            // see https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts#Superscripts_and_subscripts_block
+            labels.put(-9, new JLabel("10\u207b\u2079"));
+            labels.put(-7, new JLabel("10\u207b\u2077"));
+            labels.put(-5, new JLabel("10\u207b\u2075"));
+            labels.put(-3, new JLabel("10\u207b\u00B3"));
+            labels.put(-1, new JLabel("10\u207b\u00B9"));
             slider.setMinimum(-9);
             slider.setMaximum(-1);
             slider.setMajorTickSpacing(1);
             slider.setLabelTable(labels);
             slider.setPaintLabels(true);
+            slider.setValue(-7);
             this.setBackground(null);
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             LabeledSlider withLabel = new LabeledSlider("Stress change threshold (always active):", slider);
