@@ -1,13 +1,15 @@
 package org.vanted.addons.stressminimization;
 
+import org.Vector2d;
+import org.graffiti.graph.Node;
+import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+
+import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.function.Supplier;
-
-import org.Vector2d;
-import org.graffiti.graph.Node;
-import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 
 /**
  * Algorithm which runs in the background and
@@ -148,6 +150,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 		this.stopped = true;
 	}
 
+
 	@Override
 	public void reset() {
 		super.reset();
@@ -156,25 +159,29 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 		this.status = null;
 		this.progress = 0.0;
 		this.layout = null;
-	}
+    }
 
-	public BackgroundStatus getStatus() {
-		return status;
-	}
+    public BackgroundStatus getStatus() {
+        return status;
+    }
 
-	public double getProgress() {
-		return progress;
-	}
+    public double getProgress() {
+        return progress;
+    }
 
-	public String getStatusDescription() {
-		return statusDescription;
-	}
 
-	public Supplier<HashMap<Node, Vector2d>> getLayout() {
-		return layout;
-	}
+    public abstract JComponent getParameterUI();
 
-	public boolean isPaused() {
+
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    public Supplier<HashMap<Node, Vector2d>> getLayout() {
+        return layout;
+    }
+
+    public boolean isPaused() {
 		return paused;
 	}
 

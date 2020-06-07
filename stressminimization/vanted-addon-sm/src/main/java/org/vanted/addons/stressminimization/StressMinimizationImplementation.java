@@ -1,12 +1,5 @@
 package org.vanted.addons.stressminimization;
 
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.DoubleUnaryOperator;
-import java.util.function.Supplier;
-
 import org.AttributeHelper;
 import org.Vector2d;
 import org.apache.commons.math3.linear.BlockRealMatrix;
@@ -15,6 +8,13 @@ import org.apache.commons.math3.linear.RealVector;
 import org.graffiti.graph.Node;
 import org.vanted.addons.indexednodes.IndexedGraphOperations;
 import org.vanted.addons.indexednodes.IndexedNodeSet;
+
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.Supplier;
 
 class StressMinimizationImplementation {
 
@@ -27,25 +27,34 @@ class StressMinimizationImplementation {
 	private final int numberOfLandmarks;
 	private final int alpha;
 	private final double stressChangeEpsilon;
-	private final double initialStressPercentage;
 	private final double minimumNodeMovementThreshold;
 	private final double iterationsThreshold;
+	private final boolean useLandmarks;
 
 	/**
-	 * Creates a new StressMinimizationImplementation working on the given list of nodes
-	 * and using callingLayout for pausing and stopping behavior
-	 * @param nodes The nodes to layout.
-	 * @param callingLayout The StressMinimizationLayout instance creating this instance
+	 * Creates a new StressMinimizationImplementation working on the given list of nodes and using
+	 * callingLayout for pausing and stopping behavior
+	 *
+	 * @param nodes                        The nodes to layout.
+	 * @param callingLayout                The StressMinimizationLayout instance creating this instance
 	 * @param numberOfLandmarks
-	 * @param alpha alpha exponent for weighting.
-	 * @param stressChangeEpsilon Stress change threshold below which execution will be terminated
-	 * @param initialStressPercentage The initial stress percentage below which execution will be terminated
-	 * @param minimumNodeMovementThreshold The minimum node movement threshold below which execution will be terminated
-	 * @param iterationsThreshold The maximal number of iterations above which execution will be terminated
+	 * @param alpha                        alpha exponent for weighting.
+	 * @param stressChangeEpsilon          Stress change threshold below which execution will be terminated
+	 * @param minimumNodeMovementThreshold The minimum node movement threshold below which execution will be
+	 *                                     terminated
+	 * @param iterationsThreshold          The maximal number of iterations above which execution will be
+	 *                                     terminated
 	 */
-	public StressMinimizationImplementation(IndexedNodeSet nodes, StressMinimizationLayout callingLayout,
-			int numberOfLandmarks, int alpha, double stressChangeEpsilon, double initialStressPercentage,
-			double minimumNodeMovementThreshold, double iterationsThreshold) {
+	public StressMinimizationImplementation(
+			IndexedNodeSet nodes,
+			StressMinimizationLayout callingLayout,
+			boolean useLandmarks,
+			int numberOfLandmarks,
+			int alpha,
+			double stressChangeEpsilon,
+			double minimumNodeMovementThreshold,
+			double iterationsThreshold
+	) {
 		super();
 
 		this.callingLayout = callingLayout;
@@ -53,14 +62,13 @@ class StressMinimizationImplementation {
 		this.nodes = nodes.setOfContainedNodesWithOwnIndices();
 		this.n = this.nodes.size();
 
+		this.useLandmarks = useLandmarks;
 		this.numberOfLandmarks = numberOfLandmarks;
 		this.alpha = alpha;
 		this.stressChangeEpsilon = stressChangeEpsilon;
-		this.initialStressPercentage = initialStressPercentage;
 		this.minimumNodeMovementThreshold = minimumNodeMovementThreshold;
 		this.iterationsThreshold = iterationsThreshold;
 	}
-
 
 
 	/**
@@ -71,12 +79,12 @@ class StressMinimizationImplementation {
 			return;
 		}
 
-		// this is merely a sanity check. If/how landmarks are used will be done
-		// via the algorithm parameters / GUI.
-		if (this.numberOfLandmarks >= n) {
-			calcOnAllNodes();
-		} else {
+		if (useLandmarks) {
+		    // sanity check
+			if (this.numberOfLandmarks >= n) return;
 			calcLandmarked(this.numberOfLandmarks);
+		} else {
+			calcOnAllNodes();
 		}
 	}
 
@@ -91,8 +99,6 @@ class StressMinimizationImplementation {
 
 	// todo (review bm) landmarks variant lacks documentation or citation
 	private void calcLandmarked(int numberOfLandmarks) {
-
-		System.out.println("baz");
 
 		callingLayout.setStatusDescription("Stress Minimization: selecting landmarks");
 
@@ -146,7 +152,6 @@ class StressMinimizationImplementation {
 		// remove the scaling that is done at the end of the layout process
 		// scaling down the positions also
 		// makes this algorithm work better with results from other algorithms
-		// todo (review bm) o.0
 		selectedNodesLayout = unscaleLayout(selectedNodesLayout);
 
 		// StressMajorizationLayoutCalculator isn't working well with layouts
@@ -170,25 +175,29 @@ class StressMinimizationImplementation {
 		// todo (review bm) same bad style -- dont need to instantiate a class, set parameters in constructor and
 		//   then call a method with "no" arguments -- this introduces unnecessary statefulness
 		// todo (review bm) naming
-		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(selectedNodesLayout, selectedToSelectedDistances, weights);
+		StressMajorizationLayoutCalculator optimiser = new StressMajorizationLayoutCalculator(
+				selectedNodesLayout,
+				selectedToSelectedDistances,
+				weights);
 		// todo (review bm) complete mess of local and instance variables
-		final double initialStress = optim.calcStress();
-		final double stressThreshold = initialStress * (initialStressPercentage / 100);
+		final double initialStress = optimiser.calcStress();
 		int iterationCount = 0;
 		double newStress, prevStress = initialStress;
 		RealMatrix prevLayout = selectedNodesLayout;
 		boolean terminate = false;
 
 		do { // todo (review bm) main loop of iterative optimisation
-			 // todo (review bm) formulation seems overly complicated
+			// todo (review bm) formulation seems overly complicated
 			iterationCount += 1;
-			if (callingLayout.waitIfPausedAndCheckStop()) { return; }
+			if (callingLayout.waitIfPausedAndCheckStop()) {
+				return;
+			}
 
-			selectedNodesLayout = optim.calcOptimizedLayout();
+			selectedNodesLayout = optimiser.calcOptimizedLayout();
 			setLayout(selectedNodes, selectedToAllDistances, selectedNodesLayout);
-			newStress = optim.calcStress();
+			newStress = optimiser.calcStress();
 
-			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, selectedNodesLayout, iterationCount, stressThreshold);
+			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, selectedNodesLayout, iterationCount);
 			callingLayout.setIterationProgress(newStress, initialStress, iterationCount);
 			prevLayout = selectedNodesLayout;
 			prevStress = newStress;
@@ -201,23 +210,21 @@ class StressMinimizationImplementation {
 
 
 	/**
-	 * Checks all termination criteria.
-	 * If one criterion meets the input values the method will return true,
+	 * Checks all termination criteria. If one criterion meets the input values the method will return true,
 	 * indicating the algorithm to terminate.
-	 * @param prevStress Stress of the previous layout
-	 * @param newStress Stress of the updated layout
-	 * @param layout The new layout
-	 * @param interationCount Number of iterations done so far
-	 * @param stressThreshold stress threshold
+	 *
+	 * @param prevStress     Stress of the previous layout
+	 * @param newStress      Stress of the updated layout
+	 * @param prevLayout     previous layout
+	 * @param newLayout      The new layout
+	 * @param iterationCount Number of iterations done so far
 	 * @return Whether one criterion was met.
 	 */
-	private boolean checkTerminationCriteria(double prevStress, double newStress, RealMatrix prevLayout, RealMatrix newLayout, long iterationCount, double stressThreshold) {
+	private boolean checkTerminationCriteria(double prevStress, double newStress, RealMatrix prevLayout, RealMatrix newLayout, long iterationCount) {
 
 		boolean terminate = false;
 
 		terminate |= (prevStress - newStress) / prevStress < stressChangeEpsilon;
-
-		terminate |= newStress <= stressThreshold;
 
 		terminate |= iterationCount >= iterationsThreshold;
 
@@ -225,12 +232,11 @@ class StressMinimizationImplementation {
 		// if the threshold is != 0
 		// (actually 1e-25; double comparison with threshold)
 		// since the check has O(n) time complexity
-
 		if (minimumNodeMovementThreshold > 1e-25) {
 			double maxMovement = 0.0;
 			for (int i = 0; i < newLayout.getRowDimension(); i += 1) {
 				double movement = prevLayout.getRowVector(i).getDistance(newLayout.getRowVector(i));
-				maxMovement = movement > maxMovement ? movement : maxMovement;
+				maxMovement = Math.max(movement, maxMovement);
 			}
 			terminate |= maxMovement <= minimumNodeMovementThreshold;
 		}
@@ -238,10 +244,6 @@ class StressMinimizationImplementation {
 		return terminate;
 
 	}
-
-	// ========================
-	// MARK: landmark selection
-	// ========================
 
 	/**
 	 * Selects the next landmark on basis of the MaxMin distance method.
@@ -309,10 +311,6 @@ class StressMinimizationImplementation {
 		return nextLandmark;
 
 	}
-
-	// =====================================
-	// MARK: distance and weight calculation
-	// =====================================
 
 	/**
 	 * Calculates the distance matrix of the given nodes set.
@@ -497,10 +495,7 @@ class StressMinimizationImplementation {
 
 		}
 
-
-
 		return barycenterLayout;
-
 	}
 
 }
