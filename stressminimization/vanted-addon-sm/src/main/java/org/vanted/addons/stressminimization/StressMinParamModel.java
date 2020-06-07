@@ -15,7 +15,9 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * This is the "model" (in a stateful sense) representing the current settings of the algorithm.
+ * This class represents the GUI and at the same time the "model" of the algorithm
+ * settings/options/parameters. Note that we entirely omit the ThreadSafeOptions object and use this here
+ * object to manage options.
  */
 public class StressMinParamModel {
 

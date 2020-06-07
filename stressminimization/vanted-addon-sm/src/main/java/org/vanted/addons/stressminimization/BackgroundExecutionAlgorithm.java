@@ -37,7 +37,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 /**
- * Executes a BackgroundAlgorithm and manage the GUI interaction.
+ * This class handles the execution of a given {@link BackgroundAlgorithm} in the background, i.e.
+ * asynchroneously. This class is an instance of ThreadSafeAlgorithm in order to provide a more flexible
+ * options UI in the sidebar.
  */
 public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements PropertyChangeListener, SessionListener {
 
@@ -198,57 +200,50 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		final BackgroundTaskStatusProviderSupportingExternalCall provider = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Computing Layout", "Stress minimization progress:");
 
-		Runnable myTask = new Runnable() {
-			@Override
-			public void run() {
-				provider.setCurrentStatusValue(0);
-				int currentStatus = 0;
-				//double a = Math.pow(10, -8);
-				//double b = Math.pow(10, 10);
-				while(algorithm.getStatus() != BackgroundStatus.FINISHED) {
-					try {
-						Thread.sleep(100);
+		Runnable myTask = () -> {
+			provider.setCurrentStatusValue(0);
+			int currentStatus = 0;
+			while (algorithm.getStatus() != BackgroundStatus.FINISHED) {
+				try {
+					Thread.sleep(100);
 
-						//Exponential growth. a and b are chosen so
-						//the following points hold: (0/0), (1/100), (0.9/10)
-						//currentStatus = (int) (a * Math.pow(b, algorithm.getProgress() - a));
-						if (currentStatus < 0) {
-							currentStatus = 0;
-						}
-						// First 10% get the first 10%
-						if (algorithm.getProgress() < 1.0) {
-							currentStatus = (int) (algorithm.getProgress() * 100);
-						}
-						//First 90% get 40% in the progress bar
-						if (algorithm.getProgress() < 0.9) {
-							currentStatus = (int) (algorithm.getProgress() * 100 * 0.4 + 10);
-						}
-						//90-99 get 30% in the progress bar
-						else if (algorithm.getProgress() < 0.99) {
-							currentStatus = (int) ((algorithm.getProgress() - 0.9) * 1000 * 0.3 + 50);
-						}
-						//99-100 get 20% in the progress bar
-						else if (algorithm.getProgress() < 0.999) {
-							currentStatus = (int) ((algorithm.getProgress() - 0.99) * 10000 * 0.2 + 80);
-						}
-
-						provider.setCurrentStatusValue(currentStatus);
-						if (provider.wantsToStop()) {
-							algorithm.stop();
-						}
-
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					//Exponential growth. a and b are chosen so
+					//the following points hold: (0/0), (1/100), (0.9/10)
+					//currentStatus = (int) (a * Math.pow(b, algorithm.getProgress() - a));
+					if (currentStatus < 0) {
+						currentStatus = 0;
 					}
+					// First 10% get the first 10%
+					if (algorithm.getProgress() < 1.0) {
+						currentStatus = (int) (algorithm.getProgress() * 100);
+					}
+					//First 90% get 40% in the progress bar
+					if (algorithm.getProgress() < 0.9) {
+						currentStatus = (int) (algorithm.getProgress() * 100 * 0.4 + 10);
+					}
+					//90-99 get 30% in the progress bar
+					else if (algorithm.getProgress() < 0.99) {
+						currentStatus = (int) ((algorithm.getProgress() - 0.9) * 1000 * 0.3 + 50);
+					}
+					//99-100 get 20% in the progress bar
+					else if (algorithm.getProgress() < 0.999) {
+						currentStatus = (int) ((algorithm.getProgress() - 0.99) * 10000 * 0.2 + 80);
+					}
+
+					provider.setCurrentStatusValue(currentStatus);
+					if (provider.wantsToStop()) {
+						algorithm.stop();
+					}
+
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		};
 
 		// the task which will be executed even if the user has stopped the
 		// thread
-		Runnable myFinishTask = new Runnable() {
-			@Override
-			public void run() {}
+		Runnable myFinishTask = () -> {
 		};
 
 		reset();
@@ -257,39 +252,30 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		graph = GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
 		selection = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();
 
-		Runnable algoExecution = new Runnable() {
-			@Override
-			public void run() {
-
-				attach(graph, selection);
-				try {
-					check();
-				} catch (PreconditionException e) {
-					ErrorMsg.addErrorMessage(e.getMessage());
-					setStatus(BackgroundStatus.FINISHED);
-					return;
-				}
-
-				// we can probably exchange this here to update/create
-				// a ThreadSafeOptions object from the new UI and give it to
-				// the modified StressMinimizationLayout
-
-				setParameters(paramPanel.getUpdatedParameters());
-				// calls algorithm.setParameters(...)
-
-				try {
-					execute();
-				} catch (OutOfMemoryError error) {
-					ErrorMsg.addErrorMessage("We ran out of memory! Pleace increase heap memory of the JVM");
-					algorithm.reset();
-				} catch (Exception ex) {
-					ErrorMsg.addErrorMessage("Failed to calculate layout: " + ex.getMessage());
-					algorithm.reset();
-				} finally {
-					setStatus(BackgroundStatus.FINISHED);
-				}
-
+		Runnable algoExecution = () -> {
+			attach(graph, selection);
+			try {
+				check();
+			} catch (PreconditionException e) {
+				ErrorMsg.addErrorMessage(e.getMessage());
+				setStatus(BackgroundStatus.FINISHED);
+				return;
 			}
+
+			setParameters(paramPanel.getUpdatedParameters());
+
+			try {
+				execute();
+			} catch (OutOfMemoryError error) {
+				ErrorMsg.addErrorMessage("We ran out of memory! Please increase heap memory of the JVM");
+				algorithm.reset();
+			} catch (Exception ex) {
+				ErrorMsg.addErrorMessage("Failed to calculate layout: " + ex.getMessage());
+				algorithm.reset();
+			} finally {
+				setStatus(BackgroundStatus.FINISHED);
+			}
+
 		};
 		Thread backgroundTask = new Thread(algoExecution);
 		backgroundTask.setName(algorithm.getName()+" background execution");
@@ -355,17 +341,15 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		return algorithm.mayWorkOnMultipleGraphs();
 	}
 
+	/**
+	 * See readme for context
+	 *
+	 * @param threadSafeOptions
+	 * @param jc
+	 * @return
+	 */
 	@Override
 	public boolean setControlInterface(ThreadSafeOptions threadSafeOptions, JComponent jc) {
-		// This method receives a ThreadSafeOptions object (it will be supplied from
-		// outside). Its purpose is to store options (parameters) to the algorithm (in
-		// a thread-safe manner, as it seems).
-		// The intended usage of this method is
-		//  * to construct a GUI and attach it to `jc`
-		//  * fill it with values from `options` and update the
-		//    state of `options` every time a value is modified (event listeners on control fields).
-		// cf. RotateAlgorithm, PatternSpringEmbedder
-
 
 		SingleFiledLayout sfl = new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 1);
 
@@ -426,13 +410,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		jc.add(algorithm.getParameterUI());
 
 		jc.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-/*
-		//add parameter panel to component
-		if(paramPanel!=null) {
-			jc.add(parameterPanel);
-		}
-*/
 
 		return true;
 	}

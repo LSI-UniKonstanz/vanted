@@ -157,7 +157,6 @@ class StressMinimizationImplementation {
 		// remove the scaling that is done at the end of the layout process
 		// scaling down the positions also
 		// makes this algorithm work better with results from other algorithms
-		// todo (review bm) o.0
 		selectedNodesLayout = unscaleLayout(selectedNodesLayout);
 
 		// StressMajorizationLayoutCalculator isn't working well with layouts
@@ -181,7 +180,10 @@ class StressMinimizationImplementation {
 		// todo (review bm) same bad style -- dont need to instantiate a class, set parameters in constructor and
 		//   then call a method with "no" arguments -- this introduces unnecessary statefulness
 		// todo (review bm) naming
-		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(selectedNodesLayout, selectedToSelectedDistances, weights);
+		StressMajorizationLayoutCalculator optimiser = new StressMajorizationLayoutCalculator(
+				selectedNodesLayout,
+				selectedToSelectedDistances,
+				weights);
 		// todo (review bm) complete mess of local and instance variables
 		final double initialStress = optim.calcStress();
 		final double stressThreshold = initialStress * (initialStressPercentage / 100);
@@ -191,13 +193,15 @@ class StressMinimizationImplementation {
 		boolean terminate = false;
 
 		do { // todo (review bm) main loop of iterative optimisation
-			 // todo (review bm) formulation seems overly complicated
+			// todo (review bm) formulation seems overly complicated
 			iterationCount += 1;
-			if (callingLayout.waitIfPausedAndCheckStop()) { return; }
+			if (callingLayout.waitIfPausedAndCheckStop()) {
+				return;
+			}
 
-			selectedNodesLayout = optim.calcOptimizedLayout();
+			selectedNodesLayout = optimiser.calcOptimizedLayout();
 			setLayout(selectedNodes, selectedToAllDistances, selectedNodesLayout);
-			newStress = optim.calcStress();
+			newStress = optimiser.calcStress();
 
 			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, selectedNodesLayout, iterationCount, stressThreshold);
 			callingLayout.setIterationProgress(newStress, initialStress, iterationCount);
@@ -236,12 +240,11 @@ class StressMinimizationImplementation {
 		// if the threshold is != 0
 		// (actually 1e-25; double comparison with threshold)
 		// since the check has O(n) time complexity
-
 		if (minimumNodeMovementThreshold > 1e-25) {
 			double maxMovement = 0.0;
 			for (int i = 0; i < newLayout.getRowDimension(); i += 1) {
 				double movement = prevLayout.getRowVector(i).getDistance(newLayout.getRowVector(i));
-				maxMovement = movement > maxMovement ? movement : maxMovement;
+				maxMovement = Math.max(movement, maxMovement);
 			}
 			terminate |= maxMovement <= minimumNodeMovementThreshold;
 		}
@@ -249,10 +252,6 @@ class StressMinimizationImplementation {
 		return terminate;
 
 	}
-
-	// ========================
-	// MARK: landmark selection
-	// ========================
 
 	/**
 	 * Selects the next landmark on basis of the MaxMin distance method.
@@ -320,10 +319,6 @@ class StressMinimizationImplementation {
 		return nextLandmark;
 
 	}
-
-	// =====================================
-	// MARK: distance and weight calculation
-	// =====================================
 
 	/**
 	 * Calculates the distance matrix of the given nodes set.
@@ -508,10 +503,7 @@ class StressMinimizationImplementation {
 
 		}
 
-
-
 		return barycenterLayout;
-
 	}
 
 }

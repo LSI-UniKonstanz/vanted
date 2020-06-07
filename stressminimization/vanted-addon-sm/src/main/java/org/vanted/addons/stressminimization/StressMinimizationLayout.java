@@ -273,17 +273,15 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		setStatusDescription("Stress Minimization: calculating components");
 		List<IndexedComponent> components = IndexedGraphOperations.getComponents(workNodes);
 
-		// NOTE: applying the final nodes position updates in this class
+		// Applying the final nodes position updates in this class
 		// has the benefit that the algorithm is more easy usable by the Multilevel Framework
-		HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
+		HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<>();
 
-        for (IndexedComponent component : components) {
+		for (IndexedComponent component : components) {
 			if (waitIfPausedAndCheckStop()) {
 				return;
 			}
 			setStatusDescription("Stress Minimization: layouting next component");
-
-			// todo (review bm) weird control flow; should be split up into more methods
 
 			boolean useLandmarks = params.methodRadioGroup.useLandmarks();
 
@@ -309,7 +307,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 					numberOfLandmarks,
 					params.methodAlphaGroup.getAlpha(),
 					params.terminationStressChangeGroup.getValue(),
-					0, // todo
 					nodeMovementThreshold,
 					iterThreshold
 			);
