@@ -36,7 +36,7 @@ public class LayoutAlgorithmWrapper {
     // some algorithms, e.g. PatternSpringembedder provide two GUIs: one using Parameter objects and one using
     // ThreadSafeAlgorithm.setControlInterface
     // this boolean is to choose which one to use
-    private boolean threadSafeGUI = false;
+    private boolean useThreadSafeGUI = false;
     /**
      * Layout algorithms that can be used with the MLF. They are identified by their
      * return value of <code>getName</code>.
@@ -57,7 +57,7 @@ public class LayoutAlgorithmWrapper {
             "Stress Minimization" + " (\"thread-safe\" GUI)",
             "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps");
     // stores the last returned parameter GUI so the parameters can be retrieved
-    private ParameterEditPanel oldGUI = null;
+    private ParameterEditPanel oldParameterGUI = null;
     // keeps track of whether or not the "thread safe" GUI was called
     // if not, it needs to be generated because it starts a timer that affects the algorithm's execution
     private boolean getThreadSafeGUITimerStarted = false;
@@ -96,7 +96,7 @@ public class LayoutAlgorithmWrapper {
             throw new IllegalArgumentException("LayoutAlgorithmWrapper can only use the useThreadSafeGUI option "
                     + "for ThreadSafeAlgorithms.");
         }
-        this.threadSafeGUI = useThreadSafeGUI;
+        this.useThreadSafeGUI = useThreadSafeGUI;
         this.guiName = guiName == null ?
                 Objects.toString(algorithm.getName(), algorithm.getClass().getSimpleName()) : guiName;
         if (this.guiName.trim().isEmpty()) {
@@ -210,7 +210,7 @@ public class LayoutAlgorithmWrapper {
      * @author Gordian
      */
     public JComponent getGUI() {
-        if (this.algorithm instanceof ThreadSafeAlgorithm && this.threadSafeGUI) {
+        if (this.algorithm instanceof ThreadSafeAlgorithm && this.useThreadSafeGUI) {
             ThreadSafeAlgorithm tsa = (ThreadSafeAlgorithm) this.algorithm;
             if (this.threadSafeOptions == null) {
                 this.threadSafeOptions = new ThreadSafeOptions();
@@ -221,7 +221,7 @@ public class LayoutAlgorithmWrapper {
             this.getThreadSafeGUITimerStarted = true;
             if (this.oldThreadSafeGUI == null) {
                 this.threadSafeOptions = null;
-                this.threadSafeGUI = false;
+                this.useThreadSafeGUI = false;
                 this.getParametersCalled = false;
             } else {
                 return this.oldThreadSafeGUI;
@@ -246,7 +246,7 @@ public class LayoutAlgorithmWrapper {
      * @author Gordian
      */
     public void execute(Graph graph, Selection selection) {
-        if (this.threadSafeGUI && this.algorithm instanceof ThreadSafeAlgorithm) {
+        if (this.useThreadSafeGUI && this.algorithm instanceof ThreadSafeAlgorithm) {
             try {
                 if (this.threadSafeOptions == null) {
                     this.threadSafeOptions = new ThreadSafeOptions();
@@ -292,8 +292,8 @@ public class LayoutAlgorithmWrapper {
         }
         this.algorithm.reset();
         // set parameters in case the user changed them using the "parameter" GUI
-        if (!this.threadSafeGUI && this.oldGUI != null) {
-            this.algorithm.setParameters(this.oldGUI.getUpdatedParameters());
+        if (!this.useThreadSafeGUI && this.oldParameterGUI != null) {
+            this.algorithm.setParameters(this.oldParameterGUI.getUpdatedParameters());
         }
         this.algorithm.attach(graph, selection);
         try {
@@ -352,9 +352,9 @@ public class LayoutAlgorithmWrapper {
 
         ParameterEditPanel paramPanel;
         algorithm.attach(LayoutAlgorithmWrapper.dummyGraph, LayoutAlgorithmWrapper.dummySelection);
-        if (this.oldGUI != null) {
-            this.algorithm.setParameters(this.oldGUI.getUpdatedParameters());
-            return this.oldGUI;
+        if (this.oldParameterGUI != null) {
+            this.algorithm.setParameters(this.oldParameterGUI.getUpdatedParameters());
+            return this.oldParameterGUI;
         }
         this.getParametersCalled = true;
         if (algorithm.getParameters() != null) {
@@ -371,7 +371,7 @@ public class LayoutAlgorithmWrapper {
 
         progressAndStatus.validate();
 
-        this.oldGUI = paramPanel;
+        this.oldParameterGUI = paramPanel;
 
         return new JScrollPane(progressAndStatus);
     }
@@ -386,7 +386,7 @@ public class LayoutAlgorithmWrapper {
                 "algorithm=" + algorithm +
                 ", threadSafeOptions=" + threadSafeOptions +
                 ", getParametersCalled=" + getParametersCalled +
-                ", threadSafeGUI=" + threadSafeGUI +
+                ", threadSafeGUI=" + useThreadSafeGUI +
                 ", guiName='" + guiName + '\'' +
                 '}';
     }

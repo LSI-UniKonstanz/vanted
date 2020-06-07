@@ -38,6 +38,7 @@ public class ForceDirectedLayoutWrapper extends ThreadSafeAlgorithm {
 
     ThreadSafeAlgorithm forceDirectedAlg;
 
+    // populated by setParameters in case we do not use the threadSafeOptions variant
     private double zeroLength;
     private double stiffness;
     private double horForce;
