@@ -62,11 +62,6 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 	private final String colorBackgroundStart = "#8C8C8C";
 	private final String colorBackgroundEnd = "#3F3F3F";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		final ArrayList<EditorSession> ws = new ArrayList<EditorSession>();
 		for (EditorSession es : sortByFileName(MainFrame.getEditorSessions())) {
