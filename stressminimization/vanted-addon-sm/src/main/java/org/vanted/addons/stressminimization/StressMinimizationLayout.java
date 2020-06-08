@@ -307,6 +307,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 					numberOfLandmarks,
 					params.methodAlphaGroup.getAlpha(),
 					params.terminationStressChangeGroup.getValue(),
+					0,
 					nodeMovementThreshold,
 					iterThreshold
 			);
