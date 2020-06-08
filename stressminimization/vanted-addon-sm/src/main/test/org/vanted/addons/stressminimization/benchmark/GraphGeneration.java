@@ -381,8 +381,6 @@ public class GraphGeneration {
 
     }
 
-    // MARK: Utils
-
     private class Triangle {
         public final Node corner1;
         public final Node corner2;

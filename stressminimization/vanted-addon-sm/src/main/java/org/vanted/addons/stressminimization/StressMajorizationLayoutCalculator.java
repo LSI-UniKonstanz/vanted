@@ -96,22 +96,12 @@ class StressMajorizationLayoutCalculator {
 		return this.layout;
 	}
 
-	// =====================
-	// MARK: "cached" values
-	// =====================
-	// this section contains variables that are constant through the entire optimization process
-	// or during one optimization iteration.
-	// naming is according to paper
-
 	// constant through whole process:
 	private final RealMatrix LW;
 
 	// updated for each new layout:
 	private RealMatrix LZ;
 
-	// ========================
-	// MARK: stress calculation
-	// ========================
 
 	/**
 	 * Calculates the stress for the stored layout using the formula
@@ -120,7 +110,6 @@ class StressMajorizationLayoutCalculator {
 	 * $$
 	 * @return The stress of the current layout.
 	 */
-	// todo (review bm) this could be pure
 	public double calcStress() {
 
 		double stress = 0;
@@ -137,8 +126,6 @@ class StressMajorizationLayoutCalculator {
 
 	}
 
-	// MARK: Layout calculation
-
 	/**
 	 * Optimizes the stored layout and updates it to the optimized version.
 	 */
@@ -149,52 +136,10 @@ class StressMajorizationLayoutCalculator {
 		return optimizedLayout;
 	}
 
-	// ===========================================
-	// Implementation using localized optimization
-	// ===========================================
-	// todo (review bm) unused code
-	private RealMatrix localizedOptimizationLayout() {
-
-		RealMatrix X = layout.copy();
-
-		for (int i = 0; i < n; i += 1) {
-			RealVector Xi = X.getRowVector(i);
-			for (int a = 0; a < d; a += 1) {
-				double numerator = 0;
-				double denominator = 0;
-				for (int j = 0; j < n; j += 1) {
-					if (j != i) {
-
-						// v = wij * (Xja + ((dij * (Xia - Xja)) * inv(||Xi - Xj||)))
-						double v;
-						v  = distances.getEntry(i, j);
-						v *= X.getEntry(i, a) - X.getEntry(j, a);
-						v *= inv( X.getRowVector(i).subtract(X.getRowVector(j)).getNorm() ); // getNorm calculates the L2 Norm in this case
-						v += X.getEntry(j, a);
-						v *= weights.getEntry(i, j);
-
-						numerator += v;
-						denominator += weights.getEntry(i, j);
-
-					}
-				}
-
-				// if no node was visisted, denominator will be 0,
-				// but we don't want to set the coordinate to NaN (result of division by zero)
-				double value = denominator != 0 ? numerator / denominator : 0;
-				Xi.setEntry(a, value);
-			}
-			X.setRowVector(i, Xi);
-		}
-
-		return X;
-	}
-
 	// =======================================
 	// Implementation using Conjugate Gradient
 	// =======================================
 
-	// todo (review bm) parameters?! compeletely scattered across all these embedded classes
 	private RealMatrix conjugateGradientLayout() {
 
 		final double CONVERGENCE_EPSILON = 1e-3;
@@ -213,7 +158,6 @@ class StressMajorizationLayoutCalculator {
 		for (int j = 0; j < d; j += 1) {
 
 			PointValuePair minimum = optimizer.optimize(
-					// todo (review bm) should we set maximum values here?
 					MaxEval.unlimited(),
 					MaxIter.unlimited(),
 					new InitialGuess(layout.getColumn(j)),
@@ -266,16 +210,14 @@ class StressMajorizationLayoutCalculator {
 				// variable naming after paper, see class javadoc
 				RealMatrix Xa = new BlockRealMatrix(n, 1);
 				Xa.setColumn(0, suggestedLayout);
-				// todo (review bm) what is this formula? where is it from?
-				//  -> we want to find the minimum of the quadratic form f'(X) whose derivative (gradient)
-				//     is L^w*X^(a) - L^Z*Z^(a) (our system)
-				//     because then f'(X) = 0 = L^w*X^(a) - L^Z*Z^(a), i.e. this solves the system
-				// 1/2 * Xa^T * LW * Xa - (LZ*Za)^T * Xa
-				return 0.5 * (Xa.transpose().multiply(LW).multiply(Xa)).getEntry(0, 0) - ( LZZaT.multiply(Xa)).getEntry(0, 0);
+				//  we want to find the minimum of the quadratic form f'(X) whose derivative (gradient)
+				//   is L^w*X^(a) - L^Z*Z^(a) (our system)
+				//   because then f'(X) = 0 = L^w*X^(a) - L^Z*Z^(a), i.e. this solves the system
+				// the below expression corresponds to 1/2 * Xa^T * LW * Xa - (LZ*Za)^T * Xa
+				return 0.5 * (Xa.transpose().multiply(LW).multiply(Xa)).getEntry(0, 0) - (LZZaT.multiply(Xa)).getEntry(0, 0);
 			}
 		}
 
-		// MARK: Gradient function
 		private class Gradient implements MultivariateVectorFunction {
 
 			private final RealMatrix LZZa;
@@ -298,10 +240,6 @@ class StressMajorizationLayoutCalculator {
 		}
 
 	}
-
-	// ================
-	// MARK: Primitives
-	// ================
 
 	private double inv(double x) {
 		return x != 0 ? 1/x : 0;

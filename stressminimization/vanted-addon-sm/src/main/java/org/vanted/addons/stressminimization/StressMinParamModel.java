@@ -300,7 +300,6 @@ public class StressMinParamModel {
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             LabeledSlider withLabel = new LabeledSlider("Stress change threshold (always active):", slider);
             withLabel.setAlignmentX(LEFT_ALIGNMENT);
-            // todo: construct this specific slider here
             this.add(withLabel);
         }
 

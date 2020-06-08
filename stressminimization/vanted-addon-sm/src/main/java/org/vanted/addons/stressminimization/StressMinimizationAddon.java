@@ -26,7 +26,6 @@ public class StressMinimizationAddon extends AddonAdapter {
 		valueEditComponents.put(SliderParameter.class, SliderComponent.class);
 		valueEditComponents.put(LandmarkParameter.class, LandmarkSliderComponent.class);
 
-		// todo (review bm) needed? does SM even use Indexed structures?
 		this.attributes = new Class[1];
 		this.attributes[0] = IndexAttribute.class;
 

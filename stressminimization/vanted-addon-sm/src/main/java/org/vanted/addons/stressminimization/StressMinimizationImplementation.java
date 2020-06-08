@@ -102,7 +102,6 @@ class StressMinimizationImplementation {
 		calcLayoutForSelectedNodes(nodes, allDistances, allDistances);
 	}
 
-	// todo (review bm) landmarks variant lacks documentation or citation
 	private void calcLandmarked(int numberOfLandmarks) {
 
 		callingLayout.setStatusDescription("Stress Minimization: selecting landmarks");
@@ -162,8 +161,6 @@ class StressMinimizationImplementation {
 		// StressMajorizationLayoutCalculator isn't working well with layouts
 		// in which too many nodes are placed to the same
 		// position. We add some "noise" to avoid this case
-		// todo (review bm) do this not always but only when variance is actually
-		//   small -- we can determine this somewhere else, dont have to do it here
 		for (int i = 0; i < selectedNodes.size(); i += 1) {
 			for (int a = 0; a < d; a += 1) {
 				double noisyPosition = selectedNodesLayout.getEntry(i, a) + Math.random() * 0.01 - 0.005;
@@ -171,20 +168,15 @@ class StressMinimizationImplementation {
 			}
 		}
 
-		// todo (review bm) need pause functionality?
 		if (callingLayout.waitIfPausedAndCheckStop()) {
 			return;
 		}
 		callingLayout.setStatusDescription("Stress Minimization: optimizing layout - preprocessing...");
 
-		// todo (review bm) same bad style -- dont need to instantiate a class, set parameters in constructor and
-		//   then call a method with "no" arguments -- this introduces unnecessary statefulness
-		// todo (review bm) naming
 		StressMajorizationLayoutCalculator optimiser = new StressMajorizationLayoutCalculator(
 				selectedNodesLayout,
 				selectedToSelectedDistances,
 				weights);
-		// todo (review bm) complete mess of local and instance variables
 		final double initialStress = optimiser.calcStress();
 		final double stressThreshold = initialStress * (initialStressPercentage / 100);
 		int iterationCount = 0;
@@ -192,8 +184,8 @@ class StressMinimizationImplementation {
 		RealMatrix prevLayout = selectedNodesLayout;
 		boolean terminate = false;
 
-		do { // todo (review bm) main loop of iterative optimisation
-			// todo (review bm) formulation seems overly complicated
+		// main loop of iterative optimisation
+		do {
 			iterationCount += 1;
 			if (callingLayout.waitIfPausedAndCheckStop()) {
 				return;
@@ -440,7 +432,6 @@ class StressMinimizationImplementation {
 		return newLayout;
 	}
 
-	// todo (review bm) separation of concerns
 	private void setLayout(final IndexedNodeSet landmarks, final RealMatrix landmarksToAllDistances, final RealMatrix landmarkLayout) {
 
 		Supplier<HashMap<Node, Vector2d>> layoutSupplier = () -> {

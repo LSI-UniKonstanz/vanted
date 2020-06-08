@@ -64,8 +64,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		return v != null;
 	}
 
-	// MARK: algorithm execution
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -299,7 +297,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			int iterThreshold = (params.terminationCheckboxGroup.iterThresholdActive()) ?
 					params.terminationCheckboxGroup.getMaxIterations() : Integer.MAX_VALUE;
 
-			// todo (review bm) pretty bad style...
 			StressMinimizationImplementation impl = new StressMinimizationImplementation(
 					component.nodes,
 					this,
@@ -396,7 +393,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		super.stop();
 	}
 
-	// todo (review bm) does this still make sense?
 	// the first 10% are reserved for distance calculation
 	// the remaining 90% are used for stress progress
 

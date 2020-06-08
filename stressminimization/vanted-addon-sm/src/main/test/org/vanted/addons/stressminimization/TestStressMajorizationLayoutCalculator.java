@@ -8,11 +8,7 @@ import org.junit.Test;
 
 public class TestStressMajorizationLayoutCalculator {
 
-	private static double inf = Double.POSITIVE_INFINITY;
-
-	// ===================================================
-	// MARK: test construction
-	// ===================================================
+	private static final double inf = Double.POSITIVE_INFINITY;
 
 	private static double[] flat(double[][] in) {
 
@@ -130,10 +126,6 @@ public class TestStressMajorizationLayoutCalculator {
 		}
 
 	}
-
-	// ===================================================
-	// MARK: test stress calculation
-	// ===================================================
 
 	@Test
 	public void testConstructionMissmatchingLayoutAndDistanceMatrix() {
@@ -355,10 +347,6 @@ public class TestStressMajorizationLayoutCalculator {
 
 	}
 
-	// ===================================================
-	// MARK: test layout calculation
-	// ===================================================
-
 	@Test
 	public void testStressCalculationSquare2() {
 
@@ -567,10 +555,6 @@ public class TestStressMajorizationLayoutCalculator {
 		assert (stress2 < stress1);
 
 	}
-
-	// ===================================================
-	// MARK: util
-	// ===================================================
 
 	@Test
 	public void testStressDecliningAfterLayoutCalculationSierpiskyTriangle() {
