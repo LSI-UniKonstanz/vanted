@@ -351,14 +351,19 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
 
-            // position connected components in the view.
-            // todo: get rid of duplicate code (ConnectedComponentsHelper)
-            Set<List<Node>> componentsByNodes = new HashSet<>(); // todo better DS?
-            componentBaseLevels.forEach((cpt) -> componentsByNodes.add(cpt.getNodes()));
-            ConnectedComponentsHelper.layoutConnectedComponents(
-                    componentsByNodes,
-                    true
+            // center graph layout
+            GravistoService.getInstance().runAlgorithm(
+                    new CenterLayouterAlgorithm(),
+                    graph,
+                    selection,
+                    null
             );
+
+            // remove space between components / remove overlapping
+            // do not run as regular algorithm, since that triggers a gui dialogue
+            // this means however, that we are also changing the positions of non selected nodes
+            ConnectedComponentLayout.layoutConnectedComponents(graph);
+
             graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
         };
 
