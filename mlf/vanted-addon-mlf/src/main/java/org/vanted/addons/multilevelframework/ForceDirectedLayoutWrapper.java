@@ -192,6 +192,5 @@ public class ForceDirectedLayoutWrapper extends ThreadSafeAlgorithm {
 
     @Override
     public void resetDataCache(ThreadSafeOptions options) {
-        // todo
     }
 }

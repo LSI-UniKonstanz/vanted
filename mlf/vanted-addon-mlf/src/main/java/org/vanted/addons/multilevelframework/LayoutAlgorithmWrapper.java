@@ -229,7 +229,6 @@ public class LayoutAlgorithmWrapper {
             tsa.reset();
         }
         JComponent res = getParameterGUI(this.algorithm);
-        // todo: needed?
         if (res != null) {
             res.setBackground(null);
         }
@@ -392,7 +391,7 @@ public class LayoutAlgorithmWrapper {
     }
 
     /**
-     * Execute the algorithm, assuming an empty selection todo: pull this up to interface?
+     * Execute the algorithm, assuming an empty selection
      *
      * @param graph
      */

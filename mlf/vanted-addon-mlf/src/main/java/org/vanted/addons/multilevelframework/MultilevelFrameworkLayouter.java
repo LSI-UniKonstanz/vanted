@@ -1,6 +1,8 @@
 package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.no_overlapp_as_tim.NoOverlappLayoutAlgorithmAS;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
@@ -10,6 +12,7 @@ import org.AttributeHelper;
 import org.FolderPanel;
 import org.JMButton;
 import org.Vector2d;
+import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.LoadSetting;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
@@ -22,7 +25,6 @@ import org.graffiti.session.Session;
 import org.vanted.addons.indexednodes.IndexedComponent;
 import org.vanted.addons.indexednodes.IndexedGraphOperations;
 import org.vanted.addons.indexednodes.IndexedNodeSet;
-import org.vanted.addons.multilevelframework.sm_util.ConnectedComponentsHelper;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -50,16 +52,12 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
     // Default names of the attributes that indicate to the algorithms that the graphs they work on
     // coarsened graph instead of the original graph. The algorithm can use this for optimizations.
     // Currently only used by Stress Minimization.
-    // TODO (bm review) these final fields should be put somewhere else
-    // TODO (bm review) dont really need these
     private final static String COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_LEVEL";
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
     private final static String COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH
             = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
 
     // add the default mergers and placers
-    // todo (review bm) this static initialiser is a cool thing but it is not
-    //  easy to see when exactly this will be modified (quick lookup says when class is "initialised")
     static {
         MultilevelFrameworkLayouter.mergers.add(new SolarMerger());
         MultilevelFrameworkLayouter.mergers.add(new RandomMerger());
@@ -127,8 +125,6 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
 
     /**
      * Make a status message for the GUI.
-     * <p>
-     * todo (review bm) javadoc
      */
     static String makeStatusMessage(int totalLevels, int currentLevel, int totalComponents,
                                     int currentComponent, String graphName) {
@@ -142,8 +138,7 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
     }
 
     /**
-     * Create a percentage for the GUI. Calculates the progress for the current connected component. todo
-     * (review bm) javadoc
+     * Create a percentage for the GUI. Calculates the progress for the current connected component.
      */
     static double calculateProgress(MultilevelGraph mlg, int numComponents,
                                     int currentIndex, int numberOfLevelsAtStart) {
@@ -217,17 +212,12 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
         // to work
         final Session oldSession = MainFrame.getInstance().getActiveSession();
         final View oldView = oldSession.getActiveView();
-        // all settings need to be stored as local variables, because the user might want to execute on multiple
-        // graphs at the same time with different settings, which would change the instance variables
-        // todo (review bm) cannot really guarantee that this is the case right now, check this
         final Selection selection = this.selection;
-        final boolean removeBends = true; // todo: remove
-        final boolean removeOverlaps = true; // todo: remove
         final boolean randomTop = this.parameterModel.layoutAlgGroup.isRandomTop();
         final Merger merger;
         final Placer placer;
         final LayoutAlgorithmWrapper layouter;
-        if (!this.benchmarkMode) { // otherwise the caller needs to set those values todo (bm review) not done?
+        if (!this.benchmarkMode) {
             merger = this.getSelectedMergerCopyAndSetParameters();
             placer = this.getSelectedPlacerCopyAndSetParameters();
             layouter = this.parameterModel.layoutAlgGroup.getSelected();
@@ -248,7 +238,6 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
         // if not, indicate that the MLF is running on the graph
         graph.setBoolean(WORKING_ATTRIBUTE_PATH, true);
 
-        // todo: use logger
         System.out.println("Running MLF using " + merger.getName() + ", " + placer.getName() + ", "
                 + layouter.getAlgorithm().getName());
 
@@ -259,9 +248,7 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
         final MLFBackgroundTaskStatus bts = new MLFBackgroundTaskStatus();
         // this is where all the work happens
         final Runnable mainTask = () -> {
-            if (removeBends) {
-                GraphHelper.removeAllBends(graph, true);
-            }
+            GraphHelper.removeAllBends(graph, true);
 
             // the connected components of the subgraph induced by the selection, of the
             // entire graph if there is no selection.
@@ -285,14 +272,10 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
                 componentBaseLevels.add(componentBaseLevel);
                 // we run the MLF on each CC separately -- hence one MultilevelGraph per CC
                 MultilevelGraph componentMLG = new MultilevelGraph(
-                        // todo: to avoid constructing entirely new graphs,
-                        //   but still support operating only on induced subgraphs,
-                        //   we would need a proper data structure for that
                         componentBaseLevel
                 );
 
                 merger.buildCoarseningLevels(componentMLG);
-                // TODO (bm review) would like componentMLG.coarsen(merger) better.
 
                 // keep track of how many nodes coarsening levels there were at the start (for the progress bar)
                 final int numLevelsAtStart = componentMLG.getNumberOfLevels();
@@ -315,12 +298,9 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
                     if (componentMLG.getTopLevel().getNumberOfNodes() >= 2) {
                         layouter.execute(componentMLG.getTopLevel());
                     }
-                    if (removeOverlaps) {
-                        removeOverlaps(componentMLG.getTopLevel());
-                    }
+                    removeOverlaps(componentMLG.getTopLevel());
                     placer.reduceCoarseningLevel(componentMLG);
                     // indicate that this is a coarsened graph to allow for optimizations in the level layouter
-                    // TODO (bm review) needed? i think any other level than the 1st one would be coarsened by construction
                     componentMLG.getTopLevel().setBoolean(COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
                     if (bts.stopRequested) {
                         bts.status = -1;
@@ -330,16 +310,13 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
                 }
 
                 // indicate that this is the bottom level
-                // TODO (bm review) naming -- what is top/bottom?
                 componentMLG.getTopLevel().setBoolean(COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
 
                 reportStatus(bts, numLevelsAtStart, componentMLG, components, currentComponentIndex);
 
                 layouter.execute(componentMLG.getTopLevel());
 
-                if (removeOverlaps) {
-                    removeOverlaps(componentMLG.getTopLevel());
-                }
+                removeOverlaps(componentMLG.getTopLevel());
 
                 reportDone(bts);
             }
@@ -357,7 +334,6 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
         };
 
         // this will be invoked when MLF is done
-        // todo (review bm) position this piece of code somewhere else
         final Runnable finishSwingTask = () -> {
             // apply position updates, i.e. use positions from MergedNodes
             HashMap<Node, Vector2d> nodes2newPositions = new HashMap<>();
@@ -504,7 +480,6 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
      *     the {@link Merger} selected by the user and set it up using the parameters specified by the user through
      *     the GUI.
      * @author Gordian
-     * TODO (bm review) naming
      */
     private Merger getSelectedMergerCopyAndSetParameters() {
         final Merger merger = MlfHelper.tryMakingNewInstance(this.parameterModel.mergerGroup.getSelected());
@@ -516,17 +491,12 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
      * @return
      *     the {@link Placer} selected by the user and set it up using the parameters specified by the user through
      *     the GUI.
-     * TODO (bm review) naming
      * @author Gordian
      */
     private Placer getSelectedPlacerCopyAndSetParameters() {
         final Placer placer = MlfHelper.tryMakingNewInstance(this.parameterModel.placerGroup.getSelected());
         placer.setParameters(this.parameterModel.placerGroup.getUpdatedParameters());
         return placer;
-    }
-
-    private void stopTaskIfRequested(MLFBackgroundTaskStatus bts) {
-        // something todo here?
     }
 
     static void randomLayout(Graph graph) {
@@ -601,7 +571,6 @@ public class MultilevelFrameworkLayouter extends ThreadSafeAlgorithm {
 /**
  * @author Gordian
  * @see BackgroundTaskStatusProvider
- * TODO (review bm) should go somewhere else?
  */
 class MLFBackgroundTaskStatus implements BackgroundTaskStatusProvider {
     /**

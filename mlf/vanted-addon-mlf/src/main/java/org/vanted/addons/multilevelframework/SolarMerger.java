@@ -1,17 +1,12 @@
 package org.vanted.addons.multilevelframework;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import org.AttributeHelper;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.multilevelframework.sm_util.gui.Describable;
 
-import java.awt.*;
 import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
@@ -59,20 +54,17 @@ public class SolarMerger implements Merger {
         this.parameters = parameters;
         for (Parameter parameter : parameters) {
             switch (parameter.getName()) {
-                case MAX_LEVEL_FACTOR_NAME: {
+                case MAX_LEVEL_FACTOR_NAME -> {
                     final int value = ((IntegerParameter) parameter).getInteger();
                     validateNumber(value, 0, Integer.MAX_VALUE, MAX_LEVEL_FACTOR_NAME);
                     this.maxLevelFactor = value;
-                    break;
                 }
-                case MIN_NODES_NAME: {
+                case MIN_NODES_NAME -> {
                     final int value = ((IntegerParameter) parameter).getInteger();
                     validateNumber(value, 0, Integer.MAX_VALUE, MIN_NODES_NAME);
                     this.minNodes = value;
-                    break;
                 }
-                default:
-                    throw new IllegalStateException("Invalid parameter name passed to solar merger.");
+                default -> throw new IllegalStateException("Invalid parameter name passed to solar merger.");
             }
         }
     }
@@ -109,9 +101,6 @@ public class SolarMerger implements Merger {
     }
 
     /**
-     * todo (bm review) naming: should be "for the current top level"?
-     * todo (bm review) separation of concerns: housekeeping/assembly on/of MLG datastructure should be distinct
-     *  from merger implementation
      * Builds a Galaxy for the current multilevel consisting of several solar
      * Systems. Each solar System has a sun, planets(dist 1 to the sun) and one or
      * no moon(1+1 dist to sun) for each planet.

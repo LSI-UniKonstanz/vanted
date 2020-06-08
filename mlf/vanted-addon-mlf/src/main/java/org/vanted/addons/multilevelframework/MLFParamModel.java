@@ -15,7 +15,6 @@ import java.awt.*;
 import java.util.*;
 
 public class MLFParamModel {
-    // todo: can surely simplify this, maybe enum-singletons?
     public LayoutAlgGroup layoutAlgGroup = new LayoutAlgGroup();
     public MergerGroup mergerGroup = new MergerGroup();
     public PlacerGroup placerGroup = new PlacerGroup();
@@ -78,7 +77,6 @@ public class MLFParamModel {
                 algOptionsContainer.add(this.getSelected().getGUI());
                 removeControlButtons(algOptionsContainer);
             }
-            // todo: can I make them all collapsed by default?
         }
 
         /**
@@ -180,7 +178,6 @@ public class MLFParamModel {
             paramPanel = new ParameterEditPanel(
                     mergerParams,
                     ecm.getEditComponents(),
-                    // todo
                     new Selection(),
                     "",
                     true,
@@ -251,7 +248,6 @@ public class MLFParamModel {
                 paramPanel = new ParameterEditPanel(
                         placerParams,
                         ecm.getEditComponents(),
-                        // todo
                         new Selection(),
                         "",
                         true,

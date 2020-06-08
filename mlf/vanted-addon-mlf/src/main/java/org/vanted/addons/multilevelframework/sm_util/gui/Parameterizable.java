@@ -3,18 +3,12 @@ package org.vanted.addons.multilevelframework.sm_util.gui;
 import org.graffiti.plugin.parameter.Parameter;
 
 /**
- * Implementing classes provide and can accept different
- * {@link Parameter}s.
- *
- * todo (review bm) this is more general than `Algorithm` because `Algorithm`s other properties are irrelevant
- *   or belong to the MLF algorithm object
- * todo (review bm) this would be a supertype of `Algorithm` -- the proper way would be to integrate this into
- *   the vanted core.
- *
- * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
- * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(Parameter[])
+ * Implementing classes provide and can accept different {@link Parameter}s. This can be seen as a supertype
+ * to {@link org.graffiti.plugin.algorithm.Algorithm}.
  *
  * @author Jannik
+ * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
+ * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(Parameter[])
  */
 public interface Parameterizable {
 
@@ -28,7 +22,7 @@ public interface Parameterizable {
      *
      * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
      */
-    public Parameter[] getParameters();
+    Parameter[] getParameters();
 
 
     /**
@@ -44,5 +38,5 @@ public interface Parameterizable {
      *
      * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(Parameter[])
      */
-    public void setParameters(final Parameter[] parameters);
+    void setParameters(final Parameter[] parameters);
 }

@@ -7,7 +7,6 @@ import org.graffiti.plugin.parameter.*;
 import org.vanted.addons.multilevelframework.sm_util.gui.Describable;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 
@@ -19,7 +18,6 @@ import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
  */
 public class RandomMerger implements Merger {
 
-    // todo (review bm) necessary?
     final static String COARSENING_FACTOR_NAME     = "Coarsening Factor";
     final static String MIN_LEVEL_NODE_NUM_NAME    = "Minimum number of nodes per level";
     final static String MAX_NAM_ITERATIONS_NAME    = "Maximum number of iterations";
@@ -39,7 +37,6 @@ public class RandomMerger implements Merger {
     int maxNumberOfIterations = 100;
 
     // prefer merging MergedNodes that don't already represent lots of nodes
-    // TODO (review bm) are both this and `considerEdgeWeights` expressed in UI?
     boolean useWeights = true;
 
     // the path at which edge weights are stored see MlfHelper.getEdgeWeight
@@ -54,7 +51,7 @@ public class RandomMerger implements Merger {
      * Array of parameters that will be displayed in the GUI.
      */
     private Parameter[] parameters = {
-            // VANTED parameters only has 3 relevant digits anyway
+            // VANTED parameters only has 3 relevant digits
             new DoubleParameter(coarseningFactor, 0.001, 0.999, COARSENING_FACTOR_NAME,
                     "The random merger will aim to reduce the number of nodes in each level by this factor."
                             + " It must be between 0 and 1."),
@@ -95,38 +92,25 @@ public class RandomMerger implements Merger {
         this.parameters = parameters;
         for (Parameter parameter : parameters) {
             switch (parameter.getName()) {
-                case COARSENING_FACTOR_NAME: {
+                case COARSENING_FACTOR_NAME -> {
                     final double value = ((DoubleParameter) parameter).getDouble();
                     validateNumber(value, 0, 1, COARSENING_FACTOR_NAME);
                     this.coarseningFactor = value;
-                    break;
                 }
-                case MIN_LEVEL_NODE_NUM_NAME: {
+                case MIN_LEVEL_NODE_NUM_NAME -> {
                     final int value = ((IntegerParameter) parameter).getInteger();
                     validateNumber(value, 0, Integer.MAX_VALUE, MIN_LEVEL_NODE_NUM_NAME);
                     this.minNumberOfNodesPerLevel = value;
-                    break;
                 }
-                case MAX_NAM_ITERATIONS_NAME: {
+                case MAX_NAM_ITERATIONS_NAME -> {
                     final int value = ((IntegerParameter) parameter).getInteger();
                     validateNumber(value, 1, Integer.MAX_VALUE, MAX_NAM_ITERATIONS_NAME);
                     this.maxNumberOfIterations = value;
-                    break;
                 }
-                case USE_WEIGHTS_NAME: {
-                    this.useWeights = ((BooleanParameter) parameter).getBoolean();
-                    break;
-                }
-                case CONSIDER_EDGE_WEIGHTS_NAME: {
-                    this.considerEdgeWeights = ((BooleanParameter) parameter).getBoolean();
-                    break;
-                }
-                case WEIGHT_ATTR_PATH_NAME: {
-                    this.weightAttributePath = ((StringParameter) parameter).getString();
-                    break;
-                }
-                default:
-                    throw new IllegalStateException("Invalid parameter name passed to random merger.");
+                case USE_WEIGHTS_NAME -> this.useWeights = ((BooleanParameter) parameter).getBoolean();
+                case CONSIDER_EDGE_WEIGHTS_NAME -> this.considerEdgeWeights = ((BooleanParameter) parameter).getBoolean();
+                case WEIGHT_ATTR_PATH_NAME -> this.weightAttributePath = ((StringParameter) parameter).getString();
+                default -> throw new IllegalStateException("Invalid parameter name passed to random merger.");
             }
         }
 
@@ -148,7 +132,6 @@ public class RandomMerger implements Merger {
      */
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
 
-        final long startTime = System.nanoTime();
 
         // checks whether the coarseningFactor is in Range and the graph component does contain multiple edges.
         // no edges leave inhibit any coarsening while merged on the last edge
@@ -163,10 +146,6 @@ public class RandomMerger implements Merger {
             }
         }
 
-        // todo (review bm) should be printed through logger, if even
-        final long endTime = System.nanoTime();
-        System.out.println("Built coarsening levels in: " +
-                TimeUnit.NANOSECONDS.toMillis(endTime - startTime) + " ms.");
     }
 
     /**
@@ -197,8 +176,6 @@ public class RandomMerger implements Merger {
      *                      nodes with low weight (note that this requires {@link MergedNode}s)
      * @author Tobias
      */
-    // todo (review bm) separation of concerns
-    // 2.2
     private void buildLevel(double coarseningPerLevel, MultilevelGraph mlg, boolean sortByWeights){
         Graph baseLevel = mlg.getTopLevel();
 

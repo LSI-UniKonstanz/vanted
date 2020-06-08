@@ -221,42 +221,6 @@ public class TestsWithVANTED {
                 || AttributeHelper.getPositionX(n3) != 200 || AttributeHelper.getPositionY(n3) != 180);
     }
 
-    /**
-     * @author Gordian
-     */
-
-// todo
-    //@Test
-/*
-    public void executeInEventDispatchThread() throws InvocationTargetException, InterruptedException {
-        AdjListGraph g = new AdjListGraph();
-        Node n1 = g.addNode();
-        Node n2 = g.addNode();
-        Node n3 = g.addNode();
-        g.addEdge(n1, n2, false);
-        g.addEdge(n2, n3, false);
-        g.addEdge(n1, n3, false);
-        for (Node n : g.getNodes()) {
-            AttributeHelper.setPosition(n, 0, 0);
-        }
-//        LayoutAlgorithmWrapper law =
-//                LayoutAlgorithmWrapper.getLayoutAlgorithms().get(new PatternSpringembedder().getName());
-        // just get any algorithm
-        LayoutAlgorithmWrapper law =
-                LayoutAlgorithmWrapper.getSuppliedLayoutAlgs().entrySet().iterator().next().getValue();
-        AttributeHelper.setPosition(n1, 100, 100);
-        AttributeHelper.setPosition(n2, 200, 200);
-        AttributeHelper.setPosition(n3, 200, 180);
-        MultilevelFrameworkLayouter.display(g);
-        SwingUtilities.invokeAndWait(() -> {
-            law.execute(g, new Selection());
-        });
-        assertTrue(AttributeHelper.getPositionX(n1) != 100 || AttributeHelper.getPositionY(n1) != 100
-                || AttributeHelper.getPositionX(n2) != 200 || AttributeHelper.getPositionY(n2) != 200
-                || AttributeHelper.getPositionX(n3) != 200 || AttributeHelper.getPositionY(n3) != 180);
-    }
-
-*/
 
     /**
      * @author Gordian
@@ -405,14 +369,6 @@ public class TestsWithVANTED {
      * @author Gordian
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testIllegalArgumentConstructor() {
-        new LayoutAlgorithmWrapper("MyDummyAlg", new MultilevelFrameworkLayouter(), true);
-    }
-
-    /**
-     * @author Gordian
-     */
-    @Test(expected = IllegalArgumentException.class)
     public void testIllegalArgumentConstructor2() {
         new LayoutAlgorithmWrapper(" ", new MultilevelFrameworkLayouter(), false);
     }
@@ -542,28 +498,6 @@ public class TestsWithVANTED {
         mlfl.check();
     }
 
-    /**
-     * @author Gordian
-     */
-    @Test
-    public void executeMultilevelFrameworkLayouter() throws NoSuchFieldException, IllegalAccessException {
-        MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
-        Graph g = ErdosRenyiGraphGenerator.createGraph(100, false, 0.1, true, true);
-        Field lastSelectedAlgorithm = MultilevelFrameworkLayouter.class.getDeclaredField("lastSelectedAlgorithm");
-        lastSelectedAlgorithm.setAccessible(true);
-        lastSelectedAlgorithm.set(mfl, "Null-Layout");
-        Parameter[] parameters = mfl.getParameters();
-        for (Parameter p : parameters) {
-            if (p.getName().matches("(?i)remove.*overlaps") || p.getName().matches("(?i)remove.*bends")) {
-                p.setValue(true);
-            }
-        }
-        mfl.setParameters(parameters);
-        mfl.attach(g, new Selection());
-        mfl.execute();
-        assertTrue(g.getBoolean(MultilevelFrameworkLayouter.WORKING_ATTRIBUTE_PATH));
-    }
-
     @Test
     public void setParameters() {
         MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
@@ -651,58 +585,7 @@ public class TestsWithVANTED {
         assertEquals(placersAfter, placersBefore);
     }
 
-    /**
-     * todo: re-enable
-     * @author Gordian
-     */
-/*
-    @Test
-    public void calculateProgress() {
-        AdjListGraph g = new AdjListGraph();
-        Node n1 = g.addNode();
-        Node n2 = g.addNode();
-        Node n3 = g.addNode();
-        Node isolated = g.addNode();
-        for (Node n : g.getNodes()) { AttributeHelper.setPosition(n, 0, 0); }
-        g.addEdge(n1, n2, false);
-        g.addEdge(n2, n3, false);
-        g.addEdge(n3, n1, false);
-        MultilevelGraph mlg = new MultilevelGraph(g);
-        List<?extends CoarsenedGraph> con = MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(g.getNodes()));
-        assertEquals(0.0, MultilevelFrameworkLayouter.calculateProgress(mlg, con, 0, 1), 0.001);
-        assertEquals(50.0, MultilevelFrameworkLayouter.calculateProgress(mlg, con, 1, 2), 0.001);
-    }
-*/
 
-    /**
-     * @author Gordian
-     */
-    // todo: re-enable
-/*
-    @Test
-    public void makeStatusMessage() {
-        int totalLevels = 123;
-        int level = 42;
-        AdjListGraph g = new AdjListGraph();
-        g.addNode();
-        g.addNode();
-        g.addNode();
-        for (Node n : g.getNodes()) { AttributeHelper.setPosition(n, 0, 0); }
-        List<?extends CoarsenedGraph> con = MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(g.getNodes()));
-        int current = 1;
-        String graph = "i use arch btw";
-        String msg = MultilevelFrameworkLayouter.makeStatusMessage(totalLevels, level, con, current, graph);
-        assertTrue(msg.contains(Integer.toString(totalLevels)));
-        assertTrue(msg.contains(Integer.toString(level)));
-        assertTrue(msg.contains(Integer.toString(con.size())));
-        assertTrue(msg.contains(Integer.toString(current)));
-        assertTrue(msg.contains(graph));
-    }
-*/
-
-    /**
-     * @author Gordian
-     */
     @Test
     public void removeOverlaps() {
         AdjListGraph g = new AdjListGraph();
