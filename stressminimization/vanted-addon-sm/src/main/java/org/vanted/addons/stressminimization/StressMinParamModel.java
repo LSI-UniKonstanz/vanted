@@ -342,7 +342,7 @@ public class StressMinParamModel {
             add(movementCheckbox, gbc_chckbxNewCheckBox);
 
             nodeMovementSpinner.setEnabled(false);
-            nodeMovementSpinner.setModel(new SpinnerNumberModel(0, 0, null, 10));
+            nodeMovementSpinner.setModel(new SpinnerNumberModel(1, 1, null, 10));
             GridBagConstraints gbc_nodeMovementSpinner = new GridBagConstraints();
             gbc_nodeMovementSpinner.fill = GridBagConstraints.HORIZONTAL;
             gbc_nodeMovementSpinner.insets = new Insets(0, 0, 5, 5);
