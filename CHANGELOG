@@ -6,20 +6,20 @@
 <li>Bugfixes: Clustering</li>
 <li>RIMAS server migration</li>
 <li>HTTPS server connections</li>
-<li>Resolve HTTP-HTTPS redirecting</li>
-<li>BioModels: Handle parse exception in queries</li>
+<li>Resolves HTTP-HTTPS redirecting</li>
+<li>BioModels: Handles parsing exception in queries</li>
 <li>Add-on Manager and Add-on Pane improvements</li>
 <li>Undo/Redo additions</li>
 <li>Usability improvements:</br>
 	<ul>
 		<li>Menu updates</li>
 		<li>First graph window fits in pane</li>
-		<li>Undo limit increased to 20 operations</li>
+		<li>Undo limit increases to 20 operations</li>
 	</ul>
 </li>
-<li>Standard format is GML</li>
+<li>Standard format becomes GML</li>
 <li>Internal API improvements</li>
-<li>Replaced non-API Sun references</li>
+<li>Replaces non-API Sun references</li>
 </ul>
 
 <h4>VANTED v2.6.5 release (29/03/2018)</h4>
