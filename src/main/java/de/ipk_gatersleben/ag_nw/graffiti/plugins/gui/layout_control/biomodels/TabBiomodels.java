@@ -40,7 +40,7 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 
 	static final Logger logger = Logger.getLogger(TabBiomodels.class);
 
-	static final String NAME = "Biomodels";
+	static final String NAME = "BioModels";
 
 	BiomodelsPanel panel;
 

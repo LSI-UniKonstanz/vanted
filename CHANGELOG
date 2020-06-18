@@ -1,12 +1,13 @@
 <h3>Changelog</h3>
 
-<h4>VANTED v2.7.0 release (??/04/2020)</h4>
+<h4>VANTED v2.7.0 release (??/06/2020)</h4>
 <ul>
 <li>Minimum Java 8 compatibility</li>
 <li>Bugfixes: Clustering</li>
 <li>RIMAS server migration</li>
 <li>HTTPS server connections</li>
 <li>Resolve HTTP-HTTPS redirecting</li>
+<li>BioModels: Handle parse exception in queries</li>
 <li>Add-on Manager and Add-on Pane improvements</li>
 <li>Undo/Redo additions</li>
 <li>Usability improvements:</br>
