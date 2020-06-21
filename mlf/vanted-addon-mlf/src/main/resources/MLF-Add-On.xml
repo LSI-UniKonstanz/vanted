@@ -13,7 +13,7 @@
         <name>MLF Add-On</name>
         <main>org.vanted.addons.multilevelframework.MultilevelFrameworkAddon</main>
         <version>0.1</version>
-        <compatibility>2.5.0</compatibility>
+        <compatibility>2.6.5</compatibility>
         <available></available>
     </plugindesc>
 </plugin>
