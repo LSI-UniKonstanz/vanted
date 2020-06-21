@@ -5,13 +5,15 @@
         "http://www.graffiti.org/dtd/1.0/plugin.dtd">
 
 <plugin>
-    <author>Team 2.2 MLF</author>
-    <description>This add-on adds a "multilevel framework" to VANTED.</description>
+    <author>Jannick Löscher, René Groß, Theodor Gutschlag, Tobias Franz, Jonas Olenburger, Gordian Schönherr, Benjamin
+        Moser
+    </author>
+    <description>Graph layouting using a multilevel strategy.</description>
     <plugindesc>
         <name>MLF Add-On</name>
         <main>org.vanted.addons.multilevelframework.MultilevelFrameworkAddon</main>
         <version>0.1</version>
         <compatibility>2.5.0</compatibility>
-        <available>https://git.uni-konstanz.de/kn/swp2019/team-2.2</available>
+        <available></available>
     </plugindesc>
 </plugin>
