@@ -5,13 +5,15 @@
  "http://www.graffiti.org/dtd/1.0/plugin.dtd">
 
 <plugin>
-    <author>David Boetius, Benjamin Halbritter, Thomas Komander, Silvan Reiner, Josua Sattler, Jakob Wietstock</author>
-    <description>Adds Stress Minimization Layouter to VANTED.</description>
+    <author>David Boetius, Benjamin Halbritter, Thomas Komander, Silvan Reiner, Josua Sattler, Jakob Wietstock, Benjamin
+        Moser
+    </author>
+    <description>Graph layouting by stress minimization (full or landmark-based).</description>
     <plugindesc>
         <name>Stress Minimization Add-on</name>
         <main>org.vanted.addons.stressminimization.StressMinimizationAddon</main>
         <version>0.1</version>
         <compatibility>2.5.0</compatibility>
-        <available>https://git.uni-konstanz.de/kn/swp2019/team-2.1</available>
+        <available></available>
     </plugindesc>
 </plugin>
