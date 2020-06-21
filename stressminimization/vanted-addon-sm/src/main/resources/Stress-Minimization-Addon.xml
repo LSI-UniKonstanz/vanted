@@ -13,7 +13,7 @@
         <name>Stress Minimization Add-on</name>
         <main>org.vanted.addons.stressminimization.StressMinimizationAddon</main>
         <version>0.1</version>
-        <compatibility>2.5.0</compatibility>
+        <compatibility>2.6.5</compatibility>
         <available></available>
     </plugindesc>
 </plugin>
