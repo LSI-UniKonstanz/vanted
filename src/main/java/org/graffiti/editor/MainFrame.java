@@ -206,7 +206,6 @@ import org.vanted.VantedPreferences;
 
 import scenario.ScenarioService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.navigation.NavigationComponentView;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
 /**
  * Constructs a new graffiti frame, which contains the main gui components.

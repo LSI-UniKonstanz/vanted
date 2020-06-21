@@ -21,6 +21,8 @@ public class NavigationTree {
 
 	private final TreeSet<String> titles;
 	private final HashMap<String, String> fileName2title;
+	
+	public String levelSeparator = "\\.";
 
 	/**
 	 * @param titles
@@ -38,7 +40,7 @@ public class NavigationTree {
 		Stack<String> currentLevel = new Stack<String>();
 		int currLevel = 0;
 		for (String title : titles) {
-			String[] levelNames = title.split("\\.");
+			String[] levelNames = title.split(levelSeparator);
 			currLevel = currentLevel.size();
 
 			// last item is file extension, before is the file name
