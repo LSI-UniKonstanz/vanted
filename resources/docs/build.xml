@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="vanted javadoc script" default="beautify">
+<project name="vanted javadoc" default="beautify">
 
-	<property name="title" value="Vanted 2.6.5"/>
-	<property name="java.compatibility" value="1.7"/>
-	<property name="java.api" value="https://docs.oracle.com/javase/7/docs/api/"/>
+	<property name="title" value="Vanted 2.7.0"/>
+	<property name="java.compatibility" value="1.8"/>
+	<property name="java.api" value="https://docs.oracle.com/javase/8/docs/api/"/>
 
 	<property name="base.dir" location="../.."/>
 	<property name="dest.dir" location="./javadoc"/>
 	<property name="src.dir" location="${base.dir}/src/main/java"/>
-	<property name="libs.dir" location="${base.dir}/../vanted-lib-repository"/>
+	<property name="libs.dir" location="${base.dir}/../vanted-libraries"/>
 	<property name="tags.file" value="./vanted.tags"/>
 	<target name="javadoc" depends="prepare">
-        	<javadoc 
+        	<javadoc
 			access="public"
 			author="true"
 			classpath="${libs.dir}/*"
@@ -22,7 +22,7 @@
 			nodeprecatedlist="false"
 			noindex="false"
 			nonavbar="false"
-			notree="false" 
+			notree="false"
 			source="${java.compatibility}"
 			sourcepath="${src.dir}"
 			splitindex="true"
@@ -30,7 +30,7 @@
 			version="true">
 			<link href="${java.api}"/>
 			<tag file="${tags.file}"/>
-			<footer><![CDATA[<br/>Copyright &#169; 2016-2018 University of Konstanz, Germany]]></footer>
+			<footer><![CDATA[<br/>Copyright &#169; 2016-2020 Chair for Life Science Informatics, University of Konstanz, Germany]]></footer>
 		</javadoc>
 	</target>
 
@@ -45,8 +45,8 @@
 	<!-- Hacky way of setting frames by default. -->
 	<target name="beautify" depends="javadoc">
  		<replace casesensitive="true" file="${dest.dir}/index.html">
-    			<replacetoken><![CDATA[]]>window.location.replace('overview-summary.html');</replacetoken>  
-			<replacevalue><![CDATA[window.location.replace('index.html?overview-summary.html');]]></replacevalue>  
+    			<replacetoken><![CDATA[]]>window.location.replace('overview-summary.html');</replacetoken>
+			<replacevalue><![CDATA[window.location.replace('index.html?overview-summary.html');]]></replacevalue>
 		</replace>
 		<echo message="Done!"/>
 	</target>
