@@ -13,20 +13,15 @@ import org.graffiti.plugin.EditorPluginAdapter;
 import org.graffiti.plugin.gui.GraffitiComponent;
 
 /**
- * This plugin contains the standard editing tools.
+ * This plug-in is contained in the standard editing tools.
  * 
  * @version $Revision: 1.6 $
+ * @vanted.revision 2.7.0
  */
 public class ZoomPlugin extends EditorPluginAdapter {
-	// ~ Instance fields ========================================================
 
 	/** The button for the zoom tool */
-	private GraffitiComponent zoomButton;
-
-	/** The <code>ImageBundle</code> of the main frame. */
-	// private ImageBundle iBundle = ImageBundle.getInstance();
-
-	// ~ Constructors ===========================================================
+	private final GraffitiComponent zoomButton;
 
 	/**
 	 * Creates a new StandardTools object.
@@ -37,7 +32,3 @@ public class ZoomPlugin extends EditorPluginAdapter {
 		guiComponents[0] = zoomButton;
 	}
 }
-
-// ------------------------------------------------------------------------------
-// end of file
-// ------------------------------------------------------------------------------

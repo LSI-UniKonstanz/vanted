@@ -40,12 +40,9 @@ import org.ReleaseInfo;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
-import org.graffiti.event.AttributeEvent;
-import org.graffiti.event.TransactionEvent;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
-import org.graffiti.session.Session;
 import org.w3c.dom.Document;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.Experiment;
@@ -311,86 +308,6 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		new FileDrop(target, fdl, dragdetected, dragenddetected);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#postAttributeAdded(org.graffiti.event.
-	 * AttributeEvent)
-	 */
-	public void postAttributeAdded(AttributeEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#postAttributeChanged(org.graffiti.event.
-	 * AttributeEvent)
-	 */
-	public void postAttributeChanged(AttributeEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#postAttributeRemoved(org.graffiti.event.
-	 * AttributeEvent)
-	 */
-	public void postAttributeRemoved(AttributeEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#preAttributeAdded(org.graffiti.event.
-	 * AttributeEvent)
-	 */
-	public void preAttributeAdded(AttributeEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#preAttributeChanged(org.graffiti.event.
-	 * AttributeEvent)
-	 */
-	public void preAttributeChanged(AttributeEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#preAttributeRemoved(org.graffiti.event.
-	 * AttributeEvent)
-	 */
-	public void preAttributeRemoved(AttributeEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.TransactionListener#transactionFinished(org.graffiti.event
-	 * .TransactionEvent)
-	 */
-	public void transactionFinished(TransactionEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.TransactionListener#transactionStarted(org.graffiti.event.
-	 * TransactionEvent)
-	 */
-	public void transactionStarted(TransactionEvent e) {
-	}
-
 	// /**
 	// * @return The Filename of the DBE-Last-Experiment-File
 	// */
@@ -440,30 +357,6 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			}
 		}
 		instance.processReceivedData(null, pe.getExperimentName(), pe.getDocumentData(), pe.getGUI());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.
-	 * Session)
-	 */
-	public void sessionChanged(Session s) {
-		//
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.
-	 * Session)
-	 */
-	public void sessionDataChanged(Session s) {
-		//
-
 	}
 
 	@Override

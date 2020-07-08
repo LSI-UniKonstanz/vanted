@@ -744,7 +744,7 @@ public class DynamicTimeSeriesCollection extends AbstractIntervalXYDataset
 	 * @return The value.
 	 */
 	public Number getYValue(final int series, final int item) {
-		return new Float(getY(series, item));
+		return Float.valueOf((float) getY(series, item));
 	}
 
 	/**
@@ -904,7 +904,7 @@ public class DynamicTimeSeriesCollection extends AbstractIntervalXYDataset
 	 */
 	public Number getMaximumRangeValue() {
 		if (this.maxValue == null) {
-			this.maxValue = new Float(findMaxValue());
+			this.maxValue = Float.valueOf((float) findMaxValue());
 		}
 		return this.maxValue;
 	}

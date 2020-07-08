@@ -48,7 +48,7 @@ public class DavidTestAlgorithm extends AbstractAlgorithm {
 	@Override
 	public String getDescription() {
 		return "<html><b>David et al. Quicktest for normality distribution.</b><br>"
-				+ "All nodes which contain samples which are <b>not</b><br>"
+				+ "All nodes that contain samples and are <b>not</b><br>"
 				+ "normally distributed, will be <b>selected</b>.<br>"
 				+ "<small>Each sample needs to contain at least 5 values<br>"
 				+ "and at most 500 values!</small><br><br>Specify the alpha value (P):";

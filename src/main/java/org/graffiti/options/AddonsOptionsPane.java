@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import net.iharder.dnd.FileDrop;
@@ -23,36 +25,42 @@ import org.graffiti.plugin.GenericPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonManagerPlugin;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
+/**
+ * 
+ * @vanted.revision 2.7.0
+ */
 public class AddonsOptionsPane extends AbstractOptionPane {
 
+	private static final long serialVersionUID = 1L;
 	private static double border = 5;
 
+	/**
+	 * @vanted.revision 2.7.0
+	 */
 	protected AddonsOptionsPane() {
-		super("Addon Manager");
-		// TODO Auto-generated constructor stub
+		super("Add-on Manager");
 	}
 
 	@Override
 	public String getCategory() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * @vanted.revision 2.7.0
+	 */
 	@Override
 	public String getOptionName() {
-		// TODO Auto-generated method stub
-		return "Addon Manager";
+		return "Add-on Manager";
 	}
 
 	@Override
 	public JComponent getOptionDialogComponent() {
-		// TODO Auto-generated method stub
 		return super.getOptionDialogComponent();
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return super.getName();
 	}
 
@@ -63,29 +71,33 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 
 	@Override
 	protected void saveDefault() {
-		// TODO Auto-generated method stub
-
 	}
 
+	/**
+	 * @vanted.revision 2.7.0
+	 */
 	private void createUI() {
-		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
-				{ border, TableLayoutConstants.PREFERRED, 2 * border, TableLayoutConstants.PREFERRED, 2 * border,
-						TableLayoutConstants.PREFERRED, 2 * border, TableLayoutConstants.PREFERRED, 2 * border, } }; // Rows
+		double[][] size = {
+				 // Columns
+				{ border, TableLayoutConstants.FILL, border },
+				 // Rows
+				{ border, TableLayoutConstants.PREFERRED, border }
+		};
 		setLayout(new TableLayout(size));
 
-		add(TableLayout.get3Split(getAddOnManagerButton(), null, getPreferencesFolderButton(), TableLayout.FILL, 4,
-				TableLayout.FILL, 0, 0), "1,1");
+		
+		add(TableLayout.get4SplitVertical(
+				new JLabel(getAddonManagerInfo()), getAddOnManagerButton(),
+				new JLabel(getPreferencesFolderInfo()), getPreferencesFolderButton(),
+				TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, 0, 0), "1,1");
 	}
 
+	/**
+	 * @vanted.revision 2.7.0
+	 */
 	private JButton getAddOnManagerButton() {
 		final JButton result = new JMButton("<html>Install / Configure Add-ons");
 		result.setIcon(GenericPluginAdapter.getAddonIcon());
-		// makes no sense, will be chacked when clicking on button
-		// if (AddonManagerPlugin.getInstance() == null) {
-		// result.setEnabled(false);
-		// result.setText("<html>" + result.getText() + "<br>(Add-on manager plugin not
-		// available)");
-		// }
 		result.setOpaque(false);
 		result.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -95,7 +107,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 							"Addon-Manager Plugin not loaded on startup. Please restart application.",
 							"Internal Error");
 				else
-					p.showManageAddonDialog();
+					p.showManageAddonDialog(SwingUtilities.windowForComponent(AddonsOptionsPane.this));
 			}
 		});
 
@@ -141,25 +153,45 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	}
 
 	private JButton getPreferencesFolderButton() {
-		JButton result = new JMButton("<html>Show Preferences Folder");
+		JButton result = new JMButton("<html>Open Preferences Folder");
 
 		result.setOpaque(false);
 		result.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				showPreferencesFolder();
+				openPreferencesFolder();
 			}
 		});
 		return result;
 	}
 
-	public static void showPreferencesFolder() {
-		MainFrame.showMessageDialog("<html>" + "The application preferences folder will be opened in a moment.<br>"
-				+ "This folder contains downloaded database files, stored quick-searches,<br>"
-				+ "network download cache files, and program settings files.<br>"
-				+ "Quick searches (created with 'Edit/Search...': 'Create new menu command')<br>"
-				+ "are stored as files the file name extension '.bsh'. Such a file may be<br>"
-				+ "deleted, in case the custom search command is not needed any more.", "Information");
-		BackgroundTaskHelper.executeLaterOnSwingTask(2000, new Runnable() {
+	/**
+	 * @since 2.7.0
+	 */
+	private static String getAddonManagerInfo() {
+		return "<html>"
+				+ "Add-on Manager helps find and install new add-ons; configure and update installed add-ons.<br><br>"
+				+ "Add-ons can also be temporarily deactivated. To remove add-ons, open the add-on folder<br>"
+				+ " (<i>Install / Configure Add-ons</i>  &#8594; <i>Open Add-on Folder</i>) and delete them from there.";
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @since 2.7.0
+	 */
+	private static String getPreferencesFolderInfo() {
+		/*network downloads cache files -> cache files*/
+		return "<html><br>"
+				+ "Preferences folder contains stored quick searches, cache files, database and settings files.<br><br>"
+				+ "Quick-search commands (<i>Edit</i> &#8594; <i>Search...</i>&#8594; <i>Create new menu command</i>) are stored as '.bsh'.<br>"
+				+ "BSH files can be deleted from the file system, once the command is not needed anymore.";
+	}
+
+	/**
+	 * @vanted.revision 2.7.0
+	 */
+	public static void openPreferencesFolder() {
+		BackgroundTaskHelper.executeLaterOnSwingTask(100, new Runnable() {
 			public void run() {
 				AttributeHelper.showInBrowser(ReleaseInfo.getAppFolder());
 			}

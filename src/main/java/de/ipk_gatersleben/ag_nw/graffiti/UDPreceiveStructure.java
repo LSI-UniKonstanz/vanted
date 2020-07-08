@@ -8,6 +8,8 @@ package de.ipk_gatersleben.ag_nw.graffiti;
 
 import java.net.InetAddress;
 
+import org.ErrorMsg;
+
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
@@ -34,6 +36,7 @@ public class UDPreceiveStructure {
 			}
 			return result.substring(1);
 		} catch (java.net.UnknownHostException uhe) {
+			ErrorMsg.addErrorMessage(uhe);
 			return "Unknown host (" + sender.toString().substring(1) + ")";
 		}
 	}

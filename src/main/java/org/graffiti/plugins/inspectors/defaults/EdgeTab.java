@@ -38,7 +38,7 @@ public class EdgeTab extends AbstractTab {
 
 	@Override
 	public String getEmptyDescription() {
-		return "Properties of active edge selection are editable at this place.";
+		return "Properties of active edge selections are editable at this place.";
 	}
 
 	public static EdgeTab getInstance() {

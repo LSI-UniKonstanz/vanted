@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.ErrorMsg;
 import org.HelperClass;
 
 /**
@@ -69,8 +70,7 @@ public class BuildInfo implements HelperClass {
 			built_props.load(stream);
 			return built_props.getProperty(property);
 		} catch (IOException e) {
-			e.printStackTrace();
-
+			ErrorMsg.addErrorMessage(e);
 			return "";
 		}
 	}

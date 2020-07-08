@@ -24,7 +24,7 @@ import javax.xml.transform.TransformerException;
 
 import org.ErrorMsg;
 import org.graffiti.plugin.XMLHelper;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.ExperimentInterface;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SubstanceInterface;

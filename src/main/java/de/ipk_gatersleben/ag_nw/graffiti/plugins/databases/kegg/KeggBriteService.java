@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,8 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ReleaseInfo;
-import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
+import org.vanted.updater.HttpHttpsURL;
 
 /**
  * Service class providing hierarchy information using the BRITE database from
@@ -222,16 +221,14 @@ public class KeggBriteService {
 		f.getParentFile().mkdirs();
 
 		try (FileOutputStream fos = new FileOutputStream(f)) {
-
-			URL url = new URL(buf.toString());
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			if (conn.getResponseCode() == HttpStatus.SC_OK) {
+			HttpHttpsURL url = new HttpHttpsURL(buf.toString());
+			HttpURLConnection conn = url.openConnection();
+			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				InputStream is = conn.getInputStream();
 				byte[] buffer = new byte[10000];
 				int len;
 				while ((len = is.read(buffer)) != -1)
 					fos.write(buffer, 0, len);
-
 			}
 		} catch (IOException e) {
 			// e.printStackTrace();

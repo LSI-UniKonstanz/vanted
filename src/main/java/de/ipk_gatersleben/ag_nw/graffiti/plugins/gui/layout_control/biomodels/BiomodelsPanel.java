@@ -207,7 +207,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		if (callerThreadForSimpleModel != null && callerThreadForSimpleModel.isAlive())
 			callerThreadForSimpleModel.cancelRequest();
 
-		BackgroundTaskHelper.issueSimpleTask("Biomodels query task", "query result list",
+		BackgroundTaskHelper.issueSimpleTask("BioModels Query", "Processing results...",
 				new CallerThreadForSimpleModel(selItem, query), null);
 	}
 
@@ -215,7 +215,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		if (model == null)
 			return;
 
-		BackgroundTaskHelper.issueSimpleTask("Biomodels query task", "query result list",
+		BackgroundTaskHelper.issueSimpleTask("BioModels Query", "Processing results...",
 				new CallerThreadForSBMLModel(model), null);
 	}
 

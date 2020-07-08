@@ -6,6 +6,7 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -428,16 +429,20 @@ public class TableData {
 		return expectIfNULL;
 	}
 
+	/**
+	 * Converts cell data to unicode strings.
+	 * @param col
+	 * @param row
+	 * @return
+	 * @vanted.revision 2.7.0 Fix parsing of decimals: 1) resolve scientific notation; 2) potential multiple trailing zeros
+	 */
 	public synchronized String getUnicodeStringCellData(int col, int row) {
 		Object r = getCellData(col, row, null);
 		if (r != null && r instanceof String) {
-			return (String) r; // //////// ErrorMsg.htmlToUnicode((String)r);
+			return String.valueOf(r); // //////// ErrorMsg.htmlToUnicode((String)r);
 		} else if (r != null && r instanceof Double) {
 			String rr = r.toString();
-			if (rr.endsWith(".0"))
-				return rr.substring(0, rr.length() - ".0".length());
-			else
-				return rr;
+			return BigDecimal.valueOf(Double.valueOf(rr)).stripTrailingZeros().toPlainString();
 		} else
 			return null;
 	}

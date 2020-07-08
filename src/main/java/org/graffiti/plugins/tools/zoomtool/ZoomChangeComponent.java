@@ -26,6 +26,8 @@ import org.graffiti.session.SessionListener;
 
 /**
  * DOCUMENT ME!
+ * @vanted.revision 2.7.0
+ * @deprecated Use {@link org.graffiti.plugins.tools.enhancedzoomtool.ZoomChangeComponent} instead.
  */
 public class ZoomChangeComponent extends AbstractGraffitiComponent
 		implements ActionListener, ViewListener, SessionListener {
@@ -37,7 +39,7 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 	private static final long serialVersionUID = 1L;
 
 	/** DOCUMENT ME! */
-	private JComboBox combo;
+	private JComboBox<String> combo;
 
 	// /** DOCUMENT ME! */
 	// private MainFrame mainframe;
@@ -63,7 +65,7 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 		super(prefComp);
 		setLayout(new BorderLayout());
 
-		combo = new JComboBox(zoomValues);
+		combo = new JComboBox<String>(zoomValues);
 		combo.setSelectedIndex(4);
 		combo.setEditable(true);
 		add(combo);
@@ -71,29 +73,11 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 		combo.addActionListener(this);
 	}
 
-	// ~ Methods ================================================================
-
-	/*
-	 * @see javax.swing.JComponent#getMaximumSize()
-	 */
 	@Override
 	public Dimension getMaximumSize() {
 		return combo.getPreferredSize();
 	}
 
-	// /**
-	// * @see
-	// org.graffiti.plugin.gui.AbstractGraffitiComponent#setMainFrame(org.graffiti.editor.MainFrame)
-	// */
-	// public void setMainFrame(MainFrame mf)
-	// {
-	// super.setMainFrame(mf);
-	// this.mainframe = mf;
-	// }
-
-	/**
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		Object selectedZoom = combo.getSelectedItem();
 
@@ -123,9 +107,6 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 		}
 	}
 
-	/**
-	 * @see org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.Session)
-	 */
 	public void sessionChanged(Session s) {
 		activeSession = s;
 
@@ -134,17 +115,11 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 		}
 	}
 
-	/**
-	 * @see org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.Session)
-	 */
 	public void sessionDataChanged(Session s) {
 		activeSession = s;
 		viewChanged(s.getActiveView());
 	}
 
-	/**
-	 * @see org.graffiti.plugin.view.ViewListener#viewChanged(org.graffiti.plugin.view.View)
-	 */
 	public void viewChanged(View newView) {
 		Object newZoom = newView.getZoom();
 		String zoomStr;
@@ -159,7 +134,3 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 		combo.setSelectedItem(zoomStr);
 	}
 }
-
-// ------------------------------------------------------------------------------
-// end of file
-// ------------------------------------------------------------------------------

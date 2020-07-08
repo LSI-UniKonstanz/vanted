@@ -57,13 +57,13 @@ public class DemoResources_pl extends ListResourceBundle {
 			{ "about.title", "Informacja o..." }, { "about.version.label", "Wersja" },
 
 			// menu labels...
-			{ "menu.file", "Plik" }, { "menu.file.mnemonic", new Character('P') },
+			{ "menu.file", "Plik" }, { "menu.file.mnemonic", Character.valueOf('P') },
 
-			{ "menu.file.exit", "Zako\u0144cz" }, { "menu.file.exit.mnemonic", new Character('K') },
+			{ "menu.file.exit", "Zako\u0144cz" }, { "menu.file.exit.mnemonic", Character.valueOf('K') },
 
-			{ "menu.help", "Pomoc" }, { "menu.help.mnemonic", new Character('C') },
+			{ "menu.help", "Pomoc" }, { "menu.help.mnemonic", Character.valueOf('C') },
 
-			{ "menu.help.about", "O programie..." }, { "menu.help.about.mnemonic", new Character('A') },
+			{ "menu.help.about", "O programie..." }, { "menu.help.about.mnemonic", Character.valueOf('A') },
 
 			// dialog messages...
 			{ "dialog.exit.title", "Potwierd\u017a zamkni\u0119cie..." },

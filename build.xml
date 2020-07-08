@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create-vanted-core-jar" name="Create vanted-core Jar for Project VANTED">
-
-	<!-- ANT 1.7 is required -->
-	
 	<property name="buildnumber.file" value="src/main/resources/build.number"/>
 	<property name="jar.dest.path" value="target/jar"/>
-	
+
 	<condition property="isWindows" value="true">
 	    <os family="windows"/>
 	</condition>
@@ -15,18 +12,18 @@
 	    <os family="unix"/>
 	    </or>
 	</condition>
-	
+
 	<target name="nextbuildnumber">
 		<propertyfile file="${buildnumber.file}"
 		    comment="Vanted version and build information. ONLY EDIT THE VANTED VERSION PROPERTY!">
 			<!--<entry key="build.number" type="int" default="0" operation="+" pattern="00000"/> -->
-			<entry key="build.number" type="int" default="0" />	    
+			<entry key="build.number" type="int" default="0" />
 			<entry key="build.date" type="date" value="now" pattern="YYYYMMdd"/>
 		</propertyfile>
 		<loadproperties srcFile="${buildnumber.file}"/>
 		<echo message="${vanted.version.number} ${build.number} ${build.date}"/>
 	</target>
-	
+
 
 	<target name="create-vanted-core-jar" depends="compile">
 		<!-- create vanted-jarfile -->
@@ -35,7 +32,7 @@
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Class-Path" value="." />
-				<!-- since Java 7u51 the jar manifest needs the permission attribute 
+				<!-- since Java 7u51 the jar manifest needs the permission attribute
 					for webstart -->
 				<attribute name="Permissions" value="all-permissions" />
 			</manifest>
@@ -45,15 +42,15 @@
 	</target>
 
 	<target name="compile" depends="nextbuildnumber, init">
-		
-		
-		<javac target="1.7" source="1.7" destdir="target/classes" encoding="utf-8">
+
+
+		<javac target="1.8" source="1.8" destdir="target/classes" encoding="utf-8" includeantruntime="false">
 			<src path="src/main/java" />
-			<!-- ignore symbol file due to compiling errors when trying to find somting 
+			<!-- ignore symbol file due to compiling errors when trying to find somting
 				inside com.sun.image.codec.jpeg.* http://www.javaroots.com/2013/01/javac-error-using-classes-from-rtjar.html -->
 			<compilerarg value="-XDignore.symbol.file" />
 			<classpath>
-				<fileset dir="../vanted-lib-repository">
+				<fileset dir="../vanted-libraries">
 					<include name="**/*.jar" />
 				</fileset>
 
@@ -74,48 +71,48 @@
 	<target name="init" depends="clean, createpluginfilelistWin, createpluginfilelistMacLinux">
 		<mkdir dir="${jar.dest.path}" />
 		<mkdir dir="target/classes" />
-		
+
 	</target>
-	
+
 	<target name="createpluginfilelistWin" if="isWindows">
 	    <exec executable="cmd">
 			<arg value="/C" />
 			<arg value="createfilelistWin.cmd" />
 		</exec>
 	</target>
-	
+
 	<target name="createpluginfilelistMacLinux" if="isMacLinux">
 	    <exec executable="/bin/sh">
 			<arg value="createfilelistLinuxMac.sh" />
 		</exec>
 	</target>
-	
+
 	<target name="clean">
 
 		<delete dir="target/classes" />
 		<delete dir="${jar.dest.path}"/>
 	</target>
 
-	
+
 	<target name="create-fat-vanted-jar" depends="create-vanted-core-jar">
 		<!-- create vanted-jarfile -->
-		<!-- duplicate="preserve": warning if file is duplicate, might help to 
+		<!-- duplicate="preserve": warning if file is duplicate, might help to
 			figure out if jars provide same packages/classes in different verions -->
-		
+
 		<jar destfile="${jar.dest.path}/dependencies-all.jar">
-		    <zipgroupfileset dir="../vanted-lib-repository">
+		    <zipgroupfileset dir="../vanted-libraries">
 		        <include name="**/*.jar"/>
 		    </zipgroupfileset>
-		    
+
 		</jar>
-		    
+
 		<jar destfile="${jar.dest.path}/vanted-fatjar-ver${vanted.version.number}-build-${build.date}-${build.number}.jar">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Main-Class"
 					value="de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.Main" />
 				<attribute name="Class-Path" value="." />
-				<!-- since Java 7u51 the jar manifest needs the permission attribute 
+				<!-- since Java 7u51 the jar manifest needs the permission attribute
 					for webstart -->
 				<attribute name="Permissions" value="all-permissions" />
 			</manifest>
@@ -131,5 +128,5 @@
 		<delete file="${jar.dest.path}/dependencies-all.jar"/>
 	</target>
 
-	
+
 </project>

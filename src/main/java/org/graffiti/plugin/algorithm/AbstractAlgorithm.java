@@ -10,11 +10,16 @@
 package org.graffiti.plugin.algorithm;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Set;
 
 import javax.swing.KeyStroke;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoableEdit;
 
+import org.ErrorMsg;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
@@ -23,8 +28,11 @@ import org.graffiti.selection.Selection;
 
 /**
  * Implements some empty versions of non-obligatory methods.
+ * 
+ * @version 2.0
+ * @vanted.revision 2.7.0 Default support for Undo, Redo.
  */
-public abstract class AbstractAlgorithm implements Algorithm {
+public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	// ~ Instance fields ========================================================
 
 	/** The graph on which the algorithm will work. */
@@ -41,8 +49,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	// ~ Methods ================================================================
 
 	/**
-	 * @param params
-	 *            Parameter array
+	 * @param params Parameter array
 	 */
 	public void setParameters(Parameter[] params) {
 		this.parameters = params;
@@ -146,13 +153,214 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
 	/**
 	 * Indicates, if an algorithm is always executable - even without an active
-	 * session
+	 * session.
 	 * 
 	 * @return true, when there are no preconditions
 	 */
 	public boolean isAlwaysExecutable() {
 		return false;
 	}
+
+	// ~ UnboableEdit Impl. ========================================================
+
+	/**
+	 * The number of undo operations in regards to stack selections. This is equal
+	 * to the number of times <code>execute()</code> has run.
+	 */
+	private ArrayDeque<Selection> undoStack = new ArrayDeque<>();
+
+	/**
+	 * The number of redo operations in terms of selections. This is equal to the
+	 * number of times <code>undo()</code> has run.
+	 */
+	private ArrayDeque<Selection> redoStack = new ArrayDeque<>();
+
+	/**
+	 * This is the selection handle for the Undo/Redo methods.
+	 */
+	protected Selection recycledSelection;
+	/**
+	 * This is the graph handle for the Undo/Redo methods, internally that is the
+	 * graph of the first graph element from the recycled selection.
+	 * 
+	 */
+	protected Graph recycledGraph;
+	
+	/**
+	 * The equivalent of {@linkplain AbstractAlgorithm#getSelectedOrAllNodes()}}, but for
+	 * the <code>undo()</code> and  <code>redo()</code> implementations.
+	 * 
+	 * @return
+	 */
+	protected Collection<Node> getSelectedOrAllNodesRecycled() {
+		if (recycledSelection == null || recycledSelection.getNodes().size() <= 0)
+			return recycledGraph.getNodes();
+		else
+			return recycledSelection.getNodes();
+	}
+
+	/**
+	 * The equivalent of {@linkplain AbstractAlgorithm#getSelectedOrAllGraphElements()}}, but for
+	 * the <code>undo()</code> and  <code>redo()</code> implementations.
+	 * 
+	 * @return
+	 */
+	protected Collection<GraphElement> getSelectedOrAllGraphElementsRecycled() {
+		if (recycledSelection == null || recycledSelection.getElements().size() <= 0)
+			return recycledGraph.getGraphElements();
+		else
+			return recycledSelection.getElements();
+	}
+
+	/**
+	 * <p>
+	 * Must return <code>true</code> to allow Undo/Redo edits.
+	 * </p>
+	 * 
+	 * <b>Important:</b> If you use {@linkplain GraphHelper} for undoable edits or
+	 * any other UndoableEdit tools, do NOT return <code>true</code>, as those are
+	 * handled in that given class.
+	 * 
+	 * @return <code>false</code> by default, meaning the algorithm is not undoable
+	 */
+	public boolean doesUndo() {
+		return false;
+	}
+
+	@Override
+	public boolean canUndo() {
+		return !undoStack.isEmpty();
+	}
+
+	@Override
+	public boolean canRedo() {
+		return !redoStack.isEmpty();
+	}
+
+	/**
+	 * Marks the performed algorithm execution as done, so that the operation can
+	 * later undo.
+	 */
+	public void markExecutionDone() {
+		undoStack.addFirst(new Selection(selection.getElements()));
+	}
+
+	/**
+	 * Marks the performed algorithm undo as done, so that the operation can later
+	 * redo.
+	 */
+	public void markUndoDone() {
+		redoStack.addFirst(new Selection(recycledSelection.getElements()));
+	}
+	
+	/**
+	 * Marks the performed algorithm redo as done, so that the operation can later
+	 * undo.
+	 */
+	public void markRedoDone() {
+		undoStack.addFirst(new Selection(recycledSelection.getElements()));
+	}
+
+	@Override
+	public void die() {
+		undoStack.clear();
+		redoStack.clear();
+		recycledSelection = null;
+		recycledGraph = null;
+		reset();
+	}
+
+	@Override
+	public String getPresentationName() {
+		return getName();
+	}
+
+	@Override
+	public String getRedoPresentationName() {
+		return "Redo " + getName().toLowerCase();
+	}
+
+	@Override
+	public String getUndoPresentationName() {
+		return "Undo " + getName().toLowerCase();
+	}
+
+	/**
+	 * Whether this UndoableEdit should be considered on its own for Undo/Redo, when
+	 * performing any of them. Otherwise, it will get undone/redone once a
+	 * significant edit takes place. Default is true, as all algorithms represent
+	 * complex atomic actions.
+	 */
+	@Override
+	public boolean isSignificant() {
+		return true;
+	}
+
+	/**
+	 * <p>
+	 * Default behaviour is to run <code>execute()</code> again.
+	 * </p>
+	 * 
+	 * If implementing, don't forget to call <code>super()</code> at the top of your
+	 * implementation.
+	 */
+	@Override
+	public void redo() throws CannotRedoException {
+		if (!canRedo())
+			throw new CannotRedoException();
+		recycledSelection = redoStack.removeFirst();
+		recycledGraph = recycledSelection.getGraph().iterator().next();
+		// Default Redo behaviour occurs only here
+		try {
+			if (getClass().getMethod("redo").getDeclaringClass().equals(AbstractAlgorithm.class)) {
+				final Selection cacheSelection = selection;
+				final Graph cacheGraph = graph;
+				selection = recycledSelection;
+				graph = recycledGraph;
+				execute();
+				selection = cacheSelection;
+				graph = cacheGraph;
+			}
+		} catch (NoSuchMethodException | SecurityException e) {
+			ErrorMsg.addErrorMessage(e);
+		}
+		// Ideally, it would be called last in redo(), but since it bares information
+		// only to other methods, it is generally enough to call it anywhere in redo().
+		markRedoDone();
+
+		// your code
+	}
+
+	/**
+	 * <p>
+	 * Extend with your Undo functionality.
+	 * </p>
+	 * 
+	 * Don't forget to call <code>super()</code> at the top of your implementation.
+	 */
+	@Override
+	public void undo() throws CannotUndoException {
+		if (!canUndo())
+			throw new CannotUndoException();
+		recycledSelection = undoStack.removeFirst();
+		recycledGraph = recycledSelection.getGraph().iterator().next();
+		// Ideally, it would be called last in undo(), but since it bares information
+		// only to other methods, it is generally enough to call it anywhere in undo().
+		markUndoDone();
+
+		// your code
+	}
+
+	@Override
+	public boolean addEdit(UndoableEdit anEdit) {
+		return false;
+	}
+
+	@Override
+	public boolean replaceEdit(UndoableEdit anEdit) {
+		return false;
+	}
+
 }
 
 // ------------------------------------------------------------------------------

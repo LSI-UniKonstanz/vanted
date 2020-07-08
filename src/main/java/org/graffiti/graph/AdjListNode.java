@@ -120,7 +120,7 @@ public class AdjListNode extends AbstractNode implements Node, GraphElement {
 	 */
 	@SuppressWarnings("unchecked")
 	public Iterator<Edge> getEdgesIterator() {
-		return (Iterator) new MultipleIterator(directedInEdges.iterator(), undirectedEdges.iterator(),
+		return (Iterator<Edge>) new MultipleIterator(directedInEdges.iterator(), undirectedEdges.iterator(),
 				directedOutEdges.iterator());
 	}
 
@@ -347,11 +347,6 @@ public class AdjListNode extends AbstractNode implements Node, GraphElement {
 		// logger.fine("exiting removeEdge()");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Node#setGraph(org.graffiti.graph.AbstractGraph)
-	 */
 	public void setGraph(Graph graph) {
 		assert graph != null;
 		this.graph = graph;

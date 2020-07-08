@@ -3,6 +3,7 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.addons;
 
+import java.awt.Window;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
@@ -204,8 +205,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				try {
 					loadAddonFromFile(mapPlugDescToFile.get(curPluginDesc));
 				} catch (IOException e) {
-
-					e.printStackTrace();
+					ErrorMsg.addErrorMessage(e);
 				}
 			}
 
@@ -755,6 +755,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				return false;
 			}
 		} catch (Exception e) {
+			ErrorMsg.addErrorMessage(e);
 			return false;
 		} finally {
 			if (jarFile != null)
@@ -801,13 +802,20 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	 * Shows Add-on-Manage-Dialog.
 	 */
 	public void showManageAddonDialog() {
+		showManageAddonDialog(MainFrame.getInstance());
+	}
+
+	/**
+	 * Shows Add-on-Manage-Dialog.
+	 */
+	public void showManageAddonDialog(Window parent) {
 		if (dialog != null) {
 			dialog.close();
 		}
 
-		dialog = new ManageAddonDialog(MainFrame.getInstance(), null);
+		dialog = new ManageAddonDialog(parent, null);
 	}
-
+	
 	public void showManageAddonDialog(final String msg, final boolean highlightUpdate) {
 		showManageAddonDialog();
 		BackgroundTaskHelper.executeLaterOnSwingTask(0, new Runnable() {

@@ -20,7 +20,7 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
-import org.jdom.Document;
+import org.jdom2.Document;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Entry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Gml2PathwayErrorInformation;
@@ -29,11 +29,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
 
 public class EvaluateKGML extends AbstractAlgorithm {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Evaluate KGML/Update View";
@@ -61,11 +56,6 @@ public class EvaluateKGML extends AbstractAlgorithm {
 		super.check();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		evaluateAndUpdateGraph(graph);
 	}

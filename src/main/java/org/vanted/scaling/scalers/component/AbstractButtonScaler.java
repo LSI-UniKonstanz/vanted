@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// AbstractButtonScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers.component;
 
 import java.awt.Component;
@@ -11,7 +18,7 @@ import javax.swing.JMenuItem;
 /**
  * An {@linkplain AbstractButton}-specific extension of {@link ComponentScaler}.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler {
@@ -70,6 +77,10 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 */
 	@Override
 	public void coscaleHTML(JComponent component) {
+		/* Scale the HTML label only for emulated DPIs. */
+		if (scaleFactor == 1f)
+			return;
+		
 		AbstractButton button = (AbstractButton) component;
 		/**
 		 * The order of the HTML texts is preserved and acts as second implicit key to
@@ -139,7 +150,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 
 	/**
 	 * Worker method processing the text, given it is HTML-styled, see
-	 * {@link HTMLSupport#isHTMLStyled(String)}, by performing parsing,
+	 * {@link HTMLScaleSupport#isHTMLStyled(String)}, by performing parsing,
 	 * substitution, removal and installation of {@link TextListener} plus text
 	 * setting, if necessary.
 	 * 
@@ -149,24 +160,24 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 *            AbstractButton
 	 */
 	private static void modifyHTML(String t, AbstractButton button) {
-		if (!HTMLSupport.isHTMLStyled(t))
+		if (!HTMLScaleSupport.isHTMLStyled(t))
 			return;
 
 		// save the initial tags for later
-		HTMLSupport.storeTags(button, t);
+		HTMLScaleSupport.storeTags(button, t);
 		// convert tags to font size
-		t = HTMLSupport.parseHTMLtoFontSize(t, button);
+		t = HTMLScaleSupport.parseHTMLtoFontSize(t, button);
 
 		if (t.equals(button.getText()))
 			return;
 
 		// remove listener to avoid looping
-		HTMLSupport.handleTextListener(button, true);
+		HTMLScaleSupport.handleTextListener(button, true);
 
 		button.setText(t);
 
 		// install listener for subsequent dynamic changes
-		HTMLSupport.handleTextListener(button, false);
+		HTMLScaleSupport.handleTextListener(button, false);
 	}
 
 	/**
@@ -179,17 +190,17 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 *            AbstractButton
 	 */
 	private static void modifyHTMLTooltip(String tooltip, AbstractButton button) {
-		if (!HTMLSupport.isHTMLStyled(tooltip))
+		if (!HTMLScaleSupport.isHTMLStyled(tooltip))
 			return;
 
-		HTMLSupport.storeTags(button, tooltip);
+		HTMLScaleSupport.storeTags(button, tooltip);
 
-		tooltip = HTMLSupport.parseHTMLtoFontSize(tooltip, button);
+		tooltip = HTMLScaleSupport.parseHTMLtoFontSize(tooltip, button);
 		if (tooltip.equals(button.getToolTipText()))
 			return;
 
-		HTMLSupport.handleTextListener(button, true);
+		HTMLScaleSupport.handleTextListener(button, true);
 		button.setToolTipText(tooltip);
-		HTMLSupport.handleTextListener(button, false);
+		HTMLScaleSupport.handleTextListener(button, false);
 	}
 }

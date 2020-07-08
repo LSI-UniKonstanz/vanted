@@ -4,6 +4,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,28 +17,28 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 
+/**
+ * 
+ * @vanted.revision 2.7.0 Added Undo/Redo
+ */
 public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 
 	private String currentValue = "";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
-		else
-			return "Enter and set cluster-ID";
+
+		return "Enter Cluster ID";
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>" + "With this command you may assign a new or modified cluster Id to<br>"
-				+ "the selected nodes (or all nodes, if no node is selected).";
+		return "<html>" + "Assign/Modify cluster ID for<br>" + "selected or all nodes, given none are selected.";
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 		try {
 			HashSet<String> ids = new HashSet<String>();
 			for (GraphElement ge : getSelectedOrAllGraphElements()) {
-				ids.add(NodeTools.getClusterID(ge, "-"));
+				ids.add(NodeTools.getClusterID(ge, ""));
 			}
 			currentValue = "";
 			for (String s : ids) {
@@ -57,18 +58,13 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 		} catch (Exception e) {
 			// ignore
 		}
-		return new Parameter[] { new StringParameter(currentValue, "New Cluster ID", null) };
+		return new Parameter[] { new StringParameter(currentValue, "Cluster ID", null) };
 	}
 
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		currentValue = ((StringParameter) params[i++]).getString();
-	}
-
-	@Override
-	public String getCategory() {
-		return "Elements"; // "menu.edit";
 	}
 
 	@Override
@@ -87,9 +83,9 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
 		try {
-			for (GraphElement ge : getSelectedOrAllGraphElements()) {
-				NodeTools.setClusterID(ge, currentValue);
-			}
+			HashMap<GraphElement, String> ge2newClusterID = new HashMap<>();
+			getSelectedOrAllGraphElements().forEach(ge -> ge2newClusterID.put(ge, currentValue));
+			GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newClusterID, getName(), true);
 		} finally {
 			graph.getListenerManager().transactionFinished(this);
 		}

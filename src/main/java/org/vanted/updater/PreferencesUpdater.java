@@ -12,7 +12,7 @@ import org.vanted.BuildInfo;
  * extended or re-used to force such deep updates, if needed.
  * 
  * @since 2.6.4
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class PreferencesUpdater {

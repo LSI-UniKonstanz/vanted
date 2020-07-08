@@ -76,7 +76,6 @@ public abstract class AbstractTab extends InspectorTab
 	/**
 	 * Avoids duplicate updates
 	 */
-
 	private DelayThread delayThreadAttributeChanged;
 
 	private DelayThread delayThreadAttributeAddedRemoved;
@@ -224,7 +223,6 @@ public abstract class AbstractTab extends InspectorTab
 	}
 
 	protected void rebuildTreeAction() {
-
 		/** The tree view of the attribute hierarchy. */
 		logger.debug("rebuildtree for classname: " + this.getClass().getName());
 		JTree attributeTree;

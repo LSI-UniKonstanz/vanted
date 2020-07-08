@@ -31,29 +31,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.SearchAlgorithms.Op
  */
 public class TabNetworkAlgorithms extends InspectorTab {
 
+	private static final long serialVersionUID = 1L;
+
 	static Logger logger = Logger.getLogger(TabNetworkAlgorithms.class);
 
-	private static String NAME = "Algorithms";
+	private static final String NAME = "Algorithms";
 
-	/**
-	 * 
-	 */
 	public TabNetworkAlgorithms() {
 		initComponents();
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 */
 	private void initComponents() {
-		// initOldDialog();
-		initNewDialog();
+		initDialog();
 	}
 
-	/**
-	 * 
-	 */
-	private void initNewDialog() {
+	private void initDialog() {
 		double border = 2;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.FILL, border } }; // Rows

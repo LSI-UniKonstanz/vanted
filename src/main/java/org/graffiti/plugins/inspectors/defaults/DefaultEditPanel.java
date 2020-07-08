@@ -18,8 +18,6 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -86,14 +84,12 @@ import org.graffiti.undo.ChangeAttributesEdit;
 import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
 import org.graffiti.util.PluginHelper;
-import org.vanted.scaling.Toolbox;
 
 /**
  * Represents the edit panel in the inspector.
  * 
  * @version $Revision: 1.30 $
  */
-@SuppressWarnings("unchecked")
 public class DefaultEditPanel extends EditPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -135,8 +131,6 @@ public class DefaultEditPanel extends EditPanel {
 
 	private static Object lock = new Object();
 	private static HashSet<String> discardedRowIDs = new HashSet<String>();
-
-	private float oldRatio;
 
 	// ~ Constructors ===========================================================
 
@@ -204,7 +198,7 @@ public class DefaultEditPanel extends EditPanel {
 		displayedValueEditComponents = new LinkedList<ValueEditComponent>();
 
 		// this.attributeTypeMap = new HashMap();
-		this.editComponentsMap = new HashMap();
+		this.editComponentsMap = new HashMap<>();
 
 		/** Button used to apply all changes. */
 		JButton applyButton;
@@ -248,18 +242,12 @@ public class DefaultEditPanel extends EditPanel {
 		attributeScrollPanel.getViewport().setOpaque(false);
 		attributeScrollPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		attributeScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
-		// applyButtonPanel.add(applyButton, BorderLayout.WEST);
-		// applyButtonPanel.add(applyRedrawButton, BorderLayout.EAST);
 
 		double[][] size = new double[][] { new double[] { TableLayout.FILL },
 				new double[] { TableLayout.PREFERRED, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 
-		// Do not show add attribute and remove attribute buttons
-		// add(attributeButtonPanel, BorderLayout.NORTH);
-
 		add(TableLayout.getSplit(applyButton, applyRedrawButton, TableLayout.FILL, TableLayout.PREFERRED), "0,0");
-		// add(applyButton, "0,0");
 		add(attributeScrollPanel, "0,1");
 		validate();
 
@@ -267,21 +255,6 @@ public class DefaultEditPanel extends EditPanel {
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
 				"apply");
 		getActionMap().put("apply", applyAction);
-
-		// Scaling sync-up
-		Toolbox.addScalingListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ((evt.getNewValue().equals(Toolbox.STATE_ON_SLIDER)
-						|| evt.getNewValue().equals(Toolbox.STATE_RESCALED))
-						&& !Toolbox.isComponentScaled(DefaultEditPanel.this))
-					Toolbox.scaleComponent(DefaultEditPanel.this, (Toolbox.getDPIScalingRatio() / oldRatio), false);
-
-				if (evt.getNewValue().equals(Toolbox.STATE_IDLE))
-					oldRatio = Toolbox.getDPIScalingRatio();
-
-			}
-		});
 	}
 
 	private void addDiscarded(HashSet<String> discardedRowIDs2, String[] strings) {
@@ -325,8 +298,7 @@ public class DefaultEditPanel extends EditPanel {
 	/**
 	 * Sets the map of editcomponents to the given map.
 	 * 
-	 * @param map
-	 *            DOCUMENT ME!
+	 * @param map DOCUMENT ME!
 	 */
 	@Override
 	public void setEditComponentMap(Map map) {
@@ -336,8 +308,7 @@ public class DefaultEditPanel extends EditPanel {
 	/**
 	 * Sets the ListenerManager.
 	 * 
-	 * @param lm
-	 *            DOCUMENT ME!
+	 * @param lm DOCUMENT ME!
 	 */
 	@Override
 	public void setListenerManager(ListenerManager lm) {
@@ -347,10 +318,8 @@ public class DefaultEditPanel extends EditPanel {
 	/**
 	 * Builds the table that is used for editing attributes from scratch.
 	 * 
-	 * @param treeNode
-	 *            root attribute.
-	 * @param graphElements
-	 *            DOCUMENT ME!
+	 * @param treeNode      root attribute.
+	 * @param graphElements DOCUMENT ME!
 	 */
 	@Override
 	public void buildTable(DefaultMutableTreeNode treeNode, Collection<? extends Attributable> graphElements,
@@ -495,8 +464,7 @@ public class DefaultEditPanel extends EditPanel {
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @param attr
-	 *            DOCUMENT ME!
+	 * @param attr DOCUMENT ME!
 	 */
 	@Override
 	public void updateTable(Attribute attr) {
@@ -512,8 +480,7 @@ public class DefaultEditPanel extends EditPanel {
 	 * Updates all attributes linked with the given ValueEditComponent to the value
 	 * displayed by the ValueEditComponent.
 	 * 
-	 * @param valueEditComponent
-	 *            DOCUMENT ME!
+	 * @param valueEditComponent DOCUMENT ME!
 	 */
 	void setValues(ValueEditComponent valueEditComponent) {
 		if (!valueEditComponent.isEnabled()) {
@@ -528,20 +495,15 @@ public class DefaultEditPanel extends EditPanel {
 	/**
 	 * Adds one row of the table.
 	 * 
-	 * @param idPanel
-	 *            DOCUMENT ME!
-	 * @param editFieldPanel
-	 *            DOCUMENT ME!
-	 * @param attribute
-	 *            DOCUMENT ME!
-	 * @param ecClass
-	 *            DOCUMENT ME!
-	 * @param showValue
-	 *            DOCUMENT ME!
-	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 * @param idPanel        DOCUMENT ME!
+	 * @param editFieldPanel DOCUMENT ME!
+	 * @param attribute      DOCUMENT ME!
+	 * @param ecClass        DOCUMENT ME!
+	 * @param showValue      DOCUMENT ME!
+	 * @throws RuntimeException DOCUMENT ME!
 	 */
-	private Collection<JComponent> getRow(final Attribute attribute, Class ecClass, boolean showValue, String tabName) {
+	private Collection<JComponent> getRow(final Attribute attribute, Class<?> ecClass, boolean showValue,
+			String tabName) {
 		Collection<JComponent> result = new ArrayList<JComponent>();
 		String id = attribute.getId();
 
@@ -727,14 +689,10 @@ public class DefaultEditPanel extends EditPanel {
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @param attr
-	 *            DOCUMENT ME!
-	 * @param idPanel
-	 *            DOCUMENT ME!
-	 * @param editFieldPanel
-	 *            DOCUMENT ME!
-	 * @param showValue
-	 *            DOCUMENT ME!
+	 * @param attr           DOCUMENT ME!
+	 * @param idPanel        DOCUMENT ME!
+	 * @param editFieldPanel DOCUMENT ME!
+	 * @param showValue      DOCUMENT ME!
 	 */
 	private Collection<JComponent> getStandardRow(Attribute attr, boolean showValue, String tabName) {
 		Collection<JComponent> result = new ArrayList<JComponent>();
@@ -809,10 +767,8 @@ public class DefaultEditPanel extends EditPanel {
 	 * 
 	 * @param idPanel
 	 * @param editFieldPanel
-	 * @param treeNode
-	 *            DOCUMENT ME!
-	 * @param graphElements
-	 *            DOCUMENT ME!
+	 * @param treeNode       DOCUMENT ME!
+	 * @param graphElements  DOCUMENT ME!
 	 */
 	private Collection<JComponent> getValueEditComponents(DefaultMutableTreeNode treeNode, String tabName) {
 
@@ -825,7 +781,7 @@ public class DefaultEditPanel extends EditPanel {
 			/*
 			 * if it is a CollectionAttribute, we check if there is a component registered.
 			 */
-			Class ecClass = (Class) this.editComponentsMap.get(attr.getClass());
+			Class<?> ecClass = (Class<?>) this.editComponentsMap.get(attr.getClass());
 
 			if (ecClass != null) {
 				// if we have a registered component to display it, add it
@@ -850,7 +806,7 @@ public class DefaultEditPanel extends EditPanel {
 						continue;
 					}
 
-					ecClass = (Class) this.editComponentsMap.get(attribute.getClass());
+					ecClass = (Class<?>) this.editComponentsMap.get(attribute.getClass());
 
 					if (ecClass != null) {
 						// if we have a registered component, add it
@@ -867,7 +823,7 @@ public class DefaultEditPanel extends EditPanel {
 			 * If not, recursive call with its hierarchy form.
 			 */
 
-			Class ecClass = (Class) this.editComponentsMap.get(attr.getClass());
+			Class<?> ecClass = (Class<?>) this.editComponentsMap.get(attr.getClass());
 
 			if (ecClass != null) {
 				result.addAll(getRow(attr, ecClass, booledAttr.getBool(), tabName));
@@ -884,7 +840,7 @@ public class DefaultEditPanel extends EditPanel {
 
 						Attribute attribute = booledChild.getAttribute();
 
-						ecClass = (Class) this.editComponentsMap.get(attribute.getClass());
+						ecClass = (Class<?>) this.editComponentsMap.get(attribute.getClass());
 						if (ecClass != null) {
 							// if we have a registered component, add it
 							result.addAll(getRow(attribute, ecClass, booledChild.getBool(), tabName));
@@ -901,7 +857,7 @@ public class DefaultEditPanel extends EditPanel {
 			 * exists a ValueEditComponent, if not use standard edit component
 			 */
 			if (attr != null) {
-				Class ecClass = (Class) this.editComponentsMap.get(attr.getClass());
+				Class<?> ecClass = (Class<?>) this.editComponentsMap.get(attr.getClass());
 
 				if (ecClass != null) {
 					// if we have a registered component to display it, add it
@@ -917,8 +873,7 @@ public class DefaultEditPanel extends EditPanel {
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @param changedAttr
-	 *            DOCUMENT ME!
+	 * @param changedAttr DOCUMENT ME!
 	 */
 	private void updateVECs(Attribute changedAttr) {
 		ArrayList<ValueEditComponent> dl;
@@ -1003,8 +958,7 @@ public class DefaultEditPanel extends EditPanel {
 		/**
 		 * DOCUMENT ME!
 		 * 
-		 * @param e
-		 *            DOCUMENT ME!
+		 * @param e DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
 			if (!(displayedAttr instanceof CollectionAttribute)) {
@@ -1035,8 +989,8 @@ public class DefaultEditPanel extends EditPanel {
 
 							String path = (displayedAttr.getPath() + " ").substring(1).trim();
 
-							for (Iterator geit = graphElements.iterator(); geit.hasNext();) {
-								Attributable atbl = (Attributable) geit.next();
+							for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+								Attributable atbl = geit.next();
 								atbl.addAttribute((Attribute) newAttr.copy(), path);
 							}
 
@@ -1048,8 +1002,9 @@ public class DefaultEditPanel extends EditPanel {
 
 								String path = (displayedAttr.getPath() + " ").substring(1).trim();
 
-								for (Iterator geit = graphElements.iterator(); geit.hasNext();) {
-									Attributable atbl = (Attributable) geit.next();
+								for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit
+										.hasNext();) {
+									Attributable atbl = geit.next();
 									atbl.addAttribute((Attribute) newAttr.copy(), path);
 								}
 
@@ -1070,8 +1025,8 @@ public class DefaultEditPanel extends EditPanel {
 
 							String path = (displayedAttr.getPath() + " ").substring(1).trim();
 
-							for (Iterator geit = graphElements.iterator(); geit.hasNext();) {
-								Attributable atbl = (Attributable) geit.next();
+							for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+								Attributable atbl = geit.next();
 								atbl.addAttribute((Attribute) newAttr.copy(), path);
 							}
 
@@ -1132,10 +1087,8 @@ public class DefaultEditPanel extends EditPanel {
 			/**
 			 * Creates a new AttributeSelector object.
 			 * 
-			 * @param frame
-			 *            DOCUMENT ME!
-			 * @param parentAttrName
-			 *            DOCUMENT ME!
+			 * @param frame          DOCUMENT ME!
+			 * @param parentAttrName DOCUMENT ME!
 			 */
 			public AttributeSelector(Frame frame, String parentAttrName) {
 				super(frame, "Attribute creation", true);
@@ -1254,10 +1207,8 @@ public class DefaultEditPanel extends EditPanel {
 		/**
 		 * DOCUMENT ME!
 		 * 
-		 * @param e
-		 *            DOCUMENT ME!
-		 * @throws RuntimeException
-		 *             DOCUMENT ME!
+		 * @param e DOCUMENT ME!
+		 * @throws RuntimeException DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
 			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(DefaultEditPanel.this,
@@ -1277,8 +1228,8 @@ public class DefaultEditPanel extends EditPanel {
 				try {
 					String attrPath = (displayedAttr.getPath() + " ").substring(1).trim();
 
-					for (Iterator geit = graphElements.iterator(); geit.hasNext();) {
-						Attributable atbl = (Attributable) geit.next();
+					for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+						Attributable atbl = geit.next();
 						atbl.removeAttribute(attrPath);
 					}
 
@@ -1297,11 +1248,6 @@ public class DefaultEditPanel extends EditPanel {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.inspector.EditPanel#showEmpty()
-	 */
 	@Override
 	public void showEmpty() {
 		this.displayedAttr = null;
@@ -1315,6 +1261,7 @@ public class DefaultEditPanel extends EditPanel {
 
 		attributeScrollPanel.setViewportView(new JPanel());
 	}
+
 }
 
 // ------------------------------------------------------------------------------

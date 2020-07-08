@@ -45,11 +45,6 @@ public class IPK_AdvancedLabelTool extends AdvancedLabelTool {
 	// super.mouseEntered(arg0);
 	// }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// cmm.ensureActiveSession(e);

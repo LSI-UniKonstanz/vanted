@@ -62,13 +62,13 @@ public class DemoResources extends ListResourceBundle {
 			{ "about.title", "About..." }, { "about.version.label", "Version" },
 
 			// menu labels...
-			{ "menu.file", "File" }, { "menu.file.mnemonic", new Character('F') },
+			{ "menu.file", "File" }, { "menu.file.mnemonic", Character.valueOf('F') },
 
-			{ "menu.file.exit", "Exit" }, { "menu.file.exit.mnemonic", new Character('x') },
+			{ "menu.file.exit", "Exit" }, { "menu.file.exit.mnemonic", Character.valueOf('x') },
 
-			{ "menu.help", "Help" }, { "menu.help.mnemonic", new Character('H') },
+			{ "menu.help", "Help" }, { "menu.help.mnemonic", Character.valueOf('H') },
 
-			{ "menu.help.about", "About..." }, { "menu.help.about.mnemonic", new Character('A') },
+			{ "menu.help.about", "About..." }, { "menu.help.about.mnemonic", Character.valueOf('A') },
 
 			// dialog messages...
 			{ "dialog.exit.title", "Confirm exit..." }, { "dialog.exit.message", "Are you sure you want to exit?" },

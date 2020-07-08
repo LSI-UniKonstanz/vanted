@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.jdom.Attribute;
-import org.jdom.Element;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 public interface SampleInterface
 		extends MappingDataEntity, Comparable<SampleInterface>, Collection<NumericMeasurementInterface> {

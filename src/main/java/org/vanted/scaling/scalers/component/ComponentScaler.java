@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ComponentScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers.component;
 
 import java.awt.Font;
@@ -32,7 +39,7 @@ import org.vanted.scaling.scalers.BasicScaler;
  * {@link JTabbedPaneScaler}<br>
  * {@link JTextComponentScaler}<br>
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class ComponentScaler extends BasicScaler {

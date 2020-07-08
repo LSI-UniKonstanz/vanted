@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// Scaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers;
 
 import java.awt.Font;
@@ -9,7 +16,7 @@ import javax.swing.Icon;
  * All scalers should implement this interface. Alternatively, one could more
  * conveniently just extend the default scaler - {@link BasicScaler}.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public interface Scaler {

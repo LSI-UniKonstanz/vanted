@@ -18,9 +18,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
+import org.AttributeHelper;
 import org.FolderPanel;
 import org.Release;
 import org.ReleaseInfo;
+import org.graffiti.attributes.AttributeNotFoundException;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
@@ -28,6 +31,8 @@ import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugin.view.View;
+import org.graffiti.session.EditorSession;
 
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.services.RunAlgorithmDialog;
@@ -35,19 +40,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * @author Christian Klukas (c) 2006 IPK-Gatersleben
+ * @vanted.revision <html>2.7.0 Layout G from G<sub>O</sub> too.</html>
  */
 public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWithComponentDescription {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Apply Pathway-Overview Layout";
 		else
-			return "Apply Layout of Overview-Graph to Nodes";// Re-Layout based on Cluster-Graph Layout";
+			return "Layout Source Graph via Overview Graph";// Re-Layout based on Cluster-Graph Layout";
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 		String cluster2 = "cluster";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			cluster2 = "pathway";
-		return "<html>" + "Using this command<br>" + "a " + cluster + " graph is<br>" + "created (2) from<br>"
+		return "<html>" + "Using this command<br>" + "an " + cluster + " graph is<br>" + "created (2) from<br>"
 				+ "the source graph (1), " + "<br>which needs to<br>" + "contain nodes with<br>" + "different "
 				+ cluster2 + " IDs.<br>" + "<br>The " + cluster + " graph<br>" + "may be automatically<br>"
 				+ "layouted, or manually.<br>" + "For that you need to<br>" + "select the<br>"
@@ -88,11 +89,6 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 	public void setParameters(Parameter[] params) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.extension.Extension#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Cluster";
@@ -126,15 +122,34 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 			throw new PreconditionException("No " + cluster + " information available for this graph!");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		String cluster = "overview-graph";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			cluster = "Pathway-Overview Graph";
+
+		// If the selected graph is the overview graph, switch to its cluster graph
+		try {
+			AttributeHelper.getAttribute(graph, "cluster" + AttributeHelper.attributeSeparator + "clustergraph");
+		} catch (AttributeNotFoundException anfe) {
+			MainFrame.getInstance();
+			for (EditorSession es : MainFrame.getEditorSessions()) {
+				for (View v : es.getViews()) {
+					if (v != null) {
+						try {
+							AttributeHelper
+									.getAttribute(v.getGraph(),
+											"cluster" + AttributeHelper.attributeSeparator + "clustergraph")
+									.getName().contains(graph.getName());
+							graph = v.getGraph();
+							break;
+						} catch (AttributeNotFoundException anfe2) {
+							continue;
+						}
+
+					}
+				}
+			}
+		}
 
 		RunAlgorithmDialog rad = new RunAlgorithmDialog("Select " + cluster + " Layout", graph, selection, true, false);
 		rad.setAlwaysOnTop(true);
@@ -143,7 +158,7 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 		ActionListenerForClusterGraphBasedLayout al = new ActionListenerForClusterGraphBasedLayout();
 		final Timer t = new Timer(100, al);
 		al.setAlgorithmDialog(rad);
-		al.setOptions(getName(), t, false, false, graph);
+		al.setOptions(getName(), t, graph);
 
 		t.setRepeats(true);
 		t.start();
@@ -160,12 +175,6 @@ class ActionListenerForClusterGraphBasedLayout implements ActionListener {
 
 	private Graph graph;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		if (!rad.isVisible() && rad.getAlgorithm() != null) {
 			tref.stop();
@@ -177,8 +186,7 @@ class ActionListenerForClusterGraphBasedLayout implements ActionListener {
 			rad.setAlwaysOnTop(true);
 	}
 
-	public void setOptions(String name, Timer t, boolean currentOptionShowGraphs, boolean currentOptionWaitForLayout,
-			Graph graph) {
+	public void setOptions(String name, Timer t, Graph graph) {
 		this.name = name;
 		this.graph = graph;
 		tref = t;

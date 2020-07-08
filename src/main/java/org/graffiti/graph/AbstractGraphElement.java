@@ -130,20 +130,10 @@ public abstract class AbstractGraphElement extends AbstractAttributable implemen
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.GraphElement#getID()
-	 */
 	public long getID() {
 		return id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.GraphElement#setID(int)
-	 */
 	public void setID(long id) {
 		this.id = id;
 		// getGraph().checkMaxGraphElementId(id);

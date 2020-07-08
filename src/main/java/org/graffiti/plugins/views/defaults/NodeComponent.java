@@ -325,6 +325,7 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 			NodeShape newShape = null;
 
 			try {
+
 				newShape = (NodeShape) InstanceLoader.createInstance(currentShapeClass);
 			} catch (InstanceCreationException ie) {
 				throw new ShapeNotFoundException(ie.toString());

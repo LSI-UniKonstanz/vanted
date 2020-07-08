@@ -19,6 +19,8 @@ import javax.xml.transform.TransformerException;
 
 import org.ErrorMsg;
 import org.HelperClass;
+import org.apache.xpath.XPathAPI;
+import org.apache.xpath.objects.XBoolean;
 import org.jaxen.JaxenException;
 import org.jaxen.XPath;
 import org.jaxen.dom.DOMXPath;
@@ -29,11 +31,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.traversal.NodeIterator;
 
-import com.sun.org.apache.xpath.internal.XPathAPI;
-import com.sun.org.apache.xpath.internal.objects.XBoolean;
-
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
+ * 
+ * @vanted.revision 2.7.0
  */
 @SuppressWarnings("unchecked")
 public class XPathHelper implements HelperClass {
@@ -95,16 +96,16 @@ public class XPathHelper implements HelperClass {
 	 * @return
 	 */
 	public static String[] getTimes(Document experimentData) {
-		ArrayList resultList = new ArrayList();
+		ArrayList resultList = new ArrayList<>();
 		HashSet<String> memTest = new HashSet<String>();
 		// resultList.add(filterAll);
 		try {
 			XPath xpath = new DOMXPath("/experimentdata/measurements/substance/line/sample"); // /substance/line/sample
 			XPath xpathTimeValue = new DOMXPath("@time");
 			XPath xpathTimeUnit = new DOMXPath("@unit");
-			ArrayList results = (ArrayList) xpath.selectNodes(experimentData);
-			for (Iterator it = results.iterator(); it.hasNext();) {
-				Node n = (Node) it.next();
+			ArrayList<Node> results = (ArrayList<Node>) xpath.selectNodes(experimentData);
+			for (Iterator<Node> it = results.iterator(); it.hasNext();) {
+				Node n = it.next();
 				String time = xpathTimeValue.stringValueOf(n);
 				String unit = xpathTimeUnit.stringValueOf(n);
 				TimeAndTimeUnit tatu = new TimeAndTimeUnit(time, unit);
@@ -160,9 +161,9 @@ public class XPathHelper implements HelperClass {
 			XPath xpathName = new DOMXPath("@name");
 			XPath xpathGenoType = new DOMXPath("@genotype");
 			XPath xpathTreatment = new DOMXPath("@treatment");
-			ArrayList results = (ArrayList) xpath.selectNodes(experimentData);
-			for (Iterator it = results.iterator(); it.hasNext();) {
-				Node n = (Node) it.next();
+			ArrayList<Node> results = (ArrayList<Node>) xpath.selectNodes(experimentData);
+			for (Iterator<Node> it = results.iterator(); it.hasNext();) {
+				Node n = it.next();
 				String lineID = xpathID.stringValueOf(n);
 				String lineName = xpathName.stringValueOf(n);
 				String genotype = xpathGenoType.stringValueOf(n);
@@ -216,7 +217,7 @@ public class XPathHelper implements HelperClass {
 	public static ArrayList<Node> getPlantNodes(Document experimentData) {
 		try {
 			XPath xpath = new DOMXPath("/experimentdata/measurements/substance/line"); // /substance/line/sample
-			ArrayList results = (ArrayList) xpath.selectNodes(experimentData);
+			ArrayList<Node> results = (ArrayList<Node>) xpath.selectNodes(experimentData);
 			return results;
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("XPATH ERROR: " + e.getLocalizedMessage());
@@ -228,15 +229,15 @@ public class XPathHelper implements HelperClass {
 		try {
 			XPath xpathAllSubstances;
 			xpathAllSubstances = new DOMXPath("/experimentdata/measurements/substance");
-			ArrayList resultAllSubstances = (ArrayList) xpathAllSubstances.selectNodes(document);
+			ArrayList<Node> resultAllSubstances = (ArrayList<Node>) xpathAllSubstances.selectNodes(document);
 			if (resultAllSubstances.size() <= 0) {
 				xpathAllSubstances = new DOMXPath("substance");
-				resultAllSubstances = (ArrayList) xpathAllSubstances.selectNodes(document);
+				resultAllSubstances = (ArrayList<Node>) xpathAllSubstances.selectNodes(document);
 			}
 			return resultAllSubstances;
 		} catch (JaxenException e) {
 			ErrorMsg.addErrorMessage(e);
-			return new ArrayList();
+			return new ArrayList<Node>();
 		}
 	}
 
@@ -244,8 +245,7 @@ public class XPathHelper implements HelperClass {
 		XPath workXpath;
 		try {
 			workXpath = new DOMXPath(childNodeName);
-			ArrayList resultNodeList = (ArrayList) workXpath.selectNodes(node);
-			return (Node) resultNodeList.get(0);
+			return (Node) workXpath.selectNodes(node).get(0);
 		} catch (JaxenException e) {
 			ErrorMsg.addErrorMessage(e.getLocalizedMessage());
 			return null;
@@ -683,7 +683,7 @@ public class XPathHelper implements HelperClass {
 		try {
 			XPath xpath = new DOMXPath(
 					"/experimentdata/measurements/substance[@id=" + substanceID + "]/line[@id=" + plantID + "]/sample");
-			ArrayList results = (ArrayList) xpath.selectNodes(doc);
+			ArrayList<Node> results = (ArrayList<Node>) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("XPATH ERROR: " + e.getLocalizedMessage());
@@ -694,7 +694,7 @@ public class XPathHelper implements HelperClass {
 	public static ArrayList<Node> getDataNodes(Document doc, Integer sampleID) {
 		try {
 			XPath xpath = new DOMXPath("/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/data");
-			ArrayList results = (ArrayList) xpath.selectNodes(doc);
+			ArrayList<Node> results = (ArrayList<Node>) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("XPATH ERROR: " + e.getLocalizedMessage());
@@ -706,7 +706,7 @@ public class XPathHelper implements HelperClass {
 		try {
 			XPath xpath = new DOMXPath(
 					"/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/volume");
-			ArrayList results = (ArrayList) xpath.selectNodes(doc);
+			ArrayList<Node> results = (ArrayList<Node>) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("XPATH ERROR: " + e.getLocalizedMessage());
@@ -718,7 +718,7 @@ public class XPathHelper implements HelperClass {
 		try {
 			XPath xpath = new DOMXPath(
 					"/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/network");
-			ArrayList results = (ArrayList) xpath.selectNodes(doc);
+			ArrayList<Node> results = (ArrayList<Node>) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("XPATH ERROR: " + e.getLocalizedMessage());
@@ -730,7 +730,7 @@ public class XPathHelper implements HelperClass {
 		try {
 			XPath xpath = new DOMXPath(
 					"/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/image");
-			ArrayList results = (ArrayList) xpath.selectNodes(doc);
+			ArrayList<Node> results = (ArrayList<Node>) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("XPATH ERROR: " + e.getLocalizedMessage());

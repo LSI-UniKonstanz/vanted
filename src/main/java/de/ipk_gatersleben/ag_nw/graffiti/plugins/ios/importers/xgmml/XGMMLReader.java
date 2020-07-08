@@ -11,6 +11,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.xgmml;
 import java.io.InputStream;
 import java.io.Reader;
 
+import org.apache.xerces.parsers.SAXParser;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.OptAdjListGraph;
 import org.graffiti.plugin.io.AbstractIOSerializer;
@@ -18,7 +19,6 @@ import org.graffiti.plugin.io.AbstractInputSerializer;
 import org.graffiti.plugin.io.ParserException;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * This class provides a reader for praphs stored in XGMML format.
@@ -79,7 +79,7 @@ public class XGMMLReader extends AbstractInputSerializer {
 
 		try {
 
-			XMLReader reader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
+			XMLReader reader = new SAXParser();//XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
 
 			reader.setContentHandler(delegatorHandler);
 			reader.setEntityResolver(new XGMMLDTDResolver());
@@ -121,7 +121,7 @@ public class XGMMLReader extends AbstractInputSerializer {
 
 		try {
 
-			XMLReader reader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
+			XMLReader reader = new SAXParser();//XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
 
 			reader.setContentHandler(delegatorHandler);
 			reader.setEntityResolver(new XGMMLDTDResolver());

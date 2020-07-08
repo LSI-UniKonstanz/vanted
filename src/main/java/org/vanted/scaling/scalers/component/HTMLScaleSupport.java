@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// HTMLSupport.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers.component;
 
 import java.beans.PropertyChangeEvent;
@@ -17,19 +24,21 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
+import org.apache.commons.lang.StringUtils;
 import org.vanted.scaling.ComponentRegulator;
+import org.vanted.scaling.Toolbox;
 
 /**
- * It handles several HTML tags, see {@linkplain AwareTags#ALL} for detailed
- * list. These are problematic, because they do not respect a font change on its
- * own and are replaced by a calculated font size, e.g. &#60;font size="-1">.
- * With the help of a {@link TextListener} we dynamic changes are tracked.
+ * It handles several HTML tags, see {@linkplain Tags#ALL} for detailed list.
+ * These are problematic, because they do not respect a font change on its own
+ * and are replaced by a calculated font size, e.g. &#60;font size="-1">. With
+ * the help of a {@link TextListener} we dynamic changes are tracked.
  * 
- * @see {@link ComponentRegulator#scaleHTML(JComponent)}
+ * @see {@link ComponentRegulator#scaleHTMLComponent(JComponent)}
  * 
- * @author dim8
+ * @author D. Garkov
  */
-class HTMLSupport {
+public class HTMLScaleSupport {
 
 	/** A listener for text changes to HTML-styled components. */
 	private static PropertyChangeListener textListener = new TextListener();
@@ -40,30 +49,30 @@ class HTMLSupport {
 	 */
 	private static HashMap<Integer, List<String>> tags = new HashMap<>();
 
-	private HTMLSupport() {
+	private HTMLScaleSupport() {
 	}
 
 	/**
 	 * Checks whether the given text uses font modifying HTML tags in its
 	 * specification. HTML-formatted strings have &#60;small> and &#60;big> tags.
 	 * 
-	 * @param text
-	 *            the String to be parsed
+	 * @param text the String to be parsed
 	 * 
 	 * @return true if styled with font-modifying tags
 	 */
 	static boolean isHTMLStyled(String text) {
-		if (text != null && text.toLowerCase(Locale.ROOT).contains("<html>") && AwareTags.ALL.isTagged(text))
+		if (text != null && text.toLowerCase(Locale.ROOT).contains("<html>") && Tags.ALL.isTagged(text))
 			return true;
 
 		return false;
 	}
 
 	/**
-	 * Stores all used tags of the form &#60;small> or &#big>, while preserving the
-	 * order. Supporting data structure: {@link HTMLSupport#tags}. As key is used
-	 * the hash-code of the given component, thus identifying it uniquely during a
-	 * working session. It also supports more than one HTML text per component.
+	 * Stores all used tags of the form &#60;small> or &#60;big>, while preserving
+	 * the order. Supporting data structure: {@link HTMLScaleSupport#tags}. As key
+	 * is used the hash-code of the given component, thus identifying it uniquely
+	 * during a working session. It also supports more than one HTML text per
+	 * component.
 	 * <p>
 	 * 
 	 * Example:<br>
@@ -71,18 +80,16 @@ class HTMLSupport {
 	 * &#60;html>&#60;big>3&#60;small>&#60;br>&nbsp;nodes<br>
 	 * &#60;big>&#60;small>
 	 * 
-	 * @param component
-	 *            used to get the key
-	 * @param text
-	 *            used to get the tags
+	 * @param component used to get the key
+	 * @param text      used to get the tags
 	 */
 	static void storeTags(JComponent component, String text) {
-		if (AwareTags.SPECIAL.isTagged(text) && !tags.containsKey(component.hashCode())) {
+		if (Tags.SPECIAL.isTagged(text) && !tags.containsKey(component.hashCode())) {
 
 			/*---Construct value---*/
-			String value = "";
+			StringBuilder value = new StringBuilder();
 
-			Map<String, Integer> occurrenceIndexer = AwareTags.SPECIAL.putAllValues(new HashMap<String, Integer>(), -1);
+			Map<String, Integer> occurrenceIndexer = Tags.SPECIAL.putAllValues(new HashMap<String, Integer>(), -1);
 			boolean refresh = true;
 			text = text.toLowerCase(Locale.ROOT);
 			while (refresh) {
@@ -98,7 +105,7 @@ class HTMLSupport {
 				}
 
 				String tag = getLeastValuedKey(occurrenceIndexer);
-				value += tag;
+				value.append(tag);
 
 				text = text.substring(text.indexOf(tag));
 				text = text.replaceFirst(tag, "");
@@ -107,7 +114,7 @@ class HTMLSupport {
 			/*---Insert kv-pair---*/
 			int key = component.hashCode();
 			List<String> list = tags.containsKey(key) ? tags.get(key) : new LinkedList<String>();
-			list.add(value);
+			list.add(value.toString());
 			tags.put(key, list);
 		}
 	}
@@ -128,6 +135,31 @@ class HTMLSupport {
 	}
 
 	/**
+	 * Scales hard-sized HTML tags, such as small, big, code, etc. by replacing them
+	 * with a an equivalent scaled fontsize tag. No tags are stored, as this is
+	 * thought to be a one-time non-reversible (on new instance) scaling.
+	 * 
+	 * @param text      the HTML text
+	 * @param component component to infer font size from
+	 * @return DPI-scaled HTML text
+	 * @since 2.7.0
+	 */
+	public static String scaleText(String text) {
+		if (Toolbox.getDPIScalingRatio() == 1f)
+			return text;
+
+		int factor = HTMLScaleSupport.getFontFactor((int) (12f * Toolbox.getDPIScalingRatio()), 12f);
+		String pattern = "<FONT SIZE=\"";
+		// Insert font modifiers accordingly
+		DecimalFormat df = new DecimalFormat("+#;-#");
+		for (String tag : Tags.ALL.values)
+			text = StringUtils.replace(text, tag,
+					(Tags.ADDITIVE.values.contains(tag)) ? tag + pattern + df.format(modifyTag(tag, factor)) + "\">"
+							: pattern + df.format(modifyTag(tag, factor)) + "\">");
+		return text;
+	}
+
+	/**
 	 * This method replaces the tags, or adds right after them, with a calculated
 	 * value according the current font size. If the font size is default, no
 	 * replacement takes place, even the opposite, if previously replaced, they are
@@ -143,16 +175,17 @@ class HTMLSupport {
 	 * 
 	 * Difference between &#60;small> and &#60;big> tags in font size is 2.
 	 * 
-	 * @param text
-	 *            to be parsed
-	 * @param component
-	 *            owner of the text
+	 * @see HTMLScaleSupport#getFontFactorFromJComponent(JComponent, float)
+	 * @see HTMLScaleSupport#modifyTag(String, int)
+	 * 
+	 * @param text      to be parsed
+	 * @param component owner of the text
 	 * 
 	 * @return String with replaced and processed according to the given font size
 	 *         tags
 	 */
 	static String parseHTMLtoFontSize(String text, JComponent component) {
-		int factor = HTMLSupport.getFontFactor(component, 12f);
+		int factor = HTMLScaleSupport.getFontFactorFromJComponent(component, 12f);
 		String pattern = "<FONT SIZE=\"";
 
 		// Restore initial tagging
@@ -162,55 +195,60 @@ class HTMLSupport {
 			else {
 				String[] parts = text.split(pattern);
 				String[] initialTags = restoreTags(component);
-				text = parts[0];
+				StringBuilder textBuilder = new StringBuilder(parts[0]);
 				for (int i = 0, j = 0; i < parts.length - 1; i++, j++) {
-					boolean wasReplaced = j < initialTags.length && !AwareTags.ADDITIVE.values.contains(initialTags[j]);
+					boolean wasReplaced = j < initialTags.length && !Tags.ADDITIVE.values.contains(initialTags[j]);
 
-					text += (wasReplaced ? initialTags[j] : "");
-					text += parts[i + 1].replaceAll("^(-|\\+)*[1-9]+\">", "");
+					textBuilder.append(wasReplaced ? initialTags[j] : "");
+					textBuilder.append(parts[i + 1].replaceAll("^(-|\\+)*[1-9]+\">", ""));
 				}
 
-				return text;
+				return textBuilder.toString();
 			}
 		}
 
 		// Insert font modifiers accordingly
 		DecimalFormat df = new DecimalFormat("+#;-#");
 		if (text.indexOf(pattern) == -1) { // from standard to emulated
-			for (String tag : AwareTags.ALL.values) {
-				factor = getTagBias(tag, factor);
-				if (!AwareTags.ADDITIVE.values.contains(tag))
-					text = text.replaceAll(tag, pattern + df.format(factor) + "\">");
-				else
-					text = text.replaceAll(tag, tag + pattern + df.format(factor) + "\">");
-			}
+			for (String tag : Tags.ALL.values)
+				text = StringUtils.replace(text, tag,
+						(Tags.ADDITIVE.values.contains(tag)) ? tag + pattern + df.format(modifyTag(tag, factor)) + "\">"
+								: pattern + df.format(modifyTag(tag, factor)) + "\">");
+			return text;
 		} else { // from emulated to emulated
-			String[] parts = text.split(pattern + "(-|\\+)*[1-9]+");
-			text = "";
-			for (int i = 0; i < parts.length; i++)
-				text += parts[i] + pattern + df.format(factor);
+			return text.replaceAll(pattern + "(-|\\+)*[1-9]+", pattern + df.format(factor));
 		}
-
-		return text;
 	}
 
-	private static int getTagBias(String tag, int factor) {
+	/**
+	 * 
+	 * @param tag
+	 * @param factor
+	 * @return
+	 * 
+	 * @vanted.revision 2.7.0 Remove bias
+	 */
+	private static int modifyTag(String tag, int factor) {
 		switch (tag) {
 		case "<big>":
-			return factor += 2;
+			return factor += 0;
 		case "<small>":
-			return factor -= 2;
+			return factor -= 0;
 
-		// add other biases here
+		// add other modifiers here
 		}
 
 		return factor;
 	}
 
-	private static int getFontFactor(JComponent component, float anchorSize) {
+	private static int getFontFactorFromJComponent(JComponent component, float anchorSize) {
 		int font = component.getFont().getSize();
+		return getFontFactor(font, anchorSize);
+	}
+
+	private static int getFontFactor(int refSize, float anchorSize) {
 		float _DEFAULT_SIZE = anchorSize;
-		float ratio = font / _DEFAULT_SIZE;
+		float ratio = refSize / _DEFAULT_SIZE;
 
 		// no emulated DPI => no change
 		if (ratio == 1f)
@@ -222,7 +260,7 @@ class HTMLSupport {
 		// lower emulated DPI => bigger font size
 		if (ratio > 1) {
 			negative = false;
-			float f = font;
+			float f = refSize;
 			while (f > _DEFAULT_SIZE) {
 				f = f / 2.0f;
 				factor += 1;
@@ -230,7 +268,7 @@ class HTMLSupport {
 			// higher emulated DPI => smaller font size
 		} else {
 			negative = true;
-			float f = font;
+			float f = refSize;
 
 			factor = 1; // bias
 			while (f < _DEFAULT_SIZE) {
@@ -254,8 +292,7 @@ class HTMLSupport {
 	 * previously added, but this may bring some unwanted overhead.
 	 * 
 	 * @param component
-	 * @param remove
-	 *            true to remove previously added listener
+	 * @param remove    true to remove previously added listener
 	 */
 	static void handleTextListener(JComponent component, boolean remove) {
 
@@ -272,20 +309,19 @@ class HTMLSupport {
 
 	/**
 	 * This method restores the previously stored tags in an array form, see also
-	 * {@link HTMLSupport#storeTags(JComponent, String)}, and preserves their
+	 * {@link HTMLScaleSupport#storeTags(JComponent, String)}, and preserves their
 	 * initial order.
 	 * 
-	 * @param component
-	 *            to get native tags back
+	 * @param component to get native tags back
 	 * 
 	 * @return an array with the native tags in order of appearance
 	 */
 	static String[] restoreTags(JComponent component) {
-
-		if (tags.get(component.hashCode()).isEmpty())
+		List<String> compTags = tags.get(component.hashCode());
+		if (compTags == null || compTags.isEmpty())
 			return new String[] { "" };
 
-		String value = tags.get(component.hashCode()).get(0);
+		String value = compTags.get(0);
 		final String del = "<";
 
 		ArrayList<String> tagslist = new ArrayList<>(Arrays.asList(value.split(del)));
@@ -295,28 +331,28 @@ class HTMLSupport {
 			result[i] = del + result[i];
 
 		// remove processed value from the map's list
-		tags.get(component.hashCode()).remove(0);
+		compTags.remove(0);
 
 		return result;
 	}
 
 	/**
 	 * Listener for any changes on a Swing Component regarding its text. See
-	 * {@link HTMLSupport#handleTextListener(JComponent, boolean)} for usage.
+	 * {@link HTMLScaleSupport#handleTextListener(JComponent, boolean)} for usage.
 	 * 
-	 * @author dim8
+	 * @author D. Garkov
 	 *
 	 */
 	private static class TextListener implements PropertyChangeListener {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			ComponentRegulator.scaleHTML((JComponent) evt.getSource());
+			ComponentRegulator.scaleHTMLComponent((JComponent) evt.getSource());
 		}
 
 	}
 
-	public enum AwareTags {
+	public enum Tags {
 		ALL("ALL", "<small>", "<big>", "<font size=\"", "<code>"),
 
 		SPECIAL("SPECIAL", "<small>", "<big>", "<code>"),
@@ -325,7 +361,7 @@ class HTMLSupport {
 
 		private final Set<String> values;
 
-		private AwareTags(String type, String... values) {
+		private Tags(String type, String... values) {
 			this.values = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(values)));
 		}
 

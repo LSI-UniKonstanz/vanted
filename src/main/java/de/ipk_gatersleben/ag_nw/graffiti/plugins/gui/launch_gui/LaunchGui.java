@@ -36,27 +36,24 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 	 */
 	protected abstract Collection<Algorithm> getAlgorithms();
 
-	protected boolean modal = true;
-	protected ButtonSize algBTsize = ButtonSize.DYNAMIC;
-
 	@Override
 	public void execute() {
 		String desc = getLaunchGuiDescription();
-		if (desc.equals("Select the command to be executed:") && !modal)
+		if (desc.equals("Select the command to be executed:") && !isModal())
 			desc = null;
 
 		Object[] commands = getLaunchCommands();
 		// if(getRealAlgorithmsSize()==1)
 		// ((JButton)commands[1]).doClick();
 
-		MyInputHelper.getInput("[" + (modal ? "" : "nonmodal") + "]<html>"
+		MyInputHelper.getInput("[" + (isModal() ? "" : "nonmodal") + "]<html>"
 				+ (desc == null ? "" : "<br>" + getLaunchGuiDescription() + "<br><br>"), getName(), commands);
 	}
 
 	public String getLaunchGuiDescription() {
 		return "Select the command to be executed:";
 	}
-
+	
 	@Override
 	public String getName() {
 		return null;
@@ -87,7 +84,7 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 		JButton res = new JButton();
 		String sizetags = null;
 
-		switch (algBTsize) {
+		switch (getButtonSize()) {
 		case DYNAMIC:
 			sizetags = (getRealAlgorithmsSize() > 5 ? "" : "<br>");
 			break;
@@ -149,4 +146,21 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 		return v != null;
 	}
 
+	/**
+	 * By default all LaunchGui Windows are modal. Override to change.
+	 * 
+	 * @return modal state of this Launch Gui dialog
+	 * @since 2.7.0
+	 */
+	public boolean isModal() {
+		return true;
+	}
+	
+	/**
+	 * @return the size of this LaunchGui's algorithm buttons
+	 * @since 2.7.0
+	 */
+	public ButtonSize getButtonSize() {
+		return ButtonSize.DYNAMIC;
+	}
 }

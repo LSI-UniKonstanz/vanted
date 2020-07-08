@@ -1,4 +1,4 @@
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,16 +12,8 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SetClusterInfoAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SetClusterInfoFromLabelAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SetClusterInfoFromSubgraphAlgorithm;
 
-public class SetCluster extends LaunchGui {
-
-	public SetCluster() {
-		super();
-		modal = false;
-	}
+public class SetClusterLaunchGui extends LaunchGui {
 
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
@@ -29,6 +21,8 @@ public class SetCluster extends LaunchGui {
 		res.add(new SetClusterInfoAlgorithm());
 		res.add(new SetClusterInfoFromLabelAlgorithm());
 		res.add(new SetClusterInfoFromSubgraphAlgorithm());
+		res.add(new SortIntoCluster());
+		
 		return res;
 	}
 
@@ -54,4 +48,10 @@ public class SetCluster extends LaunchGui {
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.CLUSTER, Category.ANNOTATION));
 	}
+
+	@Override
+	public boolean isModal() {
+		return false;
+	}
+	
 }

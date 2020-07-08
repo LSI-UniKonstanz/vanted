@@ -240,7 +240,6 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		super.mouseClicked(e);
 		if (!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e)) {
 			View activeView = MainFrame.getInstance().getActiveEditorSession().getActiveView();

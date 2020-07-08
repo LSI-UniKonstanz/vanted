@@ -8,10 +8,11 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -86,15 +86,17 @@ public class ManageAddonDialog extends JDialog {
 	private JLabel msgPanel;
 	// private String msg;
 	protected PluginDescription currentDPE;
+	private JComponent descriptionJC;
+	private JComponent contactJC;
+	private JComponent tableaddonsJC;
 
-	public ManageAddonDialog(JFrame frame, String msg) {
-		super(frame);
-		frame.setEnabled(false);
+	public ManageAddonDialog(Window parent, String msg) {
+		super(parent);
+		parent.setEnabled(false);
 		// this.manager = addonManager;
 		JButton jb = initGUI();
 		setTopText(msg);
 		// TODO: TEST THIS
-		setModal(true);
 		setVisible(true);
 		installDragNDrop(jb);
 	}
@@ -148,6 +150,9 @@ public class ManageAddonDialog extends JDialog {
 		dispose();
 	}
 
+	/**
+	 * @vanted.revision 2.7.0
+	 */
 	private JButton initGUI() {
 		try {
 
@@ -156,20 +161,18 @@ public class ManageAddonDialog extends JDialog {
 			getContentPane().removeAll();
 
 			TableLayout thisLayout = new TableLayout(new double[][] {
-					// spalten
+					// columns
 					{ 5.0, TableLayoutConstants.FILL, 80, 10.0, 85.0, 80, 0.0, 10.0, TableLayoutConstants.FILL,
 							TableLayoutConstants.FILL, 5.0 },
-					// zeilen
+					// rows
 					{ 0.0, TableLayout.PREFERRED, 5.0, 0.0, 45.0, 5.0, 45.0, 5.0, 45.0, 0.0, TableLayoutConstants.FILL,
 							5.0, 45.0, 0.0, 0, 0, 5.0, 30.0, 5.0 } });
 			getContentPane().setLayout(thisLayout);
 			this.setPreferredSize(new java.awt.Dimension(700, 400));
 			this.setMinimumSize(new java.awt.Dimension(700, 400));
 			this.setTitle("Add-on Manager");
-
-			setModal(true);
-			// setAlwaysOnTop(true);
-			setLocationRelativeTo(MainFrame.getInstance());
+			setModalityType(DEFAULT_MODALITY_TYPE);
+			setLocationRelativeTo(getParent());
 
 			initAddonTable();
 
@@ -193,9 +196,8 @@ public class ManageAddonDialog extends JDialog {
 								return "Add-on Files (*.jar)";
 							}
 						});
-						fc.setApproveButtonText("Install");
-						fc.setDialogTitle("Choose Add-on to be installed");
-						int returnVal = fc.showDialog(getParent(), null);// OpenDialog(getParent());
+						fc.setDialogTitle("Choose Add-on to install");
+						int returnVal = fc.showDialog(getParent(), "Install");
 						if (returnVal == JFileChooser.APPROVE_OPTION) {
 							try {
 								AddonManagerPlugin.getInstance().installAddon(fc.getCurrentDirectory().toString(),
@@ -216,21 +218,16 @@ public class ManageAddonDialog extends JDialog {
 				findUpdatesMarker = new MarkComponent(buttondownload, false, TableLayout.PREFERRED, false,
 						TableLayout.FILL);
 
-				/*
-				 * small wait loop thing for the download button
-				 */
-				final WaitAnimationButton waitAnimationButton = new WaitAnimationButton(buttondownload);
-				final Thread waitAnimationThread = new Thread(waitAnimationButton);
-
 				buttondownload.setText("Find Add-ons/Updates");
 				buttondownload.setOpaque(false);
 				buttondownload.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						// setModal(false);
-						// close();
 						buttondownload.setEnabled(false);
-
-						waitAnimationThread.start();
+						/*
+						 * small wait loop thing for the download button
+						 */
+						final WaitAnimationButton waitAnimationButton = new WaitAnimationButton(buttondownload);
+						new Thread(waitAnimationButton).start();
 
 						final RSSFeedManager rfm = RSSFeedManager.getInstance();
 						rfm.loadRegisteredFeeds();
@@ -353,7 +350,8 @@ public class ManageAddonDialog extends JDialog {
 	}
 
 	/**
-	 * 
+	 * Initializes the Add-on table and accompanying information in the Add-on
+	 * Manager.
 	 */
 	private void initAddonTable() {
 		{
@@ -379,9 +377,11 @@ public class ManageAddonDialog extends JDialog {
 
 			textContact.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 			textContact.setOpaque(true);
-			JComponent jc = TableLayout.getSplit(textContact, null, TableLayout.FILL, 0);
-			jc.setBorder(BorderFactory.createTitledBorder("Availability"));
-			getContentPane().add(jc, "8, 4, 9, 4");
+			if (contactJC != null)
+				getContentPane().remove(contactJC);
+			contactJC = TableLayout.getSplit(textContact, null, TableLayout.FILL, 0);
+			contactJC.setBorder(BorderFactory.createTitledBorder("Availability"));
+			getContentPane().add(contactJC, "8, 4, 9, 4");
 		}
 		{
 			textDescription = new JTextArea() {
@@ -417,7 +417,8 @@ public class ManageAddonDialog extends JDialog {
 			textDescription.setOpaque(false);
 			Cursor c = new Cursor(Cursor.HAND_CURSOR);
 			textDescription.setCursor(c);
-			textDescription.addMouseListener(new MouseListener() {
+			textDescription.addMouseListener(new MouseAdapter() {
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					// AttributeHelper.showInBrowser(urlLink);
 					if (currentDPE != null) {
@@ -435,12 +436,6 @@ public class ManageAddonDialog extends JDialog {
 									"<html>Add-on is not loaded. Plugin-features can't be determined.", "Information");
 						}
 					}
-				}
-
-				public void mousePressed(MouseEvent e) {
-				}
-
-				public void mouseReleased(MouseEvent e) {
 				}
 
 				Color oldColor;
@@ -461,12 +456,16 @@ public class ManageAddonDialog extends JDialog {
 				}
 			});
 			textDescription.setToolTipText("Show list of add-on features");
-			JComponent jc = TableLayout.getSplit(textDescription, null, TableLayout.FILL, 0);
-			jc.setOpaque(false);
-			jc.setBorder(BorderFactory.createTitledBorder("Description"));
-			getContentPane().add(jc, "8, 6, 9, 11");
+			if (descriptionJC != null)
+				getContentPane().remove(descriptionJC); // remove previous one
+			descriptionJC = TableLayout.getSplit(textDescription, null, TableLayout.FILL, 0);
+			descriptionJC.setOpaque(false);
+			descriptionJC.setBorder(BorderFactory.createTitledBorder("Description"));
+			getContentPane().add(descriptionJC, "8, 6, 9, 11");
 		}
 		{
+			if (textVersion != null)
+				getContentPane().remove(textVersion);
 			textVersion = new JTextArea();
 			getContentPane().add(textVersion, "8, 12, 9, 15");
 			textVersion.setBackground(this.getBackground());
@@ -532,7 +531,6 @@ public class ManageAddonDialog extends JDialog {
 						if (vvv == null || vvv.equalsIgnoreCase("null"))
 							vvv = "";
 						String mmm;
-
 						if (vvv == null || vvv.length() == 0)
 							textVersion.setText(" No compatiblity information specified");
 						else {
@@ -559,7 +557,7 @@ public class ManageAddonDialog extends JDialog {
 			if (tableaddons.getRowCount() > 0)
 				tableaddons.getSelectionModel().setSelectionInterval(0, 0);
 
-			tableaddons.addMouseListener(new MouseListener() {
+			tableaddons.addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent e) {
 					Point p = e.getPoint();
 					int rowNumber = tableaddons.rowAtPoint(p);
@@ -597,24 +595,13 @@ public class ManageAddonDialog extends JDialog {
 					}
 				}
 
-				public void mousePressed(MouseEvent e) {
-				}
-
-				public void mouseExited(MouseEvent e) {
-				}
-
-				public void mouseEntered(MouseEvent e) {
-				}
-
-				public void mouseClicked(MouseEvent e) {
-				}
-
 			});
-
-			JComponent ttt = TableLayout.getSplitVertical(tableaddons.getTableHeader(), tableaddons,
+			if (tableaddonsJC != null)
+				getContentPane().remove(tableaddonsJC);
+			tableaddonsJC = TableLayout.getSplitVertical(tableaddons.getTableHeader(), tableaddons,
 					TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
-			ttt.setBorder(BorderFactory.createEtchedBorder());
-			getContentPane().add(ttt, "1, 4, 6, 15");
+			tableaddonsJC.setBorder(BorderFactory.createEtchedBorder());
+			getContentPane().add(tableaddonsJC, "1, 4, 6, 15");
 		}
 	}
 
@@ -690,11 +677,8 @@ public class ManageAddonDialog extends JDialog {
 class WaitAnimationButton implements Runnable {
 
 	JButton waitButton;
-	boolean exit = false;
+	private boolean exit = false;
 
-	/**
-	 * 
-	 */
 	public WaitAnimationButton(JButton waitButton) {
 		this.waitButton = waitButton;
 	}

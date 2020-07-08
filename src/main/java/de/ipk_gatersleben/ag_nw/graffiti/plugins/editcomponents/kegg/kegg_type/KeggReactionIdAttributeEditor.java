@@ -41,7 +41,7 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
-import org.jdom.Document;
+import org.jdom2.Document;
 
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.kegg.kegg_type.reaction_gui.CompoundListEditor;

@@ -38,6 +38,7 @@ import org.FolderPanel;
 import org.JLabelJavaHelpLink;
 import org.SystemInfo;
 import org.Vector2d;
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.LinkedHashMapAttribute;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
@@ -126,8 +127,7 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @param params
-	 *            DOCUMENT ME!
+	 * @param params DOCUMENT ME!
 	 */
 	public void setParameters(Parameter[] params) {
 		degree = ((DoubleParameter) params[0]).getDouble().doubleValue();
@@ -185,7 +185,7 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 
 		if (nodeList.size() < 2)
 			return;
-		// options == null ==> Vom Menü, sonst Schleife für Background-Thread
+		// options == null ==> Vom Menu, sonst Schleife fuer Background-Thread
 		final HashMap<CoordinateAttribute, Vector2d> coordinates2newPositions = new HashMap<CoordinateAttribute, Vector2d>();
 		final HashMap<CoordinateAttribute, Vector2d> coordinates2oldPositions = new HashMap<CoordinateAttribute, Vector2d>();
 		// memorize old positions
@@ -197,13 +197,12 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 			LinkedHashMapAttribute ha = ((LinkedHashMapAttribute) e.getAttribute(AttributeConstants.BENDS));
 			if (ha == null)
 				continue;
-			Map m = ha.getCollection();
+			Map<String, Attribute> m = ha.getCollection();
 			if (m == null)
 				continue;
-			for (Iterator bi = m.entrySet().iterator(); bi.hasNext();) {
+			for (Iterator<Map.Entry<String, Attribute>> bi = m.entrySet().iterator(); bi.hasNext();) {
 				// transform bends
-				Map.Entry en = (java.util.Map.Entry) bi.next();
-				CoordinateAttribute co = (CoordinateAttribute) en.getValue();
+				CoordinateAttribute co = (CoordinateAttribute) bi.next().getValue();
 				coordinates2oldPositions.put(co, new Vector2d(co.getCoordinate()));
 			}
 		}
@@ -249,13 +248,12 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 						LinkedHashMapAttribute ha = ((LinkedHashMapAttribute) e.getAttribute(AttributeConstants.BENDS));
 						if (ha == null)
 							continue;
-						Map m = ha.getCollection();
+						Map<String, Attribute> m = ha.getCollection();
 						if (m == null)
 							continue;
-						for (Iterator bi = m.entrySet().iterator(); bi.hasNext();) {
+						for (Iterator<Map.Entry<String, Attribute>> bi = m.entrySet().iterator(); bi.hasNext();) {
 							// transform bends
-							Map.Entry en = (java.util.Map.Entry) bi.next();
-							CoordinateAttribute co = (CoordinateAttribute) en.getValue();
+							CoordinateAttribute co = (CoordinateAttribute) bi.next().getValue();
 							transformThese.add(co);
 						}
 					}
@@ -326,8 +324,7 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @param e
-	 *            DOCUMENT ME!
+	 * @param e DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// executeThreadSafe(null);
@@ -335,13 +332,6 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		GravistoService.getInstance().runAlgorithm(this, nonInteractiveGraph, nonInteractiveSelection, e);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#setControlInterface(org.
-	 * graffiti.plugin.algorithm.ThreadSafeOptions, javax.swing.JComponent)
-	 */
 	@Override
 	public boolean setControlInterface(final ThreadSafeOptions options, JComponent jc) {
 		this.options = options;
@@ -421,12 +411,6 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#executeThreadSafe(org.
-	 * graffiti.plugin.algorithm.ThreadSafeOptions)
-	 */
 	@Override
 	public void executeThreadSafe(ThreadSafeOptions options) {
 		degree = 0; // not yet rotated
@@ -441,35 +425,19 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#resetDataCache(org.graffiti
-	 * .plugin.algorithm.ThreadSafeOptions)
-	 */
 	@Override
 	public void resetDataCache(ThreadSafeOptions options) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
-	 */
+	@Override
 	public void reset() {
 		nonInteractiveGraph = null;
 		nonInteractiveSelection = null;
 		options = null;
 		degree = 0;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#attach(org.graffiti.graph.Graph,
-	 * org.graffiti.selection.Selection)
-	 */
+	
+	@Override
 	public void attach(Graph g, Selection selection) {
 		if (options != null) {
 			options.setGraphInstance(g);
@@ -480,17 +448,13 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#isLayoutAlgorithm()
-	 */
+	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
 
+	@Override
 	public String getDescription() {
-		//
 		return null;
 	}
 

@@ -60,14 +60,13 @@ public class WaferMapChartDemo extends ApplicationFrame {
 	 */
 	public WaferMapChartDemo(final String title) {
 		super(title);
-		final WaferMapDataset dataset = DemoDatasetFactory.createRandomWaferMapDataset(5);
+		final WaferMapDataset dataset = DemoDatasetFactory.createRandomWaferMapDataset(50);
 		final JFreeChart chart = ChartFactory.createWaferMapChart("Wafer Map Demo", // title
 				dataset, // wafermapdataset
 				PlotOrientation.VERTICAL, // vertical = notchdown
 				true, // legend
 				false, // tooltips
 				false);
-
 		final Legend legend = chart.getLegend();
 		legend.setAnchor(Legend.EAST);
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.blue));
@@ -80,7 +79,8 @@ public class WaferMapChartDemo extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 400));
 		setContentPane(chartPanel);
-	}
+	}	
+
 
 	/**
 	 * Starting point for the demo application.
@@ -94,5 +94,4 @@ public class WaferMapChartDemo extends ApplicationFrame {
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 	}
-
 } // end class wafermapchartdemo

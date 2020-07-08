@@ -18,8 +18,8 @@ import org.StringManipulationTools;
 import org.Vector2d;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.jdom.Comment;
-import org.jdom.Element;
+import org.jdom2.Comment;
+import org.jdom2.Element;
 
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.EntryType;

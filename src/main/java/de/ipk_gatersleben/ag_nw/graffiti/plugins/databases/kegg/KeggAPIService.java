@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RecursiveAction;
 
-import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
+import org.vanted.updater.HttpHttpsURL;
 
 /**
  * A Kegg API REST accessor class
@@ -104,9 +102,9 @@ public class KeggAPIService {
 			}
 
 			try {
-				URL url = new URL(str.toString());
-				HttpURLConnection openConnection = (HttpURLConnection) url.openConnection();
-				if (openConnection.getResponseCode() == HttpStatus.SC_OK) {
+				HttpHttpsURL url = new HttpHttpsURL(str.toString());
+				HttpURLConnection openConnection = url.openConnection();
+				if (openConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(openConnection.getInputStream()));
 					String line;
 					while ((line = reader.readLine()) != null) {
@@ -116,11 +114,8 @@ public class KeggAPIService {
 						retKOIds.add(mappedIds[1].trim());
 					}
 				}
-			} catch (MalformedURLException e) {
-				
-				e.printStackTrace();
 			} catch (IOException e) {
-				
+
 				e.printStackTrace();
 			}
 

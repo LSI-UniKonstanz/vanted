@@ -8,8 +8,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.network;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,8 +27,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.network.BroadCastService;
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
+ * 
+ * @vanted.revision 2.7.0
  */
-@SuppressWarnings("unchecked")
 public class BroadCastTask extends TimerTask {
 
 	private static int timeOffline = 31000;
@@ -45,7 +47,7 @@ public class BroadCastTask extends TimerTask {
 	 */
 	ArrayList<byte[]> inMessages = new ArrayList<byte[]>();
 
-	HashMap knownHostsAndTime = new HashMap();
+	HashMap<InetAddress, Long> knownHostsAndTime = new HashMap<>();
 
 	/**
 	 * Contains byte[] arrays of data to be sent.
@@ -55,7 +57,6 @@ public class BroadCastTask extends TimerTask {
 	BroadCastTask(final BroadCastService broadCastService, final Runnable receiver) {
 		this.broadCastService = broadCastService;
 		Thread receiveTask = new Thread(new Runnable() {
-			@SuppressWarnings("deprecation")
 			public void run() {
 				boolean error = false;
 				while (!error) {
@@ -70,14 +71,14 @@ public class BroadCastTask extends TimerTask {
 								int cntBefore = knownHostsAndTime.size();
 								knownHostsAndTime.put(rec.sender, Long.valueOf(System.currentTimeMillis()));
 								long currentTime = System.currentTimeMillis();
-								ArrayList toBeDeleted = new ArrayList();
-								for (Iterator it = knownHostsAndTime.keySet().iterator(); it.hasNext();) {
-									Object key = it.next();
+								ArrayList<InetAddress> toBeDeleted = new ArrayList<>();
+								for (Iterator<InetAddress> it = knownHostsAndTime.keySet().iterator(); it.hasNext();) {
+									InetAddress key = it.next();
 									Long accessTime = (Long) knownHostsAndTime.get(key);
 									if (accessTime.longValue() + timeOffline < currentTime)
 										toBeDeleted.add(key);
 								}
-								for (Iterator it = toBeDeleted.iterator(); it.hasNext();) {
+								for (Iterator<InetAddress> it = toBeDeleted.iterator(); it.hasNext();) {
 									knownHostsAndTime.remove(it.next());
 								}
 								if (cntBefore != knownHostsAndTime.size())
@@ -90,13 +91,13 @@ public class BroadCastTask extends TimerTask {
 								msgString = msgString.substring(0, msgString.indexOf("§§§"));
 								// Decrypt
 								msgString = encrypter.decrypt(msgString);
-								Date dt = new GregorianCalendar().getTime();
+								Calendar calendar = new GregorianCalendar();
 								if (msgString != null) {
 									synchronized (inMessages) {
-										inMessages.add(new String(
-												"[" + ensure00(dt.getHours()) + ":" + ensure00(dt.getMinutes()) + "/"
-														+ rec.getSenderHostNameOrIP() + "]: " + msgString.trim())
-																.getBytes("UTF-8"));
+										inMessages.add(new String("[" + ensure00(calendar.get(Calendar.HOUR_OF_DAY))
+												+ ":" + ensure00(calendar.get(Calendar.MINUTE)) + "/"
+												+ rec.getSenderHostNameOrIP() + "]: " + msgString.trim())
+														.getBytes("UTF-8"));
 									}
 									SwingUtilities.invokeLater(receiver);
 								} else
@@ -138,7 +139,7 @@ public class BroadCastTask extends TimerTask {
 	private void sendOutMessages() {
 		try {
 			synchronized (outMessages) {
-				for (Iterator it = outMessages.iterator(); it.hasNext();) {
+				for (Iterator<byte[]> it = outMessages.iterator(); it.hasNext();) {
 					byte[] outBytes = (byte[]) it.next();
 					broadCastService.sendBroadcast(outBytes);
 				}
@@ -149,11 +150,6 @@ public class BroadCastTask extends TimerTask {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
 	@Override
 	public void run() {
 		String defaultOutMsg = "SYSTEM: AGLET CLIENT SEARCH FOR SERVERS";
@@ -165,20 +161,17 @@ public class BroadCastTask extends TimerTask {
 		}
 	}
 
-	/**
-	 * @return
-	 */
-	public ArrayList getInMessages() {
+	public ArrayList<byte[]> getInMessages() {
 		synchronized (inMessages) {
-			ArrayList result = new ArrayList(inMessages);
+			ArrayList<byte[]> result = new ArrayList<>(inMessages);
 			inMessages.clear();
 			return result;
 		}
 	}
 
-	public List getActiveHosts() {
+	public List<InetAddress> getActiveHosts() {
 		synchronized (knownHostsAndTime) {
-			ArrayList result = new ArrayList(knownHostsAndTime.keySet());
+			ArrayList<InetAddress> result = new ArrayList<>(knownHostsAndTime.keySet());
 			return result;
 		}
 	}

@@ -75,8 +75,8 @@ public class CutAction extends SelectionAction {
 		Selection selection = getSelection();
 		if (selection.isEmpty())
 			return;
+		
 		AdjListGraph copyGraph = new AdjListGraph(sourceGraph, new ListenerManager());
-
 		try {
 			String ext = "gml";
 			IOManager ioManager = MainFrame.getInstance().getIoManager();

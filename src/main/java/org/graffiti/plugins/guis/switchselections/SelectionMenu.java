@@ -56,7 +56,7 @@ public class SelectionMenu extends GraffitiMenu implements GraffitiComponent, Se
 	private Map<EditorSession, Selection> lastSelMap = new HashMap<EditorSession, Selection>();
 
 	/** Saves entries for each session. */
-	private Map<EditorSession, Map> sessionItemsMap = new HashMap<EditorSession, Map>();
+	private Map<EditorSession, Map<?,?>> sessionItemsMap = new HashMap<EditorSession, Map<?,?>>();
 
 	/** The <code>StringBundle</code> for the string constants. */
 	private StringBundle sBundle = StringBundle.getInstance();

@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// HighDPISupport.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.vanted;
 
 import java.io.File;
@@ -14,7 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.ReleaseInfo;
+import org.ErrorMsg;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
@@ -37,15 +44,16 @@ public class HighDPISupport implements PreferencesInterface {
 			? "Mac Look and Feel is restrictive," + " so for superior performance choose more tolerant alternative.<br>"
 			: "";
 
-	public static final String DESCRIPTION = "<html>&#10148; Emulate your desired DPI by moving the slider.<br>"
-			+ "&#10148; <i>Lifesaver</i> guards you against bad values. It acts on next start-up.<br>"
+	public static final String DESCRIPTION = 
+			"<html>&#10148; Emulate DPI with the slider below.<br>"
+			+ "&#10148; <i>Lifesaver</i> guards you from accidental values. It acts on next start-up.<br>"
 
 			/*********************************************************************/
 			/*--------------------Disabled for version 2.6.4---------------------*/
 			/*********************************************************************/
 			// + "&#10148; " + macText
 
-			+ "&#10148; Lastly, for optimal performance you could restart VANTED.<br><br>";
+			+ "&#10148; For optimal scaling you can restart VANTED.<br><br>";
 
 	public static final String PREFERENCES_MAC_LAF = "<html>Mac Look and Feel&emsp;";
 
@@ -117,7 +125,7 @@ public class HighDPISupport implements PreferencesInterface {
 		if (laf == null || laf.equals(activeLaf)) // no LAF change
 			return;
 
-		if (laf.equals(QUAQUA))  
+		if (laf.equals(QUAQUA))
 			setLAF(quaqua);
 		else
 			setLAF(queryLafMap(laf, true));
@@ -127,13 +135,8 @@ public class HighDPISupport implements PreferencesInterface {
 		// scale new LAF
 		ScalerLoader.doScaling(false);
 
-		if (MainFrame.getInstance() != null) {
-			if (ReleaseInfo.isRunningAsApplet())
-				SwingUtilities.updateComponentTreeUI(ReleaseInfo.getApplet());
-			else
-				SwingUtilities.updateComponentTreeUI(MainFrame.getInstance());
-			MainFrame.getInstance().repaint();
-		}
+		SwingUtilities.updateComponentTreeUI(MainFrame.getInstance());
+		MainFrame.getInstance().repaint();
 	}
 
 	@Override
@@ -145,8 +148,7 @@ public class HighDPISupport implements PreferencesInterface {
 	 * Through reflection we get an instance of the specified class, given there is
 	 * such static field defined.
 	 * 
-	 * @param clazz
-	 *            the Class to extract the instance from
+	 * @param clazz the Class to extract the instance from
 	 * @return a clazz instance
 	 */
 	public static Object getClassInstance(Class<?> clazz) {
@@ -156,7 +158,7 @@ public class HighDPISupport implements PreferencesInterface {
 			f.setAccessible(true);
 			instance = f.get(null);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+			ErrorMsg.addErrorMessage(e);
 		}
 
 		return instance;
@@ -166,7 +168,7 @@ public class HighDPISupport implements PreferencesInterface {
 		try {
 			UIManager.setLookAndFeel(laf);
 		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+			ErrorMsg.addErrorMessage(e);
 		}
 	}
 
@@ -175,7 +177,7 @@ public class HighDPISupport implements PreferencesInterface {
 			UIManager.setLookAndFeel(laf);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+			ErrorMsg.addErrorMessage(e);
 		}
 	}
 

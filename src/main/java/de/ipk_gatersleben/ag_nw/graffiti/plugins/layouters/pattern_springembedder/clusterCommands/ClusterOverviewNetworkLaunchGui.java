@@ -28,7 +28,7 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 
 	@Override
 	public boolean closeDialogBeforeExecution(Algorithm algorithm) {
-		return !(algorithm instanceof SetClusterInfoAlgorithm);
+		return algorithm instanceof ShowClusterGraphAlgorithm;
 	}
 
 	@Override
@@ -36,9 +36,9 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
-			return "Process Cluster Overview-Graph";
+			return "Process Cluster Overview Graph";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
@@ -49,4 +49,10 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
 
+	@Override
+	public boolean isModal() {
+		return false;
+	}
+
+	
 }

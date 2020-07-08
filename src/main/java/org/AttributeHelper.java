@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -71,6 +70,7 @@ import org.graffiti.graphics.LabelAttribute;
 import org.graffiti.graphics.LineModeAttribute;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.graphics.NodeLabelAttribute;
+import org.vanted.updater.HttpHttpsURL;
 
 /**
  * Attribute Helper Class - Makes it more easy to work with graph/node
@@ -320,10 +320,8 @@ public class AttributeHelper implements HelperClass {
 	 * attributes will be deleted. "$" may be used more than once</li>
 	 * </ul>
 	 * 
-	 * @param attributePath
-	 *            The path of the attribute, which will be clickable
-	 * @param pathToBeDeleted
-	 *            The path(s) of the attribute(s) to be deleted
+	 * @param attributePath   The path of the attribute, which will be clickable
+	 * @param pathToBeDeleted The path(s) of the attribute(s) to be deleted
 	 */
 	public static void setDeleteableAttribute(String attributePath, String pathToBeDeleted) {
 		if (idToDeletePath.containsKey(attributePath))
@@ -363,10 +361,8 @@ public class AttributeHelper implements HelperClass {
 	 * display instead of a attribute name. Use "A:B" as the description, to create
 	 * a group "A", which contains a item "B", for the given attributeID.
 	 * 
-	 * @param attributeID
-	 *            The name of the attribute
-	 * @param description
-	 *            The group and "nice name" of the attribute
+	 * @param attributeID The name of the attribute
+	 * @param description The group and "nice name" of the attribute
 	 */
 	public static void setNiceId(String attributeID, String description) {
 		if (idToNiceId.containsKey(attributeID)) {
@@ -694,10 +690,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Sets the Label of a Edge
 	 * 
-	 * @param edge
-	 *            The Node to work with
-	 * @param label
-	 *            The new label for the node (created if not available)
+	 * @param edge  The Node to work with
+	 * @param label The new label for the node (created if not available)
 	 */
 	public static void setLabel(Edge edge, String label) {
 		if (label == null)
@@ -709,10 +703,8 @@ public class AttributeHelper implements HelperClass {
 	 * Sets the Label of a Node. If the given label is null, the label attribute is
 	 * removed from the node.
 	 * 
-	 * @param node
-	 *            The Node to work with
-	 * @param label
-	 *            The new label for the node (created if not available)
+	 * @param node  The Node to work with
+	 * @param label The new label for the node (created if not available)
 	 */
 	public static void setLabel(Node node, String label) {
 		setLabel(node, label, null, null);
@@ -721,12 +713,9 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Sets the label of an edge
 	 * 
-	 * @param edge
-	 *            - the edge to use
-	 * @param label
-	 *            - the new label for the edge (created if not available)
-	 * @param fontName
-	 *            - the name of the font to use with this label
+	 * @param edge     - the edge to use
+	 * @param label    - the new label for the edge (created if not available)
+	 * @param fontName - the name of the font to use with this label
 	 */
 	public static void setLabel(Edge edge, String label, String fontName) {
 		if (label == null)
@@ -755,12 +744,9 @@ public class AttributeHelper implements HelperClass {
 	 * Sets the label of a node. If the given label is null, the label attribute is
 	 * removed from the node.
 	 * 
-	 * @param node
-	 *            - the node to use
-	 * @param label
-	 *            - the new label for the node (created if not available)
-	 * @param fontName
-	 *            - the name of the font to use with this label
+	 * @param node     - the node to use
+	 * @param label    - the new label for the node (created if not available)
+	 * @param fontName - the name of the font to use with this label
 	 */
 	public static void setLabel(Node node, String label, String fontName, String alignment) {
 		if (label == null) {
@@ -793,8 +779,7 @@ public class AttributeHelper implements HelperClass {
 	}
 
 	/**
-	 * @param idx
-	 *            Use -1 to get main label, use 0..99 to get annotation labels
+	 * @param idx Use -1 to get main label, use 0..99 to get annotation labels
 	 */
 	public static void setLabel(int idx, GraphElement ge, String label, String fontName, String alignment) {
 		String index = "" + idx;
@@ -839,8 +824,7 @@ public class AttributeHelper implements HelperClass {
 	}
 
 	/**
-	 * @param index
-	 *            Use -1 to get main label, use 0..99 to get annotation labels
+	 * @param index Use -1 to get main label, use 0..99 to get annotation labels
 	 */
 	public static void setLabelAlignment(int index, Node node, AlignmentSetting align) {
 		try {
@@ -862,8 +846,7 @@ public class AttributeHelper implements HelperClass {
 	}
 
 	/**
-	 * @param index
-	 *            Use -1 to get main label, use 0..99 to get annotation labels
+	 * @param index Use -1 to get main label, use 0..99 to get annotation labels
 	 */
 	public static AlignmentSetting getLabelAlignment(int index, Node node) {
 		try {
@@ -889,8 +872,7 @@ public class AttributeHelper implements HelperClass {
 	}
 
 	/**
-	 * @param index
-	 *            Use -1 to get main label, use 0..99 to get annotation labels
+	 * @param index Use -1 to get main label, use 0..99 to get annotation labels
 	 */
 	public static boolean isLabelAlignmentKnownConstant(int index, Node node) {
 		try {
@@ -915,10 +897,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Sets the font to use when the label is drawed.
 	 * 
-	 * @param label
-	 *            - the label
-	 * @param fontName
-	 *            - the name of the font
+	 * @param label    - the label
+	 * @param fontName - the name of the font
 	 */
 	public static void setFont(LabelAttribute label, String fontName) {
 		if (label != null && fontName != null)
@@ -928,10 +908,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Gets the Label of a Node
 	 * 
-	 * @param node
-	 *            The node to work with
-	 * @param defaultReturn
-	 *            The standard return value if no label is set
+	 * @param node          The node to work with
+	 * @param defaultReturn The standard return value if no label is set
 	 * @return The actual label or the <code>labelDefaul</code> value, if the
 	 *         label-attribute is not set.
 	 */
@@ -975,8 +953,7 @@ public class AttributeHelper implements HelperClass {
 	}
 
 	/**
-	 * @param index
-	 *            Use -1 to get main label, use 0..99 to get annotation labels
+	 * @param index Use -1 to get main label, use 0..99 to get annotation labels
 	 */
 	public static String getLabel(int index, Attributable node, String defaultReturn) {
 		if (index > 99)
@@ -1002,10 +979,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Check the existence of a named Attribute
 	 * 
-	 * @param n
-	 *            The node to work with
-	 * @param attributeName
-	 *            The name of the attribute to be checked
+	 * @param n             The node to work with
+	 * @param attributeName The name of the attribute to be checked
 	 * @return True, if the attribute is available for the node <code>n</code>.
 	 *         False, if the attribute is not available.
 	 */
@@ -1034,10 +1009,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Sets the position of a node
 	 * 
-	 * @param n
-	 *            The node to work with
-	 * @param p
-	 *            The new position as a <code>Point2D</code>
+	 * @param n The node to work with
+	 * @param p The new position as a <code>Point2D</code>
 	 */
 	public static void setPosition(Node n, Point2D p) {
 		try {
@@ -1060,10 +1033,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Sets the position of a node
 	 * 
-	 * @param n
-	 *            The node to work with
-	 * @param p
-	 *            The new position as a <code>Point2D</code>
+	 * @param n The node to work with
+	 * @param p The new position as a <code>Point2D</code>
 	 */
 	public static void setPosition(Node n, double x, double y) {
 		try {
@@ -1097,8 +1068,7 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * For getting the x position of a node through attribute access,
 	 * 
-	 * @param a
-	 *            Node to be analyzed.
+	 * @param a Node to be analyzed.
 	 * @return X position of node.
 	 */
 	public static double getPositionX(Node a) {
@@ -1110,8 +1080,7 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Returns the position of a node
 	 * 
-	 * @param a
-	 *            The node to be analyzed.
+	 * @param a The node to be analyzed.
 	 * @return The position of the Node (a<code>Point2D</code> structure)
 	 */
 	public static Point2D getPosition(Node a) {
@@ -1127,8 +1096,7 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Returns the position of a node
 	 * 
-	 * @param a
-	 *            The node to be analyzed.
+	 * @param a The node to be analyzed.
 	 * @return The position of the Node (a<code>Vector2d</code> structure)
 	 */
 	public static Vector2d getPositionVec2d(Node a) {
@@ -1144,8 +1112,7 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Returns the position of a node
 	 * 
-	 * @param a
-	 *            The node to be analyzed.
+	 * @param a The node to be analyzed.
 	 * @return The position of the Node (a<code>Vector2df</code> structure)
 	 */
 	public static Vector2df getPositionVec2df(Node a) {
@@ -1161,8 +1128,7 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * For geting the y position of a node through attribute access,
 	 * 
-	 * @param a
-	 *            Node to be analysed.
+	 * @param a Node to be analysed.
 	 * @return Y position of node.
 	 */
 	public static double getPositionY(Node a) {
@@ -1197,10 +1163,8 @@ public class AttributeHelper implements HelperClass {
 	 * Sets the size of the Node.
 	 * 
 	 * @param myNode
-	 * @param width
-	 *            New width
-	 * @param height
-	 *            New height
+	 * @param width  New width
+	 * @param height New height
 	 */
 	public static void setSize(Node myNode, double width, double height) {
 		try {
@@ -1235,10 +1199,8 @@ public class AttributeHelper implements HelperClass {
 	 * Sets the size of the Node.
 	 * 
 	 * @param myNode
-	 * @param width
-	 *            New width
-	 * @param height
-	 *            New height
+	 * @param width  New width
+	 * @param height New height
 	 */
 	public static void setSize(Node myNode, int width, int height) {
 		try {
@@ -1252,9 +1214,8 @@ public class AttributeHelper implements HelperClass {
 	 * Sets the size of the Node.
 	 * 
 	 * @param myNode
-	 * @param newSize
-	 *            The new size as a <code>Vector2d</code> struct. X = width, Y =
-	 *            height.
+	 * @param newSize The new size as a <code>Vector2d</code> struct. X = width, Y =
+	 *                height.
 	 */
 	public static void setSize(Node myNode, Vector2d newSize) {
 		try {
@@ -1269,10 +1230,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Sets the fill color of a given <code>Atttibutable</code>.
 	 * 
-	 * @param attributable
-	 *            - the Attributable (Node, Edge, ...) to set the color
-	 * @param color
-	 *            - the color to set
+	 * @param attributable - the Attributable (Node, Edge, ...) to set the color
+	 * @param color        - the color to set
 	 * @see #getFillColor(Attributable)
 	 * @see #setOutlineColor(Attributable, Color)
 	 * @see #getOutlineColor(Attributable)
@@ -1291,8 +1250,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Returns the fill color of a given <code>Atttibutable</code>.
 	 * 
-	 * @param attributable
-	 *            - the Attributable (Node, Edge, ...) to get the color from
+	 * @param attributable - the Attributable (Node, Edge, ...) to get the color
+	 *                     from
 	 * @see #setFillColor(Attributable, Color)
 	 * @see #setOutlineColor(Attributable, Color)
 	 * @see #getOutlineColor(Attributable)
@@ -1311,10 +1270,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Sets the outline color of a given <code>Atttibutable</code>.
 	 * 
-	 * @param attributable
-	 *            - the Attributable (Node, Edge, ...) to set the color
-	 * @param color
-	 *            - the color to set
+	 * @param attributable - the Attributable (Node, Edge, ...) to set the color
+	 * @param color        - the color to set
 	 * @see #getOutlineColor(Attributable)
 	 * @see #setFillColor(Attributable, Color)
 	 * @see #getFillColor(Attributable)
@@ -1340,8 +1297,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Returns the outline color of a given <code>Atttibutable</code>.
 	 * 
-	 * @param attributable
-	 *            - the Attributable (Node, Edge, ...) to get the color from
+	 * @param attributable - the Attributable (Node, Edge, ...) to get the color
+	 *                     from
 	 * @see #setOutlineColor(Attributable, Color)
 	 * @see #setFillColor(Attributable, Color)
 	 * @see #getFillColor(Attributable)
@@ -1367,10 +1324,8 @@ public class AttributeHelper implements HelperClass {
 	 * Sets the opacity of a given graph element This value will also influence the
 	 * opacity of dependent Graph Attribute Components (Labels, Charts, etc)
 	 * 
-	 * @param ge
-	 *            graph element
-	 * @param opacity
-	 *            a value between 0.0 (transparent) and 1.0 (opaque)
+	 * @param ge      graph element
+	 * @param opacity a value between 0.0 (transparent) and 1.0 (opaque)
 	 */
 	public static void setOpacity(GraphElement ge, double opacity) {
 		GraphElementGraphicAttribute gattr = (GraphElementGraphicAttribute) ge
@@ -1381,10 +1336,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Gets the opacity of a given graph element
 	 * 
-	 * @param ge
-	 *            graph element
-	 * @param opacity
-	 *            a value between 0.0 (transparent) and 1.0 (opaque)
+	 * @param ge      graph element
+	 * @param opacity a value between 0.0 (transparent) and 1.0 (opaque)
 	 */
 	public static double getOpacity(GraphElement ge) {
 		GraphElementGraphicAttribute gattr = (GraphElementGraphicAttribute) ge
@@ -1540,7 +1493,7 @@ public class AttributeHelper implements HelperClass {
 	}
 
 	/**
-	 * Return a Attribute value, if not present it returns the defaultValue.
+	 * Return an Attribute value, if not present, return the defaultValue.
 	 */
 	public static Object getAttributeValue(Attributable attributable, String path, String attributeName,
 			Object defaultValue, Object resultType, boolean setDefaultIfMissing) {
@@ -1637,13 +1590,38 @@ public class AttributeHelper implements HelperClass {
 	}
 
 	/**
-	 * @param attributeName
-	 * @param attributeValue
-	 * @author Christian Klukas
+	 * @param attributable An attributable is usually a graph, node or an edge.
+	 * @param path         Path can be a simple ID or a composite path built using
+	 *                     {@linkplain AttributeHelper#attributeSeparator}s.
+	 * @author Christian Klukas, Dimitar Garkov
+	 * @vanted.revision 2.7.0 Extended to include composite paths
+	 * @version 2.0
 	 */
-	public static void addAttributeFolder(Attributable attributeable, String path) {
-		CollectionAttribute nc = new HashMapAttribute(path);
-		attributeable.addAttribute(nc, "");
+	public static void addAttributeFolder(Attributable attributable, String path) {
+		String ancestorsPath = "";
+		for (String p : path.split("\\" + attributeSeparator)) {
+			attributable.addAttribute(new HashMapAttribute(p), ancestorsPath);
+			ancestorsPath += p + attributeSeparator;
+		}
+	}
+
+	/**
+	 * @param attributable An attributable is usually a graph, node or an edge.
+	 * @param path         Path can be a simple ID or a composite path built using
+	 *                     {@linkplain AttributeHelper#attributeSeparator}s.
+	 * @param overwrite    Whether, while adding new folders, any existing folders
+	 *                     should be overwritten.
+	 * @author Christian Klukas, Dimitar Garkov
+	 * @vanted.revision 2.7.0 Updated to include composite paths
+	 * @since 2.7.0
+	 */
+	public static void addAttributeFolder(Attributable attributable, String path, boolean overwrite) {
+		String ancestorsPath = "";
+		for (String p : path.split("\\" + attributeSeparator)) {
+			if (overwrite || !hasAttribute(attributable, ancestorsPath + attributeSeparator + p))
+				attributable.addAttribute(new HashMapAttribute(p), ancestorsPath);
+			ancestorsPath += p + attributeSeparator;
+		}
 	}
 
 	// /**
@@ -1866,7 +1844,7 @@ public class AttributeHelper implements HelperClass {
 		setAttribute(atta, "", "tooltip", statusText);
 	}
 
-	public static String getToolTipText(Node atta) {
+	public static String getToolTipText(Attributable atta) {
 		String res = (String) getAttributeValue(atta, "", "tooltip", null, new String(""));
 		if (res != null && res.length() == 0)
 			return null;
@@ -1918,9 +1896,8 @@ public class AttributeHelper implements HelperClass {
 
 	/**
 	 * @param attr
-	 * @param hexStr
-	 *            A color defined like #FFFFFF (must be 6 characters (hex) for the
-	 *            color components)
+	 * @param hexStr A color defined like #FFFFFF (must be 6 characters (hex) for
+	 *               the color components)
 	 */
 	public static void setFillColorHEX(Attributable attr, String hexStr) {
 		if (hexStr.startsWith("#") && hexStr.length() == "#FFFFFF".length()) {
@@ -1937,9 +1914,8 @@ public class AttributeHelper implements HelperClass {
 
 	/**
 	 * @param attr
-	 * @param hexStr
-	 *            A color defined like #FFFFFF (must be 6 characters (hex) for the
-	 *            color components)
+	 * @param hexStr A color defined like #FFFFFF (must be 6 characters (hex) for
+	 *               the color components)
 	 */
 	public static void setOutlineColorHEX(Attributable attr, String hexStr) {
 		if (hexStr.startsWith("#") && hexStr.length() == "#FFFFFF".length()) {
@@ -2604,8 +2580,7 @@ public class AttributeHelper implements HelperClass {
 	 * corner of node, (1, -1) top-right corner of node, (1, 1) bottom-right corner
 	 * of node, (-1, 1) bottom-left corner of node.
 	 * 
-	 * @param attributable
-	 *            currently only a node
+	 * @param attributable currently only a node
 	 * @return relative offset of label position from center of a node, default
 	 *         return (0, 0)
 	 */
@@ -2630,12 +2605,9 @@ public class AttributeHelper implements HelperClass {
 	 * corner of node, (1, -1) top-right corner of node, (1, 1) bottom-right corner
 	 * of node, (-1, 1) bottom-left corner of node.
 	 * 
-	 * @param attributable
-	 *            currently only a node
-	 * @param offsetX
-	 *            horizontal offset of label position from center of a node
-	 * @param offsetY
-	 *            vertical offset of label position from center of a node
+	 * @param attributable currently only a node
+	 * @param offsetX      horizontal offset of label position from center of a node
+	 * @param offsetY      vertical offset of label position from center of a node
 	 */
 	public static void setLabelOffset(Attributable attributable, double offsetX, double offsetY) {
 
@@ -2654,10 +2626,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Get NodeLabelAttribute (if available)
 	 * 
-	 * @param index
-	 *            Use -1 to get main label, use 0..99 to get annotation labels
-	 * @param node
-	 *            Node to be processed
+	 * @param index Use -1 to get main label, use 0..99 to get annotation labels
+	 * @param node  Node to be processed
 	 * @return NodeLabelAttribute, if present, otherwise null.
 	 */
 	public static NodeLabelAttribute getLabel(int index, Node node) {
@@ -2678,10 +2648,8 @@ public class AttributeHelper implements HelperClass {
 	/**
 	 * Get EdgeLabelAttribute (if available)
 	 * 
-	 * @param index
-	 *            Use -1 to get main label, use 0..99 to get annotation labels
-	 * @param edge
-	 *            Edge to be processed
+	 * @param index Use -1 to get main label, use 0..99 to get annotation labels
+	 * @param edge  Edge to be processed
 	 * @return EdgeLabelAttribute, if present, otherwise null.
 	 */
 	public static EdgeLabelAttribute getLabel(int index, Edge edge) {
@@ -2778,8 +2746,7 @@ public class AttributeHelper implements HelperClass {
 	 * Assign a arrow shape in the opposite direction.of an edge.
 	 * 
 	 * @param edge
-	 * @param show
-	 *            If set to true, the edge will have on both ends an arrow
+	 * @param show If set to true, the edge will have on both ends an arrow
 	 */
 	public static void setArrowtail(Edge edge, boolean show) {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
@@ -2857,9 +2824,8 @@ public class AttributeHelper implements HelperClass {
 	 * 
 	 * @param attributable
 	 * @param path
-	 * @param name
-	 *            A name of a single attribute "test" or a group of attributes
-	 *            "test*" (test1, test2, testA, testABC, ...).
+	 * @param name         A name of a single attribute "test" or a group of
+	 *                     attributes "test*" (test1, test2, testA, testABC, ...).
 	 * @return True, if the removal was successful. Fals, if a error has occured,
 	 *         which is added to the system log.
 	 */
@@ -3073,9 +3039,7 @@ public class AttributeHelper implements HelperClass {
 		ArrayList<String> result = new ArrayList<String>();
 		try {
 			urlText = getEncodedUrl(urlText);
-			// Create a URL for the desired page
-			URL url = new URL(urlText);
-
+			HttpHttpsURL url = new HttpHttpsURL(urlText);
 			// Read all the text returned by the server
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 			String str;
@@ -3085,8 +3049,6 @@ public class AttributeHelper implements HelperClass {
 				result.add(str);
 			}
 			in.close();
-		} catch (MalformedURLException e) {
-			ErrorMsg.addErrorMessage(e);
 		} catch (IOException e) {
 			ErrorMsg.addErrorMessage(e);
 		}
@@ -3219,10 +3181,8 @@ public class AttributeHelper implements HelperClass {
 	 * given node in the result set. Directionality of edge directions is taken into
 	 * account if the edges are directed.
 	 * 
-	 * @param node
-	 *            start node
-	 * @param result
-	 *            nodes and edges, traceable from the given node
+	 * @param node   start node
+	 * @param result nodes and edges, traceable from the given node
 	 */
 	private static void getChildElements(Node node, Set<GraphElement> result) {
 		if (node != null && result != null) {

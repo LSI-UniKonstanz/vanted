@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -39,7 +40,7 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 
 	static final Logger logger = Logger.getLogger(TabBiomodels.class);
 
-	static final String NAME = "Biomodels";
+	static final String NAME = "BioModels";
 
 	BiomodelsPanel panel;
 
@@ -63,7 +64,7 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 		final InputSerializer is;
 		final SimpleModel finalModel = model;
 		try {
-			final InputStream bis = new ByteArrayInputStream(modelstring.getBytes());
+			final InputStream bis = new ByteArrayInputStream(modelstring.getBytes("UTF-8"));
 			is = MainFrame.getInstance().getIoManager().createInputSerializer(null, ".sbml");
 
 			SwingUtilities.invokeLater(new Runnable() {
@@ -95,6 +96,8 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 		} catch (InstantiationException e1) {
 			e1.printStackTrace();
 		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
 

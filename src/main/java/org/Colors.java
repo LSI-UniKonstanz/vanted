@@ -21,15 +21,16 @@ import java.util.Iterator;
 public class Colors implements HelperClass {
 
 	/**
-	 * creates the specified number of color objects which can be discriminated as
-	 * good as possible
+	 * Creates the specified number of color objects, which can be discriminated as
+	 * good as possible,
 	 * 
 	 * @param numberOfColors
 	 *            number of different colors to create
 	 * @return Collection of Color objects
+	 * @vanted.revision 2.7.0 Increase saturation from 20% to 50% (most recent: 20%; 80%; 50%;)
 	 */
 	public static ArrayList<Color> get(int numberOfColors) {
-		return get(numberOfColors, 0.2f); // 0.8f); // 0.5f);
+		return get(numberOfColors, 0.5f); //0.2f); // 0.8f); // 0.5f);
 	}
 
 	public static ArrayList<Color> get(int numberOfColors, double saturation) {
@@ -37,8 +38,8 @@ public class Colors implements HelperClass {
 	}
 
 	/**
-	 * creates the specified number of color objects which can be discriminated as
-	 * good as possible
+	 * Creates the specified number of color objects, which can be discriminated as
+	 * good as possible.
 	 * 
 	 * @param numberOfColors
 	 *            number of different colors to create
@@ -115,16 +116,17 @@ public class Colors implements HelperClass {
 		return result;
 	}
 
-	public static Color[] getColors(int numberOfColors) {
-		Collection<Color> r = get(numberOfColors);
-		Color[] result = new Color[r.size()];
-		int i = 0;
-		for (Iterator<Color> it = r.iterator(); it.hasNext();) {
-			Color t = (Color) it.next();
-			Color c = new Color(t.getRed(), t.getGreen(), t.getBlue());
-			result[i++] = c;
-		}
-		return result;
+	/**
+	 * An array version of {@linkplain Colors#get(int)}.
+	 * 
+	 * @param numberOfColours the number of distinct colours
+	 * 
+	 * @return {@link Color} array of size <code>numberOfColours</code>
+	 * 
+	 * @vanted.revision 2.7.0
+	 */
+	public static Color[] getColors(int numberOfColours) {
+		return get(numberOfColours).toArray(new Color[numberOfColours]);
 	}
 
 	/**

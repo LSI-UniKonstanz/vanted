@@ -16,9 +16,9 @@ import org.AttributeHelper;
 import org.ErrorMsg;
 import org.StringManipulationTools;
 import org.graffiti.plugin.XMLHelper;
-import org.jdom.Attribute;
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.output.XMLOutputter;
 import org.w3c.dom.Document;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent.MyComparableDataPoint;

@@ -49,17 +49,11 @@ public class FileNewAction extends GraffitiAction {
 
 	// ~ Methods ================================================================
 
-	/**
-	 * @see javax.swing.Action#isEnabled()
-	 */
 	@Override
 	public boolean isEnabled() {
 		return viewManager.hasViews();
 	}
 
-	/**
-	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
-	 */
 	@Override
 	public HelpContext getHelpContext() {
 		return null;

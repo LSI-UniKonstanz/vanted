@@ -4,7 +4,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.prefs.Preferences;
@@ -22,7 +24,7 @@ import uk.ac.ebi.biomodels.ws.SimpleModel;
  * Access adapter for the Biomodels Webservice client.
  * 
  * @author matthiak
- * @vanted.revision 2.6.5
+ * @vanted.revision 2.7.0
  */
 public class BiomodelsAccessAdapter implements PreferencesInterface {
 
@@ -42,8 +44,8 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	 * @author matthiak
 	 */
 	public enum QueryType {
-		CHEBI("ChEBI"), NAME("Model Name"), TAXONOMY("Taxonomy"), PERSON("Person"), PUBLICATION(
-				"Publication (Name/Id)"), GO("GO Term"), UNIPROT("Uniprot Ids"), BIOMODELID("Biomodels Id");
+		CHEBI("ChEBI"), NAME("Model Name"), TAXONOMY("Taxonomy"), PERSON("Person"),
+		PUBLICATION("Publication (Name/Id)"), GO("GO Term"), UNIPROT("Uniprot Ids"), BIOMODELID("Biomodels Id");
 
 		private String name;
 
@@ -86,20 +88,17 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	 * Queries simple models, {@linkplain SimpleModel}, by type
 	 * {@linkplain QueryType} and
 	 * 
-	 * @param type
-	 *            of models
+	 * @param type  of models
 	 * @param query
 	 * @return list of {@linkplain SimpleModel}s of the given type
-	 * @throws BioModelsWSException
-	 *             unable to establish connection
+	 * @throws BioModelsWSException unable to establish connection
+	 * @vanted.revision 2.7.0 Handle SAXParseException
 	 */
 	public List<SimpleModel> queryForSimpleModel(QueryType type, String query) throws BioModelsWSException {
 		abort = false;
 		BioModelsWSClient client = createClient();
 		String[] resultIds = null;
-
 		List<SimpleModel> resultSimpleModels = null;
-
 		try {
 			switch (type) {
 			case NAME:
@@ -128,8 +127,10 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 				break;
 			default:
 			}
-			if (resultIds != null)
-				resultSimpleModels = client.getSimpleModelsByIds(resultIds);
+
+			if (resultIds != null) {
+				resultSimpleModels = getSimpleModels(client, resultIds);
+			}
 			if (!isAbort())
 				notifyResultSimpleModelListeners(type, resultSimpleModels);
 		} catch (BioModelsWSException e) {
@@ -139,6 +140,50 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 		}
 
 		return resultSimpleModels;
+	}
+
+	/**
+	 * Get simple models by IDs. Because for some models in large queries an
+	 * exception is thrown, and building a query for each ID is too slow, the list
+	 * of queries is split as long as a valid range is found. Worst case is each ID
+	 * should be queried on its own.
+	 * 
+	 * @param client
+	 * @param ids
+	 * @return a list of simple models
+	 * @since 2.7.0
+	 */
+	private List<SimpleModel> getSimpleModels(BioModelsWSClient client, String[] ids) {
+		try {
+			return client.getSimpleModelsByIds(ids);
+		} catch (BioModelsWSException e) {
+			String[] ids1 = Arrays.copyOfRange(ids, 0, ids.length / 2);
+			String[] ids2 = Arrays.copyOfRange(ids, ids.length / 2, ids.length);
+			List<SimpleModel> resultSimpleModels = new LinkedList<SimpleModel>();
+			if (ids1.length > 1)
+				resultSimpleModels = getSimpleModels(client, ids1);
+			else if (ids1.length == 1) {
+				try {
+					resultSimpleModels.add(client.getSimpleModelById(ids1[0]));
+				} catch (BioModelsWSException e1) {
+					System.err.print("BioModels " + ids1[0] + ": ");
+					System.err.println(e1.getMessage());
+				}
+			}
+
+			if (ids2.length > 1)
+				resultSimpleModels.addAll(getSimpleModels(client, ids2));
+			else if (ids2.length == 1) {
+				try {
+					resultSimpleModels.add(client.getSimpleModelById(ids2[0]));
+				} catch (BioModelsWSException e1) {
+					System.err.print("BioModels " + ids2[0] + ": ");
+					System.err.println(e1.getMessage());
+				}
+			}
+
+			return resultSimpleModels;
+		}
 	}
 
 	public String getSBMLModel(SimpleModel simpleModel) throws BioModelsWSException {
@@ -151,7 +196,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 			if (!isAbort())
 				notifyResultSBMLListeners(simpleModel, result);
 		} catch (BioModelsWSException e) {
-			
+
 			e.printStackTrace();
 			notifyErrorListener(e);
 			throw e;
@@ -168,7 +213,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 			simpleModel = createClient().getSimpleModelById(modelId);
 			result = getSBMLModel(simpleModel);
 		} catch (BioModelsWSException e) {
-			
+
 			e.printStackTrace();
 			notifyErrorListener(e);
 			throw e;

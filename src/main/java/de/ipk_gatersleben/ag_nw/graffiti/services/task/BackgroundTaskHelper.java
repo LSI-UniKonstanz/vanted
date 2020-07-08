@@ -298,13 +298,6 @@ class SimpleBackgroundTask implements Runnable, BackgroundTaskStatusProvider {
 		this.runTask2swing = task2swing;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValue()
-	 */
 	public int getCurrentStatusValue() {
 		if (finished || executingSwingTask)
 			return 100;
@@ -312,77 +305,30 @@ class SimpleBackgroundTask implements Runnable, BackgroundTaskStatusProvider {
 			return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValueFine()
-	 */
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage1()
-	 */
 	public String getCurrentStatusMessage1() {
 		return progressText1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage2()
-	 */
 	public String getCurrentStatusMessage2() {
 		return progressText2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pleaseStop()
-	 */
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pluginWaitsForUser()
-	 */
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pleaseContinueRun()
-	 */
 	public void pleaseContinueRun() {
 		// empty
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
 	public void run() {
 		finished = false;
 		if (runTask1 != null)

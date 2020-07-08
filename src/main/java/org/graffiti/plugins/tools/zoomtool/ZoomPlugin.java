@@ -16,6 +16,8 @@ import org.graffiti.plugin.gui.GraffitiComponent;
  * This plugin contains the standard editing tools.
  * 
  * @version $Revision: 1.6 $
+ * @vanted.revision 2.7.0
+ * @deprecated Use {@link org.graffiti.plugins.tools.enhancedzoomtool.ZoomPlugin} instead.
  */
 public class ZoomPlugin extends EditorPluginAdapter {
 	// ~ Instance fields ========================================================

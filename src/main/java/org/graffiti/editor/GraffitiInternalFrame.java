@@ -104,12 +104,10 @@ public class GraffitiInternalFrame extends JInternalFrame // MaximizeFrame
 	/**
 	 * Constructor that sets the session, as well as the title.
 	 * 
-	 * @param session
-	 *            the session this frame is in.
-	 * @param view
-	 *            DOCUMENT ME!
-	 * @param title
-	 *            the title of this internal frame.
+	 * @param session               the session this frame is in.
+	 * @param view                  DOCUMENT ME!
+	 * @param title                 the title of this internal frame.
+	 * @param otherViewWillBeClosed
 	 */
 	public GraffitiInternalFrame(final EditorSession session, final View view, String title,
 			boolean otherViewWillBeClosed) {
@@ -126,9 +124,6 @@ public class GraffitiInternalFrame extends JInternalFrame // MaximizeFrame
 
 		// setOpaque(true);
 		// setBackground(Color.WHITE);
-
-		// if (ReleaseInfo.isRunningAsApplet())
-
 	}
 
 	private String getViewType(final View view) {
@@ -206,8 +201,7 @@ public class GraffitiInternalFrame extends JInternalFrame // MaximizeFrame
 	/**
 	 * Sets the title of this frame and its associated button and menu button.
 	 * 
-	 * @param title
-	 *            the new title of the frame.
+	 * @param title the new title of the frame.
 	 */
 	@Override
 	public void setTitle(String title) {

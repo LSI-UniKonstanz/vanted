@@ -29,7 +29,7 @@ public abstract class AddonAdapter extends IPK_EditorPluginAdapter {
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("<html>Exception occured when initializing Add-on \""
 					+ getClass().getCanonicalName() + "\":<br>" + e.getLocalizedMessage());
-			e.printStackTrace();
+
 			throw new AddonInstantiationRuntimeException(e);
 		}
 	}

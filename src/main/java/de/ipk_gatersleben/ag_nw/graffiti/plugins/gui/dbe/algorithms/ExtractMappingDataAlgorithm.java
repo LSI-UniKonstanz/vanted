@@ -37,13 +37,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 
 	public String getName() {
-		return "Extract Mapped Data";
+		return "Extract Mapping Data";
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>Gathers all experimental data from the selected<br>"
-				+ "graph elements and put this data in the \"Experiments\" tab.";
+		return "<html>Gather all experimental data from the graph/selection<br/>and put it in Experiments Tab.";
 	}
 
 	@Override
@@ -60,62 +59,14 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] { new BooleanParameter(onlyOne, "Extract single experiment",
-				"<html>If enabled, all experiments will be merged together") };
+		return new Parameter[] { new BooleanParameter(onlyOne, "Extract single experiment  ",
+				"If enabled, all experiments will be merged together.") };
 	}
 
 	@Override
 	public void setParameters(Parameter[] params) {
 		int idx = 0;
 		onlyOne = ((BooleanParameter) params[idx++]).getBoolean();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
-	public void execute() {
-		// graph.getListenerManager().transactionStarted(this);
-		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
-		final BackgroundTaskStatusProviderSupportingExternalCall status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
-				"Initialize...", "");
-		if (workNodes.size() > 0)
-			BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", new Runnable() {
-				public void run() {
-					status.setCurrentStatusValue(-1);
-					status.setCurrentStatusText1("Extracting mapped data...");
-					status.setCurrentStatusText2("");
-					// Graph g = workNodes.iterator().next().getGraph();
-					// g.getListenerManager().transactionStarted(ExtractMappingDataAlgorithm.this);
-					try {
-						status.setCurrentStatusText2("Getting mapped data from elements");
-						status.setCurrentStatusValue(0);
-
-						for (ExperimentInterface e : getExperiments(workNodes, onlyOne, status)) {
-							String expname = e.getName();
-							if (expname == null) {
-								ErrorMsg.addErrorMessage("Error occured: could not determine experiment name!");
-								expname = "unknown";
-							}
-							TabDBE.addOrUpdateExperimentPane(new ProjectEntity(expname, e));
-						}
-
-						status.setCurrentStatusValue(-1);
-					} finally {
-						// g.getListenerManager().transactionFinished(ExtractMappingDataAlgorithm.this,
-						// false, status);
-						status.setCurrentStatusValue(100);
-					}
-					if (status.wantsToStop())
-						status.setCurrentStatusText1("Processing aborted");
-					else
-						status.setCurrentStatusText1("Finished");
-					status.setCurrentStatusText2("");
-				}
-
-			}, null, status);
-
 	}
 
 	@Override
@@ -125,7 +76,42 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 			if (GraphElementHelper.hasDataMapping(element))
 				return;
 		}
-		throw new PreconditionException("Network does not contain any experimental data.");
+		throw new PreconditionException("Network does not contain experimental data");
+	}
+
+	@Override
+	public void execute() {
+		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
+		final BackgroundTaskStatusProviderSupportingExternalCall status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"Initialize...", "");
+		BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", () -> {
+			status.setCurrentStatusValue(-1);
+			status.setCurrentStatusText1("Extracting mapping data...");
+			status.setCurrentStatusText2("");
+			try {
+				status.setCurrentStatusText2("Getting mapping data from elements");
+				status.setCurrentStatusValue(0);
+
+				for (ExperimentInterface e : getExperiments(workNodes, onlyOne, status)) {
+					String expname = e.getName();
+					if (expname == null) {
+						ErrorMsg.addErrorMessage("Error occured: could not determine experiment name!");
+						expname = "unknown";
+					}
+					TabDBE.addOrUpdateExperimentPane(new ProjectEntity(expname, e));
+				}
+				status.setCurrentStatusValue(-1);
+			} finally {
+				status.setCurrentStatusValue(100);
+			}
+			if (status.wantsToStop())
+				status.setCurrentStatusText1("Processing aborted");
+			else
+				status.setCurrentStatusText1("Finished");
+			status.setCurrentStatusText2("");
+
+		}, null, status);
+
 	}
 
 	public static Collection<ExperimentInterface> getExperiments(Collection<GraphElement> workNodes, boolean onlyOne,

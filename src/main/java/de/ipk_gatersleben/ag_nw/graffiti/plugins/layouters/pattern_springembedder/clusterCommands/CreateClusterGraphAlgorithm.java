@@ -7,11 +7,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.AttributeHelper;
 import org.Release;
@@ -27,20 +26,20 @@ import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
-import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorParameter;
-import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.NullLayoutAlgorithm;
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
+ * 
+ * @vanted.revision 2.7.0 Default layout of overview graph, based on source graph. 
  */
 public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
-	boolean applyLayout = true;
 
 	boolean resizeNodes = true;
 
@@ -55,39 +54,31 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 	int maxEdgeSize = 10;
 
 	boolean colorCode = true;
+	
+	private ClusterColorAttribute clusterColorAttribute;
 
 	@Override
 	public Parameter[] getParameters() {
+		Collection<String> clusters = GraphHelper.getClusters(graph.getNodes());
 
-		Graph g = graph;
-		Set<String> clusters = new TreeSet<String>();
-		for (Iterator<?> it = g.getNodesIterator(); it.hasNext();) {
-			Node n = (Node) it.next();
-			String clusterId = NodeTools.getClusterID(n, "");
-			if (!clusterId.equals(""))
-				clusters.add(clusterId);
-		}
-
-		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(g,
+		clusterColorAttribute = (ClusterColorAttribute) AttributeHelper.getAttributeValue(graph,
 				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
 				ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
 
 		// cca.ensureMinimumColorSelection(clusters.size());
-		cca.updateClusterList(clusters);
-		ClusterColorAttribute cca_new = new ClusterColorAttribute(ClusterColorAttribute.attributeName, cca.getString());
+		clusterColorAttribute.updateClusterList(clusters);
+		ClusterColorAttribute cca_new = new ClusterColorAttribute(ClusterColorAttribute.attributeName, clusterColorAttribute.getString());
 		ClusterColorParameter op = new ClusterColorParameter(cca_new, "Cluster-Colors", ClusterColorAttribute.desc);
 
 		Parameter[] result = new Parameter[] {
-				new BooleanParameter(applyLayout, "Layout Overview-Graph",
-						"Select a layout algorithm to run on the overview-graph"),
 				new BooleanParameter(resizeNodes, "Resize Nodes",
 						"Resize Nodes depending on number of nodes related to the cluster-node"),
-				new IntegerParameter(minNodeSize, "Min. Node-Size", "The minimum size of a node"),
-				new IntegerParameter(maxNodeSize, "Max. Node-Size", "The maximum size of a node"),
-				new BooleanParameter(resizeEdges, "Set Edge-Width",
-						"Set the edge-width depending on the number of edges that go from one cluster to another"),
-				new IntegerParameter(minEdgeSize, "Min. Edge-Width", "The minimum width of a edge"),
-				new IntegerParameter(maxEdgeSize, "Max. Edge-Width", "The maximum width of a edge"),
+				new IntegerParameter(minNodeSize, "Min. Node Size", "Node minimum size attribute."),
+				new IntegerParameter(maxNodeSize, "Max. Node Size", "Node maximum size attribute."),
+				new BooleanParameter(resizeEdges, "Set Edge Thickness",
+						"Set edge thickness depending on the number of edges that go from one cluster to another"),
+				new IntegerParameter(minEdgeSize, "Min. Edge Thickness", "The minimum edge thickness attribute."),
+				new IntegerParameter(maxEdgeSize, "Max. Edge Thickness", "The maximum edge thickness attribute."),
 				new BooleanParameter(colorCode, "Color-Code Clusters", "<html>"
 						+ "Change the color of the nodes in the source- and cluster-graph according to their cluster number.<br>"
 						+ "The colors can be changed later with the corresponding attribute-editor in the graph-tab"),
@@ -98,7 +89,6 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
-		applyLayout = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		resizeNodes = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		minNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		maxNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
@@ -107,35 +97,20 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		maxEdgeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		colorCode = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 
-		ClusterColorAttribute cca = (ClusterColorAttribute) ((ClusterColorParameter) params[i++]).getValue();
-		if (graph.getAttributes().getCollection().containsKey(cca.getPath()))
-			graph.removeAttribute(cca.getPath());
-		graph.addAttribute(cca, ClusterColorAttribute.attributeFolder);
+		clusterColorAttribute = (ClusterColorAttribute) ((ClusterColorParameter) params[i++]).getValue();
+		if (graph.getAttributes().getCollection().containsKey(clusterColorAttribute.getPath()))
+			graph.removeAttribute(clusterColorAttribute.getPath());
+		graph.addAttribute(clusterColorAttribute, ClusterColorAttribute.attributeFolder);
 
 	}
 
-	@Override
-	public void reset() {
-		applyLayout = true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.extension.Extension#getName()
-	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Create Cluster Overview-Graph";
+			return "Create Overview Graph";
 		else
 			return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.extension.Extension#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Cluster";
@@ -151,11 +126,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
+	@Override
 	public void execute() {
 		HashMap<String, Integer> clusterNodeIDandNumberOfContainingNodes = new HashMap<String, Integer>();
 		Graph clusterReferenceGraph = GraphHelper.createClusterReferenceGraph(graph,
@@ -163,11 +134,14 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		AttributeHelper.setAttribute(graph, "cluster", "clustergraph", clusterReferenceGraph);
 
 		if (colorCode) {
-			PajekClusterColor pcc = new PajekClusterColor();
-			pcc.attach(graph, new Selection(""));
-			pcc.execute();
+			PajekClusterColor.executeClusterColoringOnGraph(graph, clusterColorAttribute);
+			PajekClusterColor.executeClusterColoringOnGraph(clusterReferenceGraph, clusterColorAttribute);
 		}
-
+		else {
+			
+			PajekClusterColor.removeClusterColoringOnGraph(graph);
+			//clusterReferenceGraph is not coloured by default, when created
+		}
 		if (resizeEdges)
 			processEdgeWidth(clusterReferenceGraph, minEdgeSize, maxEdgeSize);
 		if (resizeNodes)
@@ -184,15 +158,14 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 			MainFrame.getInstance().showGraph(clusterReferenceGraph, null);
 		}
 
-		if (applyLayout) {
-			AlgorithmServices.selectAndRunLayoutAlgorithm(clusterReferenceGraph, new Selection(),
-					"Apply a Layout-Algorithm to the Overview-Graph", true);
-		}
+		MyClusterGraphBasedReLayoutService clusterLayoutService = new MyClusterGraphBasedReLayoutService(false, graph);
+		clusterLayoutService.setAlgorithm(new NullLayoutAlgorithm(), null);
+		clusterLayoutService.run();
 
 		clusterReferenceGraph.setModified(false);
 	}
 
-	private void processNodeSize(Graph clusterReferenceGraph,
+	private static void processNodeSize(Graph clusterReferenceGraph,
 			HashMap<String, Integer> clusterNodeIDandNumberOfContainingNodes, double minNodeSize, double maxNodeSize) {
 		// search minimum and maximum of cluster/node size
 		int minNodes = Integer.MAX_VALUE;
@@ -233,7 +206,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		}
 	}
 
-	private void processEdgeWidth(Graph clusterReferenceGraph, double minWidth, double maxWidth) {
+	private static void processEdgeWidth(Graph clusterReferenceGraph, double minWidth, double maxWidth) {
 		// search min and max edgecount
 		int minCnt = Integer.MAX_VALUE;
 		int maxCnt = Integer.MIN_VALUE;

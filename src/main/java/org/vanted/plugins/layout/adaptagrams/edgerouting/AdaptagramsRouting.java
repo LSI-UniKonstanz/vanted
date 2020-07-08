@@ -48,6 +48,7 @@ public class AdaptagramsRouting {
 	public static ShapeRef defineShapeRef(Router router, View view, Node node) {
 
 		NodeShape nodeShape = getNodeShape(view, node);
+		System.out.println("Node " + node + "");
 		Rectangle2D rectangle2D = nodeShape.getRealBounds2D();
 		AvoidRectangle avoidRectangle = new AvoidRectangle(new Point(rectangle2D.getX(), rectangle2D.getY()),
 				new Point(rectangle2D.getX() + rectangle2D.getWidth(), rectangle2D.getY() + rectangle2D.getHeight()));

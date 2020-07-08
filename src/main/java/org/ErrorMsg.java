@@ -143,7 +143,7 @@ public class ErrorMsg implements HelperClass {
 	}
 
 	/**
-	 * Returns pending error messages that were not shown to the user immediatly.
+	 * Returns pending error messages that were not shown to the user immediately.
 	 * 
 	 * @return Pending Error Messages
 	 */
@@ -279,8 +279,7 @@ public class ErrorMsg implements HelperClass {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Object findChildComponent(Component c, Class searchClass) {
+	public static Object findChildComponent(Component c, Class<?> searchClass) {
 		if (c == null)
 			return null;
 		// System.out.println(c.getClass().getCanonicalName());
@@ -302,8 +301,7 @@ public class ErrorMsg implements HelperClass {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void findChildComponents(Component c, Class searchClass, ArrayList<Object> result) {
+	public static void findChildComponents(Component c, Class<?> searchClass, ArrayList<Object> result) {
 		if (c == null)
 			return;
 		// System.out.println(c.getClass().getCanonicalName());
@@ -324,8 +322,7 @@ public class ErrorMsg implements HelperClass {
 			}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Object findParentComponent(Component c, Class searchClass) {
+	public static Object findParentComponent(Component c, Class<?> searchClass) {
 		if (c == null)
 			return null;
 		// System.out.println(c.getClass().getCanonicalName());
@@ -341,6 +338,13 @@ public class ErrorMsg implements HelperClass {
 		return findParentComponent(c.getParent(), searchClass);
 	}
 
+	/**
+	 * Adds exception to the global exception list, which is
+	 * then reported to the user and prepared for reporting.</p>
+	 * 
+	 * <b>It prints the stack trace, too!</b></p>
+	 * @param e the exception
+	 */
 	public static void addErrorMessage(Exception e) {
 		if (rethrowErrorMessages)
 			throw new Error(e);

@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +49,7 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+import org.vanted.updater.HttpHttpsURL;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.FileDownloadStatusInformationProvider;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
@@ -320,7 +320,7 @@ public class GUIhelper {
 				if (!processFTPdownload(status, downloadURL, targetFileName, lastStatus))
 					downloadOK = false;
 			} else {
-				URL url = new URL(downloadURL);
+				HttpHttpsURL url = new HttpHttpsURL(downloadURL);
 				conn = url.openConnection();
 				int contentLength = conn.getContentLength();
 				in = conn.getInputStream();

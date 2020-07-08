@@ -76,10 +76,9 @@ public class GraphHelper implements HelperClass {
 	/**
 	 * displays a graph in the mainframe
 	 * 
-	 * @param the
-	 *            graph to be displayed
+	 * @param the graph to be displayed
 	 */
-	public static void diplayGraph(Graph g) {
+	public static void displayGraph(Graph g) {
 		EditorSession es = new EditorSession(g);
 
 		GravistoService.getInstance().getMainFrame().showViewChooserDialog(es, false, null);
@@ -98,8 +97,7 @@ public class GraphHelper implements HelperClass {
 		// create "virtual" cluster graph that will be used for circular layout
 		// add cluster central nodes to this non visible graph, these
 		// nodes represent the target position of the cluster in the graph to be
-		// layouted by
-		// the springembedder
+		// layouted by the springembedder
 		PositionGridGenerator pgg = new PositionGridGenerator(40, 40, 400);
 		for (Iterator<String> it = clusters.iterator(); it.hasNext();) {
 			Node clusterNode = clusterReferenceGraph.addNode();
@@ -177,20 +175,19 @@ public class GraphHelper implements HelperClass {
 	public static Graph getClusterSubGraph(Graph mainGraph, String validClusterID) {
 		AdjListGraph clusterSubGraph = new AdjListGraph(mainGraph, new ListenerManager());
 		ArrayList<Long> validNodeIDs = new ArrayList<Long>();
-		for (Iterator<?> it = mainGraph.getNodesIterator(); it.hasNext();) {
-			Node n = (Node) it.next();
+		for (Node n : clusterSubGraph.getNodes()) {
 			String clusterID = NodeTools.getClusterID(n, "");
 			if (clusterID.equals(validClusterID))
 				validNodeIDs.add(Long.valueOf(n.getID()));
 		}
 
-		ArrayList<org.graffiti.graph.Node> toBeDeleted = new ArrayList<org.graffiti.graph.Node>();
-		for (org.graffiti.graph.Node n : clusterSubGraph.getNodes()) {
+		ArrayList<Node> toBeDeleted = new ArrayList<Node>();
+		for (Node n : clusterSubGraph.getNodes()) {
 			if (!validNodeIDs.contains(Long.valueOf(n.getID()))) {
 				toBeDeleted.add(n);
 			}
 		}
-		for (org.graffiti.graph.Node n : toBeDeleted)
+		for (Node n : toBeDeleted)
 			clusterSubGraph.deleteNode(n);
 
 		return clusterSubGraph;
@@ -199,8 +196,7 @@ public class GraphHelper implements HelperClass {
 	/**
 	 * gets the nodes which can be reached by the the specified nodes
 	 * 
-	 * @param startNode
-	 *            node to start with
+	 * @param startNode node to start with
 	 * @return set of reachable nodes
 	 */
 	public static Set<Node> getConnectedNodes(Node startNode) {
@@ -259,8 +255,7 @@ public class GraphHelper implements HelperClass {
 	 * builds for all connected components a separate graph and returns them as a
 	 * collection of graphs
 	 * 
-	 * @param graph
-	 *            the graph to use
+	 * @param graph the graph to use
 	 * @return a collection with all connected components as separate graphs
 	 */
 	public static Collection<Graph> getConnectedComponentsAsCopy(Graph graph) {
@@ -470,8 +465,7 @@ public class GraphHelper implements HelperClass {
 	/**
 	 * Add new bends to a graph
 	 * 
-	 * @param bends
-	 *            Number of bends to be introduced, either 1 or 2!
+	 * @param bends Number of bends to be introduced, either 1 or 2!
 	 * @author klukas
 	 */
 	public static void introduceNewBends(Graph graph, HashSet<Edge> edges, int percent, String shape, int bends,
@@ -778,21 +772,15 @@ public class GraphHelper implements HelperClass {
 	 * Adds a new node to a graph.
 	 * 
 	 * @return the new node.
-	 * @param posx
-	 *            Position of the new Node (X)
-	 * @param posy
-	 *            Position of the new Node (Y)
-	 * @param frameThickness_3
-	 *            Thinkness of Frame (default was 3)
-	 * @param width_25
-	 *            Width of the new node (default was 25)
-	 * @param height_25
-	 *            Height of the new node (default was 25)
-	 * @param frameColor_0_0_0_255
-	 *            Color of the framw, the default was
-	 *            <code>new Color(0,0,0,255)</code>.
-	 * @param fillColor_0_100_250_100
-	 *            Fill-Color. Default was <code>new Color(0,100,250,100)</code>.
+	 * @param posx                    Position of the new Node (X)
+	 * @param posy                    Position of the new Node (Y)
+	 * @param frameThickness_3        Thinkness of Frame (default was 3)
+	 * @param width_25                Width of the new node (default was 25)
+	 * @param height_25               Height of the new node (default was 25)
+	 * @param frameColor_0_0_0_255    Color of the frame, the default was
+	 *                                <code>new Color(0,0,0,255)</code>.
+	 * @param fillColor_0_100_250_100 Fill-Color. Default was
+	 *                                <code>new Color(0,100,250,100)</code>.
 	 */
 	public static Node addNodeToGraph(Graph graph, double posx, double posy, double frameThickness_3, double width_25,
 			double height_25, Color frameColor_0_0_0_255, Color fillColor_0_100_250_100) {
@@ -805,14 +793,14 @@ public class GraphHelper implements HelperClass {
 	}
 
 	/**
-	 * @param graphInstance
-	 * @return A List of Integers, which describe the cluster numbers in the list of
-	 *         given nodes.
+	 * @param elements graph elements to extract Cluster IDs from
+	 * @return A Set of distinct Strings, which contain the cluster IDs, obtained from the list of
+	 *        nodes.
 	 */
-	public static Collection<String> getClusters(List<?> nodes) {
+	public static Collection<String> getClusters(Collection<? extends GraphElement> elements) {
 		Set<String> result = new TreeSet<String>();
-		for (Iterator<?> n = nodes.iterator(); n.hasNext();) {
-			String cluster = NodeTools.getClusterID((Node) n.next(), "");
+		for (Iterator<? extends GraphElement> ge = elements.iterator(); ge.hasNext();) {
+			String cluster = NodeTools.getClusterID(ge.next(), "");
 			if (!cluster.equals(""))
 				result.add(cluster);
 		}
@@ -2335,8 +2323,7 @@ public class GraphHelper implements HelperClass {
 	}
 
 	/**
-	 * @param n
-	 *            Node
+	 * @param n Node
 	 * @return Null, if clustering coefficient is undefined (division by zero)
 	 */
 	public static Double getClusteringCoefficientUndirected(Node n) {
@@ -2362,8 +2349,7 @@ public class GraphHelper implements HelperClass {
 	}
 
 	/**
-	 * @param n
-	 *            Node
+	 * @param n Node
 	 * @return Null, if clustering coefficient is undefined (division by zero)
 	 */
 	public static Double getClusteringCoefficientDirected(Node n) {

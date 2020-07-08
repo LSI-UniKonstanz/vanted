@@ -86,10 +86,10 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 				+ "only one of the previously assigned datasets. The connecting edges will be<br>"
 				+ "duplicated, the newly created nodes will have the same connectivity to other<br>"
 				+ "nodes as the source node.<hr>"
-				+ "<li>The second mode splits nodes with a degree beeing greater than the<br>"
+				+ "<li>The second mode splits nodes with a degree being greater than the<br>"
 				+ "specified threshold into multiple nodes, so that the resulting node degree<br>"
-				+ "of the node copies will be 1. This means, that there will be as many nodes<br>"
-				+ "created as there is a connectivity to other nodes. Also self-loops may be<br>" + "processed.";
+				+ "will be 1. This means, that there will be as many nodes created as connec-<br>"
+				+ "tions to other nodes. Self-loops can be processed here.";
 	}
 
 	@Override

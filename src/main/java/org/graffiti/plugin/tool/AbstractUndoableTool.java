@@ -89,7 +89,7 @@ public abstract class AbstractUndoableTool extends AbstractTool implements Undoa
 	}
 
 	/**
-	 * Returne a new graph element reference through the mapping from old ones
+	 * Return a new graph element reference through the mapping from old ones
 	 * 
 	 * @param ge
 	 *            DOCUMENT ME!

@@ -79,7 +79,7 @@ public class ImageAssignmentCommand extends AbstractAlgorithm {
 
 				"Use the Node Attribute Editor to change the positioning of the image.<br>"
 				+ "Default position is outside of the nodes. In case the image position<br>"
-				+ "is set to `centered', the node size will be increased to fit the image.";
+				+ "is set to 'centered', the node size will be increased to fit the image.";
 	}
 
 	@Override

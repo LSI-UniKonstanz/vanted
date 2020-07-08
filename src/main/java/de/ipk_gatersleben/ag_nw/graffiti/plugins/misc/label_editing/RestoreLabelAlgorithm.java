@@ -26,26 +26,16 @@ import org.graffiti.plugin.algorithm.Category;
  */
 public class RestoreLabelAlgorithm extends AbstractAlgorithm {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		return "Restore labels...";
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>" + "Some commands offer a option to save current label text<br>"
-				+ "before a change to the label is done.<br>"
-				+ "If such a command has been executed before, this command will use<br>"
-				+ "'oldlabel' graph element attribute information to restore the previous<br>" + "label text.";
-	}
-
-	@Override
-	public String getCategory() {
-		return null;// "Elements";
+		return "<html>" + "Some commands offer an option to save the current label before it has<br>"
+				+ "been changed. If such has already been executed, this command will<br>"
+				+ "restore it (via its 'oldlabel' attribute).<br>";
 	}
 
 	@Override
@@ -58,11 +48,7 @@ public class RestoreLabelAlgorithm extends AbstractAlgorithm {
 		return "edit.Change Label";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
+	@Override
 	public void execute() {
 		int idCnt = 0;
 		for (GraphElement ge : getSelectedOrAllGraphElements()) {

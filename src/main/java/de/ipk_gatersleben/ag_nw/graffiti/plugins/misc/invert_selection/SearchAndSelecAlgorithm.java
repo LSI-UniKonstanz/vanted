@@ -69,9 +69,6 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		return result;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
-	 */
 	@Override
 	public Parameter[] getParameters() {
 		return null;
@@ -82,17 +79,10 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		return KeyStroke.getKeyStroke('L', SystemInfo.getAccelModifier());
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#
-	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
-	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		ArrayList<AttributePathNameSearchType> possibleAttributes = new ArrayList<AttributePathNameSearchType>();
 		HashSet<SearchType> validSearchTypes = SearchType.getSetOfSearchTypes();
@@ -109,7 +99,6 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		return;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void enumerateAllAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes, Graph graph,
 			HashSet<SearchType> validSearchTypes) {
 
@@ -125,10 +114,8 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 			}
 			AttributePathNameSearchType[] sortedPossibleAttributes = possibleAttributes
 					.toArray(new AttributePathNameSearchType[] {});
-			Arrays.sort(sortedPossibleAttributes, new Comparator() {
-				public int compare(Object o1, Object o2) {
-					AttributePathNameSearchType a1 = (AttributePathNameSearchType) o1;
-					AttributePathNameSearchType a2 = (AttributePathNameSearchType) o2;
+			Arrays.sort(sortedPossibleAttributes, new Comparator<AttributePathNameSearchType>() {
+				public int compare(AttributePathNameSearchType a1, AttributePathNameSearchType a2) {
 					return a1.getNiceID().compareTo(a2.getNiceID());
 				}
 			});
@@ -142,16 +129,14 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 
 	@SuppressWarnings("unchecked")
 	public static void enumerateAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes,
-			Collection graphElements, HashSet<SearchType> validSearchTypes) {
+			Collection<?> graphElements, HashSet<SearchType> validSearchTypes) {
 		for (GraphElement ge : (Collection<GraphElement>) graphElements) {
 			enumerateAttributes(possibleAttributes, ge, validSearchTypes);
 		}
 		AttributePathNameSearchType[] sortedPossibleAttributes = possibleAttributes
 				.toArray(new AttributePathNameSearchType[] {});
-		Arrays.sort(sortedPossibleAttributes, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				AttributePathNameSearchType a1 = (AttributePathNameSearchType) o1;
-				AttributePathNameSearchType a2 = (AttributePathNameSearchType) o2;
+		Arrays.sort(sortedPossibleAttributes, new Comparator<AttributePathNameSearchType>() {
+			public int compare(AttributePathNameSearchType a1, AttributePathNameSearchType a2) {
 				return a1.getNiceID().compareTo(a2.getNiceID());
 			}
 		});
@@ -168,10 +153,9 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		boolean searchColors = validSearchTypes.contains(SearchType.searchColor);
 		while (!catts.empty()) {
 			CollectionAttribute ccc = catts.pop();
-			for (Object o : ccc.getCollection().values()) {
-				Attribute a = (Attribute) o;
+			for (Attribute a : ccc.getCollection().values()) {
 				if (a instanceof CollectionAttribute && !(a instanceof ColorAttribute && searchColors)) {
-					catts.push((CollectionAttribute) o);
+					catts.push((CollectionAttribute) a);
 				} else {
 					SearchType st = null;
 					if (a instanceof StringAttribute)
@@ -231,18 +215,12 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		return result;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
-	 */
 	@Override
 	public void reset() {
 		graph = null;
 		selection = null;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Search";
 	}
@@ -267,6 +245,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		this.selection = selection;
 	}
 
+	@Override
 	public boolean activeForView(View v) {
 		return v != null;
 	}

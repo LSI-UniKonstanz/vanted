@@ -15,12 +15,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 
 public class SOManalysis extends LaunchGui implements Algorithm {
 
-	public SOManalysis() {
-		super();
-		algBTsize = ButtonSize.LARGE;
-		modal = false;
-	}
-
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -83,6 +77,15 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
+	}	
+
+	@Override
+	public boolean isModal() {
+		return false;
 	}
 
+	@Override
+	public ButtonSize getButtonSize() {
+		return ButtonSize.LARGE;
+	}
 }

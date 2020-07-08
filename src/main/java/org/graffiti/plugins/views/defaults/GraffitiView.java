@@ -155,9 +155,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 
 	// ~ Methods ================================================================
 
-	/**
-	 * @see java.awt.Container#getComponentAt(int, int)
-	 */
 	@Override
 	public Component getComponentAt(int x, int y) {
 		// return super.getComponentAt(x, y);
@@ -214,9 +211,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 		return this.blockEdges;
 	}
 
-	/**
-	 * @see javax.swing.JComponent#getGraphics()
-	 */
 	@Override
 	public Graphics getGraphics() {
 		Graphics2D sg = (Graphics2D) super.getGraphics();
@@ -246,10 +240,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 		this.messageListeners.add(ml);
 	}
 
-	/**
-	 * @see java.awt.Component#addMouseListener(java.awt.event.MouseListener)
-	 */
-
 	@Override
 	public void addMouseListener(MouseListener l) {
 		ZoomedMouseListener zoomedListener = new ZoomedMouseListener(l);
@@ -264,9 +254,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 		zoomedMouseListeners.remove(listener);
 	}
 
-	/**
-	 * @see java.awt.Component#addMouseMotionListener(java.awt.event.MouseMotionListener)
-	 */
 	@Override
 	public void addMouseMotionListener(MouseMotionListener l) {
 		ZoomedMouseMotionListener zoomedListener = new ZoomedMouseMotionListener(l);
@@ -309,9 +296,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 		return redrawInProgress;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.view.View#completeRedraw()
-	 */
 	public void completeRedraw() {
 		logger.debug("complete redraw issued for " + getGraph().getName());
 		if (redrawInProgress)
@@ -1789,8 +1773,14 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 			}
 			if (attrComp != null) {
 				int indexOf = listCopyComponents.indexOf(gec);
-				this.add(attrComp, indexOf); // , 0);
-				listCopyComponents.add(indexOf, attrComp);
+				if (indexOf < 0) {
+					this.add(attrComp, 0);
+					listCopyComponents.add(0, attrComp);
+				} else {
+					this.add(attrComp, indexOf); // , 0);
+					listCopyComponents.add(indexOf, attrComp);
+				}
+
 			}
 			return true;
 		} catch (AttributeComponentNotFoundException acnfe) {

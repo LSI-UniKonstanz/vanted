@@ -6,8 +6,8 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml;
 
-import org.jdom.Attribute;
-import org.jdom.Element;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 public class KGMLhelper {
 
@@ -24,7 +24,6 @@ public class KGMLhelper {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void addNewAttribute(Element element, String attributeName, String value) {
 		if (element != null && attributeName != null && value != null) {
 			element.getAttributes().add(getNewAttribute(attributeName, value));

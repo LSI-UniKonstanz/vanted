@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// AutomatonBean.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.beans.PropertyChangeListener;
@@ -26,7 +33,7 @@ import java.io.Serializable;
  * <b>idle</b>: after scaling is done and custom DPI is established; could go to
  * <i>onSlider</i>.<br>
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 class AutomatonBean implements Serializable {

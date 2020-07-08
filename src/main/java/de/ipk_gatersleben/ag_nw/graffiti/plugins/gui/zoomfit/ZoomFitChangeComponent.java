@@ -85,12 +85,6 @@ public class ZoomFitChangeComponent extends JToolBar
 
 	// ~ Constructors ===========================================================
 
-	/**
-	 * Constructor for ZoomChangeComponent.
-	 * 
-	 * @param prefComp
-	 *            DOCUMENT ME!
-	 */
 	public ZoomFitChangeComponent(String prefComp) {
 		super("Zoom");
 		this.prefComp = prefComp;
@@ -213,9 +207,6 @@ public class ZoomFitChangeComponent extends JToolBar
 		useSmooth = false;
 	}
 
-	/**
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(final ActionEvent e) {
 		if (activeSession != null) {
 			Zoomable myView = activeSession.getActiveView();
@@ -395,7 +386,14 @@ public class ZoomFitChangeComponent extends JToolBar
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param view
+	 * @param scrollPane
+	 * @deprecated
+	 */
+	@SuppressWarnings("unused")
 	private void myZoomToView(View view, JScrollPane scrollPane) {
 		Rectangle selectionViewRect = getViewRectFromSelection(view, null);
 		if (selectionViewRect == null)
@@ -682,9 +680,6 @@ public class ZoomFitChangeComponent extends JToolBar
 		return smallestX < cx ? smallestX : cx;
 	}
 
-	/**
-	 * @see org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.Session)
-	 */
 	public void sessionChanged(Session s) {
 		activeSession = s;
 
@@ -699,21 +694,11 @@ public class ZoomFitChangeComponent extends JToolBar
 
 	}
 
-	/**
-	 * @see org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.Session)
-	 */
 	public void sessionDataChanged(Session s) {
 		activeSession = s;
 		viewChanged(s.getActiveView());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.plugin.view.ViewListener#viewChanged(org.graffiti.plugin.view.
-	 * View)
-	 */
 	public void viewChanged(View newView) {
 		View view = newView;
 		if (view == null || !(view instanceof GraffitiView)) {
@@ -729,32 +714,14 @@ public class ZoomFitChangeComponent extends JToolBar
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.selection.SelectionListener#selectionChanged(org.graffiti.
-	 * selection.SelectionEvent)
-	 */
 	public void selectionChanged(SelectionEvent e) {
 		e.getSelection();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.selection.SelectionListener#selectionListChanged(org.graffiti.
-	 * selection.SelectionEvent)
-	 */
 	public void selectionListChanged(SelectionEvent e) {
 		e.getSelection();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.gui.GraffitiComponent#getPreferredComponent()
-	 */
 	public String getPreferredComponent() {
 		return prefComp;
 	}

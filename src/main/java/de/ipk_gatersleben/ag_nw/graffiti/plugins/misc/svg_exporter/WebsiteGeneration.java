@@ -62,11 +62,6 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 	private final String colorBackgroundStart = "#8C8C8C";
 	private final String colorBackgroundEnd = "#3F3F3F";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		final ArrayList<EditorSession> ws = new ArrayList<EditorSession>();
 		for (EditorSession es : sortByFileName(MainFrame.getEditorSessions())) {
@@ -82,7 +77,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 			paramsA.add("<h1>My Pathway Website</h1>");
 			paramsB.add("Website-Description//");
 			paramsB.add(
-					"VANTED graph to website export. VANTED is available at <a href=\"http://kim25.wwwdns.kim.uni-konstanz.de/vanted/\" target=\"_blank\">http://kim25.wwwdns.kim.uni-konstanz.de/vanted/</a>.");
+					"VANTED graph to website export. VANTED is available at <a href=\"http://www.vanted.org\" target=\"_blank\">www.vanted.org</a>.");
 			paramsC.add("Footer//");
 			paramsC.add("<small>Copyright (c) " + Calendar.getInstance().get(Calendar.YEAR)
 					+ " by NAME OF INSTITUTION.</small>");
@@ -300,7 +295,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 		readAndProcessExistingGraphLinks(targetPath, fileNameNavigation, ws, titles, fileName2title);
 
 		NavigationTree tree = new NavigationTree(titles, fileName2title);
-
+		tree.levelSeparator = itemSeparator;
 		tree.outputLinks(pathwayLinks);
 		//
 		// writeSimpleWebsiteBody(
@@ -518,7 +513,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 	 */
 	private String getAllButLastItemOf(String pathwayTitle) {
 		StringBuilder res = new StringBuilder();
-		String[] f = pathwayTitle.split("\\.");
+		String[] f = pathwayTitle.split(itemSeparator);
 		if (f.length > 1) {
 			for (int i = 0; i < f.length - 1; i++) {
 				res.append(f[i]);
@@ -530,7 +525,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 	}
 
 	private String getLastItemOf(String title) {
-		String[] n = title.split("\\.");
+		String[] n = title.split(itemSeparator);
 		return n[n.length - 1];
 	}
 
@@ -539,11 +534,6 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 		return false; // is handled by the algorithm itself
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Network as Website";
 	}
@@ -570,14 +560,19 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsS
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.EditorAlgorithm#activeForView(org.graffiti
-	 * .plugin.view.View)
-	 */
 	public boolean activeForView(View v) {
 		return v != null;
 	}
+	
+	private String itemSeparator = "\\.";
+
+	public String getItemSeparator() {
+		return itemSeparator;
+	}
+
+	public void setItemSeparator(String itemSeparator) {
+		this.itemSeparator = itemSeparator;
+	}
+	
 
 }

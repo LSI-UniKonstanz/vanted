@@ -20,6 +20,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 import org.ErrorMsg;
@@ -103,19 +104,18 @@ public class FileSaveAsAction extends GraffitiAction {
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @param e
-	 *            DOCUMENT ME!
+	 * @param e DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		JFileChooser fc = ioManager.createSaveFileChooser(getGraph());
+		final JFileChooser fc = ioManager.createSaveFileChooser(getGraph());
 
 		OpenFileDialogService.setActiveDirectoryFor(fc);
 
 		this.fileTypeDescription = null;
 		this.jTextFieldFileName = null;
 		this.isTextFieldFileNameSearchDone = false;
-		PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
+		final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
 
@@ -217,80 +217,86 @@ public class FileSaveAsAction extends GraffitiAction {
 			// empty
 		}
 
-		boolean needFile = true;
-		while (needFile) {
-			int returnVal = fc.showDialog(mainFrame, sBundle.getString("menu.file.saveAs"));
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
 
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				boolean needFile = true;
+				while (needFile) {
+					int returnVal = fc.showDialog(mainFrame, sBundle.getString("menu.file.saveAs"));
 
-				File oldfile = null;
-				try {
-					oldfile = new File(mainFrame.getActiveEditorSession().getFileNameFull()).getParentFile();
-				} catch (Exception e1) {
-				}
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-				File file = fc.getSelectedFile();
-
-				if (UNCFileLocationCheck.showUNCPathConfirmDialogForPath(file) != UNCFileLocationCheck.CONFIRM)
-					continue;
-
-				String ext = ((GenericFileFilter) fc.getFileFilter()).getExtension();
-				String description = ((GenericFileFilter) fc.getFileFilter()).getDescription();
-				description = description.substring(0, description.lastIndexOf("(") - 1);
-
-				String path = fc.getCurrentDirectory().getAbsolutePath();
-				String fileName = file.getName();
-				// fall back if file name text field could not be found
-				if (FileSaveAsAction.this.jTextFieldFileName == null) {
-					// try to remove old file extension ...
-					// ... use file extensions from file save as dialog
-					for (FileFilter filterFilter : fc.getChoosableFileFilters()) {
-						String fileExtension = ((GenericFileFilter) filterFilter).getExtension();
-						if (!ext.equals(fileExtension) && fileName.endsWith(fileExtension)) {
-							fileName = fileName.substring(0, fileName.lastIndexOf(fileExtension));
-							break;
+						File oldfile = null;
+						try {
+							oldfile = new File(mainFrame.getActiveEditorSession().getFileNameFull()).getParentFile();
+						} catch (Exception e1) {
 						}
-					}
-					// ... use file extensions from input serializers
-					for (String fileExtension : MainFrame.getInstance().getIoManager().getGraphFileExtensions())
-						if (!ext.equals(fileExtension) && fileName.endsWith(fileExtension)) {
-							fileName = fileName.substring(0, fileName.lastIndexOf(fileExtension));
-							break;
+
+						File file = fc.getSelectedFile();
+
+						if (UNCFileLocationCheck.showUNCPathConfirmDialogForPath(file) != UNCFileLocationCheck.CONFIRM)
+							continue;
+
+						String ext = ((GenericFileFilter) fc.getFileFilter()).getExtension();
+						String description = ((GenericFileFilter) fc.getFileFilter()).getDescription();
+						description = description.substring(0, description.lastIndexOf("(") - 1);
+
+						String path = fc.getCurrentDirectory().getAbsolutePath();
+						String fileName = file.getName();
+						// fall back if file name text field could not be found
+						if (FileSaveAsAction.this.jTextFieldFileName == null) {
+							// try to remove old file extension ...
+							// ... use file extensions from file save as dialog
+							for (FileFilter filterFilter : fc.getChoosableFileFilters()) {
+								String fileExtension = ((GenericFileFilter) filterFilter).getExtension();
+								if (!ext.equals(fileExtension) && fileName.endsWith(fileExtension)) {
+									fileName = fileName.substring(0, fileName.lastIndexOf(fileExtension));
+									break;
+								}
+							}
+							// ... use file extensions from input serializers
+							for (String fileExtension : MainFrame.getInstance().getIoManager().getGraphFileExtensions())
+								if (!ext.equals(fileExtension) && fileName.endsWith(fileExtension)) {
+									fileName = fileName.substring(0, fileName.lastIndexOf(fileExtension));
+									break;
+								}
 						}
-				}
-				// add file extension to file name if necessary
-				// if file name contains '.' as in 'abc.def' but doesn't contain
-				// a known file extension '.def' is treated as unknown file extension
-				if (!fileName.endsWith(ext))
-					file = new File(path + File.separator + fileName + ext);
+						// add file extension to file name if necessary
+						// if file name contains '.' as in 'abc.def' but doesn't contain
+						// a known file extension '.def' is treated as unknown file extension
+						if (!fileName.endsWith(ext))
+							file = new File(path + File.separator + fileName + ext);
 
-				needFile = safeFile(file, ext, description, getGraph());
+						needFile = safeFile(file, ext, description, getGraph());
 
-				FileHandlingManager.getInstance().throwFileSavedAs(oldfile, file.getParentFile());
+						FileHandlingManager.getInstance().throwFileSavedAs(oldfile, file.getParentFile());
 
-				if (!needFile) {
-					EditorSession session = (EditorSession) mainFrame.getActiveSession();
-					if (session != null) {
-						if (!file.getName().endsWith(ext))
-							file = new File(file.getAbsolutePath() + ext);
-						session.setFileName(file.getAbsolutePath());
-						session.setFileTypeDescription(description);
+						if (!needFile) {
+							EditorSession session = (EditorSession) mainFrame.getActiveSession();
+							if (session != null) {
+								if (!file.getName().endsWith(ext))
+									file = new File(file.getAbsolutePath() + ext);
+								session.setFileName(file.getAbsolutePath());
+								session.setFileTypeDescription(description);
 
-						if (session != null && session.getUndoManager() != null)
-							session.getUndoManager().discardAllEdits();
+								if (session != null && session.getUndoManager() != null)
+									session.getUndoManager().discardAllEdits();
 
-						mainFrame.fireSessionDataChanged(session);
-						OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
+								mainFrame.fireSessionDataChanged(session);
+								OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
+							}
+						}
+					} else {
+						// signal any graphs waiting on it to close
+						MainFrame.getInstance().cancelledSaveAction.set(true);
+						// leave loop
+						needFile = false;
 					}
 				}
-			} else {
-				// signal any graphs waiting on it to close
-				MainFrame.getInstance().cancelledSaveAction.set(true);
-				// leave loop
-				needFile = false;
+				fc.removePropertyChangeListener(propertyChangeListener);
 			}
-		}
-		fc.removePropertyChangeListener(propertyChangeListener);
+		});
 	}
 
 	public static boolean safeFile(File file, String ext, String fileTypeDescription, Graph graph) {

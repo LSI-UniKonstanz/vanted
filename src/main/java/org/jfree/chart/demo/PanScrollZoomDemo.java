@@ -74,13 +74,13 @@ import org.jfree.data.XYSeries;
 import org.jfree.data.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
 
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
-
 /**
  * A demo for panning, scrolling and zooming.
  */
 public class PanScrollZoomDemo extends JFrame
 		implements ActionListener, ChangeListener, ChartChangeListener, MouseListener, MouseMotionListener {
+
+	private static final long serialVersionUID = 1L;
 
 	/** The panel that displays the chart. */
 	private ChartPanel chartPanel;
@@ -156,6 +156,8 @@ public class PanScrollZoomDemo extends JFrame
 		recalcScrollBar(chart.getPlot());
 
 		this.chartPanel = new ChartPanel(chart) {
+			private static final long serialVersionUID = 1L;
+
 			public void autoRangeBoth() {
 				System.out.println("Use 'Fit all' button");
 			}
@@ -172,9 +174,12 @@ public class PanScrollZoomDemo extends JFrame
 
 		// remove popup menu to allow panning
 		// with right mouse pressed
-		this.chartPanel.setPopupMenu(null);
+		//this.chartPanel.setPopupMenu(null);
 
 		getContentPane().add(this.chartPanel);
+		
+		plot = chart.getPlot();
+		info = chartPanel.getChartRenderingInfo();
 	}
 
 	/**
@@ -675,6 +680,9 @@ public class PanScrollZoomDemo extends JFrame
 		}
 	}
 
+	
+	public Plot plot;
+	public ChartRenderingInfo info;
 	/**
 	 * Handles a mouse clicked event, in this case by ignoring it.
 	 * 
@@ -682,7 +690,11 @@ public class PanScrollZoomDemo extends JFrame
 	 *            the event.
 	 */
 	public void mouseClicked(final MouseEvent event) {
-		// ignored
+		// ignored		
+		if (!chartPanel.getScaledDataArea().contains(event.getPoint()))
+			return;
+		
+		//TODO handling if events within the chart
 	}
 
 	/**
@@ -724,8 +736,7 @@ public class PanScrollZoomDemo extends JFrame
 	public static void main(final String[] args) {
 
 		try {
-			final String lookAndFeelClassName = WindowsLookAndFeel.class.getName();
-			UIManager.setLookAndFeel(lookAndFeelClassName);
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}

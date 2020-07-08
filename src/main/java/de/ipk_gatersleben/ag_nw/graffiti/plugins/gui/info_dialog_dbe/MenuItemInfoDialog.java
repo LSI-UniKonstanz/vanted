@@ -62,6 +62,7 @@ import org.graffiti.editor.actions.ClipboardService;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.gui.GraffitiMenu;
 import org.vanted.osx.OSXSupport;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 import org.vanted.updater.ScanForUpdate;
 
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
@@ -117,7 +118,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 
 		ClassLoader cl = this.getClass().getClassLoader();
 		// String path = this.getClass().getPackage().getName().replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_alpha_16x16.png"));
+		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_16x16.png"));
 		info.setIcon(icon);
 		KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
 		info.setAccelerator(f1);
@@ -158,7 +159,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 
 				copyRMonash = "&copy; 2014 - 2016 Monash University";
 
-				copyRKonstanz = "&copy; 2016 - 2018 Konstanz University";
+				copyRKonstanz = "&copy; 2016 - 2020 Konstanz University";
 
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();
@@ -483,7 +484,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 					err.append("<html><body><h2>No error messages available.</h2></body></html>");
 				}
 				// GraffitiSingleton.getInstance().getMainFrame().showMessageDialog(err);
-				JEditorPane errMsg = new JEditorPane("text/html", err.toString());
+				JEditorPane errMsg = new JEditorPane("text/html", HTMLScaleSupport.scaleText(err.toString()));
 				errMsg.setEditable(false);
 				errMsg.setAutoscrolls(false);
 
@@ -564,19 +565,20 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 			}
 		});
 
-		JMenuItem workflowItem = new JMenuItem("Workflow Tutorial");
-		workflowItem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				if (dialogWorkflow == null)
-					createWorkflowDialog();
-				dialogWorkflow.setVisible(true);
-				dialogWorkflow.toFront();
-
-			}
-		});
+		/* Workflow Tutorial has been moved to vanted.org. */
+//		JMenuItem workflowItem = new JMenuItem("Workflow Tutorial");
+//		workflowItem.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//
+//				if (dialogWorkflow == null)
+//					createWorkflowDialog();
+//				dialogWorkflow.setVisible(true);
+//				dialogWorkflow.toFront();
+//
+//			}
+//		});
 
 		JMenuItem scanUpdate = new JMenuItem("Scan for updates");
 		scanUpdate.addActionListener(new ActionListener() {
@@ -589,7 +591,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		int pos = 1;
 		insert(error, pos++);
 		insert(examplesItem, pos++);
-		insert(workflowItem, pos++);
+		// insert(workflowItem, pos++);
 
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
 			insert(jMenuItemJavaHelp, pos++);
@@ -662,8 +664,8 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 						 * ErrorMsg.getErrorMessages()[errorMsg.length - 1],
 						 * "<html><small>Click 'Help/Error Messages' for more details.", new Runnable()
 						 * { public void run() { try { Thread.sleep(2000); } catch (InterruptedException
-						 * e) {  e.printStackTrace(); } } }, new
-						 * Runnable() { public void run() { } }, false);
+						 * e) { e.printStackTrace(); } } }, new Runnable() { public void run() { } },
+						 * false);
 						 */
 					}
 					// if (!MainFrame.getInstance().isTaskPanelVisible("Error Watch"))
@@ -699,6 +701,10 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 
 	}
 
+	/**
+	 * @deprecated The workflow tutorial has been moved to the website
+	 *             <code>vanted.org</code>.
+	 */
 	protected void createWorkflowDialog() {
 		final JPanel workFlowHelp = WorkflowHelper.getWorkFlowHelp();
 

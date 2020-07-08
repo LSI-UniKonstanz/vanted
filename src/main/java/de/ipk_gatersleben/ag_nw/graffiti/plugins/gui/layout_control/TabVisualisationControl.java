@@ -20,6 +20,8 @@ import org.graffiti.session.Session;
  * of the current graph object.
  * 
  * @version $Revision$
+ * @deprecated Do not use, will be removed in future.
+ * @vanted.revision 2.7.0 Deprecate class.
  */
 public class TabVisualisationControl extends InspectorTab {
 

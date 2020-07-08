@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// WindowsScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers;
 
 import javax.swing.Icon;
@@ -5,7 +12,7 @@ import javax.swing.Icon;
 /**
  * Similar to the default scaler. Not necessary/able to scale LAF-Icons.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class WindowsScaler extends BasicScaler {

@@ -14,10 +14,9 @@ package org.graffiti.selection;
  * selection model.
  * 
  * @version $Revision: 1.4 $
+ * @vanted.revision 2.7.0
  */
 public interface SelectionListener {
-	// ~ Methods ================================================================
-
 	/**
 	 * Is called, if something in the selection model changed.
 	 */
@@ -28,7 +27,3 @@ public interface SelectionListener {
 	 */
 	public void selectionListChanged(SelectionEvent e);
 }
-
-// ------------------------------------------------------------------------------
-// end of file
-// ------------------------------------------------------------------------------

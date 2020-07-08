@@ -49,12 +49,6 @@ public class ClusterHelperToolbarComponent extends JToolBar
 	// ~ Constructors
 	// ===========================================================
 
-	/**
-	 * Constructor for ZoomChangeComponent.
-	 * 
-	 * @param prefComp
-	 *            DOCUMENT ME!
-	 */
 	public ClusterHelperToolbarComponent(String prefComp) {
 		super("Cluster/Nodes");
 		this.prefComp = prefComp;

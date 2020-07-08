@@ -9,8 +9,8 @@ import org.ErrorMsg;
 import org.StringManipulationTools;
 import org.graffiti.attributes.StringAttribute;
 import org.graffiti.event.AttributeEvent;
-import org.jdom.Document;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.input.SAXBuilder;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.Experiment;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.ExperimentInterface;

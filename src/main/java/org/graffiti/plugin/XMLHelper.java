@@ -35,16 +35,15 @@ import javax.xml.validation.Validator;
 import org.ErrorMsg;
 import org.HelperClass;
 import org.StringManipulationTools;
-import org.jdom.JDOMException;
-import org.jdom.input.DOMBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
+import org.jdom2.JDOMException;
+import org.jdom2.input.DOMBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 
 /**
  * Contains some (static) auxiliary methods for writing XML.
@@ -117,7 +116,7 @@ public class XMLHelper implements HelperClass {
 		return result;
 	}
 
-	public static org.jdom.Document getJDOMfromDOM(org.w3c.dom.Document doc) {
+	public static org.jdom2.Document getJDOMfromDOM(org.w3c.dom.Document doc) {
 		DOMBuilder db = new DOMBuilder();
 		return db.build(doc);
 	}

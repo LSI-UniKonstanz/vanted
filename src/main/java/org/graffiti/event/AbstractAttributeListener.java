@@ -9,6 +9,8 @@
 
 package org.graffiti.event;
 
+import org.BackgroundTaskStatusProviderSupportingExternalCall;
+
 /**
  * An abstract adapter class for receiving attribute events. The methods in this
  * class are empty. This class exists as convenience for creating listener
@@ -96,6 +98,10 @@ public abstract class AbstractAttributeListener implements AttributeListener {
 	 *            gives details about the transaction.
 	 */
 	public void transactionFinished(TransactionEvent e) {
+	}	
+
+	@Override
+	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {		
 	}
 
 	/**

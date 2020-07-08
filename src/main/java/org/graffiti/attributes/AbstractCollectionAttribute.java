@@ -203,7 +203,7 @@ public abstract class AbstractCollectionAttribute extends AbstractAttribute impl
 					callPostAttributeAdded(attrEvent);
 				} catch (Exception e2) {
 					throw new AttributeExistsException(
-							"Attribute with ID " + attrId + " already exists in " + "this HashMapAttribute!");
+							"Attribute with ID " + attrId + " already exists in " + "this CollectionAttribute!");
 				}
 			}
 		} else {

@@ -37,6 +37,7 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.selection.Selection;
 import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 import org.vanted.scaling.scalers.component.JLabelScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.MyPluginTreeNode;
@@ -44,6 +45,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
 
 /**
  * @author matthiak
+ * 
  */
 public class AlgorithmPanelFactory extends JPanel implements TreeSelectionListener {
 
@@ -134,11 +136,20 @@ public class AlgorithmPanelFactory extends JPanel implements TreeSelectionListen
 
 	}
 
+	/**
+	 * 
+	 * @param alg
+	 * @param graph
+	 * @param selection
+	 * 
+	 * @vanted.revision 2.7.0 Undoable Algorithm support
+	 */
 	void runAlgorithm(final Algorithm alg, Graph graph, Selection selection) {
 		// ScenarioService.postWorkflowStep(alg, alg.getParameters());
 		alg.reset();
 		alg.attach(graph, selection);
 		alg.execute();
+		GravistoService.processUndoableAlgorithm(alg);
 	}
 
 	private void initAlgorithmPreferencesPanel(final Algorithm alg, final Graph graph, Selection selection) {
@@ -154,7 +165,7 @@ public class AlgorithmPanelFactory extends JPanel implements TreeSelectionListen
 
 		progressAndStatus.setLayout(new TableLayout(size));
 
-		String desc = alg.getDescription();
+		String desc = HTMLScaleSupport.scaleText(alg.getDescription());
 		JLabel info = new JLabel(desc);
 		info.setBorder(BorderFactory.createLoweredBevelBorder());
 		info.setOpaque(false);

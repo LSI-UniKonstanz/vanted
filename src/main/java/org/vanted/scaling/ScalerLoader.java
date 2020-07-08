@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ScalerLoader.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Container;
@@ -6,6 +13,7 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.UIManager;
 
+import org.ErrorMsg;
 import org.vanted.scaling.AutomatonBean.State;
 import org.vanted.scaling.vanted.GraphScaler;
 
@@ -34,7 +42,7 @@ import org.vanted.scaling.vanted.GraphScaler;
  * scaling of its components. Then you could use the synchronized initial
  * scaling {@link ScalerLoader#doSyncInitialScaling()}.
  * 
- * @author dim8
+ * @author D. Garkov
  */
 public final class ScalerLoader {
 
@@ -280,7 +288,7 @@ public final class ScalerLoader {
 		/**
 		 * To access the container.
 		 * 
-		 * @author dim8
+		 * @author D. Garkov
 		 */
 		class Holder {
 			private Container c = null;
@@ -313,7 +321,7 @@ public final class ScalerLoader {
 							| NoSuchMethodException | SecurityException | InterruptedException e) {
 						System.err.println("Not able to load initial external Scaler!");
 						System.err.println("EXCEPTION: " + e.getCause());
-						e.printStackTrace();
+						ErrorMsg.addErrorMessage(e);
 
 						// kill the thread
 						if (!Thread.currentThread().isInterrupted())

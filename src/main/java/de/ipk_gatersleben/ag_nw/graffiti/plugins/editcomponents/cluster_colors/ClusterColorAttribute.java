@@ -19,6 +19,7 @@ import org.graffiti.event.AttributeEvent;
  * from id to class type is initialized.
  * 
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
+ * @vanted.revision 2.7.0 Cluster recolouring.
  */
 public class ClusterColorAttribute extends StringAttribute {
 	/**
@@ -36,7 +37,7 @@ public class ClusterColorAttribute extends StringAttribute {
 	public static String attributeFolder = "";
 	public static String desc = "<html>Modify the color (fill/first row and outline/second row)<br>of the nodes with cluster information and the color of the nodes in the cluster-graph";
 
-	private String notSet = "undefined"; // "0,0,0,255:255,255,255,255;255,0,0,255:0,255,255,255;50,50,0,255:255,55,55,255";
+	private String notSet = "undefined";
 
 	private ArrayList<String> listClusterNames;
 	private ArrayList<Color> listClusterColors;
@@ -210,37 +211,32 @@ public class ClusterColorAttribute extends StringAttribute {
 					barCol_outCol = " : ";
 				if (result.length() > 0)
 					result.append(";");
-				if (idx0bar_1outline == 0)
-					result.append(getColorCode(newColor) + ":" + nullForEmpty(barCol_outCol.split(":")[1]));
-				else
-					result.append(nullForEmpty(barCol_outCol.split(":")[0]) + ":" + getColorCode(newColor));
+
+				String colorCode;
+				if (newColor == null)
+					colorCode = "null";
+				else {
+					if (newColor instanceof Color) {
+						Color c = (Color) newColor;
+						colorCode = c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "," + c.getAlpha();
+					} else
+						colorCode = "null";
+				}
+
+				String s;
+				if (idx0bar_1outline == 0) {
+					s = barCol_outCol.split(":")[1];
+					s = (s == null || s.length() == 0) ? "null" : s;
+					result.append(colorCode + ":" + s);
+				} else {
+					s = barCol_outCol.split(":")[0];
+					s = (s == null || s.length() == 0) ? "null" : s;
+					result.append(s + ":" + colorCode);
+				}
 			}
 		}
 		value = result.toString();
 		// setValue(result);
-	}
-
-	/**
-	 * @param string
-	 * @return
-	 */
-	private static String nullForEmpty(String string) {
-		if (string == null || string.length() == 0)
-			return "null";
-		else
-			return string;
-	}
-
-	private static String getColorCode(Paint newColor) {
-		if (newColor == null)
-			return "null";
-		else {
-			if (newColor instanceof Color) {
-				Color c = (Color) newColor;
-				return c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "," + c.getAlpha();
-			} else
-				return "null";
-		}
 	}
 
 	private void ensureMinimumColorSelection(int clusterCount) {
@@ -255,11 +251,13 @@ public class ClusterColorAttribute extends StringAttribute {
 
 	/**
 	 * Must be called on an existing ClusterColorAttribute to update the cluster
-	 * information. Existing clusters not found in clusterNames will be deleted
-	 * clusterNames not found in the Attribute Object will be added Nothing is
-	 * changed, if the clusterlists are the same
+	 * information. Clusters will be recoloured given there is a change, because
+	 * there is no reasonable mapping of additional colours to the existing
+	 * (unknown) colour model. Given there is no change, cluster colours won't be
+	 * modified.
 	 * 
 	 * @param clusterNames
+	 * @vanted.revision 2.7.0 Bugfixing of bugfixing...
 	 */
 	public void updateClusterList(Collection<String> clusterNames) {
 		if (clusterNames == null || clusterNames.isEmpty()) {
@@ -269,8 +267,8 @@ public class ClusterColorAttribute extends StringAttribute {
 
 		/*
 		 * If this attribute is created, only colors are known, since clusternames are
-		 * not stored in GML or when this stringattriute is read.. Compatibiliy Sooo. we
-		 * just need to connect names, to already set colors.
+		 * not stored in GML or when this string attribute is read.. Compatibility Sooo.
+		 * we just need to connect names, to already set colors.
 		 */
 		if (listClusterNames.isEmpty()) {
 			/*
@@ -279,47 +277,24 @@ public class ClusterColorAttribute extends StringAttribute {
 			 * clustercolors is a graph attribute .. e.g. copying from graph with two
 			 * clusters.. copy one node (one cluster member) insert to new graph.. graph
 			 * attribute still has two colors colors but only one cluster By calling
-			 * updateClusterList again with the actuall number of present clusters the
+			 * updateClusterList again with the actual number of present clusters the
 			 * clustercolors graph attribute gets updated.
 			 */
 			listClusterNames.addAll(clusterNames);
 			updateClusterList(clusterNames);
 		} else {
+			if (listClusterNames.size() == listClusterColors.size())
+				return;
 
-			Color[] colors = Colors.getColors(clusterNames.size() * 2); // get some colors that won't match the existing
-																		// ones
-			int colorIdx = clusterNames.size() * 2 - 1;
+			Color[] colors = Colors.getColors(clusterNames.size());
+			int colorIdx = clusterNames.size() - 1;
 			ArrayList<Color> newListClusterColors = new ArrayList<Color>();
 			ArrayList<Color> newListOutlineColors = new ArrayList<Color>();
 			ArrayList<String> newListClusterNames = new ArrayList<String>();
-			int foundIdx;
 			for (String curClusterName : clusterNames) {
-				foundIdx = -1;
-				for (int i = 0; i < listClusterNames.size(); i++) {
-					if (curClusterName.equals(listClusterNames.get(i))) {
-						foundIdx = i;
-					}
-				}
-
-				/*
-				 * if through copy and paste more cluster than cluster colors are present an
-				 * indexoutofboundexception can happen, if we try to set up the lists See
-				 * comment above. In that case, act like this is a new color.
-				 */
-				if (foundIdx >= listClusterColors.size())
-					foundIdx = -1;
-
-				if (foundIdx >= 0) {
-					newListClusterColors.add(listClusterColors.get(foundIdx));
-					newListOutlineColors.add(listOutlineColors.get(foundIdx));
-					newListClusterNames.add(listClusterNames.get(foundIdx));
-				} else {
-					// new color
-					newListClusterColors.add(colors[colorIdx]);
-					newListOutlineColors.add(colors[colorIdx]);
-					newListClusterNames.add(curClusterName);
-					colorIdx--;
-				}
+				newListClusterColors.add(colors[colorIdx--]);
+				newListOutlineColors.add(Color.BLACK);
+				newListClusterNames.add(curClusterName);
 			}
 
 			listClusterColors = newListClusterColors;
@@ -330,12 +305,8 @@ public class ClusterColorAttribute extends StringAttribute {
 
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
-		assert o != null;
-
 		try {
-			value = (String) o;
-
-			fillColorFields();
+			setString((String) o);
 
 		} catch (ClassCastException cce) {
 			throw new IllegalArgumentException("Invalid value type.");

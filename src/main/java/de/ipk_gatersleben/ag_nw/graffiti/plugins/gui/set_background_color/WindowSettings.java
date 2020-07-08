@@ -98,11 +98,6 @@ public class WindowSettings extends AbstractAlgorithm implements ProvidesGeneral
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.ContextMenuPlugin#getCurrentContextMenuItem()
-	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
 		myMenuItem = new JMenuItem("Show/hide graph edges (view setting)");
 		myMenuItem.addActionListener(this);
@@ -124,12 +119,6 @@ public class WindowSettings extends AbstractAlgorithm implements ProvidesGeneral
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == myMenuItem) {
 			GravistoService.getInstance().algorithmAttachData(this);

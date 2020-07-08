@@ -13,7 +13,7 @@ import com.sun.istack.NotNull;
  * @version 1.1
  * 
  * @author mathiak
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class LookAndFeelNameAndClass {

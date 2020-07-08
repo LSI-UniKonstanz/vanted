@@ -27,13 +27,11 @@ import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
-import org.vanted.animation.Animation;
 import org.vanted.animation.Animator;
+import org.vanted.animation.AnimatorAdapter;
 import org.vanted.animation.AnimatorData;
-import org.vanted.animation.AnimatorListener;
 import org.vanted.animation.animations.Position2DAnimation;
 import org.vanted.animation.data.Point2DTimePoint;
-import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.interpolators.CosineInterpolator;
 import org.vanted.animation.loopers.StandardLooper;
 
@@ -45,6 +43,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
  * Places all nodes on a circle with a user specified radius.
  * 
  * @author Dirk Koschützki, Christian Klukas, Matthias Klapperstueck
+ * @vanted.revision 2.7.0
  */
 public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 
@@ -70,8 +69,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
 	 * 
-	 * @param defaultRadius
-	 *            a value for the radius
+	 * @param defaultRadius a value for the radius
 	 */
 	public CircleLayouterAlgorithm(double defaultRadius) {
 		super();
@@ -95,9 +93,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	/**
 	 * Checks, if a graph was given and that the radius is positive.
 	 * 
-	 * @throws PreconditionException
-	 *             if no graph was given during algorithm invocation or the radius
-	 *             is negative
+	 * @throws PreconditionException if no graph was given during algorithm
+	 *                               invocation or the radius is negative
 	 */
 	@Override
 	public void check() throws PreconditionException {
@@ -282,39 +279,12 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		if (animate) {
 			int duration = 1000;
 			final Animator animator = new Animator(graph, 1);
-			animator.addListener(new AnimatorListener() {
-
-				@Override
-				public void onNewAnimatorLoop(AnimatorData data) {
-				}
-
-				@Override
-				public void onAnimatorStop(AnimatorData data) {
-					System.out.println("Animator stopped");
-				}
-
-				@Override
-				public void onAnimatorStart(AnimatorData data) {
-				}
-
-				@Override
-				public void onAnimatorRestart(AnimatorData data) {
-				}
-
-				@Override
-				public void onAnimatorReset(AnimatorData data) {
-				}
+			animator.addListener(new AnimatorAdapter<Object>() {
 
 				@Override
 				public void onAnimatorFinished(AnimatorData data) {
 					((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView())
 							.setDrawMode(DrawMode.NORMAL);
-					System.out.println("onAnimatorFinished");
-				}
-
-				@Override
-				public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim) {
-					// System.out.println("onAnimationFinished");
 				}
 			});
 			animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
@@ -332,14 +302,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 						new StandardLooper(), new CosineInterpolator());
 				animator.addAnimation(posAnimation);
 			}
-			// SwingUtilities.invokeLater(new Runnable() {
-
-			// @Override
-			// public void run() {
 			((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).setDrawMode(DrawMode.REDUCED);
 			animator.start();
-			// }
-			// });
 		} else {
 			GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
 		}
@@ -450,9 +414,9 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 
 			equalizeParam = new BooleanParameter(true, "Equalize", "Equalize distance between nodes on the circle");
 			avgDistBoolean = new BooleanParameter(false, "Average Radius",
-					"This parameter overrules the 'Radius' parameter. It calculates the center of all nodes, \n"
-							+ "selected for layout and calculates then the average distance to every node,\n"
-							+ "which is then taken as final radius for the circle");
+					"This parameter overrules the 'Radius' parameter. Calculates the center of all selected nodes, \n"
+							+ "and then the average distance to every node,\n"
+							+ "which is then taken as final radius for the circle.");
 			minimzeCrossingsParam = new BooleanParameter(minimzeCrossings, "Minimize Crossings",
 					"If checked, the edge crossings will be minimzed");
 			sortbyclusterParam = new BooleanParameter(true, "Sort by cluster", "Sort elements by their clusterID");
@@ -465,8 +429,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	/**
 	 * Sets the radius parameter to the given value.
 	 * 
-	 * @param params
-	 *            An array with exact one DoubleParameter.
+	 * @param params An array with exact one DoubleParameter.
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
@@ -482,11 +445,6 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		animate = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Layout";

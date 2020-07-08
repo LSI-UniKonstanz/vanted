@@ -39,6 +39,7 @@ import org.graffiti.util.MultipleIterator;
  */
 public class ListenerManager {
 	// ~ Instance fields ========================================================
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ListenerManager.class);
 	/**
 	 * Holds the list of registered NodeListeners that receive events even if a

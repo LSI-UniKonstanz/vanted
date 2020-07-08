@@ -10,6 +10,7 @@
 package org.graffiti.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.Policy;
@@ -95,6 +96,9 @@ public class InstanceLoader {
 	public static synchronized Object createInstance(String name) throws InstanceCreationException {
 		try {
 			Class<?> c = storedLoader.loadClass(name);
+			
+			if (Modifier.isAbstract(c.getModifiers()))
+				throw new InstanceCreationException("Class " + name + " is abstract! Abstract classes cannot be instantiated!");
 
 			return c.getDeclaredConstructor().newInstance();
 		} catch (NullPointerException | ClassNotFoundException | InstantiationException | IllegalAccessException

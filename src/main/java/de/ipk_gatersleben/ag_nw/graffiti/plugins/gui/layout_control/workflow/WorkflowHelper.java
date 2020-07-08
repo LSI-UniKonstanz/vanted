@@ -79,6 +79,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.Main;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
+/**
+ * 
+ * @deprecated Since 2.7.0, it contains outdated information and has been moved
+ *             to vanted.org, where an updated version can be found at the
+ *             tutorials section. There is also existing resize issue, connected
+ *             with that.
+ */
 public class WorkflowHelper extends InspectorTab implements ScenarioGui, ContainsTabbedPane, HelperClass {
 	private static final long serialVersionUID = 1L;
 

@@ -35,7 +35,6 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.managers.IOManager;
 import org.graffiti.managers.MyInputStreamCreator;
-import org.graffiti.managers.ViewManager;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.io.InputSerializer;
 import org.graffiti.plugin.io.ParserException;
@@ -91,9 +90,6 @@ public class TabPatternLayout extends InspectorTab {
 
 	/** DOCUMENT ME! */
 	private StringBundle sBundle;
-
-	/** DOCUMENT ME! */
-	private ViewManager viewManager;
 
 	private void initComponents() {
 
@@ -507,7 +503,6 @@ public class TabPatternLayout extends InspectorTab {
 		this.title = "Search Subnetworks";
 		this.mainframe = MainFrame.getInstance();
 		this.ioManager = mainframe.getIoManager();
-		this.viewManager = mainframe.getViewManager();
 		this.sBundle = StringBundle.getInstance();
 
 		initComponents();

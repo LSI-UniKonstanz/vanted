@@ -15,8 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +27,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -88,8 +87,6 @@ import org.jfree.chart.axis.Axis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.CategoryItemRenderer;
-import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scalers.component.JTabbedPaneScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
@@ -199,8 +196,6 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	private boolean showLegend = false;
 	private float outlineBorderWidth = 10f;
 
-	private float oldRatio = 1f;
-
 	/**
 	 * Initialize GUI
 	 */
@@ -217,7 +212,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// stat.addTab(null, new VTextIcon(stat, "Correlate n:n",
 		// VTextIcon.ROTATE_RIGHT), getAnalysisPanel());
 
-		stat.addTab("<html><small>Compare Samples", getStudentPanel());
+		stat.addTab("<html><small>Compare Samples", new JScrollPane(getStudentPanel(),
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 		// stat.addTab("<html><small>Scatter Matrix", getPlotPanel());
 		stat.addTab("<html><small>Scatter Matrix", new JScrollPane(getPlotPanel(),
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
@@ -239,24 +235,6 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		this.setLayout(new TableLayout(size));
 		this.add(stat, "1,1");
 		this.validate();
-
-		// Scaling sync-up
-		Toolbox.addScalingListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ((evt.getNewValue().equals(Toolbox.STATE_ON_SLIDER)
-						|| evt.getNewValue().equals(Toolbox.STATE_RESCALED))
-						|| (evt.getOldValue().equals(Toolbox.STATE_ON_START)
-								&& evt.getNewValue().equals(Toolbox.STATE_IDLE)))
-					// if not part of the active component tree, then scale here
-					if (!MainFrame.getInstance().isSessionActive())
-						new JTabbedPaneScaler(Toolbox.getDPIScalingRatio() / oldRatio).coscaleFont(stat);
-
-				if (evt.getNewValue().equals(Toolbox.STATE_IDLE))
-					oldRatio = Toolbox.getDPIScalingRatio();
-
-			}
-		});
 	}
 
 	public JTabbedPane getTabbedPane() {
@@ -872,10 +850,10 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		result.add(doTest, "1,2");
 
 		final JRadioButton ttestSel = new JRadioButton(
-				"<html>Unpaired T-Test<br>" + "<small>StdDev is unknown but expected to be equal (homoscedastic), "
+				"<html>Unpaired T-Test<br>" + "<small>StdDev is unknown but expected to be equal (homoscedastic), <br>"
 						+ "assuming a normal distribution of independent samples");
 		final JRadioButton welchSel = new JRadioButton(
-				"<html>Welch-Satterthwaite T-Test<br>" + "<small>StdDev is unknown (heteroscedastic), "
+				"<html>Welch-Satterthwaite T-Test<br>" + "<small>StdDev is unknown (heteroscedastic), <br>"
 						+ "assuming a normal distribution of independent samples");
 		final JRadioButton wilcoxonSel = new JRadioButton(
 				"<html>Wilcoxon, Mann-Whitney U-Test<br>" + "<small>Rank sum test for two independent samples");
@@ -937,9 +915,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 
-		JComponent calcTypePanel = TableLayout.get3SplitVertical(ttestSel,
-				TableLayout.getSplitVertical(welchSel, wilcoxonSel, TableLayout.PREFERRED, TableLayout.PREFERRED),
-				ratioSel, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED);
+		JComponent calcTypePanel = TableLayout.get4SplitVertical(ttestSel, welchSel, wilcoxonSel, ratioSel,
+				TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
+				TableLayout.PREFERRED, TableLayout.PREFERRED);
 
 		calcTypePanel.setOpaque(false);
 		calcTypePanel.setBorder(BorderFactory.createTitledBorder("Type of test"));
@@ -998,36 +976,34 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 
 		double curVal = 10d;
 		Graph graph = null;
-		try {
-			EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
+
+		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
+		if (session != null) {
 			graph = session.getGraph();
 			curVal = ((Double) AttributeHelper.getAttributeValue(graph, "", AttributeHelper.id_ttestCircleSize,
 					Double.valueOf(10.0d), Double.valueOf(10.0d))).doubleValue();
-		} catch (Exception e) {
-			// empty
 		}
 
-		final SpinnerNumberModel numberModel = new SpinnerNumberModel(curVal, 0d, Double.MAX_VALUE, 0.5d);
+		final SpinnerNumberModel numberModel = new SpinnerNumberModel(curVal, 0d, Integer.MAX_VALUE, 0.5d);
 		numberModel.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				try {
-					EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
-					Graph g = session.getGraph();
-					AttributeHelper.setAttribute(g, "", AttributeHelper.id_ttestCircleSize,
-							Double.valueOf(numberModel.getNumber().doubleValue()));
-				} catch (Exception err) {
-					// empty
-				}
+				EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
+				if (session == null)
+					return;
+				
+				Graph g = session.getGraph();
+				AttributeHelper.setAttribute(g, "", AttributeHelper.id_ttestCircleSize,
+						Double.valueOf(numberModel.getNumber().doubleValue()));
 			}
 		});
-		JSpinner circleSize = new JSpinner(numberModel);
 
-		fp2.addComp(TableLayout.get3Split(ttestCircleSize, new JLabel(""), circleSize, TableLayout.PREFERRED, 3,
-				TableLayout.FILL));
+		fp2.addComp(TableLayout.get3Split(ttestCircleSize, new JLabel(""), new JSpinner(numberModel),
+				TableLayout.PREFERRED, 3, TableLayout.FILL));
 
 		addStatusText1.setOpaque(false);
 		addStatusText1.setSelected(showStatusResult);
 		addStatusText1.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				showStatusResult = addStatusText1.isSelected();
 				addStatusText2.setSelected(showStatusResult);
@@ -1091,12 +1067,6 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	public void transactionStarted(TransactionEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == findCorrButton) {
 			checkProbabilityInput(jTextFieldProb1findCorr);
@@ -1193,9 +1163,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public JComponent getScatterPlot(Graph graph) {
-		Collection<GraphElement> graphElements = (Collection) graph.getNodes();
+		Collection<GraphElement> graphElements = graph.getNodes().stream().map(n -> (GraphElement) n)
+				.collect(Collectors.toSet());
 
 		boolean plotAverage = false;
 		boolean mergeDataset = true;
@@ -2383,15 +2353,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	 * Returns col1 if maxOrMinR is -1, returns col2 if maxOrMinR is 1, returns a
 	 * color between these colors if marOrMin is between -1 and 1.
 	 * 
-	 * @param maxOrMinR
-	 *            a value between -1 and 1
-	 * @param gamma
-	 *            Instead of r, r^gamma is used for determining the color. This
-	 *            makes it possible to stay longer near col_0.
-	 * @param col1
-	 *            The returned color in case maxOrMinR is -1
-	 * @param col2
-	 *            The returned color in case maxOrMinR is 1
+	 * @param maxOrMinR a value between -1 and 1
+	 * @param gamma     Instead of r, r^gamma is used for determining the color.
+	 *                  This makes it possible to stay longer near col_0.
+	 * @param col1      The returned color in case maxOrMinR is -1
+	 * @param col2      The returned color in case maxOrMinR is 1
 	 * @return A average color depending on maxOrMinR
 	 */
 	public static Color getRcolor(float maxOrMinR, double gamma, Color col__1, Color col_0, Color col_1) {

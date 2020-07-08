@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -50,16 +50,12 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 	boolean currentOptionShowGraphs = false;
 	boolean currentOptionWaitForLayout = false;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Layout Pathway-Subgraphs";
 		else
-			return "Layout Cluster";
+			return "Layout Each Cluster";
 	}
 
 	@Override
@@ -101,11 +97,6 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 			currentOptionShowGraphs = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.extension.Extension#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
@@ -144,11 +135,7 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		// }
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
+	@Override
 	public void execute() {
 		String cluster = "Cluster";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -178,12 +165,7 @@ class MyActionListener implements ActionListener {
 	private boolean currentOptionShowGraphs;
 	private boolean currentOptionWaitForLayout;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!rad.isVisible() && rad.getAlgorithm() != null) {
 			tref.stop();
@@ -220,12 +202,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 
 	private Algorithm layoutAlgorithm;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValue()
-	 */
+	@Override
 	public int getCurrentStatusValue() {
 		return statusInt;
 	}
@@ -234,53 +211,29 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 		this.layoutAlgorithm = algorithm;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValueFine()
-	 */
+	@Override
 	public double getCurrentStatusValueFine() {
 		return statusInt;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage1()
-	 */
+	@Override
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage2()
-	 */
+	@Override
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop()
-	 */
+	@Override
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
+	@Override
 	public void run() {
-		if (checkStop())
+		if (mustStop())
 			return;
 		Graph mainGraph = null;
 		try {
@@ -288,7 +241,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 		} catch (NullPointerException npe) {
 			ErrorMsg.addErrorMessage(npe.getLocalizedMessage());
 		}
-		TreeSet<String> clusters = new TreeSet<String>();
+		Collection<String> clusters;
 		HashMap<Long, Point2D> newCoordinates = new HashMap<Long, Point2D>();
 		HashMap<Long, Vector2d> newSizes = new HashMap<Long, Vector2d>();
 		// HashMap<String, Point2D> centerForClusterGraph = new HashMap<String,
@@ -297,28 +250,21 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 			MainFrame.showMessageDialog("Error: Working-graph could not be determined", "Error");
 		} else {
 			status1 = "Set Node IDs for reference purposes...";
-			int refID = 0;
+			// int refID = 0;
 			// for (Node n : mainGraph.getNodes())
 			// n.setID(refID++);
 			String cluster4 = "cluster";
 			if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 				cluster4 = "pathway";
 			status1 = "Read " + cluster4 + " information";
-			for (Iterator<?> it = mainGraph.getNodesIterator(); it.hasNext();) {
-				if (checkStop())
-					return;
-				Node n = (Node) it.next();
-				String clusterId = NodeTools.getClusterID(n, "");
-				if (!clusterId.equals(""))
-					clusters.add(clusterId);
-			}
-
+			
 			int cnt = 0;
-
 			ArrayList<Graph> clusterGraphsToBeAnalyzed = new ArrayList<Graph>();
+			
+			clusters = GraphHelper.getClusters(mainGraph.getNodes());
 
 			for (String clusterID : clusters) {
-				if (checkStop())
+				if (mustStop())
 					break;
 				status1 = "Apply " + layoutAlgorithm.getName() + " to Subgraph (" + cluster4 + " " + clusterID + ")...";
 
@@ -347,7 +293,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 				statusInt = (int) (++cnt * 100f / clusters.size());
 			}
 
-			if (!checkStop()) {
+			if (!mustStop()) {
 				if (currentOptionShowGraphs)
 					for (final Graph clusterSubGraph : clusterGraphsToBeAnalyzed)
 						SwingUtilities.invokeLater(new Runnable() {
@@ -423,7 +369,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 	/**
 	 * @return
 	 */
-	private boolean checkStop() {
+	private boolean mustStop() {
 		if (pleaseStop) {
 			status1 = "Layout not complete: aborted";
 			status2 = "";
@@ -432,28 +378,17 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 		return pleaseStop;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pluginWaitsForUser()
-	 */
+	@Override
 	public boolean pluginWaitsForUser() {
 		return userBreak;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pleaseContinueRun()
-	 */
+	@Override
 	public void pleaseContinueRun() {
 		userBreak = false;
 	}
 
+	@Override
 	public void setCurrentStatusValue(int value) {
 		statusInt = value;
 	}

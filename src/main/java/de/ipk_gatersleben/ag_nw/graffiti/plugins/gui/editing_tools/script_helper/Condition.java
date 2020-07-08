@@ -12,8 +12,8 @@ import java.util.Set;
 import org.AttributeHelper;
 import org.ErrorMsg;
 import org.StringManipulationTools;
-import org.jdom.Attribute;
-import org.jdom.Element;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent.MyComparableDataPoint;
 

@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ComponentRegulator.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Component;
@@ -20,6 +27,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.text.JTextComponent;
 
+import org.ErrorMsg;
 import org.vanted.scaling.scalers.component.AbstractButtonScaler;
 import org.vanted.scaling.scalers.component.ComponentScaler;
 import org.vanted.scaling.scalers.component.HTMLScaler;
@@ -39,19 +47,22 @@ import org.vanted.scaling.scalers.component.JTextComponentScaler;
  * any specified icons. Those are extracted from the component tree and rescaled
  * accordingly (see {@linkplain ComponentScaler} and its subtypes).
  * 
- * @author dim8
+ * @author D. Garkov
  */
 public class ComponentRegulator {
 
 	private float factor;
 
-	/** A set holding the hash-codes of the components with modified aspect. */
+	/** A set holding the hash-codes of the components with modified aspects. */
 	private static HashSet<Integer> modified;
 
 	/** The hash code of the modifed pool/set. */
 	private static int modifiedHash = 0;
 	/** The hash code of the pool right after an overall scaling. */
 	private static int originalMomentHash;
+
+	/* No scaling should be done, before the global scaling has run. */
+	static boolean isInitialized = false;
 
 	/**
 	 * This holds all relevant component classes (i.e. their superclasses up to
@@ -63,9 +74,8 @@ public class ComponentRegulator {
 	/**
 	 * Constructs a ComponentRegulator instance for upcoming component scaling.
 	 * 
-	 * @param scaleFactor
-	 *            the working scaling factor, a ratio between current actual DPI and
-	 *            to be emulated DPI.
+	 * @param scaleFactor the working scaling factor, a ratio between current actual
+	 *                    DPI and to be emulated DPI.
 	 * 
 	 * @see {@linkplain ScalingCoordinator}
 	 * @see {@linkplain DPIHelper}
@@ -76,20 +86,18 @@ public class ComponentRegulator {
 	}
 
 	/**
-	 * Scan and scale the components specifics. This are taken from the specified
-	 * parent {@link Container} <code>container</code>.
+	 * Global system DPI scaling init! Scan and scale the components specifics. This
+	 * are taken from the specified parent {@link Container} <code>container</code>.
 	 * <p>
 	 * 
 	 * <b>Important:</b> Register any newly implemented component scalers before
 	 * calling this method! (see:
 	 * {@linkplain ComponentRegulator#registerNewScaler()}}
 	 * 
-	 * @param container,
-	 *            whose components are to be modified
+	 * @param container, application main frame/window/container
 	 * 
-	 * @throws OutOfMemoryError
-	 *             when the allocated heap memory is not enough to hold all largely
-	 *             scaled components, such as Icons.
+	 * @throws OutOfMemoryError when the allocated heap memory is not enough to hold
+	 *                          all largely scaled components, such as Icons.
 	 */
 	public void init(Container container) throws OutOfMemoryError {
 		if (container == null)
@@ -98,6 +106,7 @@ public class ComponentRegulator {
 		// ensure some extra capacity beforehand
 		System.gc();
 
+		isInitialized = true;
 		doExternalScaling(container);
 	}
 
@@ -105,12 +114,10 @@ public class ComponentRegulator {
 	 * Worker scaling method. Consider using the utility method
 	 * {@link ComponentRegulator#init(Container)} instead.
 	 * 
-	 * @param c
-	 *            container, whose components are to be modified
+	 * @param c container, whose components are to be modified
 	 * 
-	 * @throws OutOfMemoryError
-	 *             when the allocated heap memory is not enough to hold all largely
-	 *             scaled components, such as Icons.
+	 * @throws OutOfMemoryError when the allocated heap memory is not enough to hold
+	 *                          all largely scaled components, such as Icons.
 	 */
 	private void doExternalScaling(Container c) throws OutOfMemoryError {
 		Container container;
@@ -154,11 +161,36 @@ public class ComponentRegulator {
 	 * Recursively iterates the component tree and initiate scaling for any
 	 * encountered JComponents.
 	 * 
-	 * @param container
-	 *            the container to crawl
+	 * <p>
+	 * Important: Default behaviour is to first run system scaling and only then any
+	 * other proxy scalers, to change this, call
+	 * {@linkplain ComponentRegulator#override()}.
+	 * </p>
+	 * 
+	 * @param container the container to crawl
 	 */
 	public void scaleComponentsOf(Container container) {
-		for (Component c : container.getComponents()) {
+		scaleComponentsOf(container.getComponents());
+
+//		if (container instanceof Window) {
+//			Dimension size = ((Window) container).getSize();
+//			((Window) container).setSize((int) (size.getWidth() * factor), (int) (size.getHeight() * factor));
+//		}
+	}
+
+	/**
+	 * See {@linkplain ComponentRegulator#scaleComponentsOf(Container)}.
+	 * 
+	 * @param container the container to crawl
+	 */
+	public void scaleComponentsOf(Component[] components) {
+		if (!isInitialized)
+			return;
+
+		// Update the scalers with the current factor
+		scalers.values().forEach(v -> v.setScaleFactor(factor));
+
+		for (Component c : components) {
 			// delegate further extraction
 			if (c instanceof JComponent) {
 				conduct((JComponent) c);
@@ -180,45 +212,78 @@ public class ComponentRegulator {
 	 * {@link ComponentRegulator#scaleComponentsOf(Container)} doesn't check and
 	 * marks all.
 	 * 
+	 * <p>
+	 * Important: Default behaviour is to first run system scaling and only then any
+	 * other proxy scalers, to change this, call
+	 * {@linkplain ComponentRegulator#override()}.
+	 * </p>
+	 * 
 	 * @param container
-	 * @param checkScaled
-	 *            true to check components for being scaled and avoid double scaling
-	 * @param markScaled
-	 *            true to mark any scaled components as such
+	 * @param checkScaled true to check components for being scaled and avoid double
+	 *                    scaling
+	 * @param mark        true to mark any scaled components as such
 	 */
-	public void scaleComponentsOf(Container container, boolean checkScaled, boolean markScaled) {
-		if (!checkScaled && markScaled)
-			scaleComponentsOf(container);
+	public void scaleComponentsOf(Container container, boolean checkScaled, boolean mark) {
+		scaleComponentsOf(container.getComponents(), checkScaled, mark);
+	}
+
+	/**
+	 * See
+	 * {@linkplain ComponentRegulator#scaleComponentsOf(Container, boolean, boolean)}
+	 * and {@linkplain ComponentRegulator#scaleComponentsOf(Component[])}.
+	 * 
+	 * @param components
+	 * @param check      true to check components for being scaled and avoid double
+	 *                   scaling
+	 * @param mark       true to mark any scaled components as such
+	 */
+	public void scaleComponentsOf(Component[] components, boolean check, boolean mark) {
+		if (!isInitialized) // Cannot run before the application DPI Scaling, initialize with init()
+			return;
+
+		// Update the scalers with the current factor
+		scalers.values().forEach(v -> v.setScaleFactor(factor));
+
+		if (!check) // marks component in any case
+			scaleComponentsOf(components);
 		else {
-			for (Component c : container.getComponents()) {
+			for (Component c : components) {
 				// delegate further extraction
 
 				if (!(c instanceof JComponent))
 					continue;
 
-				boolean check = checkScaled ? !isScaled((JComponent) c) : true;
-				if (check) {
+				boolean scale = check ? !isScaled((JComponent) c) : true;
+				if (scale) {
 					conduct((JComponent) c);
 
-					if (markScaled)
+					if (mark)
 						addScaledComponent((JComponent) c);
 				}
 
 				// go further down recursively
 				if (c instanceof Container)
-					scaleComponentsOf((Container) c);
+					scaleComponentsOf((Container) c, check, mark);
 			}
 		}
+	}
+
+	/**
+	 * Override default behaviour to run proxy scalers before the application / init
+	 * DPI scaler.
+	 * 
+	 */
+	public static void overrideForAll() {
+		ComponentRegulator.isInitialized = true;
 	}
 
 	/**
 	 * Dynamically traffics the component to its compatible
 	 * <code>ComponentScaler</code> for scaling.
 	 * 
-	 * @param component
-	 *            the to be scaled component
+	 * @param component the to be scaled component
 	 */
-	private static void conduct(JComponent component) {
+	private void conduct(JComponent component) {
 		ComponentScaler scaler;
 		for (Entry<Class<?>, ComponentScaler> entry : scalers.entrySet()) {
 			if (matches(component, entry.getKey())) {
@@ -243,9 +308,9 @@ public class ComponentRegulator {
 	 * 
 	 * @param component
 	 * 
-	 * @see HTMLSupport
+	 * @see HTMLScaleSupport
 	 */
-	public static void scaleHTML(JComponent component) {
+	public static void scaleHTMLComponent(JComponent component) {
 		for (Entry<Class<?>, ComponentScaler> entry : scalers.entrySet()) {
 			if (matches(component, entry.getKey())) {
 				// through reflection
@@ -258,7 +323,7 @@ public class ComponentRegulator {
 					htmlModifier.invoke(scaler, component);
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					e.printStackTrace();
+					ErrorMsg.addErrorMessage(e);
 				}
 
 				break;
@@ -272,10 +337,8 @@ public class ComponentRegulator {
 	 * check.
 	 * <p>
 	 * 
-	 * @param component
-	 *            the component being tested
-	 * @param clazz
-	 *            the class that may be a superclass of component
+	 * @param component the component being tested
+	 * @param clazz     the class that may be a superclass of component
 	 */
 	private static boolean matches(JComponent component, Class<?> clazz) {
 		return (clazz.isInstance(component));
@@ -299,8 +362,7 @@ public class ComponentRegulator {
 	/**
 	 * Add the component to the set of already scaled components.
 	 * 
-	 * @param component
-	 *            to be stored component
+	 * @param component to be stored component
 	 */
 	public static void addScaledComponent(JComponent component) {
 		// Autoboxing comes into play
@@ -317,11 +379,9 @@ public class ComponentRegulator {
 	 * between the new and the already provided ones. In other words, the more
 	 * generic the type, further back in the list should be placed.
 	 * 
-	 * @param superclass
-	 *            the super class, or possibly even direct class for overriding
-	 *            purposes.
-	 * @param scaler
-	 *            the newly implemented ComponentScaler
+	 * @param superclass the super class, or possibly even direct class for
+	 *                   overriding purposes.
+	 * @param scaler     the newly implemented ComponentScaler
 	 */
 	public static void registerNewScaler(Class<?> superclass, ComponentScaler scaler) {
 		if (scalers.containsKey(superclass))
@@ -342,8 +402,7 @@ public class ComponentRegulator {
 	 * A rough measure to determine whether <code>component</code> had one of his
 	 * scaling specifics - Font, Icon, Insets; scaled.
 	 * 
-	 * @param component
-	 *            to be checked at runtime
+	 * @param component to be checked at runtime
 	 * 
 	 * @return true if the component has been scaled
 	 */
@@ -360,7 +419,7 @@ public class ComponentRegulator {
 	public void clearModifiedPool() {
 		if (modified != null) {
 			modifiedHash = modified.hashCode();
-			modified.clear();
+			modified = null;
 		}
 	}
 

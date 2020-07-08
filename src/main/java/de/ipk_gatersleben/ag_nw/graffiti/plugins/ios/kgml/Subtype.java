@@ -8,7 +8,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml;
 
 import java.util.Collection;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.EntryType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.Id;

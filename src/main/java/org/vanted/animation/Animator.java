@@ -33,7 +33,6 @@ public class Animator {
 	 */
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	private boolean isInTransaction;
-	private boolean isStopRequest;
 
 	/**
 	 * Creates an animator will perform a single loop forever.

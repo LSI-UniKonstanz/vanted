@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ScalingSlider.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Container;
@@ -30,14 +37,11 @@ import org.vanted.scaling.resources.ImmutableSlider;
  * UIdefaults with the factor of 2 at most. On the contrary, one could increase
  * with a factor of 100. This could be overwritten though.
  * 
- * @author dim8
+ * @author D. Garkov
  */
 public class ScalingSlider extends ImmutableSlider implements ChangeListener, FocusListener, Serializable {
 
 	private static final long serialVersionUID = 939020663044124704L;
-
-	private static final int MAJOR_TICK_SPACING = 25;
-	private static final int MINOR_TICK_SPACING = 10;
 
 	private static int STANDARD_DPI;
 	static float MIN_DPI;
@@ -62,14 +66,15 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 	public static int max = 100;
 	private int extent = 0;
 
-	public static int median = (min + max) / 2;
+	public static int center = (min + max) / 2;
+
+	private static DecimalFormat ScalerDecimalFormatter = new DecimalFormat("##.##");
 
 	/**
 	 * Slider to allow live modifications to the scaling of components. It just has
 	 * to be initialized e.g. in Preferences window.
 	 * 
-	 * @param mainContainer
-	 *            the applications main Container/Window/Frame
+	 * @param mainContainer the applications main Container/Window/Frame
 	 */
 	public ScalingSlider(Container mainContainer) {
 		this.main = mainContainer;
@@ -82,21 +87,45 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 	/**
 	 * Specify your own Slider model. Factors, however, are dependent on values.
 	 * 
-	 * @param value
-	 *            initial Slider's value
-	 * @param extent
-	 *            Slider's extent
-	 * @param min
-	 *            minimal Slider's value
-	 * @param max
-	 *            maximal Slider's value
-	 * @param mainContainer
-	 *            the applications main Container/Window/Frame
+	 * @param value         initial Slider's value
+	 * @param extent        Slider's extent, see {@link JSlider#getExtent()}
+	 * @param min           minimal Slider's value
+	 * @param max           maximal Slider's value
+	 * @param mainContainer the applications main Container/Window/Frame
 	 */
 	public ScalingSlider(int value, int extent, int min, int max, Container mainContainer) {
 		this.main = mainContainer;
 
 		scalingSlider(value, extent, min, max);
+	}
+
+	/**
+	 * Specify your own Slider model. Factors, however, are dependent on values.
+	 * 
+	 * @param extent        Slider's extent, see {@link JSlider#getExtent()}
+	 * @param min           minimal Slider's value
+	 * @param max           maximal Slider's value
+	 * @param mainContainer the applications main Container/Window/Frame
+	 */
+	public ScalingSlider(int extent, int min, int max, Container mainContainer) {
+		this.main = mainContainer;
+		int prefsValue = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
+
+		scalingSlider(prefsValue, extent, min, max);
+	}
+
+	/**
+	 * Specify your own Slider model. Factors, however, are dependent on values.
+	 * 
+	 * @param min           minimal Slider's value
+	 * @param max           maximal Slider's value
+	 * @param mainContainer the applications main Container/Window/Frame
+	 */
+	public ScalingSlider(int min, int max, Container mainContainer) {
+		this.main = mainContainer;
+		int prefsValue = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
+
+		scalingSlider(prefsValue, extent, min, max);
 	}
 
 	/**
@@ -113,7 +142,7 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 		ScalingSlider.min = min;
 		ScalingSlider.max = max;
 
-		median = (min + max) / 2;
+		center = (max - min) / 2;
 
 		DefaultBoundedRangeModel rModel = new DefaultBoundedRangeModel(value, extent, min, max);
 		this.setModel(rModel);
@@ -131,18 +160,17 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 	 * This determines what our standard DPI is.
 	 * <p>
 	 * 
-	 * Basically, Macintosh uses 72 DPI - pretty neat, since dots and pixels to inch
-	 * are then literally the same (WYSIWYG principle). However, Windows is another
-	 * story, to fix some of the 72-DPI-problems, it introduced a 33% bigger size -
-	 * 96 DPI. As for Linux, we could assume the Gnome default 96 DPI, because
-	 * otherwise it's just a mess. And then come all the custom resolution size
-	 * displays, e.g. through HDMI, so we take as a standard the default
-	 * main-monitor DPI resolution.
+	 * Basically, Macintosh uses 72 DPI - dots and pixels to inch are then literally
+	 * the same (WYSIWYG). However, Windows is another story, to fix some of the
+	 * 72-DPI-problems, it introduced a 33% bigger size - 96 DPI. As for Linux, we
+	 * could only assume the Gnome default to be 96 DPI, because otherwise it's just
+	 * a mess. And then for all the custom resolution displays, e.g. through HDMI,
+	 * thus we take as a standard the default main-monitor DPI resolution.
 	 */
 	public static int getStandard() {
 		STANDARD_DPI = Toolkit.getDefaultToolkit().getScreenResolution();
 
-		MIN_DPI = STANDARD_DPI / (2f * median);
+		MIN_DPI = STANDARD_DPI / (2f * center);
 
 		return STANDARD_DPI;
 	}
@@ -159,11 +187,9 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 	/**
 	 * Set the slider value.
 	 * 
-	 * @param value
-	 *            the value to set
+	 * @param value the value to set
 	 * @return true if within range and successfully set
-	 * @throws IllegalStateException
-	 *             if called without active instance
+	 * @throws IllegalStateException if called without active instance
 	 */
 	public static boolean setSliderValue(int value) throws IllegalStateException {
 		if (!(value >= min && value <= max))
@@ -213,16 +239,19 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 	 */
 	private void setSpecifics() {
 		/* ticks */
-		this.setMajorTickSpacing(MAJOR_TICK_SPACING);
-		this.setMinorTickSpacing(MINOR_TICK_SPACING);
+		this.setMajorTickSpacing(center / 2);
+		this.setMinorTickSpacing(center / 4);
 		this.setPaintTicks(true);
 		/* orientation */
 		this.setOrientation(JSlider.HORIZONTAL);
-		/* set up labels */
+		/* truncate float */
+		ScalerDecimalFormatter.setRoundingMode(RoundingMode.UP);
+		/* set up DPI labels */
 		insertLabels();
 		/* set initial TooltipText */
 		int v = this.getValue();
-		this.setToolTipText(String.valueOf(v) + " (DPI: " + Math.round(DPIHelper.processEmulatedDPIValue(v)) + ")");
+		this.setToolTipText(String.valueOf(v) + " (DPI: "
+				+ ScalerDecimalFormatter.format(DPIHelper.processEmulatedDPIValue(v)) + ")");
 
 		// When no startUp scaling has been done, state automaton is null
 		if (AutomatonBean.getInstance() == null)
@@ -234,21 +263,14 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 	 */
 	private void insertLabels() {
 		Hashtable<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
-		/* truncate float */
-		DecimalFormat df = new DecimalFormat("##.##");
-		df.setRoundingMode(RoundingMode.UP);
 		/* add elements */
-		float factor = 1f / max;
-		for (int i = min; i <= max; i += MAJOR_TICK_SPACING) {
-			float label = STANDARD_DPI * factor;
+		for (int i = min; i <= max; i += getMajorTickSpacing()) {
+			float dpi = DPIHelper.processEmulatedDPIValue(i);
 
-			if (!Float.toString(label).endsWith(".0")) // show as float
-				labels.put(i + extent, new JLabel(df.format((label)) + " DPI"));
-			else // otherwise as int
-				labels.put(i + extent, new JLabel(Integer.toString((int) (label)) + " DPI"));
-
-			// update factor with next value
-			factor = ((float) (i + MAJOR_TICK_SPACING)) / median;
+			if (!Float.toString(dpi).endsWith(".0")) // show as float
+				labels.put(i + extent, new JLabel(ScalerDecimalFormatter.format((dpi)) + " DPI"));
+			else // otherwise int
+				labels.put(i + extent, new JLabel(Integer.toString((int) (dpi)) + " DPI"));
 		}
 
 		setLabelTable(labels);
@@ -295,8 +317,7 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 	 * Calling it twice consecutively, is as going back and forth with the slider
 	 * itself and thus giving a factor of 1.0 and no change at all.
 	 * 
-	 * @param sliderValue
-	 *            the Slider's selected DPI value
+	 * @param sliderValue the Slider's selected DPI value
 	 * @return the adjusted DPI factor ready to be pass onto the ScalingCoordinator
 	 */
 	private float computeCoordinatorFactor(int sliderValue) {
@@ -306,14 +327,14 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 			dpif /= prevFactor;
 		else {
 			int prefsSliderValue = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
-			float prefsPrevFactor = (prefsSliderValue == (float) min) ? (min + 0.5f) / median
+			float prefsPrevFactor = (prefsSliderValue == 0) ? 0.5f / 50f
 					/* 1/2 for lowest mark, since 0 neutral */
-					: prefsSliderValue / (float) median;
+					: prefsSliderValue / 50f;
 			dpif /= prefsPrevFactor;
 		}
 
 		// update next previous DPI factor
-		prevFactor = (sliderValue == (float) min) ? (min + 0.5f) / median : (float) sliderValue / median;
+		prevFactor = (sliderValue == 0) ? 0.5f / 50f : sliderValue / 50f;
 
 		return dpif;
 	}
@@ -354,7 +375,7 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 
 	@Override
 	public void focusGained(FocusEvent e) {
-		/* do nothing */}
+		/* does nothing */}
 
 	@Override
 	public void focusLost(FocusEvent e) {

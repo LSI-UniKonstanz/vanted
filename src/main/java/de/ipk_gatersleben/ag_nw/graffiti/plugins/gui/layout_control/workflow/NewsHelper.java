@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
@@ -41,11 +40,11 @@ import org.SystemInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
+import com.rometools.rome.feed.synd.SyndContent;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
 
 import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
@@ -318,6 +317,9 @@ public class NewsHelper implements HelperClass {
 		}
 	}
 
+	/**
+	 * @vanted.revision 2.7.0
+	 */
 	public static void refreshNews(final RSSFeedManager rfm, final Runnable finishTask,
 			final JButton optRefreshNewsButton) {
 
@@ -355,53 +357,49 @@ public class NewsHelper implements HelperClass {
 								ErrorMsg.addErrorMessage(e);
 								continue;
 							}
-							SyndFeedInput input = new SyndFeedInput();
 							try {
-								SyndFeed feed = input.build(new XmlReader(feedUrl));
-								for (Object o : feed.getEntries()) {
-									if (o instanceof SyndEntry) {
-										SyndEntry se = (SyndEntry) o;
-										Date d = se.getPublishedDate();
-										if (d == null)
-											d = se.getUpdatedDate();
-
-										JLabel c1;
-										if (d != null) {
-											String lbl = df.format(d);
-											c1 = new JLabel("<html><small>" + lbl);
-											if (templatest == null)
+								SyndFeed feed = new SyndFeedInput().build(new XmlReader(feedUrl));
+								for (SyndEntry se : feed.getEntries()) {
+									Date d = se.getPublishedDate();
+									if (d == null)
+										d = se.getUpdatedDate();
+									
+									JLabel c1;
+									if (d != null) {
+										String lbl = df.format(d);
+										c1 = new JLabel("<html><small>" + lbl);
+										if (templatest == null)
+											templatest = d;
+										else {
+											if (d.after(templatest))
 												templatest = d;
-											else {
-												if (d.after(templatest))
-													templatest = d;
-											}
-										} else
-											c1 = new JLabel("");
+										}
+									} else
+										c1 = new JLabel("");
 
-										String text = getContentText(se.getContents(), removeHTML.get(i));
-										ArrayList<JComponent> buttons = new ArrayList<JComponent>();
+									String text = getContentText(se, removeHTML.get(i));
+									ArrayList<JComponent> buttons = new ArrayList<JComponent>();
 
-										text = constructButtons(text, buttons, optRefreshNewsButton);
+									text = constructButtons(text, buttons, optRefreshNewsButton);
 
-										JLabel c2 = new JLabelHTMLlink(
-												"<html><small><b>" + checkTextWidth(rfm, se.getTitle()) + "</b><br>"
-														+ checkTextWidth(rfm, text),
-												se.getLink(), "Click to see full text in browser");
+									JLabel c2 = new JLabelHTMLlink(
+											"<html><small><b>" + checkTextWidth(rfm, se.getTitle()) + "</b><br>"
+													+ checkTextWidth(rfm, text),
+											se.getLink(), "Click to see full text in browser");
 
-										JComponent buttonRow = TableLayout.getMultiSplit(buttons,
-												TableLayoutConstants.PREFERRED, 4, 0, 8, 2);
-										c1 = getCustomizedLabel(c1);
-										c2 = getCustomizedLabel(c2);
-										GuiRow gr;
-										if (buttons.size() == 0)
-											gr = new GuiRow(c1, c2);
-										else
-											gr = new GuiRow(c1, TableLayout.getSplitVertical(c2, buttonRow,
-													TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
-										row2date.put(gr, d);
-										newsItems.add(gr);
-										news++;
-									}
+									JComponent buttonRow = TableLayout.getMultiSplit(buttons,
+											TableLayoutConstants.PREFERRED, 4, 0, 8, 2);
+									c1 = getCustomizedLabel(c1);
+									c2 = getCustomizedLabel(c2);
+									GuiRow gr;
+									if (buttons.size() == 0)
+										gr = new GuiRow(c1, c2);
+									else
+										gr = new GuiRow(c1, TableLayout.getSplitVertical(c2, buttonRow,
+												TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
+									row2date.put(gr, d);
+									newsItems.add(gr);
+									news++;
 								}
 							} catch (Exception e) {
 								JLabel c1 = new JLabel("<html><small>No connection:");
@@ -636,19 +634,17 @@ public class NewsHelper implements HelperClass {
 			}
 		};
 
-		BackgroundTaskHelper.issueSimpleTask(null, "Init...", workTask, finishSwingTask, status);
+		BackgroundTaskHelper.issueSimpleTask("Fetch add-ons", "Init...", workTask, finishSwingTask, status);
 	}
 
-	protected static String getContentText(List<?> contents, boolean removeHTML) {
+	protected static String getContentText(SyndEntry se, boolean removeHTML) {
 		StringBuilder res = new StringBuilder();
-		for (Object o : contents) {
-			if (o instanceof SyndContent) {
-				SyndContent sc = (SyndContent) o;
-				String s = sc.getValue();
-				if (removeHTML)
-					s = StringManipulationTools.removeHTMLtags(s);
-				res.append(s + "...");
-			}
+		SyndContent sc;
+		if ((sc = se.getDescription()) != null) {
+			String s = sc.getValue();
+			if (removeHTML)
+				s = StringManipulationTools.removeHTMLtags(s);
+			res.append(s);
 		}
 		return res.toString();
 	}
