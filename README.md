@@ -12,7 +12,7 @@ It allows users to create and edit networks, as well as mapping experimental dat
 
 The functionality of VANTED can be extended by installing one or more of the provided Addons using the built-in Addon Manager. For an overview see: [here](http://vanted.org/add-ons).
 
-New Addons can be developed from scratch, using built-in [API](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/javadoc/)s for manipulation of networks and data. A simple step-by-step guide for developing custom Addons can be found [here](https://bitbucket.org/vanted-dev/vanted/wiki/Home).
+New Addons can be developed from scratch, using built-in [API](https://kim25.wwwdns.kim.uni-konstanz.de/vanted/javadoc/)s for manipulation of networks and data. A simple step-by-step guide for developing custom Addons can be found [here](https://github.com/LSI-UniKonstanz/vanted/wiki).
 
 The development of VANTED is an ongoing process and we try to fix bugs and implement new features as soon as possible. Updates will be delivered on a regular basis.
 
@@ -23,18 +23,22 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
-### VANTED v2.7.0 release (??/??/2019) ###
+### VANTED v2.7.0 release (08/07/2020) ###
     Minimum Java 8 compatibility
-    Clustering bugfixes
-    Add-on Manager and Pane revamped
-    DPI Scaling adjusted
+    Bugfixes: Clustering
+    RIMAS server migration
+    HTTPS server connections
+    Resolves HTTP-HTTPS redirecting
+    BioModels: Handles parsing exception in queries
+    Add-on Manager and Add-on Pane improvements
     Undo/Redo additions
-    Usability improvements, such as
-      First graph window fits in pane
-      Undo limit increased to 20 operations
-    Standard format is GML
+    Usability improvements:
+	      Menu updates
+		    First graph window fits in pane
+		    Undo limit increases to 20 operations
+    Standard format becomes GML
     Internal API improvements
-    Replaced non-API Sun references
+    Replaces non-API Sun references
 
 ### VANTED v2.6.5 release (29/03/2018) ###
 
@@ -142,7 +146,8 @@ You can download and install this version [here](http://kim25.wwwdns.kim.uni-kon
 Please excuse us for the inconvenience.
 
 Users who went through the automatic update to get 2.5.1 will see an error message when trying to load SBML documents. This error message will not appear for users who did a fresh install of VANTED 2.5.1.
-VANTED v2.5.0 release (01/09/2015)
+
+### VANTED v2.5.0 release (01/09/2015) ###
 Changes are listed below:
 
     Drawing speed improvement when loading and exploring large networks
@@ -152,10 +157,7 @@ Changes are listed below:
     Better support for program preferences
     Tons of bug fixes
 
-We removed the download link as this version had a bug in the loading code. Please download the latest version.
-
-Previous releases
-VANTED v2.2.0 release (23/12/2014)
+### VANTED v2.2.0 release (23/12/2014) ###
 Changes are listed below:
 
     Updated support for new KEGG REST API
