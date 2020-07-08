@@ -1,8 +1,11 @@
-The ant script javadoc.xml is used for generating Vanted documentation. To run the script use
+The ant script ./build.xml is used for generating Vanted documentation.
+
+adjust the properties related to title, java version and java API link base in build.xml.
+
+Then to run the script use
 
 	ant
 
-The generated output should later be uploaded to the webserver in the respective directory. 
-To edit any meta-information, see the properties of the scipt. Optionally, to introduce new
-tags, add a new tag specification on a new line in the vanted.tags file. For attributes' reference:
-https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javadoc.html#tag
+The generated output should later be uploaded to the webserver in the respective directory.
+Optionally, to introduce new tags, add a new tag specification on a new line in the vanted.tags file.
+For attributes' reference: https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html#tag
