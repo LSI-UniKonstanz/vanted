@@ -33,9 +33,9 @@ If you have questions or suggestions regarding VANTED, please contact us at:
     Add-on Manager and Add-on Pane improvements
     Undo/Redo additions
     Usability improvements:
-	Menu updates
-	First graph window fits in pane
-	Undo limit increases to 20 operations
+        Menu updates
+        First graph window fits in pane
+        Undo limit increases to 20 operations
     Standard format becomes GML
     Internal API improvements
     Replaces non-API Sun references
