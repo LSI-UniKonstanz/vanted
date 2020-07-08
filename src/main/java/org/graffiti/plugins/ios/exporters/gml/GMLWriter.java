@@ -139,18 +139,12 @@ public class GMLWriter implements OutputSerializer, SupportsWriterOutput {
 
 	// ~ Methods ================================================================
 
-	/**
-	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
-	 */
+	@Override
 	public String[] getExtensions() {
 		return new String[] { ".gml" };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-	 */
+	@Override
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "GML" };
 	}
@@ -184,9 +178,7 @@ public class GMLWriter implements OutputSerializer, SupportsWriterOutput {
 		return true;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.io.OutputSerializer#write(OutputStream, Graph)
-	 */
+	@Override
 	public void write(OutputStream o, Graph g) throws IOException {
 		PrintStream p;
 		try {

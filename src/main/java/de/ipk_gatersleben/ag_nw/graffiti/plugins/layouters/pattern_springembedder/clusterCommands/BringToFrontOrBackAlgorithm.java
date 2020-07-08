@@ -30,11 +30,6 @@ public class BringToFrontOrBackAlgorithm extends AbstractAlgorithm {
 		bringToFront = !toBack;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			return bringToFront ? "Move Elements to Front" : "Move Elements to Back";
@@ -75,11 +70,6 @@ public class BringToFrontOrBackAlgorithm extends AbstractAlgorithm {
 			throw new PreconditionException("Graph contains no elements!");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		int smallestViewID = Integer.MAX_VALUE;
 		int greatestViewID = Integer.MIN_VALUE;
