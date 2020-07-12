@@ -287,12 +287,14 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			if (line.toLowerCase().startsWith("+")) {
 				String parseline = line.substring(1);
 				if (parseline.toLowerCase().startsWith(CORESTRING)) {
-
 					parseline = parseline.substring(CORESTRING.length() + 1).trim();
+					
+					String md5local = mapJarMd5PairsInstalledCore.get(parseline);
+					String md5remote = mapMd5FromUpdateLocation.get(parseline);
+					System.out.println("Checking " + parseline + ": " + md5local + "(local); " + md5remote + "(remote)");
 					// compare both md5 sums (remote and local
-					if (mapJarMd5PairsInstalledCore.get(parseline) == null // new remote jar
-							|| !mapJarMd5PairsInstalledCore.get(parseline)
-									.equals(mapMd5FromUpdateLocation.get(parseline))) {
+					if (md5local == null // new remote jar
+							|| !md5local.equals(md5remote)) {
 						listAddCoreJarRelativePath.add(parseline);
 						continue;
 					}
@@ -302,7 +304,8 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 
 					String md5local = mapJarMd5PairsInstalledLibs.get(parseline);
 					String md5remote = mapMd5FromUpdateLocation.get(parseline);
-					if (mapJarMd5PairsInstalledLibs.get(parseline) == null // new remote jar
+					System.out.println("Checking " + parseline + ": " + md5local + "(local); " + md5remote + "(remote)");
+					if (md5local == null // new remote jar
 							|| !md5local.equals(md5remote)) {
 						listAddLibsJarRelativePaths.add(parseline);
 						continue;
