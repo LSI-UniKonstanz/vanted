@@ -1,5 +1,10 @@
 <h3>Changelog</h3>
 
+<h4>VANTED v2.7.1 release (13/07/2020)</h4>
+<ul>
+<li>Resolve constant updating</li>
+</ul>
+
 <h4>VANTED v2.7.0 release (08/07/2020)</h4>
 <ul>
 <li>Minimum Java 8 compatibility</li>
