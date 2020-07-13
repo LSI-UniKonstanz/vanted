@@ -201,6 +201,10 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 
 		// get a list of all paths to the jars in the classpath and their md5
 		List<Pair<String, String>> jarMd5Pairs = CalcClassPathJarsMd5.getJarMd5Pairs();
+		if (jarMd5Pairs == null) {
+			System.out.println("Update check omitted in developement");
+			return;
+		}
 
 		Map<String, String> mapMd5FromUpdateLocation = getMd5FromUpdateLocation(URL_UPDATEMD5_FILESTRING);
 		// now sort them into core and lib jars

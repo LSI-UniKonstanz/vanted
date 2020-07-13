@@ -1,20 +1,18 @@
 package org.vanted.updater;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.ErrorMsg;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.graffiti.util.Pair;
 
 /**
@@ -36,43 +34,28 @@ public class CalcClassPathJarsMd5 {
 	 * 
 	 * @return a list with pairs of jar paths and MD5s.
 	 * 
-	 * @vanted.revision 2.7.1 Fix regression w.r.t. ClassLoder
-	 * <s>2.7.0 Update File API</s>
+	 * @vanted.revision 2.7.1 Fix regression w.r.t. ClassLoder <s>2.7.0 Update File
+	 *                  API</s>
 	 */
 	public static List<Pair<String, String>> getJarMd5Pairs() {
 		List<Pair<String, String>> listJarMd5Pairs = new ArrayList<Pair<String, String>>();
 		try {
 			MessageDigest.getInstance("MD5");
-			File libs;
-			File core;
-//			File libs = new File("C:" + File.separator + "Program Files" + File.separator + "Vanted" + File.separator
-//					+ "core-libs" + File.separator);
-//			File core = new File("C:" + File.separator + "Program Files" + File.separator + "Vanted"
-//					+ File.separator + "vanted-core" + File.separator);
-			// Execution path as provided by the bootstrap
-			URL execPath = Thread.currentThread().getContextClassLoader().getResources("").nextElement();
-			libs = new File(execPath.toURI().toString() + "/core-libs/");
-			core = new File(execPath.toURI().toString() + "/vanted-core/");
-			for (Object obj : ArrayUtils.addAll(libs.listFiles(), core.listFiles())) {
-			File jar = (File) obj;
-				String md5 = DigestUtils.md5Hex(Files.readAllBytes(Paths.get(jar.toURI())));
-				listJarMd5Pairs.add(new Pair<String, String>(jar.toURI().toString(), md5));
+			URLClassLoader bootstrapLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+			for (URL jarurl : bootstrapLoader.getURLs()) {
+				String md5 = DigestUtils.md5Hex(Files.readAllBytes(Paths.get(jarurl.toURI())));
+				listJarMd5Pairs.add(new Pair<String, String>(jarurl.toURI().toString(), md5));
 			}
 		} catch (NoSuchAlgorithmException e) {
 			ErrorMsg.addErrorMessage(e);
 		} catch (URISyntaxException | IOException e) {
 			e.printStackTrace();
+		} catch (ClassCastException e) {
+			// During development there is no bootstrap, hence no libraries, core can be
+			// loaded, so do not check for updates
+			listJarMd5Pairs = null;
 		}
 
 		return listJarMd5Pairs;
-	}
-
-	/**
-	 * 
-	 * @return the paths of the JARs in the classpath as strings
-	 * @since 2.7.0
-	 */
-	public static String[] getClasspathEntries() {
-		return System.getProperty("java.class.path").split(System.getProperty("path.separator"));
 	}
 }
