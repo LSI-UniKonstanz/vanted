@@ -1,5 +1,6 @@
 package org.vanted.updater;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import org.ErrorMsg;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.graffiti.util.Pair;
 
 /**
@@ -41,13 +43,18 @@ public class CalcClassPathJarsMd5 {
 		List<Pair<String, String>> listJarMd5Pairs = new ArrayList<Pair<String, String>>();
 		try {
 			MessageDigest.getInstance("MD5");
-//			File dirLibs = new File("C:" + File.separator + "Program Files" + File.separator + "Vanted" + File.separator
+			File libs;
+			File core;
+//			File libs = new File("C:" + File.separator + "Program Files" + File.separator + "Vanted" + File.separator
 //					+ "core-libs" + File.separator);
-//			File coreLibs = new File("C:" + File.separator + "Program Files" + File.separator + "Vanted"
+//			File core = new File("C:" + File.separator + "Program Files" + File.separator + "Vanted"
 //					+ File.separator + "vanted-core" + File.separator);
-//			for (Object obj : ArrayUtils.addAll(dirLibs.listFiles(), coreLibs.listFiles())) {
-//				File jar = (File) obj;
-			for (URL jar : Collections.list(Thread.currentThread().getContextClassLoader().getResources(""))) {
+			// Execution path as provided by the bootstrap
+			URL execPath = Thread.currentThread().getContextClassLoader().getResources("").nextElement();
+			libs = new File(execPath.toURI().toString() + "/core-libs/");
+			core = new File(execPath.toURI().toString() + "/vanted-core/");
+			for (Object obj : ArrayUtils.addAll(libs.listFiles(), core.listFiles())) {
+			File jar = (File) obj;
 				String md5 = DigestUtils.md5Hex(Files.readAllBytes(Paths.get(jar.toURI())));
 				listJarMd5Pairs.add(new Pair<String, String>(jar.toURI().toString(), md5));
 			}
