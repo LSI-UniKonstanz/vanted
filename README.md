@@ -23,6 +23,9 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### VANTED v2.7.1 release (13/07/2020) ###
+    Resolve constant updating
+
 ### VANTED v2.7.0 release (08/07/2020) ###
     Minimum Java 8 compatibility
     Bugfixes: Clustering
