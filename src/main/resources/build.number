@@ -2,5 +2,5 @@
 #Mon, 13 Jul 2020 11:34:08 +0200
 build.number=10
 build.date=20200713
-vanted.version.number=2.7.1
-vanted.min.compatibility=2.7.0
+vanted.version.number=2.7.2
+vanted.min.compatibility=2.5.0

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="vanted javadoc" default="beautify">
 
-	<property name="title" value="Vanted 2.7.1"/>
+	<property name="title" value="Vanted 2.7.2"/>
 	<property name="java.compatibility" value="1.8"/>
 	<property name="java.api" value="https://docs.oracle.com/javase/8/docs/api/"/>
 
