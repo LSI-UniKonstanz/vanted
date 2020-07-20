@@ -295,7 +295,6 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 					
 					String md5local = mapJarMd5PairsInstalledCore.get(parseline);
 					String md5remote = mapMd5FromUpdateLocation.get(parseline);
-					System.out.println("Checking " + parseline + ": " + md5local + "(local); " + md5remote + "(remote)");
 					// compare both md5 sums (remote and local
 					if (md5local == null // new remote jar
 							|| !md5local.equals(md5remote)) {
@@ -308,7 +307,6 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 
 					String md5local = mapJarMd5PairsInstalledLibs.get(parseline);
 					String md5remote = mapMd5FromUpdateLocation.get(parseline);
-					System.out.println("Checking " + parseline + ": " + md5local + "(local); " + md5remote + "(remote)");
 					if (md5local == null // new remote jar
 							|| !md5local.equals(md5remote)) {
 						listAddLibsJarRelativePaths.add(parseline);
