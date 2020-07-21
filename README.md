@@ -23,7 +23,7 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
-### VANTED v2.7.2 release (20/07/2020)###
+### VANTED v2.7.2 release (20/07/2020) ###
     Resolve OS and compatibility issue
 
 ### VANTED v2.7.1 release (13/07/2020) ###
