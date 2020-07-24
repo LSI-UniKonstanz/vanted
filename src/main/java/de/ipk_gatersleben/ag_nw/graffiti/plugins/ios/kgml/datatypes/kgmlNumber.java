@@ -21,16 +21,24 @@ public class kgmlNumber {
 		this.value = value;
 	}
 
+	/**
+	 * Parses a string to a kgml number.
+	 * @param s string number
+	 * @return Null, if the string cannot be parsed to an integer.
+	 * @vanted.revision 2.7.3
+	 */
 	public static kgmlNumber getNumber(String s) {
+		Thread.dumpStack();
 		try {
-			return new kgmlNumber(Integer.parseInt(s));
+			if (s != null && s.matches("[+-]?\\d+"))
+				return new kgmlNumber(Integer.parseInt(s));
 		} catch (NumberFormatException nfe) {
 			System.out.println("Number format exception: " + s);
-			return null;
 		} catch (Exception e) {
-			System.out.println("NN: " + s);
-			return null;
+			System.out.println("Exception at kgmlNumber.getNumber(): " + s);
 		}
+		
+		return null;
 	}
 
 	@Override
