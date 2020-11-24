@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE plugin
+        PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN"
+        "http://www.graffiti.org/dtd/1.0/plugin.dtd">
+
+<plugin>
+    <author>Jannick Löscher, René Groß, Theodor Gutschlag, Tobias Franz, Jonas Olenburger, Gordian Schönherr, Benjamin
+        Moser
+    </author>
+    <description>Graph layouting using a multilevel strategy.</description>
+    <plugindesc>
+        <name>MLF Add-On</name>
+        <main>org.vanted.addons.multilevelframework.MultilevelFrameworkAddon</main>
+        <version>0.1</version>
+        <compatibility>2.6.5</compatibility>
+        <available></available>
+    </plugindesc>
+</plugin>
