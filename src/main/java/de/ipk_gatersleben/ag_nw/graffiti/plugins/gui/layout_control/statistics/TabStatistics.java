@@ -58,12 +58,10 @@ import org.FolderPanel;
 import org.JLabelJavaHelpLink;
 import org.JMButton;
 import org.SystemInfo;
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.DistributionFactory;
-import org.apache.commons.math.distribution.NormalDistribution;
-import org.apache.commons.math.distribution.TDistribution;
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
-import org.apache.commons.math.stat.inference.TTestImpl;
+import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.distribution.TDistribution;
+import org.apache.commons.math3.exception.MathRuntimeException;
+import org.apache.commons.math3.stat.inference.TTest;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.editor.GravistoService;
@@ -106,7 +104,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * @author Christian Klukas
- * @version $Revision$
+ * @vanted.revision 2.8 Update Apache Commons Math3 references.
  */
 public class TabStatistics extends InspectorTab implements ActionListener, ContainsTabbedPane {
 	private static final long serialVersionUID = 1L;
@@ -1296,7 +1294,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		ArrayList<Object> params = new ArrayList<>();
 
 		params.add("Reference Dataset:");
-		final JComboBox jc = new JComboBox(conditions.toArray());
+		final JComboBox<String> jc = new JComboBox(conditions.toArray());
 		params.add(jc);
 		params.add("<html><br>Compare to:");
 		params.add(new JLabel());
@@ -1455,7 +1453,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// useApache,
 		// DescriptiveStatistics stat = DescriptiveStatistics.newInstance();
 		Boolean res1;
-		TTestImpl ttest = new TTestImpl();
+		TTest ttest = new TTest();
 		double[] xd = new double[X.length];
 		int i = 0;
 		for (Double v : X)
@@ -1501,7 +1499,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					+ (res1 != null && res1 ? "YES" : "NO") + " : Sample " + sampleIdx + "</b>");
 		} catch (IllegalArgumentException e) {
 			// empty
-		} catch (MathException e) {
+		} catch (MathRuntimeException e) {
 			// empty
 		}
 		// if (useApache)
@@ -1515,8 +1513,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			StringBuilder statusResult, int sampleIdx) {
 		Boolean res1, res2;
 
-		DescriptiveStatistics.newInstance();
-		TTestImpl ttest = new TTestImpl();
+//		DescriptiveStatistics ds = new DescriptiveStatistics();
+		TTest ttest = new TTest();
 		double[] xd = new double[X.length];
 		int i = 0;
 		for (Double v : X)
@@ -1567,7 +1565,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					+ " : Sample " + sampleIdx + "</b>");
 		} catch (IllegalArgumentException e) {
 			// empty
-		} catch (MathException e) {
+		} catch (MathRuntimeException e) {
 			// empty
 		}
 		if (useApache)
@@ -1576,8 +1574,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			return res2;
 	}
 
-	private static DistributionFactory factory = DistributionFactory.newInstance();
-	private static NormalDistribution normalDistribution = factory.createNormalDistribution();
+	private static NormalDistribution normalDistribution = new NormalDistribution();
 
 	private boolean calcuteWilcoxonTest(Double[] X, Double[] Y, double alpha, StringBuilder statusResult,
 			int sampleIdx) {
@@ -1660,7 +1657,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			statusResult.append(" &gt; z_alpha [" + AttributeHelper.formatNumber(compare_z, "#.###") + "]");
 			statusResult.append("? <b>" + (z_ > compare_z ? "YES" : "NO") + " : Sample " + sampleIdx + "</b>");
 			return z_ > compare_z;
-		} catch (MathException e) {
+		} catch (MathRuntimeException e) {
 			statusResult.append(", MATH ERROR FOR SAMPLE " + sampleIdx);
 			ErrorMsg.addErrorMessage(e);
 			return false;
@@ -2056,7 +2053,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		return corrRes;
 	}
 
-	private static TDistribution tDistribution = factory.createTDistribution(100);
+	private static TDistribution tDistribution = new TDistribution(null, 100);
 
 	// private static NormalDistribution nDistribution =
 	// factory.createNormalDistribution();
@@ -2078,11 +2075,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				 * t_or_z = r*Math.sqrt(n-1); p2 =
 				 * nDistribution.cumulativeProbability(Math.abs(t_or_z));
 				 */
-				tDistribution.setDegreesOfFreedom(n - 2);
+				tDistribution = new TDistribution(null, n - 2);
 				t_or_z = Math.abs(r) / Math.sqrt((1 - r * r) / (n - 2));
 				p2 = tDistribution.cumulativeProbability(Math.abs(t_or_z));
 			} else {
-				tDistribution.setDegreesOfFreedom(n - 2);
+				tDistribution = new TDistribution(null, n - 2);
 				t_or_z = r / Math.sqrt((1 - r * r) / (n - 2));
 				p2 = tDistribution.cumulativeProbability(Math.abs(t_or_z));
 			}
@@ -2111,7 +2108,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		} catch (IllegalArgumentException iae) {
 			calculationHistory.append("<tr><td colspan=\"5\">CALCULATION (to few datapoints): "
 					+ iae.getLocalizedMessage() + "</td></tr>\n");
-		} catch (MathException e) {
+		} catch (MathRuntimeException e) {
 			calculationHistory
 					.append("<tr><td colspan=\"5\">CALCULATION ERROR: " + e.getLocalizedMessage() + "</td></tr>\n");
 			ErrorMsg.addErrorMessage(e);

@@ -34,7 +34,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
- * Algorithm to generate an Erdős–Rényi random network of n nodes, using p edge
+ * Algorithm to generate an Erdos Renyi random network of n nodes, using p edge
  * probability.
  * 
  * @version 2.6.5

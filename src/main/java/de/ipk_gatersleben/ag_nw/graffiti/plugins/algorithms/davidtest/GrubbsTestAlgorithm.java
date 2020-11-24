@@ -12,9 +12,8 @@ import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.DistributionFactoryImpl;
-import org.apache.commons.math.distribution.TDistribution;
+import org.apache.commons.math3.distribution.TDistribution;
+import org.apache.commons.math3.exception.MathRuntimeException;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.editor.MainFrame;
@@ -38,7 +37,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 /**
  * Executes the Grubbs' statistical test to detect outliers.
  * 
- * @version 2.6.5
+ * @vanted.revision 2.8 Update Apache Commons Math3 references.
  */
 public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 
@@ -86,8 +85,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 						"If selected, all identified outliers will be removed from the dataset.") };
 	}
 
-	private static DistributionFactoryImpl distFact = new DistributionFactoryImpl();
-	private static TDistribution td = distFact.createTDistribution(10);
+	private static TDistribution td = new TDistribution(null, 10);
 
 	public static List<Node> doGrubbsTest(List<Node> nodes, Graph g, double alpha, boolean removeOutliers) {
 		ArrayList<Node> result = new ArrayList<Node>();
@@ -165,7 +163,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 							// )^0.5
 							if (n - 2 > 0) {
 								try {
-									td.setDegreesOfFreedom(n - 2);
+									td = new TDistribution(null, n - 2);
 									double t1 = td.inverseCumulativeProbability(1 - (1 - alpha) / (2 * n));
 									double testG = (n - 1) / Math.sqrt(n) * Math.sqrt(t1 * t1 / (n - 2 + t1));
 									if (G > testG) {
@@ -176,7 +174,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 										removedPoints++;
 										outlierIdentified = true;
 									}
-								} catch (MathException e) {
+								} catch (MathRuntimeException e) {
 									ErrorMsg.addErrorMessage(e);
 								}
 							}
