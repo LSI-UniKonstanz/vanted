@@ -97,6 +97,7 @@
 ./src/main/java/org/jfree/chart/demo/categorydata.xml
 ./src/main/java/org/jfree/chart/demo/piedata.xml
 ./src/main/java/org/vanted/plugins/layout/adaptagrams/edgerouting/plugin.xml
+./src/main/java/org/vanted/plugins/layout/multilevelframework/plugin.xml
 ./src/main/java/org/vanted/plugins/layout/stressminimization/plugin.xml
 ./src/main/java/vanted_feature/FeatureAnalysisCommands.xml
 ./src/main/java/vanted_feature/FeatureClustering.xml

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE plugin PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN" "http://www.vanted.org/dtd/1.0/plugin.dtd">
+
+<plugin>
+    <author>Jannick Löscher, René Groß, Theodor Gutschlag, Tobias Franz, Jonas Olenburger, Gordian Schönherr, Benjamin
+        Moser
+    </author>
+    <description>Graph layouting using a multilevel strategy.</description>
+    <plugindesc>
+        <name>Multilevel Framework</name>
+        <main>org.vanted.plugins.layout.multilevelframework.MultilevelFrameworkPlugin</main>
+        <version>1.0</version>
+        <compatibility>2.8.0</compatibility>
+        <available></available>
+    </plugindesc>
+</plugin>
