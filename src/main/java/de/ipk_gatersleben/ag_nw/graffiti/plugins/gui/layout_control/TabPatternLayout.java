@@ -63,8 +63,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
  * @version $Revision$
  */
 public class TabPatternLayout extends InspectorTab {
-
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6088920628006312093L;
 	private javax.swing.JButton jButtonAddPattern;
 	private javax.swing.JButton jButtonEdit;
 	private javax.swing.JButton jButtonLoad;

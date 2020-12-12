@@ -23,6 +23,10 @@ import org.AttributeHelper;
  */
 public class JLabelHTMLlink extends JLabel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8236317065471341173L;
 	String labelText;
 	boolean defaultTooltip = false;
 
@@ -110,8 +114,6 @@ public class JLabelHTMLlink extends JLabel {
 			}
 		});
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	private String urlLink;
 

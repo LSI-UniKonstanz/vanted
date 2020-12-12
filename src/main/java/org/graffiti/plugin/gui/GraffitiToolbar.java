@@ -15,13 +15,12 @@ import javax.swing.JToolBar;
  * TODO
  */
 public class GraffitiToolbar extends JToolBar implements GraffitiContainer {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4954611265049333475L;
 
+	// ~ Instance fields ========================================================
 	/** The id of the toolbar. */
 	protected String id;
 

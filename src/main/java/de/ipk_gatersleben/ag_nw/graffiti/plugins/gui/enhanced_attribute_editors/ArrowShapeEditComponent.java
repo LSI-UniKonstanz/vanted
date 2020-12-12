@@ -41,7 +41,11 @@ public class ArrowShapeEditComponent extends ComboBoxEditComponent {
 				"org.graffiti.plugins.views.defaults.CircleNodeShape",
 				"org.graffiti.plugins.views.defaults.EllipseNodeShape" };
 		this.comboBox = new JComboBox<Object>(this.comboText) {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -1469217374850031910L;
 
 			@Override
 			public Dimension getMinimumSize() {

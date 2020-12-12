@@ -23,11 +23,10 @@ import javax.swing.JComponent;
  * @see org.graffiti.plugin.view.View2D
  */
 public class ButtonOverlayView extends IPKGraffitiView {
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7307958187271490490L;
 
 	@Override
 	public Object getViewToolbarComponentTop() {

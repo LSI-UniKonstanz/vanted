@@ -14,7 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
 public class MyJLabel extends JLabel {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4894501748005777132L;
 	private String fullText = "";
 
 	public MyJLabel(String text) {
@@ -24,7 +27,11 @@ public class MyJLabel extends JLabel {
 		KeyStroke statusHotkey = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0, false);
 		String STATUS_KEY = "MyStatus";
 		Action uirobot = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -283574413943306038L;
 
 			public void actionPerformed(ActionEvent e) {
 				setEnabled(false); // stop any other events from interfering

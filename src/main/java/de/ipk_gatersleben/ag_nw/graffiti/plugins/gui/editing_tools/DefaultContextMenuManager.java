@@ -304,7 +304,11 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		BSHinfo info = new BSHinfo(FileSystemHandler.getURL(new File(fileName)));
 		BSHscriptMenuEntry newMenu = new BSHscriptMenuEntry(info.firstLine, fileName, info.nodeCommand);
 		newMenu.setAction(new GraffitiAction("scriptcommand", MainFrame.getInstance(), "beanshell") {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3928274183735299646L;
 
 			@Override
 			public boolean isEnabled() {

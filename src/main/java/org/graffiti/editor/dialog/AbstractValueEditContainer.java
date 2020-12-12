@@ -29,7 +29,7 @@ public abstract class AbstractValueEditContainer extends JComponent implements V
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2719479990330345552L;
 
 	/** The <code>LayoutManager</code> for this component. */
 	protected LayoutManager lm;

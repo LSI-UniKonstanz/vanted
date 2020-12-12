@@ -48,8 +48,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffit
 // import com.sun.java.swing.SwingUtilities2;
 
 public class SelectNodesComponent extends JToolBar implements GraffitiComponent, SessionListener, ViewListener {
-
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3266138379991737181L;
 	private final ArrayList<Node> initSelection = new ArrayList<Node>();
 	// private Selection selection;
 	private final String prefComp;

@@ -69,10 +69,11 @@ import org.jfree.util.PublicCloneable;
 public class StatisticalBarRenderer extends BarRenderer
 		implements CategoryItemRenderer, Cloneable, PublicCloneable, Serializable {
 
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7913307536550344287L;
 
 	/**
 	 * Default constructor.

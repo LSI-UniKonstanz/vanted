@@ -45,7 +45,10 @@ public class GraffitiFrame extends JFrame // MaximizeFrame
 {
 	// ~ Instance fields ========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5202278616999118346L;
 
 	/** The session this frame is in. */
 	private EditorSession session;

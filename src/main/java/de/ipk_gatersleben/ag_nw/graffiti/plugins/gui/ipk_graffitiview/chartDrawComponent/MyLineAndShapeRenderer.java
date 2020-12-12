@@ -29,7 +29,10 @@ import org.jfree.data.CategoryDataset;
 
 public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1841523689414463224L;
 
 	boolean showStdDevAsVerticalT = false;
 

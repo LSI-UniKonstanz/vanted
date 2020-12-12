@@ -27,12 +27,11 @@ import org.graffiti.help.HelpContext;
  * @version $Revision: 1.9 $
  */
 public abstract class GraffitiAction extends AbstractAction {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1318016336412400036L;
+	// ~ Instance fields ========================================================
 
 	private static HashSet<GraffitiAction> knownActions = new HashSet<GraffitiAction>();
 

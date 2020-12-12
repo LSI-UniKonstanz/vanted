@@ -80,7 +80,10 @@ import org.jfree.ui.RefineryUtilities;
 public class PanScrollZoomDemo extends JFrame
 		implements ActionListener, ChangeListener, ChartChangeListener, MouseListener, MouseMotionListener {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4047815153048215050L;
 
 	/** The panel that displays the chart. */
 	private ChartPanel chartPanel;
@@ -156,7 +159,11 @@ public class PanScrollZoomDemo extends JFrame
 		recalcScrollBar(chart.getPlot());
 
 		this.chartPanel = new ChartPanel(chart) {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5481377218316896355L;
 
 			public void autoRangeBoth() {
 				System.out.println("Use 'Fit all' button");

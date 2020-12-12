@@ -37,7 +37,7 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4207645953489122114L;
 
 	/** The <code>StringBundle</code> of this option pane. */
 	protected static StringBundle sBundle = StringBundle.getInstance();

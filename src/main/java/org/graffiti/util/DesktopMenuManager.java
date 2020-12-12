@@ -319,7 +319,7 @@ public class DesktopMenuManager extends MenuAdapter implements SessionListener {
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = -4672378082675672748L;
 		/** The associated frame */
 		private final JInternalFrame frame;
 

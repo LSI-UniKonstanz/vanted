@@ -26,6 +26,11 @@ import org.graffiti.session.EditorSession;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class AlignNodesCommand extends AbstractUndoableEdit {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -141421295248365712L;
+
 	public enum Command {
 		jbHorB, jbHorC, jbHorT, jbVertC, jbVertL, jbVertR
 	};
@@ -62,8 +67,6 @@ public class AlignNodesCommand extends AbstractUndoableEdit {
 		if (cmd == Command.jbVertC)
 			desc += "vertical - center";
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String getPresentationName() {

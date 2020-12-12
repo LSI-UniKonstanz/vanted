@@ -27,7 +27,10 @@ import javax.swing.tree.TreeModel;
  */
 
 public class JTreeTable extends JTable {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5935850330270429291L;
 	protected TreeTableCellRenderer tree;
 
 	public JTreeTable(TreeTableModel treeTableModel) {
@@ -46,7 +49,11 @@ public class JTreeTable extends JTable {
 
 		// Force the JTable and JTree to share their row selection models.
 		tree.setSelectionModel(new DefaultTreeSelectionModel() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3740517007939649585L;
 
 			// Extend the implementation of the constructor, as if:
 			/* public this() */ {
@@ -87,8 +94,10 @@ public class JTreeTable extends JTable {
 	//
 
 	public class TreeTableCellRenderer extends JTree implements TableCellRenderer {
-
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8553500254662497569L;
 		protected int visibleRow;
 
 		public TreeTableCellRenderer(TreeModel model) {

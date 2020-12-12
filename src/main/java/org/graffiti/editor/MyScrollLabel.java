@@ -17,7 +17,11 @@ import org.vanted.scaling.Toolbox;
 import org.vanted.scaling.scalers.component.JTextComponentScaler;
 
 public class MyScrollLabel extends JPanel {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3333043566410344123L;
 
 	public MyScrollLabel(String msg) {
 		this.setLayout(new BorderLayout());

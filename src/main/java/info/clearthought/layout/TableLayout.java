@@ -101,7 +101,10 @@ import org.FolderPanel;
 
 public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, TableLayoutConstants {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7862966128955410955L;
 
 	/** Default row/column size */
 	protected static final double defaultSize[][] = { {}, {} };

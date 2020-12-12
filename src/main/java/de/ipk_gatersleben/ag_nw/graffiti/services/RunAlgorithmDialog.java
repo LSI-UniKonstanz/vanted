@@ -29,7 +29,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
  */
 public class RunAlgorithmDialog extends JDialog implements HandlesAlgorithmData {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6882567547201105027L;
 
 	private Algorithm algorithm;
 

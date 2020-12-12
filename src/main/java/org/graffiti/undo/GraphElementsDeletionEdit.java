@@ -31,10 +31,12 @@ import org.graffiti.graph.Node;
  * @version $Revision: 1.9 $
  */
 public class GraphElementsDeletionEdit extends GraphElementsEdit {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3908451391597763481L;
+
 	// ~ Static fields/initializers =============================================
-
-	private static final long serialVersionUID = 1L;
-
 	/** The logger for the current class. */
 	private static final Logger logger = Logger.getLogger(GraphElementsDeletionEdit.class.getName());
 

@@ -22,7 +22,10 @@ import org.graffiti.options.AbstractOptionPane;
 public class LoadSaveOptionsPane extends AbstractOptionPane {
 	// ~ Constructors ===========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -943933107375681531L;
 
 	/**
 	 * Constructor for LoadSaveOptionsPane.

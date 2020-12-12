@@ -10,7 +10,11 @@ import javax.swing.JComponent;
 import org.jfree.chart.plot.PlotOrientation;
 
 public class MyColorGrid extends JComponent {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -807742085144304286L;
 
 	Color[][] colors = null;
 

@@ -31,8 +31,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
  * @version $Revision$
  */
 public class TabPluginControl extends InspectorTab implements SelectionListener, SessionListener {
-
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5650523766880858443L;
 	/**
 	 * DOCUMENT ME!
 	 */

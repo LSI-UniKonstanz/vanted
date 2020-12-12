@@ -27,8 +27,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class SearchOptionEditorGUI extends JComponent {
-	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6633404387535282784L;
 	private SearchOption option;
 
 	public SearchOptionEditorGUI(final SearchOption option,

@@ -80,9 +80,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.web.RestService;
  * @author Christian Klukas, Torsten Vogt, Matthias Klapperstueck, Tobias
  *         Czauderna
  */
+@SuppressWarnings("serial")
 public class TabKegg extends InspectorTab implements ActionListener, BackgroundTaskStatusProvider {
-
-	private static final long serialVersionUID = 1L;
 
 	Logger logger = Logger.getLogger(TabKegg.class);
 	private static JCheckBox prettifyLabels = null;

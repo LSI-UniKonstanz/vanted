@@ -24,7 +24,7 @@ public class FileDropBean implements java.io.Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -635164729709460738L;
 	private javax.swing.event.EventListenerList listenerList = new javax.swing.event.EventListenerList();
 
 	/** Creates new FileDropBean */

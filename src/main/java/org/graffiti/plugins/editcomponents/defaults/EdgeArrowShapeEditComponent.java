@@ -37,8 +37,12 @@ public class EdgeArrowShapeEditComponent extends ComboBoxEditComponent {
 		this.comboValue = new String[] { standardArrow, standardArrowLeft, standardArrowRight, thinStandardArrow,
 				thinDiamondArrow, diamondArrow, thinCircleArrow, circleArrow, circleConnectArrow, inhibitorArrow,
 				absoluteInhibitorArrow, absoluteStimulationArrow, assignmentArrow, triggerArrow, "" };
-		this.comboBox = new JComboBox(this.comboText) {
-			private static final long serialVersionUID = 1L;
+		this.comboBox = new JComboBox<Object>(this.comboText) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6651563354845975614L;
 
 			@Override
 			public Dimension getMinimumSize() {

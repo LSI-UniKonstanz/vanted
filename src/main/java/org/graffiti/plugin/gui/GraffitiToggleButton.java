@@ -20,12 +20,11 @@ import javax.swing.JToggleButton;
  * @version $Revision: 1.5 $
  */
 public abstract class GraffitiToggleButton extends JToggleButton implements GraffitiComponent {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7867463935382159398L;
+	// ~ Instance fields ========================================================
 	/** The preferred component of this button. */
 	protected String preferredComponent;
 

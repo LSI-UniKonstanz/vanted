@@ -36,6 +36,11 @@ import org.vanted.scaling.Toolbox;
  */
 public abstract class InspectorTab extends JComponent implements ComponentListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6610404454815754499L;
+
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(InspectorTab.class);
 
@@ -49,11 +54,6 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 	public static final String PREFERENCE_TAB_SHOW = "Show";
 
 	// ~ Instance fields ========================================================
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The panel that holds the table of the attributes and the buttons for adding

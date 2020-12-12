@@ -46,7 +46,7 @@ public class CategoryLabelPositions implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7951724160267942449L;
 
 	/** STANDARD category label positions. */
 	public static final CategoryLabelPositions STANDARD = new CategoryLabelPositions(

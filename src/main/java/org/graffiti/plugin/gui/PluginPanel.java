@@ -17,13 +17,12 @@ import java.awt.Component;
  * @version $Revision: 1.6 $
  */
 public class PluginPanel extends AbstractGraffitiContainer {
-	// ~ Constructors ===========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4163512739506314629L;
 
+	// ~ Constructors ===========================================================
 	/**
 	 * Creates a new PluginPanel object.
 	 */

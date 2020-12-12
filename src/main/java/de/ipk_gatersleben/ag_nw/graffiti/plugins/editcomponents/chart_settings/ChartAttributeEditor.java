@@ -25,7 +25,11 @@ public class ChartAttributeEditor extends AbstractValueEditComponent {
 
 		//TODO Add Dummy ChartComponent, instead of EMPTY_STRING, to avoid mixing
 		jComboBoxChartType = new JComboBox<Object>() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5572901436148215483L;
 
 			@Override
 			public Dimension getMinimumSize() {

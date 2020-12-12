@@ -219,6 +219,10 @@ public class MainFrame extends JFrame
 
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6007845363881721091L;
 	Logger logger = Logger.getLogger(MainFrame.class);
 	/**
 	 * The only and single instance of this object
@@ -231,8 +235,6 @@ public class MainFrame extends JFrame
 	}
 
 	// ~ Static fields/initializers =============================================
-
-	private static final long serialVersionUID = 1L;
 
 	/** The size of an internal frame for first displaying. */
 	public static final Dimension PREFERRED_INTERNALFRAME_SIZE = new Dimension(1000, 1000);

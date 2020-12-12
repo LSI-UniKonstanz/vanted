@@ -21,10 +21,12 @@ import java.util.List;
  * 
  * @vanted.revision 2.6.5
  */
-public class PreconditionException extends Exception {
+public class PreconditionException extends Exception {	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4160776037182505133L;
 	// ~ Instance fields ========================================================
-
-	private static final long serialVersionUID = 1L;
 	/** List of error entries. */
 	private List<Entry> errors;
 

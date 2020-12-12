@@ -12,7 +12,10 @@ import javax.swing.JComponent;
  * @author klukas
  */
 public class SelectionRectangle extends JComponent {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7516923167886576115L;
 	private static Color drawColForeGround = new Color(255, 0, 0, 40);
 	// private static Color drawColShadow = new Color(50, 50, 50, 40);
 	private static Color drawColBorder = new Color(80, 10, 10, 100);

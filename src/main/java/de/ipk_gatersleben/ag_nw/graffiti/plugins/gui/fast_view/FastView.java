@@ -84,7 +84,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
  */
 public class FastView extends JComponent implements Printable, GraphView {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5107065749277281358L;
 
 	private Graph graph;
 

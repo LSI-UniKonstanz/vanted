@@ -23,7 +23,7 @@ public class ShapeNotFoundException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5984889433963582264L;
 
 	/**
 	 * Constructs a ShapeNotFoundException.

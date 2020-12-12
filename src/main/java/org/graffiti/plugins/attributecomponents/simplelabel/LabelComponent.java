@@ -81,16 +81,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.label_alignment.
  */
 public class LabelComponent extends AbstractAttributeComponent
 		implements GraphicAttributeConstants, PreferencesInterface {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8008180101425000720L;
 	// ~ Instance fields ========================================================
-
 	private static final Logger logger = Logger.getLogger(LabelComponent.class);
 
 	static {
 		logger.setLevel(Level.INFO);
 	}
-
-	private static final long serialVersionUID = 1L;
-
 	private static int MINSIZE_VISIBILITY;
 	public static String PREF_MINSIZE_VISIBILITY = "min-size visibility";
 

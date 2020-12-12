@@ -178,7 +178,10 @@ public class GradientFillAttributeEditor extends AbstractValueEditComponent {
 
 	public class NodeGradientRenderer extends JLabel implements ListCellRenderer {
 
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -780247869575262319L;
 
 		public NodeGradientRenderer() {
 			setOpaque(true);

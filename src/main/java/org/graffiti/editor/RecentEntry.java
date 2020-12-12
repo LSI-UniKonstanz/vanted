@@ -11,7 +11,11 @@ import javax.swing.JMenuItem;
 import org.OpenFileDialogService;
 
 public class RecentEntry extends JMenuItem {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1437006481718844862L;
 
 	public RecentEntry(String data, boolean visible, Icon icon) {
 		super();

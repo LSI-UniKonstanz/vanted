@@ -20,14 +20,18 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 
 public class ThicknessAttributeEditor extends AbstractValueEditComponent {
 
-	private final JComboBox combo;
+	private final JComboBox<Object> combo;
 	private final JSpinner spinner;
 	private final JPanel pan;
 
 	public ThicknessAttributeEditor(Displayable disp) {
 		super(disp);
-		combo = new JComboBox(ArrowHeadModes.values()) {
-			private static final long serialVersionUID = 1L;
+		combo = new JComboBox<Object>(ArrowHeadModes.values()) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6344786893439460070L;
 
 			@Override
 			public Dimension getMinimumSize() {

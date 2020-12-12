@@ -28,9 +28,9 @@ public class DeleteAction extends SelectionAction {
 	// ~ Constructors ===========================================================
 
 	/**
-	 * Comment for <code>serialVersionUID</code>
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2527327965710575605L;
 
 	/**
 	 * Constructs a new copy action.

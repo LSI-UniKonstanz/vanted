@@ -69,7 +69,11 @@ public class ColorChooserEditComponent extends AbstractValueEditComponent {
 		buttonText = "";
 		// buttonText = buttonText+" "+disp.getName();
 		button = new JButton(buttonText) {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 8028031871505868138L;
 
 			@Override
 			public Dimension getMinimumSize() {

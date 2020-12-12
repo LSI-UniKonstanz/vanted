@@ -29,6 +29,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.MergeNodes;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class KeggNavigationToolbarCommand extends AbstractUndoableEdit {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7251008865357992636L;
+
 	public enum Command {
 		PATHWAY_OVERVIEW, COLLAPSE_PATHWAY, LOAD_PATHWAY, CONDENSE_ENTITIES, UPDATE_CLUSTER_NODES, HIDE_CLUSTER_NODES
 	};
@@ -62,8 +67,6 @@ public class KeggNavigationToolbarCommand extends AbstractUndoableEdit {
 		if (cmd == Command.CONDENSE_ENTITIES)
 			desc += "Condense Multiple Entities";
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String getPresentationName() {

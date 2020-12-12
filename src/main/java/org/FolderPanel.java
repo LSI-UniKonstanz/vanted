@@ -48,7 +48,10 @@ import javax.swing.SwingUtilities;
  */
 public class FolderPanel extends JComponent {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6336875862832234005L;
 	private String title;
 	private boolean condensedState;
 	private Color frameColor = new Color(195, 212, 232); // new

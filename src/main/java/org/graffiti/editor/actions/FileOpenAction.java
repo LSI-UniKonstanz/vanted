@@ -40,7 +40,7 @@ public class FileOpenAction extends GraffitiAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6753238738278066254L;
 
 	/** DOCUMENT ME! */
 	private static IOManager ioManager;

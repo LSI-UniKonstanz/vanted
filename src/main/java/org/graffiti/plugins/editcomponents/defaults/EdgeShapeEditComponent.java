@@ -48,8 +48,12 @@ public class EdgeShapeEditComponent extends ComboBoxEditComponent {
 			comboValue[i++] = e.getValue();
 		}
 
-		comboBox = new JComboBox(this.comboText) {
-			private static final long serialVersionUID = 1L;
+		comboBox = new JComboBox<Object>(this.comboText) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8184280389904042802L;
 
 			@Override
 			public Dimension getMinimumSize() {

@@ -13,7 +13,11 @@ import javax.swing.table.AbstractTableModel;
 import org.StringManipulationTools;
 
 public class XlsTableModel extends AbstractTableModel {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2604053076025280513L;
 
 	private TableData data;
 

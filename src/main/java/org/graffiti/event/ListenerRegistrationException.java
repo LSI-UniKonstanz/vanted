@@ -22,7 +22,7 @@ public class ListenerRegistrationException extends RuntimeException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4779718430076850252L;
 
 	/**
 	 * Constructs a <code>ListenerRegistrationException</code> with the specified

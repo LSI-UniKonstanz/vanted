@@ -72,9 +72,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.C
  */
 public class IPKGraffitiView extends GraffitiView
 		implements OptionPane, Printable, PaintStatusSupport, PreferencesInterface {
-
-	private static final long serialVersionUID = 1L;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1464954375246703366L;
 	private static Logger logger = Logger.getLogger(IPKGraffitiView.class);
 
 	static {

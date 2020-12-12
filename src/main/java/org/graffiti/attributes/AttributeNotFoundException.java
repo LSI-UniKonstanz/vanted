@@ -18,7 +18,10 @@ package org.graffiti.attributes;
 public class AttributeNotFoundException extends RuntimeException {
 	// ~ Constructors ===========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4378388964705221358L;
 
 	/**
 	 * Constructs an <code>AttributeNotFoundException</code> with the specified

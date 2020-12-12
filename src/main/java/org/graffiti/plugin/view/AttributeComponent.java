@@ -29,7 +29,7 @@ public abstract class AttributeComponent extends JComponent implements GraffitiV
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4061031258149050793L;
 
 	protected Composite composite;
 

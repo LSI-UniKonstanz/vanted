@@ -27,6 +27,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 
 public class GraphElementSelectionLabel extends JLabel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6026782315885081594L;
 	private Graph g = null;
 	private Node n = null;
 	private Edge e = null;
@@ -163,7 +167,4 @@ public class GraphElementSelectionLabel extends JLabel {
 				((JTabbedPane) nt.getParent()).setSelectedIndex(index);
 		}
 	}
-
-	private static final long serialVersionUID = 1L;
-
 }

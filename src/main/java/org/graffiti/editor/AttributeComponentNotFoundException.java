@@ -18,9 +18,9 @@ public class AttributeComponentNotFoundException extends Exception {
 	// ~ Constructors ===========================================================
 
 	/**
-	 * Comment for <code>serialVersionUID</code>
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1761675201788255091L;
 
 	/**
 	 * Constructor for AttributeComponentNotFoundException.

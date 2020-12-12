@@ -22,9 +22,11 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.10 $
  */
 public class EdgeTab extends AbstractTab {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 936162217630347664L;
 	// ~ Constructors ===========================================================
-
-	private static final long serialVersionUID = 1L;
 	private static EdgeTab instance = null;
 
 	/**

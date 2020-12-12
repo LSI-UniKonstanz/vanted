@@ -31,7 +31,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.SearchAlgorithms.Op
  */
 public class TabNetworkAlgorithms extends InspectorTab {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1375768845115569087L;
 
 	static Logger logger = Logger.getLogger(TabNetworkAlgorithms.class);
 

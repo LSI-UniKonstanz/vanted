@@ -63,7 +63,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
  *         Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class XmlDataChartComponent extends JComponent {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 772491557595392217L;
 
 	public XmlDataChartComponent(String preferredChartType, Graph graph, org.graffiti.graph.GraphElement ge) {
 

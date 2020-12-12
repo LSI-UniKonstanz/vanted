@@ -222,7 +222,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 4277483859034210243L;
 		String[] listIDsToTranslateFromKegg;
 		int leftIdx;
 		int rightIdx;
@@ -315,7 +315,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 4199328488427630261L;
 
 		URL url;
 

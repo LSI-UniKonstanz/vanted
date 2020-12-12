@@ -23,13 +23,12 @@ import org.graffiti.session.EditorSession;
  * @version $Revision: 1.6 $ $Date: 2010/12/22 13:05:58 $
  */
 public class SelectionChangeAction extends GraffitiAction {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5776600348691541324L;
 
+	// ~ Instance fields ========================================================
 	/** DOCUMENT ME! */
 	private EditorSession session;
 

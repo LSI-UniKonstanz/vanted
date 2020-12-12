@@ -18,7 +18,10 @@ import org.jfree.ui.DateCellRenderer;
 
 public class MyDataJTable extends JTable {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 142228804436116144L;
 
 	public MyDataJTable(XlsTableModel xtm) {
 		super(xtm);

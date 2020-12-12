@@ -17,12 +17,11 @@ import org.graffiti.event.AbstractEvent;
  * @version $Revision: 1.5 $
  */
 public class SelectionEvent extends AbstractEvent {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1549429891485378799L;
+	// ~ Instance fields ========================================================
 	/** DOCUMENT ME! */
 	private boolean added;
 

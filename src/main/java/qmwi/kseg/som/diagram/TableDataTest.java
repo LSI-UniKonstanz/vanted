@@ -12,7 +12,7 @@ public class TableDataTest extends javax.swing.table.AbstractTableModel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6270498356797408179L;
 	protected qmwi.kseg.som.DataSet dataSet;
 
 	/**

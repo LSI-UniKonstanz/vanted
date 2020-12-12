@@ -38,7 +38,7 @@ public class GraffitiInternalFrame extends JInternalFrame // MaximizeFrame
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2195692353913581458L;
 
 	/** The session this frame is in. */
 	private EditorSession session;

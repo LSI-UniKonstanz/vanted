@@ -36,7 +36,7 @@ public class MaximizeFrame extends JInternalFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -415416830581555379L;
 
 	/**
 	 * Create a MaximizeFrame object.

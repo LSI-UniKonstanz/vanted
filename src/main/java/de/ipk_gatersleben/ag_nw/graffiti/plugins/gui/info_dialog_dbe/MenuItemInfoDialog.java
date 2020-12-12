@@ -83,9 +83,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContainer {
 	// to avoid collisions let ID be package name + menu + name of the menu
 
-	private static final Logger logger = Logger.getLogger(MenuItemInfoDialog.class.getName());
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6671696188380122625L;
 
-	private static final long serialVersionUID = 1L;
+	private static final Logger logger = Logger.getLogger(MenuItemInfoDialog.class.getName());
 
 	private static String extractText = "[Save license text to file and open with system editor]";
 
@@ -159,7 +162,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 
 				copyRMonash = "&copy; 2014 - 2016 Monash University";
 
-				copyRKonstanz = "&copy; 2016 - 2020 Konstanz University";
+				copyRKonstanz = "&copy; 2016 - 2021 Konstanz University";
 
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();

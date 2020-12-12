@@ -17,7 +17,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.SubtypeName;
 
 public class SubComponentNameCheckBox extends JCheckBox {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4365997824460122788L;
 
 	private Relation currentRelation;
 

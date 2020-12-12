@@ -23,7 +23,7 @@ public class CloseViewAction extends GraffitiAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5290117426629523465L;
 
 	/**
 	 * Constructs a new close view action.

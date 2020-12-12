@@ -36,13 +36,12 @@ import org.graffiti.session.SessionListener;
  * @author $Author: klukas $
  */
 public class SelectionMenu extends GraffitiMenu implements GraffitiComponent, SelectionListener, SessionListener {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3425885071881121200L;
 
+	// ~ Instance fields ========================================================
 	/** The action for the "save as ..." menu item. */
 	private final Action saveAction;
 

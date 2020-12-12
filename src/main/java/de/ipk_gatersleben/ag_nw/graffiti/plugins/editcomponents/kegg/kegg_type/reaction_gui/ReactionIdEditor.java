@@ -16,7 +16,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.KeggId;
 
 public class ReactionIdEditor extends JTextField {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3836585138360538033L;
+
 	private Reaction currReaction;
 
 	private Pathway currPathway;

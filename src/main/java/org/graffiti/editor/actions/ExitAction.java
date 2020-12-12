@@ -24,7 +24,7 @@ public class ExitAction extends GraffitiAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6294696024311937132L;
 
 	/**
 	 * Creates a new ExitAction object.

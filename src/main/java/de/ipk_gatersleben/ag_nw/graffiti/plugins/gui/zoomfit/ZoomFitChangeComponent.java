@@ -59,13 +59,16 @@ public class ZoomFitChangeComponent extends JToolBar
 
 	// ~ Instance fields ========================================================
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6148796088041066490L;
+
 	static Logger logger = Logger.getLogger(ZoomFitChangeComponent.class);
 
 	static {
 		logger.setLevel(Level.ERROR);
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	/** The zoom buttons */
 	private JButton jbZoomOut, jbZoomIn, jbZoom1to1, jbZoomRegion;

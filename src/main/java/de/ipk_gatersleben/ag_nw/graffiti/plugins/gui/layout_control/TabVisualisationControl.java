@@ -25,7 +25,10 @@ import org.graffiti.session.Session;
  */
 public class TabVisualisationControl extends InspectorTab {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1822597920551426964L;
 
 	/**
 	 * DOCUMENT ME!

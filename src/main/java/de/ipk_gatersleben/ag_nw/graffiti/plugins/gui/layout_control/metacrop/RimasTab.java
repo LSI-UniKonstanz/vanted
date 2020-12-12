@@ -37,7 +37,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
  * @author klukas
  */
 public class RimasTab extends InspectorTab implements PreferencesInterface {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9077025357135383654L;
 
 	@Override
 	public boolean visibleForView(View v) {

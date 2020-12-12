@@ -52,7 +52,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.GravistoMainHelper
 
 public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2465423490381876076L;
 
 	private List<String> projectList = new ArrayList<String>();
 
@@ -206,7 +209,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void loadExcelOrBinaryFiles() {
 		final Collection<File> fileList = OpenExcelFileDialogService.getExcelOrBinaryFiles();
 		if (fileList != null) {
@@ -274,7 +277,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		// add handler for load dataset button
 		final String title = target.getText();
 		FileDrop.Listener fdl = new FileDrop.Listener() {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public void filesDropped(File[] files) {
 				if (files != null && files.length > 0) {
 					ArrayList<File> mfiles = new ArrayList<File>();

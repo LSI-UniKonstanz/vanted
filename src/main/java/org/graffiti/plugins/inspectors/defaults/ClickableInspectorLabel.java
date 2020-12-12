@@ -15,7 +15,10 @@ import org.graffiti.editor.GravistoService;
 
 public class ClickableInspectorLabel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7418953795950170313L;
 	private final Runnable executeOnClick;
 	private final JLabel textlabel, iconlabel;
 	private static ImageIcon icon = new ImageIcon(

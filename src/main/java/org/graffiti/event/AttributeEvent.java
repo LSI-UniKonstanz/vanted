@@ -23,7 +23,7 @@ public class AttributeEvent extends AbstractEvent {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5286425769069301273L;
 	/** The path that has been assigned to the attribute by the event. */
 	private String path;
 

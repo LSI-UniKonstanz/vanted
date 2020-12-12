@@ -12,7 +12,7 @@ public class DiagrammPaneData extends javax.swing.table.AbstractTableModel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1970389783798786559L;
 	public ClassesAll cAll;
 	public AttributsAll aAll;
 	public java.lang.String[] columnNames;

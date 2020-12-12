@@ -19,11 +19,14 @@ import org.graffiti.selection.SelectionEvent;
  * @version $Revision: 1.9 $
  */
 public class NodeTab extends AbstractTab {
-	// ~ Constructors ===========================================================
 
-	private static final long serialVersionUID = 1L;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1644616365121572136L;
 	private static NodeTab instance = null;
+	
+	// ~ Constructors ===========================================================
 
 	/**
 	 * Constructs a <code>NodeTab</code> and sets the title.

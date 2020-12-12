@@ -22,13 +22,13 @@ import org.graffiti.help.HelpContext;
  * @version $Revision: 1.7 $
  */
 public class PopupAction extends SelectionAction {
-	// ~ Constructors ===========================================================
-
+	
 	/**
-	 * Comment for <code>serialVersionUID</code>
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3261305234922894795L;
 
+	// ~ Constructors ===========================================================
 	/**
 	 * Constructs a new popup action.
 	 * 

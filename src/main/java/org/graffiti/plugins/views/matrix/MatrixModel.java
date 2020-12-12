@@ -31,10 +31,12 @@ import org.graffiti.graph.Node;
  */
 public class MatrixModel extends AbstractTableModel implements GraphListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3185159861017596484L;
+
 	// ~ Instance fields ========================================================
-
-	private static final long serialVersionUID = 1L;
-
 	/** The list of nodes. Maps from row/col index to <code>Node</code>. */
 	private ArrayList<Node> nodes;
 

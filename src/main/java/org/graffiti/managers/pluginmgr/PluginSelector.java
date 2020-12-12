@@ -49,16 +49,14 @@ import org.graffiti.core.StringBundle;
 public class PluginSelector extends JDialog
 		implements ActionListener, MouseListener, ListSelectionListener, WindowListener {
 	// ~ Static fields/initializers =============================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3953774306145561321L;
 
 	/** The logger for the current class. */
 
 	// ~ Instance fields ========================================================
-
 	/** The <code>ImageBundle</code> of the plugin selector. */
 	protected ImageBundle iBundle = ImageBundle.getInstance();
 
@@ -380,10 +378,11 @@ public class PluginSelector extends JDialog
 	 * Renders the plugin description in a <code>JList</code>.
 	 */
 	static class PluginDescriptionCellRenderer extends DefaultListCellRenderer {
+
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 4798005480588293492L;
 
 		/**
 		 * Constructs a new plugin description cell renderer.

@@ -38,7 +38,10 @@ import java.io.Serializable;
  */
 class AutomatonBean implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3832714752327173774L;
 
 	static final String NAME = "scaling state";
 

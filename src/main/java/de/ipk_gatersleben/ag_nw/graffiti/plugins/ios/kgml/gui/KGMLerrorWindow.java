@@ -33,6 +33,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Gml2PathwayWarningInfo
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
 
 public class KGMLerrorWindow extends JDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2572952194851322409L;
 	private Collection<Gml2PathwayWarningInformation> warnings;
 	private Collection<Gml2PathwayErrorInformation> errors;
 	private FolderPanel panelWarning;
@@ -157,7 +161,4 @@ public class KGMLerrorWindow extends JDialog {
 		result.layoutRows();
 		return result;
 	}
-
-	private static final long serialVersionUID = 1L;
-
 }

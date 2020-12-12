@@ -27,8 +27,12 @@ import org.graffiti.graph.GraphElement;
  * @version $Revision: 1.8 $
  */
 public class ChangeAttributesEdit extends GraffitiAbstractUndoableEdit {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4062595404535627088L;
+	
 	// ~ Instance fields ========================================================
 
 	/** map from an attribute to its old value */

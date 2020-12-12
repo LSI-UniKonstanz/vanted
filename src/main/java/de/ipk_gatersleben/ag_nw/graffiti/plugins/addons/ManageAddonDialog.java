@@ -61,7 +61,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class ManageAddonDialog extends JDialog {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 540547664381497229L;
 	final static int iconcolumn = 0;
 	final static int namecolumn = 1;
 	final static int checkcolumn = 2;
@@ -356,7 +359,11 @@ public class ManageAddonDialog extends JDialog {
 	private void initAddonTable() {
 		{
 			textContact = new JLabelHTMLlink("", "", null, true) {
-				private static final long serialVersionUID = 1L;
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -8282671400507985589L;
 
 				@Override
 				public String getToolTipText() {
@@ -385,7 +392,10 @@ public class ManageAddonDialog extends JDialog {
 		}
 		{
 			textDescription = new JTextArea() {
-				private static final long serialVersionUID = 1L;
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -3682656712848493595L;
 
 				@Override
 				public String getToolTipText() {

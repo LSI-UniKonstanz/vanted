@@ -26,7 +26,7 @@ public class ViewNewAction extends GraffitiAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5252117180552221559L;
 	/** DOCUMENT ME! */
 	private StringBundle sBundle;
 

@@ -9,8 +9,11 @@ import org.JMButton;
 import scenario.Scenario;
 
 public class MyScenarioEditor extends JMButton {
-	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5056901527519209025L;
 	Scenario s = null;
 
 	public MyScenarioEditor(final Scenario s) {

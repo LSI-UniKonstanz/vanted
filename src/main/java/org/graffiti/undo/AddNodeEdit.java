@@ -22,12 +22,11 @@ import org.graffiti.graph.Node;
  * @version $Revision: 1.6 $
  */
 public class AddNodeEdit extends GraphElementsEdit {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8130286199378756838L;
+	// ~ Instance fields ========================================================
 	/** added node */
 	private Node node;
 

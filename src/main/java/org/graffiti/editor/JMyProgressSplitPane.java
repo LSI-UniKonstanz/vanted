@@ -16,7 +16,7 @@ public class JMyProgressSplitPane extends JSplitPane {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8787614001821816062L;
 	JPanel progressPanel;
 
 	/**

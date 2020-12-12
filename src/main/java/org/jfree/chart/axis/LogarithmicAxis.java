@@ -81,7 +81,11 @@ import org.jfree.ui.TextAnchor;
  * @author Michael Duffy
  */
 public class LogarithmicAxis extends NumberAxis {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5735018554949391116L;
 
 	/** Useful constant for log(10). */
 	public static final double LOG10_VALUE = Math.log(10.0);

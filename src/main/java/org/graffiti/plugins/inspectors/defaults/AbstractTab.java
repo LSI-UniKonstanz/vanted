@@ -53,15 +53,16 @@ import org.graffiti.util.DelayThread;
  */
 public abstract class AbstractTab extends InspectorTab
 		implements SessionListener, SelectionListener, AttributeListener {
-	// ~ Instance fields ========================================================
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5717473922361831010L;
 
 	private static Logger logger = Logger.getLogger(AbstractTab.class);
 	static {
 		logger.setLevel(Level.INFO);
 	}
-
-	private static final long serialVersionUID = 1L;
-
+	// ~ Instance fields ========================================================
 	/** The attribute used to display the tree. */
 	protected Attribute collAttr;
 

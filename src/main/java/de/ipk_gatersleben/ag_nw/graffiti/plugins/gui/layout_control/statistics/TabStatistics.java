@@ -107,7 +107,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * @vanted.revision 2.8 Update Apache Commons Math3 references.
  */
 public class TabStatistics extends InspectorTab implements ActionListener, ContainsTabbedPane {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5293962618880791441L;
 
 	private Component lastScatterPlot = null;
 

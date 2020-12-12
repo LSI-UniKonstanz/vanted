@@ -87,7 +87,11 @@ public class BooleanEditComponent extends AbstractValueEditComponent {
 		});
 
 		checkBox.addActionListener(new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 389822861498768833L;
 
 			public void actionPerformed(ActionEvent e) {
 				if (showEmpty) {

@@ -23,12 +23,13 @@ import org.graffiti.session.EditorSession;
  * @version $Revision: 1.6 $
  */
 public abstract class SelectionAction extends GraffitiAction {
-	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8570717015762140695L;
+	
+	// ~ Constructors ===========================================================
 
 	/**
 	 * Constructs a new selection action with the given name.

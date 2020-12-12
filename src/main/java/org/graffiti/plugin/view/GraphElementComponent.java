@@ -27,7 +27,7 @@ public abstract class GraphElementComponent extends JComponent
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6496536237986687540L;
 
 	/**
 	 * Returns whether the given coordinates lie within this component and within

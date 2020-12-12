@@ -391,7 +391,10 @@ public class GraphHelper implements HelperClass {
 		}
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 938230634760323234L;
 			private final String description = "Remove Edge Bends";
 			private final HashMap<Edge, Collection<Vector2d>> edge2oldBendPositions = new LinkedHashMap<Edge, Collection<Vector2d>>();
 
@@ -541,7 +544,10 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3818602757869110847L;
 			private final HashMap<LinkedHashMapAttribute, Collection<CoordinateAttribute>> edge2newBendAttributes = new LinkedHashMap<LinkedHashMapAttribute, Collection<CoordinateAttribute>>();
 
 			@Override
@@ -1251,8 +1257,10 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
-
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -9076618806681226636L;
 			HashMap<Node, Vector2d> oldPositions = new LinkedHashMap<Node, Vector2d>();
 
 			@Override
@@ -1308,7 +1316,7 @@ public class GraphHelper implements HelperClass {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 3309620727653339949L;
 
 						@Override
 						public String getMessage() {
@@ -1352,8 +1360,11 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 124606541705582619L;
 			HashMap<Node, Vector2d> oldSize = new LinkedHashMap<Node, Vector2d>();
 
 			@Override
@@ -1406,10 +1417,11 @@ public class GraphHelper implements HelperClass {
 				}
 				if (myGraph == null) {
 					CannotUndoException ce = new CannotUndoException() {
+
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 304121988827407216L;
 
 						@Override
 						public String getMessage() {
@@ -1454,8 +1466,11 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7660082669678730610L;
 			HashMap<Node, Vector2d> oldPositions = new LinkedHashMap<Node, Vector2d>();
 			HashMap<CoordinateAttribute, Vector2d> oldPositionsOfBends = new LinkedHashMap<CoordinateAttribute, Vector2d>();
 
@@ -1531,10 +1546,11 @@ public class GraphHelper implements HelperClass {
 					}
 				if (myGraph == null) {
 					CannotUndoException ce = new CannotUndoException() {
+
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 7887256674243154384L;
 
 						@Override
 						public String getMessage() {
@@ -1603,8 +1619,11 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2525020294767860302L;
 			HashMap<Node, Vector2d> oldPositions = new LinkedHashMap<Node, Vector2d>();
 			HashMap<Node, Vector2d> oldNodeSize = new LinkedHashMap<Node, Vector2d>();
 
@@ -1675,10 +1694,11 @@ public class GraphHelper implements HelperClass {
 					}
 				if (myGraph == null) {
 					CannotUndoException ce = new CannotUndoException() {
+
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = -7608993578940926709L;
 
 						@Override
 						public String getMessage() {
@@ -1744,7 +1764,11 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -3115678952161000798L;
 
 			@Override
 			public String getPresentationName() {
@@ -1819,7 +1843,11 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -9044249037327955042L;
 
 			@Override
 			public String getPresentationName() {
@@ -1907,8 +1935,11 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2425297828439882967L;
 			HashMap<GraphElement, String> oldIds = new LinkedHashMap<GraphElement, String>();
 
 			@Override
@@ -1982,7 +2013,10 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7330433751790597854L;
 			HashMap<Node, Node> oldNode2newlyAddedNode = new LinkedHashMap<Node, Node>();
 
 			@Override
@@ -2152,8 +2186,11 @@ public class GraphHelper implements HelperClass {
 			return;
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 5471440235998919661L;
 			ArrayList<Edge> newEdges = new ArrayList<Edge>();
 
 			@Override
@@ -2188,10 +2225,11 @@ public class GraphHelper implements HelperClass {
 				}
 				if (myGraph == null)
 					throw new CannotRedoException() {
+
 						/**
-						* 
-						*/
-						private static final long serialVersionUID = 1L;
+						 * 
+						 */
+						private static final long serialVersionUID = -414541457055188113L;
 
 						@Override
 						public String getMessage() {
@@ -2242,10 +2280,11 @@ public class GraphHelper implements HelperClass {
 				}
 				if (myGraph == null) {
 					CannotUndoException ce = new CannotUndoException() {
+
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 626283458079717994L;
 
 						@Override
 						public String getMessage() {

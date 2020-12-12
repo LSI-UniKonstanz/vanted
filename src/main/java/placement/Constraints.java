@@ -12,10 +12,11 @@ import java.util.Collections;
  * @author dwyer_2
  */
 class Constraints extends ArrayList<Constraint> {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1022027768719353703L;
 
 	public Constraints(Constraints inConstraints) {
 		super(inConstraints);

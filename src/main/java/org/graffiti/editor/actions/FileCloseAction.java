@@ -35,7 +35,7 @@ public class FileCloseAction extends GraffitiAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1753053200351459126L;
 
 	/**
 	 * Creates a new FileCloseAction object.

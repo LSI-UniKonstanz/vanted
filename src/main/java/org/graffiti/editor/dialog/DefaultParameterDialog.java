@@ -71,12 +71,13 @@ import org.vanted.scaling.scalers.component.JLabelScaler;
  * @version $Revision: 1.25 $
  */
 public class DefaultParameterDialog extends AbstractParameterDialog implements ActionListener, WindowListener {
-	/**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 1L;
 
 	// ~ Instance fields ========================================================
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2056323037374508608L;
 
 	/** The <code>ImageBundle</code> of the view type chooser. */
 	protected ImageBundle iBundle = ImageBundle.getInstance();
@@ -220,7 +221,11 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		getRootPane().setDefaultButton(ok);
 
 		getRootPane().getActionMap().put("escapeAction", new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2233104321117610124L;
 
 			public void actionPerformed(ActionEvent event) {
 				DefaultParameterDialog.this.dispose();

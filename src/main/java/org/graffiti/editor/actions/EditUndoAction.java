@@ -26,8 +26,12 @@ import org.graffiti.session.EditorSession;
  * @version $Revision: 1.10 $
  */
 public class EditUndoAction extends GraffitiAction {
-	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8471739910845392234L;
+
 	// ~ Constructors ===========================================================
 	/**
 	 * Creates a new EditUndoAction object.

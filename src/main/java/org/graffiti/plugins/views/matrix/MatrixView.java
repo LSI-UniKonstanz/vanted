@@ -43,15 +43,13 @@ import org.graffiti.plugin.view.MessageListener;
  * @vanted.revision 2.7.0
  */
 public class MatrixView extends AbstractView implements ActionListener, AttributeConsumer {
-	// ~ Static fields/initializers =============================================
-
-	// ~ Instance fields ========================================================
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1378617686038001465L;
 
+	// ~ Instance fields ========================================================
 	/** The table, which contains the matrix of the graph. */
 	private JTable matrixView;
 
@@ -79,7 +77,11 @@ public class MatrixView extends AbstractView implements ActionListener, Attribut
 		setLayout(new BorderLayout());
 
 		matrixView = new JTable() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2586891616659172017L;
 
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int rowIndex, int vColIndex) {

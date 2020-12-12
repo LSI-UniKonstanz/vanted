@@ -16,13 +16,12 @@ import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
 
 public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterface {
-
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 9151183202582295365L;
 	static final String METACROP_PATHWAY_URL_PARAM = "Metacrop Pathway URL";
 	static String METACROP_PATHWAY_URL_VALUE = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/metacrop/gml-newsbgnshapes/";
-	private static final long serialVersionUID = 1L;
 
 	public TabMetaCrop() {
 

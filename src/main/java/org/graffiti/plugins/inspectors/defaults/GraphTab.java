@@ -24,10 +24,11 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.11 $
  */
 public class GraphTab extends AbstractTab {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7244001973611463035L;
 	// ~ Instance fields ========================================================
-
-	private static final long serialVersionUID = 1L;
-
 	private static GraphTab instance = null;
 
 	// ~ Constructors ===========================================================

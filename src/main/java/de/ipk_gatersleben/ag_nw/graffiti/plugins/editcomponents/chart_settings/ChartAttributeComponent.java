@@ -41,7 +41,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.viewcomponents.EdgeComponen
 
 public class ChartAttributeComponent extends AbstractAttributeComponent
 		implements GraphicAttributeConstants, PreferencesInterface {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5009297923649060841L;
 
 	static Logger logger = Logger.getLogger(ChartAttributeComponent.class);
 

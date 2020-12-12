@@ -87,7 +87,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  *             with that.
  */
 public class WorkflowHelper extends InspectorTab implements ScenarioGui, ContainsTabbedPane, HelperClass {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -815145579438677541L;
 
 	private static WorkflowHelper instance = null;
 

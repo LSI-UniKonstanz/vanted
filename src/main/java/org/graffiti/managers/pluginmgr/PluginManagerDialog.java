@@ -55,9 +55,10 @@ import org.graffiti.util.PluginHelper;
  */
 public class PluginManagerDialog extends JDialog implements ActionListener, ListSelectionListener, TableModelListener {
 	// ~ Static fields/initializers =============================================
-
-	private static final long serialVersionUID = 1L;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6058010988673700924L;
 	// ~ Instance fields ========================================================
 
 	/** The <code>ImageBundle</code> of this plugin manager dialog. */
@@ -516,8 +517,11 @@ public class PluginManagerDialog extends JDialog implements ActionListener, List
 	 * @version $Revision: 1.8 $
 	 */
 	protected class PluginsTableModel extends AbstractTableModel {
-		private static final long serialVersionUID = 1L;
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3910852196126441878L;
 		private List pluginEntries;
 
 		/**

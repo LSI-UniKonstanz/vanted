@@ -27,7 +27,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.IdRef;
 
 public class RelationLabel extends JLabel {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2184482924076036978L;
 	private Relation relation;
 
 	public RelationLabel(final Relation r, final HashMap<Entry, Node> entry2graphNode, final Pathway pathway,

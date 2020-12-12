@@ -247,7 +247,10 @@ public class DockingAttributeEditor extends AbstractValueEditComponent {
 
 	public class EdgeDockingRenderer extends JLabel implements ListCellRenderer {
 
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 453625895451054231L;
 
 		public EdgeDockingRenderer() {
 			setOpaque(true);

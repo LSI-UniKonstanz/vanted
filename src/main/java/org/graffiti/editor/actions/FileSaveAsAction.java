@@ -49,7 +49,11 @@ import org.vanted.VantedPreferences;
  */
 public class FileSaveAsAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7524445118721655238L;
 
 	/** DOCUMENT ME! */
 	private IOManager ioManager;

@@ -45,11 +45,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.font_settings.Fo
 
 public class FontChooser extends JDialog implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7100955043311531331L;
 
 	JColorChooser colorChooser;
 
-	JComboBox fontName;
+	JComboBox<?> fontName;
 
 	JCheckBox fontBold, fontItalic;
 
@@ -86,7 +89,7 @@ public class FontChooser extends JDialog implements ActionListener {
 		JPanel fontPanel = new JPanel();
 
 		String[] fontnames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-		fontName = new JComboBox(fontnames);
+		fontName = new JComboBox<String>(fontnames);
 
 		fontName.addActionListener(this);
 		fontSize = new JTextField(Integer.valueOf(initFont.getSize()).toString(), 4);

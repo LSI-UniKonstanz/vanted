@@ -26,12 +26,11 @@ import org.graffiti.plugin.editcomponent.ValueEditComponent;
  * @see AbstractValueEditContainer
  */
 public class AbstractGraffitiValueEditContainer extends AbstractValueEditContainer {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7465463694726902155L;
+	// ~ Instance fields ========================================================
 	/** The table containing the component for editing values. */
 	private NameValueTable nvt;
 
@@ -90,10 +89,11 @@ public class AbstractGraffitiValueEditContainer extends AbstractValueEditContain
 	 * @see javax.swing.JSplitPane
 	 */
 	protected class NameValueTable extends JSplitPane {
+
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 4111403064206902630L;
 
 		/** DOCUMENT ME! */
 		private JPanel left = new JPanel();

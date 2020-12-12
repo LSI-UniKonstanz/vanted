@@ -26,6 +26,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
  * @vanted.revision 2.6.5
  */
 public class MyRelationList extends JList<Relation> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3562406467116213596L;
 	RelationTypeEditor relationTypeEditor;
 	SubComponentTypesEditor subComponentTypesEditor;
 	JLabel relationDescription;
@@ -52,8 +56,6 @@ public class MyRelationList extends JList<Relation> {
 		setCellRenderer(getRelationCellRenderer());
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	public void updateRelationInfo(Relation r) {
 		relationTypeEditor.updateRelationSelection(r);

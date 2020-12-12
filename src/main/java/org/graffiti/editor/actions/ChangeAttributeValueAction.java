@@ -27,7 +27,10 @@ import org.graffiti.selection.SelectionEvent;
 public class ChangeAttributeValueAction extends SelectionAction {
 	// ~ Constructors ===========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8583877351136847444L;
 
 	/**
 	 * Creates a new ChangeAttributeValueAction object.

@@ -41,9 +41,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.network.BroadCastService;
  */
 public class TabAglet extends InspectorTab implements Runnable {
 
-	public static String newline = System.getProperty("line.separator");
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3946464315024239246L;
 
-	private static final long serialVersionUID = 1L;
+	public static String newline = System.getProperty("line.separator");
 
 	private Timer networkBroadCast;
 	private BroadCastService broadCastService = new BroadCastService(9900, 9910, 1000);

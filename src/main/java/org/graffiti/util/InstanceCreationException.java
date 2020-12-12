@@ -20,7 +20,7 @@ public class InstanceCreationException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5052589819208279218L;
 
 	/**
 	 * Creates a new InstanceCreationException object.

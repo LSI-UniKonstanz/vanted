@@ -8,7 +8,10 @@ import org.graffiti.managers.pluginmgr.PluginDescription;
 
 public class AddonTableModel extends DefaultTableModel {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1417054872084775151L;
 
 	@Override
 	public int getColumnCount() {

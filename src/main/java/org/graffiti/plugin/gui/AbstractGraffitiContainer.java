@@ -15,12 +15,11 @@ package org.graffiti.plugin.gui;
  * @version $Revision: 1.5 $
  */
 public abstract class AbstractGraffitiContainer extends AbstractGraffitiComponent implements GraffitiContainer {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3645124966759621427L;
+	// ~ Instance fields ========================================================
 	/** The id of the <code>AbstractGraffitiContainer</code>. */
 	protected String id;
 

@@ -22,12 +22,11 @@ import org.graffiti.graph.GraphElement;
  * @version $Revision: 1.4 $ $Date: 2010/12/22 13:05:35 $
  */
 public abstract class GraphElementsEdit extends GraffitiAbstractUndoableEdit {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7103160764993932741L;
+	// ~ Instance fields ========================================================
 	/** Necessary graph reference */
 	protected Graph graph;
 

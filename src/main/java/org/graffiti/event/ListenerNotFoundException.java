@@ -21,7 +21,7 @@ public class ListenerNotFoundException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7480920926138456854L;
 
 	/**
 	 * Constructs a <code>ListenerNotFoundException</code> with the specified detail

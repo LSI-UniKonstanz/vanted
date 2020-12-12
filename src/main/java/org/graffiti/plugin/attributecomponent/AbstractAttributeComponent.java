@@ -37,13 +37,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffit
  * 
  * @version $Revision: 1.9 $
  */
-public abstract class AbstractAttributeComponent extends AttributeComponent implements GraffitiViewComponent {
-	// ~ Instance fields ========================================================
-
+public abstract class AbstractAttributeComponent extends AttributeComponent implements GraffitiViewComponent {	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2418357637318671513L;
+
+	// ~ Instance fields ========================================================
 
 	/** The attribute that this component displays. */
 	protected Attribute attr;

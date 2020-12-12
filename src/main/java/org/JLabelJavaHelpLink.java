@@ -24,7 +24,10 @@ import javax.swing.JLabel;
 import org.graffiti.editor.MainFrame;
 
 public class JLabelJavaHelpLink extends JLabel {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1715926055847923180L;
 	String labelText;
 
 	public JLabelJavaHelpLink(String label, final String topic) {

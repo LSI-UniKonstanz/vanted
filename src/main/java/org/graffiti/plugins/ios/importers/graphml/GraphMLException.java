@@ -17,10 +17,12 @@ import java.io.IOException;
  * @author ruediger
  */
 public class GraphMLException extends IOException {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3402057563881951712L;
+
 	// ~ Constructors ===========================================================
-
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Constructs a new <code>GraphMLException</code> from a given
 	 * <code>Throwable</code>.

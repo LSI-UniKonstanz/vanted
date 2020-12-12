@@ -56,10 +56,11 @@ class BlocksFileFilter extends FileFilter {
 }
 
 public class RectangleDrawerPanel extends JPanel implements Printable, MouseInputListener, Observer {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4170710907119480165L;
 
 	private int prevX, prevY;
 

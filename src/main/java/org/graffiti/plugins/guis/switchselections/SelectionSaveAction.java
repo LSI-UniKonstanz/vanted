@@ -23,13 +23,12 @@ import org.graffiti.session.EditorSession;
  * Saves a selection as long as the session lives under some name.
  */
 public class SelectionSaveAction extends GraffitiAction {
-	// ~ Constructors ===========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4154988989492357844L;
 
+	// ~ Constructors ===========================================================
 	/**
 	 * Creates a new SelectionSaveAction object.
 	 * 

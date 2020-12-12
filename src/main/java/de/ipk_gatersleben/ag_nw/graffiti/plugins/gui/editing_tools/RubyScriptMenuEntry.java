@@ -18,7 +18,10 @@ import javax.swing.JMenuItem;
  */
 public class RubyScriptMenuEntry extends JMenuItem {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4594810662012219162L;
 
 	/**
 	 * The beanshell commando file-name

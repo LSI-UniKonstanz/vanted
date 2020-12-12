@@ -29,7 +29,7 @@ public class AddAttributeAction extends SelectionAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7774775271731361767L;
 
 	/**
 	 * Constructs a new add attribute action.

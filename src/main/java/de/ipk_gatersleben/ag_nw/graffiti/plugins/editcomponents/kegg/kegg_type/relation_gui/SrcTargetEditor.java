@@ -44,7 +44,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Entry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
 
 public class SrcTargetEditor extends JPanel {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9070929659063869964L;
 
 	private Relation currentRelation;
 

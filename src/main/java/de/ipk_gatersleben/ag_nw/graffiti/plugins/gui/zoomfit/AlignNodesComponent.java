@@ -33,9 +33,12 @@ public class AlignNodesComponent extends JToolBar
 	// ~ Instance fields
 	// ========================================================
 
-	private static final long serialVersionUID = 1L;
-
 	// JToolBar myContent;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7493233604736279353L;
 
 	/** The alignment buttons */
 	private JButton jbHorB, jbHorC, jbHorT, jbVertC, jbVertL, jbVertR;

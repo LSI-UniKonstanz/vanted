@@ -64,7 +64,11 @@ public class HideOrShowChildNodes extends AbstractAlgorithm implements ProvidesN
 
 	private Action getHideAllChildrenAction() {
 		return new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5418673992589571517L;
 
 			@Override
 			public String toString() {
@@ -95,7 +99,11 @@ public class HideOrShowChildNodes extends AbstractAlgorithm implements ProvidesN
 
 	private Action getShowDirectChildrenAction() {
 		return new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4782498941899246045L;
 
 			@Override
 			public String toString() {
@@ -110,7 +118,11 @@ public class HideOrShowChildNodes extends AbstractAlgorithm implements ProvidesN
 
 	private Action getShowAllChildrenAction() {
 		return new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 550148004331321446L;
 
 			@Override
 			public String toString() {

@@ -24,7 +24,7 @@ public class DnDList extends javax.swing.JList
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -195565244220495497L;
 
 	@SuppressWarnings("unused")
 	private java.awt.dnd.DropTarget dropTarget = null;

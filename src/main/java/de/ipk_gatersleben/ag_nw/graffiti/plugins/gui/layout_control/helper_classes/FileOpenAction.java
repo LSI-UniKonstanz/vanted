@@ -39,7 +39,10 @@ import org.graffiti.session.EditorSession;
 public class FileOpenAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1996719968269727433L;
 
 	/** DOCUMENT ME! */
 	private IOManager ioManager;

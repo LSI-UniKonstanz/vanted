@@ -20,7 +20,10 @@ package org.graffiti.event;
 public class TransactionEvent extends AbstractEvent {
 	// ~ Instance fields ========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7899323840573283619L;
 	/**
 	 * Contains the objects that have been changed during the lifetime of a
 	 * transaction.

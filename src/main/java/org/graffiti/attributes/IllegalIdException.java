@@ -18,7 +18,10 @@ package org.graffiti.attributes;
 public class IllegalIdException extends RuntimeException {
 	// ~ Constructors ===========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8310727638389056412L;
 
 	/**
 	 * Constructs an <code>IllegalIdException</code> with the specified detail

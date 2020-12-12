@@ -31,7 +31,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  */
 public class AddonsOptionsPane extends AbstractOptionPane {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7064954066138435049L;
 	private static double border = 5;
 
 	/**

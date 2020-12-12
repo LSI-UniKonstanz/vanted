@@ -3,10 +3,11 @@ package placement;
 import javax.swing.JFrame;
 
 public class DebugFrame extends JFrame {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -806384303382899523L;
 
 	@SuppressWarnings("unused")
 	private Constraints constraints;

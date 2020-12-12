@@ -28,7 +28,7 @@ public class FileSaveAllAction extends GraffitiAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -53357153860385957L;
 
 	/**
 	 * Creates a new FileSaveAllAction object.

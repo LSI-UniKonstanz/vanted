@@ -25,12 +25,12 @@ import org.vanted.scaling.scalers.component.JTextComponentScaler;
  * @version $Revision: 1.7 $
  */
 public class OverviewOptionPane extends AbstractOptionPane {
-	// ~ Constructors ===========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5031482675780050322L;
+	
+	// ~ Constructors ===========================================================
 
 	/**
 	 * Constructor for OverviewOptionPane.

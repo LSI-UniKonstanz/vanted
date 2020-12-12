@@ -51,7 +51,7 @@ public class ClassPathPluginDescriptionCollector implements PluginDescriptionCol
 	 */
 	@SuppressWarnings("unchecked")
 	public List collectPluginDescriptions() {
-		HashSet result = new HashSet();
+		HashSet<String> result = new HashSet<>();
 
 		collectFilesInRoots(splitClassPath(System.getProperty("java.class.path"), System.getProperty("path.separator")),
 				result);
@@ -59,7 +59,7 @@ public class ClassPathPluginDescriptionCollector implements PluginDescriptionCol
 		// create a list of all plugin entries
 		List<DefaultPluginEntry> descriptions = new LinkedList<DefaultPluginEntry>();
 
-		for (Iterator i = result.iterator(); i.hasNext();) {
+		for (Iterator<String> i = result.iterator(); i.hasNext();) {
 			// create a new parser instance for every xml file.
 			// this is necessary to prevent inconsitencies in the
 			// state of the XML parser, if the parsing of an xml
@@ -69,7 +69,7 @@ public class ClassPathPluginDescriptionCollector implements PluginDescriptionCol
 			InputStream is = null;
 
 			try {
-				String fileName = (String) i.next();
+				String fileName = i.next();
 
 				URL u = new URL(fileName);
 

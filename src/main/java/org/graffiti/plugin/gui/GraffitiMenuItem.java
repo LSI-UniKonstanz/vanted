@@ -18,12 +18,11 @@ import org.graffiti.editor.MainFrame;
  * TODO
  */
 public class GraffitiMenuItem extends JMenuItem implements GraffitiComponent {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8938169395007853640L;
+	// ~ Instance fields ========================================================
 	/** The id of the component the menu item prefers to be inserted in. */
 	protected String preferredComponent;
 

@@ -30,7 +30,7 @@ public abstract class EditPanel extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8067554428406228546L;
 	/** a reference to the map between old and new graph elements */
 	protected Map<?, ?> geMap;
 

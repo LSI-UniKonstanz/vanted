@@ -33,7 +33,10 @@ import org.graffiti.session.SessionListener;
 public class ZoomChangeComponent extends AbstractGraffitiComponent
 		implements ActionListener, ViewListener, SessionListener {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6164758999280638792L;
 
 	/** DOCUMENT ME! */
 	private JButton combo;

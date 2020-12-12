@@ -16,11 +16,10 @@ import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.StandardLegend;
 
 public class MyLegendComponent extends JPanel {
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -9014849369414957031L;
 	private StandardLegend sl;
 	private double scale;
 

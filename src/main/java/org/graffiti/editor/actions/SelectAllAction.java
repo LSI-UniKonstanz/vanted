@@ -23,7 +23,7 @@ public class SelectAllAction extends SelectionAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -9099430751885921428L;
 
 	/**
 	 * Constructs a new copy action.

@@ -44,8 +44,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.IdRef;
 
 public class SubtypeCompoundEditor extends JPanel {
-	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3174782300945637151L;
 	private Relation currentRelation;
 	private MyRelationList list;
 	private MutableList<Entry> subProdSelection = new MutableList<>(new DefaultListModel<Entry>());

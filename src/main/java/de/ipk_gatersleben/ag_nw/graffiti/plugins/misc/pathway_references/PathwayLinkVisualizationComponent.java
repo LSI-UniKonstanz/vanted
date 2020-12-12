@@ -28,8 +28,11 @@ import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.ShapeNotFoundException;
 
 public class PathwayLinkVisualizationComponent extends AbstractAttributeComponent implements MouseMotionListener {
-	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6436703663171867672L;
 	NodePathwayLinkVisualizationAttribute va = null;
 	ArrayList<DrawingGroup> items = null;
 

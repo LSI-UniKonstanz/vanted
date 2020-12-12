@@ -25,7 +25,7 @@ public class EdgeRoutingPlugin extends GenericPluginAdapter {
 	 * copies the native Adaptagrams libraries if necessary.
 	 */
 	public EdgeRoutingPlugin() {
-
+		
 		// register the edge routing algorithm
 		this.algorithms = new Algorithm[] { new EdgeRoutingAlgorithm() };
 

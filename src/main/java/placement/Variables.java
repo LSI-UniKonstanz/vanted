@@ -12,10 +12,11 @@ import java.util.Comparator;
  */
 
 public class Variables extends ArrayList<Variable> {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6057989365330332912L;
 
 	Variables getSources() {
 		Variables sources = new Variables();

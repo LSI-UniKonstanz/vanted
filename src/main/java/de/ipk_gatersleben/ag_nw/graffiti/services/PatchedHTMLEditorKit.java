@@ -26,8 +26,10 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 public class PatchedHTMLEditorKit extends HTMLEditorKit {
-
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 817683297749618803L;
 
 	// Since we only have two mouse events to listen to, we'll use the same
 	// method to generate the appropriate hyperlinks and distinguish
@@ -45,7 +47,10 @@ public class PatchedHTMLEditorKit extends HTMLEditorKit {
 	}
 
 	public static class LinkController extends MouseInputAdapter implements Serializable {
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8646533360830612263L;
 		URL currentUrl = null;
 
 		// here's the mouseClicked event similar to the one in

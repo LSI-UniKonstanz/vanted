@@ -31,13 +31,12 @@ import org.graffiti.session.SessionListener;
  */
 public class ZoomChangeComponent extends AbstractGraffitiComponent
 		implements ActionListener, ViewListener, SessionListener {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8781891824935548293L;
 
+	// ~ Instance fields ========================================================
 	/** DOCUMENT ME! */
 	private JComboBox<String> combo;
 

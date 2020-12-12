@@ -23,7 +23,7 @@ public class PluginManagerException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8995166117614010696L;
 
 	/** The <code>StringBundle</code> of the exception. */
 	protected static StringBundle sBundle = StringBundle.getInstance();

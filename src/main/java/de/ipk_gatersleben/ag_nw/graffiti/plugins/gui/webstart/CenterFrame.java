@@ -11,7 +11,10 @@ import java.awt.Rectangle;
 
 class CenterFrame extends Frame {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4980101102842597496L;
 
 	/**
 	 * @param applicationName

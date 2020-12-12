@@ -55,7 +55,10 @@ import org.vanted.scaling.scalers.component.JLabelScaler;
 public class ParameterEditPanel extends JPanel {
 	// ~ Instance fields ========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7641144078414449557L;
 
 	private List<ValueEditComponent> displayedVEC;
 

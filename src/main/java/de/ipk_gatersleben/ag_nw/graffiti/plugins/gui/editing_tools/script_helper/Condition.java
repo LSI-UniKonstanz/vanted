@@ -324,8 +324,6 @@ public class Condition implements ConditionInterface {
 	}
 
 	public boolean setData(Element conditionElement, Element experimentChildElement) {
-
-		@SuppressWarnings("unchecked") // update lib to remove suppression
 		List<Attribute> attributeList = conditionElement.getAttributes();
 
 		if (experimentChildElement != null)
@@ -342,7 +340,6 @@ public class Condition implements ConditionInterface {
 				setAttribute(a);
 			}
 		}
-		@SuppressWarnings("unchecked") // update lib to remove suppression
 		List<Element> childrenList = conditionElement.getChildren();
 		for (Element childElement : childrenList) {
 			setDataOfChildElement(childElement);

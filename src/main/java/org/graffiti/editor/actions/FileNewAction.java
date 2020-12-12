@@ -28,7 +28,7 @@ public class FileNewAction extends GraffitiAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5482805688657702432L;
 	/** DOCUMENT ME! */
 	private ViewManager viewManager;
 

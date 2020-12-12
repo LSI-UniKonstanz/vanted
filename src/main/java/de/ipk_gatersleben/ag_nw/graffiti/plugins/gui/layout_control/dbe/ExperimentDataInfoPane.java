@@ -77,9 +77,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  */
 public class ExperimentDataInfoPane extends JComponent implements SessionListener {
 
-	private static final long serialVersionUID = 1L;
-
 	// private Document mydoc;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5305083121223250824L;
 
 	private ExperimentInterface md;
 

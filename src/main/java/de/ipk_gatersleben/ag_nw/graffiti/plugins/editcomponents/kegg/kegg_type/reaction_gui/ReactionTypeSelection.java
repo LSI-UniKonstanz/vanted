@@ -12,7 +12,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.ReactionType;
 
 public class ReactionTypeSelection extends JComboBox<ReactionType> {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -333500598608875831L;
 	private Reaction currReaction;
 	private MyReactionList list;
 

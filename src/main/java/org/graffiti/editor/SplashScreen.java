@@ -43,7 +43,7 @@ public class SplashScreen extends JFrame implements SplashScreenInterface {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3580998514612999130L;
 
 	/** Display for the progress made in loading Graffiti */
 	private static JProgressBar progressBar;

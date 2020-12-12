@@ -173,7 +173,11 @@ public class MegaCreateTool extends MegaTools {
 		bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
 
 		deleteAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2822915969413737718L;
 
 			public void actionPerformed(ActionEvent e) {
 				// useful to check if the selection isn't empty
@@ -873,8 +877,11 @@ public class MegaCreateTool extends MegaTools {
 		final ObjectRef result = new ObjectRef();
 
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 223013535622328428L;
 			Node newNode = null;
 			private Edge newEdge1 = null, newEdge2 = null;
 			private Node oldSource = null, oldTarget = null;

@@ -29,7 +29,7 @@ public abstract class AbstractParameterDialog extends JDialog implements Paramet
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6466027298853748633L;
 	/** The <code>ValueEditContainer</code> for this dialog. */
 	protected ValueEditContainer valueEditContainer;
 

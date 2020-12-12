@@ -648,8 +648,11 @@ public class GUIhelper {
 }
 
 class MyDialog extends JDialog {
-	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1368055415676568665L;
 	private final String title;
 	private final String[] buttons;
 	private int returnValue;
@@ -707,7 +710,11 @@ class MyDialog extends JDialog {
 
 		final String ESC_ACTION_KEY = "ESC_ACTION_KEY";
 		getRootPane().getActionMap().put(ESC_ACTION_KEY, new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -1251109539079548033L;
 
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);

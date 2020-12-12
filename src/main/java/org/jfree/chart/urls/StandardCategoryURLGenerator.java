@@ -52,7 +52,10 @@ import org.jfree.util.ObjectUtils;
  */
 public class StandardCategoryURLGenerator implements CategoryURLGenerator, Cloneable, Serializable {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8275944906298579767L;
 
 	/** Prefix to the URL */
 	private String prefix = "index.html";

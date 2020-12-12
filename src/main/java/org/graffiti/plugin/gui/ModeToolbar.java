@@ -27,13 +27,12 @@ import org.graffiti.plugin.tool.Tool;
  * @see org.graffiti.plugin.mode.Mode
  */
 public class ModeToolbar extends GraffitiToolbar {
-	// ~ Constructors ===========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8235173296551689681L;
 
+	// ~ Constructors ===========================================================
 	/**
 	 * Constructor that sets the id of this toolbar. The id is set to the name of
 	 * the mode. Tools can be added to the mode represented by this toolbar by

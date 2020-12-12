@@ -24,7 +24,7 @@ public abstract class AbstractEvent extends EventObject {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2383616846719461551L;
 
 	public enum EVENTTYPE {
 		CREATED, UPDATED, DELETED

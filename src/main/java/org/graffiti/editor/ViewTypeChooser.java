@@ -52,8 +52,13 @@ import org.vanted.scaling.scalers.component.JLabelScaler;
  */
 public class ViewTypeChooser extends JDialog
 		implements ListSelectionListener, ActionListener, MouseListener, WindowListener {
-	private static final long serialVersionUID = 1L;
+
 	// ~ Instance fields ========================================================
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3894438522416265915L;
 
 	/** The <code>ImageBundle</code> of the view type chooser. */
 	protected ImageBundle iBundle = ImageBundle.getInstance();

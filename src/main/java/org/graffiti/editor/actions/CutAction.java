@@ -34,12 +34,12 @@ import org.graffiti.selection.Selection;
  * @version $Revision: 1.6.4.1 $
  */
 public class CutAction extends SelectionAction {
-	// ~ Constructors ===========================================================
-
 	/**
-	 * Comment for <code>serialVersionUID</code>
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4714132737262703703L;
+
+	// ~ Constructors ===========================================================
 
 	/**
 	 * Constructs a new cut action.

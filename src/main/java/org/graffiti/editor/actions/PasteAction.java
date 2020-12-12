@@ -39,9 +39,9 @@ public class PasteAction extends SelectionAction {
 	// ~ Constructors ===========================================================
 
 	/**
-	 * Comment for <code>serialVersionUID</code>
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3707097349090210803L;
 
 	private static final int pasteOffset = 50;
 

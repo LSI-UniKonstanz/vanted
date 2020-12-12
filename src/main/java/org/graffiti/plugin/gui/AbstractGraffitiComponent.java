@@ -19,12 +19,11 @@ import org.graffiti.editor.MainFrame;
  * @version $Revision: 1.5 $
  */
 public abstract class AbstractGraffitiComponent extends JPanel implements GraffitiComponent {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3884722947525157168L;
+	// ~ Instance fields ========================================================
 	/**
 	 * The component wherer the current <code>AbstractGraffitiContainer</code>
 	 * prefers to be inserted.

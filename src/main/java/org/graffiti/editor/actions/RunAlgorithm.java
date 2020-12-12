@@ -30,7 +30,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar.SelectWindowsAlgor
 public class RunAlgorithm extends GraffitiAction {
 	// ~ Instance fields ========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6118584661754407756L;
 
 	/** The class name of the algorithm to run. */
 	private final String algorithmClassName;

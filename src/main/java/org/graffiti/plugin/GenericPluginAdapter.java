@@ -81,6 +81,7 @@ public abstract class GenericPluginAdapter implements GenericPlugin {
 	/**
 	 * Constructs a new <code>GenericPluginAdapter</code>.
 	 */
+	@SuppressWarnings("unchecked")
 	protected GenericPluginAdapter() {
 		this.algorithms = new Algorithm[0];
 		this.attributes = new Class[0];

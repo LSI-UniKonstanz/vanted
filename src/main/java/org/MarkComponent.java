@@ -22,8 +22,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class MarkComponent extends JComponent {
-	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -161138351776622049L;
 	JLabel b1 = new JLabel();
 	JLabel b2 = new JLabel();
 	JLabel bb1 = new JLabel();

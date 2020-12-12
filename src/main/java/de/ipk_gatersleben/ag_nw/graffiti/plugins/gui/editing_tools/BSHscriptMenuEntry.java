@@ -38,7 +38,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  */
 public class BSHscriptMenuEntry extends JMenuItem {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 23061869481093260L;
 
 	/**
 	 * The beanshell commando file-name

@@ -16,11 +16,10 @@ package net.iharder.dnd;
  * @version 1.1
  */
 public class FileDropEvent extends java.util.EventObject {
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 259739987174376013L;
 	private java.io.File[] files;
 
 	/**

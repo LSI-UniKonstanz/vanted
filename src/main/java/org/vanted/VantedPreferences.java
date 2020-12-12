@@ -253,7 +253,10 @@ public class VantedPreferences implements PreferencesInterface {
 	 */
 	class LookAndFeelWrapperListRenderer extends DefaultListCellRenderer {
 
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3728755116362893068L;
 
 		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,

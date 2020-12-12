@@ -8,7 +8,11 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 
 public class TransactionHashMap extends HashMap<Object, Object> {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 784110795570316171L;
 
 	@Override
 	public Object put(Object key, Object value) {

@@ -45,7 +45,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContainer {
 	// to avoid collisions let ID be package name + menu + name of the menu
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1170152185709002720L;
 
 	public String errorMessagesMenuTitle = "Error Messages";
 

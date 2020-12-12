@@ -22,13 +22,12 @@ import org.graffiti.graph.GraphElement;
  * @version $Revision: 1.6 $
  */
 public abstract class GraffitiAbstractUndoableEdit extends AbstractUndoableEdit {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -337942202981548644L;
 
+	// ~ Instance fields ========================================================
 	/**
 	 * The reference for the map between graph elements recreated after undo
 	 * processing and original graph elements.

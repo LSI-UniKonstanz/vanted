@@ -29,6 +29,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
  * @vanted.revision 2.6.5
  */
 public class MyReactionList extends JList<Reaction> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2271974738858700400L;
 	ReactionIdEditor reactionIdEditor;
 	ReactionTypeSelection reactionTypeSelection;
 	JLabel reactionDescription;
@@ -59,8 +63,6 @@ public class MyReactionList extends JList<Reaction> {
 
 		setCellRenderer(getReactionCellRenderer());
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	public void updateReactionInfo(Reaction r) {
 		if (r != null) {

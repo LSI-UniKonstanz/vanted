@@ -30,7 +30,10 @@ import java.awt.event.WindowListener;
  */
 public class MessageBox extends Dialog implements ActionListener, WindowListener {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7835679317849546097L;
 	Button ok;
 	Button cancel;
 	TextField inp;

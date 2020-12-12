@@ -26,7 +26,10 @@ import org.graffiti.options.OptionPane;
  */
 public class OptionSetter extends JComponent {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2890355497496512055L;
 
 	/**
 	 * @param component

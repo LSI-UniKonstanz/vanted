@@ -29,7 +29,11 @@ import java.util.Arrays;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.database.dbe.ProgressManager;
 
 public class TextFile extends ArrayList<String> {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5218439216820211025L;
 
 	/**
 	 * Tools to read and write files as single strings:

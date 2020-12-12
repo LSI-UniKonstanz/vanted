@@ -38,7 +38,11 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 
 	private void setGUI(LineModeAttribute lma, boolean showEmpty) {
 		guiComp = new JComboBox<LineModeSetting>(getLineModes()) {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6926152662005254477L;
 
 			@Override
 			public Dimension getMinimumSize() {

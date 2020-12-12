@@ -31,8 +31,11 @@ public class ClusterHelperToolbarComponent extends JToolBar
 
 	// ~ Instance fields
 	// ========================================================
-
-	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6175031515425979019L;
 
 	// JToolBar myContent;
 

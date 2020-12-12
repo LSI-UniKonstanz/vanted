@@ -21,7 +21,7 @@ public class ParameterOutOfBoundsException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4524277824406026568L;
 }
 
 // ------------------------------------------------------------------------------

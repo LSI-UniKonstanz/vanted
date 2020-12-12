@@ -27,8 +27,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawC
 @SuppressWarnings("deprecation")
 public class MyXML_XYDataset extends AbstractXYDataset {
 
-	private static final long serialVersionUID = 1L;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7441296585310430842L;
 	private boolean ranksCalculated = false;
 	private boolean calcMerge = false;
 	private int calcOffset = Integer.MAX_VALUE;

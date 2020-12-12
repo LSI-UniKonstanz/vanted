@@ -36,8 +36,12 @@ public class NodeShapeEditComponent extends ComboBoxEditComponent {
 		super(disp);
 		this.comboText = AttributeHelper.getShapeDescritions();
 		this.comboValue = AttributeHelper.getShapeClasses();
-		this.comboBox = new JComboBox(this.comboText) {
-			private static final long serialVersionUID = 1L;
+		this.comboBox = new JComboBox<Object>(this.comboText) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6524009339332909062L;
 
 			@Override
 			public Dimension getMinimumSize() {

@@ -28,7 +28,7 @@ public class ToolBarLayout extends FlowLayout {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -9094581492654351756L;
 
 	/*
 	 * @see FlowLayout#FlowLayout()

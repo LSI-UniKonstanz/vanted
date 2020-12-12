@@ -29,13 +29,13 @@ import javax.swing.border.AbstractBorder;
 public class NodeBorder extends AbstractBorder {
 	// ~ Instance fields ========================================================
 
+	/** DOCUMENT ME! */
+	// private final AffineTransform IDENTITY = new AffineTransform();
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
-	/** DOCUMENT ME! */
-	// private final AffineTransform IDENTITY = new AffineTransform();
+	private static final long serialVersionUID = -4725673425003887161L;
 
 	/** Color used to paint border. */
 	private Color color;

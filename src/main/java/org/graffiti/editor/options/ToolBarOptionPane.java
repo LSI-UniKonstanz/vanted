@@ -35,7 +35,7 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1185481309539878864L;
 
 	/** DOCUMENT ME! */
 	private JCheckBox showToolbar;
@@ -107,10 +107,11 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 	 * The tool bar edit dialog.
 	 */
 	protected class ToolBarEditDialog extends JDialog {
+
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 3247361229636300402L;
 
 		/**
 		 * Constructs a new tool bar editor instance.

@@ -53,7 +53,7 @@ public class KeggAPIService {
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 7688882888446634509L;
 		String[] listIDsToTranslateFromKegg;
 		int leftIdx;
 		int rightIdx;

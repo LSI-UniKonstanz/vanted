@@ -44,7 +44,10 @@ import java.awt.Insets;
 
 public class SingleFiledLayout implements java.awt.LayoutManager, java.io.Serializable {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6272984621856402492L;
 
 	/** Align components in a column */
 	public static final int COLUMN = 0;

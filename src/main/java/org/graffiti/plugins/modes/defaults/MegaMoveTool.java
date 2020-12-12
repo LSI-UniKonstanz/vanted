@@ -216,7 +216,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		nodeCursor = new Cursor(Cursor.MOVE_CURSOR);
 
 		deleteAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 8790717790481216046L;
 
 			public void actionPerformed(ActionEvent e) {
 				if (AdvancedLabelTool.getEditDeleteAction() != null)
@@ -237,7 +241,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		leftAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -7527205493987647524L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("LEFT");
@@ -246,7 +254,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		upAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -3889724835182564442L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("UP");
@@ -255,7 +267,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		rightAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2747875290521605901L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("RIGHT");
@@ -265,7 +281,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		downAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4128181059738172955L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("DOWN");
@@ -274,7 +294,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		leftActionFine = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5779329285207644490L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("LEFT FINE");
@@ -283,7 +307,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		upActionFine = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2981573408263736812L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("UP FINE");
@@ -292,7 +320,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		rightActionFine = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2585873025884451444L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("RIGHT FINE");
@@ -302,7 +334,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		downActionFine = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -3787382139726469157L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("DOWN FINE");
@@ -311,7 +347,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		};
 
 		escAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4936387920302357087L;
 
 			public void actionPerformed(ActionEvent arg0) {
 				unmarkAll();
@@ -741,7 +781,10 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	public CoordinateAttribute processBendCreation(final MouseEvent e, final Component c) {
 
 		AbstractUndoableEdit createNewBend = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4522781434170099705L;
 			private ArrayList<CoordinateAttribute> bendsBeforeBending = new ArrayList<CoordinateAttribute>();
 			private boolean newStyleSet = false;
 			private Edge bendedEdge;

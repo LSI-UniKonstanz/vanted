@@ -59,6 +59,11 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 2365123393058727688L;
+
+	/**
+	 * 
+	 */
 	private static final BasicStroke BASIC_STROKE = new BasicStroke();
 
 	private static Logger logger = Logger.getLogger(AbstractGraphElementComponent.class);
@@ -66,8 +71,6 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	private static boolean isDebuggingLevel = Logger.getRootLogger().getLevel() == Level.DEBUG;
 
 	// ~ Instance fields ========================================================
-	private static final long serialVersionUID = 1L;
-
 	/** The <code>GraphElement</code> that is represented by this component. */
 	protected GraphElement graphElement;
 

@@ -27,7 +27,11 @@ import org.graffiti.session.EditorSession;
  */
 public class EditRedoAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6331846569157657511L;
 
 	/**
 	 * Creates a new EditRedoAction object.

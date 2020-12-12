@@ -24,7 +24,10 @@ import org.graffiti.options.AbstractOptionPane;
  */
 public class ShortcutsOptionPane extends AbstractOptionPane {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6449091056036042475L;
 
 	/**
 	 * Constructor for ShortcutsOptionPane.
@@ -49,11 +52,11 @@ public class ShortcutsOptionPane extends AbstractOptionPane {
 	 * The table of shortcuts.
 	 */
 	protected class ShortcutsModel extends AbstractTableModel {
+
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
-
+		private static final long serialVersionUID = -6780864845253368682L;
 		/** Contains a list of key bindings. */
 		private List<?> bindings;
 

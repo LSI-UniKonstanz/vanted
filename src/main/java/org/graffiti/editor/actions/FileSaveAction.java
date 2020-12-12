@@ -34,7 +34,10 @@ import org.graffiti.session.SessionManager;
 public class FileSaveAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6260210660304675944L;
 
 	/** DOCUMENT ME! */
 	private final IOManager ioManager;

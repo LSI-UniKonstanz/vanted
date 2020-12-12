@@ -28,14 +28,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.PatchedHTMLEditorKit;
  * @author klukas
  */
 public class ClickableHTMLtableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
-	private static final long serialVersionUID = 1L;
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax
-	 * .swing.JTable, java.lang.Object, boolean, boolean, int, int)
 	 */
+	private static final long serialVersionUID = -8433186541580953404L;
+
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
 

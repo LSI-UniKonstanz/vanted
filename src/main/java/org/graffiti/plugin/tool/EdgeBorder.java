@@ -42,7 +42,7 @@ public class EdgeBorder extends AbstractBorder {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2536785806090003576L;
 
 	/** Color used to paint border. */
 	protected Color color;

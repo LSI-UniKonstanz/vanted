@@ -23,7 +23,7 @@ public class ParserException extends IOException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3839416019887418417L;
 
 	/**
 	 * Constructs a new <code>ParserException</code>.

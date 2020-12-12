@@ -32,6 +32,11 @@ import org.graffiti.plugin.inspector.SubtabHostTab;
  */
 public class InspectorContainer extends JTabbedPane implements GraffitiContainer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2221389820047572656L;
+
 	static Logger logger = Logger.getLogger(InspectorContainer.class);
 	static {
 		logger.setLevel(Level.INFO); // Adjust for debugging purposes
@@ -41,11 +46,6 @@ public class InspectorContainer extends JTabbedPane implements GraffitiContainer
 	/** The tabbed pane for the edge-, node- and graph-tab. */
 
 	// private JTabbedPane tabbedPane;
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/** The list of the inspector's tabs. */
 	private List<InspectorTab> tabs;

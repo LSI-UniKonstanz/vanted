@@ -27,7 +27,11 @@ import org.graffiti.plugins.attributecomponents.simplelabel.LabelComponent;
 import org.graffiti.plugins.views.defaults.RectangleNodeShape;
 
 public class CompoundImageAttributeComponent extends AbstractAttributeComponent implements GraphicAttributeConstants {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8628783023165297003L;
 
 	protected JLabel imageComponent;
 

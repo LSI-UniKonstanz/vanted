@@ -6,7 +6,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MyPluginTreeNode extends DefaultMutableTreeNode {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7308527676284643518L;
 	String nodeText;
 	Class<?> identifyAs;
 
@@ -16,11 +19,6 @@ public class MyPluginTreeNode extends DefaultMutableTreeNode {
 		this.identifyAs = identifyAs;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return nodeText;

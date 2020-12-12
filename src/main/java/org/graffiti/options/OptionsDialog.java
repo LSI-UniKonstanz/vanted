@@ -65,6 +65,10 @@ import org.graffiti.plugin.view.View;
 public class OptionsDialog extends JDialog implements ActionListener, TreeSelectionListener {
 	// ~ Static fields/initializers =============================================
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7483590592571256294L;
 	private static Logger logger = Logger.getLogger(OptionsDialog.class);
 
 	static {
@@ -77,11 +81,6 @@ public class OptionsDialog extends JDialog implements ActionListener, TreeSelect
 	public static final String CAT_GENERAL = "General";
 	public static final String CAT_TOOLS = "Tools";
 	public static final String CAT_ATTR_COMP = "Visualisation";
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/** The <code>StringBundle</code> of this options dialog. */
 	private static StringBundle sBundle = StringBundle.getInstance();
@@ -740,10 +739,11 @@ public class OptionsDialog extends JDialog implements ActionListener, TreeSelect
 	 * @version $Revision: 1.6 $ $Date: 2010/12/22 13:05:35 $
 	 */
 	class PaneNameRenderer extends DefaultTreeCellRenderer {
+
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2292349156565417208L;
 
 		/** DOCUMENT ME! */
 		private Font groupFont;

@@ -30,7 +30,7 @@ public class EdgeEvent extends AbstractEvent {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5218501473013545622L;
 
 	/**
 	 * Constructs an edge event object with the specified source component.

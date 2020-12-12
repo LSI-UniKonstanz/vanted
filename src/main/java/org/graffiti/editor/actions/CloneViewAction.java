@@ -22,7 +22,10 @@ import org.graffiti.plugin.actions.GraffitiAction;
 public class CloneViewAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5357908122813820750L;
 
 	/**
 	 * Constructs a new clone view action.

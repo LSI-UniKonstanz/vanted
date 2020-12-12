@@ -3,7 +3,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class PathwayWebLinkTreeNode extends DefaultMutableTreeNode {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7897804331599566418L;
 	private String label;
 	private PathwayWebLinkItem metaCropListItem;
 

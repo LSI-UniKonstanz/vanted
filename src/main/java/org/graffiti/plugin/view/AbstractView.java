@@ -45,9 +45,13 @@ import org.graffiti.plugin.inspector.InspectorTab;
  */
 public abstract class AbstractView extends JComponent implements View {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8968573850380080881L;
+
 	Logger logger = Logger.getLogger(AbstractView.class);
 	// ~ Static fields/initializers =============================================
-	private static final long serialVersionUID = 1L;
 
 	/** The autoscroll margin. */
 	protected static final int autoscrollMargin = 20;

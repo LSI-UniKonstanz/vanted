@@ -30,13 +30,12 @@ import org.graffiti.plugin.tool.Tool;
  * @version $Revision: 1.11 $ $Date: 2010/12/22 13:05:54 $
  */
 public class ToolButton extends GraffitiToggleButton implements GraffitiToolComponent, ActionListener {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3017277902303429061L;
 
+	// ~ Instance fields ========================================================
 	/** The tool this button is identified with. */
 	private Tool tool;
 

@@ -32,7 +32,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggHel
  */
 public class IPKnodeComponent extends NodeComponent {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7083858448111248041L;
 
 	@Override
 	public String getToolTipText() {

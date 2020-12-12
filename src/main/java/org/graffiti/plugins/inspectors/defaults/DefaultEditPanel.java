@@ -92,9 +92,12 @@ import org.graffiti.util.PluginHelper;
  */
 public class DefaultEditPanel extends EditPanel {
 
-	private static final long serialVersionUID = 1L;
-
 	// ~ Static fields/initializers =============================================
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4391542141537877530L;
 
 	/** The logger for the current class. */
 	static final Logger logger = Logger.getLogger(DefaultEditPanel.class.getName());
@@ -210,7 +213,11 @@ public class DefaultEditPanel extends EditPanel {
 		applyButton.setDefaultCapable(true);
 		applyButton.setMnemonic(1);
 		applyAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8376920324878678081L;
 
 			public void actionPerformed(ActionEvent e) {
 				applyChanges();
@@ -226,7 +233,11 @@ public class DefaultEditPanel extends EditPanel {
 		applyRedrawButton.setMnemonic(1);
 		applyRedrawButton.setOpaque(false);
 		applyRedrawButton.addActionListener(new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -6361938670548654590L;
 
 			public void actionPerformed(ActionEvent e) {
 				if (MainFrame.getInstance().getActiveEditorSession() == null)
@@ -621,8 +632,11 @@ public class DefaultEditPanel extends EditPanel {
 	protected void deleteAttribute(final String delPath) {
 
 		AbstractUndoableEdit delAttrCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -7660873212954764648L;
 			private Map<Attributable, ArrayList<Attribute>> deletedAttributes = new HashMap<>();
 			final Collection<? extends Attributable> attributables = graphElements;
 
@@ -1050,7 +1064,11 @@ public class DefaultEditPanel extends EditPanel {
 		 * @version $Revision: 1.30 $ $Date: 2010/12/20 15:07:39 $
 		 */
 		private class AttributeSelector extends JDialog {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4777475925143992970L;
 
 			/** DOCUMENT ME! */
 			private final JButton cancelButton;

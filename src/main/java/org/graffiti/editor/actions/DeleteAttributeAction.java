@@ -27,9 +27,9 @@ public class DeleteAttributeAction extends SelectionAction {
 	// ~ Constructors ===========================================================
 
 	/**
-	 * Comment for <code>serialVersionUID</code>
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -797556201684320153L;
 
 	/**
 	 * Constructs a new delete attribute action.

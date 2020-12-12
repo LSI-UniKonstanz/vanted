@@ -30,7 +30,7 @@ public class RedrawViewAction extends GraffitiAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6939141137836275872L;
 
 	/**
 	 * Creates a new RedrawViewAction object.

@@ -19,12 +19,11 @@ import org.graffiti.editor.MainFrame;
  * TODO
  */
 public abstract class GraffitiButton extends JButton implements GraffitiComponent {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8413161275632854152L;
+	// ~ Instance fields ========================================================
 	/** The preffered component of this button. */
 	protected String preferredComponent;
 

@@ -34,7 +34,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  */
 public class XMLdataTablePane extends JComponent {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -915373546950214889L;
 	String myCompoundID;
 	String mySubstrateName;
 	String myFormula;

@@ -62,7 +62,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
 public class SearchDialog extends JDialog {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8184468198821429691L;
 
 	private final Collection<AttributePathNameSearchType> possibleAttributes;
 
@@ -76,7 +80,10 @@ public class SearchDialog extends JDialog {
 		myDialogInit();
 
 		getRootPane().getActionMap().put("escapeAction", new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8936924143134313282L;
 
 			public void actionPerformed(ActionEvent event) {
 				SearchDialog.this.dispose();

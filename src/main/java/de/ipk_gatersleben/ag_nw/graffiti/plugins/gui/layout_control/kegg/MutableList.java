@@ -7,7 +7,11 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
 public class MutableList<T> extends JList<T> {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4487868931153791436L;
 
 	public MutableList(DefaultListModel<T> model) {
 		super(model);

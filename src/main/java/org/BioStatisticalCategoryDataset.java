@@ -20,8 +20,10 @@ import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class BioStatisticalCategoryDataset extends DefaultStatisticalCategoryDataset implements RangeInfo {
-
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6503824110786727086L;
 	private HashSet<String> units = new LinkedHashSet<String>(1);
 	private HashSet<String> timeUnits = new LinkedHashSet<String>(1);
 	private float ttestMarkCircleSize;

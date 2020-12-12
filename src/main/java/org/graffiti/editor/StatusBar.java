@@ -80,13 +80,16 @@ import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 public class StatusBar extends JPanel implements SessionListener, SelectionListener, GraphListener {
 	// ~ Static fields/initializers =============================================
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 219307340702068274L;
+
 	static final Logger logger = Logger.getLogger(StatusBar.class);
 
 	static {
 		logger.setLevel(Level.ERROR);
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	/** The time, a message is displayed in the status line. */
 	private static final int DELAY = 5000;

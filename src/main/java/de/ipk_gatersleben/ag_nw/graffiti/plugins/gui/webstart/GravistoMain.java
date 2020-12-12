@@ -45,9 +45,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
  */
 @Deprecated
 public class GravistoMain extends JApplet {
-	// ~ Static fields/initializers =============================================
-
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6702022482936016092L;
 
 	// ~ Instance fields ========================================================
 

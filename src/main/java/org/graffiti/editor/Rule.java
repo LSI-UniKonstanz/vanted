@@ -12,7 +12,10 @@ import javax.swing.JComponent;
 /* Rule.java is used by ScrollDemo.java. */
 
 public class Rule extends JComponent {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1316567377226197765L;
 	public static final int INCH = Toolkit.getDefaultToolkit().getScreenResolution();
 	public static final int HORIZONTAL = 0;
 	public static final int VERTICAL = 1;

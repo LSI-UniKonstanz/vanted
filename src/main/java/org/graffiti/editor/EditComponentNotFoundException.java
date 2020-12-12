@@ -18,7 +18,7 @@ public class EditComponentNotFoundException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3292699801893305791L;
 
 	/**
 	 * Constructor for AttributeComponentNotFoundException.

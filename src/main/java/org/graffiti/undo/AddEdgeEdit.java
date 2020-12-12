@@ -23,12 +23,11 @@ import org.graffiti.graph.Node;
  * @version $Revision: 1.5 $
  */
 public class AddEdgeEdit extends GraphElementsEdit {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4417650090315139823L;
+	// ~ Instance fields ========================================================
 	/** added edge */
 	private Edge edge;
 

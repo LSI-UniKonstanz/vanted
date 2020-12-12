@@ -18,13 +18,12 @@ import org.graffiti.graphics.GraphicAttributeConstants;
  * @version $Revision: 1.5 $
  */
 public class SimpleLabelComponent extends LabelComponent implements GraphicAttributeConstants {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1208880928573528262L;
 
+	// ~ Instance fields ========================================================
 	/**
 	 * Instantiates an <code>LabelComponent</code>
 	 */

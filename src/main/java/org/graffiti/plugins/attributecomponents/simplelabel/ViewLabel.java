@@ -14,7 +14,10 @@ import org.LabelFrameSetting;
 
 public class ViewLabel extends JLabel {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2376982832159714768L;
 
 	boolean empty;
 

@@ -31,7 +31,7 @@ public class NodeEvent extends AbstractEvent {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3639532365763468151L;
 	/** The edge that might have been responsible for the NodeEvent. */
 	private Edge edge;
 

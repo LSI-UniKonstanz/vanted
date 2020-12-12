@@ -73,7 +73,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.HandlesAlgorithmData;
 
 public class PreferencesDialog extends JDialog implements PluginManagerListener {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4809728583122792088L;
 
 	public static JButton activeStartLayoutButton;
 

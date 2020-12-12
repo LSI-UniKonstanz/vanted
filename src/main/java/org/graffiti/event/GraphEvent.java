@@ -32,7 +32,7 @@ public class GraphEvent extends AbstractEvent {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8911776681434197483L;
 
 	/**
 	 * The edge that has been changed by the event. <code>Null</code> if no edge is

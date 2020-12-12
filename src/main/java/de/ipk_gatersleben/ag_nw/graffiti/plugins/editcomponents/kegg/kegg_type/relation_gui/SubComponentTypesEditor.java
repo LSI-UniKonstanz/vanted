@@ -22,7 +22,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.SubtypeName;
 
 public class SubComponentTypesEditor extends JPanel {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7189168789279095009L;
 	private JLabel subComponentTypesHelp;
 	private ArrayList<SubComponentNameCheckBox> checkBoxes = new ArrayList<SubComponentNameCheckBox>();
 

@@ -11,8 +11,10 @@ import org.graffiti.session.Session;
 
 public class FrameTabbedPane extends JTabbedPane implements ViewListener {
 
-	private static final long serialVersionUID = 1L;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2825118317853989051L;
 	HashMap<String, Integer> tab2index = new HashMap<String, Integer>();
 
 	@Override

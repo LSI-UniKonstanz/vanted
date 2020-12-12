@@ -11,10 +11,11 @@ import java.util.Hashtable;
 import javax.swing.JPanel;
 
 public class DebugPanel extends JPanel {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3122140808738568084L;
 
 	private Constraints constraints;
 

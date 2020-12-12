@@ -20,7 +20,7 @@ public class NoNextStepException extends RuntimeException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1457683508898063396L;
 }
 
 // ------------------------------------------------------------------------------

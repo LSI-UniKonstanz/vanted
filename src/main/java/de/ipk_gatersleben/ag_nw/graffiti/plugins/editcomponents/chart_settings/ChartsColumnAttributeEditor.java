@@ -21,7 +21,11 @@ public class ChartsColumnAttributeEditor extends AbstractValueEditComponent {
 			if (i != 0)
 				validOptions.add(String.valueOf(i));
 		combo = new JComboBox<String>(validOptions.toArray(new String[validOptions.size()])) {
-			private static final long serialVersionUID = 1L;
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -1748931935136910319L;
 
 			@Override
 			public Dimension getMinimumSize() {

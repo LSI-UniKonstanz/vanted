@@ -28,7 +28,10 @@ import org.graffiti.plugin.gui.ToolButton;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.MyGraphicsTools;
 
 public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGUIprovider {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2550777199579759928L;
 	private static String stopText = "<html><small>Stop";
 	private static String waitText = "<html><small>Wait";
 	private static String closeText = "<html><small>OK";
