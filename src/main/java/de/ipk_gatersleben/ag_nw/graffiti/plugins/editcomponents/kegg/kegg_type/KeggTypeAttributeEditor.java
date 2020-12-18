@@ -53,6 +53,7 @@ public class KeggTypeAttributeEditor extends AbstractValueEditComponent implemen
 		// keggTypeSelection.setOpaque(false);
 	}
 
+	@Override
 	public JComponent getComponent() {
 		if (showButton)
 			return TableLayout.getSplit(
@@ -67,6 +68,7 @@ public class KeggTypeAttributeEditor extends AbstractValueEditComponent implemen
 		 */
 	}
 
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -82,11 +84,13 @@ public class KeggTypeAttributeEditor extends AbstractValueEditComponent implemen
 		}
 	}
 
+	@Override
 	public void setValue() {
 		// if (!keggTypeSelection.getSelectedItem().equals(EMPTY_STRING))
 		// ((KeggTypeAttribute)displayable).setString(keggTypeSelection.getSelectedItem().toString());
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// String currentEntryTypeString = (String) keggTypeSelection.getSelectedItem();
 		String currentEntryTypeString = keggTypeLabel.getText();

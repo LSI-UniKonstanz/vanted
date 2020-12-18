@@ -107,6 +107,7 @@ public class StringEditComponent extends AbstractValueEditComponent {
 	 * 
 	 * @return the <code>JComponent</code> of this edit component.
 	 */
+	@Override
 	public JComponent getComponent() {
 		if (!(getDisplayable() instanceof Attribute))
 			return textComp;
@@ -167,6 +168,7 @@ public class StringEditComponent extends AbstractValueEditComponent {
 	 * Sets the current value of the displayable in the corresponding
 	 * <code>JComponent</code>.
 	 */
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			this.textComp.setText(EMPTY_STRING);
@@ -180,6 +182,7 @@ public class StringEditComponent extends AbstractValueEditComponent {
 	 * Sets the value of the displayable specified in the <code>JComponent</code>.
 	 * But only if it is different.
 	 */
+	@Override
 	public void setValue() {
 		String text = this.textComp.getText();
 

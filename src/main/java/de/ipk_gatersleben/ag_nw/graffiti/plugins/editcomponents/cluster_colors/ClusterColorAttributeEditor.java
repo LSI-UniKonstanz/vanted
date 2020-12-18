@@ -12,8 +12,8 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -116,7 +116,8 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 			final int bar) {
 		colorButton.setOpaque(true);
 		colorButton.setBorder(BorderFactory.createRaisedBevelBorder());
-		colorButton.addMouseListener(new MouseListener() {
+		colorButton.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				JLabel src = (JLabel) e.getSource();
 				Color c;
@@ -133,16 +134,12 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 				}
 			}
 
-			public void mousePressed(MouseEvent arg0) {
-			}
-
-			public void mouseReleased(MouseEvent arg0) {
-			}
-
+			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				colorButton.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
 			}
 
+			@Override
 			public void mouseExited(MouseEvent arg0) {
 				colorButton.setBorder(BorderFactory.createRaisedBevelBorder());
 			}

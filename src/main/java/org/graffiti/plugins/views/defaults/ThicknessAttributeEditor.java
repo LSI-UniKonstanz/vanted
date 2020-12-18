@@ -66,10 +66,12 @@ public class ThicknessAttributeEditor extends AbstractValueEditComponent {
 		pan.setLayout(TableLayout.getLayout(TableLayout.FILL, TableLayout.FILL));
 	}
 
+	@Override
 	public JComponent getComponent() {
 		return pan;
 	}
 
+	@Override
 	public void setEditFieldValue() {
 
 		if (showEmpty) {
@@ -102,6 +104,7 @@ public class ThicknessAttributeEditor extends AbstractValueEditComponent {
 		combo.setSelectedItem(mode);
 	}
 
+	@Override
 	public void setValue() {
 		Object selitem = combo.getSelectedItem();
 		if (selitem.equals(EMPTY_STRING))

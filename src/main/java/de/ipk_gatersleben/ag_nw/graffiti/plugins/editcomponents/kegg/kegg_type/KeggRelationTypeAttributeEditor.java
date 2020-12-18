@@ -49,11 +49,13 @@ public class KeggRelationTypeAttributeEditor extends AbstractValueEditComponent 
 		selectOfThisType.addActionListener(this);
 	}
 
+	@Override
 	public JComponent getComponent() {
 		return TableLayout.getSplit(keggRelationTypeSelection, selectOfThisType, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED);
 	}
 
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -65,11 +67,13 @@ public class KeggRelationTypeAttributeEditor extends AbstractValueEditComponent 
 		}
 	}
 
+	@Override
 	public void setValue() {
 		if (!keggRelationTypeSelection.getText().equals(EMPTY_STRING))
 			((KeggRelationTypeAttribute) displayable).setString(keggRelationTypeSelection.getText());
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		String currentRelationTypeString = keggRelationTypeSelection.getText();
 		if (currentRelationTypeString == null)

@@ -60,11 +60,13 @@ public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent imp
 		keggIsPartSelection.setMinimumSize(new Dimension(40, defHeight));
 	}
 
+	@Override
 	public JComponent getComponent() {
 		return TableLayout.getSplit(keggIsPartSelection, selectOfThisType, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED);
 	}
 
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -81,6 +83,7 @@ public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent imp
 		}
 	}
 
+	@Override
 	public void setValue() {
 		if (!keggIsPartSelection.getSelectedItem().equals(EMPTY_STRING)) {
 			Object o = keggIsPartSelection.getSelectedItem();
@@ -91,6 +94,7 @@ public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent imp
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		String currentSel = (String) keggIsPartSelection.getSelectedItem();
 		boolean searchGroupParts = false;

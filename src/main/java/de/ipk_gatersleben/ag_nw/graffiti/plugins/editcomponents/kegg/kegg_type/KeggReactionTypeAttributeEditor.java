@@ -56,12 +56,14 @@ public class KeggReactionTypeAttributeEditor extends AbstractValueEditComponent 
 		selectOfThisType.setOpaque(false);
 	}
 
+	@Override
 	public JComponent getComponent() {
 		return TableLayout.getSplit(
 				// keggReactionTypeSelection,
 				reactionTypeDisplay, selectOfThisType, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
 	}
 
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -77,11 +79,13 @@ public class KeggReactionTypeAttributeEditor extends AbstractValueEditComponent 
 		}
 	}
 
+	@Override
 	public void setValue() {
 		// if (!keggReactionTypeSelection.getSelectedItem().equals(EMPTY_STRING))
 		// ((KeggReactionTypeAttribute)displayable).setString(keggReactionTypeSelection.getSelectedItem().toString());
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// String currentReactionTypeString = (String)
 		// keggReactionTypeSelection.getSelectedItem();

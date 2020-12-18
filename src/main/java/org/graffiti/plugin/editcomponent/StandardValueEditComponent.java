@@ -32,8 +32,7 @@ public class StandardValueEditComponent extends AbstractValueEditComponent {
 	/**
 	 * Standard constructor.
 	 * 
-	 * @param disp
-	 *            DOCUMENT ME!
+	 * @param disp DOCUMENT ME!
 	 */
 	public StandardValueEditComponent(Displayable disp) {
 		super(disp);
@@ -50,6 +49,7 @@ public class StandardValueEditComponent extends AbstractValueEditComponent {
 	 * 
 	 * @return DOCUMENT ME!
 	 */
+	@Override
 	public JComponent getComponent() {
 		// textField = new JTextField(displayable.getValue().toString());
 		// textField.setEditable(false);
@@ -66,6 +66,7 @@ public class StandardValueEditComponent extends AbstractValueEditComponent {
 	/**
 	 * Updates this component with the value from the displayable.
 	 */
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			this.textField.setText(EMPTY_STRING);
@@ -79,6 +80,7 @@ public class StandardValueEditComponent extends AbstractValueEditComponent {
 	/**
 	 * Standard edit component is not editable.
 	 */
+	@Override
 	public void setValue() {
 	}
 }

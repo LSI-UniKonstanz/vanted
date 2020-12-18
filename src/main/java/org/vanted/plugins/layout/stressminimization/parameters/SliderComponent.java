@@ -96,8 +96,7 @@ public class SliderComponent extends AbstractValueEditComponent{
 	            
 	         }
 	      });
-	}
-	
+	}	
 
 	//=================================================
 	// needed functions for AbstractValueEditComponent
@@ -117,8 +116,5 @@ public class SliderComponent extends AbstractValueEditComponent{
 	public void setValue() {
 		displayable.setValue(value);
 	}
-	
-	
-
 }
 

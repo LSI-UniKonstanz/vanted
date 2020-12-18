@@ -117,6 +117,7 @@ public class SpinnerEditComponent extends AbstractValueEditComponent {
 	 * Sets the current value of the <code>Attribute</code> in the corresponding
 	 * <code>JComponent</code>.
 	 */
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			((JSpinner.DefaultEditor) this.jSpinner.getEditor()).getTextField().setText(EMPTY_STRING);
@@ -144,6 +145,7 @@ public class SpinnerEditComponent extends AbstractValueEditComponent {
 	 * Sets the value of the displayable, specified in the <code>JComponent</code>.
 	 * But only, if it is different.
 	 */
+	@Override
 	public void setValue() {
 		if (jSpinner.getEditor() != null && jSpinner.getEditor() instanceof NumberEditor) {
 			NumberEditor ne = (NumberEditor) jSpinner.getEditor();

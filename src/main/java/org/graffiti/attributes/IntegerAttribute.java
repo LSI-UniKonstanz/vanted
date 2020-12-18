@@ -64,9 +64,7 @@ public class IntegerAttribute extends AbstractAttribute {
 
 	// ~ Methods ================================================================
 
-	/**
-	 * @see org.graffiti.attributes.Attribute#setDefaultValue()
-	 */
+	@Override
 	public void setDefaultValue() {
 		value = 0;
 	}
@@ -133,9 +131,6 @@ public class IntegerAttribute extends AbstractAttribute {
 		}
 	}
 
-	/**
-	 * @see org.graffiti.plugin.Displayable#toXMLString()
-	 */
 	@Override
 	public String toXMLString() {
 		return getStandardXML(String.valueOf(value));

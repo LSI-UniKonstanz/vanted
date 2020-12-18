@@ -55,6 +55,7 @@ public abstract class NumberEditComponent extends AbstractValueEditComponent {
 	 * @return the <code>JComponent</code> associated with this value edit
 	 *         component.
 	 */
+	@Override
 	public JComponent getComponent() {
 		JComponent defaultResult = spinnerEditComponent.getComponent();
 		if (displayable != null && displayable.getIcon() != null) {
@@ -89,6 +90,7 @@ public abstract class NumberEditComponent extends AbstractValueEditComponent {
 	 * Sets the current value of the <code>Attribute</code> in the corresponding
 	 * <code>JComponent</code>.
 	 */
+	@Override
 	public void setEditFieldValue() {
 		spinnerEditComponent.setEditFieldValue();
 	}
@@ -111,6 +113,7 @@ public abstract class NumberEditComponent extends AbstractValueEditComponent {
 	 * Calls setAttribute in the associated spinner, i.e. it only changes the value
 	 * if it is different.
 	 */
+	@Override
 	public void setValue() {
 		spinnerEditComponent.setValue();
 	}

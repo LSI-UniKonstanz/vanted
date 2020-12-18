@@ -56,15 +56,15 @@ public class ChartsColumnAttributeEditor extends AbstractValueEditComponent {
 			combo.setSelectedItem(EMPTY_STRING);
 			return;
 		}
-		combo.setSelectedItem(((Attribute) getDisplayable()).getValue());
+		combo.setSelectedItem(String.valueOf(((Attribute) getDisplayable()).getValue()));
 	}
 
 	@Override
 	public void setValue() {
-		Object selitem = combo.getSelectedItem();
+		String selitem = (String) combo.getSelectedItem();
 		if (selitem.equals(EMPTY_STRING))
 			return;
-		((Attribute) getDisplayable()).setValue(selitem);
+		((Attribute) getDisplayable()).setValue(Integer.valueOf(selitem));
 	}
 
 }

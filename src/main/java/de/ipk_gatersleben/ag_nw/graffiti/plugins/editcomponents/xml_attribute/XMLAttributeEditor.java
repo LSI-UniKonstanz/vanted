@@ -51,10 +51,12 @@ public class XMLAttributeEditor extends AbstractValueEditComponent {
 		});
 	}
 
+	@Override
 	public JComponent getComponent() {
 		return mappingButton;
 	}
 
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			mappingButton.setText("Mapped Data (~)");
@@ -69,6 +71,7 @@ public class XMLAttributeEditor extends AbstractValueEditComponent {
 		}
 	}
 
+	@Override
 	public void setValue() {
 		// ((XMLAttribute)displayable).setColor(jButtonFontAndColor.getForeground());
 	}

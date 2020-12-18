@@ -82,29 +82,17 @@ public class EnhDoubleEditComponent extends AbstractValueEditComponent implement
 		viewComp.validate();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#getComponent()
-	 */
+	@Override
 	public JComponent getComponent() {
 		return viewComp;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setEditFieldValue()
-	 */
+	@Override
 	public void setEditFieldValue() {
 		//
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setValue()
-	 */
+	@Override
 	public void setValue() {
 		if (disp.getValue() != null) {
 			// if (disp.getValue() instanceof Integer) disp.setValue(new
@@ -126,12 +114,7 @@ public class EnhDoubleEditComponent extends AbstractValueEditComponent implement
 			disp.setValue(spinner.getValue());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == nan)
 			if (nan.isSelected()) {

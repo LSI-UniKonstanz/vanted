@@ -37,7 +37,7 @@ import org.graffiti.plugin.Displayable;
 public class ComboBoxEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
 
-	/** The combobox component used. */
+	/** The comboBox component used. */
 	protected JComboBox<Object> comboBox;
 
 	/** Text that is displayed in the combo box. */

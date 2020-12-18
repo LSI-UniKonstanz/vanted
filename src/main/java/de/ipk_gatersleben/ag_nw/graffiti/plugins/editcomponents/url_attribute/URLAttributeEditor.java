@@ -123,11 +123,13 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 		}
 	}
 
+	@Override
 	public JComponent getComponent() {
 		return TableLayout.getSplit(jEditField, jButtonShowURL, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED);
 	}
 
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			jButtonShowURL.setEnabled(false);
@@ -144,6 +146,7 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 		}
 	}
 
+	@Override
 	public void setValue() {
 		if (!jEditField.getText().equals(EMPTY_STRING))
 			((URLAttribute) displayable).setString(jEditField.getText());
