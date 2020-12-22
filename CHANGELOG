@@ -1,5 +1,14 @@
 <h3>Changelog</h3>
 
+<h4>VANTED v2.8.0 release (22/12/2020)</h4>
+<ul>
+<li>New layout: Stress Minimisation</li>
+<li>New layout: Multilevel Framework</li>
+<li>Use commons-math3 3.6.1</li>
+<li>Resolve attribute issue</li>
+<li>Deactivate Biomodels DB (current version)</li>
+</ul>
+
 <h4>VANTED v2.7.2 release (20/07/2020)</h4>
 <ul>
 <li>Resolve OS and compatibility issue</li>
