@@ -260,15 +260,19 @@ class LevelGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * @author Gordian
+     * @author D. Garkov
      * @see CoarsenedGraph#getMergedNodes()
      */
     @Override
-    // only containing MergedNodes is an invariant that this wrapper class tries to
-    // sustain, so this _should_ be safe
-    @SuppressWarnings("unchecked")
-    public Collection<? extends MergedNode> getMergedNodes() {
-        return (Collection<? extends MergedNode>) this.nodes; // see comment above, this cast _should_ be safe
+    public Collection<MergedNode> getMergedNodes() {
+    	Collection<MergedNode> mergedNodes = new LinkedList<>();
+    	for (Node node : this.nodes) {
+    		if (node instanceof MergedNode) {
+    			mergedNodes.add((MergedNode) node);
+    		}
+    	}
+    	
+        return mergedNodes;
     }
 
     /**
