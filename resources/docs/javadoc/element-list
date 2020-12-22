@@ -230,9 +230,14 @@ org.vanted.animation.animations
 org.vanted.animation.data
 org.vanted.animation.interpolators
 org.vanted.animation.loopers
+org.vanted.indexednodes
+org.vanted.indexednodes.accumulators
 org.vanted.osx
 org.vanted.plugins.layout.adaptagrams
 org.vanted.plugins.layout.adaptagrams.edgerouting
+org.vanted.plugins.layout.multilevelframework
+org.vanted.plugins.layout.stressminimization
+org.vanted.plugins.layout.stressminimization.parameters
 org.vanted.scaling
 org.vanted.scaling.resources
 org.vanted.scaling.scalers

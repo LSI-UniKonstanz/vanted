@@ -1,11 +1,13 @@
-The ant script ./build.xml is used for generating Vanted documentation.
+The ant script ./build.xml is used to generate Vanted API documentation.
 
-adjust the properties related to title, java version and java API link base in build.xml.
-
-Then to run the script use
+Adjust the properties related to title, Java version and Java API link base in ./build.xml
+Then to run the script, in the current directory use
 
 	ant
 
-The generated output should later be uploaded to the webserver in the respective directory.
+Or run build.xml as ant script from within Eclipse.
+
+The generated output should then be uploaded to the webserver in the respective directory.
+
 Optionally, to introduce new tags, add a new tag specification on a new line in the vanted.tags file.
 For attributes' reference: https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html#tag
