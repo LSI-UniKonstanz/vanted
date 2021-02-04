@@ -16,6 +16,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.IntroduceBendsAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.IntroduceParallelEdgeBends;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.IntroduceSelfEdgeBends;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.RemoveParallelEdges;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.RemoveBendsAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.ResizeNodesDepDegreeAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
@@ -42,7 +43,7 @@ public class PluginPatternSpringembedder extends IPK_PluginAdapter {
 
 				new ResizeNodesDepDegreeAlgorithm(),
 				// new BendsLaunchGUI(),
-				new BundleParallelEdges(), new IntroduceParallelEdgeBends(),
+				new BundleParallelEdges(), new IntroduceParallelEdgeBends(), new RemoveParallelEdges(),
 				// new ResetEdgeSourceOrTarget(),
 				new DuplicateEdge(), new BringToFrontOrBackAlgorithm(false), new BringToFrontOrBackAlgorithm(true),
 				new RandomLayouterAlgorithm(),
