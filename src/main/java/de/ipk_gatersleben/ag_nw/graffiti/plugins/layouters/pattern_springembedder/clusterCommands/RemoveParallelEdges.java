@@ -2,7 +2,6 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedd
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -17,6 +16,7 @@ import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.session.EditorSession;
+import org.graffiti.util.Pair;
 
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
@@ -72,24 +72,25 @@ public class RemoveParallelEdges extends AbstractEditorAlgorithm {
 
 		final EditorSession session = MainFrame.getInstance().getActiveEditorSession();
 		final LinkedList<Edge> toDelete = new LinkedList<>();
+		// We don't update the selection directly, this is handled internally
 
 		Runnable exec = new Runnable() {
 			@Override
 			public void run() {
-				HashMap<Long, Long> srcTrg = new HashMap<>();
+				HashSet<Pair<Long, Long>> antiParellelEdges = new HashSet<>();
 				Collection<Edge> workingEdges = null;
 				if (selection == null || selection.isEmpty()) {
 					workingEdges = session.getGraph().getEdges();
 				} else if (selection.getEdges().isEmpty()) { // selected: only nodes
 					HashSet<Edge> edges = new HashSet<>();
 					for (Node n : selection.getNodes()) {
-						for (Edge e : n.getEdges()) {
+						for (Edge e : n.getEdges()) { // all edges, given selection is subset of all nodes
 							edges.add(e);
 						}
 					}
 					workingEdges = edges;
 				} else { // selected: only edges
-					workingEdges = selection.getEdges();					
+					workingEdges = selection.getEdges();
 				}
 
 				if (status.wantsToStop())
@@ -98,13 +99,15 @@ public class RemoveParallelEdges extends AbstractEditorAlgorithm {
 				for (Edge e : workingEdges) {
 					Long src = e.getSource().getID();
 					Long trg = e.getTarget().getID();
-					if (isParallel(srcTrg, src, trg)) {
+					Pair<Long, Long> srcTrg = new Pair<Long, Long>(src, trg);
+					if (isParallelEdge(antiParellelEdges, srcTrg)) {
 						toDelete.add(e);
 						continue;
 					}
-					srcTrg.put(src, trg);
+					System.out.println("Not parallel -> " + e + "(" + src + ", " + trg + ")");
+					antiParellelEdges.add(srcTrg);
 				}
-				
+
 				if (status.wantsToStop()) {
 					toDelete.clear();
 					return;
@@ -122,19 +125,21 @@ public class RemoveParallelEdges extends AbstractEditorAlgorithm {
 		BackgroundTaskHelper.issueSimpleTask(getName(), "", exec, finishSwingTask, status);
 	}
 
-	private boolean isParallel(HashMap<Long, Long> srcTrg, Long src, Long trg) {
-		if (!undirected) {
-			if (srcTrg.containsKey(src) && srcTrg.get(src).equals(trg))
-				return true;
-			else
-				return false;
-		} else {
-			if ((srcTrg.containsKey(src) && srcTrg.get(src).equals(trg))
-					|| (srcTrg.containsKey(trg) && srcTrg.get(trg).equals(src)))
-				return true;
-			else
-				return false;
-		}
+	/**
+	 * Depending on direction, an edge, i.e. pair of source and target node IDs, is
+	 * tested against a known set of non-parallel edges.
+	 * 
+	 * @param antiParallelEdges a HashSet with {@link Pair}s representing known
+	 *                          edges
+	 * @param srcTrg            a pair of source and target node IDs
+	 * @return true, given the tested edge is parallel
+	 */
+	private boolean isParallelEdge(HashSet<Pair<Long, Long>> antiParallelEdges, Pair<Long, Long> srcTrg) {
+		if (!undirected)
+			return antiParallelEdges.contains(srcTrg);
+		else
+			return antiParallelEdges.contains(srcTrg)
+					|| antiParallelEdges.contains(new Pair<Long, Long>(srcTrg.getSnd(), srcTrg.getFst()));
 	}
 
 	@Override
