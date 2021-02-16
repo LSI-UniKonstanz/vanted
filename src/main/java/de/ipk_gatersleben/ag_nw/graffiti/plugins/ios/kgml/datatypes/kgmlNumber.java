@@ -28,7 +28,6 @@ public class kgmlNumber {
 	 * @vanted.revision 2.7.3
 	 */
 	public static kgmlNumber getNumber(String s) {
-		Thread.dumpStack();
 		try {
 			if (s != null && s.matches("[+-]?\\d+"))
 				return new kgmlNumber(Integer.parseInt(s));
