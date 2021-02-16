@@ -1,6 +1,8 @@
 package org.vanted;
 
 import java.awt.Component;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +32,8 @@ import org.graffiti.plugin.parameter.StringParameter;
 
 import org.vanted.scaling.ScalerLoader;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.Main;
+
 /**
  * Global Preference class for VANTED. Every Preference regarding global
  * settings of VANTED should be put in here. As usual Classes implementing the
@@ -43,6 +47,7 @@ import org.vanted.scaling.ScalerLoader;
 public class VantedPreferences implements PreferencesInterface {
 
 	public static final String PREFERENCE_LOOKANDFEEL = "Look and Feel";
+	public static final String PREFERENCE_KEGGACCESS = "KEGG Access";
 	public static final String PREFERENCE_PROXYHOST = "Proxy Host";
 	public static final String PREFERENCE_PROXYPORT = "Proxy Port";
 
@@ -78,6 +83,7 @@ public class VantedPreferences implements PreferencesInterface {
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> params = new ArrayList<>();
 		params.add(getLookAndFeelParameter());
+		params.add(new BooleanParameter(false, PREFERENCE_KEGGACCESS, "Accept or reject KEGG license"));
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS,
@@ -166,6 +172,50 @@ public class VantedPreferences implements PreferencesInterface {
 
 		PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE = Boolean
 				.valueOf(preferences.get(PREFERENCE_DEBUG_SHOWPANELFRAMES, "false"));
+		
+		/**
+		 * Handle KEGG enabler, original source is org.grafitti.editor.actions.ShowPreferencesAction
+		 */
+		boolean keggAccess = preferences.getBoolean(PREFERENCE_KEGGACCESS, false);
+		if (keggAccess) {
+			try {
+				new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected").createNewFile();
+			} catch (Exception e) {
+				ErrorMsg.addErrorMessage(e);
+			}
+			try {
+				if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").exists())
+					new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").delete();
+			} catch (Exception e) {
+				ErrorMsg.addErrorMessage(e);
+			}
+		} else {
+			if (Main.doEnableKEGGaskUser()) {
+				try {
+					new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").createNewFile();
+				} catch (IOException e) {
+					ErrorMsg.addErrorMessage(e);
+				}
+				try {
+					if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected").exists())
+						new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected").delete();
+				} catch (Exception e) {
+					ErrorMsg.addErrorMessage(e);
+				}
+			} else {
+				try {
+					new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected").createNewFile();
+				} catch (Exception e) {
+					ErrorMsg.addErrorMessage(e);
+				}
+				try {
+					if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").exists())
+						new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").delete();
+				} catch (Exception e) {
+					ErrorMsg.addErrorMessage(e);
+				}
+			}
+		}
 	}
 
 	@Override
