@@ -85,9 +85,6 @@ public class VantedPreferences implements PreferencesInterface {
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> params = new ArrayList<>();
 		params.add(getLookAndFeelParameter());
-//		if (isKEGGAccepted()) {			
-//			refPreferences.put(PREFERENCE_KEGGACCESS, String.valueOf(true));
-//		}
 		params.add(new BooleanParameter(isKEGGAccepted(), PREFERENCE_KEGGACCESS, "Accept or reject KEGG's license"));
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
@@ -190,7 +187,7 @@ public class VantedPreferences implements PreferencesInterface {
 		if (!updatedAsAccept && !isUpdatingOnStart) {
 			deleteLicenseFile("accepted");
 		}
-		
+
 		if ((isUpdatingOnStart && !isKEGGAccepted()) || (updatedAsAccept && !isUpdatingOnStart)) {
 			// First, delete any existing license_kegg_* files
 			deleteLicenseFile("accepted");
@@ -340,6 +337,9 @@ public class VantedPreferences implements PreferencesInterface {
 				GravistoService.loadIcon(VantedPreferences.class, "images/node.png"));
 	}
 
+	/**
+	 * Is the current update the first update, when Vanted starts?
+	 */
 	private static boolean isUpdatingOnStart = true;
 
 	/**
