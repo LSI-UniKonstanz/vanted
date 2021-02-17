@@ -2,7 +2,6 @@ package org.vanted;
 
 import java.awt.Component;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +41,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.Main;
  * class.
  * 
  * @author matthiak
- * @vanted.revision 2.7.0 Standard save format 
+ * @vanted.revision 2.8.0 Add KEGG Access preference 2.7.0 Standard save format
  */
 public class VantedPreferences implements PreferencesInterface {
 
@@ -58,6 +57,7 @@ public class VantedPreferences implements PreferencesInterface {
 	public static final String PREFERENCE_STANDARD_SAVE_FILEFORMAT = "Standard save file format";
 
 	private static VantedPreferences instance;
+	private Preferences refPreferences;
 
 	public VantedPreferences() {
 
@@ -71,6 +71,8 @@ public class VantedPreferences implements PreferencesInterface {
 		 * start-up.
 		 */
 		ScalerLoader.init(MainFrame.getInstance(), MainFrame.class);
+
+		refPreferences = PreferenceManager.getPreferenceForClass(VantedPreferences.class);
 	}
 
 	public static VantedPreferences getInstance() {
@@ -83,7 +85,10 @@ public class VantedPreferences implements PreferencesInterface {
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> params = new ArrayList<>();
 		params.add(getLookAndFeelParameter());
-		params.add(new BooleanParameter(false, PREFERENCE_KEGGACCESS, "Accept or reject KEGG license"));
+//		if (isKEGGAccepted()) {			
+//			refPreferences.put(PREFERENCE_KEGGACCESS, String.valueOf(true));
+//		}
+		params.add(new BooleanParameter(isKEGGAccepted(), PREFERENCE_KEGGACCESS, "Accept or reject KEGG's license"));
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS,
@@ -172,55 +177,95 @@ public class VantedPreferences implements PreferencesInterface {
 
 		PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE = Boolean
 				.valueOf(preferences.get(PREFERENCE_DEBUG_SHOWPANELFRAMES, "false"));
-		
+			
 		/**
-		 * Handle KEGG enabler, original source is org.grafitti.editor.actions.ShowPreferencesAction
-		 */
-		boolean keggAccess = preferences.getBoolean(PREFERENCE_KEGGACCESS, false);
-		if (keggAccess) {
-			try {
-				new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected").createNewFile();
-			} catch (Exception e) {
-				ErrorMsg.addErrorMessage(e);
-			}
-			try {
-				if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").exists())
-					new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").delete();
-			} catch (Exception e) {
-				ErrorMsg.addErrorMessage(e);
-			}
-		} else {
+		 * Handle KEGG enabler, original source code is at
+		 * org.grafitti.editor.actions.ShowPreferencesAction
+		 */		
+		// The value in the KEGG Access checkbox (except on first run)
+		boolean updatedAsAccept = Boolean.valueOf(preferences.get(PREFERENCE_KEGGACCESS, "false"));	
+		if (updatedAsAccept && !isUpdatingOnStart) {
+			deleteLicenseFile("rejected");
+		}
+		if (!updatedAsAccept && !isUpdatingOnStart) {
+			deleteLicenseFile("accepted");
+		}
+		
+		if ((isUpdatingOnStart && !isKEGGAccepted()) || (updatedAsAccept && !isUpdatingOnStart)) {
+			// First, delete any existing license_kegg_* files
+			deleteLicenseFile("accepted");
+			deleteLicenseFile("rejected");
+
+			// Now ask the user about the license, update files
 			if (Main.doEnableKEGGaskUser()) {
-				try {
-					new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").createNewFile();
-				} catch (IOException e) {
-					ErrorMsg.addErrorMessage(e);
-				}
-				try {
-					if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected").exists())
-						new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected").delete();
-				} catch (Exception e) {
-					ErrorMsg.addErrorMessage(e);
-				}
+				createLicenseFile("accepted");
+				deleteLicenseFile("rejected");
 			} else {
-				try {
-					new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected").createNewFile();
-				} catch (Exception e) {
-					ErrorMsg.addErrorMessage(e);
-				}
-				try {
-					if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").exists())
-						new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").delete();
-				} catch (Exception e) {
-					ErrorMsg.addErrorMessage(e);
-				}
+				createLicenseFile("rejected");
+				deleteLicenseFile("accepted");
+			}
+
+			// Lastly, synchronise the state in preferences
+			if (isKEGGAccepted()) {
+				// The user has accepted the license, store that in preferences
+				refPreferences.putBoolean(PREFERENCE_KEGGACCESS, true);
+			} else {
+				refPreferences.putBoolean(PREFERENCE_KEGGACCESS, false);
 			}
 		}
+
+		if (isUpdatingOnStart)
+			isUpdatingOnStart = false;
 	}
 
 	@Override
 	public String getPreferencesAlternativeName() {
 		return "Vanted Preferences";
+	}
+
+	/**
+	 * Whether the KEGG License agreement has been accepted by the user.
+	 * 
+	 * @return true, if the correct file exists.
+	 */
+	private static boolean isKEGGAccepted() {
+		boolean isAccepted = false;
+		try {
+			if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").exists())
+				isAccepted = true;
+		} catch (Exception e) {
+			ErrorMsg.addErrorMessage(e);
+		}
+
+		return isAccepted;
+	}
+
+	/**
+	 * Create a new empty file, indicating the state of the KEGG license agreement.
+	 * 
+	 * @param state either "accepted" or "rejected"
+	 */
+	private static void createLicenseFile(String state) {
+		try {
+			new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_" + state).createNewFile();
+		} catch (Exception e) {
+			ErrorMsg.addErrorMessage(e);
+		}
+	}
+
+	/**
+	 * Deletes any existing file, indicating the state of the KEGG license
+	 * agreement.
+	 * 
+	 * @param state either "accepted" or "rejected"
+	 */
+	private static void deleteLicenseFile(String state) {
+		try {
+			if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_" + state).exists())
+				new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_" + state).delete();
+		} catch (Exception e) {
+			ErrorMsg.addErrorMessage(e);
+		}
 	}
 
 	/**
@@ -294,6 +339,8 @@ public class VantedPreferences implements PreferencesInterface {
 		UIManager.getLookAndFeelDefaults().put("Tree.leafIcon",
 				GravistoService.loadIcon(VantedPreferences.class, "images/node.png"));
 	}
+
+	private static boolean isUpdatingOnStart = true;
 
 	/**
 	 * Custom list cell renderer, that will have the LookAndFeelNameAndClass as
