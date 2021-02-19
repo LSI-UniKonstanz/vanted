@@ -63,6 +63,7 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
+import org.vanted.KeggAccess;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -914,12 +915,11 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		default:
 			break;
 		}
-
 	}
 
 	@Override
 	public boolean visibleForView(View v) {
-		return v == null || v instanceof GraphView;
+		return (v == null || v instanceof GraphView) && KeggAccess.isKEGGAccepted();
 	}
 
 	public int getCurrentStatusValue() {
@@ -962,5 +962,4 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
 	}
-
 }

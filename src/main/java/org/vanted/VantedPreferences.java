@@ -27,7 +27,7 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
-
+import org.graffiti.plugins.inspectors.defaults.Inspector;
 import org.vanted.scaling.ScalerLoader;
 
 /**
@@ -182,9 +182,13 @@ public class VantedPreferences implements PreferencesInterface {
 			boolean updatedAsAccept = Boolean.valueOf(preferences.get(PREFERENCE_KEGGACCESS, "false"));
 			if (updatedAsAccept && !isUpdatingOnStart) {
 				KeggAccess.deleteLicenseFile("rejected");
+				// Force a view change so that KEGG tab changes can take effect
+				((Inspector) MainFrame.getInstance().getInspectorPlugin()).viewChanged(null);
 			}
 			if (!updatedAsAccept && !isUpdatingOnStart) {
 				KeggAccess.deleteLicenseFile("accepted");
+				// Force a view change so that KEGG tab changes can take effect
+				((Inspector) MainFrame.getInstance().getInspectorPlugin()).viewChanged(null);
 			}
 
 			if ((isUpdatingOnStart && !KeggAccess.isKEGGAccepted()) || (updatedAsAccept && !isUpdatingOnStart)) {
@@ -208,6 +212,10 @@ public class VantedPreferences implements PreferencesInterface {
 				} else {
 					refPreferences.putBoolean(PREFERENCE_KEGGACCESS, false);
 				}
+
+				// Force a view change so that KEGG tab changes can take effect
+				if (!isUpdatingOnStart)					
+					((Inspector) MainFrame.getInstance().getInspectorPlugin()).viewChanged(null);
 			}
 		}
 

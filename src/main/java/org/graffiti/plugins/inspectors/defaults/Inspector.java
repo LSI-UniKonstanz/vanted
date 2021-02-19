@@ -253,7 +253,6 @@ public class Inspector extends EditorPluginAdapter
 		for (InspectorTab tab : container.getTabs()) {
 			if (!tab.visibleForView(newView) || (newView != null && !newView.worksWithTab(tab))) {
 				container.hideTab(tab);
-
 			} else {
 				container.showTab(tab);
 			}
