@@ -61,6 +61,7 @@ import org.graffiti.editor.MessageType;
 import org.graffiti.editor.actions.ClipboardService;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.gui.GraffitiMenu;
+import org.vanted.KeggAccess;
 import org.vanted.osx.OSXSupport;
 import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 import org.vanted.updater.ScanForUpdate;
@@ -880,18 +881,48 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 						new String[] { "http://www.gnu.org/licenses/old-licenses/lgpl-2.0" });
 	}
 
+	/**
+	 * 
+	 * @see {@link KeggAccess}
+	 */
+	@Deprecated
 	public static String getKEGGlibText() {
-		return getLibText("KEGG libraries and SOAP access",
-				"KEGG - Kyoto Encyclopedia of Genes and Genomes (Kanehisa Laboratory of Kyoto University Bioinformatics Center)",
-				"(at the listed web-site possible updates to this license text might be available and should be considered)"
-						+ "<hr>"
-						+ "Non-academic users and Academic users intending to use KEGG for commercial purposes are "
-						+ "requested to obtain a license agreement through KEGG's exclusive licensing agent, Pathway "
-						+ "Solutions, for installation of KEGG at their sites, for distribution or reselling of KEGG "
-						+ "data, for software development or any other commercial activities that make use of KEGG, "
-						+ "or as end users of any third-party application that requires downloading of KEGG data or "
-						+ "access to KEGG data via the KEGG API.",
-				new String[] { "http://www.genome.jp/kegg/legal.html" });
+		/**
+		 * @since 2.8.0
+		 */
+		return "<html>KEGG: Kyoto Encyclopedia of Genes and Genomes (Kanehisa Laboratory of Kyoto University Bioinformatics Center)<br>"
+				+ "<small>(Changes to the license can occur, those are considered via http://www.genome.jp/kegg/legal.html)</small><br>"
+				+ "<hr>"
+				+ "<h4>Copyright and Disclaimer</h4>"
+				+ "<b>KEGG</b> is an original database product, copyright Kanehisa Laboratories.<br>"
+				+ "Although best efforts are always applied when developing KEGG products, Kanehisa Laboratories makes no warrant<br>"
+				+ "nor assumes any legal responsibility for the accuracy or usefulness of KEGG or any information contained therein.<br>"
+				+ "<br>"
+				+ "<h4>Academic use of KEGG</h4>"
+				+ "Academic users may freely use the KEGG website at https://www.kegg.jp or its mirror site at GenomeNet https://www.genome.jp/kegg.<br>"
+				+ "Academic users who utilize KEGG for providing academic services are requested to obtain an academic service provider license,<br>"
+				+ "which is included in the KEGG FTP academic subscription (https://www.pathway.jp/en/academic.html) for organizational use.<br>"
+				+ "The KEGG FTP academic subscription, which is a paid service (see https://www.genome.jp/kegg/docs/plea.html), may also be<br>"
+				+ "obtained to conveniently download the entire KEGG database.<br>"
+				+ "<br>"
+				+ "<h4>Non-academic use of KEGG</h4>"
+				+ "Non-academic users must understand that KEGG is not a public database and non-academic use of KEGG generally requires a<br>"
+				+ "commercial license. There are two types of commercial licenses available: end user and business. The end user license includes<br>"
+				+ "access rights to the FTP site and the website, while the business license includes access rights to the FTP site only. Please contact<br>"
+				+ "Pathway Solutions (https://www.pathway.jp) for more details." + "<br><br>"
+				+ "<h4>Reference website: http://www.genome.jp/kegg/legal.html</h4>" + "<br>";
+
+//		return getLibText("KEGG libraries and SOAP access",
+//				"KEGG: Kyoto Encyclopedia of Genes and Genomes (Kanehisa Laboratory of Kyoto University Bioinformatics Center)",
+//				"(at the listed website possible updates to this license text might be available and should be considered)"
+//						+ "<hr>"
+//						+ "Non-academic users and Academic users intending to use KEGG for commercial purposes are "
+//						+ "requested to obtain a license agreement through KEGG's exclusive licensing agent, Pathway "
+//						+ "Solutions, for installation of KEGG at their sites, for distribution or reselling of KEGG "
+//						+ "data, for software development or any other commercial activities that make use of KEGG, "
+//						+ "or as end users of any third-party application that requires downloading of KEGG data or "
+//						+ "access to KEGG data via the KEGG API.",
+//				new String[] { "http://www.genome.jp/kegg/legal.html" });
 		/*
 		 * return getLibText( "KEGG libraries and SOAP access",
 		 * "KEGG - Kyoto Encyclopedia of Genes and Genomes (Kanehisa Laboratory of Kyoto University Bioinformatics Center)"

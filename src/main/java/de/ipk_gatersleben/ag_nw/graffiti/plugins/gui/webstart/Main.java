@@ -36,19 +36,19 @@ import org.graffiti.editor.SplashScreenInterface;
 import org.graffiti.editor.actions.ShowPreferencesAction;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+import org.vanted.KeggAccess;
 import org.vanted.VantedPreferences;
 import org.vanted.osx.OSXSupport;
 import org.vanted.osx.OpenFileAction;
 import org.vanted.updater.ScanForUpdate;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInfoDialog;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter;
 
 /**
  * Starts Vanted.
  * 
- * @vanted.revision 2.6.5
+ * @vanted.revision 2.8.0, 2.6.5
  */
 public class Main {
 
@@ -150,33 +150,6 @@ public class Main {
 		}
 
 		GravistoMainHelper.initApplicationExt(args, splashScreen, cl, null, addon);
-	}
-
-	public static boolean doEnableKEGGaskUser() {
-		return askForEnablingKEGG() == JOptionPane.YES_OPTION;
-	}
-
-	private static int askForEnablingKEGG() {
-		JOptionPane.showMessageDialog(null, "<html><h3>KEGG License Status Evaluation</h3>"
-				+ "While VANTED is available as a academic research tool at no cost to commercial and non-commercial users, for using<br>"
-				+ "KEGG related functions, it is necessary for all users to adhere to the KEGG license.<br>"
-				+ "For using VANTED you need also be aware of information about licenses and conditions for<br>"
-				+ "usage, listed at the program info dialog and the VANTED website (www.vanted.org).<br><br>"
-				+ "VANTED does not distribute information from KEGG but contains functionality for the online-access to <br>"
-				+ "information from KEGG website.<br><br>"
-				+ "<b>Before these functions are available to you, you should  carefully read the following license information<br>"
-				+ "and decide if it is legit for you to use the KEGG related program functions. If you choose not to use the KEGG functions<br>"
-				+ "all other features of this application are still available and fully working.",
-				"VANTED Program Features Initialization", JOptionPane.INFORMATION_MESSAGE);
-
-		JOptionPane.showMessageDialog(null,
-				"<html><h3>KEGG License Status Evaluation</h3>" + MenuItemInfoDialog.getKEGGlibText(),
-				"VANTED Program Features Initialization", JOptionPane.INFORMATION_MESSAGE);
-
-		int result = JOptionPane.showConfirmDialog(null, "<html><h3>Enable KEGG functions?",
-				"VANTED Program Features Initialization", JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE);
-		return result;
 	}
 
 	/**
@@ -330,6 +303,16 @@ public class Main {
 	public static void startVanted(String[] args, String adn) {
 		startVantedExt(args, new String[] { adn });
 
+	}
+	
+	/**
+	 * Please use {@link KeggAccess#doEnableKEGGaskUser()} instead.
+	 * @vanted.revision 2.8.0 change to deprecated
+	 * @return
+	 */
+	@Deprecated
+	public static boolean doEnableKEGGaskUser() {
+		return KeggAccess._askForEnablingKEGG() == JOptionPane.YES_OPTION;
 	}
 }
 
