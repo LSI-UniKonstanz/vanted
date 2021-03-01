@@ -22,7 +22,7 @@ import org.graffiti.attributes.Attributable;
  */
 public interface TransactionListener extends EventListener {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Called when a transaction has stopped. <br>
 	 * The class {@link TransactionHashMap} merges duplicate
@@ -35,15 +35,15 @@ public interface TransactionListener extends EventListener {
 	 * code should completely re-process the affected {@link Attributable}.
 	 * 
 	 * @param e
-	 *            the EdgeEvent detailing the changes.
+	 *           the EdgeEvent detailing the changes.
 	 */
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status);
-
+	
 	/**
 	 * Called when a transaction has started.
 	 * 
 	 * @param e
-	 *            the EdgeEvent detailing the changes.
+	 *           the EdgeEvent detailing the changes.
 	 */
 	public void transactionStarted(TransactionEvent e);
 }

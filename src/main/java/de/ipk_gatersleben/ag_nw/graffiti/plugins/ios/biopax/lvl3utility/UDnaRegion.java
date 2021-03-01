@@ -21,7 +21,7 @@ public class UDnaRegion extends UtilitySuperClassToGraph {
 	 */
 	public static void addAttributesToNode(GraphElement elem, DnaRegion i)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-
+		
 		// first set label to node
 		setLabels(elem, i);
 		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), //$NON-NLS-1$
@@ -40,12 +40,12 @@ public class UDnaRegion extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement elem, Graph g, Model model) {
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
-
+		
 		if (!model.containsID(RDFID)) {
 			DnaRegion interaction = model.addNew(DnaRegion.class, RDFID);
 			UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
@@ -62,7 +62,7 @@ public class UDnaRegion extends UtilitySuperClassToGraph {
 			UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 			UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
 		}
-
+		
 	}
-
+	
 }

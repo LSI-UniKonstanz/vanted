@@ -1,10 +1,10 @@
-//==============================================================================
+// ==============================================================================
 //
-//   GraphMLEntityResolver.java
+// GraphMLEntityResolver.java
 //
-//   Copyright (c) 2001-2004 Gravisto Team, University of Passau
+// Copyright (c) 2001-2004 Gravisto Team, University of Passau
 //
-//==============================================================================
+// ==============================================================================
 // $Id: GraphMLEntityResolver.java,v 1.6 2011/01/16 16:39:59 klukas Exp $
 
 package org.graffiti.plugins.ios.importers.graphml.parser;
@@ -25,30 +25,29 @@ import org.xml.sax.InputSource;
  */
 public class GraphMLEntityResolver implements EntityResolver {
 	// ~ Static fields/initializers =============================================
-
+	
 	/** The logger for this class. */
 	private static final Logger logger = Logger.getLogger(GraphMLEntityResolver.class.getName());
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>GraphMLEntityResolver</code>.
 	 */
 	public GraphMLEntityResolver() {
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Redirects the external system identifiers pointing to graphML schema
 	 * locations to the locally cached schemas.
 	 *
 	 * @param publicId
-	 *            the public identifier of the external entity being referenced,
-	 *            <code>null</code> if none was supplied.
+	 *           the public identifier of the external entity being referenced,
+	 *           <code>null</code> if none was supplied.
 	 * @param systemId
-	 *            the system identifier of the external entity being referenced.
-	 *
+	 *           the system identifier of the external entity being referenced.
 	 * @return the <code>InputSource</code> object describing the alternative input
 	 *         source, <code>null</code> to fall back to the default behavior.
 	 */
@@ -57,12 +56,12 @@ public class GraphMLEntityResolver implements EntityResolver {
 		String baseURL = "http://graphml.graphdrawing.org/xmlns/";
 		String graphmlURL1 = baseURL + "1.0rc/";
 		String graphmlURL2 = baseURL + "graphml/";
-
+		
 		logger.finest("publicId: \"" + publicId + "\"");
 		logger.finest("systemId: \"" + systemId + "\"");
-
+		
 		InputSource is = null;
-
+		
 		// the ressources for the graphML namespace
 		// http://graphml.graphdrawing.org/xmlns/1.0rc
 		if (systemId.startsWith(graphmlURL1)) {
@@ -75,7 +74,7 @@ public class GraphMLEntityResolver implements EntityResolver {
 				logger.warning("unknown schema location: " + systemId);
 			}
 		}
-
+		
 		// the ressources for the graphML namespace
 		// http://graphml.graphdrawing.org/xmlns/graphml
 		else if (systemId.startsWith(graphmlURL2)) {
@@ -88,7 +87,7 @@ public class GraphMLEntityResolver implements EntityResolver {
 				logger.warning("unknown schema location: " + systemId);
 			}
 		}
-
+		
 		// fallback cases
 		else if (systemId.endsWith("graphml-attributes-1.0rc.xsd")
 				|| systemId.endsWith("graphml-structure-1.0rc.xsd")) {
@@ -96,39 +95,38 @@ public class GraphMLEntityResolver implements EntityResolver {
 		} else if (systemId.endsWith("graphml-attributes.xsd") || systemId.endsWith("graphml-structure.xsd")) {
 			is = getSource("graphml-struct.xsd");
 		}
-
+		
 		// for both URLS
 		if (systemId.endsWith("xlink.xsd")) {
 			is = getSource("xlink.xsd");
 		}
-
+		
 		if (is == null) {
 			logger.fine("no cached file available for systemID\n\t" + systemId);
 		}
-
+		
 		return is;
 	}
-
+	
 	/**
 	 * Determines the <code>InputSource</code> for the specified resource and retuns
 	 * it.
 	 *
 	 * @param resource
-	 *            the resource to be determined.
-	 *
+	 *           the resource to be determined.
 	 * @return the <code>InputSource</code> corresponding to the specified
 	 *         ressource.
 	 */
 	private InputSource getSource(String resource) {
 		logger.fine("searching ressource " + resource);
-
+		
 		InputStream istr = this.getClass().getResourceAsStream(resource);
 		assert istr != null;
 		logger.fine("using cached file \"" + resource + "\".");
-
+		
 		InputSource is = new InputSource(istr);
 		assert is != null : "input source is null";
-
+		
 		return is;
 	}
 }

@@ -43,35 +43,35 @@ import org.jfree.ui.RefineryUtilities;
  * A population pyramid demo.
  */
 public class PopulationChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public PopulationChartDemo(final String title) {
-
+		
 		super(title);
 		final CategoryDataset dataset = createDataset();
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createStackedBarChart("Population Chart Demo", "Age Group", // domain axis
-																											// label
+				// label
 				"Population (millions)", // range axis label
 				dataset, // data
 				PlotOrientation.HORIZONTAL, true, // include legend
 				true, // tooltips
 				false // urls
 		);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -82,14 +82,14 @@ public class PopulationChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a dataset.
 	 * 
 	 * @return A dataset.
 	 */
 	private KeyedValues2DDataset createDataset() {
-
+		
 		final DefaultKeyedValues2DDataset data = new DefaultKeyedValues2DDataset();
 		data.addValue(-6.0, "Male", "70+");
 		data.addValue(-8.0, "Male", "60-69");
@@ -108,22 +108,22 @@ public class PopulationChartDemo extends ApplicationFrame {
 		data.addValue(19.0, "Female", "10-19");
 		data.addValue(20.0, "Female", "0-9");
 		return data;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final PopulationChartDemo demo = new PopulationChartDemo("Population Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

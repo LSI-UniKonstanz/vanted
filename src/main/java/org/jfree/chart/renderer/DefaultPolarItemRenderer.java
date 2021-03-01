@@ -60,24 +60,24 @@ import org.jfree.util.BooleanUtils;
  * @author Daniel Bridenbecker, Solution Engineering, Inc.
  */
 public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarItemRenderer {
-
+	
 	/** The plot that the renderer is assigned to. */
 	private PolarPlot plot;
-
+	
 	/** Flags that control whether the renderer fills each series or not. */
 	private BooleanList seriesFilled;
-
+	
 	/**
 	 * Creates a new instance of DefaultPolarItemRenderer
 	 */
 	public DefaultPolarItemRenderer() {
 		this.seriesFilled = new BooleanList();
 	}
-
+	
 	// --------------------------------
 	// --- AbstractRenderer Methods ---
 	// --------------------------------
-
+	
 	/**
 	 * Returns the drawing supplier from the plot.
 	 * 
@@ -91,7 +91,7 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 		}
 		return result;
 	}
-
+	
 	// ----------------------
 	// --- Public Methods ---
 	// ----------------------
@@ -99,12 +99,12 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	 * Set the plot associated with this renderer.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 */
 	public void setPlot(PolarPlot plot) {
 		this.plot = plot;
 	}
-
+	
 	/**
 	 * Return the plot associated with this renderer.
 	 * 
@@ -113,26 +113,26 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	public PolarPlot getPlot() {
 		return this.plot;
 	}
-
+	
 	/**
 	 * Plots the data for a given series.
 	 * 
 	 * @param g2
-	 *            the drawing surface.
+	 *           the drawing surface.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param info
-	 *            collects plot rendering info.
+	 *           collects plot rendering info.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param seriesIndex
-	 *            the series index.
+	 *           the series index.
 	 */
 	public void drawSeries(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, PolarPlot plot,
 			XYDataset dataset, int seriesIndex) {
-
+		
 		Polygon poly = new Polygon();
 		int numPoints = dataset.getItemCount(seriesIndex);
 		for (int i = 0; i < numPoints; i++) {
@@ -152,13 +152,13 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 			g2.draw(poly);
 		}
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the renderer should fill the specified series,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return A boolean.
 	 */
 	public boolean isSeriesFilled(int series) {
@@ -169,39 +169,39 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether or not a series is filled.
 	 * 
 	 * @param series
-	 *            the series index.
+	 *           the series index.
 	 * @param filled
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setSeriesFilled(int series, boolean filled) {
 		this.seriesFilled.setBoolean(series, BooleanUtils.valueOf(filled));
 	}
-
+	
 	/**
 	 * Draw the angular gridlines - the spokes.
 	 * 
 	 * @param g2
-	 *            the drawing surface.
+	 *           the drawing surface.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 */
 	public void drawAngularGridLines(Graphics2D g2, PolarPlot plot, List ticks, Rectangle2D dataArea) {
-
+		
 		g2.setFont(plot.getAngleLabelFont());
 		g2.setStroke(plot.getAngleGridlineStroke());
 		g2.setPaint(plot.getAngleGridlinePaint());
-
+		
 		double maxRadius = plot.getMaxRadius();
-
+		
 		Point center = plot.translateValueThetaRadiusToJava2D(0.0, 0.0, dataArea);
 		Iterator iterator = ticks.iterator();
 		while (iterator.hasNext()) {
@@ -217,30 +217,30 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 			}
 		}
 	}
-
+	
 	/**
 	 * Draw the radial gridlines - the rings.
 	 * 
 	 * @param g2
-	 *            the drawing surface.
+	 *           the drawing surface.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param radialAxis
-	 *            the radial axis.
+	 *           the radial axis.
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 */
 	public void drawRadialGridLines(Graphics2D g2, PolarPlot plot, ValueAxis radialAxis, List ticks,
 			Rectangle2D dataArea) {
-
+		
 		g2.setFont(radialAxis.getTickLabelFont());
 		g2.setPaint(plot.getRadiusGridlinePaint());
 		g2.setStroke(plot.getRadiusGridlineStroke());
-
+		
 		Point center = plot.translateValueThetaRadiusToJava2D(0.0, 0.0, dataArea);
-
+		
 		Iterator iterator = ticks.iterator();
 		while (iterator.hasNext()) {
 			NumberTick tick = (NumberTick) iterator.next();
@@ -254,17 +254,17 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 			g2.draw(ring);
 		}
 	}
-
+	
 	/**
 	 * Return the legend for the given series.
 	 * 
 	 * @param series
-	 *            the series index.
+	 *           the series index.
 	 * @return The legend item.
 	 */
 	public LegendItem getLegendItem(int series) {
 		LegendItem result = null;
-
+		
 		PolarPlot polarPlot = getPlot();
 		if (polarPlot != null) {
 			XYDataset dataset;
@@ -281,5 +281,5 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 		}
 		return result;
 	}
-
+	
 }

@@ -5,11 +5,11 @@ package org.graffiti.attributes;
  */
 public class ArrowShapeAttribute extends StringAttribute {
 	// ~ Constructors ===========================================================
-
+	
 	public ArrowShapeAttribute() {
-
+		
 	}
-
+	
 	public ArrowShapeAttribute(String id, String value) {
 		super(id, value);
 	}

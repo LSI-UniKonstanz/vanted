@@ -37,11 +37,11 @@ package org.jfree.data;
  * @author Bill Kelemenm (bill@kelemen-usa.com)
  */
 public interface CombinationDataset {
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// New methods from CombinationDataset
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the parent Dataset of this combination. If there is more than one
 	 * parent, or a child is found that is not a combination, then returns
@@ -50,12 +50,12 @@ public interface CombinationDataset {
 	 * @return the parent Dataset of this combination.
 	 */
 	public SeriesDataset getParent();
-
+	
 	/**
 	 * Returns a map or indirect indexing form our series into parent's series.
 	 * 
 	 * @return a map or indirect indexing form our series into parent's series.
 	 */
 	public int[] getMap();
-
+	
 }

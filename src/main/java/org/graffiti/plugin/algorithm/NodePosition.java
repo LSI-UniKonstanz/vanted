@@ -19,27 +19,27 @@ import org.graffiti.graph.Node;
  */
 public class NodePosition {
 	// ~ Instance fields ========================================================
-
+	
 	/** DOCUMENT ME! */
 	Node n;
-
+	
 	/** DOCUMENT ME! */
 	double x;
-
+	
 	/** DOCUMENT ME! */
 	double y;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new NodePosition object.
 	 * 
 	 * @param n
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param x
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param y
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	NodePosition(Node n, double x, double y) {
 		this.n = n;

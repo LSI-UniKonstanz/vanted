@@ -93,100 +93,100 @@ import org.jfree.util.ObjectUtils;
  * are plotted in a chart.
  */
 public class StandardLegend extends Legend implements Serializable {
-
+	
 	/** The default outer gap. */
 	public static final Spacer DEFAULT_OUTER_GAP = new Spacer(Spacer.ABSOLUTE, 3, 3, 3, 3);
-
+	
 	/** The default inner gap. */
 	public static final Spacer DEFAULT_INNER_GAP = new Spacer(Spacer.ABSOLUTE, 2, 2, 2, 2);
-
+	
 	/** The default outline stroke. */
 	public static final Stroke DEFAULT_OUTLINE_STROKE = new BasicStroke();
-
+	
 	/** The default outline paint. */
 	public static final Paint DEFAULT_OUTLINE_PAINT = Color.gray;
-
+	
 	/** The default background paint. */
 	public static final Paint DEFAULT_BACKGROUND_PAINT = Color.white;
-
+	
 	/** The default title font. */
 	public static final Font DEFAULT_TITLE_FONT = new Font("SansSerif", Font.BOLD, 11);
-
+	
 	/** The default item font. */
 	public static final Font DEFAULT_ITEM_FONT = new Font("SansSerif", Font.PLAIN, 10);
-
+	
 	/**
 	 * Used with {@link #setPreferredWidth(double)} to indicate that no preferred
 	 * width is desired and defaults are to be used.
 	 */
 	public static final double NO_PREFERRED_WIDTH = Double.MAX_VALUE;
-
+	
 	/** Reported when illegal legend is unexpectedly found. */
 	private static final String UNEXPECTED_LEGEND_ANCHOR = "Unexpected legend anchor";
-
+	
 	/** The amount of blank space around the legend. */
 	private Spacer outerGap;
-
+	
 	/** The stroke used to draw the outline of the legend. */
 	private transient Stroke outlineStroke;
-
+	
 	/** The paint used to draw the outline of the legend. */
 	private transient Paint outlinePaint;
-
+	
 	/** The paint used to draw the background of the legend. */
 	private transient Paint backgroundPaint;
-
+	
 	/** The blank space inside the legend box. */
 	private Spacer innerGap;
-
+	
 	/** An optional title for the legend. */
 	private String title;
-
+	
 	/** The font used to display the legend title. */
 	private Font titleFont;
-
+	
 	/** The font used to display the legend item names. */
 	private Font itemFont;
-
+	
 	/** The paint used to display the legend item names. */
 	private transient Paint itemPaint;
-
+	
 	/** A flag controlling whether or not outlines are drawn around shapes. */
 	private boolean outlineShapes;
-
+	
 	/** The stroke used to outline item shapes. */
 	private transient Stroke shapeOutlineStroke = new BasicStroke(0.5f);
-
+	
 	/** The paint used to outline item shapes. */
 	private transient Paint shapeOutlinePaint = Color.lightGray;
-
+	
 	/** A flag that controls whether the legend displays the series shapes. */
 	private boolean displaySeriesShapes;
-
+	
 	/** The x scale factor for shapes displayed in the legend. */
 	private double shapeScaleX = 1.0;
-
+	
 	/** The y scale factor for shapes displayed in the legend. */
 	private double shapeScaleY = 1.0;
-
+	
 	/** A flag that controls whether the legend displays the series line */
 	private boolean displaySeriesLines;
-
+	
 	/** The order of the legend items. */
 	private LegendRenderingOrder renderingOrder = LegendRenderingOrder.STANDARD;
-
+	
 	/** The width of the arc used to round off the corners of the bounding box. */
 	private int boundingBoxArcWidth = 0;
-
+	
 	/** The height of the arc used to round off the corners of the bounding box. */
 	private int boundingBoxArcHeight = 0;
-
+	
 	/** The preferred width of the legend bounding box. */
 	private double preferredWidth = NO_PREFERRED_WIDTH;
-
+	
 	/** Access to logging facilities. */
 	private static final LogContext LOGGER = Log.createContext(StandardLegend.class);
-
+	
 	/**
 	 * Constructs a new legend with default settings.
 	 */
@@ -203,19 +203,19 @@ public class StandardLegend extends Legend implements Serializable {
 		this.displaySeriesShapes = false;
 		this.displaySeriesLines = false;
 	}
-
+	
 	/**
 	 * Creates a new legend.
 	 * 
 	 * @param chart
-	 *            the chart that the legend belongs to.
+	 *           the chart that the legend belongs to.
 	 * @deprecated use the default constructor instead and let JFreeChart manage the
 	 *             chart reference
 	 */
 	public StandardLegend(JFreeChart chart) {
 		this();
 	}
-
+	
 	/**
 	 * Returns the outer gap for the legend. This is the amount of blank space
 	 * around the outside of the legend.
@@ -225,13 +225,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Spacer getOuterGap() {
 		return this.outerGap;
 	}
-
+	
 	/**
 	 * Sets the outer gap for the legend and sends a {@link LegendChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param outerGap
-	 *            the outer gap (<code>null</code> not permitted).
+	 *           the outer gap (<code>null</code> not permitted).
 	 */
 	public void setOuterGap(Spacer outerGap) {
 		if (outerGap == null) {
@@ -240,7 +240,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.outerGap = outerGap;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the inner gap for the legend. This is the amount of blank space
 	 * around the inside of the legend.
@@ -250,13 +250,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Spacer getInnerGap() {
 		return this.innerGap;
 	}
-
+	
 	/**
 	 * Sets the inner gap for the legend and sends a {@link LegendChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param innerGap
-	 *            the inner gap (<code>null</code> not permitted).
+	 *           the inner gap (<code>null</code> not permitted).
 	 */
 	public void setInnerGap(Spacer innerGap) {
 		if (innerGap == null) {
@@ -265,7 +265,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.innerGap = innerGap;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the background paint for the legend.
 	 * 
@@ -274,13 +274,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Paint getBackgroundPaint() {
 		return this.backgroundPaint;
 	}
-
+	
 	/**
 	 * Sets the background paint for the legend and sends a
 	 * {@link LegendChangeEvent} to all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setBackgroundPaint(Paint paint) {
 		if (paint == null) {
@@ -289,7 +289,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.backgroundPaint = paint;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the outline stroke.
 	 * 
@@ -298,13 +298,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Stroke getOutlineStroke() {
 		return this.outlineStroke;
 	}
-
+	
 	/**
 	 * Sets the outline stroke and sends a {@link LegendChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> not permitted).
+	 *           the stroke (<code>null</code> not permitted).
 	 */
 	public void setOutlineStroke(Stroke stroke) {
 		if (stroke == null) {
@@ -313,7 +313,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.outlineStroke = stroke;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the outline paint.
 	 * 
@@ -322,13 +322,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Paint getOutlinePaint() {
 		return this.outlinePaint;
 	}
-
+	
 	/**
 	 * Sets the outline paint and sends a {@link LegendChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setOutlinePaint(Paint paint) {
 		if (paint == null) {
@@ -337,7 +337,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.outlinePaint = paint;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Gets the title for the legend.
 	 * 
@@ -346,19 +346,19 @@ public class StandardLegend extends Legend implements Serializable {
 	public String getTitle() {
 		return this.title;
 	}
-
+	
 	/**
 	 * Sets the title of the legend and sends a {@link LegendChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param title
-	 *            the title (<code>null</code> permitted).
+	 *           the title (<code>null</code> permitted).
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the title font.
 	 * 
@@ -367,13 +367,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Font getTitleFont() {
 		return this.titleFont;
 	}
-
+	
 	/**
 	 * Sets the title font and sends a {@link LegendChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param font
-	 *            the font (<code>null</code> not permitted).
+	 *           the font (<code>null</code> not permitted).
 	 */
 	public void setTitleFont(Font font) {
 		if (font == null) {
@@ -382,7 +382,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.titleFont = font;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the series label font.
 	 * 
@@ -391,13 +391,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Font getItemFont() {
 		return this.itemFont;
 	}
-
+	
 	/**
 	 * Sets the series label font and sends a {@link LegendChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param font
-	 *            the font (<code>null</code> not permitted).
+	 *           the font (<code>null</code> not permitted).
 	 */
 	public void setItemFont(Font font) {
 		if (font == null) {
@@ -406,7 +406,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.itemFont = font;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the series label paint.
 	 * 
@@ -415,13 +415,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Paint getItemPaint() {
 		return this.itemPaint;
 	}
-
+	
 	/**
 	 * Sets the series label paint and sends a {@link LegendChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setItemPaint(Paint paint) {
 		if (paint == null) {
@@ -430,7 +430,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.itemPaint = paint;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the flag that indicates whether or not outlines are drawn around
 	 * shapes.
@@ -440,19 +440,19 @@ public class StandardLegend extends Legend implements Serializable {
 	public boolean getOutlineShapes() {
 		return this.outlineShapes;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether or not outlines are drawn around shapes,
 	 * and sends a {@link LegendChangeEvent} to all registered listeners.
 	 * 
 	 * @param flag
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setOutlineShapes(boolean flag) {
 		this.outlineShapes = flag;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the stroke used to outline shapes.
 	 * 
@@ -461,13 +461,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public Stroke getShapeOutlineStroke() {
 		return this.shapeOutlineStroke;
 	}
-
+	
 	/**
 	 * Sets the stroke used to outline shapes and sends a {@link LegendChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> not permitted).
+	 *           the stroke (<code>null</code> not permitted).
 	 */
 	public void setShapeOutlineStroke(Stroke stroke) {
 		if (stroke == null) {
@@ -476,7 +476,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.shapeOutlineStroke = stroke;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint used to outline shapes.
 	 * 
@@ -485,31 +485,31 @@ public class StandardLegend extends Legend implements Serializable {
 	public Paint getShapeOutlinePaint() {
 		return this.shapeOutlinePaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to outline shapes. A {@link LegendChangeEvent} is sent to
 	 * all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setShapeOutlinePaint(Paint paint) {
 		this.shapeOutlinePaint = paint;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether or not the legend displays the series
 	 * shapes.
 	 * 
 	 * @param flag
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 */
 	public void setDisplaySeriesShapes(boolean flag) {
 		this.displaySeriesShapes = flag;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not the legend displays the series
 	 * shapes.
@@ -520,7 +520,7 @@ public class StandardLegend extends Legend implements Serializable {
 	public boolean getDisplaySeriesShapes() {
 		return this.displaySeriesShapes;
 	}
-
+	
 	/**
 	 * Returns the x scale factor for shapes displayed in the legend.
 	 * 
@@ -529,19 +529,19 @@ public class StandardLegend extends Legend implements Serializable {
 	public double getShapeScaleX() {
 		return this.shapeScaleX;
 	}
-
+	
 	/**
 	 * Sets the x scale factor for shapes displayed in the legend and sends a
 	 * {@link LegendChangeEvent} to all registered listeners.
 	 * 
 	 * @param factor
-	 *            the factor.
+	 *           the factor.
 	 */
 	public void setShapeScaleX(double factor) {
 		this.shapeScaleX = factor;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the y scale factor for shapes displayed in the legend.
 	 * 
@@ -550,31 +550,31 @@ public class StandardLegend extends Legend implements Serializable {
 	public double getShapeScaleY() {
 		return this.shapeScaleY;
 	}
-
+	
 	/**
 	 * Sets the y scale factor for shapes displayed in the legend and sends a
 	 * {@link LegendChangeEvent} to all registered listeners.
 	 * 
 	 * @param factor
-	 *            the factor.
+	 *           the factor.
 	 */
 	public void setShapeScaleY(double factor) {
 		this.shapeScaleY = factor;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether or not the legend displays the series line
 	 * stroke.
 	 * 
 	 * @param flag
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 */
 	public void setDisplaySeriesLines(boolean flag) {
 		this.displaySeriesLines = flag;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not the legend displays the series
 	 * line stroke.
@@ -585,7 +585,7 @@ public class StandardLegend extends Legend implements Serializable {
 	public boolean getDisplaySeriesLines() {
 		return this.displaySeriesLines;
 	}
-
+	
 	/**
 	 * Returns the legend rendering order.
 	 * 
@@ -594,13 +594,13 @@ public class StandardLegend extends Legend implements Serializable {
 	public LegendRenderingOrder getRenderingOrder() {
 		return this.renderingOrder;
 	}
-
+	
 	/**
 	 * Sets the legend rendering order and sends a {@link LegendChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param order
-	 *            the order (<code>null</code> not permitted).
+	 *           the order (<code>null</code> not permitted).
 	 */
 	public void setRenderingOrder(LegendRenderingOrder order) {
 		if (order == null) {
@@ -609,7 +609,7 @@ public class StandardLegend extends Legend implements Serializable {
 		this.renderingOrder = order;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the width of the arc used to round off the corners of the bounding
 	 * box.
@@ -620,19 +620,19 @@ public class StandardLegend extends Legend implements Serializable {
 	public int getBoundingBoxArcWidth() {
 		return this.boundingBoxArcWidth;
 	}
-
+	
 	/**
 	 * Sets the width of the arc used to round off the corners of the bounding box.
 	 * A {@link LegendChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param arcWidth
-	 *            the new arc width.
+	 *           the new arc width.
 	 */
 	public void setBoundingBoxArcWidth(int arcWidth) {
 		this.boundingBoxArcWidth = arcWidth;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the height of the arc used to round off the corners of the bounding
 	 * box.
@@ -643,19 +643,19 @@ public class StandardLegend extends Legend implements Serializable {
 	public int getBoundingBoxArcHeight() {
 		return this.boundingBoxArcHeight;
 	}
-
+	
 	/**
 	 * Sets the height of the arc used to round off the corners of the bounding box.
 	 * A {@link LegendChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param arcHeight
-	 *            the new arc height.
+	 *           the new arc height.
 	 */
 	public void setBoundingBoxArcHeight(int arcHeight) {
 		this.boundingBoxArcHeight = arcHeight;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the preferred width of the legend bounding box if such width has been
 	 * defined; otherwise returns <code>NO_PREFERRED_WIDTH</code>.
@@ -666,7 +666,7 @@ public class StandardLegend extends Legend implements Serializable {
 	public double getPreferredWidth() {
 		return this.preferredWidth;
 	}
-
+	
 	/**
 	 * Sets the preferred width of the legend bounding box. If a preferred width is
 	 * set, the legend text is word-wrapped in an attempt to fulfill the preferred
@@ -679,74 +679,74 @@ public class StandardLegend extends Legend implements Serializable {
 	 * A {@link LegendChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param width
-	 *            the new width.
+	 *           the new width.
 	 */
 	public void setPreferredWidth(double width) {
 		this.preferredWidth = width;
 		notifyListeners(new LegendChangeEvent(this));
 	}
-
+	
 	/**
 	 * Draws the legend on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param available
-	 *            the area within which the legend, and afterwards the plot, should
-	 *            be drawn.
+	 *           the area within which the legend, and afterwards the plot, should
+	 *           be drawn.
 	 * @param info
-	 *            collects rendering info (optional).
+	 *           collects rendering info (optional).
 	 * @return The area NOT used by the legend.
 	 */
 	public Rectangle2D draw(Graphics2D g2, Rectangle2D available, ChartRenderingInfo info) {
-
+		
 		return draw(g2, available, (getAnchor() & HORIZONTAL) != 0, (getAnchor() & INVERTED) != 0, info);
-
+		
 	}
-
+	
 	/**
 	 * Draws the legend.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param available
-	 *            the area available for drawing the chart.
+	 *           the area available for drawing the chart.
 	 * @param horizontal
-	 *            a flag indicating whether the legend items are laid out
-	 *            horizontally.
+	 *           a flag indicating whether the legend items are laid out
+	 *           horizontally.
 	 * @param inverted
-	 *            ???
+	 *           ???
 	 * @param info
-	 *            collects rendering info (optional).
+	 *           collects rendering info (optional).
 	 * @return The remaining available drawing area.
 	 */
 	protected Rectangle2D draw(Graphics2D g2, Rectangle2D available, boolean horizontal, boolean inverted,
 			ChartRenderingInfo info) {
-
+		
 		LegendItemCollection legendItems = getChart().getPlot().getLegendItems();
-
+		
 		if (legendItems == null || legendItems.getItemCount() == 0) {
 			return available;
 		}
 		// else...
-
+		
 		DrawableLegendItem legendTitle = null;
 		LegendItem titleItem = null;
-
+		
 		if (this.title != null && !this.title.equals("")) {
 			titleItem = new LegendItem(this.title, this.title, null, true, Color.black, new BasicStroke(1.0f),
 					Color.black, new BasicStroke(1.0f));
 		}
-
+		
 		RectangularShape legendArea;
 		double availableWidth = available.getWidth();
 		// the translation point for the origin of the drawing system
 		Point2D translation;
-
+		
 		// Create buffer for individual items within the legend
 		List items = new ArrayList();
-
+		
 		// Compute individual rectangles in the legend, translation point as well
 		// as the bounding box for the legend.
 		if (horizontal) {
@@ -757,20 +757,20 @@ public class StandardLegend extends Legend implements Serializable {
 			double rowHeight = 0;
 			double totalHeight = 0;
 			boolean wrappingAllowed = true;
-
+			
 			if (titleItem != null) {
 				g2.setFont(getTitleFont());
-
+				
 				legendTitle = createDrawableLegendItem(g2, titleItem, xoffset, totalHeight);
-
+				
 				rowHeight = Math.max(0, legendTitle.getHeight());
 				xoffset += legendTitle.getWidth();
 			}
-
+			
 			g2.setFont(this.itemFont);
 			for (int i = 0; i < legendItems.getItemCount(); i++) {
 				DrawableLegendItem item;
-
+				
 				if (this.renderingOrder == LegendRenderingOrder.STANDARD) {
 					item = createDrawableLegendItem(g2, legendItems.get(i), xoffset, totalHeight);
 				} else if (this.renderingOrder == LegendRenderingOrder.REVERSE) {
@@ -780,7 +780,7 @@ public class StandardLegend extends Legend implements Serializable {
 					// we're not supposed to get here, will cause NullPointerException
 					item = null;
 				}
-
+				
 				if (item.getMaxX() + xstart > xlimit && wrappingAllowed) {
 					// start a new row
 					maxRowWidth = Math.max(maxRowWidth, xoffset);
@@ -799,34 +799,34 @@ public class StandardLegend extends Legend implements Serializable {
 					items.add(item);
 				}
 			}
-
+			
 			maxRowWidth = Math.max(maxRowWidth, xoffset);
 			totalHeight += rowHeight;
-
+			
 			// Create the bounding box
 			legendArea = new RoundRectangle2D.Double(0, 0, maxRowWidth, totalHeight, this.boundingBoxArcWidth,
 					this.boundingBoxArcHeight);
-
+			
 			translation = createTranslationPointForHorizontalDraw(available, inverted, maxRowWidth, totalHeight);
 		} else { // vertical...
 			double totalHeight = 0;
 			double maxWidth = (this.preferredWidth == NO_PREFERRED_WIDTH) ? 0 : this.preferredWidth;
-
+			
 			if (titleItem != null) {
 				g2.setFont(getTitleFont());
-
+				
 				legendTitle = createDrawableLegendItem(g2, titleItem, 0, totalHeight);
-
+				
 				totalHeight += legendTitle.getHeight();
 				maxWidth = Math.max(maxWidth, legendTitle.getWidth());
 			}
-
+			
 			g2.setFont(this.itemFont);
-
+			
 			int legendItemsLength = legendItems.getItemCount();
 			for (int i = 0; i < legendItemsLength; i++) {
 				List drawableParts;
-
+				
 				if (this.renderingOrder == LegendRenderingOrder.STANDARD) {
 					drawableParts = createAllDrawableLinesForItem(g2, legendItems.get(i), 0, totalHeight, maxWidth);
 				} else if (this.renderingOrder == LegendRenderingOrder.REVERSE) {
@@ -836,49 +836,49 @@ public class StandardLegend extends Legend implements Serializable {
 					// we're not supposed to get here, will cause NullPointerException
 					drawableParts = null;
 				}
-
+				
 				for (Iterator j = drawableParts.iterator(); j.hasNext();) {
 					DrawableLegendItem item = (DrawableLegendItem) j.next();
-
+					
 					totalHeight += item.getHeight();
 					maxWidth = Math.max(maxWidth, item.getWidth());
-
+					
 					items.add(item);
 				}
 			}
-
+			
 			// Create the bounding box
 			legendArea = new RoundRectangle2D.Float(0, 0, (float) maxWidth, (float) totalHeight,
 					this.boundingBoxArcWidth, this.boundingBoxArcHeight);
-
+			
 			translation = createTranslationPointForVerticalDraw(available, inverted, totalHeight, maxWidth);
 		}
-
+		
 		// Move the origin of the drawing to the appropriate location
 		g2.translate(translation.getX(), translation.getY());
-
+		
 		LOGGER.debug("legendArea = " + legendArea.getWidth() + ", " + legendArea.getHeight());
 		drawLegendBox(g2, legendArea);
 		drawLegendTitle(g2, legendTitle);
 		drawSeriesElements(g2, items, translation, info);
-
+		
 		// translate the origin back to what it was prior to drawing the legend
 		g2.translate(-translation.getX(), -translation.getY());
-
+		
 		return calcRemainingDrawingArea(available, horizontal, inverted, legendArea);
 	}
-
+	
 	/**
 	 * ???
 	 * 
 	 * @param available
-	 *            the available area.
+	 *           the available area.
 	 * @param inverted
-	 *            inverted?
+	 *           inverted?
 	 * @param maxRowWidth
-	 *            the maximum row width.
+	 *           the maximum row width.
 	 * @param totalHeight
-	 *            the total height.
+	 *           the total height.
 	 * @return The translation point.
 	 */
 	private Point2D createTranslationPointForHorizontalDraw(Rectangle2D available, boolean inverted, double maxRowWidth,
@@ -898,22 +898,22 @@ public class StandardLegend extends Legend implements Serializable {
 		} else {
 			throw new IllegalStateException(UNEXPECTED_LEGEND_ANCHOR);
 		}
-
+		
 		// Create the translation point
 		return new Point2D.Double(xloc, yloc);
 	}
-
+	
 	/**
 	 * ???
 	 * 
 	 * @param available
-	 *            the available area.
+	 *           the available area.
 	 * @param inverted
-	 *            inverted?
+	 *           inverted?
 	 * @param totalHeight
-	 *            the total height.
+	 *           the total height.
 	 * @param maxWidth
-	 *            the maximum width.
+	 *           the maximum width.
 	 * @return The translation point.
 	 */
 	private Point2D createTranslationPointForVerticalDraw(Rectangle2D available, boolean inverted, double totalHeight,
@@ -935,15 +935,15 @@ public class StandardLegend extends Legend implements Serializable {
 		// Create the translation point
 		return new Point2D.Double(xloc, yloc);
 	}
-
+	
 	/**
 	 * Draws the legend title.
 	 * 
 	 * @param g2
-	 *            the graphics device (<code>null</code> not permitted).
+	 *           the graphics device (<code>null</code> not permitted).
 	 * @param legendTitle
-	 *            the title (<code>null</code> permitted, in which case the method
-	 *            does nothing).
+	 *           the title (<code>null</code> permitted, in which case the method
+	 *           does nothing).
 	 */
 	private void drawLegendTitle(Graphics2D g2, DrawableLegendItem legendTitle) {
 		if (legendTitle != null) {
@@ -958,14 +958,14 @@ public class StandardLegend extends Legend implements Serializable {
 			LOGGER.debug("Title y = " + legendTitle.getLabelPosition().getY());
 		}
 	}
-
+	
 	/**
 	 * Draws the bounding box for the legend.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param legendArea
-	 *            the legend area.
+	 *           the legend area.
 	 */
 	private void drawLegendBox(Graphics2D g2, RectangularShape legendArea) {
 		// Draw the legend's bounding box
@@ -975,18 +975,18 @@ public class StandardLegend extends Legend implements Serializable {
 		g2.setStroke(this.outlineStroke);
 		g2.draw(legendArea);
 	}
-
+	
 	/**
 	 * Draws the series elements.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param items
-	 *            the items.
+	 *           the items.
 	 * @param translation
-	 *            the translation point.
+	 *           the translation point.
 	 * @param info
-	 *            optional carrier for rendering info.
+	 *           optional carrier for rendering info.
 	 */
 	private void drawSeriesElements(Graphics2D g2, List items, Point2D translation, ChartRenderingInfo info) {
 		EntityCollection entities = null;
@@ -1001,7 +1001,7 @@ public class StandardLegend extends Legend implements Serializable {
 			if (this.displaySeriesLines) {
 				g2.setStroke(item.getLineStroke());
 				g2.draw(item.getLine());
-
+				
 				if (this.displaySeriesShapes) {
 					if (item.isMarkerFilled()) {
 						g2.fill(keyBox);
@@ -1027,7 +1027,7 @@ public class StandardLegend extends Legend implements Serializable {
 					(float) item.getLabelPosition().getY(), TextAnchor.CENTER_LEFT);
 			LOGGER.debug("Item x = " + item.getLabelPosition().getX());
 			LOGGER.debug("Item y = " + item.getLabelPosition().getY());
-
+			
 			if (entities != null) {
 				Rectangle2D area = new Rectangle2D.Double(translation.getX() + item.getX(),
 						translation.getY() + item.getY(), item.getWidth(), item.getHeight());
@@ -1037,18 +1037,18 @@ public class StandardLegend extends Legend implements Serializable {
 			}
 		}
 	}
-
+	
 	/**
 	 * Calculates the remaining drawing area.
 	 * 
 	 * @param available
-	 *            the available area.
+	 *           the available area.
 	 * @param horizontal
-	 *            horizontal?
+	 *           horizontal?
 	 * @param inverted
-	 *            inverted?
+	 *           inverted?
 	 * @param legendArea
-	 *            the legend area.
+	 *           the legend area.
 	 * @return The remaining drawing area.
 	 */
 	private Rectangle2D calcRemainingDrawingArea(Rectangle2D available, boolean horizontal, boolean inverted,
@@ -1063,7 +1063,7 @@ public class StandardLegend extends Legend implements Serializable {
 			double yy = available.getY();
 			double yloc = (inverted) ? yy
 					: yy + legendArea.getHeight() + getOuterGap().getBottomSpace(available.getHeight());
-
+			
 			// return the remaining available drawing area
 			return new Rectangle2D.Double(available.getX(), yloc, available.getWidth(),
 					available.getHeight() - legendArea.getHeight() - getOuterGap().getTopSpace(available.getHeight())
@@ -1078,7 +1078,7 @@ public class StandardLegend extends Legend implements Serializable {
 			double xloc = (inverted) ? available.getX()
 					: available.getX() + legendArea.getWidth() + getOuterGap().getLeftSpace(available.getWidth())
 							+ getOuterGap().getRightSpace(available.getWidth());
-
+			
 			// return the remaining available drawing area
 			return new Rectangle2D.Double(xloc, available.getY(),
 					available.getWidth() - legendArea.getWidth() - getOuterGap().getLeftSpace(available.getWidth())
@@ -1086,58 +1086,58 @@ public class StandardLegend extends Legend implements Serializable {
 					available.getHeight());
 		}
 	}
-
+	
 	/**
 	 * Returns a list of drawable legend items for the specified legend item.
 	 * Word-wrapping is applied to the specified legend item and it is broken into a
 	 * few lines in order to fit into the specified <code>wordWrapWidth</code>.
 	 * 
 	 * @param g2
-	 *            the graphics context.
+	 *           the graphics context.
 	 * @param legendItem
-	 *            the legend item.
+	 *           the legend item.
 	 * @param x
-	 *            the upper left x coordinate for the bounding box.
+	 *           the upper left x coordinate for the bounding box.
 	 * @param y
-	 *            the upper left y coordinate for the bounding box.
+	 *           the upper left y coordinate for the bounding box.
 	 * @param wordWrapWidth
-	 *            the word wrap width.
+	 *           the word wrap width.
 	 * @return A list of drawable legend items for the specified legend item.
 	 * @see #setPreferredWidth(double)
 	 */
 	private List createAllDrawableLinesForItem(Graphics2D g2, LegendItem legendItem, double x, double y,
 			double wordWrapWidth) {
-
+		
 		List drawableParts = new ArrayList();
-
+		
 		DrawableLegendItem line = createDrawableLegendItem(g2, legendItem, x, y);
-
+		
 		if (line.getWidth() < wordWrapWidth) {
 			// we don't need word-wrapping, return just a single line.
 			drawableParts.add(line);
 			return drawableParts;
 		}
-
+		
 		// we need word-wrapping. start laying out the lines. add words to
 		// every line until it's full.
-
+		
 		boolean firstLine = true;
 		double totalHeight = y;
 		String prefix = "";
 		String suffix = legendItem.getLabel().trim();
-
+		
 		LegendItem tmpItem = new LegendItem(prefix.trim(), legendItem.getLabel(), legendItem.getShape(),
 				legendItem.isShapeFilled(), legendItem.getPaint(), legendItem.getStroke(), legendItem.getOutlinePaint(),
 				legendItem.getOutlineStroke());
-
+		
 		line = createDrawableLegendItem(g2, tmpItem, x, totalHeight);
-
+		
 		DrawableLegendItem goodLine = null; // no good known line yet.
-
+		
 		do {
 			// save the suffix, we might need to restore it.
 			String prevSuffix = suffix;
-
+			
 			// try to extend the prefix.
 			int spacePos = suffix.indexOf(" ");
 			if (spacePos < 0) {
@@ -1149,7 +1149,7 @@ public class StandardLegend extends Legend implements Serializable {
 				prefix += suffix.substring(0, spacePos + 1);
 				suffix = suffix.substring(spacePos + 1);
 			}
-
+			
 			// Create a temporary legend item for the extended prefix.
 			// If first line, make its marker visible. Otherwise, paint marker
 			// in background paint.
@@ -1157,10 +1157,10 @@ public class StandardLegend extends Legend implements Serializable {
 			tmpItem = new LegendItem(prefix.trim(), legendItem.getLabel(), legendItem.getShape(),
 					legendItem.isShapeFilled(), firstLine ? legendItem.getPaint() : background, legendItem.getStroke(),
 					firstLine ? legendItem.getOutlinePaint() : background, legendItem.getOutlineStroke());
-
+			
 			// and create a line for it as well.
 			line = createDrawableLegendItem(g2, tmpItem, x, totalHeight);
-
+			
 			// now check if line fits in width.
 			if (line.getWidth() < wordWrapWidth) {
 				// fits! save it as the last good known line.
@@ -1187,15 +1187,15 @@ public class StandardLegend extends Legend implements Serializable {
 				goodLine = null; // mark as used to avoid using twice.
 			}
 		} while (!suffix.equals(""));
-
+		
 		// make sure not to forget last line.
 		if (line != null) {
 			drawableParts.add(line);
 		}
-
+		
 		return drawableParts;
 	}
-
+	
 	/**
 	 * Creates a drawable legend item.
 	 * <P>
@@ -1204,35 +1204,35 @@ public class StandardLegend extends Legend implements Serializable {
 	 * 70% of the height of current font.
 	 * 
 	 * @param graphics
-	 *            the graphics context (supplies font metrics etc.).
+	 *           the graphics context (supplies font metrics etc.).
 	 * @param legendItem
-	 *            the legend item.
+	 *           the legend item.
 	 * @param x
-	 *            the upper left x coordinate for the bounding box.
+	 *           the upper left x coordinate for the bounding box.
 	 * @param y
-	 *            the upper left y coordinate for the bounding box.
+	 *           the upper left y coordinate for the bounding box.
 	 * @return A legend item encapsulating all necessary info for drawing.
 	 */
 	private DrawableLegendItem createDrawableLegendItem(Graphics2D graphics, LegendItem legendItem, double x,
 			double y) {
-
+		
 		LOGGER.debug("In createDrawableLegendItem(x = " + x + ", y = " + y);
 		int insideGap = 2;
 		FontMetrics fm = graphics.getFontMetrics();
 		LineMetrics lm = fm.getLineMetrics(legendItem.getLabel(), graphics);
 		float textAscent = lm.getAscent();
 		float lineHeight = textAscent + lm.getDescent() + lm.getLeading();
-
+		
 		DrawableLegendItem item = new DrawableLegendItem(legendItem);
-
+		
 		float xLabelLoc = (float) (x + insideGap + 1.15f * lineHeight);
 		float yLabelLoc = (float) (y + insideGap + 0.5f * lineHeight);
-
+		
 		item.setLabelPosition(new Point2D.Float(xLabelLoc, yLabelLoc));
-
+		
 		float width = (float) (item.getLabelPosition().getX() - x + fm.stringWidth(legendItem.getLabel())
 				+ 0.5 * textAscent);
-
+		
 		float height = (2 * insideGap + lineHeight);
 		item.setBounds(x, y, width, height);
 		float boxDim = lineHeight * 0.70f;
@@ -1254,7 +1254,7 @@ public class StandardLegend extends Legend implements Serializable {
 				Shape s2 = transformer.createTransformedShape(s1);
 				item.setMarker(s2);
 			}
-
+			
 		} else {
 			if (this.displaySeriesShapes) {
 				Shape marker = legendItem.getShape();
@@ -1270,30 +1270,30 @@ public class StandardLegend extends Legend implements Serializable {
 		}
 		item.setMarkerFilled(legendItem.isShapeFilled());
 		return item;
-
+		
 	}
-
+	
 	/**
 	 * Tests an object for equality with this legend.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof StandardLegend) {
 			StandardLegend l = (StandardLegend) obj;
 			if (super.equals(obj)) {
-
+				
 				if (!ObjectUtils.equal(this.outerGap, l.outerGap)) {
 					return false;
 				}
@@ -1335,17 +1335,17 @@ public class StandardLegend extends Legend implements Serializable {
 				}
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -1356,16 +1356,16 @@ public class StandardLegend extends Legend implements Serializable {
 		SerialUtilities.writeStroke(this.shapeOutlineStroke, stream);
 		SerialUtilities.writePaint(this.shapeOutlinePaint, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -1376,5 +1376,5 @@ public class StandardLegend extends Legend implements Serializable {
 		this.shapeOutlineStroke = SerialUtilities.readStroke(stream);
 		this.shapeOutlinePaint = SerialUtilities.readPaint(stream);
 	}
-
+	
 }

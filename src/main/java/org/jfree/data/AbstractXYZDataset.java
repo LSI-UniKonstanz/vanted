@@ -34,14 +34,14 @@ package org.jfree.data;
  * {@link XYZDataset} interface.
  */
 public abstract class AbstractXYZDataset extends AbstractXYDataset implements XYZDataset {
-
+	
 	/**
 	 * Returns the z-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The z-value.
 	 */
 	public double getZ(int series, int item) {
@@ -52,5 +52,5 @@ public abstract class AbstractXYZDataset extends AbstractXYDataset implements XY
 		}
 		return result;
 	}
-
+	
 }

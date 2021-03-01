@@ -16,42 +16,42 @@ package org.graffiti.plugin.parameter;
  */
 public class ObjectParameter extends AbstractSingleParameter {
 	// ~ Instance fields ========================================================
-
+	
 	/** DOCUMENT ME! */
 	private Object object;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new integer parameter.
 	 * 
 	 * @param value
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param name
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param description
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ObjectParameter(Object value, String name, String description) {
 		super(name, description);
-
+		
 		this.object = value;
 	}
-
+	
 	/**
 	 * Constructs a new integer parameter.
 	 * 
 	 * @param name
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param description
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ObjectParameter(String name, String description) {
 		super(name, description);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see org.graffiti.plugin.Displayable#setValue(java.lang.Object)
 	 */
@@ -59,7 +59,7 @@ public class ObjectParameter extends AbstractSingleParameter {
 	public void setValue(Object val) throws IllegalArgumentException {
 		object = val;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

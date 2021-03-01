@@ -3,9 +3,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml;
 import org.AttributeHelper;
 
 public class SBMLNodesNiceIdHelper {
-
+	
 	private static boolean isInitialized = false;
-
+	
 	/**
 	 * Sets the niceIDs if they are not initialized yet.
 	 */
@@ -16,11 +16,11 @@ public class SBMLNodesNiceIdHelper {
 			isInitialized = true;
 		}
 	}
-
+	
 	public static boolean isInitialized() {
 		return isInitialized;
 	}
-
+	
 	private static void initReactionNiceIDs() {
 		AttributeHelper.setNiceId(SBML_Constants.FAST, SBML_Constants.SBML_HEADLINE + ": Fast");
 		AttributeHelper.setNiceId(SBML_Constants.REVERSIBLE, SBML_Constants.SBML_HEADLINE + ": Reversible");
@@ -29,14 +29,14 @@ public class SBMLNodesNiceIdHelper {
 		AttributeHelper.setNiceId(SBML_Constants.REACTION_COMPARTMENT,
 				SBML_Constants.SBML_HEADLINE + ": Compartment ID");
 	}
-
+	
 	/**
 	 * Sets the nice id
 	 * 
 	 * @param internHeadline
-	 *            how the headline is represented intern
+	 *           how the headline is represented intern
 	 * @param presentedHeadline
-	 *            how the user will see the headline
+	 *           how the user will see the headline
 	 */
 	private static void initSpeciesNiceIDs() {
 		AttributeHelper.setNiceId(SBML_Constants.COMPARTMENT, SBML_Constants.SBML_HEADLINE + ": Compartment ID");
@@ -60,7 +60,7 @@ public class SBMLNodesNiceIdHelper {
 		AttributeHelper.setNiceId(SBML_Constants.SPECIES_NOTES, SBML_Constants.SBML_HEADLINE + ": Notes");
 		AttributeHelper.setNiceId(SBML_Constants.SPECIES_COMPARTMENT_NAME,
 				SBML_Constants.SBML_HEADLINE + ": Compartment ID");
-
+		
 	}
-
+	
 }

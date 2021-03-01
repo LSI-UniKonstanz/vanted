@@ -44,7 +44,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.ContextMenuHe
  */
 public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 		implements ProvidesNodeContextMenu, NeedsSwingThread {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -65,11 +65,11 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 		JMenuItem increaseSpace = new JMenuItem("Increase space between " + sel + " nodes");
 		JMenuItem decreaseSpace = new JMenuItem("Decrease space between " + sel + " nodes");
 		JMenuItem modifySpace = new JMenuItem("Increase space between " + sel + " nodes (parameterized)");
-
+		
 		final double factor = 1.5;
-
+		
 		final Collection<Node> selectedNodesF = selectedNodes;
-
+		
 		increaseSpace.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// increase space between nodes
@@ -93,10 +93,10 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 				doOperation(selectedNodesF, (Double) result[0], (Double) result[1], "X/Y transformation");
 			}
 		});
-
+		
 		return new JMenuItem[] { increaseSpace, decreaseSpace, modifySpace };
 	}
-
+	
 	/**
 	 * Transforms the Bends of an Edge that starts at a given node. Only Edges are
 	 * transformed, that have the target in the selection.
@@ -124,7 +124,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 			}
 		}
 	}
-
+	
 	// public static void expandSpace(Collection<Node> nodes, double factor,
 	// Vector2d center, double raster, Graph graph) {
 	// graph.getListenerManager().transactionStarted(graph);
@@ -147,7 +147,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	// }
 	// graph.getListenerManager().transactionFinished(graph);
 	// }
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -156,17 +156,17 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	public String getName() {
 		return "Expand or Reduce Node-Spacing";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -178,7 +178,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	public void setParameters(Parameter[] params) {
 		// empty
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -188,7 +188,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	public Parameter[] getParameters() {
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -198,7 +198,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	public void check() {
 		// empty
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -207,7 +207,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	public void execute() {
 		ContextMenuHelper.createAndShowContextMenuForAlgorithm(this);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -216,9 +216,9 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	@Override
 	public void reset() {
 		//
-
+		
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -228,7 +228,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-
+	
 	public static void doOperation(final Collection<Node> selectedNodes, final double factorX, double factorY,
 			String description) {
 		Vector2d center;
@@ -243,18 +243,18 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 				center = NodeTools.getCenter(selectedNodes);
 		} else
 			center = NodeTools.getCenter(selectedNodes);
-
+		
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		HashMap<CoordinateAttribute, Vector2d> bends2newPositions = new HashMap<CoordinateAttribute, Vector2d>();
-
+		
 		for (Iterator<Node> it = selectedNodes.iterator(); it.hasNext();) {
 			Node currentNode = it.next();
 			Vector2d currentPosition = AttributeHelper.getPositionVec2d(currentNode);
 			double x = (currentPosition.x - center.x) * factorX + center.x;
 			double y = (currentPosition.y - center.y) * factorY + center.y;
-
+			
 			nodes2newPositions.put(currentNode, new Vector2d(x, y));
-
+			
 			TransformEdgesForThisNode(bends2newPositions, currentNode, selectedNodes, factorX, factorY, center);
 		}
 		GraphHelper.applyUndoableNodeAndBendPositionUpdate(nodes2newPositions, bends2newPositions, description);

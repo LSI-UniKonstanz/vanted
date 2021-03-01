@@ -50,23 +50,23 @@ import org.jfree.data.DefaultPieDataset;
  * charts per second.
  */
 public class ChartTiming1 implements ActionListener {
-
+	
 	/** A flag that indicates when time is up. */
 	private boolean finished;
-
+	
 	/**
 	 * Creates a new application.
 	 */
 	public ChartTiming1() {
 		// nothing to do
 	}
-
+	
 	/**
 	 * Runs the timing.
 	 */
 	public void run() {
 		this.finished = false;
-
+		
 		// create a dataset...
 		final DefaultPieDataset data = new DefaultPieDataset();
 		data.setValue("One", Double.valueOf(10.3));
@@ -75,15 +75,15 @@ public class ChartTiming1 implements ActionListener {
 		data.setValue("Four", Double.valueOf(3.9));
 		data.setValue("Five", Double.valueOf(3.9));
 		data.setValue("Six", Double.valueOf(3.9));
-
+		
 		// create a pie chart...
 		final boolean withLegend = true;
 		final JFreeChart chart = ChartFactory.createPieChart("Testing", data, withLegend, true, false);
-
+		
 		final BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g2 = image.createGraphics();
 		final Rectangle2D chartArea = new Rectangle2D.Double(0, 0, 400, 300);
-
+		
 		// set up the timer...
 		final Timer timer = new Timer(10000, this);
 		timer.setRepeats(false);
@@ -97,30 +97,30 @@ public class ChartTiming1 implements ActionListener {
 			}
 		}
 		System.out.println("DONE");
-
+		
 	}
-
+	
 	/**
 	 * Receives notification of action events (in this case, from the Timer).
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		this.finished = true;
 	}
-
+	
 	/**
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ChartTiming1 app = new ChartTiming1();
 		app.run();
-
+		
 	}
-
+	
 }

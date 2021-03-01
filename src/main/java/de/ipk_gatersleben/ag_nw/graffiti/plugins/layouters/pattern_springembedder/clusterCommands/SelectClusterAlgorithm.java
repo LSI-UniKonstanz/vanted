@@ -23,24 +23,24 @@ import org.graffiti.plugin.view.View;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 
 public class SelectClusterAlgorithm extends AbstractEditorAlgorithm {
-
+	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Select Pathway-Subgraph...";
 		else
 			return "Select Cluster";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.SELECTION));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -54,7 +54,7 @@ public class SelectClusterAlgorithm extends AbstractEditorAlgorithm {
 		if (clusters.size() <= 0)
 			throw new PreconditionException("There is no cluster information assigned to graph elements!");
 	}
-
+	
 	public void execute() {
 		TreeSet<String> clusters = new TreeSet<String>();
 		for (GraphElement ge : graph.getGraphElements()) {
@@ -68,7 +68,7 @@ public class SelectClusterAlgorithm extends AbstractEditorAlgorithm {
 		String cluster = "Cluster";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			cluster = "Pathway";
-
+		
 		if ((result = JOptionPane.showInputDialog(MainFrame.getInstance(),
 				"Select the " + cluster + " to be selected (by ID)", "Select " + cluster, JOptionPane.OK_CANCEL_OPTION,
 				null, clusters.toArray(), clusters.first())) != null) {
@@ -81,16 +81,16 @@ public class SelectClusterAlgorithm extends AbstractEditorAlgorithm {
 					cnt++;
 				}
 			}
-
+			
 			MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 			MainFrame.showMessage(cnt + " graph elements added to selection", MessageType.INFO);
 		}
 	}
-
+	
 	public boolean activeForView(View v) {
 		return v != null;
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

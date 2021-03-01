@@ -54,12 +54,12 @@ import org.jfree.ui.RefineryUtilities;
  * data from a {@link CategoryDataset}.
  */
 public class LineChartDemo1 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public LineChartDemo1(final String title) {
 		super(title);
@@ -69,19 +69,19 @@ public class LineChartDemo1 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private CategoryDataset createDataset() {
-
+		
 		// row keys...
 		final String series1 = "First";
 		final String series2 = "Second";
 		final String series3 = "Third";
-
+		
 		// column keys...
 		final String type1 = "Type 1";
 		final String type2 = "Type 2";
@@ -91,10 +91,10 @@ public class LineChartDemo1 extends ApplicationFrame {
 		final String type6 = "Type 6";
 		final String type7 = "Type 7";
 		final String type8 = "Type 8";
-
+		
 		// create the dataset...
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
+		
 		dataset.addValue(1.0, series1, type1);
 		dataset.addValue(4.0, series1, type2);
 		dataset.addValue(3.0, series1, type3);
@@ -103,7 +103,7 @@ public class LineChartDemo1 extends ApplicationFrame {
 		dataset.addValue(7.0, series1, type6);
 		dataset.addValue(7.0, series1, type7);
 		dataset.addValue(8.0, series1, type8);
-
+		
 		dataset.addValue(5.0, series2, type1);
 		dataset.addValue(7.0, series2, type2);
 		dataset.addValue(6.0, series2, type3);
@@ -112,7 +112,7 @@ public class LineChartDemo1 extends ApplicationFrame {
 		dataset.addValue(4.0, series2, type6);
 		dataset.addValue(2.0, series2, type7);
 		dataset.addValue(1.0, series2, type8);
-
+		
 		dataset.addValue(4.0, series3, type1);
 		dataset.addValue(3.0, series3, type2);
 		dataset.addValue(2.0, series3, type3);
@@ -121,20 +121,20 @@ public class LineChartDemo1 extends ApplicationFrame {
 		dataset.addValue(3.0, series3, type6);
 		dataset.addValue(4.0, series3, type7);
 		dataset.addValue(3.0, series3, type8);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            a dataset.
+	 *           a dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createLineChart("Line Chart Demo 1", // chart title
 				"Type", // domain axis label
@@ -145,25 +145,25 @@ public class LineChartDemo1 extends ApplicationFrame {
 				true, // tooltips
 				false // urls
 		);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setDisplaySeriesShapes(true);
 		legend.setShapeScaleX(1.5);
 		legend.setShapeScaleY(1.5);
 		legend.setDisplaySeriesLines(true);
-
+		
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		// customise the range axis...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		rangeAxis.setAutoRangeIncludesZero(true);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -174,11 +174,11 @@ public class LineChartDemo1 extends ApplicationFrame {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// customise the renderer...
 		final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
 		renderer.setDrawShapes(true);
-
+		
 		renderer.setSeriesStroke(0, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
 				new float[] { 10.0f, 6.0f }, 0.0f));
 		renderer.setSeriesStroke(1, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
@@ -186,23 +186,23 @@ public class LineChartDemo1 extends ApplicationFrame {
 		renderer.setSeriesStroke(2, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
 				new float[] { 2.0f, 6.0f }, 0.0f));
 		// OPTIONAL CUSTOMISATION COMPLETED.
-
+		
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final LineChartDemo1 demo = new LineChartDemo1("Line Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

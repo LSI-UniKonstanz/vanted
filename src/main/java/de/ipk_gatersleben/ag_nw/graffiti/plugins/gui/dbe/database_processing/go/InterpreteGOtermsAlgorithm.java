@@ -52,12 +52,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
-
+	
 	private GoProcessing gp = null;
-
+	
 	private int maxDepth = 0;
 	private boolean useMinDistance = true;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -66,12 +66,12 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Create Gene Ontology Tree";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command creates a node- and data-specific GO hierarchy network.<br>"
@@ -85,7 +85,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 				+ "GO terms, instead of a particular defined GO term.<br>" + "<br>"
 				+ "For layouting the resulting network, the DOT layout most times gives good results.";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new IntegerParameter(maxDepth, "Max. distance from root-node (0=unlimited)",
@@ -95,7 +95,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 						+ "If selected, the minimum distance will be considered for maximum depth of hierarchy,<br>"
 						+ "otherwise, the maximum distance.") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -106,7 +106,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 		BooleanParameter bp = (BooleanParameter) params[i++];
 		useMinDistance = bp.getBoolean().booleanValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -134,24 +134,24 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			public void run() {
 				fgraph.getListenerManager().transactionStarted(this);
 				interpreteGO(fgraph, workNodes, sp);
-
+				
 			}
 		}, new Runnable() {
-
+			
 			@Override
 			public void run() {
 				fgraph.getListenerManager().transactionFinished(this);
 			}
 		}, sp);
 	}
-
+	
 	private void interpreteGO(Graph graph, List<NodeHelper> workNodes,
 			BackgroundTaskStatusProviderSupportingExternalCall sp) {
 		HashMap<String, Node> goTerm2goNode = new HashMap<String, Node>();
 		HashSet<Node> knownNodes = new HashSet<Node>();
 		sp.setCurrentStatusText1("Process network nodes...");
 		sp.setCurrentStatusText1("Enumerate existing GO-Term nodes...");
-
+		
 		for (Node n : graph.getNodes()) {
 			knownNodes.add(n);
 			// NodeHelper nh = new NodeHelper(n);
@@ -168,13 +168,13 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			// Collection<String> ids = nh.getAlternativeIDs();
 			ArrayList<String> ids = AttributeHelper.getLabels(nh.getGraphNode(), true);
 			// ids.add(nh.getLabel());
-
+			
 			HashSet<String> goTerms = new HashSet<String>();
-
+			
 			// String lbl = nh.getLabel();
 			// if (lbl != null && lbl.toUpperCase().startsWith("GO:"))
 			// goTerms.add(lbl);
-
+			
 			for (String test : ids) {
 				test = test.toUpperCase();
 				if (test.startsWith("GO:"))
@@ -192,9 +192,9 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 					if (!valid) {
 						// EnzymeEntry eze = EnzymeService.getEnzymeInformation(test, false);
 						String extractECId = EnzymeService.extractECId(test);
-
+						
 						if (extractECId != null) {
-
+							
 							for (KoEntry koe : KeggAPIServiceHelper.getInstance().getEntriesByEC(extractECId)) {
 								for (String goID : koe.getKoDbLinks("GO")) {
 									goTerms.add("GO:" + goID);
@@ -249,7 +249,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			sp.setCurrentStatusText2(
 					"Created GO hiearchy with a maximum depth of " + maxDepth + " (removed " + cnt + " GO term nodes)");
 		}
-
+		
 		/*
 		 * layout
 		 */
@@ -264,10 +264,10 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 				}
 			}
 			tree.setParameters(parameters2);
-
+			
 			tree.attach(graph, new Selection(newNodes));
 			tree.execute();
-
+			
 			double minX = Double.MAX_VALUE;
 			double maxX = Double.MIN_VALUE;
 			double maxY = Double.MIN_VALUE;
@@ -291,7 +291,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			//
 			// CenterLayouterAlgorithm.moveGraph(graph, getName(), true, 50, 50);
 		}
-
+		
 		sp.setCurrentStatusText1("Processing completed");
 		if (maxDepth <= 0)
 			sp.setCurrentStatusText2("Created (unlimited) GO hiearchy");
@@ -304,7 +304,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	private int getDepth(Node n, Node rootNode, boolean minDist) {
 		if (n == rootNode)
 			return 0;
@@ -326,7 +326,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			return maxDepth + 1;
 		}
 	}
-
+	
 	public static Node processGoHierarchy(PositionGridGenerator pgg, HashMap<String, Node> goTerm2goNode,
 			GoProcessing gp, String goTerm, Graph g) {
 		Node gn;
@@ -362,7 +362,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 		gn = goTerm2goNode.get(goTerm);
 		return gn;
 	}
-
+	
 	private static void connectNodeWithNodes(Node goNode, Node newGoNode, String type) {
 		if (goNode == null || newGoNode == null)
 			return;

@@ -56,13 +56,13 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 	// private Selection selection;
 	private final String prefComp;
 	private static Session activeSession;
-
+	
 	private final JTextField searchText;
 	private final JLabel searchDesc;
 	private final JButton okButton;
-
+	
 	private static SelectNodesComponent instance;
-
+	
 	public static void focus(KeyEvent e) {
 		if (instance != null) {
 			instance.searchText.requestFocusInWindow();
@@ -73,22 +73,22 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 			}
 		}
 	}
-
+	
 	public SelectNodesComponent(String prefComp) {
 		super("Select Nodes/Edges");
 		instance = this;
 		this.prefComp = prefComp;
 		MainFrame.getInstance().addViewListener(this);
-
+		
 		searchDesc = new JLabel(FolderPanel.getSearchIcon());
 		if (!SystemInfo.isMac())
 			add(searchDesc);
-
+		
 		okButton = new JButton("OK");
 		// int s = 0;
 		// okButton.setMargin(new Insets(s, s, s, s));
 		okButton.setRolloverEnabled(true);
-
+		
 		searchText = new JTextField();
 		if (SystemInfo.isMac()) {
 			searchText.putClientProperty("JTextField.variant", "search");
@@ -120,7 +120,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 							MessageType.PERMANENT_INFO);
 				}
 			}
-
+			
 			private Collection<Node> getActiveSelection() {
 				if (activeSession != null) {
 					Selection selection = ((EditorSession) activeSession).getSelectionModel().getActiveSelection();
@@ -128,7 +128,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 				} else
 					return null;
 			}
-
+			
 			public void focusLost(FocusEvent e) {
 				if (activeSession != null) {
 					if (e.getOppositeComponent() == okButton) {
@@ -147,7 +147,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 					searchText.setBackground(null);
 				}
 			}
-
+			
 			private void setSelection(ArrayList<Node> tSelection, boolean addToSelection) {
 				activeSession.getGraph().getListenerManager().transactionStarted(this);
 				Selection selection = ((EditorSession) activeSession).getSelectionModel().getActiveSelection();
@@ -161,7 +161,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 				activeSession.getGraph().getListenerManager().transactionFinished(this);
 			}
 		});
-
+		
 		searchText.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {
 				if (activeSession != null) {
@@ -180,7 +180,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 					});
 				}
 			}
-
+			
 			public void keyPressed(KeyEvent e) {
 				// enter
 				if (e.getKeyCode() == 10) {
@@ -195,18 +195,18 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 					e.consume();
 					ToolButton.requestToolButtonFocus();
 				}
-
+				
 			}
-
+			
 			public void keyReleased(KeyEvent e) {
 			}
 		});
-
+		
 		add(okButton);
 		// setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		validate();
 	}
-
+	
 	private Collection<GraphElement> getFilteredGraphElementList(String text) {
 		text = text.toUpperCase();
 		ArrayList<GraphElement> result = new ArrayList<GraphElement>();
@@ -232,11 +232,11 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 		}
 		return result;
 	}
-
+	
 	// private String getDescLabelText() {
 	// return "<html><small>Search:&nbsp;";
 	// }
-
+	
 	// private Collection<Node> getFilteredSelection() {
 	// Graph graph = activeSession.getGraph();
 	// Selection selection =
@@ -252,7 +252,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 	//
 	// return nodes;
 	// }
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -265,7 +265,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 		if (s != null)
 			viewChanged(s.getActiveView());
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -277,7 +277,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 		if (s != null)
 			viewChanged(s.getActiveView());
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -286,7 +286,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 	public String getPreferredComponent() {
 		return prefComp;
 	}
-
+	
 	public void viewChanged(View newView) {
 		View view = newView;
 		if (view == null || !(view.getClass() == IPKGraffitiView.class)) {

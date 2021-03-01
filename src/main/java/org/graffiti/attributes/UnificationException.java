@@ -20,12 +20,12 @@ package org.graffiti.attributes;
  */
 public class UnificationException extends Exception {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4506724938819746758L;
-
+	
 	/**
 	 * Constructor for UnificationException.
 	 * 
@@ -34,7 +34,7 @@ public class UnificationException extends Exception {
 	public UnificationException(String arg0) {
 		super(arg0);
 	}
-
+	
 	/**
 	 * Constructor for UnificationException.
 	 * 

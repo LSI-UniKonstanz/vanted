@@ -44,9 +44,9 @@ public class UCatalysis extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement edge, Graph g, Model model) {
 		Edge elem = null;
 		try {
@@ -57,7 +57,7 @@ public class UCatalysis extends UtilitySuperClassToGraph {
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		if (!model.containsID(RDFID)) {
 			Catalysis interaction = model.addNew(Catalysis.class, RDFID);
-
+			
 			UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 			UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 			UtilitySuperClassFromGraph.getCatalysisDirection(elem, interaction);
@@ -70,30 +70,30 @@ public class UCatalysis extends UtilitySuperClassToGraph {
 			UtilitySuperClassFromGraph.getName(elem, interaction);
 			UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 			UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
-
+			
 			// iteriere �ber alle Kanten und finde alle mit der gleichen RDFId
 			// f�ge bei gleicher RDFId die Controller und die Processes in eine
 			// Menge
 			for (Edge e : elem.getGraph().getEdges()) {
-
+				
 				if (AttributeHelper.hasAttribute(e, Messages.getString("UtilitySuperClassToGraph.82"))) {
 					String currentEdgeRDFId = getAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.82"));
-
+					
 					if (currentEdgeRDFId.matches(RDFID)) {
 						Node controlNode = e.getSource();
 						Node processNode = e.getTarget();
-
+						
 						String controlNodeRDFId = getAttributeSecure(controlNode,
 								Messages.getString("UtilitySuperClassToGraph.82"));
 						String processNodeRDFId = getAttributeSecure(processNode,
 								Messages.getString("UtilitySuperClassToGraph.82"));
-
+						
 						Controller control = (Controller) model.getByID(controlNodeRDFId);
 						Process process = (Process) model.getByID(processNodeRDFId);
-
+						
 						interaction.addController(control);
 						interaction.addControlled(process);
-
+						
 						String cofactor = getAttributeSecure(controlNode,
 								Messages.getString("UtilitySuperClassToGraph.82"));
 						if (cofactor.matches("true")) {

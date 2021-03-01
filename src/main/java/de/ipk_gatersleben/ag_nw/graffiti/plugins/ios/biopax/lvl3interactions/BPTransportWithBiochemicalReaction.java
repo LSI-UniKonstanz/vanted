@@ -18,17 +18,17 @@ public class BPTransportWithBiochemicalReaction extends BPInteraction {
 	public BPTransportWithBiochemicalReaction(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super(Graph, Nodes);
 	}
-
+	
 	public void read(Interaction i) {
 		TransportWithBiochemicalReaction twbr = (TransportWithBiochemicalReaction) i;
 		Set<PhysicalEntity> left = twbr.getLeft();
 		Set<PhysicalEntity> right = twbr.getRight();
-
+		
 		// set center node of the reaction
 		Node center = graph.addNode(centerAttribute);
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, twbr);
 		nodes.put(twbr, center);
-
+		
 		for (Entity l : left) {
 			Node node = findORcreateNode(l);
 			Edge e = addEdge(node, center);
@@ -36,7 +36,7 @@ public class BPTransportWithBiochemicalReaction extends BPInteraction {
 					Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$
 			sW.writeParticipantStoichiometry(node, center, e, twbr.getParticipantStoichiometry());
 		}
-
+		
 		for (Entity r : right) {
 			Node node = findORcreateNode(r);
 			Edge e = addEdge(center, node);

@@ -68,81 +68,81 @@ import org.jfree.util.PublicCloneable;
  */
 public class XYStepRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/**
 	 * Constructs a new renderer with no tooltip or URL generation.
 	 */
 	public XYStepRenderer() {
 		super();
 	}
-
+	
 	/**
 	 * Constructs a new renderer.
 	 * 
 	 * @param toolTipGenerator
-	 *            the item label generator.
+	 *           the item label generator.
 	 * @param urlGenerator
-	 *            the URL generator.
+	 *           the URL generator.
 	 */
 	public XYStepRenderer(XYToolTipGenerator toolTipGenerator, XYURLGenerator urlGenerator) {
-
+		
 		super();
 		setToolTipGenerator(toolTipGenerator);
 		setURLGenerator(urlGenerator);
-
+		
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the data is being drawn.
+	 *           the area within which the data is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the vertical axis.
+	 *           the vertical axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index (ignored here).
+	 *           the pass index (ignored here).
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		Paint seriesPaint = getItemPaint(series, item);
 		Stroke seriesStroke = getItemStroke(series, item);
 		g2.setPaint(seriesPaint);
 		g2.setStroke(seriesStroke);
-
+		
 		// get the data point...
 		Number x1 = dataset.getXValue(series, item);
 		Number y1 = dataset.getYValue(series, item);
 		if (y1 == null) {
 			return;
 		}
-
+		
 		RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
 		RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
 		double transX1 = domainAxis.valueToJava2D(x1.doubleValue(), dataArea, xAxisLocation);
 		double transY1 = rangeAxis.valueToJava2D(y1.doubleValue(), dataArea, yAxisLocation);
-
+		
 		if (item > 0) {
 			// get the previous data point...
 			Number x0 = dataset.getXValue(series, item - 1);
@@ -150,7 +150,7 @@ public class XYStepRenderer extends AbstractXYItemRenderer
 			if (y0 != null) {
 				double transX0 = domainAxis.valueToJava2D(x0.doubleValue(), dataArea, xAxisLocation);
 				double transY0 = rangeAxis.valueToJava2D(y0.doubleValue(), dataArea, yAxisLocation);
-
+				
 				Line2D line = state.workingLine;
 				if (orientation == PlotOrientation.HORIZONTAL) {
 					if (transY0 == transY1) { // this represents the situation for drawing a
@@ -175,13 +175,13 @@ public class XYStepRenderer extends AbstractXYItemRenderer
 						g2.draw(line);
 					}
 				}
-
+				
 			}
 		}
-
+		
 		updateCrosshairValues(crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1, orientation);
 		// collect entity and tool tip information...
-
+		
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
 			if (entities != null) {
@@ -204,16 +204,16 @@ public class XYStepRenderer extends AbstractXYItemRenderer
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

@@ -24,5 +24,5 @@ public class SpringEmbedderPlugin extends GenericPluginAdapter {
 		this.algorithms = new Algorithm[1];
 		this.algorithms[0] = new SpringEmbedderAlgorithm();
 	}
-
+	
 }

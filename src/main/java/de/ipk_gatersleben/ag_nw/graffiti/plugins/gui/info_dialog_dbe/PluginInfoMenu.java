@@ -26,18 +26,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
  */
 public class PluginInfoMenu extends DBE_EditorPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new GuiComponentsPlugin object.
 	 */
 	public PluginInfoMenu() {
-
+		
 		GravistoService.getInstance().getMainFrame().setTitle(DBEgravistoHelper.DBE_GRAVISTO_VERSION);
 		GraffitiInternalFrame.startTitle = DBEgravistoHelper.DBE_GRAVISTO_VERSION;
 		/*
 		 * +", based on " + GraffitiSingleton.getInstance().getMainFrame().getTitle());
 		 */
-
+		
 		this.guiComponents = new GraffitiComponent[1];
 		this.guiComponents[0] = new MenuItemInfoDialog();
 	}

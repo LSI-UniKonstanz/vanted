@@ -35,29 +35,29 @@ public class BackgroundTaskHelper implements HelperClass {
 	private final boolean showDialog;
 	private Thread runThread;
 	private boolean modal = false;
-
+	
 	private int initalShowDelay = 200;
-
+	
 	private static ArrayList<Object> runningTasksRefrenceObjects = new ArrayList<Object>();
-
+	
 	/**
 	 * Creates a new BackgroundTaskHelper object.
 	 * 
 	 * @param workTask
-	 *            The task to be executed.
+	 *           The task to be executed.
 	 * @param statusProvider
-	 *            The statusProvider, probably linked to or returned by the workTask
-	 *            object.
+	 *           The statusProvider, probably linked to or returned by the workTask
+	 *           object.
 	 * @param title
-	 *            The Title of the Dialog / Pane
+	 *           The Title of the Dialog / Pane
 	 * @param taskName
-	 *            The Task Name
+	 *           The Task Name
 	 * @param autoClose
-	 *            If set to true, the pane or dialog will automatically close after
-	 *            completion of the job (with a timeout value)
+	 *           If set to true, the pane or dialog will automatically close after
+	 *           completion of the job (with a timeout value)
 	 * @param showDialogIsTrue_ShowPanelIsFalse
-	 *            If set to true, a Dialog window will be shown, if set to false, a
-	 *            pane will be shown in the GUI.
+	 *           If set to true, a Dialog window will be shown, if set to false, a
+	 *           pane will be shown in the GUI.
 	 */
 	public BackgroundTaskHelper(Runnable workTask, BackgroundTaskStatusProvider statusProvider, String title,
 			String taskName, boolean autoClose, boolean showDialogIsTrue_ShowPanelIsFalse) {
@@ -68,14 +68,14 @@ public class BackgroundTaskHelper implements HelperClass {
 		this.autoClose = autoClose;
 		this.showDialog = showDialogIsTrue_ShowPanelIsFalse;
 	}
-
+	
 	public BackgroundTaskHelper(Runnable workTask, BackgroundTaskStatusProvider statusProvider, String title,
 			String taskName, boolean autoClose, boolean showDialogIsTrue_ShowPanelIsFalse,
 			int intialShowDelayForStatusPanel) {
 		this(workTask, statusProvider, title, taskName, autoClose, showDialogIsTrue_ShowPanelIsFalse);
 		this.initalShowDelay = intialShowDelayForStatusPanel;
 	}
-
+	
 	/**
 	 * Opens a progress window and starts the <code>workTask</code> that was
 	 * provided in the constructor. The <code>statusProvider</code> is used for
@@ -91,7 +91,7 @@ public class BackgroundTaskHelper implements HelperClass {
 		else
 			taskWindow = new BackgroundTaskPanelEntry(false);
 		taskWindow.setStatusProvider(statusProvider, title, taskName);
-
+		
 		runThread = new Thread(workTask);
 		final long currentTime = System.currentTimeMillis();
 		if (taskName != null)
@@ -103,7 +103,7 @@ public class BackgroundTaskHelper implements HelperClass {
 			runningTasksRefrenceObjects.add(referenceObject);
 			runThread.start();
 		}
-
+		
 		if (!showDialog) {
 			// add panel to mainframe status area
 			final MainFrame mf = GravistoService.getInstance().getMainFrame();
@@ -131,11 +131,11 @@ public class BackgroundTaskHelper implements HelperClass {
 				}
 			}
 		}
-
+		
 		final ThreadSafeOptions tso = new ThreadSafeOptions();
 		final Timer checkStatus = new Timer(100, new ActionListener() {
 			boolean finishedCalled = false;
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				if (!runThread.isAlive()) {
 					if (!finishedCalled) {
@@ -157,11 +157,11 @@ public class BackgroundTaskHelper implements HelperClass {
 		tso.setParam(0, checkStatus);
 		checkStatus.start();
 	}
-
+	
 	public Thread getRunThread() {
 		return runThread;
 	}
-
+	
 	public static boolean isTaskWithGivenReferenceRunning(Object referenceObject) {
 		boolean result;
 		synchronized (runningTasksRefrenceObjects) {
@@ -169,28 +169,28 @@ public class BackgroundTaskHelper implements HelperClass {
 		}
 		return result;
 	}
-
+	
 	public static void issueSimpleTask(String taskName, String progressText, Runnable backgroundTask,
 			Runnable finishSwingTask, BackgroundTaskStatusProvider sp) {
 		SimpleBackgroundTask sbt = new SimpleBackgroundTask(progressText, "", backgroundTask, finishSwingTask);
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(sbt, sp, taskName, taskName, true, false);
 		bth.startWork(taskName);
 	}
-
+	
 	public static void issueSimpleTask(String taskName, String progressText, Runnable backgroundTask,
 			Runnable finishSwingTask, BackgroundTaskStatusProvider sp, int delayForPanel) {
 		SimpleBackgroundTask sbt = new SimpleBackgroundTask(progressText, "", backgroundTask, finishSwingTask);
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(sbt, sp, taskName, taskName, true, false, delayForPanel);
 		bth.startWork(taskName);
 	}
-
+	
 	public static void issueSimpleTaskInWindow(String taskName, String progressText, Runnable backgroundTask,
 			Runnable finishSwingTask, BackgroundTaskStatusProvider sp) {
 		SimpleBackgroundTask sbt = new SimpleBackgroundTask(progressText, "", backgroundTask, finishSwingTask);
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(sbt, sp, taskName, taskName, true, true);
 		bth.startWork(taskName);
 	}
-
+	
 	public static void issueSimpleTaskInWindow(String taskName, String progressText, Runnable backgroundTask,
 			Runnable finishSwingTask, BackgroundTaskStatusProvider sp, boolean modal, boolean autoclose) {
 		SimpleBackgroundTask sbt = new SimpleBackgroundTask(progressText, "", backgroundTask, finishSwingTask);
@@ -198,14 +198,14 @@ public class BackgroundTaskHelper implements HelperClass {
 		bth.setModalWindow(modal);
 		bth.startWork(taskName);
 	}
-
+	
 	public static void issueSimpleTask(String taskName, String progressText, Runnable backgroundTask1,
 			Runnable finishSwingTask) {
 		SimpleBackgroundTask sbt = new SimpleBackgroundTask(progressText, "", backgroundTask1, finishSwingTask);
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(sbt, sbt, taskName, taskName, true, false);
 		bth.startWork(taskName);
 	}
-
+	
 	public static void issueSimpleTask(String taskName, String progressText1, String progressText2,
 			Runnable backgroundTask1, Runnable finishSwingTask) {
 		SimpleBackgroundTask sbt = new SimpleBackgroundTask(progressText1, progressText2, backgroundTask1,
@@ -213,7 +213,7 @@ public class BackgroundTaskHelper implements HelperClass {
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(sbt, sbt, taskName, taskName, true, false);
 		bth.startWork(taskName);
 	}
-
+	
 	public static void issueSimpleTask(String taskName, String progressText1, String progressText2,
 			Runnable backgroundTask1, Runnable finishSwingTask, boolean autoclose) {
 		SimpleBackgroundTask sbt = new SimpleBackgroundTask(progressText1, progressText2, backgroundTask1,
@@ -221,15 +221,15 @@ public class BackgroundTaskHelper implements HelperClass {
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(sbt, sbt, taskName, taskName, autoclose, false);
 		bth.startWork(taskName);
 	}
-
+	
 	private void setModalWindow(boolean modal) {
 		this.modal = modal;
 	}
-
+	
 	public static void showMessage(String message1, String message2) {
 		issueSimpleTask("Information Message", message1, message2, null, null);
 	}
-
+	
 	public static void executeLaterOnSwingTask(int delay, final Runnable runnable) {
 		final Timer t = new Timer(delay, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -239,16 +239,16 @@ public class BackgroundTaskHelper implements HelperClass {
 		});
 		t.start();
 	}
-
+	
 	private static HashMap<Object, Semaphore> device2sema = new HashMap<Object, Semaphore>();
-
+	
 	/**
 	 * @param device
-	 *            If specified, the Semaphore is saved in a hashmap and may be
-	 *            release using the method lockRelease. If set to null, always a new
-	 *            semaphore is returned.
+	 *           If specified, the Semaphore is saved in a hashmap and may be
+	 *           release using the method lockRelease. If set to null, always a new
+	 *           semaphore is returned.
 	 * @param maxLoad
-	 *            Max semaphore load.
+	 *           Max semaphore load.
 	 * @return The desired semaphore.
 	 */
 	public static synchronized Semaphore lockGetSemaphore(Object device, int maxLoad) {
@@ -262,7 +262,7 @@ public class BackgroundTaskHelper implements HelperClass {
 		}
 		return device2sema.get(device);
 	}
-
+	
 	public static void lockAquire(Object device, int maxLoad) {
 		if (device == null)
 			throw new UnsupportedOperationException("When using this method, a device needs to be specified!");
@@ -273,7 +273,7 @@ public class BackgroundTaskHelper implements HelperClass {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	public static void lockRelease(Object device) {
 		if (device == null)
 			throw new UnsupportedOperationException("When using this method, a device needs to be specified!");
@@ -289,7 +289,7 @@ class SimpleBackgroundTask implements Runnable, BackgroundTaskStatusProvider {
 	private final Runnable runTask1;
 	private final Runnable runTask2swing;
 	private boolean pleaseStop;
-
+	
 	public SimpleBackgroundTask(String progress1, String progress2, Runnable task1, Runnable task2swing) {
 		this.finished = false;
 		this.progressText1 = progress1;
@@ -297,38 +297,38 @@ class SimpleBackgroundTask implements Runnable, BackgroundTaskStatusProvider {
 		this.runTask1 = task1;
 		this.runTask2swing = task2swing;
 	}
-
+	
 	public int getCurrentStatusValue() {
 		if (finished || executingSwingTask)
 			return 100;
 		else
 			return -1;
 	}
-
+	
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
-
+	
 	public String getCurrentStatusMessage1() {
 		return progressText1;
 	}
-
+	
 	public String getCurrentStatusMessage2() {
 		return progressText2;
 	}
-
+	
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void run() {
 		finished = false;
 		if (runTask1 != null)
@@ -351,7 +351,7 @@ class SimpleBackgroundTask implements Runnable, BackgroundTaskStatusProvider {
 		}
 		finished = true;
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		// empty
 	}

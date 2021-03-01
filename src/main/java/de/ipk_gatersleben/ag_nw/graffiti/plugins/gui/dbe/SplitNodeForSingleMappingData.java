@@ -35,7 +35,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid.GridLayouterAlgo
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
-
+	
 	String option1 = "Split nodes with multiple data-mappings";
 	String option2 = "Split nodes with a degree over the specified threshold";
 	String mCurrentMode = option1;
@@ -43,14 +43,14 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 	private int mMinimumDegree = 2;
 	private boolean mProcessSelfLoops = true;
 	private boolean mRepositionOfNodes = false;
-
+	
 	public SplitNodeForSingleMappingData() {
 		super();
 		optionList.clear();
 		optionList.add(option1);
 		optionList.add(option2);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -59,17 +59,17 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 	public String getName() {
 		return "Split Nodes";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Nodes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.LAYOUT, Category.MAPPING));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "With this command nodes may be split into several nodes. In both modes all valid<br>"
@@ -91,7 +91,7 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 				+ "will be 1. This means, that there will be as many nodes created as connec-<br>"
 				+ "tions to other nodes. Self-loops can be processed here.";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -106,7 +106,7 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 				new BooleanParameter(mRepositionOfNodes, "Modify Layout", "<html>"
 						+ "If selected, the multiple nodes will be placed next to each<br>" + "other in a grid.") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -115,19 +115,19 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 		mProcessSelfLoops = ((BooleanParameter) params[i++]).getBoolean();
 		mRepositionOfNodes = ((BooleanParameter) params[i++]).getBoolean();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
-
+		
 		if (mCurrentMode.equals(option2) && mMinimumDegree < 1) {
 			MainFrame.showMessageDialog("<html>Cannot split nodes!<br>Please specify a threshold over 0.", "Error");
 			return;
 		}
-
+		
 		Collection<Node> workNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		graph.getListenerManager().transactionStarted(this);
 		int newNodes = 0;
@@ -181,7 +181,7 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 		MainFrame.showMessage("Split " + removedNodes + " nodes into " + newNodes + " new nodes; " + removedEdges
 				+ " edges removed, " + newEdges + " edges created", MessageType.INFO);
 	}
-
+	
 	public static SplitResult splitNodes(Node graphNode, int mMinimumDegree, Graph graph, boolean mProcessSelfLoops,
 			boolean mRepositionOfNodes) {
 		SplitResult res = new SplitResult();
@@ -217,7 +217,7 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 		}
 		return res;
 	}
-
+	
 	private static void processLayout(ArrayList<Node> nodelist, boolean mRepositionOfNodes) {
 		if (!mRepositionOfNodes || nodelist == null || nodelist.size() <= 1)
 			return;

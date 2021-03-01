@@ -18,12 +18,12 @@ package org.graffiti.graphics;
  */
 public class NodeLabelAttribute extends LabelAttribute {
 	// ~ Instance fields ========================================================
-
+	
 	/** Position of a label within this node. */
 	// private NodeLabelPositionAttribute position;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for NodeLabelAttribute.
 	 * 
@@ -33,21 +33,21 @@ public class NodeLabelAttribute extends LabelAttribute {
 		super(id);
 		this.add(new NodeLabelPositionAttribute(POSITION), false);
 	}
-
+	
 	/**
 	 * Constructor for NodeLabelAttribute.
 	 * 
 	 * @param id
 	 * @param l
-	 *            label string
+	 *           label string
 	 */
 	public NodeLabelAttribute(String id, String l) {
 		super(id, l);
 		this.add(new NodeLabelPositionAttribute(POSITION), false);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	// /**
 	// * Sets the collection of attributes contained within this
 	// * <tt>CollectionAttribute</tt>
@@ -86,18 +86,18 @@ public class NodeLabelAttribute extends LabelAttribute {
 	// throw new IllegalArgumentException("Invalid value type.");
 	// }
 	// }
-
+	
 	/**
 	 * Sets the 'position'-value.
 	 * 
 	 * @param p
-	 *            the 'position'-value to be set.
+	 *           the 'position'-value to be set.
 	 */
 	public void setPosition(NodeLabelPositionAttribute p) {
 		remove(POSITION);
 		add(p, false);
 	}
-
+	
 	/**
 	 * Returns the NodeLabelPositionAttribute specifying the position of the
 	 * encapsulated label.
@@ -108,7 +108,7 @@ public class NodeLabelAttribute extends LabelAttribute {
 	public NodeLabelPositionAttribute getPosition() {
 		return (NodeLabelPositionAttribute) attributes.get(POSITION);
 	}
-
+	
 	// /**
 	// * Returns a deep copy of this object.
 	// *
@@ -126,7 +126,7 @@ public class NodeLabelAttribute extends LabelAttribute {
 	//
 	// return copied;
 	// }
-
+	
 	// /**
 	// * Sets the value of this <code>Attribute</code> to the given value without
 	// * informing the <code>ListenerManager</code>.

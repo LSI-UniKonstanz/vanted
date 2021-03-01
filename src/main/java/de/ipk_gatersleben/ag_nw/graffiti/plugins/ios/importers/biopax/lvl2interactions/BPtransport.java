@@ -14,17 +14,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2utility.UtilityClassSelectorToGraph;
 
 public class BPtransport extends BPinteraction {
-
+	
 	public BPtransport(Graph Graph, Hashtable<String, Node> Nodes) {
 		super(Graph, Nodes);
 	}
-
+	
 	public void read(Level2Element i) {
 		transport trans = (transport) i;
-
+		
 		Set<physicalEntityParticipant> left = trans.getLEFT();
 		Set<physicalEntityParticipant> right = trans.getRIGHT();
-
+		
 		// set center node of the reaction
 		Node center = graph.addNode(centerAttribute);
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, trans);
@@ -36,7 +36,7 @@ public class BPtransport extends BPinteraction {
 					Messages.getString("UtilitySuperClassToGraph.117"));
 			sW.writeParticipantStoichiometry(node, center, e, trans.getLEFT());
 		}
-
+		
 		for (physicalEntityParticipant r : right) {
 			Node node = findORcreateNode(r);
 			Edge e = addEdge(center, node);

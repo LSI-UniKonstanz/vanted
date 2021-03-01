@@ -59,89 +59,89 @@ import org.jfree.ui.RefineryUtilities;
  * @author DMO
  */
 public class ContourPlotDemo2 extends ApplicationFrame {
-
+	
 	/** The x axis. */
 	private ValueAxis xAxis = null;
-
+	
 	/** The y axis. */
 	private NumberAxis yAxis = null;
-
+	
 	/** The z axis. */
 	private ColorBar zColorBar = null;
-
+	
 	/** A flag controlling the orientation of the z axis. */
 	// private static boolean zIsVertical = false;
-
+	
 	/** A flag indicating whether or not the x-values are dates. */
 	private static boolean xIsDate = false;
-
+	
 	/** ??. */
 	private static boolean asPoints = false;
-
+	
 	/** Logarithmic x-axis? */
 	private static boolean xIsLog = false;
-
+	
 	/** Logarithmic y axis? */
 	private static boolean yIsLog = false;
-
+	
 	/** Logarithmic z axis? */
 	private static boolean zIsLog = false;
-
+	
 	/** Inverted x axis? */
 	private static boolean xIsInverted = true;
-
+	
 	/** Inverted y axis? */
 	private static boolean yIsInverted = false;
-
+	
 	/** Inverted z axis? */
 	private static boolean zIsInverted = false;
-
+	
 	/** Annotate? */
 	private static boolean annotate = false;
-
+	
 	/** Number of x intervals. */
 	private static int numX = 10;
-
+	
 	/** Number of y intervals. */
 	private static int numY = 20;
-
+	
 	/** The plot ratio. */
 	private static double ratio = 0.0;
-
+	
 	/** Temp data storage. */
 	private double[] tmpDoubleY = null;
-
+	
 	/** Temp data storage. */
 	private double[] tmpDoubleX = null;
-
+	
 	/** Temp data storage. */
 	private double[] tmpDoubleZ = null;
-
+	
 	/** X outline. */
 	private double[] xOutline = null;
-
+	
 	/** Y outline. */
 	private double[] yOutline = null;
-
+	
 	/** Draw the outline? */
 	static boolean drawOutline = false;
-
+	
 	/** Fill the outline? */
 	static boolean fillOutline = false;
-
+	
 	/** ??. */
 	static int power = 4;
-
+	
 	/**
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ContourPlotDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		final JFreeChart chart = createContourPlot();
 		final ChartPanel panel = new ChartPanel(chart, true, true, true, true, true);
 		panel.setPreferredSize(new java.awt.Dimension(1000, 800));
@@ -151,21 +151,21 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 		panel.setVerticalZoom(true);
 		panel.setFillZoomRectangle(true);
 		setContentPane(panel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a ContourPlot chart.
 	 * 
 	 * @return the ContourPlot chart.
 	 */
 	private JFreeChart createContourPlot() {
-
+		
 		final String title = "Contour Plot";
 		final String xAxisLabel = "X Values";
 		final String yAxisLabel = "Y Values";
 		final String zAxisLabel = "Color Values";
-
+		
 		if (xIsDate) {
 			this.xAxis = new DateAxis(xAxisLabel);
 			xIsLog = false; // force axis to be linear when displaying dates
@@ -176,65 +176,65 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 				this.xAxis = new NumberAxis(xAxisLabel);
 			}
 		}
-
+		
 		if (yIsLog) {
 			this.yAxis = new LogarithmicAxis(yAxisLabel);
 		} else {
 			this.yAxis = new NumberAxis(yAxisLabel);
 		}
-
+		
 		if (zIsLog) {
 			this.zColorBar = new ColorBar(zAxisLabel);
 		} else {
 			this.zColorBar = new ColorBar(zAxisLabel);
 		}
-
+		
 		if (this.xAxis instanceof NumberAxis) {
 			((NumberAxis) this.xAxis).setAutoRangeIncludesZero(false);
 			((NumberAxis) this.xAxis).setInverted(xIsInverted);
 		}
-
+		
 		this.yAxis.setAutoRangeIncludesZero(false);
-
+		
 		this.yAxis.setInverted(yIsInverted);
-
+		
 		if (!xIsDate) {
 			((NumberAxis) this.xAxis).setLowerMargin(0.0);
 			((NumberAxis) this.xAxis).setUpperMargin(0.0);
 		}
-
+		
 		this.yAxis.setLowerMargin(0.0);
 		this.yAxis.setUpperMargin(0.0);
-
+		
 		if (!xIsDate) {
 			this.xAxis.setRange(10.5, 15.0);
 		}
 		this.yAxis.setRange(3.5, 7.0);
-
+		
 		this.zColorBar.getAxis().setInverted(zIsInverted);
 		this.zColorBar.getAxis().setTickMarksVisible(true);
-
+		
 		final ContourDataset data = createDataset();
-
+		
 		final ContourPlot plot = new ContourPlot(data, this.xAxis, this.yAxis, this.zColorBar);
-
+		
 		if (xIsDate) {
 			ratio = Math.abs(ratio); // don't use plot units for ratios when x axis is date
 		}
-
+		
 		if (asPoints) {
 			plot.setRenderAsPoints(true);
 		}
 		plot.setDataAreaRatio(ratio);
-
+		
 		if (annotate) {
 			if (asPoints) {
 				final Number[] xValues = data.getXValues();
 				final Number[] yValues = data.getYValues();
 				// Number[] zValues = data.getZValues();
-
+				
 				final Font font = new Font("SansSerif", Font.PLAIN, 20);
-
+				
 				for (int i = 0; i < xValues.length; i++) {
 					final XYTextAnnotation xyAnn = new XYTextAnnotation(Integer.toString(i), xValues[i].doubleValue(),
 							yValues[i].doubleValue());
@@ -243,7 +243,7 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 				}
 			} else {
 				final Font font = new Font("SansSerif", Font.PLAIN, 20);
-
+				
 				for (int i = 0; i < this.tmpDoubleX.length; i++) {
 					final XYTextAnnotation xyAnn = new XYTextAnnotation(Integer.toString(i), this.tmpDoubleX[i],
 							this.tmpDoubleY[i]);
@@ -251,23 +251,23 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 					plot.addAnnotation(xyAnn);
 				}
 			}
-
+			
 		}
-
+		
 		if (fillOutline || drawOutline) {
 			initShoreline();
 			plot.setClipPath(new ClipPath(this.xOutline, this.yOutline, true, fillOutline, drawOutline));
 		}
-
+		
 		final JFreeChart chart = new JFreeChart(title, null, plot, false);
-
+		
 		// then customise it a little...
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.green));
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Creates a ContourDataset.
 	 * 
@@ -275,18 +275,18 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 	 */
 	private ContourDataset createDataset() {
 		initData();
-
+		
 		final Double[] oDoubleX = (Double[]) DefaultContourDataset.formObjectArray(this.tmpDoubleX);
 		final Double[] oDoubleY = (Double[]) DefaultContourDataset.formObjectArray(this.tmpDoubleY);
 		final Double[] oDoubleZ = (Double[]) DefaultContourDataset.formObjectArray(this.tmpDoubleZ);
-
+		
 		final Date[] tmpDateX = new Date[this.tmpDoubleX.length];
 		for (int i = 0; i < this.tmpDoubleX.length; i++) {
 			tmpDateX[i] = new Date((long) (1000.0 * this.tmpDoubleX[i]));
 		}
-
+		
 		ContourDataset data = null;
-
+		
 		if (xIsDate) {
 			if (asPoints) {
 				data = new DefaultContourDataset("Contouring", tmpDateX, oDoubleY, oDoubleZ);
@@ -299,20 +299,20 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 			data = new DefaultContourDataset("Contouring", oDoubleX, oDoubleY, oDoubleZ);
 		}
 		return data;
-
+		
 	}
-
+	
 	/**
 	 * Sets options passed via the command line
 	 * 
 	 * @param args
-	 *            the arguments.
+	 *           the arguments.
 	 * @return Flag indicating whether program should continue.
 	 */
 	protected static boolean processArgs(final String[] args) {
 		final String[] options = { "-?", "-date", "-vertical", "-points", "-outline", "-filled", "-ratio:", "-numX:",
 				"-numY:", "-power:", "-annotate" };
-
+		
 		for (int i = 0; i < args.length; i++) {
 			boolean foundOption = false;
 			for (int j = 0; j < options.length; j++) {
@@ -321,49 +321,49 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 					int index = 0;
 					String tmpStr = null;
 					switch (j) {
-					case 0: // -?
-						usage();
-						return false;
-					case 1:
-						xIsDate = true;
-						break;
-					case 2:
-						// zIsVertical = true;
-						break;
-					case 3:
-						asPoints = true;
-						break;
-					case 4:
-						drawOutline = true;
-						break;
-					case 5:
-						fillOutline = true;
-						break;
-					case 6:
-						index = args[i].indexOf(':');
-						tmpStr = args[i].substring(index + 1);
-						ratio = Double.parseDouble(tmpStr);
-						break;
-					case 7:
-						index = args[i].indexOf(':');
-						tmpStr = args[i].substring(index + 1);
-						numX = Integer.parseInt(tmpStr);
-						break;
-					case 8:
-						index = args[i].indexOf(':');
-						tmpStr = args[i].substring(index + 1);
-						numY = Integer.parseInt(tmpStr);
-						break;
-					case 9:
-						index = args[i].indexOf(':');
-						tmpStr = args[i].substring(index + 1);
-						power = Integer.parseInt(tmpStr);
-						break;
-					case 10:
-						annotate = true;
-						break;
-					default:
-						System.out.println("Only 11 options available, update options array");
+						case 0: // -?
+							usage();
+							return false;
+						case 1:
+							xIsDate = true;
+							break;
+						case 2:
+							// zIsVertical = true;
+							break;
+						case 3:
+							asPoints = true;
+							break;
+						case 4:
+							drawOutline = true;
+							break;
+						case 5:
+							fillOutline = true;
+							break;
+						case 6:
+							index = args[i].indexOf(':');
+							tmpStr = args[i].substring(index + 1);
+							ratio = Double.parseDouble(tmpStr);
+							break;
+						case 7:
+							index = args[i].indexOf(':');
+							tmpStr = args[i].substring(index + 1);
+							numX = Integer.parseInt(tmpStr);
+							break;
+						case 8:
+							index = args[i].indexOf(':');
+							tmpStr = args[i].substring(index + 1);
+							numY = Integer.parseInt(tmpStr);
+							break;
+						case 9:
+							index = args[i].indexOf(':');
+							tmpStr = args[i].substring(index + 1);
+							power = Integer.parseInt(tmpStr);
+							break;
+						case 10:
+							annotate = true;
+							break;
+						default:
+							System.out.println("Only 11 options available, update options array");
 					}
 				}
 			}
@@ -373,10 +373,10 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 				return false;
 			}
 		}
-
+		
 		return true; // continue running application
 	}
-
+	
 	/**
 	 * Prints usage options.
 	 */
@@ -396,16 +396,16 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 		System.out.println("-numX number of values to generate along the X axis");
 		System.out.println("-numY number of values to generate along the Y axis");
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            command line options, launch ContourDemoPlot -? for listing of
-	 *            options.
+	 *           command line options, launch ContourDemoPlot -? for listing of
+	 *           options.
 	 */
 	public static void main(final String[] args) {
-
+		
 		if (!processArgs(args)) {
 			System.exit(1);
 		}
@@ -413,38 +413,38 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 	/**
 	 * Initialise data.
 	 */
 	private void initData() {
-
+		
 		final double[] tmpDoubleYY = { 6.782, 6.79, 6.882, 6.289, 6.339, 6.426, 6.584, 5.532, 5.788, 5.922, 6.053,
 				4.008, 4.185, 4.456, 4.801, 4.779, 4.572, 5.202, 5.613, 5.893 }; // 3.5,7}; // add values to fill entire
-																					// lake surface
-
+		// lake surface
+		
 		final double[] tmpDoubleXX = { 14.508, 14.413, 14.329, 14.512, 14.284, 14.085, 13.793, 13.603, 13.492, 13.229,
 				12.956, 11.087, 11.062, 10.937, 11.169, 11.837, 12.182, 12.802, 12.782, 12.687 }; // 10.5,15}; // add
-																									// values to fill
-																									// entire lake
-																									// surface
-
+		// values to fill
+		// entire lake
+		// surface
+		
 		final double[] tmpDoubleZZ = { 2.03, 1.23, 0.86, 3.99, 2.38, 3, 3.08, 6.63, 6.84, 7.38, 6.99, 10.4, 11.11,
 				10.97, 11.22, 11.25, 10.68, 7.93, 8.17, 7.4 }; // 12.0, 0.0}; // add values to fill entire lake surface
-
+		
 		this.tmpDoubleY = new double[tmpDoubleYY.length];
 		this.tmpDoubleX = new double[tmpDoubleXX.length];
 		this.tmpDoubleZ = new double[tmpDoubleZZ.length];
-
+		
 		for (int i = 0; i < this.tmpDoubleX.length; i++) {
 			this.tmpDoubleX[i] = tmpDoubleXX[i];
 			this.tmpDoubleY[i] = tmpDoubleYY[i];
 			this.tmpDoubleZ[i] = tmpDoubleZZ[i];
 		}
 	}
-
+	
 	/**
 	 * Initialise data.
 	 */
@@ -503,7 +503,7 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 				6.83E+00, 6.85E+00, 6.86E+00, 6.87E+00, 6.88E+00, 6.88E+00, 6.89E+00, 6.90E+00, 6.90E+00, 6.91E+00,
 				6.91E+00, 6.91E+00, 6.90E+00, 6.91E+00, 6.92E+00, 6.92E+00, 6.93E+00, 6.93E+00, 6.93E+00, 6.91E+00,
 				6.90E+00, 6.88E+00, 6.87E+00, 6.88E+00, 6.90E+00, 6.90E+00, 6.92E+00, 6.94E+00, 6.95E+00, 6.96E+00 };
-
+		
 		final double[] xxOutline = { 1.46171E+01, 1.45984E+01, 1.45883E+01, 1.45818E+01, 1.45626E+01, 1.45435E+01,
 				1.45257E+01, 1.45462E+01, 1.45653E+01, 1.45854E+01, 1.46027E+01, 1.46256E+01, 1.46482E+01, 1.46707E+01,
 				1.46934E+01, 1.47161E+01, 1.47312E+01, 1.47494E+01, 1.47604E+01, 1.47746E+01, 1.47856E+01, 1.47939E+01,
@@ -572,14 +572,14 @@ public class ContourPlotDemo2 extends ApplicationFrame {
 				1.42637E+01, 1.42889E+01, 1.43115E+01, 1.43339E+01, 1.43563E+01, 1.43787E+01, 1.44021E+01, 1.44245E+01,
 				1.44475E+01, 1.44702E+01, 1.44924E+01, 1.44868E+01, 1.44644E+01, 1.44868E+01, 1.45073E+01, 1.45297E+01,
 				1.45515E+01, 1.45662E+01, 1.45885E+01, 1.45938E+01 };
-
+		
 		this.xOutline = new double[xxOutline.length];
 		this.yOutline = new double[yyOutline.length];
-
+		
 		for (int i = 0; i < this.xOutline.length; i++) {
 			this.xOutline[i] = xxOutline[i];
 			this.yOutline[i] = yyOutline[i];
 		}
 	}
-
+	
 }

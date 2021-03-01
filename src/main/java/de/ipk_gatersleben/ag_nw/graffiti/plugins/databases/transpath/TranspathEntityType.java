@@ -5,6 +5,6 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.transpath;
 
 public interface TranspathEntityType {
 	public String getKey();
-
+	
 	public void processXMLentityValue(String environment, String value);
 }

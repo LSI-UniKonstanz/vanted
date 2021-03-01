@@ -51,15 +51,15 @@ import org.jfree.ui.RefineryUtilities;
  * @author Jelai Wang, jelaiw AT mindspring.com
  */
 public class HistogramDemo extends ApplicationFrame {
-
+	
 	/** For generating random numbers. */
 	static Random random = new Random();
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public HistogramDemo(final String title) {
 		super(title);
@@ -70,7 +70,7 @@ public class HistogramDemo extends ApplicationFrame {
 		chartPanel.setMouseZoomable(true, false);
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample {@link HistogramDataset}.
 	 * 
@@ -83,7 +83,7 @@ public class HistogramDemo extends ApplicationFrame {
 		dataset.addSeries("H0", gaussianData(1000, 0), 20);
 		return dataset;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -94,12 +94,12 @@ public class HistogramDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            a dataset.
+	 *           a dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final IntervalXYDataset dataset) {
@@ -108,14 +108,14 @@ public class HistogramDemo extends ApplicationFrame {
 		chart.getXYPlot().setForegroundAlpha(0.75f);
 		return chart;
 	}
-
+	
 	/**
 	 * Generates an array of sample data.
 	 * 
 	 * @param size
-	 *            the array size.
+	 *           the array size.
 	 * @param shift
-	 *            the shift from zero.
+	 *           the shift from zero.
 	 * @return The array of sample data.
 	 */
 	private static double[] gaussianData(final int size, final double shift) {
@@ -125,22 +125,22 @@ public class HistogramDemo extends ApplicationFrame {
 		}
 		return d;
 	}
-
+	
 	/**
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 * @throws IOException
-	 *             if there is a problem saving the file.
+	 *            if there is a problem saving the file.
 	 */
 	public static void main(final String[] args) throws IOException {
-
+		
 		final HistogramDemo demo = new HistogramDemo("Histogram Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

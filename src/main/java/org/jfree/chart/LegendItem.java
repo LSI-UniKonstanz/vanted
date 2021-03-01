@@ -55,67 +55,67 @@ import org.jfree.util.ObjectUtils;
  * concerned about the display location. Instances of this class are immutable.
  */
 public class LegendItem implements Serializable {
-
+	
 	/** The label. */
 	private String label;
-
+	
 	/** The description (not currently used). */
 	private String description;
-
+	
 	/** The shape. */
 	private transient Shape shape;
-
+	
 	/** A flag that controls whether or not the shape is filled. */
 	private boolean shapeFilled;
-
+	
 	/** The paint. */
 	private transient Paint paint;
-
+	
 	/** The stroke. */
 	private transient Stroke stroke;
-
+	
 	/** The outline paint. */
 	private transient Paint outlinePaint;
-
+	
 	/** The outline stroke. */
 	private transient Stroke outlineStroke;
-
+	
 	/**
 	 * Creates a new legend item.
 	 * 
 	 * @param label
-	 *            the label (<code>null</code> not permitted).
+	 *           the label (<code>null</code> not permitted).
 	 * @param paint
-	 *            the fill paint (<code>null</code> not permitted).
+	 *           the fill paint (<code>null</code> not permitted).
 	 */
 	public LegendItem(String label, Paint paint) {
 		this(label, label, new Rectangle2D.Double(-4.0, -4.0, 8.0, 8.0), true, paint, new BasicStroke(0.5f),
 				Color.lightGray, new BasicStroke(0.5f));
 	}
-
+	
 	/**
 	 * Creates a new legend item.
 	 * 
 	 * @param label
-	 *            the label (<code>null</code> not permitted).
+	 *           the label (<code>null</code> not permitted).
 	 * @param description
-	 *            the description (not currently used, <code>null</code> permitted).
+	 *           the description (not currently used, <code>null</code> permitted).
 	 * @param shape
-	 *            the shape (<code>null</code> permitted).
+	 *           the shape (<code>null</code> permitted).
 	 * @param shapeFilled
-	 *            a flag that controls whether or not the shape is filled.
+	 *           a flag that controls whether or not the shape is filled.
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 * @param stroke
-	 *            the stroke (<code>null</code> not permitted).
+	 *           the stroke (<code>null</code> not permitted).
 	 * @param outlinePaint
-	 *            the outline paint (<code>null</code> not permitted).
+	 *           the outline paint (<code>null</code> not permitted).
 	 * @param outlineStroke
-	 *            the outline stroke (<code>null</code> not permitted).
+	 *           the outline stroke (<code>null</code> not permitted).
 	 */
 	public LegendItem(String label, String description, Shape shape, boolean shapeFilled, Paint paint, Stroke stroke,
 			Paint outlinePaint, Stroke outlineStroke) {
-
+		
 		if (label == null) {
 			throw new IllegalArgumentException("Null 'label' argument.");
 		}
@@ -139,9 +139,9 @@ public class LegendItem implements Serializable {
 		this.stroke = stroke;
 		this.outlinePaint = outlinePaint;
 		this.outlineStroke = outlineStroke;
-
+		
 	}
-
+	
 	/**
 	 * Returns the label.
 	 * 
@@ -150,7 +150,7 @@ public class LegendItem implements Serializable {
 	public String getLabel() {
 		return this.label;
 	}
-
+	
 	/**
 	 * Returns the shape used to label the series represented by this legend item.
 	 * 
@@ -159,7 +159,7 @@ public class LegendItem implements Serializable {
 	public Shape getShape() {
 		return this.shape;
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not the shape is filled.
 	 * 
@@ -168,7 +168,7 @@ public class LegendItem implements Serializable {
 	public boolean isShapeFilled() {
 		return this.shapeFilled;
 	}
-
+	
 	/**
 	 * Returns the paint.
 	 * 
@@ -177,7 +177,7 @@ public class LegendItem implements Serializable {
 	public Paint getPaint() {
 		return this.paint;
 	}
-
+	
 	/**
 	 * Returns the stroke used to render the shape for this series.
 	 * 
@@ -186,7 +186,7 @@ public class LegendItem implements Serializable {
 	public Stroke getStroke() {
 		return this.stroke;
 	}
-
+	
 	/**
 	 * Returns the outline paint.
 	 * 
@@ -195,7 +195,7 @@ public class LegendItem implements Serializable {
 	public Paint getOutlinePaint() {
 		return this.outlinePaint;
 	}
-
+	
 	/**
 	 * Returns the outline stroke.
 	 * 
@@ -204,12 +204,12 @@ public class LegendItem implements Serializable {
 	public Stroke getOutlineStroke() {
 		return this.outlineStroke;
 	}
-
+	
 	/**
 	 * Tests this item for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -246,14 +246,14 @@ public class LegendItem implements Serializable {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream (<code>null</code> not permitted).
+	 *           the output stream (<code>null</code> not permitted).
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -263,16 +263,16 @@ public class LegendItem implements Serializable {
 		SerialUtilities.writeStroke(this.outlineStroke, stream);
 		SerialUtilities.writePaint(this.outlinePaint, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream (<code>null</code> not permitted).
+	 *           the input stream (<code>null</code> not permitted).
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -282,53 +282,53 @@ public class LegendItem implements Serializable {
 		this.outlineStroke = SerialUtilities.readStroke(stream);
 		this.outlinePaint = SerialUtilities.readPaint(stream);
 	}
-
+	
 	// // DEPRECATED CODE
 	// //////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Creates a new legend item.
 	 * 
 	 * @param label
-	 *            the label.
+	 *           the label.
 	 * @param description
-	 *            the description (not used).
+	 *           the description (not used).
 	 * @param shape
-	 *            the shape.
+	 *           the shape.
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 * @param outlinePaint
-	 *            the outline paint.
+	 *           the outline paint.
 	 * @param stroke
-	 *            the stroke.
+	 *           the stroke.
 	 * @deprecated Use the other constructor.
 	 */
 	public LegendItem(String label, String description, Shape shape, Paint paint, Paint outlinePaint, Stroke stroke) {
 		this(label, description, shape, true, paint, outlinePaint, stroke);
 	}
-
+	
 	/**
 	 * Creates a new legend item.
 	 * 
 	 * @param label
-	 *            the label.
+	 *           the label.
 	 * @param description
-	 *            the description (not used).
+	 *           the description (not used).
 	 * @param shape
-	 *            the shape.
+	 *           the shape.
 	 * @param shapeFilled
-	 *            a flag that controls whether or not the shape is filled.
+	 *           a flag that controls whether or not the shape is filled.
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 * @param outlinePaint
-	 *            the outline paint.
+	 *           the outline paint.
 	 * @param stroke
-	 *            the stroke.
+	 *           the stroke.
 	 * @deprecated Use other constructor.
 	 */
 	public LegendItem(String label, String description, Shape shape, boolean shapeFilled, Paint paint,
 			Paint outlinePaint, Stroke stroke) {
-
+		
 		this.label = label;
 		this.description = description;
 		this.shape = shape;
@@ -336,7 +336,7 @@ public class LegendItem implements Serializable {
 		this.paint = paint;
 		this.outlinePaint = outlinePaint;
 		this.stroke = stroke;
-
+		
 	}
-
+	
 }

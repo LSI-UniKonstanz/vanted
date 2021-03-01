@@ -40,9 +40,9 @@ public class USmallMolecule extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
@@ -63,5 +63,5 @@ public class USmallMolecule extends UtilitySuperClassToGraph {
 			UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
 		}
 	}
-
+	
 }

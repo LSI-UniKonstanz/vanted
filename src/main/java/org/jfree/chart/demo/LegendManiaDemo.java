@@ -58,22 +58,22 @@ import org.jfree.ui.RefineryUtilities;
  * @since March 26, 2004
  */
 public class LegendManiaDemo extends ApplicationFrame {
-
+	
 	/** The chart title. */
 	private static final String CHART_TITLE = "Legend Mania Demo";
-
+	
 	/** The background paint. */
 	private static final Paint BACKGROUND_PAINT = new Color(255, 240, 240);
-
+	
 	/** The chart of this demo */
 	private JFreeChart demoChart;
-
+	
 	/**
 	 * A demo application that shows legend positions and legend bounding box
 	 * options.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public LegendManiaDemo(final String title) {
 		super(title);
@@ -83,55 +83,55 @@ public class LegendManiaDemo extends ApplicationFrame {
 		chartPanel.setPreferredSize(new Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Returns a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private CategoryDataset createDataset() {
-
+		
 		// row keys...
 		final String series1 = "Birds";
 		final String series2 = "Beas";
 		final String series3 = "A very very very very very long snake";
-
+		
 		// column keys...
 		final String category1 = "Shopping";
 		final String category2 = "Socializing";
 		final String category3 = "Sex";
 		final String category4 = "TV Watching";
-
+		
 		// create the dataset...
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
+		
 		dataset.addValue(1.0, series1, category1);
 		dataset.addValue(4.0, series1, category2);
 		dataset.addValue(3.0, series1, category3);
 		dataset.addValue(5.0, series1, category4);
-
+		
 		dataset.addValue(5.0, series2, category1);
 		dataset.addValue(7.0, series2, category2);
 		dataset.addValue(6.0, series2, category3);
 		dataset.addValue(8.0, series2, category4);
-
+		
 		dataset.addValue(4.0, series3, category1);
 		dataset.addValue(3.0, series3, category2);
 		dataset.addValue(2.0, series3, category3);
 		dataset.addValue(3.0, series3, category4);
-
+		
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart(CHART_TITLE, // chart title
 				"Activity", // domain axis label
@@ -142,47 +142,47 @@ public class LegendManiaDemo extends ApplicationFrame {
 				true, // tooltips?
 				false // URLs?
 		);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
+		
 		// set the background color for the chart...
 		chart.setBackgroundPaint(new Color(255, 255, 180));
-
+		
 		// get a reference to the plot for further customisation...
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundPaint(BACKGROUND_PAINT);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		// set the range axis to display integers only...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+		
 		// disable bar outlines...
 		final BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
-
+		
 		final CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
-
+		
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setBackgroundPaint(Color.orange);
 		legend.setOutlinePaint(Color.orange);
-
+		
 		// activate word wrapping when legend is vertical.
 		legend.setPreferredWidth(125);
-
+		
 		// OPTIONAL CUSTOMISATION COMPLETED.
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final LegendManiaDemo demo = new LegendManiaDemo(CHART_TITLE);
@@ -190,17 +190,17 @@ public class LegendManiaDemo extends ApplicationFrame {
 		demo.setSize(800, 600);
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 		final Thread updater = demo.new UpdaterThread();
 		updater.setDaemon(true);
 		updater.start();
 	}
-
+	
 	/**
 	 * A thread for updating the legend position in a loop.
 	 */
 	private class UpdaterThread extends Thread {
-
+		
 		/**
 		 * @see java.lang.Runnable#run()
 		 */
@@ -208,35 +208,35 @@ public class LegendManiaDemo extends ApplicationFrame {
 			final int[] anchors = { Legend.NORTH_NORTHWEST, Legend.NORTH, Legend.NORTH_NORTHEAST, Legend.EAST_NORTHEAST,
 					Legend.EAST, Legend.EAST_SOUTHEAST, Legend.SOUTH_SOUTHEAST, Legend.SOUTH, Legend.SOUTH_SOUTHWEST,
 					Legend.WEST_SOUTHWEST, Legend.WEST, Legend.WEST_NORTHWEST };
-
+			
 			final String[] anchorNames = { "NORTH_NORTHWEST", "NORTH", "NORTH_NORTHEAST", "EAST_NORTHEAST", "EAST",
 					"EAST_SOUTHEAST", "SOUTH_SOUTHEAST", "SOUTH", "SOUTH_SOUTHWEST", "WEST_SOUTHWEST", "WEST",
 					"WEST_NORTHWEST" };
-
+			
 			setPriority(MIN_PRIORITY); // be nice
 			final StandardLegend legend = (StandardLegend) demoChart.getLegend();
-
+			
 			int i = 0;
 			while (true) {
 				// set the next anchor point
 				legend.setTitle(anchorNames[i]);
 				legend.setAnchor(anchors[i]);
 				i = (i + 1) % anchors.length;
-
+				
 				// set rectangular corners of bounding box and wait for a second
 				legend.setBoundingBoxArcHeight(0);
 				legend.setBoundingBoxArcWidth(0);
-
+				
 				try {
 					sleep(1000);
 				} catch (InterruptedException e) {
 					// ignored.
 				}
-
+				
 				// set round corners of bounding box and wait for a second
 				legend.setBoundingBoxArcHeight(10);
 				legend.setBoundingBoxArcWidth(10);
-
+				
 				try {
 					sleep(1000);
 				} catch (InterruptedException e) {

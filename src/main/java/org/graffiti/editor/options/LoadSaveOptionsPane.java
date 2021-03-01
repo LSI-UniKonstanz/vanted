@@ -21,48 +21,47 @@ import org.graffiti.options.AbstractOptionPane;
  */
 public class LoadSaveOptionsPane extends AbstractOptionPane {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -943933107375681531L;
-
+	
 	/**
 	 * Constructor for LoadSaveOptionsPane.
 	 */
 	public LoadSaveOptionsPane() {
 		super("loadsave");
-
+		
 		// TODO
 	}
-
+	
 	// ~ Methods ================================================================
-
-
+	
 	@Override
 	protected void initDefault() {
 		// TODO
 	}
-
+	
 	@Override
 	protected void saveDefault() {
 		// TODO
 	}
-
+	
 	public String getCategory() {
 		//
 		return null;
 	}
-
+	
 	public String getOptionName() {
 		//
 		return null;
 	}
-
+	
 	public void init(JComponent options) {
 		//
 	}
-
+	
 	public void save(JComponent options) {
 		//
 	}

@@ -46,62 +46,62 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  */
 public class StringEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-
+	
 	/** The text field containing the value of the displayable. */
 	protected JTextComponent textComp;
 	protected JComponent alternateComp;
 	protected JComponent searchComponent;
-
+	
 	private Boolean multiline;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	// /**
 	// * The attribute displayed by this component;
 	// */
 	// private StringAttribute strAttr;
-
+	
 	/**
 	 * Constructs a new <code>StringEditComponent</code>.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public StringEditComponent(Displayable disp) {
 		super(disp);
-
+		
 		searchComponent = getSearchComponent();
 		createComponent();
-
+		
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	private void createComponent() {
 		if (textComp == null) {
 			// System.out.println("creating StringAttribute");
 			boolean multiRow = multiline != null && multiline.booleanValue();
-
+			
 			if (multiRow) {
 				textComp = new JTextArea(getDisplayable().getValue().toString());
 				// ((JTextArea)textComp).setWrapStyleWord(true);
 				((JTextArea) textComp).setLineWrap(true);
 				((JTextArea) textComp).setRows(5);
 				textComp.setBorder(BorderFactory.createEtchedBorder());
-
+				
 			} else {
 				textComp = new JTextField(getDisplayable().getValue().toString());
 			}
-
+			
 			textComp.setMinimumSize(new Dimension(0, 30));
 			textComp.setPreferredSize(new Dimension(multiRow ? 500 : 50, 30));
 			textComp.setMaximumSize(new Dimension(2000, 30));
 		}
-
+		
 		alternateComp = TableLayout.getSplit(textComp, searchComponent, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED);
 	}
-
+	
 	/**
 	 * Returns the <code>JComponent</code> of this edit component.
 	 * 
@@ -114,7 +114,7 @@ public class StringEditComponent extends AbstractValueEditComponent {
 		else
 			return alternateComp;
 	}
-
+	
 	private JComponent getSearchComponent() {
 		final JButton s = new JButton("Select");
 		s.setOpaque(false);
@@ -129,16 +129,16 @@ public class StringEditComponent extends AbstractValueEditComponent {
 					return;
 				}
 				Attribute attr = (Attribute) getDisplayable();
-
+				
 				String path = attr.getPath();
 				if (path.indexOf(".") >= 0)
 					path = path.substring(0, path.lastIndexOf("."));
 				String attributeName = attr.getId();
-
+				
 				Collection<GraphElement> select = new ArrayList<GraphElement>();
-
+				
 				boolean subsearch = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-
+				
 				for (GraphElement ge : MainFrame.getInstance().getActiveEditorSession().getGraph().getGraphElements()) {
 					String val = (String) AttributeHelper.getAttributeValue(ge, path, attributeName, null, "");
 					if (val == null)
@@ -155,7 +155,7 @@ public class StringEditComponent extends AbstractValueEditComponent {
 				MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection()
 						.addAll(select);
 				MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
-
+				
 				MainFrame.showMessage("Added " + select.size()
 						+ " elements to selection. Press Shift while clicking the search button to search within text.",
 						MessageType.INFO);
@@ -163,7 +163,7 @@ public class StringEditComponent extends AbstractValueEditComponent {
 		});
 		return s;
 	}
-
+	
 	/**
 	 * Sets the current value of the displayable in the corresponding
 	 * <code>JComponent</code>.
@@ -177,7 +177,7 @@ public class StringEditComponent extends AbstractValueEditComponent {
 		}
 		searchComponent.setEnabled(!showEmpty);
 	}
-
+	
 	/**
 	 * Sets the value of the displayable specified in the <code>JComponent</code>.
 	 * But only if it is different.
@@ -185,12 +185,12 @@ public class StringEditComponent extends AbstractValueEditComponent {
 	@Override
 	public void setValue() {
 		String text = this.textComp.getText();
-
+		
 		if (!text.equals(EMPTY_STRING) && !this.displayable.getValue().toString().equals(text)) {
 			this.displayable.setValue(text);
 		}
 	}
-
+	
 	@Override
 	public void setParameter(String setting, Object value) {
 		super.setParameter(setting, value);

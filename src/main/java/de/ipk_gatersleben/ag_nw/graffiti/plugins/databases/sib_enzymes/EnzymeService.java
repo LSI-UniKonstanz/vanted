@@ -44,43 +44,43 @@ public class EnzymeService
 		implements MemoryHog, BackgroundTaskStatusProvider, FileDownloadStatusInformationProvider, HelperClass {
 	// Enzyme Class related variables
 	private static boolean read_enzclass_txt = false;
-
+	
 	private static String enzymeRelease = "unknown version";
-
+	
 	private static String relTag = "Release:";
-
+	
 	private static List<EnzClassEntry> enzymeClassEntries = new Vector<EnzClassEntry>();
-
+	
 	// Enzyme Database related variables
 	private static boolean read_enzyme_DB_txt = false;
-
+	
 	private static String enzymeDBrelease = "unknown version";
-
+	
 	private static String relTagDB = "CC   Release ";
-
+	
 	// private boolean pleaseStop=false;
 	private static String status1;
 	private static String status2;
 	private static int statusVal = -1;
-
+	
 	private FolderPanel res;
 	private JLabel labelStatus1;
 	private JLabel labelStatus2;
-
+	
 	private static EnzymeService instance = null;
-
+	
 	private EnzymeService() {
 		registerMemoryHog();
 		enablePeriodicFreeMemory();
 	}
-
+	
 	public static EnzymeService getInstance() {
 		if (instance == null)
 			instance = new EnzymeService();
 		
 		return instance;
 	}
-
+	
 	public synchronized void finishedNewDownload() {
 		read_enzclass_txt = false;
 		enzymeRelease = "unknown version";
@@ -90,22 +90,22 @@ public class EnzymeService
 		status1 = null;
 		status2 = null;
 		statusVal = -1;
-
+		
 		updateDatabaseStatus(labelStatus1, labelStatus2, false);
-
+		
 	}
-
+	
 	/**
 	 * Contains a mapping from the EC number (ID) to the corresponding enzyme info
 	 */
 	private static HashMap<String, EnzymeEntry> enzymeEntries = new HashMap<String, EnzymeEntry>();
-
+	
 	/**
 	 * Contains a mapping from the uppercase synonyms to the corresponding enzyme
 	 * info
 	 */
 	private static HashMap<String, EnzymeEntry> knownEnzymeAlternativeNamesEntries = new HashMap<String, EnzymeEntry>();
-
+	
 	private static synchronized void initService(boolean initInBackground) {
 		if (initInBackground) {
 			if (!read_enzclass_txt || !read_enzyme_DB_txt) {
@@ -138,7 +138,7 @@ public class EnzymeService
 		}
 		getInstance().noteRequest();
 	}
-
+	
 	/**
 	 * Reads the file enzclass.txt. All methods depending on info from that file
 	 * should call <code>initService</code>, first. To ensure that this service is
@@ -202,7 +202,7 @@ public class EnzymeService
 		}
 		status1 = "Enzyme classes analysed";
 	}
-
+	
 	/**
 	 * Reads the file enzyme.dat. All methods depending on info from that file
 	 * should call <code>initService</code>, first. To ensure that this service is
@@ -249,7 +249,7 @@ public class EnzymeService
 								endTagFound = true;
 								line = line.substring(0, line.length() - 2);
 							}
-
+							
 							if (line.startsWith("PR") || line.startsWith("DR")) {
 								// ignore these lines... they need also be
 								// treated different,
@@ -315,7 +315,7 @@ public class EnzymeService
 		}
 		status1 = "Enzyme Names analysed (" + enzymeEntries.size() + ")";
 	}
-
+	
 	private static BufferedReader getFileReader(String fileName) {
 		try {
 			return new BufferedReader(new FileReader(ReleaseInfo.getAppFolderWithFinalSep() + fileName));
@@ -325,7 +325,7 @@ public class EnzymeService
 			return null;
 		}
 	}
-
+	
 	public boolean isDatabaseAvailable(boolean checkInternal) {
 		noteRequest();
 		String fileName = "enzyme.dat";
@@ -344,7 +344,7 @@ public class EnzymeService
 			return false;
 		}
 	}
-
+	
 	/**
 	 * @return The release information from the enzyme-classes file (enzclass.txt).
 	 */
@@ -353,7 +353,7 @@ public class EnzymeService
 		initService(false);
 		return enzymeRelease;
 	}
-
+	
 	/**
 	 * Retuns all matches for the enzyme class. Example: "1.1.5.2" "1. -. -.-" ->
 	 * Oxidoreductases "1. 1. -.-" -> Acting on the CH-OH group of donors "1. 1.
@@ -361,16 +361,18 @@ public class EnzymeService
 	 * "Oxidoreductases", "Acting on the CH-OH group of donors", "With a quinone or
 	 * similar compound as acceptor" }
 	 * 
-	 * @param ec_number_or_synonyme A EC Number in the form "EC1.2.3.4" or "1.2.3.4"
-	 *                              or " 1. 2. 3 . 4" (space is ignored while
-	 *                              matching) Also a synonym to a EC number can be
-	 *                              used, in this case a lookup to the known
-	 *                              synonyms is done to get the corresponding EC
-	 *                              number.
-	 * @param lazy                  If lazy is TRUE, then the service is inited in
-	 *                              background, this method will return
-	 *                              immeadeately, but might not return reliable
-	 *                              results until the database is inited.
+	 * @param ec_number_or_synonyme
+	 *           A EC Number in the form "EC1.2.3.4" or "1.2.3.4"
+	 *           or " 1. 2. 3 . 4" (space is ignored while
+	 *           matching) Also a synonym to a EC number can be
+	 *           used, in this case a lookup to the known
+	 *           synonyms is done to get the corresponding EC
+	 *           number.
+	 * @param lazy
+	 *           If lazy is TRUE, then the service is inited in
+	 *           background, this method will return
+	 *           immeadeately, but might not return reliable
+	 *           results until the database is inited.
 	 * @return A string array of all matching categories or descriptions.
 	 */
 	public static List<String> getEnzymeClasses(String ec_number_or_synonyme, boolean lazy) {
@@ -379,7 +381,7 @@ public class EnzymeService
 		if (ec_number_or_synonyme.toUpperCase().startsWith("EC:"))
 			ec_number_or_synonyme = ec_number_or_synonyme.substring("ec:".length());
 		List<String> classes = new ArrayList<String>();
-
+		
 		// check if the given parameter is a synonym
 		EnzymeEntry eze = getEnzymeInformation(ec_number_or_synonyme, lazy);
 		// if info is found, use this as the ID
@@ -398,11 +400,12 @@ public class EnzymeService
 		}
 		return classes;
 	}
-
+	
 	/**
 	 * Get a EnzymeEntry with the associated information.
 	 * 
-	 * @param ec_or_synonyme A EC number (1.2.3.4) or known synonyme.
+	 * @param ec_or_synonyme
+	 *           A EC number (1.2.3.4) or known synonyme.
 	 * @return NULL, if no info is found or a corresponding entry.
 	 */
 	public static EnzymeEntry getEnzymeInformation(String ec_or_synonyme, boolean lazy) {
@@ -422,9 +425,9 @@ public class EnzymeService
 		}
 		return result;
 	}
-
+	
 	static Pattern pattern = Pattern.compile("\\d{1,2}(\\.(\\-|\\d{1,2})){3}");
-
+	
 	public static String extractECId(String ecString) {
 		Matcher matcher = pattern.matcher(ecString);
 		if (matcher.find())
@@ -432,7 +435,7 @@ public class EnzymeService
 		else
 			return null;
 	}
-
+	
 	/**
 	 * @return The release information of the enzyme.dat file.
 	 */
@@ -441,14 +444,15 @@ public class EnzymeService
 		initService(false);
 		return enzymeDBrelease;
 	}
-
+	
 	/**
 	 * Get the number of nodes in this graph which could possible be valid EC
 	 * numbers. It is not checked if the EC number is existent, meaning a EC number
 	 * like "6.6.6.666" which probably does not exist would increase the number
 	 * count.
 	 * 
-	 * @param graph All nodes from this graph will be checked
+	 * @param graph
+	 *           All nodes from this graph will be checked
 	 * @return The number of nodes which have a <code>QuadNumber</code> valid
 	 *         structure, meaning, a name of substance name like a.b.c.d, where abcd
 	 *         are either numbers or "-".
@@ -470,62 +474,62 @@ public class EnzymeService
 		}
 		return cnt;
 	}
-
+	
 	public int getCurrentStatusValue() {
 		return statusVal;
 	}
-
+	
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
-
+	
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	public void pleaseStop() {
 		// pleaseStop = true;
 	}
-
+	
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		statusVal = value;
 	}
-
+	
 	public String getDescription() {
 		return "";
 	}
-
+	
 	public JComponent getStatusPane(boolean showEmpty) {
 		res = new FolderPanel(
 				"<html>SIB Enzyme Database<br><small>" + "(contains information about enzyme IDs, names and synonyms)");
-
+		
 		labelStatus1 = new JLabel();
 		labelStatus2 = new JLabel();
-
+		
 		res.setFrameColor(Color.LIGHT_GRAY, null, 1, 5);
-
+		
 		int b = 5; // normal border
 		int bB = 1; // border around action buttons
-
+		
 		if (!showEmpty)
 			initService(false);
-
+		
 		boolean internalAvailable = isDatabaseAvailable(true);
-
+		
 		updateDatabaseStatus(labelStatus1, labelStatus2, showEmpty);
-
+		
 		if (internalAvailable) {
 			// labelStatus1.setText(status1);
 			res.addGuiComponentRow(new JLabel("<html>" + "Embedded Files:&nbsp;<br><small>"
@@ -533,11 +537,11 @@ public class EnzymeService
 					+ "you may download a updated file and save it<br>" + "in the file system of your hard drive)"),
 					FolderPanel.getBorderedComponent(labelStatus1, b, b, b, b), false);
 		}
-
+		
 		// labelStatus2.setText(status2);
 		res.addGuiComponentRow(new JLabel("<html>" + "Downloaded Files:&nbsp;"),
 				FolderPanel.getBorderedComponent(labelStatus2, b, b, b, b), false);
-
+		
 		ArrayList<JComponent> actionButtons = new ArrayList<JComponent>();
 		if (!showEmpty) {
 			actionButtons.add(getWebsiteButton());
@@ -545,35 +549,35 @@ public class EnzymeService
 			actionButtons.add(getDownloadButton());
 		}
 		pretifyButtons(actionButtons);
-
+		
 		res.addGuiComponentRow(new JLabel("<html>" + "Visit Website(s)"),
 				TableLayout.getMultiSplit(actionButtons, TableLayout.PREFERRED, bB, bB, bB, bB), false);
-
+		
 		res.layoutRows();
 		return res;
 	}
-
+	
 	protected void updateDatabaseStatus(JLabel labelStatus1, JLabel labelStatus2, boolean showEmpty) {
 		boolean internalAvailable = isDatabaseAvailable(true);
 		boolean externalAvailable = isDatabaseAvailable(false);
-
+		
 		String status1 = "";
 		String status2 = "";
 		if (internalAvailable)
 			status1 = "<html><b>Database is online</b>";
 		else
 			status1 = "<html>Embedded database file not available";
-
+		
 		if (externalAvailable)
 			status2 = "<html><b>Database is online</b>";
 		else
 			status2 = "<html>Database file not available";
-
+		
 		if (externalAvailable || internalAvailable) {
 			if (externalAvailable) {
-
+				
 				status2 += "<br>";
-
+				
 				String modifiedTime = GravistoService.getFileModificationDateAndTime(getFile("enzyme.dat"),
 						"unknown version (file not found)");
 				File f = getFile("enzyme.dat");
@@ -591,7 +595,7 @@ public class EnzymeService
 						"&nbsp;&nbsp;enzyme.dat: " + getReleaseVersionForEnzymeInformation() + "<br>"
 						+ "&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
 		}
-
+		
 		if (internalAvailable) {
 			EnzymeService.getEnzymeInformation("dummy", false);
 			EnzymeService.getEnzymeClasses("dummy", false);
@@ -622,18 +626,18 @@ public class EnzymeService
 					status1 += "<br>&nbsp;&nbsp;problem identified: enzyme entry information could not be retrieved";
 			}
 		}
-
+		
 		if (showEmpty)
 			status2 = "<html><b>Bringing database online...</b><br>Please wait a few moments.";
-
+		
 		labelStatus1.setText(status1);
 		labelStatus2.setText(status2);
 	}
-
+	
 	public static File getFile(String fileName) {
 		return new File(ReleaseInfo.getAppFolderWithFinalSep() + fileName);
 	}
-
+	
 	private JComponent getDownloadButton() {
 		return GUIhelper.getWebsiteDownloadButton("Download", "ftp://ftp.expasy.org/databases/enzyme",
 				ReleaseInfo.getAppFolderWithFinalSep(), "<html>"
@@ -649,20 +653,20 @@ public class EnzymeService
 						"ftp://ftp.expasy.org/databases/enzyme/enzyme.dat" },
 				"Manual download instructions (automatic download failure)", this);
 	}
-
+	
 	private static JComponent getLicenseButton() {
 		return GUIhelper.getWebsiteButton("License", "http://enzyme.expasy.org/enzyme.get", null, null, null);
 	}
-
+	
 	private static JComponent getWebsiteButton() {
 		return GUIhelper.getWebsiteButton("Website", "http://enzyme.expasy.org/", null, null, null);
 	}
-
+	
 	private static void pretifyButtons(ArrayList<JComponent> actionButtons) {
 		for (JComponent jc : actionButtons)
 			jc.setBackground(Color.white);
 	}
-
+	
 	@Override
 	public void freeMemory() {
 		if (doFreeMemory())

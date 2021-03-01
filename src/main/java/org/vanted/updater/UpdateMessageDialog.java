@@ -27,31 +27,31 @@ import org.graffiti.editor.MainFrame;
  * @author matthiak
  */
 public class UpdateMessageDialog extends JDialog {
-
+	
 	private static final long serialVersionUID = 1972389636851761448L;
 	int width = 200;
 	int height = 300;
-
+	
 	String headerText;
 	String messageText;
 	String messageText2;
 	String footerText;
-
+	
 	/**
 	 * Creates and shows the Update message dialog with a given message formatted in
 	 * HTML
 	 */
 	private UpdateMessageDialog(String header, String htmlMessage, String htmlMessage2, String footer) {
-
+		
 		super(MainFrame.getInstance(), true);
-
+		
 		this.headerText = header;
 		this.messageText = htmlMessage;
 		this.messageText2 = htmlMessage2;
 		this.footerText = footer;
-
+		
 		createUI();
-
+		
 		addWindowListener(new WindowAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -64,17 +64,17 @@ public class UpdateMessageDialog extends JDialog {
 				dispose();
 			}
 		});
-
+		
 		pack();
 		setLocationRelativeTo(MainFrame.getInstance());
 		setResizable(false);
 		setVisible(true);
 	}
-
+	
 	public static void showUpdateMessageDialog(String header, String htmlMessage, String htmlMessage2, String footer) {
 		new UpdateMessageDialog(header, htmlMessage, htmlMessage2, footer);
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -88,11 +88,11 @@ public class UpdateMessageDialog extends JDialog {
 						5, TableLayoutConstants.PREFERRED, // footer
 						5, TableLayoutConstants.MINIMUM // Button
 				} }));
-
+		
 		JLabel header = new JLabel();
 		header.setText("<html><strong>" + headerText);
 		// header.setSize(width, 50);
-
+		
 		/*
 		 * JTextPane message = new JTextPane(); message.setContentType("text/html");
 		 * message.setEditable(false); message.setText(messageText); JScrollPane spane =
@@ -102,7 +102,7 @@ public class UpdateMessageDialog extends JDialog {
 		 */
 		JLabel msg = new JLabel();
 		msg.setText("<html>" + messageText);
-
+		
 		JTextPane message2 = new JTextPane();
 		message2.setContentType("text/html");
 		message2.setEditable(false);
@@ -110,21 +110,21 @@ public class UpdateMessageDialog extends JDialog {
 		JScrollPane spane2 = new JScrollPane(message2, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		spane2.setPreferredSize(new Dimension(300, 200));
-
+		
 		JLabel footer = new JLabel();
 		footer.setText("<html>" + footerText);
-
+		
 		JButton button = new JButton("OK");
-
+		
 		button.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();
 			}
 		});
-
+		
 		panel.add(header, new TableLayoutConstraints(0, 0, 2, 0, TableLayoutConstraints.MAX_ALIGN,
 				TableLayoutConstraints.MAX_ALIGN));
 		panel.add(msg, new TableLayoutConstraints(0, 2, 2, 2, TableLayoutConstraints.MAX_ALIGN,
@@ -136,12 +136,12 @@ public class UpdateMessageDialog extends JDialog {
 				TableLayoutConstraints.MAX_ALIGN));
 		panel.add(button,
 				new TableLayoutConstraints(1, 8, 1, 8, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER));
-
+		
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		
 		getContentPane().add(panel);
 	}
-
+	
 	/**
 	 * test
 	 * 

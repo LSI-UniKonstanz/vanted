@@ -40,21 +40,21 @@ import org.jfree.chart.plot.Plot;
  * plot.
  */
 public class PlotChangeEvent extends ChartChangeEvent {
-
+	
 	/** The plot that generated the event. */
 	private Plot plot;
-
+	
 	/**
 	 * Creates a new PlotChangeEvent.
 	 * 
 	 * @param plot
-	 *            the plot that generated the event.
+	 *           the plot that generated the event.
 	 */
 	public PlotChangeEvent(Plot plot) {
 		super(plot);
 		this.plot = plot;
 	}
-
+	
 	/**
 	 * Returns the plot that generated the event.
 	 * 
@@ -63,5 +63,5 @@ public class PlotChangeEvent extends ChartChangeEvent {
 	public Plot getPlot() {
 		return this.plot;
 	}
-
+	
 }

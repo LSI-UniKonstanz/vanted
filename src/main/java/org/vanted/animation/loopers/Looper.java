@@ -7,25 +7,23 @@ import org.vanted.animation.data.InterpolatableTimePoint;
 import org.vanted.animation.data.TimePoint;
 
 /**
- * 
  * @author - Patrick Shaw The looper class which points the Interpolator classes
  *         need to perform an interpolation. It also works out what the
  *         previousIndex is for Animation classes.
- * 
  */
 public abstract class Looper {
 	/**
 	 * @param time
 	 * @param dataPoints
 	 * @param previousIndex
-	 *            The last data point that {@code time} has past with respect to
-	 *            time.
+	 *           The last data point that {@code time} has past with respect to
+	 *           time.
 	 * @param pointsBefore
-	 *            The number of points to return that are before
-	 *            {@code dataPoints[previousIndex]}.
+	 *           The number of points to return that are before
+	 *           {@code dataPoints[previousIndex]}.
 	 * @param pointsAfter
-	 *            The number of points to return that are after
-	 *            {@code dataPoints[previousIndex]}.
+	 *           The number of points to return that are after
+	 *           {@code dataPoints[previousIndex]}.
 	 * @return Returns a set of indexes relative to the {@code previousIndex}.
 	 */
 	public <V, T extends TimePoint<V>> int[] getPointIndexes(List<T> dataPoints, int previousIndex, int pointsBefore,
@@ -45,15 +43,15 @@ public abstract class Looper {
 		// System.out.println(Arrays.toString(indexes));
 		return indexes;
 	}
-
+	
 	/**
 	 * @param x
-	 *            A value between 0 and 1 that represents where a particular values
-	 *            is relative to the two data points it is between. Eg. If you have
-	 *            two points, (1,5) and (4,5) and you want to interpolate (2,?) then
-	 *            x=0.25
+	 *           A value between 0 and 1 that represents where a particular values
+	 *           is relative to the two data points it is between. Eg. If you have
+	 *           two points, (1,5) and (4,5) and you want to interpolate (2,?) then
+	 *           x=0.25
 	 * @param y
-	 *            The y values used for the particular interpolation.
+	 *           The y values used for the particular interpolation.
 	 * @returns An interpolated value.
 	 */
 	public <V, T extends TimePoint<V>> List<T> getPointsUsed(List<T> dataPoints, int previousIndex, int pointsBefore,
@@ -65,23 +63,23 @@ public abstract class Looper {
 		}
 		return points;
 	}
-
+	
 	/**
 	 * (Provided this method is not overridden) Finds the largest index, from a set
 	 * of data points, who's getTime() method is <= time.
 	 * 
 	 * @param <V>
-	 *            The type of data value that the data point holds.
+	 *           The type of data value that the data point holds.
 	 * @param <T>
-	 *            The type of data point that the interpolator is interpolating for.
+	 *           The type of data point that the interpolator is interpolating for.
 	 * @param dataPoints
-	 *            The set of data points that the interpolator is interpolating on
+	 *           The set of data points that the interpolator is interpolating on
 	 * @param oldPreviousIndex
-	 *            The old index that was being used before this method was called
+	 *           The old index that was being used before this method was called
 	 * @param currentLoopNumber
-	 *            The current loop number of the animation
+	 *           The current loop number of the animation
 	 * @param time
-	 *            The time that has elapsed since the start of the animation loop.
+	 *           The time that has elapsed since the start of the animation loop.
 	 * @return The largest index from a set of data points, who's getTime() return
 	 *         value is <= time.
 	 * @see org.vanted.animation.data.TimePoint#getTime()
@@ -96,35 +94,35 @@ public abstract class Looper {
 				break;
 			}
 		}
-
+		
 		return newPreviousIndex;
 	}
-
+	
 	/**
 	 * Specifies what the previousIndex animation should be set to when it starts a
 	 * new loop.
 	 * 
 	 * @param dataPoints
-	 *            The set of data points that the interpolator is interpolating on.
+	 *           The set of data points that the interpolator is interpolating on.
 	 * @param newLoopNumber
-	 *            The animation's new loop number.
+	 *           The animation's new loop number.
 	 * @return The new previousIndex value of the Animation.
 	 */
 	public <V, T extends TimePoint<V>> int getNextLoopPreviousIndex(List<T> dataPoints, int newLoopNumber) {
 		return 0;
 	}
-
+	
 	/**
 	 * Calculates the time since the start of the loop
 	 * 
 	 * @param currentLoopNumber
-	 *            The animation's loop number.
+	 *           The animation's loop number.
 	 * @return The time since the start of the animation's current loop.
 	 */
 	public double getTimeSinceStartOfLoop(int currentLoopNumber, double startTime, double loopDuration, double time) {
 		return (time - startTime) % loopDuration;
 	}
-
+	
 	/**
 	 * This method typically handles how the looper behaves when kthIndex is below
 	 * 0<br>
@@ -132,21 +130,21 @@ public abstract class Looper {
 	 * Eg. For a ForwardLooper, getIndexBeforePreviousIndex(-1, 5, 2, 2) = 4
 	 * 
 	 * @param kthIndex
-	 *            An index that has not had any range handling/limitations performed
-	 *            on it.
+	 *           An index that has not had any range handling/limitations performed
+	 *           on it.
 	 * @param dataPointsSize
-	 *            The number of data points that the Animation class is dealing with
+	 *           The number of data points that the Animation class is dealing with
 	 * @param pointsBefore
-	 *            The number of points the interpolator needs before the
-	 *            previousIndex
+	 *           The number of points the interpolator needs before the
+	 *           previousIndex
 	 * @param pointsAfter
-	 *            The number of points the interpolator needs after the
-	 *            previousIndex
+	 *           The number of points the interpolator needs after the
+	 *           previousIndex
 	 * @return The index of the data point set.
 	 */
 	protected abstract int getIndexBeforePreviousPoint(int kthIndex, int dataPointsSize, int pointsBefore,
 			int pointsAfter);
-
+	
 	/**
 	 * This method typically handles how the looper behaves when kthIndex is equal
 	 * to or above dataPointsSize<br>
@@ -154,21 +152,21 @@ public abstract class Looper {
 	 * Eg. For a ForwardLooper, getIndexBeforePreviousIndex(5, 5, 2, 2) = 0
 	 * 
 	 * @param kthIndex
-	 *            An index that has not had any range handling/limitations performed
-	 *            on it.
+	 *           An index that has not had any range handling/limitations performed
+	 *           on it.
 	 * @param dataPointsSize
-	 *            The number of data points that the Animation class is dealing with
+	 *           The number of data points that the Animation class is dealing with
 	 * @param pointsBefore
-	 *            The number of points the interpolator needs before the
-	 *            previousIndex
+	 *           The number of points the interpolator needs before the
+	 *           previousIndex
 	 * @param pointsAfter
-	 *            The number of points the interpolator needs after the
-	 *            previousIndex
+	 *           The number of points the interpolator needs after the
+	 *           previousIndex
 	 * @return The index of the data point set.
 	 */
 	protected abstract int getIndexAfterPreviousPoint(int kthIndex, int dataPointsSize, int pointsBefore,
 			int pointsAfter);
-
+	
 	/**
 	 * Calculates how far the {@code time} is from the next data point as a
 	 * percentage. <br>
@@ -176,18 +174,18 @@ public abstract class Looper {
 	 * this method will return 0.5 because 6.5-6/7-6 = 0.5
 	 * 
 	 * @param <V>
-	 *            The type of data value that the data point holds.
+	 *           The type of data value that the data point holds.
 	 * @param <T>
-	 *            The type of data point that the interpolator is interpolating for.
+	 *           The type of data point that the interpolator is interpolating for.
 	 * @param time
-	 *            The time has elapsed since the start of the animation.
+	 *           The time has elapsed since the start of the animation.
 	 * @param loopDuration
-	 *            How long each loop takes in milliseconds
+	 *           How long each loop takes in milliseconds
 	 * @param dataPoints
-	 *            All the dataPoints that the interpolator needs to interpolate
-	 *            between
+	 *           All the dataPoints that the interpolator needs to interpolate
+	 *           between
 	 * @param pointsUsed
-	 *            The points being used for the interpolation.
+	 *           The points being used for the interpolation.
 	 * @return A value between 0 and 1.
 	 */
 	public <V, T extends InterpolatableTimePoint<V>> double getNormalizedTime(double time, double loopDuration,

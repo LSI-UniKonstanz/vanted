@@ -60,29 +60,29 @@ import org.jfree.ui.Spacer;
  * dynamically add (random) data by clicking on a button.
  */
 public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener {
-
+	
 	/** The number of subplots. */
 	public static final int SUBPLOT_COUNT = 3;
-
+	
 	/** The datasets. */
 	private TimeSeriesCollection[] datasets;
-
+	
 	/** The most recent value added to series 1. */
 	private double[] lastValue = new double[SUBPLOT_COUNT];
-
+	
 	/**
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public DynamicDataDemo3(final String title) {
-
+		
 		super(title);
-
+		
 		final CombinedDomainXYPlot plot = new CombinedDomainXYPlot(new DateAxis("Time"));
 		this.datasets = new TimeSeriesCollection[SUBPLOT_COUNT];
-
+		
 		for (int i = 0; i < SUBPLOT_COUNT; i++) {
 			this.lastValue[i] = 100.0;
 			final TimeSeries series = new TimeSeries("Random " + i, Millisecond.class);
@@ -95,13 +95,13 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 			subplot.setRangeGridlinePaint(Color.white);
 			plot.add(subplot);
 		}
-
+		
 		final JFreeChart chart = new JFreeChart("Dynamic Data Demo 3", plot);
 		chart.getLegend().setAnchor(Legend.EAST);
 		chart.setBorderPaint(Color.black);
 		chart.setBorderVisible(true);
 		chart.setBackgroundPaint(Color.white);
-
+		
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
@@ -109,14 +109,14 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 		final ValueAxis axis = plot.getDomainAxis();
 		axis.setAutoRange(true);
 		axis.setFixedAutoRange(60000.0); // 60 seconds
-
+		
 		final JPanel content = new JPanel(new BorderLayout());
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		content.add(chartPanel);
-
+		
 		final JPanel buttonPanel = new JPanel(new FlowLayout());
-
+		
 		for (int i = 0; i < SUBPLOT_COUNT; i++) {
 			final JButton button = new JButton("Series " + i);
 			button.setActionCommand("ADD_DATA_" + i);
@@ -127,14 +127,14 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 		buttonAll.setActionCommand("ADD_ALL");
 		buttonAll.addActionListener(this);
 		buttonPanel.add(buttonAll);
-
+		
 		content.add(buttonPanel, BorderLayout.SOUTH);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 470));
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		setContentPane(content);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -145,15 +145,15 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Handles a click on the button by adding new (random) data.
 	 * 
 	 * @param e
-	 *            the action event.
+	 *           the action event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
-
+		
 		for (int i = 0; i < SUBPLOT_COUNT; i++) {
 			if (e.getActionCommand().endsWith(String.valueOf(i))) {
 				final Millisecond now = new Millisecond();
@@ -162,7 +162,7 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 				this.datasets[i].getSeries(0).add(new Millisecond(), this.lastValue[i]);
 			}
 		}
-
+		
 		if (e.getActionCommand().equals("ADD_ALL")) {
 			final Millisecond now = new Millisecond();
 			System.out.println("Now = " + now.toString());
@@ -171,22 +171,22 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 				this.datasets[i].getSeries(0).add(new Millisecond(), this.lastValue[i]);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final DynamicDataDemo3 demo = new DynamicDataDemo3("Dynamic Data Demo 3");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

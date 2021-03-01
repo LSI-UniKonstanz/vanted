@@ -16,20 +16,20 @@ import org.Vector2d;
  * @author Tobias Czauderna
  */
 public class PaperShapeBottomLeft extends PaperShape {
-
+	
 	double calloutPosX = 0.25; // relative position from bottom-left corner
-
+	
 	public PaperShapeBottomLeft() {
-
+		
 		this.ignorePoints = new HashSet<>();
 		this.ignorePoints.add(Integer.valueOf(3));
 		this.ignorePoints.add(Integer.valueOf(4));
-
+		
 	}
-
+	
 	@Override
 	protected Collection<Vector2d> getRelativePointPositions() {
-
+		
 		// paper shape with callout bottom-left
 		double off = this.roundingRadius;
 		Collection<Vector2d> points = new ArrayList<>();
@@ -46,7 +46,7 @@ public class PaperShapeBottomLeft extends PaperShape {
 		points.add(new Vector2d(0, 1 - this.offsetBottom)); // 10
 		points.add(new Vector2d(0, 0)); // 11
 		return points;
-
+		
 	}
-
+	
 }

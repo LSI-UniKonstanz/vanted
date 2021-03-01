@@ -32,13 +32,13 @@ import org.graffiti.selection.SelectionModel;
  */
 public class EditorSession extends Session implements ActionListener {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * The map between new and old graph elements for proper undoing of their
 	 * deleting
 	 */
 	private Map<GraphElement, GraphElement> graphElementsMap;
-
+	
 	/**
 	 * The selectionModel in this session.
 	 * 
@@ -46,51 +46,51 @@ public class EditorSession extends Session implements ActionListener {
 	 * @clientCardinality 1
 	 */
 	private SelectionModel selectionModel;
-
+	
 	/** The undoManager for this session. */
 	private UndoManager um;
-
+	
 	/**
 	 * The &quot;closing&quot; state of this session. <code>true</code>, if this
 	 * session is currently closing.
 	 */
 	private boolean closing = false;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>EditorSession</code> with an empty graph instance.
 	 */
 	public EditorSession() {
 		this(new AdjListGraph());
-
+		
 		// this.selectionModel = new SelectionModel();
 	}
-
+	
 	/**
 	 * Constructs a new <code>EditorSession</code>.
 	 * 
 	 * @param graph
-	 *            the <code>Graph</code> object for this session.
+	 *           the <code>Graph</code> object for this session.
 	 */
 	public EditorSession(Graph graph) {
 		super(graph);
 		um = new UndoManager();
 		um.setLimit(20);
 		graphElementsMap = new HashMap<GraphElement, GraphElement>();
-
+		
 		// this.selectionModel = new SelectionModel();
 		// this.selectionModel.add(new Selection(ACTIVE));
 		// this.selectionModel.setActiveSelection(ACTIVE);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the closing state of this session. This may only be done once.
 	 * 
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void setClosing() {
 		if (closing) {
@@ -99,7 +99,7 @@ public class EditorSession extends Session implements ActionListener {
 			closing = true;
 		}
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if the session is currently closing.
 	 * 
@@ -108,17 +108,17 @@ public class EditorSession extends Session implements ActionListener {
 	public boolean isClosing() {
 		return closing;
 	}
-
+	
 	/**
 	 * Sets the fileName.
 	 * 
 	 * @param fileName
-	 *            The fileName to set
+	 *           The fileName to set
 	 */
 	public void setFileName(String fileName) {
 		graph.setName(fileName);
 	}
-
+	
 	/**
 	 * Returns the full fileName including path of this session's graph.
 	 * 
@@ -127,7 +127,7 @@ public class EditorSession extends Session implements ActionListener {
 	public String getFileNameFull() {
 		return graph.getName(true);
 	}
-
+	
 	/**
 	 * Get just the file name excluding the path
 	 * 
@@ -136,7 +136,7 @@ public class EditorSession extends Session implements ActionListener {
 	public String getFileName() {
 		return graph.getName(false);
 	}
-
+	
 	/**
 	 * Returns the graphElementMap.
 	 * 
@@ -145,17 +145,17 @@ public class EditorSession extends Session implements ActionListener {
 	public Map<GraphElement, GraphElement> getGraphElementsMap() {
 		return graphElementsMap;
 	}
-
+	
 	/**
 	 * Sets the selectionModel.
 	 * 
 	 * @param selectionModel
-	 *            The selectionModel to set
+	 *           The selectionModel to set
 	 */
 	public void setSelectionModel(SelectionModel selectionModel) {
 		this.selectionModel = selectionModel;
 	}
-
+	
 	/**
 	 * Returns the selectionModel.
 	 * 
@@ -164,7 +164,7 @@ public class EditorSession extends Session implements ActionListener {
 	public SelectionModel getSelectionModel() {
 		return this.selectionModel;
 	}
-
+	
 	/**
 	 * Returns the undoManager for this session.
 	 * 
@@ -173,17 +173,17 @@ public class EditorSession extends Session implements ActionListener {
 	public UndoManager getUndoManager() {
 		return um;
 	}
-
+	
 	/**
 	 * Registrates the selected <code>Tool</code> as an
 	 * <code>MouseInputListener</code> at the view.
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 	}
-
+	
 	public String getWorkSessionFilePath() {
 		String path = getFileNameFull();
 		if (!new File(path).exists())
@@ -191,7 +191,7 @@ public class EditorSession extends Session implements ActionListener {
 		else
 			return new File(path).getParent() + "/";
 	}
-
+	
 	public boolean isSaved() {
 		try {
 			return new File(getFileNameFull()).exists();
@@ -199,7 +199,7 @@ public class EditorSession extends Session implements ActionListener {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Sets a file type description which can be used to choose an appropriate
 	 * output serializer independent of the file extension.
@@ -207,11 +207,11 @@ public class EditorSession extends Session implements ActionListener {
 	 * @param fileTypeDescription
 	 */
 	public void setFileTypeDescription(String fileTypeDescription) {
-
+		
 		this.graph.setFileTypeDescription(fileTypeDescription);
-
+		
 	}
-
+	
 	/**
 	 * Returns a file type description which can be used to choose an appropriate
 	 * output serializer independent of the file extension.
@@ -219,11 +219,11 @@ public class EditorSession extends Session implements ActionListener {
 	 * @return a file type description
 	 */
 	public String getFileTypeDescription() {
-
+		
 		return this.graph.getFileTypeDescription();
-
+		
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

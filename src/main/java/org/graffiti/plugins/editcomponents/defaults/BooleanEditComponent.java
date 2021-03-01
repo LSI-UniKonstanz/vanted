@@ -40,26 +40,26 @@ import org.graffiti.plugin.parameter.BooleanParameter;
  */
 public class BooleanEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-
+	
 	/** DOCUMENT ME! */
 	private Icon defaultIcon;
-
+	
 	/** DOCUMENT ME! */
 	private Icon defaultSelectedIcon;
-
+	
 	/** DOCUMENT ME! */
 	private Icon emptyIcon;
-
+	
 	/** The gui element of this component. */
 	private JCheckBox checkBox;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new boolean edit component, referencing the given displayable.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public BooleanEditComponent(final Displayable disp) {
 		super(disp);
@@ -67,32 +67,32 @@ public class BooleanEditComponent extends AbstractValueEditComponent {
 		if (disp instanceof BooleanParameter && ((BooleanParameter) disp).isLeftAligned()) {
 			checkBox.setText(((BooleanParameter) disp).getName());
 		}
-
+		
 		checkBox.putClientProperty("displayable", disp);
-
+		
 		checkBox.setOpaque(false);
 		// this.checkBox.setAlignmentX(0.5f);
-
+		
 		// iBundle = org.graffiti.core.ImageBundle.getInstance();
 		// defaultIcon = new ImageIcon(iBundle.getImage("bool.notselected"));
 		// emptyIcon = new ImageIcon(iBundle.getImage("bool.half.notselected"));
 		// defaultSelectedIcon = new ImageIcon(iBundle.getImage("bool.selected"));
-
+		
 		// checkBox.setPressedIcon(emptyIcon);
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				checkDependentParameters(disp);
 			}
 		});
-
+		
 		checkBox.addActionListener(new AbstractAction() {
-
+			
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 389822861498768833L;
-
+			
 			public void actionPerformed(ActionEvent e) {
 				if (showEmpty) {
 					showEmpty = false;
@@ -102,9 +102,9 @@ public class BooleanEditComponent extends AbstractValueEditComponent {
 			}
 		});
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the <code>JComponent</code> for editing this edit component.
 	 * 
@@ -117,16 +117,16 @@ public class BooleanEditComponent extends AbstractValueEditComponent {
 				public void mouseClicked(MouseEvent e) {
 					checkBox.setSelected(!checkBox.isSelected());
 				}
-
+				
 				public void mousePressed(MouseEvent e) {
 				}
-
+				
 				public void mouseReleased(MouseEvent e) {
 				}
-
+				
 				public void mouseEntered(MouseEvent e) {
 				}
-
+				
 				public void mouseExited(MouseEvent e) {
 				}
 			});
@@ -140,7 +140,7 @@ public class BooleanEditComponent extends AbstractValueEditComponent {
 		} else
 			return checkBox;
 	}
-
+	
 	/**
 	 * Sets the current value of the <code>Attribute</code> in the corresponding
 	 * <code>JComponent</code>.
@@ -153,17 +153,17 @@ public class BooleanEditComponent extends AbstractValueEditComponent {
 		// checkBox.setSelectedIcon(defaultSelectedIcon);
 		// checkBox.setIcon(defaultIcon);
 		// }
-
+		
 		checkBox.setSelected(((Boolean) this.displayable.getValue()).booleanValue());
 	}
-
+	
 	/**
 	 * Sets the value of the displayable specified in the <code>JComponent</code>.
 	 * But only if it is different.
 	 */
 	public void setValue() {
 		boolean bb = false;
-
+		
 		if (this.displayable != null) {
 			if (!(this.displayable.getValue() instanceof Boolean)) {
 				bb = Boolean.valueOf((String) this.displayable.getValue());
@@ -173,7 +173,7 @@ public class BooleanEditComponent extends AbstractValueEditComponent {
 		}
 		if (!(bb == this.checkBox.isSelected())) {
 			displayable.setValue(Boolean.valueOf(checkBox.isSelected()));
-
+			
 			// check if this edit component is about to edit the graph attribute directed,
 			// if so, update graph
 			if (displayable != null && displayable instanceof BooleanAttribute
@@ -186,7 +186,7 @@ public class BooleanEditComponent extends AbstractValueEditComponent {
 			}
 		}
 	}
-
+	
 	private void checkDependentParameters(final Displayable disp) {
 		if (disp instanceof BooleanParameter) {
 			BooleanParameter bp = (BooleanParameter) disp;

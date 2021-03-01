@@ -39,7 +39,7 @@ package org.graffiti.attributes;
  */
 public interface AttributeConsumer {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the attribute, which should be available in a edge object. May return
 	 * <code>null</code>.
@@ -47,7 +47,7 @@ public interface AttributeConsumer {
 	 * @return DOCUMENT ME!
 	 */
 	CollectionAttribute getEdgeAttribute();
-
+	
 	/**
 	 * Returns the attribute, which should be available in a graph object. May
 	 * return <code>null</code>.
@@ -55,7 +55,7 @@ public interface AttributeConsumer {
 	 * @return DOCUMENT ME!
 	 */
 	CollectionAttribute getGraphAttribute();
-
+	
 	/**
 	 * Returns the attribute, which should be available in a node object. May return
 	 * <code>null</code>.

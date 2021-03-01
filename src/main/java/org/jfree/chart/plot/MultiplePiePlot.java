@@ -60,33 +60,33 @@ import org.jfree.util.TableOrder;
  * {@link CategoryDataset}.
  */
 public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
-
+	
 	/** The chart object that draws the individual pie charts. */
 	private JFreeChart pieChart;
-
+	
 	/** The dataset. */
 	private CategoryDataset dataset;
-
+	
 	/** The data extract order (by row or by column). */
 	private TableOrder dataExtractOrder;
-
+	
 	/** The pie section limit percentage. */
 	private double limit = 0.0;
-
+	
 	private boolean useSizeScaling = false;
-
+	
 	/**
 	 * Creates a new plot with no data.
 	 */
 	public MultiplePiePlot() {
 		this(null);
 	}
-
+	
 	/**
 	 * Creates a new plot.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 */
 	public MultiplePiePlot(CategoryDataset dataset) {
 		super();
@@ -99,7 +99,7 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 		seriesTitle.setPosition(RectangleEdge.BOTTOM);
 		this.pieChart.setTitle(seriesTitle);
 	}
-
+	
 	/**
 	 * Returns the pie chart that is used to draw the individual pie plots.
 	 * 
@@ -108,18 +108,18 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	public JFreeChart getPieChart() {
 		return this.pieChart;
 	}
-
+	
 	/**
 	 * Sets the chart that is used to draw the individual pie plots.
 	 * 
 	 * @param pieChart
-	 *            the pie chart.
+	 *           the pie chart.
 	 */
 	public void setPieChart(JFreeChart pieChart) {
 		this.pieChart = pieChart;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the data extract order (by row or by column).
 	 * 
@@ -128,13 +128,13 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	public TableOrder getDataExtractOrder() {
 		return this.dataExtractOrder;
 	}
-
+	
 	/**
 	 * Sets the data extract order (by row or by column) and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param order
-	 *            the order (<code>null</code> not permitted).
+	 *           the order (<code>null</code> not permitted).
 	 */
 	public void setDataExtractOrder(TableOrder order) {
 		if (order == null) {
@@ -143,7 +143,7 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 		this.dataExtractOrder = order;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the limit (as a percentage) below which small pie sections are
 	 * aggregated.
@@ -153,19 +153,19 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	public double getLimit() {
 		return this.limit;
 	}
-
+	
 	/**
 	 * Sets the limit below which pie sections are aggregated. Set this to 0.0 if
 	 * you don't want any aggregation to occur.
 	 * 
 	 * @param limit
-	 *            the limit percent.
+	 *           the limit percent.
 	 */
 	public void setLimit(double limit) {
 		this.limit = limit;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns a short string describing the type of plot.
 	 * 
@@ -174,26 +174,26 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	public String getPlotType() {
 		return "Multiple Pie Plot"; // need to fetch this from localised resources
 	}
-
+	
 	public void setSumScale(boolean useSizeScaling) {
 		this.useSizeScaling = useSizeScaling;
 	}
-
+	
 	/**
 	 * Draws the plot on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the area within which the plot should be drawn.
+	 *           the area within which the plot should be drawn.
 	 * @param parentState
-	 *            the state from the parent plot, if there is one.
+	 *           the state from the parent plot, if there is one.
 	 * @param info
-	 *            collects info about the drawing.
+	 *           collects info about the drawing.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState, PlotRenderingInfo info) {
-
+		
 		// adjust the drawing area for the plot insets (if any)...
 		Insets insets = getInsets();
 		if (insets != null) {
@@ -203,31 +203,31 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 		}
 		drawBackground(g2, plotArea);
 		drawOutline(g2, plotArea);
-
+		
 		// check that there is some data to display...
 		if (DatasetUtilities.isEmptyOrNull(this.dataset)) {
 			drawNoDataMessage(g2, plotArea);
 			return;
 		}
-
+		
 		int pieCount = 0;
 		if (this.dataExtractOrder == TableOrder.BY_ROW) {
 			pieCount = this.dataset.getRowCount();
 		} else {
 			pieCount = this.dataset.getColumnCount();
 		}
-
+		
 		// the columns variable is always >= rows
 		int displayCols = (int) Math.ceil(Math.sqrt(pieCount));
 		int displayRows = (int) Math.ceil((double) pieCount / (double) displayCols);
-
+		
 		// swap rows and columns to match plotArea shape
 		if (displayCols > displayRows && plotArea.getWidth() < plotArea.getHeight()) {
 			int temp = displayCols;
 			displayCols = displayRows;
 			displayRows = temp;
 		}
-
+		
 		// int fontHeight = g2.getFontMetrics(this.plotLabelFont).getHeight() * 2;
 		int x = (int) plotArea.getX();
 		int y = (int) plotArea.getY();
@@ -240,9 +240,9 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 		Rectangle rect = new Rectangle();
 		PieDataset[] piedatasetArr = new PieDataset[pieCount];
 		double[] piedatasetSum = new double[pieCount];
-
+		
 		double maxSum = Double.NEGATIVE_INFINITY;
-
+		
 		for (int pieIndex = 0; pieIndex < pieCount; pieIndex++) {
 			PieDataset dd = new CategoryToPieDataset(this.dataset, this.dataExtractOrder, pieIndex);
 			if (this.limit > 0.0) {
@@ -273,7 +273,7 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 			rect.setBounds(x + xoffset + (width * column) + (int) (0.5d * width * (1d - scale)),
 					y + (height * row) + (int) (0.5d * height * (1d - scale)), (int) (width * scale),
 					(int) (height * scale));
-
+			
 			String title = null;
 			if (this.dataExtractOrder == TableOrder.BY_ROW) {
 				title = this.dataset.getRowKey(pieIndex).toString();
@@ -284,7 +284,7 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 				this.pieChart.setTitle((String) null);
 			else
 				this.pieChart.setTitle(title);
-
+			
 			PieDataset piedataset = piedatasetArr[pieIndex];
 			PiePlot piePlot = (PiePlot) this.pieChart.getPlot();
 			piePlot.setDataset(piedataset);
@@ -298,38 +298,38 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 				info.getOwner().getEntityCollection().addEntities(subinfo.getEntityCollection());
 				info.addSubplotInfo(subinfo.getPlotInfo());
 			}
-
+			
 			++column;
 			if (column == displayCols) {
 				column = 0;
 				++row;
-
+				
 				if (row == displayRows - 1 && diff != 0) {
 					xoffset = (diff * width) / 2;
 				}
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a collection of legend items for the pie chart.
 	 * 
 	 * @return the legend items.
 	 */
 	public LegendItemCollection getLegendItems() {
-
+		
 		LegendItemCollection result = new LegendItemCollection();
-
+		
 		if (this.dataset != null) {
 			List keys = null;
-
+			
 			if (this.dataExtractOrder == TableOrder.BY_ROW) {
 				keys = this.dataset.getColumnKeys();
 			} else if (this.dataExtractOrder == TableOrder.BY_COLUMN) {
 				keys = this.dataset.getRowKeys();
 			}
-
+			
 			if (keys != null) {
 				int section = 0;
 				Iterator iterator = keys.iterator();
@@ -341,10 +341,10 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 					Paint paint = plot.getSectionPaint(section);
 					Paint outlinePaint = plot.getSectionOutlinePaint(section);
 					Stroke stroke = plot.getSectionOutlineStroke(section);
-
+					
 					LegendItem item = new LegendItem(label, description, shape, true, paint, stroke, outlinePaint,
 							stroke);
-
+					
 					result.add(item);
 					section++;
 				}
@@ -352,5 +352,5 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 		}
 		return result;
 	}
-
+	
 }

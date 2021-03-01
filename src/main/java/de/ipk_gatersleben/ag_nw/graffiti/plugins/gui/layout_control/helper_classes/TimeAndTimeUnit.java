@@ -7,21 +7,21 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes;
 
 public class TimeAndTimeUnit {
-
+	
 	private String time;
 	private String timeAndUnit;
 	private String unit;
-
+	
 	public TimeAndTimeUnit(String time, String unit) {
 		this.time = time;
 		this.unit = unit;
 		this.timeAndUnit = unit + " " + time;
 	}
-
+	
 	public Double getTime() {
 		return Double.parseDouble(time);
 	}
-
+	
 	@Override
 	public String toString() {
 		if (timeAndUnit.equals("-1 -1"))
@@ -29,7 +29,7 @@ public class TimeAndTimeUnit {
 		else
 			return timeAndUnit;
 	}
-
+	
 	public String getTimeUnit() {
 		return unit;
 	}

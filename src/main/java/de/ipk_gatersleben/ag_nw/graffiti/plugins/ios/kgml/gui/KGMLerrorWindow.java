@@ -41,24 +41,24 @@ public class KGMLerrorWindow extends JDialog {
 	private Collection<Gml2PathwayErrorInformation> errors;
 	private FolderPanel panelWarning;
 	private FolderPanel panelError;
-
+	
 	public KGMLerrorWindow(Collection<Gml2PathwayWarningInformation> warnings,
 			Collection<Gml2PathwayErrorInformation> errors) {
 		super(MainFrame.getInstance());
 		this.warnings = warnings;
 		this.errors = errors;
 	}
-
+	
 	@Override
 	protected void dialogInit() {
 		super.dialogInit();
-
+		
 		setResizable(false);
-
+		
 		setTitle("KGML Conversion Errors / Warnings");
 		setLayout(TableLayout.getLayout(TableLayoutConstants.PREFERRED, new double[] { TableLayoutConstants.PREFERRED,
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED }));
-
+		
 		panelWarning = createFolderPaneWarnings(true);
 		panelError = createFolderPaneErrors(true);
 		updatePanels(panelWarning, panelError, warnings, errors);
@@ -74,7 +74,7 @@ public class KGMLerrorWindow extends JDialog {
 			}
 		});
 	}
-
+	
 	private Component getButtonCmdPane() {
 		JButton updateB = new JButton("Refresh");
 		updateB.addActionListener(new ActionListener() {
@@ -92,7 +92,7 @@ public class KGMLerrorWindow extends JDialog {
 				}
 			}
 		});
-
+		
 		JButton okB = new JButton("Close");
 		okB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -105,7 +105,7 @@ public class KGMLerrorWindow extends JDialog {
 		return TableLayout.get3Split(okB, null, updateB, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED);
 	}
-
+	
 	public static void updatePanels(FolderPanel panelWarning, FolderPanel panelError,
 			Collection<Gml2PathwayWarningInformation> warnings, Collection<Gml2PathwayErrorInformation> errors) {
 		panelWarning.clearGuiComponentList();
@@ -123,7 +123,7 @@ public class KGMLerrorWindow extends JDialog {
 			}
 		}
 		panelWarning.layoutRows();
-
+		
 		panelError.clearGuiComponentList();
 		if (errors == null || errors.size() <= 0) {
 			panelError.addGuiComponentRow(new JLabel(""), new JLabel("No Errors"), false);
@@ -140,7 +140,7 @@ public class KGMLerrorWindow extends JDialog {
 		}
 		panelError.layoutRows();
 	}
-
+	
 	public static FolderPanel createFolderPaneWarnings(boolean usedInDialog) {
 		FolderPanel result = new FolderPanel("Warnings", true, true, false, null);
 		if (usedInDialog)
@@ -150,7 +150,7 @@ public class KGMLerrorWindow extends JDialog {
 		result.layoutRows();
 		return result;
 	}
-
+	
 	public static FolderPanel createFolderPaneErrors(boolean usedInDialog) {
 		FolderPanel result = new FolderPanel("Errors", true, true, false, null);
 		if (usedInDialog)

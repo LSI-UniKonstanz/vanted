@@ -29,7 +29,7 @@ import java.awt.event.WindowListener;
  * </CODE>
  */
 public class MessageBox extends Dialog implements ActionListener, WindowListener {
-
+	
 	/**
 	 * 
 	 */
@@ -38,16 +38,16 @@ public class MessageBox extends Dialog implements ActionListener, WindowListener
 	Button cancel;
 	TextField inp;
 	String current;
-
+	
 	/**
 	 * @param f
-	 *            The parent frame.
+	 *           The parent frame.
 	 * @param title
-	 *            The dialog title
+	 *           The dialog title
 	 * @param prompt
-	 *            The text before the input field.
+	 *           The text before the input field.
 	 * @param default
-	 *            The default text.
+	 *           The default text.
 	 */
 	public MessageBox(Frame f, String title, String prompt, String defaultS) {
 		super(f, title, true);
@@ -58,7 +58,7 @@ public class MessageBox extends Dialog implements ActionListener, WindowListener
 		 */
 		Panel tPan = new Panel();
 		inp = new TextField(current, 20);
-
+		
 		tPan.add(new Label(prompt));
 		tPan.add(inp);
 		/*
@@ -82,14 +82,14 @@ public class MessageBox extends Dialog implements ActionListener, WindowListener
 		addWindowListener(this);
 		pack();
 	}
-
+	
 	/**
 	 * @returns The user input, or null if the user pressed cancel.
 	 */
 	public String getText() {
 		return current;
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == ok) {
 			current = inp.getText();
@@ -101,28 +101,28 @@ public class MessageBox extends Dialog implements ActionListener, WindowListener
 			dispose();
 		}
 	}
-
+	
 	public void windowOpened(WindowEvent e) {
 	}
-
+	
 	public void windowClosing(WindowEvent e) {
 		current = null;
 		setVisible(false);
 		dispose();
 	}
-
+	
 	public void windowClosed(WindowEvent e) {
 	}
-
+	
 	public void windowIconified(WindowEvent e) {
 	}
-
+	
 	public void windowDeiconified(WindowEvent e) {
 	}
-
+	
 	public void windowActivated(WindowEvent e) {
 	}
-
+	
 	public void windowDeactivated(WindowEvent e) {
 	}
 }

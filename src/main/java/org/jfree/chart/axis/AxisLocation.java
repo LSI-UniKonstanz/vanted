@@ -40,32 +40,32 @@ import java.io.Serializable;
  * orientation of the plot.
  */
 public final class AxisLocation implements Serializable {
-
+	
 	/** Axis at the top or left. */
 	public static final AxisLocation TOP_OR_LEFT = new AxisLocation("AxisLocation.TOP_OR_LEFT");
-
+	
 	/** Axis at the top or right. */
 	public static final AxisLocation TOP_OR_RIGHT = new AxisLocation("AxisLocation.TOP_OR_RIGHT");
-
+	
 	/** Axis at the bottom or left. */
 	public static final AxisLocation BOTTOM_OR_LEFT = new AxisLocation("AxisLocation.BOTTOM_OR_LEFT");
-
+	
 	/** Axis at the bottom or right. */
 	public static final AxisLocation BOTTOM_OR_RIGHT = new AxisLocation("AxisLocation.BOTTOM_OR_RIGHT");
-
+	
 	/** The name. */
 	private String name;
-
+	
 	/**
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *            the name.
+	 *           the name.
 	 */
 	private AxisLocation(String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * Returns a string representing the object.
 	 * 
@@ -74,38 +74,38 @@ public final class AxisLocation implements Serializable {
 	public String toString() {
 		return this.name;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if this object is equal to the specified object,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param obj
-	 *            the other object (<code>null</code> permitted).
+	 *           the other object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (this == obj) {
 			return true;
 		}
 		if (!(obj instanceof AxisLocation)) {
 			return false;
 		}
-
+		
 		final AxisLocation location = (AxisLocation) obj;
 		if (!this.name.equals(location.toString())) {
 			return false;
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Returns the location that is opposite to the supplied location.
 	 * 
 	 * @param location
-	 *            the location (<code>null</code> not permitted).
+	 *           the location (<code>null</code> not permitted).
 	 * @return The opposite location.
 	 */
 	public static AxisLocation getOpposite(AxisLocation location) {
@@ -126,13 +126,13 @@ public final class AxisLocation implements Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Ensures that serialization returns the unique instances.
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *             if there is a problem.
+	 *            if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(AxisLocation.TOP_OR_RIGHT)) {
@@ -146,5 +146,5 @@ public final class AxisLocation implements Serializable {
 		}
 		return null;
 	}
-
+	
 }

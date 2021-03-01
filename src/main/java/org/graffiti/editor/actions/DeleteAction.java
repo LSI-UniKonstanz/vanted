@@ -26,24 +26,24 @@ import org.graffiti.undo.GraphElementsDeletionEdit;
  */
 public class DeleteAction extends SelectionAction {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2527327965710575605L;
-
+	
 	/**
 	 * Constructs a new copy action.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public DeleteAction(MainFrame mainFrame) {
 		super("edit.delete", mainFrame);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the help context for the action.
 	 * 
@@ -53,12 +53,12 @@ public class DeleteAction extends SelectionAction {
 	public HelpContext getHelpContext() {
 		return null; // TODO
 	}
-
+	
 	/**
 	 * Executes this action.
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		Selection selection = getSelection();
@@ -71,20 +71,20 @@ public class DeleteAction extends SelectionAction {
 			MainFrame.getInstance().getUndoSupport().postEdit(edit);
 		}
 	}
-
+	
 	@Override
 	public boolean isEnabled() {
 		boolean result = getSelectedItems().size() > 0;
 		return result;
 	}
-
+	
 	/**
 	 * Sets the internal <code>enable</code> flag, which depends on the given list
 	 * of selected items.
 	 * 
 	 * @param items
-	 *            the items, which determine the internal state of the
-	 *            <code>enable</code> flag.
+	 *           the items, which determine the internal state of the
+	 *           <code>enable</code> flag.
 	 */
 	@Override
 	protected void enable(List<?> items) {

@@ -21,23 +21,23 @@ import org.graffiti.plugin.Displayable;
  */
 public class TextAreaEditComponent extends StringEditComponent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for TextAreaEditComponent.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public TextAreaEditComponent(Displayable disp) {
 		super(disp);
 		this.textComp = new JTextArea();
 	}
-
+	
 	/**
 	 * Constructor for TextAreaEditComponent.
 	 * 
 	 * @param attr
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public TextAreaEditComponent(StringAttribute attr) {
 		super(attr);

@@ -12,9 +12,8 @@ import org.graffiti.plugin.io.resources.IOurl;
 import org.vanted.updater.HttpHttpsURL;
 
 public class WebDirectoryFileListAccess {
-
+	
 	/**
-	 * 
 	 * @return
 	 * @throws IOException
 	 * @vanted.revision 2.7.0
@@ -41,10 +40,10 @@ public class WebDirectoryFileListAccess {
 			result.add(new PathwayWebLinkItem(fileName, new IOurl(pref + fileName)));
 		}
 		in.close();
-
+		
 		return result;
 	}
-
+	
 	/**
 	 * @param webAddress
 	 * @param validExtensions
@@ -59,7 +58,7 @@ public class WebDirectoryFileListAccess {
 		String address = webAddress;
 		HttpURLConnection connection = null;
 		BufferedReader in = null;
-		try {		
+		try {
 			// Create a URL for the desired page
 			HttpHttpsURL url = new HttpHttpsURL(address);
 			connection = url.openConnection();
@@ -94,7 +93,7 @@ public class WebDirectoryFileListAccess {
 			if (connection != null)
 				connection.disconnect();
 		}
-
+		
 		return result;
 	}
 }

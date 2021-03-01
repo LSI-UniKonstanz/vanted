@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 public class CompositeIcon implements Icon, SwingConstants {
 	Icon fIcon1, fIcon2;
 	int fPosition, fHorizontalOrientation, fVerticalOrientation;
-
+	
 	/**
 	 * Create a CompositeIcon from the specified Icons, using the default relative
 	 * position (icon1 above icon2) and orientations (centered horizontally and
@@ -30,7 +30,7 @@ public class CompositeIcon implements Icon, SwingConstants {
 	public CompositeIcon(Icon icon1, Icon icon2) {
 		this(icon1, icon2, TOP);
 	}
-
+	
 	/**
 	 * Create a CompositeIcon from the specified Icons, using the specified relative
 	 * position and default orientations (centered horizontally and vertically)
@@ -38,7 +38,7 @@ public class CompositeIcon implements Icon, SwingConstants {
 	public CompositeIcon(Icon icon1, Icon icon2, int position) {
 		this(icon1, icon2, position, CENTER, CENTER);
 	}
-
+	
 	/**
 	 * Create a CompositeIcon from the specified Icons, using the specified relative
 	 * position and orientations
@@ -50,7 +50,7 @@ public class CompositeIcon implements Icon, SwingConstants {
 		fHorizontalOrientation = horizontalOrientation;
 		fVerticalOrientation = verticalOrientation;
 	}
-
+	
 	/**
 	 * Draw the icon at the specified location. Icon implementations may use the
 	 * Component argument to get properties useful for painting, e.g. the foreground
@@ -88,39 +88,39 @@ public class CompositeIcon implements Icon, SwingConstants {
 			paintIcon(c, g, fIcon2, x, y, width, height, fHorizontalOrientation, fVerticalOrientation);
 		}
 	}
-
+	
 	/*
 	 * Paints one icon in the specified rectangle with the given orientations
 	 */
 	void paintIcon(Component c, Graphics g, Icon icon, int x, int y, int width, int height, int horizontalOrientation,
 			int verticalOrientation) {
-
+		
 		int xIcon, yIcon;
 		switch (horizontalOrientation) {
-		case LEFT:
-			xIcon = x;
-			break;
-		case RIGHT:
-			xIcon = x + width - icon.getIconWidth();
-			break;
-		default:
-			xIcon = x + (width - icon.getIconWidth()) / 2;
-			break;
+			case LEFT:
+				xIcon = x;
+				break;
+			case RIGHT:
+				xIcon = x + width - icon.getIconWidth();
+				break;
+			default:
+				xIcon = x + (width - icon.getIconWidth()) / 2;
+				break;
 		}
 		switch (verticalOrientation) {
-		case TOP:
-			yIcon = y;
-			break;
-		case BOTTOM:
-			yIcon = y + height - icon.getIconHeight();
-			break;
-		default:
-			yIcon = y + (height - icon.getIconHeight()) / 2;
-			break;
+			case TOP:
+				yIcon = y;
+				break;
+			case BOTTOM:
+				yIcon = y + height - icon.getIconHeight();
+				break;
+			default:
+				yIcon = y + (height - icon.getIconHeight()) / 2;
+				break;
 		}
 		icon.paintIcon(c, g, xIcon, yIcon);
 	}
-
+	
 	/**
 	 * Returns the icon's width.
 	 * 
@@ -129,10 +129,10 @@ public class CompositeIcon implements Icon, SwingConstants {
 	public int getIconWidth() {
 		if (fPosition == LEFT || fPosition == RIGHT)
 			return fIcon1.getIconWidth() + fIcon2.getIconWidth();
-
+		
 		return Math.max(fIcon1.getIconWidth(), fIcon2.getIconWidth());
 	}
-
+	
 	/**
 	 * Returns the icon's height.
 	 * 
@@ -141,8 +141,8 @@ public class CompositeIcon implements Icon, SwingConstants {
 	public int getIconHeight() {
 		if (fPosition == TOP || fPosition == BOTTOM)
 			return fIcon1.getIconHeight() + fIcon2.getIconHeight();
-
+		
 		return Math.max(fIcon1.getIconHeight(), fIcon2.getIconHeight());
 	}
-
+	
 }

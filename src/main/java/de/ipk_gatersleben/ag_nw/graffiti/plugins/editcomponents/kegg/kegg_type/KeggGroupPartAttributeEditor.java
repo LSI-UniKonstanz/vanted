@@ -38,11 +38,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent implements ActionListener {
 	protected JComboBox<String> keggIsPartSelection = new JComboBox<>();
 	protected JButton selectOfThisType = new JButton("Select");
-
+	
 	protected final String isPartOfGroup = "<html>is part of a group<br>"
 			+ "<small><font color='gray'>(move element inside corresponding group element)";
 	protected final String isNotPartOfGroup = "<html>is not part of a group";
-
+	
 	public KeggGroupPartAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggGroupPartAttribute) getDisplayable()).getString();
@@ -59,13 +59,13 @@ public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent imp
 		keggIsPartSelection.setPreferredSize(new Dimension(40, defHeight));
 		keggIsPartSelection.setMinimumSize(new Dimension(40, defHeight));
 	}
-
+	
 	@Override
 	public JComponent getComponent() {
 		return TableLayout.getSplit(keggIsPartSelection, selectOfThisType, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED);
 	}
-
+	
 	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
@@ -82,7 +82,7 @@ public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent imp
 				keggIsPartSelection.setSelectedItem(isNotPartOfGroup);
 		}
 	}
-
+	
 	@Override
 	public void setValue() {
 		if (!keggIsPartSelection.getSelectedItem().equals(EMPTY_STRING)) {
@@ -93,7 +93,7 @@ public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent imp
 				((KeggGroupPartAttribute) displayable).setString("no");
 		}
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		String currentSel = (String) keggIsPartSelection.getSelectedItem();
@@ -128,7 +128,7 @@ public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent imp
 				nodes.add(n);
 		}
 		selection.addAll(nodes);
-
+		
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(nodes.size() + " nodes match criteria", MessageType.INFO);
 	}

@@ -43,17 +43,17 @@ import org.graffiti.graphics.NodeLabelAttribute;
  * @version Mon Dec 07 12:54:24 CET 2009
  */
 public class parser extends java_cup.runtime.lr_parser {
-
+	
 	/** Default constructor. */
 	public parser() {
 		super();
 	}
-
+	
 	/** Constructor which sets the default scanner. */
 	public parser(java_cup.runtime.Scanner s) {
 		super(s);
 	}
-
+	
 	/** Production table. */
 	protected static final short _production_table[][] = unpackFromStrings(
 			new String[] { "\000\230\000\002\003\005\000\002\002\004\000\002\004"
@@ -103,12 +103,12 @@ public class parser extends java_cup.runtime.lr_parser {
 					+ "\014\005\000\002\014\004\000\002\020\004\000\002\020"
 					+ "\003\000\002\024\006\000\002\024\003\000\002\025\005"
 					+ "\000\002\025\005\000\002\025\005\000\002\025\003" });
-
+	
 	/** Access to production table. */
 	public short[][] production_table() {
 		return _production_table;
 	}
-
+	
 	/** Parse-action table. */
 	protected static final short[][] _action_table = unpackFromStrings(
 			new String[] { "\000\u0197\000\004\004\005\001\002\000\004\002\u0199\001"
@@ -871,12 +871,12 @@ public class parser extends java_cup.runtime.lr_parser {
 					+ "\036\007\uffe9\011\uffe9\012\uffe9\013\uffe9\014\uffe9\015\uffe9"
 					+ "\016\uffe9\017\uffe9\020\uffe9\021\uffe9\022\uffe9\023\uffe9\024"
 					+ "\uffe9\066\uffe9\001\002\000\004\002\000\001\002" });
-
+	
 	/** Access to parse-action table. */
 	public short[][] action_table() {
 		return _action_table;
 	}
-
+	
 	/** <code>reduce_goto</code> table. */
 	protected static final short[][] _reduce_table = unpackFromStrings(
 			new String[] { "\000\u0197\000\004\003\003\001\001\000\002\001\001\000"
@@ -1038,59 +1038,59 @@ public class parser extends java_cup.runtime.lr_parser {
 					+ "\001\001\000\002\001\001\000\010\012\010\013\u0195\017"
 					+ "\u0196\001\001\000\002\001\001\000\002\001\001\000\010"
 					+ "\012\010\013\u0195\017\u0197\001\001\000\002\001\001\000" + "\002\001\001\000\002\001\001" });
-
+	
 	/** Access to <code>reduce_goto</code> table. */
 	public short[][] reduce_table() {
 		return _reduce_table;
 	}
-
+	
 	/** Instance of action encapsulation class. */
 	protected CUP$parser$actions action_obj;
-
+	
 	/** Action encapsulation object initializer. */
 	protected void init_actions() {
 		action_obj = new CUP$parser$actions(this);
 	}
-
+	
 	/** Invoke a user supplied parse action. */
 	public java_cup.runtime.Symbol do_action(int act_num, java_cup.runtime.lr_parser parser, java.util.Stack stack,
 			int top) throws java.lang.Exception {
 		/* call code in generated class */
 		return action_obj.CUP$parser$do_action(act_num, parser, stack, top);
 	}
-
+	
 	/** Indicates start state. */
 	public int start_state() {
 		return 0;
 	}
-
+	
 	/** Indicates start production. */
 	public int start_production() {
 		return 1;
 	}
-
+	
 	/** <code>EOF</code> Symbol index. */
 	public int EOF_sym() {
 		return 0;
 	}
-
+	
 	/** <code>error</code> Symbol index. */
 	public int error_sym() {
 		return 1;
 	}
-
+	
 	/**
 	 * Prints out debug messages if debug is active.
 	 * 
 	 * @param msg
-	 *            the message to be printed.
+	 *           the message to be printed.
 	 */
 	private void debug(String msg) {
 		if (action_obj.debug) {
 			System.out.print(msg);
 		}
 	}
-
+	
 	/**
 	 * Returns the read in graph from the parser.
 	 * 
@@ -1099,17 +1099,17 @@ public class parser extends java_cup.runtime.lr_parser {
 	public Graph getGraph() {
 		return action_obj.getGraph();
 	}
-
+	
 	// for debugging only
 	public NodeGraphicAttribute getNodeStyle() {
 		return action_obj.getNodeStyle();
 	}
-
+	
 	// for debugging only
 	public EdgeGraphicAttribute getEdgeStyle() {
 		return action_obj.getEdgeStyle();
 	}
-
+	
 	// for testing the parser from the command line.
 	public static void main(String args[]) {
 		parser p = new parser(new Yylex(System.in));
@@ -1119,7 +1119,7 @@ public class parser extends java_cup.runtime.lr_parser {
 			p.debug("------------------------------------------\n");
 			p.debug("Graph read in: \n");
 			p.debug("#nodes = " + g.getNumberOfNodes() + ", #edges = " + g.getNumberOfEdges() + "\n");
-
+			
 			int count = 0;
 			for (Iterator itr = g.getNodesIterator(); itr.hasNext();) {
 				Node n = (Node) itr.next();
@@ -1128,7 +1128,7 @@ public class parser extends java_cup.runtime.lr_parser {
 				Map m = n.getAttributes().getCollection();
 				printMap(p, m);
 			}
-
+			
 			count = 0;
 			for (Iterator itr = g.getEdgesIterator(); itr.hasNext();) {
 				Edge e = (Edge) itr.next();
@@ -1140,7 +1140,7 @@ public class parser extends java_cup.runtime.lr_parser {
 			org.ErrorMsg.addErrorMessage(e.getLocalizedMessage());
 		}
 	}
-
+	
 	// required for testing from command line.
 	private static void printMap(parser p, Map m) {
 		String indent = "\t";
@@ -1155,54 +1155,54 @@ public class parser extends java_cup.runtime.lr_parser {
 			}
 		}
 	}
-
+	
 }
 
 /** Cup generated class to encapsulate user supplied action code. */
 class CUP$parser$actions {
-
+	
 	/**
 	 * Indicated whether or not the graph is directed.
 	 */
 	private boolean directed = false;
-
+	
 	/**
 	 * Contains a mapping from id to the corresponding node.
 	 */
 	private HashMap<Integer, Node> nodeMap = new HashMap<Integer, Node>();
-
+	
 	/**
 	 * The graph being read in.
 	 */
 	private Graph g = new OptAdjListGraph();
-
+	
 	/**
 	 * The default node graphic attribute.
 	 */
 	private NodeGraphicAttribute nodeStyle = new NodeGraphicAttribute();
-
+	
 	/**
 	 * The default edge graphic attribute.
 	 */
 	private EdgeGraphicAttribute edgeStyle = new EdgeGraphicAttribute();
-
+	
 	/**
 	 * <code>true</code>, if debug mode is active, <code>false</code> otherwise.
 	 */
 	boolean debug = false;
-
+	
 	/**
 	 * Prints out debug messages if debug is active.
 	 * 
 	 * @param msg
-	 *            the message to be printed.
+	 *           the message to be printed.
 	 */
 	private void debug(String msg) {
 		if (debug) {
 			System.out.print(msg);
 		}
 	}
-
+	
 	/**
 	 * Returns the read in graph.
 	 * 
@@ -1211,21 +1211,21 @@ class CUP$parser$actions {
 	public Graph getGraph() {
 		return g;
 	}
-
+	
 	// only for debugging
 	public NodeGraphicAttribute getNodeStyle() {
 		return nodeStyle;
 	}
-
+	
 	// only for debugging
 	public EdgeGraphicAttribute getEdgeStyle() {
 		return edgeStyle;
 	}
-
+	
 	/** Constructor */
 	CUP$parser$actions(parser parser) {
 	}
-
+	
 	/** Method with the actual generated action code. */
 	@SuppressWarnings(value = { "unchecked" })
 	public final java_cup.runtime.Symbol CUP$parser$do_action(int CUP$parser$act_num,
@@ -1233,2577 +1233,2575 @@ class CUP$parser$actions {
 			throws java.lang.Exception {
 		/* Symbol object for return from actions */
 		java_cup.runtime.Symbol CUP$parser$result;
-
+		
 		/* select the action based on the action number */
 		switch (CUP$parser$act_num) {
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 151: // COORD ::= CBRACE
-		{
-			CoordinateAttribute RESULT = null;
-
-			RESULT = new CoordinateAttribute("bend");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(19/* COORD */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 150: // COORD ::= POINT_Z REAL COORD
-		{
-			CoordinateAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			CoordinateAttribute c = (CoordinateAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			c.add(new DoubleAttribute("z", r.doubleValue()));
-			debug("point.z " + r + "\n");
-			RESULT = c;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(19/* COORD */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 149: // COORD ::= POINT_Y REAL COORD
-		{
-			CoordinateAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			CoordinateAttribute c = (CoordinateAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			c.setY(r.doubleValue());
-			debug("point.y " + r + "\n");
-			RESULT = c;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(19/* COORD */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 148: // COORD ::= POINT_X REAL COORD
-		{
-			CoordinateAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			CoordinateAttribute c = (CoordinateAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			c.setX(r.doubleValue());
-			debug("point.x " + r + "\n");
-			RESULT = c;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(19/* COORD */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 147: // LINE_POINTS ::= CBRACE
-		{
-			List RESULT = null;
-
-			RESULT = new LinkedList<Attribute>();
-
-			CUP$parser$result = new java_cup.runtime.Symbol(18/* LINE_POINTS */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 146: // LINE_POINTS ::= GRAPHICS_POINT SBRACE COORD LINE_POINTS
-		{
-			List RESULT = null;
-			CoordinateAttribute c = (CoordinateAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			l.add(c);
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(18/* LINE_POINTS */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 145: // LIST ::= CBRACE
-		{
-			List RESULT = null;
-
-			RESULT = new LinkedList<Attribute>();
-
-			CUP$parser$result = new java_cup.runtime.Symbol(14/* LIST */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 144: // LIST ::= KEYVALUE LIST
-		{
-			List RESULT = null;
-			Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			debug("rule LIST ... ");
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(k);
-
-			CUP$parser$result = new java_cup.runtime.Symbol(14/* LIST */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 143: // KEYVALUE ::= LABEL STRING
-		{
-			Attribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = StringAttribute.getTypedStringAttribute("label", s);
-			;
-			debug("LabelAttribute with id label and value " + s + " ... \n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 142: // KEYVALUE ::= KEY SBRACE LIST
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			CollectionAttribute ca = new HashMapAttribute(k);
-			for (Iterator itr = l.iterator(); itr.hasNext();) {
-				Attribute a = (Attribute) itr.next();
-				ca.add(a);
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 151: // COORD ::= CBRACE
+			{
+				CoordinateAttribute RESULT = null;
+				
+				RESULT = new CoordinateAttribute("bend");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(19/* COORD */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			RESULT = ca;
-			debug("CollectionAttribute with id " + k + " ... \n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 141: // KEYVALUE ::= KEY STRING
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = StringAttribute.getTypedStringAttribute(k, s);
-			debug("StringAttribute with id " + k + " and value " + s + " ... \n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 140: // KEYVALUE ::= KEY BOOLEAN
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			Boolean i = (Boolean) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new BooleanAttribute(k, i);
-			debug("BooleanAttribute with id " + k + " and value " + i + " ... \n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 139: // KEYVALUE ::= KEY REAL
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new DoubleAttribute(k, r);
-			debug("DoubleAttribute with id " + k + " and value " + r + " ... \n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 138: // KEYVALUE ::= KEY INTEGER
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new IntegerAttribute(k, i);
-			debug("IntegerAttribute with id " + k + " and value " + i + " ... \n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 137: // E_GFX_ITEM ::= CBRACE
-		{
-			EdgeGraphicAttribute RESULT = null;
-
-			RESULT = (EdgeGraphicAttribute) edgeStyle.copy();
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 136: // E_GFX_ITEM ::= KEYVALUE E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute ngi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("attribute in graphics.\n");
-			try {
-				ngi.add(k);
-				debug("added attribute with label " + k.getId() + " in graphics.\n");
-			} catch (AttributeExistsException aee) {
-				Attribute existsAttr = ngi.getAttribute(k.getPath());
-				if (k instanceof CollectionAttribute) {
-					if (!(existsAttr instanceof CollectionAttribute)) {
-						org.ErrorMsg.addErrorMessage(
-								"Attribute with ID " + k.getId() + " is a CollectionAttribute but should be a simple"
-										+ " attribute of type " + existsAttr.getClass().getName() + " ... not loaded!");
-					} else {
-						// both CollectionAttributes, check size of maps
-						Map valueToSet = (Map) k.getValue();
-						if (((Map) existsAttr.getValue()).size() > valueToSet.size()) {
-							org.ErrorMsg.addErrorMessage("Attribute with ID " + k.getId()
-									+ " is a standard attribute but file does not provide"
-									+ " all sub attributes... not loaded!");
-						} else {
-							if (((Map) existsAttr.getValue()).size() < valueToSet.size()) {
-								org.ErrorMsg.addErrorMessage("Warning: Attribute with ID " + k.getId()
-										+ " is a standard attribute but file provides"
-										+ " too many sub attributes... trying to load anyway...");
-							}
-							try {
-								existsAttr.setValue(k.getValue());
-							} catch (Exception eee) {
-								org.ErrorMsg.addErrorMessage(
-										"Attribute with ID " + k.getId() + " is a standard attribute but file provides"
-												+ " unexpected / missing sub attributes... not loaded!");
-							}
-						}
-					}
-				} else {
-					try {
-						existsAttr.setValue(k.getValue());
-					} catch (ClassCastException cce2) {
-						org.ErrorMsg.addErrorMessage("Attribute with ID " + k.getId()
-								+ " has a different type as expected (" + k.getClass().getName() + " instead of "
-								+ existsAttr.getClass().getName() + ") ... not loaded");
-					}
-				}
-				debug("attr already there, overrode value " + "(if no error occurred).\n");
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 150: // COORD ::= POINT_Z REAL COORD
+			{
+				CoordinateAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				CoordinateAttribute c = (CoordinateAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				c.add(new DoubleAttribute("z", r.doubleValue()));
+				debug("point.z " + r + "\n");
+				RESULT = c;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(19/* COORD */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 135: // E_GFX_ITEM ::= GRAPHICS_LINE SBRACE LINE_POINTS E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			int count = 0;
-			SortedCollectionAttribute sca = egi.getBends();
-			// gml ignores first and last point !?
-			if (l.size() >= 3)
-				l = l.subList(1, l.size() - 1);
-
-			for (ListIterator iter = l.listIterator(l.size()); iter.hasPrevious();) {
-				CoordinateAttribute cAttr = (CoordinateAttribute) iter.previous();
-				count++;
-				sca.add(new CoordinateAttribute("bend" + count, cAttr.getX(), cAttr.getY()));
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 149: // COORD ::= POINT_Y REAL COORD
+			{
+				CoordinateAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				CoordinateAttribute c = (CoordinateAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				c.setY(r.doubleValue());
+				debug("point.y " + r + "\n");
+				RESULT = c;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(19/* COORD */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			if (!l.isEmpty() && !GraphicAttributeConstants.SMOOTH_CLASSNAME.equals(egi.getShape())) {
-				egi.setShape(GraphicAttributeConstants.POLYLINE_CLASSNAME);
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 148: // COORD ::= POINT_X REAL COORD
+			{
+				CoordinateAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				CoordinateAttribute c = (CoordinateAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				c.setX(r.doubleValue());
+				debug("point.x " + r + "\n");
+				RESULT = c;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(19/* COORD */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 134: // E_GFX_ITEM ::= GRAPHICS_FONT STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: font (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 133: // E_GFX_ITEM ::= GRAPHICS_JUSTIFY STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: justify (ignored):.\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 132: // E_GFX_ITEM ::= GRAPHICS_SPLINESTEPS INTEGER E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: spline steps (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 131: // E_GFX_ITEM ::= GRAPHICS_SMOOTH INTEGER E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			egi.setShape("org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
-			debug("graphics: smooth (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 130: // E_GFX_ITEM ::= GRAPHICS_JOINSTYLE STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			@SuppressWarnings("unused")
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			@SuppressWarnings("unused")
-			int egileft = ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: joinstyle (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 129: // E_GFX_ITEM ::= GRAPHICS_CAPSTYLE STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: capstyle (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 128: // E_GFX_ITEM ::= GRAPHICS_ARROW STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: arrow.\n");
-			if ("first".equals(s) || "both".equals(s)) {
-				egi.setArrowtail("org.graffiti.plugins.views.defaults.StandardArrowShape");
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 147: // LINE_POINTS ::= CBRACE
+			{
+				List RESULT = null;
+				
+				RESULT = new LinkedList<Attribute>();
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(18/* LINE_POINTS */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			if ("last".equals(s) || "both".equals(s)) {
-				egi.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 146: // LINE_POINTS ::= GRAPHICS_POINT SBRACE COORD LINE_POINTS
+			{
+				List RESULT = null;
+				CoordinateAttribute c = (CoordinateAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				l.add(c);
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(18/* LINE_POINTS */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 127: // E_GFX_ITEM ::= GRAPHICS_ARROW_TAIL STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: arrow tail.\n");
-			egi.setArrowtail(s);
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 126: // E_GFX_ITEM ::= GRAPHICS_ARROW_HEAD STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: arrow head.\n");
-			egi.setArrowhead(s);
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 125: // E_GFX_ITEM ::= GRAPHICS_IMAGE STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			ImageAttribute image = new ImageAttribute("image");
-			image.setReference(s);
-			egi.setBackgroundImage(image);
-			debug("graphics: image set to" + s + ".\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 124: // E_GFX_ITEM ::= GRAPHICS_BITMAP STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: bitmap (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 123: // E_GFX_ITEM ::= GRAPHICS_FOREGROUND STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("TODO: set the right foreground color.\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 122: // E_GFX_ITEM ::= GRAPHICS_BACKGROUND STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("TODO: set the right background color.\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 121: // E_GFX_ITEM ::= GRAPHICS_STYLE STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: style (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 120: // E_GFX_ITEM ::= GRAPHICS_START REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: start (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 119: // E_GFX_ITEM ::= GRAPHICS_EXTENT REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: extent (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 118: // E_GFX_ITEM ::= GRAPHICS_WIDTH REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: width2 = " + r + "\n");
-			egi.setFrameThickness(r.doubleValue());
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 117: // E_GFX_ITEM ::= GRAPHICS_ANCHOR STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: anchor (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 116: // E_GFX_ITEM ::= GRAPHICS_STIPPLE STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: stripple (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 115: // E_GFX_ITEM ::= GRAPHICS_OUTLINE STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: outline (ignored).\n");
-			ColorAttribute outlineAttr = new ColorAttribute("outline");
-			try {
-				outlineAttr.setColor(Color.decode(s));
-			} catch (NumberFormatException nfe) {
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 145: // LIST ::= CBRACE
+			{
+				List RESULT = null;
+				
+				RESULT = new LinkedList<Attribute>();
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(14/* LIST */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			egi.setFramecolor(outlineAttr);
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 114: // E_GFX_ITEM ::= GRAPHICS_FILL STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: fill: (ignored).\n");
-			ColorAttribute fillAttr = new ColorAttribute("fill");
-			try {
-				fillAttr.setColor(Color.decode(s));
-			} catch (NumberFormatException nfe) {
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 144: // LIST ::= KEYVALUE LIST
+			{
+				List RESULT = null;
+				Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("rule LIST ... ");
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(k);
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(14/* LIST */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			egi.setFillcolor(fillAttr);
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 113: // E_GFX_ITEM ::= GRAPHICS_VISIBLE STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: visible (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 112: // E_GFX_ITEM ::= GRAPHICS_TYPE STRING E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			if (s.equals("line")) {
-				s = "org.graffiti.plugins.views.defaults.StraightLineEdgeShape";
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 143: // KEYVALUE ::= LABEL STRING
+			{
+				Attribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = StringAttribute.getTypedStringAttribute("label", s);;
+				debug("LabelAttribute with id label and value " + s + " ... \n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			egi.setShape(s);
-			debug("graphics: edge type set to " + s + ".\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 111: // E_GFX_ITEM ::= GRAPHICS_D REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: depth (ignored).");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 110: // E_GFX_ITEM ::= GRAPHICS_H REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: height (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 109: // E_GFX_ITEM ::= GRAPHICS_W REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: width = " + r + "\n");
-			egi.setFrameThickness(r.doubleValue());
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 108: // E_GFX_ITEM ::= GRAPHICS_Z REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: z (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 107: // E_GFX_ITEM ::= GRAPHICS_Y REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: y (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 106: // E_GFX_ITEM ::= GRAPHICS_X REAL E_GFX_ITEM
-		{
-			EdgeGraphicAttribute RESULT = null;
-			EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: x (ignored).\n");
-			RESULT = egi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 105: // E_ATTR ::= CBRACE
-		{
-			CollectionAttribute RESULT = null;
-
-			RESULT = new HashMapAttribute("");
-			;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 104: // E_ATTR ::= GRAPHICS SBRACE E_GFX_ITEM E_ATTR
-		{
-			CollectionAttribute RESULT = null;
-			EdgeGraphicAttribute eg = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 1)).value;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			l.add(eg);
-			// todo
-			debug("TODO " + l.getId() + ";\n");
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 103: // E_ATTR ::= KEYVALUE E_ATTR
-		{
-			CollectionAttribute RESULT = null;
-			Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			// now know it's a node; use EdgeLabelAttribute ...
-			if (k instanceof LabelAttribute) {
-				EdgeLabelAttribute elpa = new EdgeLabelAttribute(k.getId());
-				elpa.setLabel(((LabelAttribute) k).getLabel());
-				// k = elpa;
-				l.add(elpa);
-				// debug("E_ATTR: found LabelAttribute. " +
-				// "Converted to EdgeLabelAttribute.\n");
-			} else {
-				l.add(k);
-			}
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 102: // E_ATTR ::= TARGET INTEGER E_ATTR
-		{
-			CollectionAttribute RESULT = null;
-			Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			l.add(new IntegerAttribute("target", i));
-			debug("target with id " + i + " added.\n");
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 101: // E_ATTR ::= SOURCE INTEGER E_ATTR
-		{
-			CollectionAttribute RESULT = null;
-			Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			l.add(new IntegerAttribute("source", i));
-			debug("source with id " + i + " added.\n");
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 100: // E_ATTR ::= ID INTEGER E_ATTR
-		{
-			CollectionAttribute RESULT = null;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			// l.add(new IntegerAttribute("id", i));
-			// debug("edge id " + i + " ... \n");
-			debug("edge id ignored \n");
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 99: // N_GFX_ITEM ::= CBRACE
-		{
-			NodeGraphicAttribute RESULT = null;
-
-			RESULT = (NodeGraphicAttribute) nodeStyle.copy();
-			RESULT.setCoordinate(new CoordinateAttribute(GraphicAttributeConstants.COORDINATE));
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 98: // N_GFX_ITEM ::= KEYVALUE N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("attribute in graphics.\n");
-			try {
-				ngi.add(k);
-				debug("added attribute with label " + k.getId() + " in graphics.\n");
-			} catch (AttributeExistsException aee) {
-				org.ErrorMsg.addErrorMessage("Attribute (id=" + k.getId() + " exists. " + aee.getLocalizedMessage());
-				Attribute existsAttr = ngi.getAttribute(k.getPath());
-				if (k instanceof CollectionAttribute) {
-					if (!(existsAttr instanceof CollectionAttribute)) {
-						org.ErrorMsg.addErrorMessage(
-								"Attribute with ID " + k.getId() + " is a CollectionAttribute but should be a simple"
-										+ " attribute of type " + existsAttr.getClass().getName() + " ... not loaded!");
-					} else {
-						// both CollectionAttributes, check size of maps
-						Map valueToSet = (Map) k.getValue();
-						if (((Map) existsAttr.getValue()).size() > valueToSet.size()) {
-							org.ErrorMsg.addErrorMessage("Attribute with ID " + k.getId()
-									+ " is a standard attribute but file does not provide"
-									+ " all sub attributes... not loaded!");
-						} else {
-							if (((Map) existsAttr.getValue()).size() < valueToSet.size()) {
-								org.ErrorMsg.addErrorMessage("Warning: Attribute with ID " + k.getId()
-										+ " is a standard attribute but file provides"
-										+ " too many sub attributes... trying to load anyway...");
-							}
-							try {
-								existsAttr.setValue(k.getValue());
-							} catch (Exception eee) {
-								org.ErrorMsg.addErrorMessage(
-										"Attribute with ID " + k.getId() + " is a standard attribute but file provides"
-												+ " unexpected / missing sub attributes... not loaded!");
-							}
-						}
-					}
-				} else {
-					try {
-						existsAttr.setValue(k.getValue());
-					} catch (ClassCastException cce2) {
-						org.ErrorMsg.addErrorMessage("Attribute with ID " + k.getId()
-								+ " has a different type as expected (" + k.getClass().getName() + " instead of "
-								+ existsAttr.getClass().getName() + ") ... not loaded");
-					}
-				}
-				debug("attr already there, overrode value " + "(if no error occurred).\n");
-			}
-
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 97: // N_GFX_ITEM ::= GRAPHICS_LINE SBRACE LINE_POINTS N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics line (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 96: // N_GFX_ITEM ::= GRAPHICS_FONT STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: font (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 95: // N_GFX_ITEM ::= GRAPHICS_JUSTIFY STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: justify (ignored):.\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 94: // N_GFX_ITEM ::= GRAPHICS_SPLINESTEPS INTEGER N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: spline steps (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 93: // N_GFX_ITEM ::= GRAPHICS_SMOOTH INTEGER N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: smooth (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 92: // N_GFX_ITEM ::= GRAPHICS_JOINSTYLE STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: joinstyle (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 91: // N_GFX_ITEM ::= GRAPHICS_CAPSTYLE STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: capstyle (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 90: // N_GFX_ITEM ::= GRAPHICS_ARROW STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: arrow (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 89: // N_GFX_ITEM ::= GRAPHICS_IMAGE STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			ImageAttribute image = new ImageAttribute("image");
-			image.setReference(s);
-			ngi.setBackgroundImage(image);
-			debug("graphics: image set to" + s + ".\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 88: // N_GFX_ITEM ::= GRAPHICS_BITMAP STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: bitmap (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 87: // N_GFX_ITEM ::= GRAPHICS_FOREGROUND STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("TODO: set the right foreground color.\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 86: // N_GFX_ITEM ::= GRAPHICS_BACKGROUND STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("TODO: set the right background color.\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 85: // N_GFX_ITEM ::= GRAPHICS_STYLE STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: style (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 84: // N_GFX_ITEM ::= GRAPHICS_START REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: start (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 83: // N_GFX_ITEM ::= GRAPHICS_EXTENT REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: extent (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 82: // N_GFX_ITEM ::= GRAPHICS_WIDTH REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: width.\n");
-			ngi.setFrameThickness(r.doubleValue());
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 81: // N_GFX_ITEM ::= GRAPHICS_ANCHOR STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: anchor (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 80: // N_GFX_ITEM ::= GRAPHICS_STIPPLE STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: stripple (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 79: // N_GFX_ITEM ::= GRAPHICS_OUTLINE STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: outline.\n");
-			ColorAttribute outlineAttr = new ColorAttribute("outline");
-			try {
-				outlineAttr.setColor(Color.decode(s));
-			} catch (NumberFormatException nfe) {
-				org.ErrorMsg.addErrorMessage("ColorAttribute Number Format Error: " + nfe.getLocalizedMessage());
-			}
-			ngi.setFramecolor(outlineAttr);
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 78: // N_GFX_ITEM ::= GRAPHICS_FILL STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: fill \n");
-			ColorAttribute fillAttr = new ColorAttribute("fill");
-			try {
-				fillAttr.setColor(Color.decode(s));
-			} catch (NumberFormatException nfe) {
-				org.ErrorMsg.addErrorMessage("ColorAttribute Number Format Error: " + nfe.getLocalizedMessage());
-			}
-			ngi.setFillcolor(fillAttr);
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 77: // N_GFX_ITEM ::= GRAPHICS_VISIBLE STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: visible (ignored).\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 76: // N_GFX_ITEM ::= GRAPHICS_TYPE STRING N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-			if (s.equals("oval")) {
-				s = "org.graffiti.plugins.views.defaults.EllipseNodeShape";
-			} else if (s.equals("rectangle")) {
-				s = "org.graffiti.plugins.views.defaults.RectangleNodeShape";
-			}
-			ngi.setShape(s);
-			debug("graphics: shape set to " + s + ".\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 75: // N_GFX_ITEM ::= GRAPHICS_D REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("graphics: depth (ignored).");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 74: // N_GFX_ITEM ::= GRAPHICS_H REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			ngi.getDimension().setHeight(r.doubleValue());
-			debug("graphics: height set to " + r + ".\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 73: // N_GFX_ITEM ::= GRAPHICS_W REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			ngi.getDimension().setWidth(r.doubleValue());
-			debug("graphics: width set to " + r + ".\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 72: // N_GFX_ITEM ::= GRAPHICS_Z REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			ngi.getCoordinate().add(new DoubleAttribute("z", r.doubleValue()));
-			debug("graphics: z coord set to " + r + ".\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 71: // N_GFX_ITEM ::= GRAPHICS_Y REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			ngi.getCoordinate().setY(r.doubleValue());
-			debug("graphics: y coord set to " + r + ".\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 70: // N_GFX_ITEM ::= GRAPHICS_X REAL N_GFX_ITEM
-		{
-			NodeGraphicAttribute RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			ngi.getCoordinate().setX(r.doubleValue());
-			debug("graphics: x coord set to " + r + ".\n");
-			RESULT = ngi;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 69: // N_ATTR ::= CBRACE
-		{
-			CollectionAttribute RESULT = null;
-
-			RESULT = new HashMapAttribute("");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(11/* N_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 68: // N_ATTR ::= GRAPHICS SBRACE N_GFX_ITEM N_ATTR
-		{
-			CollectionAttribute RESULT = null;
-			NodeGraphicAttribute ng = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 1)).value;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			l.add(ng);
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(11/* N_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 67: // N_ATTR ::= KEYVALUE N_ATTR
-		{
-			CollectionAttribute RESULT = null;
-			Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			// now know it's a node; use NodeLabelAttribute ...
-			if (k instanceof LabelAttribute) {
-				NodeLabelAttribute nlpa = new NodeLabelAttribute(k.getId());
-				nlpa.setLabel(((LabelAttribute) k).getLabel());
-				k = nlpa;
-				// debug("N_ATTR: found LabelAttribute. " +
-				// "Converted to NodeLabelAttribute.\n");
-			}
-			l.add(k);
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(11/* N_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 66: // N_ATTR ::= ID INTEGER N_ATTR
-		{
-			CollectionAttribute RESULT = null;
-			Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			l.add(new IntegerAttribute("id", i));
-			debug("node id " + i + " ... \n");
-			RESULT = l;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(11/* N_ATTR */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 65: // E_STL_ITEM ::= CBRACE
-		{
-			Object RESULT = null;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 64: // E_STL_ITEM ::= GRAPHICS_TYPE STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			if (s.equals("line")) {
-				s = "org.graffiti.plugins.views.defaults.StraightLineEdgeShape";
-			}
-			edgeStyle.setShape(s);
-			debug("graphics: edge style type set to " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 63: // E_STL_ITEM ::= GRAPHICS_FONT STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("graphics font (ignored).\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 62: // E_STL_ITEM ::= GRAPHICS_SMOOTH INTEGER E_STL_ITEM
-		{
-			Object RESULT = null;
-			edgeStyle.setShape("org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
-			debug("graphics: smooth (ignored).\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 61: // E_STL_ITEM ::= GRAPHICS_ARROW STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("graphics arrow (ignored).\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 60: // E_STL_ITEM ::= GRAPHICS_ANCHOR STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("graphics: anchor (ignored).\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 59: // E_STL_ITEM ::= GRAPHICS_STIPPLE STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("graphics: stripple (ignored).\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 58: // E_STL_ITEM ::= GRAPHICS_IMAGE STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			ImageAttribute image = new ImageAttribute("image");
-			image.setReference(s);
-			edgeStyle.setBackgroundImage(image);
-			debug("graphics: image set to" + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 57: // E_STL_ITEM ::= GRAPHICS_BITMAP STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("graphics: bitmap (ignored).\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 56: // E_STL_ITEM ::= GRAPHICS_FOREGROUND STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("TODO: set the right foreground color.\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 55: // E_STL_ITEM ::= GRAPHICS_BACKGROUND STRING E_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("TODO: set the right background color.\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 54: // N_STL_ITEM ::= CBRACE
-		{
-			Object RESULT = null;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 53: // N_STL_ITEM ::= GRAPHICS_TYPE STRING N_STL_ITEM
-		{
-			Object RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			if (s.equals("oval")) {
-				s = "org.graffiti.plugins.views.defaults.EllipseNodeShape";
-			} else if (s.equals("rectangle")) {
-				s = "org.graffiti.plugins.views.defaults.RectangleNodeShape";
-			}
-			nodeStyle.setShape(s);
-			debug("graphics type set to " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 52: // N_STL_ITEM ::= GRAPHICS_IMAGE STRING N_STL_ITEM
-		{
-			Object RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			ImageAttribute image = new ImageAttribute("image");
-			image.setReference(s);
-			nodeStyle.setBackgroundImage(image);
-			debug("graphics: image set to" + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 51: // N_STL_ITEM ::= GRAPHICS_BITMAP STRING N_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("graphics: bitmap (ignored).\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 50: // N_STL_ITEM ::= GRAPHICS_FOREGROUND STRING N_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("TODO: set the right foreground color.\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 49: // N_STL_ITEM ::= GRAPHICS_BACKGROUND STRING N_STL_ITEM
-		{
-			Object RESULT = null;
-			debug("TODO: set the right background color.\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 48: // N_STL_ITEM ::= GRAPHICS_D REAL N_STL_ITEM
-		{
-			Object RESULT = null;
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 47: // N_STL_ITEM ::= GRAPHICS_H REAL N_STL_ITEM
-		{
-			Object RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			nodeStyle.getDimension().setHeight(r.doubleValue());
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 46: // N_STL_ITEM ::= GRAPHICS_W REAL N_STL_ITEM
-		{
-			Object RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			nodeStyle.getDimension().setWidth(r.doubleValue());
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 45: // N_STL_ITEM ::= GRAPHICS_Z REAL N_STL_ITEM
-		{
-			Object RESULT = null;
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 44: // N_STL_ITEM ::= GRAPHICS_Y REAL N_STL_ITEM
-		{
-			Object RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			nodeStyle.getCoordinate().setY(r.doubleValue());
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 43: // N_STL_ITEM ::= GRAPHICS_X REAL N_STL_ITEM
-		{
-			Object RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			nodeStyle.getCoordinate().setX(r.doubleValue());
-
-			CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 42: // ES_ITEM ::= CBRACE
-		{
-			Object RESULT = null;
-			debug("Rule S_ITEM CBRACE\n");
-			CUP$parser$result = new java_cup.runtime.Symbol(4/* ES_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 41: // ES_ITEM ::= GRAPHICS_STYLE SBRACE GRAPHICS SBRACE E_STL_ITEM CBRACE ES_ITEM
-		{
-			Object RESULT = null;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(4/* ES_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 6)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 40: // ES_ITEM ::= KEY STRING ES_ITEM
-		{
-			Object RESULT = null;
-			debug("Rule S_ITEM 1\n");
-			CUP$parser$result = new java_cup.runtime.Symbol(4/* ES_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 39: // NS_ITEM ::= CBRACE
-		{
-			Object RESULT = null;
-			debug("Rule S_ITEM CBRACE\n");
-			CUP$parser$result = new java_cup.runtime.Symbol(5/* NS_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 38: // NS_ITEM ::= GRAPHICS_STYLE SBRACE GRAPHICS SBRACE N_STL_ITEM CBRACE NS_ITEM
-		{
-			Object RESULT = null;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(5/* NS_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 6)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 37: // NS_ITEM ::= KEY STRING NS_ITEM
-		{
-			Object RESULT = null;
-			debug("Rule S_ITEM 1\n");
-			CUP$parser$result = new java_cup.runtime.Symbol(5/* NS_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 36: // G_GFX_ITEM ::= CBRACE
-		{
-			List RESULT = null;
-
-			RESULT = new LinkedList<Attribute>();
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 35: // G_GFX_ITEM ::= GRAPHICS_FOREGROUND STRING G_GFX_ITEM
-		{
-			List RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(StringAttribute.getTypedStringAttribute("foreground", s));
-			debug("grphics attribute foreground: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 34: // G_GFX_ITEM ::= GRAPHICS_BACKGROUND STRING G_GFX_ITEM
-		{
-			List RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(StringAttribute.getTypedStringAttribute("background", s));
-			debug("grphics attribute background: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 33: // G_GFX_ITEM ::= GRAPHICS_WIDTH REAL G_GFX_ITEM
-		{
-			List RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(new DoubleAttribute("width", r));
-			debug("grphics attribute width: " + r + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 32: // G_GFX_ITEM ::= GRAPHICS_OUTLINE STRING G_GFX_ITEM
-		{
-			List RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(StringAttribute.getTypedStringAttribute("outline", s));
-			debug("grphics attribute outline: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 31: // G_GFX_ITEM ::= GRAPHICS_FILL STRING G_GFX_ITEM
-		{
-			List RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(StringAttribute.getTypedStringAttribute("fill", s));
-			debug("grphics attribute fill: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 30: // G_GFX_ITEM ::= GRAPHICS_VISIBLE STRING G_GFX_ITEM
-		{
-			List RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(StringAttribute.getTypedStringAttribute("visible", s));
-			debug("grphics attribute visible: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 29: // G_GFX_ITEM ::= GRAPHICS_TYPE STRING G_GFX_ITEM
-		{
-			List RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(StringAttribute.getTypedStringAttribute("type", s));
-			debug("grphics attribute type: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 28: // G_GFX_ITEM ::= GRAPHICS_D REAL G_GFX_ITEM
-		{
-			List RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(new DoubleAttribute("depth", r));
-			debug("grphics attribute depth: " + r + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 27: // G_GFX_ITEM ::= GRAPHICS_H REAL G_GFX_ITEM
-		{
-			List RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(new DoubleAttribute("height", r));
-			debug("grphics attribute heigth: " + r + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 26: // G_GFX_ITEM ::= GRAPHICS_W REAL G_GFX_ITEM
-		{
-			List RESULT = null;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(new DoubleAttribute("width", r));
-			debug("grphics attribute width: " + r + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 25: // G_LIST ::= CBRACE
-		{
-			List RESULT = null;
-
-			RESULT = new LinkedList<Attribute>();
-			debug("graph: finished subpath.\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(13/* G_LIST */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 24: // G_LIST ::= G_ITEM G_LIST
-		{
-			List RESULT = null;
-			Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			debug("rule G_LIST ... ");
-			RESULT = new LinkedList<Attribute>(l);
-			RESULT.add(k);
-
-			CUP$parser$result = new java_cup.runtime.Symbol(13/* G_LIST */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 23: // G_ITEM ::= G_KEYVALUE
-		{
-			Attribute RESULT = null;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 22: // G_ITEM ::= GRAPHICS SBRACE G_GFX_ITEM
-		{
-			Attribute RESULT = null;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			CollectionAttribute ca = new HashMapAttribute("graphics");
-			for (Iterator itr = l.iterator(); itr.hasNext();) {
-				Attribute a = (Attribute) itr.next();
-				if (a != null)
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 142: // KEYVALUE ::= KEY SBRACE LIST
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				CollectionAttribute ca = new HashMapAttribute(k);
+				for (Iterator itr = l.iterator(); itr.hasNext();) {
+					Attribute a = (Attribute) itr.next();
 					ca.add(a);
+				}
+				RESULT = ca;
+				debug("CollectionAttribute with id " + k + " ... \n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			debug("graph: CollectionAttribute graphics added.\n");
-			RESULT = ca;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 21: // G_ITEM ::= KEY SBRACE G_LIST
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).value;
-			List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			CollectionAttribute ca = new HashMapAttribute(k);
-			for (Iterator itr = l.iterator(); itr.hasNext();) {
-				Attribute a = (Attribute) itr.next();
-				ca.add(a);
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 141: // KEYVALUE ::= KEY STRING
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = StringAttribute.getTypedStringAttribute(k, s);
+				debug("StringAttribute with id " + k + " and value " + s + " ... \n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			debug("graph: CollectionAttribute " + k + " added.\n");
-			RESULT = ca;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 20: // G_ITEM ::= KEY STRING
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = StringAttribute.getTypedStringAttribute(k, s);
-			debug("graph: StringAttribute " + k + ": " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 19: // G_ITEM ::= KEY REAL
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new DoubleAttribute(k, r);
-			debug("graph: DoubleAttribute " + k + ": " + r + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 18: // G_ITEM ::= KEY BOOLEAN
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			Boolean i = (Boolean) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			g.setBoolean(k, i.booleanValue());
-			debug("graph: attribute " + k + " set to " + i + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 17: // G_ITEM ::= KEY INTEGER
-		{
-			Attribute RESULT = null;
-			String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-			Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			g.setInteger(k, i.intValue());
-			debug("graph: attribute " + k + " set to " + i + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 16: // G_ITEM ::= CREATOR STRING
-		{
-			Attribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = StringAttribute.getTypedStringAttribute("creator", s);
-			debug("graph: StringAttribute creator: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 15: // G_ITEM ::= COMMENT STRING
-		{
-			Attribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = StringAttribute.getTypedStringAttribute("comment", s);
-			debug("graph: StringAttribute comment: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 14: // G_ITEM ::= DIRECTED BOOLEAN
-		{
-			Attribute RESULT = null;
-			Boolean i = (Boolean) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			if (i.booleanValue() == true) {
-				directed = true;
-			} else {
-				directed = false;
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 140: // KEYVALUE ::= KEY BOOLEAN
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				Boolean i = (Boolean) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new BooleanAttribute(k, i);
+				debug("BooleanAttribute with id " + k + " and value " + i + " ... \n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			// RESULT = new BooleanAttribute("directed", directed);
-			g.setDirected(directed, false);
-			g.setBoolean("directed", directed);
-			debug("directed set to " + directed + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 13: // G_ITEM ::= VERSION STRING
-		{
-			Attribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = StringAttribute.getTypedStringAttribute("version", s);
-			debug("graph: StringAttribute version: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 12: // G_ITEM ::= VERSION INTEGER
-		{
-			Attribute RESULT = null;
-			Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new IntegerAttribute("version", i);
-			debug("graph: IntegerAttribute version: " + i + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 11: // G_ITEM ::= LABEL STRING
-		{
-			Attribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = StringAttribute.getTypedStringAttribute("label", s);
-			debug("graph: LabelAttribute id label, " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 10: // G_ITEM ::= NAME STRING
-		{
-			Attribute RESULT = null;
-			String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = StringAttribute.getTypedStringAttribute("name", s);
-			debug("graph: StringAttribute name: " + s + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 9: // G_ITEM ::= ID INTEGER
-		{
-			Attribute RESULT = null;
-			Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
-
-			RESULT = new IntegerAttribute("id", i);
-			debug("graph: IntegerAttribute id: " + i + ".\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 8: // GRAPH_ELEM ::= EDGE SBRACE E_ATTR
-		{
-			Object RESULT = null;
-			CollectionAttribute attr = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("edge with attributes ...\n");
-			Integer sourceId = (Integer) ((IntegerAttribute) attr.getAttribute("source")).getValue();
-			assert nodeMap.size() > 0 : "node map contains no elements.";
-			Node source = (Node) nodeMap.get(sourceId);
-			assert source != null : "source is null.";
-			Integer targetId = (Integer) ((IntegerAttribute) attr.getAttribute("target")).getValue();
-			Node target = (Node) nodeMap.get(targetId);
-			assert target != null : "target is null.";
-			Edge e = g.addEdge(source, target, directed, attr);
-			e.getAttributes().remove("source");
-			e.getAttributes().remove("target");
-			try {
-				e.getAttributes().getAttribute("graphics");
-			} catch (AttributeNotFoundException anfe) {
-				// org.ErrorMsg.addErrorMessage(anfe.getLocalizedMessage());
-				EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edgeStyle.copy();
-				e.addAttribute(ega, "");
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 139: // KEYVALUE ::= KEY REAL
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new DoubleAttribute(k, r);
+				debug("DoubleAttribute with id " + k + " and value " + r + " ... \n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			debug("edge added to the graph.\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(3/* GRAPH_ELEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 7: // GRAPH_ELEM ::= NODE SBRACE N_ATTR
-		{
-			Object RESULT = null;
-			CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 0)).value;
-
-			debug("node with attributes ...\n");
-			Node n = g.addNode(l);
-			Integer i = (Integer) ((IntegerAttribute) n.getAttribute("id")).getValue();
-			nodeMap.put(i, n);
-			n.getAttributes().remove("id");
-			try {
-				n.getAttributes().getAttribute("graphics");
-			} catch (AttributeNotFoundException anfe) {
-				org.ErrorMsg.addErrorMessage(anfe.getLocalizedMessage());
-				NodeGraphicAttribute nga = (NodeGraphicAttribute) nodeStyle.copy();
-				nga.setCoordinate(new CoordinateAttribute(GraphicAttributeConstants.COORDINATE));
-				n.addAttribute(nga, "");
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 138: // KEYVALUE ::= KEY INTEGER
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new IntegerAttribute(k, i);
+				debug("IntegerAttribute with id " + k + " and value " + i + " ... \n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(10/* KEYVALUE */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-			debug("node added to the graph.\n");
-
-			CUP$parser$result = new java_cup.runtime.Symbol(3/* GRAPH_ELEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 6: // GRAPHITEM ::= CBRACE
-		{
-			Object RESULT = null;
-			debug("Rule GRAPHITEM 6\n");
-			CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 5: // GRAPHITEM ::= GRAPH_ELEM GRAPHITEM
-		{
-			Object RESULT = null;
-
-			CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 4: // GRAPHITEM ::= EDGE_STYLE SBRACE ES_ITEM GRAPHITEM
-		{
-			Object RESULT = null;
-			debug("Rule GRAPHITEM 3\n");
-			CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 3: // GRAPHITEM ::= NODE_STYLE SBRACE NS_ITEM GRAPHITEM
-		{
-			Object RESULT = null;
-			debug("Rule GRAPHITEM 2\n");
-			CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 2: // GRAPHITEM ::= G_ITEM GRAPHITEM
-		{
-			Object RESULT = null;
-			Attribute gi = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
-
-			if (gi != null) {
-				g.addAttribute(gi, "");
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 137: // E_GFX_ITEM ::= CBRACE
+			{
+				EdgeGraphicAttribute RESULT = null;
+				
+				RESULT = (EdgeGraphicAttribute) edgeStyle.copy();
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
 			}
-
-			CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 1: // $START ::= GML EOF
-		{
-			Object RESULT = null;
-			Object start_val = (Object) ((java_cup.runtime.Symbol) CUP$parser$stack
-					.elementAt(CUP$parser$top - 1)).value;
-			RESULT = start_val;
-			CUP$parser$result = new java_cup.runtime.Symbol(0/* $START */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			/* ACCEPT */
-			CUP$parser$parser.done_parsing();
-			return CUP$parser$result;
-
-		/* . . . . . . . . . . . . . . . . . . . . */
-		case 0: // GML ::= GRAPH SBRACE GRAPHITEM
-		{
-			Object RESULT = null;
-			debug("Rule GML\n");
-			CUP$parser$result = new java_cup.runtime.Symbol(1/* GML */,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
-					((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
-		}
-			return CUP$parser$result;
-
-		/* . . . . . . */
-		default:
-			throw new Exception("Invalid action number found in internal parse table");
-
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 136: // E_GFX_ITEM ::= KEYVALUE E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute ngi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("attribute in graphics.\n");
+				try {
+					ngi.add(k);
+					debug("added attribute with label " + k.getId() + " in graphics.\n");
+				} catch (AttributeExistsException aee) {
+					Attribute existsAttr = ngi.getAttribute(k.getPath());
+					if (k instanceof CollectionAttribute) {
+						if (!(existsAttr instanceof CollectionAttribute)) {
+							org.ErrorMsg.addErrorMessage(
+									"Attribute with ID " + k.getId() + " is a CollectionAttribute but should be a simple"
+											+ " attribute of type " + existsAttr.getClass().getName() + " ... not loaded!");
+						} else {
+							// both CollectionAttributes, check size of maps
+							Map valueToSet = (Map) k.getValue();
+							if (((Map) existsAttr.getValue()).size() > valueToSet.size()) {
+								org.ErrorMsg.addErrorMessage("Attribute with ID " + k.getId()
+										+ " is a standard attribute but file does not provide"
+										+ " all sub attributes... not loaded!");
+							} else {
+								if (((Map) existsAttr.getValue()).size() < valueToSet.size()) {
+									org.ErrorMsg.addErrorMessage("Warning: Attribute with ID " + k.getId()
+											+ " is a standard attribute but file provides"
+											+ " too many sub attributes... trying to load anyway...");
+								}
+								try {
+									existsAttr.setValue(k.getValue());
+								} catch (Exception eee) {
+									org.ErrorMsg.addErrorMessage(
+											"Attribute with ID " + k.getId() + " is a standard attribute but file provides"
+													+ " unexpected / missing sub attributes... not loaded!");
+								}
+							}
+						}
+					} else {
+						try {
+							existsAttr.setValue(k.getValue());
+						} catch (ClassCastException cce2) {
+							org.ErrorMsg.addErrorMessage("Attribute with ID " + k.getId()
+									+ " has a different type as expected (" + k.getClass().getName() + " instead of "
+									+ existsAttr.getClass().getName() + ") ... not loaded");
+						}
+					}
+					debug("attr already there, overrode value " + "(if no error occurred).\n");
+				}
+				
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 135: // E_GFX_ITEM ::= GRAPHICS_LINE SBRACE LINE_POINTS E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				int count = 0;
+				SortedCollectionAttribute sca = egi.getBends();
+				// gml ignores first and last point !?
+				if (l.size() >= 3)
+					l = l.subList(1, l.size() - 1);
+				
+				for (ListIterator iter = l.listIterator(l.size()); iter.hasPrevious();) {
+					CoordinateAttribute cAttr = (CoordinateAttribute) iter.previous();
+					count++;
+					sca.add(new CoordinateAttribute("bend" + count, cAttr.getX(), cAttr.getY()));
+				}
+				if (!l.isEmpty() && !GraphicAttributeConstants.SMOOTH_CLASSNAME.equals(egi.getShape())) {
+					egi.setShape(GraphicAttributeConstants.POLYLINE_CLASSNAME);
+				}
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 134: // E_GFX_ITEM ::= GRAPHICS_FONT STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: font (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 133: // E_GFX_ITEM ::= GRAPHICS_JUSTIFY STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: justify (ignored):.\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 132: // E_GFX_ITEM ::= GRAPHICS_SPLINESTEPS INTEGER E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: spline steps (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 131: // E_GFX_ITEM ::= GRAPHICS_SMOOTH INTEGER E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				egi.setShape("org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
+				debug("graphics: smooth (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 130: // E_GFX_ITEM ::= GRAPHICS_JOINSTYLE STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				@SuppressWarnings("unused")
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				@SuppressWarnings("unused")
+				int egileft = ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: joinstyle (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 129: // E_GFX_ITEM ::= GRAPHICS_CAPSTYLE STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: capstyle (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 128: // E_GFX_ITEM ::= GRAPHICS_ARROW STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: arrow.\n");
+				if ("first".equals(s) || "both".equals(s)) {
+					egi.setArrowtail("org.graffiti.plugins.views.defaults.StandardArrowShape");
+				}
+				if ("last".equals(s) || "both".equals(s)) {
+					egi.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
+				}
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 127: // E_GFX_ITEM ::= GRAPHICS_ARROW_TAIL STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: arrow tail.\n");
+				egi.setArrowtail(s);
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 126: // E_GFX_ITEM ::= GRAPHICS_ARROW_HEAD STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: arrow head.\n");
+				egi.setArrowhead(s);
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 125: // E_GFX_ITEM ::= GRAPHICS_IMAGE STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				ImageAttribute image = new ImageAttribute("image");
+				image.setReference(s);
+				egi.setBackgroundImage(image);
+				debug("graphics: image set to" + s + ".\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 124: // E_GFX_ITEM ::= GRAPHICS_BITMAP STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: bitmap (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 123: // E_GFX_ITEM ::= GRAPHICS_FOREGROUND STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("TODO: set the right foreground color.\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 122: // E_GFX_ITEM ::= GRAPHICS_BACKGROUND STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("TODO: set the right background color.\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 121: // E_GFX_ITEM ::= GRAPHICS_STYLE STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: style (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 120: // E_GFX_ITEM ::= GRAPHICS_START REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: start (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 119: // E_GFX_ITEM ::= GRAPHICS_EXTENT REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: extent (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 118: // E_GFX_ITEM ::= GRAPHICS_WIDTH REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: width2 = " + r + "\n");
+				egi.setFrameThickness(r.doubleValue());
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 117: // E_GFX_ITEM ::= GRAPHICS_ANCHOR STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: anchor (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 116: // E_GFX_ITEM ::= GRAPHICS_STIPPLE STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: stripple (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 115: // E_GFX_ITEM ::= GRAPHICS_OUTLINE STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: outline (ignored).\n");
+				ColorAttribute outlineAttr = new ColorAttribute("outline");
+				try {
+					outlineAttr.setColor(Color.decode(s));
+				} catch (NumberFormatException nfe) {
+				}
+				egi.setFramecolor(outlineAttr);
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 114: // E_GFX_ITEM ::= GRAPHICS_FILL STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: fill: (ignored).\n");
+				ColorAttribute fillAttr = new ColorAttribute("fill");
+				try {
+					fillAttr.setColor(Color.decode(s));
+				} catch (NumberFormatException nfe) {
+				}
+				egi.setFillcolor(fillAttr);
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 113: // E_GFX_ITEM ::= GRAPHICS_VISIBLE STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: visible (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 112: // E_GFX_ITEM ::= GRAPHICS_TYPE STRING E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				if (s.equals("line")) {
+					s = "org.graffiti.plugins.views.defaults.StraightLineEdgeShape";
+				}
+				egi.setShape(s);
+				debug("graphics: edge type set to " + s + ".\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 111: // E_GFX_ITEM ::= GRAPHICS_D REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: depth (ignored).");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 110: // E_GFX_ITEM ::= GRAPHICS_H REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: height (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 109: // E_GFX_ITEM ::= GRAPHICS_W REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: width = " + r + "\n");
+				egi.setFrameThickness(r.doubleValue());
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 108: // E_GFX_ITEM ::= GRAPHICS_Z REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: z (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 107: // E_GFX_ITEM ::= GRAPHICS_Y REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: y (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 106: // E_GFX_ITEM ::= GRAPHICS_X REAL E_GFX_ITEM
+			{
+				EdgeGraphicAttribute RESULT = null;
+				EdgeGraphicAttribute egi = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: x (ignored).\n");
+				RESULT = egi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(17/* E_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 105: // E_ATTR ::= CBRACE
+			{
+				CollectionAttribute RESULT = null;
+				
+				RESULT = new HashMapAttribute("");;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 104: // E_ATTR ::= GRAPHICS SBRACE E_GFX_ITEM E_ATTR
+			{
+				CollectionAttribute RESULT = null;
+				EdgeGraphicAttribute eg = (EdgeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 1)).value;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				l.add(eg);
+				// todo
+				debug("TODO " + l.getId() + ";\n");
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 103: // E_ATTR ::= KEYVALUE E_ATTR
+			{
+				CollectionAttribute RESULT = null;
+				Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				// now know it's a node; use EdgeLabelAttribute ...
+				if (k instanceof LabelAttribute) {
+					EdgeLabelAttribute elpa = new EdgeLabelAttribute(k.getId());
+					elpa.setLabel(((LabelAttribute) k).getLabel());
+					// k = elpa;
+					l.add(elpa);
+					// debug("E_ATTR: found LabelAttribute. " +
+					// "Converted to EdgeLabelAttribute.\n");
+				} else {
+					l.add(k);
+				}
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 102: // E_ATTR ::= TARGET INTEGER E_ATTR
+			{
+				CollectionAttribute RESULT = null;
+				Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				l.add(new IntegerAttribute("target", i));
+				debug("target with id " + i + " added.\n");
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 101: // E_ATTR ::= SOURCE INTEGER E_ATTR
+			{
+				CollectionAttribute RESULT = null;
+				Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				l.add(new IntegerAttribute("source", i));
+				debug("source with id " + i + " added.\n");
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 100: // E_ATTR ::= ID INTEGER E_ATTR
+			{
+				CollectionAttribute RESULT = null;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				// l.add(new IntegerAttribute("id", i));
+				// debug("edge id " + i + " ... \n");
+				debug("edge id ignored \n");
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(12/* E_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 99: // N_GFX_ITEM ::= CBRACE
+			{
+				NodeGraphicAttribute RESULT = null;
+				
+				RESULT = (NodeGraphicAttribute) nodeStyle.copy();
+				RESULT.setCoordinate(new CoordinateAttribute(GraphicAttributeConstants.COORDINATE));
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 98: // N_GFX_ITEM ::= KEYVALUE N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("attribute in graphics.\n");
+				try {
+					ngi.add(k);
+					debug("added attribute with label " + k.getId() + " in graphics.\n");
+				} catch (AttributeExistsException aee) {
+					org.ErrorMsg.addErrorMessage("Attribute (id=" + k.getId() + " exists. " + aee.getLocalizedMessage());
+					Attribute existsAttr = ngi.getAttribute(k.getPath());
+					if (k instanceof CollectionAttribute) {
+						if (!(existsAttr instanceof CollectionAttribute)) {
+							org.ErrorMsg.addErrorMessage(
+									"Attribute with ID " + k.getId() + " is a CollectionAttribute but should be a simple"
+											+ " attribute of type " + existsAttr.getClass().getName() + " ... not loaded!");
+						} else {
+							// both CollectionAttributes, check size of maps
+							Map valueToSet = (Map) k.getValue();
+							if (((Map) existsAttr.getValue()).size() > valueToSet.size()) {
+								org.ErrorMsg.addErrorMessage("Attribute with ID " + k.getId()
+										+ " is a standard attribute but file does not provide"
+										+ " all sub attributes... not loaded!");
+							} else {
+								if (((Map) existsAttr.getValue()).size() < valueToSet.size()) {
+									org.ErrorMsg.addErrorMessage("Warning: Attribute with ID " + k.getId()
+											+ " is a standard attribute but file provides"
+											+ " too many sub attributes... trying to load anyway...");
+								}
+								try {
+									existsAttr.setValue(k.getValue());
+								} catch (Exception eee) {
+									org.ErrorMsg.addErrorMessage(
+											"Attribute with ID " + k.getId() + " is a standard attribute but file provides"
+													+ " unexpected / missing sub attributes... not loaded!");
+								}
+							}
+						}
+					} else {
+						try {
+							existsAttr.setValue(k.getValue());
+						} catch (ClassCastException cce2) {
+							org.ErrorMsg.addErrorMessage("Attribute with ID " + k.getId()
+									+ " has a different type as expected (" + k.getClass().getName() + " instead of "
+									+ existsAttr.getClass().getName() + ") ... not loaded");
+						}
+					}
+					debug("attr already there, overrode value " + "(if no error occurred).\n");
+				}
+				
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 97: // N_GFX_ITEM ::= GRAPHICS_LINE SBRACE LINE_POINTS N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics line (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 96: // N_GFX_ITEM ::= GRAPHICS_FONT STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: font (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 95: // N_GFX_ITEM ::= GRAPHICS_JUSTIFY STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: justify (ignored):.\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 94: // N_GFX_ITEM ::= GRAPHICS_SPLINESTEPS INTEGER N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: spline steps (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 93: // N_GFX_ITEM ::= GRAPHICS_SMOOTH INTEGER N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: smooth (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 92: // N_GFX_ITEM ::= GRAPHICS_JOINSTYLE STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: joinstyle (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 91: // N_GFX_ITEM ::= GRAPHICS_CAPSTYLE STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: capstyle (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 90: // N_GFX_ITEM ::= GRAPHICS_ARROW STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: arrow (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 89: // N_GFX_ITEM ::= GRAPHICS_IMAGE STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				ImageAttribute image = new ImageAttribute("image");
+				image.setReference(s);
+				ngi.setBackgroundImage(image);
+				debug("graphics: image set to" + s + ".\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 88: // N_GFX_ITEM ::= GRAPHICS_BITMAP STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: bitmap (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 87: // N_GFX_ITEM ::= GRAPHICS_FOREGROUND STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("TODO: set the right foreground color.\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 86: // N_GFX_ITEM ::= GRAPHICS_BACKGROUND STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("TODO: set the right background color.\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 85: // N_GFX_ITEM ::= GRAPHICS_STYLE STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: style (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 84: // N_GFX_ITEM ::= GRAPHICS_START REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: start (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 83: // N_GFX_ITEM ::= GRAPHICS_EXTENT REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: extent (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 82: // N_GFX_ITEM ::= GRAPHICS_WIDTH REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: width.\n");
+				ngi.setFrameThickness(r.doubleValue());
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 81: // N_GFX_ITEM ::= GRAPHICS_ANCHOR STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: anchor (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 80: // N_GFX_ITEM ::= GRAPHICS_STIPPLE STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: stripple (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 79: // N_GFX_ITEM ::= GRAPHICS_OUTLINE STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: outline.\n");
+				ColorAttribute outlineAttr = new ColorAttribute("outline");
+				try {
+					outlineAttr.setColor(Color.decode(s));
+				} catch (NumberFormatException nfe) {
+					org.ErrorMsg.addErrorMessage("ColorAttribute Number Format Error: " + nfe.getLocalizedMessage());
+				}
+				ngi.setFramecolor(outlineAttr);
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 78: // N_GFX_ITEM ::= GRAPHICS_FILL STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: fill \n");
+				ColorAttribute fillAttr = new ColorAttribute("fill");
+				try {
+					fillAttr.setColor(Color.decode(s));
+				} catch (NumberFormatException nfe) {
+					org.ErrorMsg.addErrorMessage("ColorAttribute Number Format Error: " + nfe.getLocalizedMessage());
+				}
+				ngi.setFillcolor(fillAttr);
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 77: // N_GFX_ITEM ::= GRAPHICS_VISIBLE STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: visible (ignored).\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 76: // N_GFX_ITEM ::= GRAPHICS_TYPE STRING N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				if (s.equals("oval")) {
+					s = "org.graffiti.plugins.views.defaults.EllipseNodeShape";
+				} else if (s.equals("rectangle")) {
+					s = "org.graffiti.plugins.views.defaults.RectangleNodeShape";
+				}
+				ngi.setShape(s);
+				debug("graphics: shape set to " + s + ".\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 75: // N_GFX_ITEM ::= GRAPHICS_D REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("graphics: depth (ignored).");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 74: // N_GFX_ITEM ::= GRAPHICS_H REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				ngi.getDimension().setHeight(r.doubleValue());
+				debug("graphics: height set to " + r + ".\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 73: // N_GFX_ITEM ::= GRAPHICS_W REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				ngi.getDimension().setWidth(r.doubleValue());
+				debug("graphics: width set to " + r + ".\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 72: // N_GFX_ITEM ::= GRAPHICS_Z REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				ngi.getCoordinate().add(new DoubleAttribute("z", r.doubleValue()));
+				debug("graphics: z coord set to " + r + ".\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 71: // N_GFX_ITEM ::= GRAPHICS_Y REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				ngi.getCoordinate().setY(r.doubleValue());
+				debug("graphics: y coord set to " + r + ".\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 70: // N_GFX_ITEM ::= GRAPHICS_X REAL N_GFX_ITEM
+			{
+				NodeGraphicAttribute RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				NodeGraphicAttribute ngi = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				ngi.getCoordinate().setX(r.doubleValue());
+				debug("graphics: x coord set to " + r + ".\n");
+				RESULT = ngi;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(16/* N_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 69: // N_ATTR ::= CBRACE
+			{
+				CollectionAttribute RESULT = null;
+				
+				RESULT = new HashMapAttribute("");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(11/* N_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 68: // N_ATTR ::= GRAPHICS SBRACE N_GFX_ITEM N_ATTR
+			{
+				CollectionAttribute RESULT = null;
+				NodeGraphicAttribute ng = (NodeGraphicAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 1)).value;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				l.add(ng);
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(11/* N_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 67: // N_ATTR ::= KEYVALUE N_ATTR
+			{
+				CollectionAttribute RESULT = null;
+				Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				// now know it's a node; use NodeLabelAttribute ...
+				if (k instanceof LabelAttribute) {
+					NodeLabelAttribute nlpa = new NodeLabelAttribute(k.getId());
+					nlpa.setLabel(((LabelAttribute) k).getLabel());
+					k = nlpa;
+					// debug("N_ATTR: found LabelAttribute. " +
+					// "Converted to NodeLabelAttribute.\n");
+				}
+				l.add(k);
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(11/* N_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 66: // N_ATTR ::= ID INTEGER N_ATTR
+			{
+				CollectionAttribute RESULT = null;
+				Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				l.add(new IntegerAttribute("id", i));
+				debug("node id " + i + " ... \n");
+				RESULT = l;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(11/* N_ATTR */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 65: // E_STL_ITEM ::= CBRACE
+			{
+				Object RESULT = null;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 64: // E_STL_ITEM ::= GRAPHICS_TYPE STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				if (s.equals("line")) {
+					s = "org.graffiti.plugins.views.defaults.StraightLineEdgeShape";
+				}
+				edgeStyle.setShape(s);
+				debug("graphics: edge style type set to " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 63: // E_STL_ITEM ::= GRAPHICS_FONT STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("graphics font (ignored).\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 62: // E_STL_ITEM ::= GRAPHICS_SMOOTH INTEGER E_STL_ITEM
+			{
+				Object RESULT = null;
+				edgeStyle.setShape("org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
+				debug("graphics: smooth (ignored).\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 61: // E_STL_ITEM ::= GRAPHICS_ARROW STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("graphics arrow (ignored).\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 60: // E_STL_ITEM ::= GRAPHICS_ANCHOR STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("graphics: anchor (ignored).\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 59: // E_STL_ITEM ::= GRAPHICS_STIPPLE STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("graphics: stripple (ignored).\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 58: // E_STL_ITEM ::= GRAPHICS_IMAGE STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				ImageAttribute image = new ImageAttribute("image");
+				image.setReference(s);
+				edgeStyle.setBackgroundImage(image);
+				debug("graphics: image set to" + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 57: // E_STL_ITEM ::= GRAPHICS_BITMAP STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("graphics: bitmap (ignored).\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 56: // E_STL_ITEM ::= GRAPHICS_FOREGROUND STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("TODO: set the right foreground color.\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 55: // E_STL_ITEM ::= GRAPHICS_BACKGROUND STRING E_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("TODO: set the right background color.\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(7/* E_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 54: // N_STL_ITEM ::= CBRACE
+			{
+				Object RESULT = null;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 53: // N_STL_ITEM ::= GRAPHICS_TYPE STRING N_STL_ITEM
+			{
+				Object RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				if (s.equals("oval")) {
+					s = "org.graffiti.plugins.views.defaults.EllipseNodeShape";
+				} else if (s.equals("rectangle")) {
+					s = "org.graffiti.plugins.views.defaults.RectangleNodeShape";
+				}
+				nodeStyle.setShape(s);
+				debug("graphics type set to " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 52: // N_STL_ITEM ::= GRAPHICS_IMAGE STRING N_STL_ITEM
+			{
+				Object RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				ImageAttribute image = new ImageAttribute("image");
+				image.setReference(s);
+				nodeStyle.setBackgroundImage(image);
+				debug("graphics: image set to" + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 51: // N_STL_ITEM ::= GRAPHICS_BITMAP STRING N_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("graphics: bitmap (ignored).\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 50: // N_STL_ITEM ::= GRAPHICS_FOREGROUND STRING N_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("TODO: set the right foreground color.\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 49: // N_STL_ITEM ::= GRAPHICS_BACKGROUND STRING N_STL_ITEM
+			{
+				Object RESULT = null;
+				debug("TODO: set the right background color.\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 48: // N_STL_ITEM ::= GRAPHICS_D REAL N_STL_ITEM
+			{
+				Object RESULT = null;
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 47: // N_STL_ITEM ::= GRAPHICS_H REAL N_STL_ITEM
+			{
+				Object RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				nodeStyle.getDimension().setHeight(r.doubleValue());
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 46: // N_STL_ITEM ::= GRAPHICS_W REAL N_STL_ITEM
+			{
+				Object RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				nodeStyle.getDimension().setWidth(r.doubleValue());
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 45: // N_STL_ITEM ::= GRAPHICS_Z REAL N_STL_ITEM
+			{
+				Object RESULT = null;
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 44: // N_STL_ITEM ::= GRAPHICS_Y REAL N_STL_ITEM
+			{
+				Object RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				nodeStyle.getCoordinate().setY(r.doubleValue());
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 43: // N_STL_ITEM ::= GRAPHICS_X REAL N_STL_ITEM
+			{
+				Object RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				nodeStyle.getCoordinate().setX(r.doubleValue());
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(6/* N_STL_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 42: // ES_ITEM ::= CBRACE
+			{
+				Object RESULT = null;
+				debug("Rule S_ITEM CBRACE\n");
+				CUP$parser$result = new java_cup.runtime.Symbol(4/* ES_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 41: // ES_ITEM ::= GRAPHICS_STYLE SBRACE GRAPHICS SBRACE E_STL_ITEM CBRACE ES_ITEM
+			{
+				Object RESULT = null;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(4/* ES_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 6)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 40: // ES_ITEM ::= KEY STRING ES_ITEM
+			{
+				Object RESULT = null;
+				debug("Rule S_ITEM 1\n");
+				CUP$parser$result = new java_cup.runtime.Symbol(4/* ES_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 39: // NS_ITEM ::= CBRACE
+			{
+				Object RESULT = null;
+				debug("Rule S_ITEM CBRACE\n");
+				CUP$parser$result = new java_cup.runtime.Symbol(5/* NS_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 38: // NS_ITEM ::= GRAPHICS_STYLE SBRACE GRAPHICS SBRACE N_STL_ITEM CBRACE NS_ITEM
+			{
+				Object RESULT = null;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(5/* NS_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 6)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 37: // NS_ITEM ::= KEY STRING NS_ITEM
+			{
+				Object RESULT = null;
+				debug("Rule S_ITEM 1\n");
+				CUP$parser$result = new java_cup.runtime.Symbol(5/* NS_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 36: // G_GFX_ITEM ::= CBRACE
+			{
+				List RESULT = null;
+				
+				RESULT = new LinkedList<Attribute>();
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 35: // G_GFX_ITEM ::= GRAPHICS_FOREGROUND STRING G_GFX_ITEM
+			{
+				List RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(StringAttribute.getTypedStringAttribute("foreground", s));
+				debug("grphics attribute foreground: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 34: // G_GFX_ITEM ::= GRAPHICS_BACKGROUND STRING G_GFX_ITEM
+			{
+				List RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(StringAttribute.getTypedStringAttribute("background", s));
+				debug("grphics attribute background: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 33: // G_GFX_ITEM ::= GRAPHICS_WIDTH REAL G_GFX_ITEM
+			{
+				List RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(new DoubleAttribute("width", r));
+				debug("grphics attribute width: " + r + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 32: // G_GFX_ITEM ::= GRAPHICS_OUTLINE STRING G_GFX_ITEM
+			{
+				List RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(StringAttribute.getTypedStringAttribute("outline", s));
+				debug("grphics attribute outline: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 31: // G_GFX_ITEM ::= GRAPHICS_FILL STRING G_GFX_ITEM
+			{
+				List RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(StringAttribute.getTypedStringAttribute("fill", s));
+				debug("grphics attribute fill: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 30: // G_GFX_ITEM ::= GRAPHICS_VISIBLE STRING G_GFX_ITEM
+			{
+				List RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(StringAttribute.getTypedStringAttribute("visible", s));
+				debug("grphics attribute visible: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 29: // G_GFX_ITEM ::= GRAPHICS_TYPE STRING G_GFX_ITEM
+			{
+				List RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(StringAttribute.getTypedStringAttribute("type", s));
+				debug("grphics attribute type: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 28: // G_GFX_ITEM ::= GRAPHICS_D REAL G_GFX_ITEM
+			{
+				List RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(new DoubleAttribute("depth", r));
+				debug("grphics attribute depth: " + r + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 27: // G_GFX_ITEM ::= GRAPHICS_H REAL G_GFX_ITEM
+			{
+				List RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(new DoubleAttribute("height", r));
+				debug("grphics attribute heigth: " + r + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 26: // G_GFX_ITEM ::= GRAPHICS_W REAL G_GFX_ITEM
+			{
+				List RESULT = null;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(new DoubleAttribute("width", r));
+				debug("grphics attribute width: " + r + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(15/* G_GFX_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 25: // G_LIST ::= CBRACE
+			{
+				List RESULT = null;
+				
+				RESULT = new LinkedList<Attribute>();
+				debug("graph: finished subpath.\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(13/* G_LIST */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 24: // G_LIST ::= G_ITEM G_LIST
+			{
+				List RESULT = null;
+				Attribute k = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("rule G_LIST ... ");
+				RESULT = new LinkedList<Attribute>(l);
+				RESULT.add(k);
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(13/* G_LIST */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 23: // G_ITEM ::= G_KEYVALUE
+			{
+				Attribute RESULT = null;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 22: // G_ITEM ::= GRAPHICS SBRACE G_GFX_ITEM
+			{
+				Attribute RESULT = null;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				CollectionAttribute ca = new HashMapAttribute("graphics");
+				for (Iterator itr = l.iterator(); itr.hasNext();) {
+					Attribute a = (Attribute) itr.next();
+					if (a != null)
+						ca.add(a);
+				}
+				debug("graph: CollectionAttribute graphics added.\n");
+				RESULT = ca;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 21: // G_ITEM ::= KEY SBRACE G_LIST
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).value;
+				List l = (List) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				CollectionAttribute ca = new HashMapAttribute(k);
+				for (Iterator itr = l.iterator(); itr.hasNext();) {
+					Attribute a = (Attribute) itr.next();
+					ca.add(a);
+				}
+				debug("graph: CollectionAttribute " + k + " added.\n");
+				RESULT = ca;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 20: // G_ITEM ::= KEY STRING
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = StringAttribute.getTypedStringAttribute(k, s);
+				debug("graph: StringAttribute " + k + ": " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 19: // G_ITEM ::= KEY REAL
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				Double r = (Double) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new DoubleAttribute(k, r);
+				debug("graph: DoubleAttribute " + k + ": " + r + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 18: // G_ITEM ::= KEY BOOLEAN
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				Boolean i = (Boolean) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				g.setBoolean(k, i.booleanValue());
+				debug("graph: attribute " + k + " set to " + i + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 17: // G_ITEM ::= KEY INTEGER
+			{
+				Attribute RESULT = null;
+				String k = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				g.setInteger(k, i.intValue());
+				debug("graph: attribute " + k + " set to " + i + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 16: // G_ITEM ::= CREATOR STRING
+			{
+				Attribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = StringAttribute.getTypedStringAttribute("creator", s);
+				debug("graph: StringAttribute creator: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 15: // G_ITEM ::= COMMENT STRING
+			{
+				Attribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = StringAttribute.getTypedStringAttribute("comment", s);
+				debug("graph: StringAttribute comment: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 14: // G_ITEM ::= DIRECTED BOOLEAN
+			{
+				Attribute RESULT = null;
+				Boolean i = (Boolean) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				if (i.booleanValue() == true) {
+					directed = true;
+				} else {
+					directed = false;
+				}
+				// RESULT = new BooleanAttribute("directed", directed);
+				g.setDirected(directed, false);
+				g.setBoolean("directed", directed);
+				debug("directed set to " + directed + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 13: // G_ITEM ::= VERSION STRING
+			{
+				Attribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = StringAttribute.getTypedStringAttribute("version", s);
+				debug("graph: StringAttribute version: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 12: // G_ITEM ::= VERSION INTEGER
+			{
+				Attribute RESULT = null;
+				Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new IntegerAttribute("version", i);
+				debug("graph: IntegerAttribute version: " + i + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 11: // G_ITEM ::= LABEL STRING
+			{
+				Attribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = StringAttribute.getTypedStringAttribute("label", s);
+				debug("graph: LabelAttribute id label, " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 10: // G_ITEM ::= NAME STRING
+			{
+				Attribute RESULT = null;
+				String s = (String) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = StringAttribute.getTypedStringAttribute("name", s);
+				debug("graph: StringAttribute name: " + s + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 9: // G_ITEM ::= ID INTEGER
+			{
+				Attribute RESULT = null;
+				Integer i = (Integer) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).value;
+				
+				RESULT = new IntegerAttribute("id", i);
+				debug("graph: IntegerAttribute id: " + i + ".\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(9/* G_ITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 8: // GRAPH_ELEM ::= EDGE SBRACE E_ATTR
+			{
+				Object RESULT = null;
+				CollectionAttribute attr = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("edge with attributes ...\n");
+				Integer sourceId = (Integer) ((IntegerAttribute) attr.getAttribute("source")).getValue();
+				assert nodeMap.size() > 0 : "node map contains no elements.";
+				Node source = (Node) nodeMap.get(sourceId);
+				assert source != null : "source is null.";
+				Integer targetId = (Integer) ((IntegerAttribute) attr.getAttribute("target")).getValue();
+				Node target = (Node) nodeMap.get(targetId);
+				assert target != null : "target is null.";
+				Edge e = g.addEdge(source, target, directed, attr);
+				e.getAttributes().remove("source");
+				e.getAttributes().remove("target");
+				try {
+					e.getAttributes().getAttribute("graphics");
+				} catch (AttributeNotFoundException anfe) {
+					// org.ErrorMsg.addErrorMessage(anfe.getLocalizedMessage());
+					EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edgeStyle.copy();
+					e.addAttribute(ega, "");
+				}
+				debug("edge added to the graph.\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(3/* GRAPH_ELEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 7: // GRAPH_ELEM ::= NODE SBRACE N_ATTR
+			{
+				Object RESULT = null;
+				CollectionAttribute l = (CollectionAttribute) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 0)).value;
+				
+				debug("node with attributes ...\n");
+				Node n = g.addNode(l);
+				Integer i = (Integer) ((IntegerAttribute) n.getAttribute("id")).getValue();
+				nodeMap.put(i, n);
+				n.getAttributes().remove("id");
+				try {
+					n.getAttributes().getAttribute("graphics");
+				} catch (AttributeNotFoundException anfe) {
+					org.ErrorMsg.addErrorMessage(anfe.getLocalizedMessage());
+					NodeGraphicAttribute nga = (NodeGraphicAttribute) nodeStyle.copy();
+					nga.setCoordinate(new CoordinateAttribute(GraphicAttributeConstants.COORDINATE));
+					n.addAttribute(nga, "");
+				}
+				debug("node added to the graph.\n");
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(3/* GRAPH_ELEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 6: // GRAPHITEM ::= CBRACE
+			{
+				Object RESULT = null;
+				debug("Rule GRAPHITEM 6\n");
+				CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 5: // GRAPHITEM ::= GRAPH_ELEM GRAPHITEM
+			{
+				Object RESULT = null;
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 4: // GRAPHITEM ::= EDGE_STYLE SBRACE ES_ITEM GRAPHITEM
+			{
+				Object RESULT = null;
+				debug("Rule GRAPHITEM 3\n");
+				CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 3: // GRAPHITEM ::= NODE_STYLE SBRACE NS_ITEM GRAPHITEM
+			{
+				Object RESULT = null;
+				debug("Rule GRAPHITEM 2\n");
+				CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 3)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 2: // GRAPHITEM ::= G_ITEM GRAPHITEM
+			{
+				Object RESULT = null;
+				Attribute gi = (Attribute) ((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).value;
+				
+				if (gi != null) {
+					g.addAttribute(gi, "");
+				}
+				
+				CUP$parser$result = new java_cup.runtime.Symbol(2/* GRAPHITEM */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 1: // $START ::= GML EOF
+			{
+				Object RESULT = null;
+				Object start_val = (Object) ((java_cup.runtime.Symbol) CUP$parser$stack
+						.elementAt(CUP$parser$top - 1)).value;
+				RESULT = start_val;
+				CUP$parser$result = new java_cup.runtime.Symbol(0/* $START */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 1)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				/* ACCEPT */
+				CUP$parser$parser.done_parsing();
+				return CUP$parser$result;
+			
+			/* . . . . . . . . . . . . . . . . . . . . */
+			case 0: // GML ::= GRAPH SBRACE GRAPHITEM
+			{
+				Object RESULT = null;
+				debug("Rule GML\n");
+				CUP$parser$result = new java_cup.runtime.Symbol(1/* GML */,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 2)).left,
+						((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top - 0)).right, RESULT);
+			}
+				return CUP$parser$result;
+			
+			/* . . . . . . */
+			default:
+				throw new Exception("Invalid action number found in internal parse table");
+			
 		}
 	}
 }

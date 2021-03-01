@@ -29,16 +29,16 @@ public abstract class GraphElementsEdit extends GraffitiAbstractUndoableEdit {
 	// ~ Instance fields ========================================================
 	/** Necessary graph reference */
 	protected Graph graph;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Create a nes <code>GraphElementsEdit</code>.
 	 * 
 	 * @param graph
-	 *            a graph reference
+	 *           a graph reference
 	 * @param geMap
-	 *            reference to the map supports the undo operations.
+	 *           reference to the map supports the undo operations.
 	 */
 	public GraphElementsEdit(Graph graph, Map<GraphElement, GraphElement> geMap) {
 		super(geMap);

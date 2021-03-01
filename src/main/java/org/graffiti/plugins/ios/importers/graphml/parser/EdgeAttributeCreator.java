@@ -1,10 +1,10 @@
-//==============================================================================
+// ==============================================================================
 //
-//   EdgeAttributeCreator.java
+// EdgeAttributeCreator.java
 //
-//   Copyright (c) 2001-2004 Gravisto Team, University of Passau
+// Copyright (c) 2001-2004 Gravisto Team, University of Passau
 //
-//==============================================================================
+// ==============================================================================
 // $Id: EdgeAttributeCreator.java,v 1.7 2011/01/16 16:39:59 klukas Exp $
 
 package org.graffiti.plugins.ios.importers.graphml.parser;
@@ -20,16 +20,16 @@ import org.graffiti.graphics.EdgeGraphicAttribute;
  */
 class EdgeAttributeCreator extends AttributeCreator {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>EdgeAttributeCreator</code>.
 	 */
 	EdgeAttributeCreator() {
 		super();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/*
 	 *
 	 */

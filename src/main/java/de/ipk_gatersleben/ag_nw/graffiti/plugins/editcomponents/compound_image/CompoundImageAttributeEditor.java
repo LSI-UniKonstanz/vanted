@@ -44,11 +44,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.CachedW
  */
 public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 	protected JLabel imageContainer;
-
+	
 	protected JTextField compoundNumber;
-
+	
 	private static final String IMAGE_NA = "Image N/A";
-
+	
 	public CompoundImageAttributeEditor(Displayable disp) {
 		super(disp);
 		compoundNumber = new JTextField();
@@ -57,17 +57,17 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 		compoundNumber.setText(val);
 		updateGraphicComponent(CompoundImageAttributeComponent.checkAndChangePath(val, (Attribute) displayable));
 	}
-
+	
 	private static HashSet<String> knownInvalidUrls = new HashSet<String>();
-
+	
 	public static JLabel getCompoundImageComponent(JLabel currentInstance, String imgName, boolean acceptNULLreturn) {
 		return getCompoundImageComponent(currentInstance, imgName, acceptNULLreturn, -1, -1);
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	public static JLabel getCompoundImageComponent(JLabel currentInstance, String imgName, boolean acceptNULLreturn,
 			int sizex, int sizey) {
-
+		
 		ImageIcon graphicComponent = null;
 		if (!knownInvalidUrls.contains(imgName)) {
 			try {
@@ -148,13 +148,13 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 			} catch (InterruptedException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-
+			
 			if (sizex > 0 && sizey > 0)
 				graphicComponent = new ImageIcon(
 						GravistoService.getScaledImage(graphicComponent.getImage(), sizex, sizey));
-
+			
 			currentInstance.setIcon(graphicComponent);
-
+			
 			currentInstance
 					.setPreferredSize(new Dimension(graphicComponent.getIconWidth(), graphicComponent.getIconHeight()));
 			currentInstance.setText(null);
@@ -169,16 +169,16 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 		}
 		return currentInstance;
 	}
-
+	
 	private void updateGraphicComponent(String imgName) {
 		imageContainer = getCompoundImageComponent(imageContainer, imgName, false, 128, 128);
 	}
-
+	
 	protected static String checkImageName(String imgName) {
 		if (imgName != null) {
 			if (imgName.startsWith("cpd:"))
 				imgName = imgName.substring("cpd:".length());
-
+			
 			// CompoundEntry ce = CompoundService.getInformation(imgName);
 			// if (ce != null) {
 			// return ce.getID() + ".gif";
@@ -189,12 +189,12 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 		}
 		return imgName;
 	}
-
+	
 	public JComponent getComponent() {
 		return TableLayout.getSplitVertical(imageContainer, compoundNumber, TableLayoutConstants.PREFERRED,
 				TableLayoutConstants.PREFERRED);
 	}
-
+	
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			imageContainer.setIcon(null);
@@ -205,7 +205,7 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 					(Attribute) displayable));
 		}
 	}
-
+	
 	public void setValue() {
 		String text = compoundNumber.getText();
 		if (!text.equals(EMPTY_STRING) && !text.equals(IMAGE_NA)

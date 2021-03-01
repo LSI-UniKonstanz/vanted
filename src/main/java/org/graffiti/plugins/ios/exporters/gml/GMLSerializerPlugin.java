@@ -22,16 +22,16 @@ import org.graffiti.plugin.io.OutputSerializer;
  */
 public class GMLSerializerPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for GMLSerializerPlugin.
 	 */
 	public GMLSerializerPlugin() {
 		super();
-
+		
 		// TODO perhaps: merge this and
 		// org.graffiti.plugins.io.exporter.gml.GMLReaderPlugin.
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.EXTENDED_FILE_FORMAT)) {
 			outputSerializers = new OutputSerializer[] { new GMLWriter(), new GMLgzWriter() };
 		} else {

@@ -48,16 +48,16 @@ import org.jfree.data.PieDataset;
  * {@link PieDataset}.
  */
 public interface PieSectionLabelGenerator {
-
+	
 	/**
 	 * Generates a label for a pie section.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param key
-	 *            the section key (<code>null</code> not permitted).
+	 *           the section key (<code>null</code> not permitted).
 	 * @return The label (possibly <code>null</code>).
 	 */
 	public String generateSectionLabel(PieDataset dataset, Comparable key);
-
+	
 }

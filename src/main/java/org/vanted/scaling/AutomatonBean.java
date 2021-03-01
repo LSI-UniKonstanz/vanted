@@ -20,7 +20,6 @@ import java.io.Serializable;
  * of the three active states: <i>onStart</i>, <i>onSlider</i> and
  * <i>rescaled</i>.
  * <p>
- * 
  * Possible values are:<br>
  * <b>null</b>: not set, but called upon.<br>
  * <b>unscaled</b>: initial property value; could go to <i>onSlider</i>,
@@ -34,38 +33,37 @@ import java.io.Serializable;
  * <i>onSlider</i>.<br>
  * 
  * @author D. Garkov
- *
  */
 class AutomatonBean implements Serializable {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3832714752327173774L;
-
+	
 	static final String NAME = "scaling state";
-
+	
 	static enum State {
 		UNSCALED, ON_SLIDER, ON_START, RESCALED, IDLE
 	}
-
+	
 	private static PropertyChangeSupport support;
-
+	
 	private static String state;
-
+	
 	static AutomatonBean instance;
-
+	
 	AutomatonBean() {
 		state = State.UNSCALED.toString();
 		support = new PropertyChangeSupport(this);
 		support.firePropertyChange(NAME, null, State.UNSCALED);
 		instance = this;
 	}
-
+	
 	static String getState() {
 		return state;
 	}
-
+	
 	static boolean setState(State newState) {
 		if (isStateTransitionCorrect(newState)) {
 			support.firePropertyChange(NAME, state, newState.toString());
@@ -74,47 +72,47 @@ class AutomatonBean implements Serializable {
 		} else
 			return false;
 	}
-
+	
 	void addPropertyChangeListener(PropertyChangeListener listener) {
 		for (PropertyChangeListener l : support.getPropertyChangeListeners(NAME))
 			if (l.equals(listener))
 				return;
-
+			
 		support.addPropertyChangeListener(NAME, listener);
 	}
-
+	
 	void removePropertyChangeListener(PropertyChangeListener listener) {
 		support.removePropertyChangeListener(listener);
 	}
-
+	
 	static AutomatonBean getInstance() {
 		return instance;
 	}
-
+	
 	private static boolean isStateTransitionCorrect(State toCheck) {
 		switch (state) {
-		case "UNSCALED":
-			if (toCheck == State.ON_SLIDER || toCheck == State.ON_START)
-				return true;
-			break;
-		case "ON_SLIDER":
-			if (!(toCheck == State.ON_START || toCheck == State.ON_SLIDER))
-				return true;
-			break;
-		case "ON_START":
-			if (toCheck == State.IDLE)
-				return true;
-			break;
-		case "RESCALED":
-			if (toCheck == State.ON_SLIDER || toCheck == State.IDLE)
-				return true;
-			break;
-		case "IDLE":
-			if (toCheck == State.ON_SLIDER)
-				return true;
-			break;
+			case "UNSCALED":
+				if (toCheck == State.ON_SLIDER || toCheck == State.ON_START)
+					return true;
+				break;
+			case "ON_SLIDER":
+				if (!(toCheck == State.ON_START || toCheck == State.ON_SLIDER))
+					return true;
+				break;
+			case "ON_START":
+				if (toCheck == State.IDLE)
+					return true;
+				break;
+			case "RESCALED":
+				if (toCheck == State.ON_SLIDER || toCheck == State.IDLE)
+					return true;
+				break;
+			case "IDLE":
+				if (toCheck == State.ON_SLIDER)
+					return true;
+				break;
 		}
-
+		
 		return false;
 	}
 }

@@ -17,7 +17,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
 
 public class ReferencesPlugin extends IPK_EditorPluginAdapter {
-
+	
 	@SuppressWarnings("unchecked")
 	public ReferencesPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.PATHWAY_FILE_REFERENCE)) {

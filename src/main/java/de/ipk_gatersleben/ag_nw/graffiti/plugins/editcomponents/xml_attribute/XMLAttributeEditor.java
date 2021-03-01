@@ -38,10 +38,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
  */
 public class XMLAttributeEditor extends AbstractValueEditComponent {
 	protected JButton mappingButton;
-
+	
 	public XMLAttributeEditor(final Displayable disp) {
 		super(disp);
-
+		
 		mappingButton = new JButton("Mapped Data");
 		mappingButton.setOpaque(false);
 		mappingButton.addActionListener(new ActionListener() {
@@ -50,12 +50,12 @@ public class XMLAttributeEditor extends AbstractValueEditComponent {
 			}
 		});
 	}
-
+	
 	@Override
 	public JComponent getComponent() {
 		return mappingButton;
 	}
-
+	
 	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
@@ -70,12 +70,12 @@ public class XMLAttributeEditor extends AbstractValueEditComponent {
 			}
 		}
 	}
-
+	
 	@Override
 	public void setValue() {
 		// ((XMLAttribute)displayable).setColor(jButtonFontAndColor.getForeground());
 	}
-
+	
 	public static void showMappedDataForSelection(Collection<GraphElement> graphElements, String attributeName) {
 		if (graphElements.size() <= 0) {
 			MainFrame.showMessageDialog("No nodes or edges selected!", "Error");
@@ -89,12 +89,12 @@ public class XMLAttributeEditor extends AbstractValueEditComponent {
 			jf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			jf.setLayout(new GridLayout(1, 1));
 			jf.setLocationRelativeTo(MainFrame.getInstance());
-
+			
 			final JTabbedPane jtp = new JTabbedPane();
 			jtp.addContainerListener(new ContainerListener() {
 				public void componentAdded(ContainerEvent e) {
 				}
-
+				
 				public void componentRemoved(ContainerEvent e) {
 					if (jtp.getTabCount() <= 0) {
 						jf.setVisible(false);
@@ -102,13 +102,13 @@ public class XMLAttributeEditor extends AbstractValueEditComponent {
 					}
 				}
 			});
-
+			
 			for (GraphElement ge : graphElements) {
 				if (ge instanceof org.graffiti.graph.Node) {
 					String desc = AttributeHelper.getLabel(ge, null);
 					if (desc == null)
 						desc = "n/a";
-
+					
 					jtp.add("<html>" + desc, new XMLdataTablePane(
 							Experiment2GraphHelper.getMappedDataListFromGraphElement(ge, attributeName), jtp));
 				}
@@ -126,16 +126,16 @@ public class XMLAttributeEditor extends AbstractValueEditComponent {
 						descE = descA + " -> " + descB;
 					else
 						descE = descA + " -" + descE + "-&gt; " + descB;
-
+					
 					if (Experiment2GraphHelper.getMappedDataListFromGraphElement(ge) != null)
 						jtp.add("<html>" + descE, new XMLdataTablePane(
 								Experiment2GraphHelper.getMappedDataListFromGraphElement(ge), jtp));
 				}
 			}
-
+			
 			jf.getContentPane().add(jtp);
 			jf.getContentPane().validate();
-
+			
 			jf.setVisible(true);
 		}
 	}

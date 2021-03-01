@@ -26,22 +26,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgorithm {
-
+	
 	public String getName() {
 		return "Add Neighbour-Node Cluster-Histogram";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(
 				Arrays.asList(Category.GRAPH, Category.ENRICHMENT, Category.COMPUTATION, Category.HIDDEN));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command enumerates the neighbours of all or the selected nodes with mapping data.<br>"
@@ -50,7 +50,7 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 				+ "A similar command which processes all leaf nodes in a hierarchy is available from the<br>"
 				+ "&quot;Hierarchy&quot; menu.";
 	}
-
+	
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -68,13 +68,13 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	private static void processNode(NodeHelper nh, TreeSet<String> knownClusterIDs) {
 		Collection<Node> workNodes = nh.getNeighbors();
 		TreeMap<String, Integer> cluster2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
 			cluster2frequency.put(ci, Integer.valueOf(0));
-
+		
 		for (Node n : workNodes) {
 			NodeHelper nnh = new NodeHelper(n);
 			if (nnh.hasDataMapping()) {
@@ -104,7 +104,7 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 				"Frequency of clusters in neighbour nodes", "");
 		nh.setChartType(GraffitiCharts.BAR);
 	}
-
+	
 	private static Collection<String> getChildNodeClusterIDs(HashSet<Node> processedNodes, NodeHelper nh,
 			Collection<String> knownClusterIDs) {
 		Collection<String> result = new ArrayList<String>();

@@ -20,13 +20,13 @@ import org.graffiti.plugin.io.OutputSerializer;
  */
 public class GMLXMLSerializerPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for GMLSerializerPlugin.
 	 */
 	public GMLXMLSerializerPlugin() {
 		super();
-
+		
 		// TODO perhaps: merge this and
 		// org.graffiti.plugins.io.exporter.gml.GMLReaderPlugin.
 		outputSerializers = new OutputSerializer[1];

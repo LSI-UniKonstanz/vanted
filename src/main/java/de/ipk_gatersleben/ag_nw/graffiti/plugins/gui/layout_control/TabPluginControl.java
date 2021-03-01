@@ -40,7 +40,7 @@ public class TabPluginControl extends InspectorTab implements SelectionListener,
 	 */
 	// JComboBox pluginSelection;
 	private PreferencesDialog pd;
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
@@ -48,7 +48,7 @@ public class TabPluginControl extends InspectorTab implements SelectionListener,
 		// initOldDialog();
 		initNewDialog();
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -57,7 +57,7 @@ public class TabPluginControl extends InspectorTab implements SelectionListener,
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.FILL, border } }; // Rows
 		this.setLayout(new TableLayout(size));
-
+		
 		pd = new PreferencesDialog();
 		GravistoService.getInstance().getMainFrame().getPluginManager().addPluginManagerListener(pd);
 		JPanel newPanel = new JPanel();
@@ -66,7 +66,7 @@ public class TabPluginControl extends InspectorTab implements SelectionListener,
 		this.add(newPanel, "1,1");
 		this.revalidate();
 	}
-
+	
 	/**
 	 * Constructs a <code>PatternTab</code> and sets the title.
 	 */
@@ -75,57 +75,57 @@ public class TabPluginControl extends InspectorTab implements SelectionListener,
 		this.title = "Layout";
 		initComponents();
 	}
-
+	
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void transactionFinished(TransactionEvent e) {
 	}
-
+	
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 	public void sessionChanged(Session s) {
 		if (isVisible() && s != null) {
 			pd.updateSettingsPanel(null, s.getGraph(), ((EditorSession) s).getSelectionModel().getActiveSelection(),
 					null, false);
 		}
 	}
-
+	
 	public void sessionDataChanged(Session s) {
 	}
-
+	
 	@Override
 	public void selectionChanged(SelectionEvent arg0) {
 		if (isVisible() && arg0 != null && MainFrame.getInstance().getActiveSession() != null) {
 			pd.updateSettingsPanel(null, MainFrame.getInstance().getActiveSession().getGraph(), arg0.getSelection(),
 					null, false);
 		}
-
+		
 	}
-
+	
 	@Override
 	public void selectionListChanged(SelectionEvent e) {
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		return v != null && v instanceof GraphView;
 	}
-
+	
 }

@@ -13,18 +13,17 @@ import org.ReleaseInfo;
  * @author Dímitar Garkov
  * @since 2.8.0
  * @version 3.0
- *
  */
 public final class KeggAccess {
-
+	
 	private static final String TITLE = "VANTED Features Initialisation";
-
+	
 	/**
 	 * Static use only.
 	 */
 	private KeggAccess() {
 	}
-
+	
 	/**
 	 * Show the message dialog for enabling KEGG access by accepting the license.
 	 * 
@@ -33,7 +32,7 @@ public final class KeggAccess {
 	public static boolean doEnableKEGGaskUser() {
 		return askForEnablingKEGG() == JOptionPane.YES_OPTION;
 	}
-
+	
 	/**
 	 * Build 3 message dialogs to explain and enable/disable KEGG access.
 	 * 
@@ -51,15 +50,15 @@ public final class KeggAccess {
 				+ "decide for you on using the KEGG-related functions in VANTED. If you choose not to, all other features&emsp;&emsp;<br>"
 				+ "of VANTED are still fully available to you.&emsp;&emsp;<br><br>", TITLE,
 				JOptionPane.INFORMATION_MESSAGE);
-
+		
 		JOptionPane.showMessageDialog(null, "<html><h3>KEGG License Status Evaluation</h3>" + getKEGGLicense(), TITLE,
 				JOptionPane.INFORMATION_MESSAGE);
-
+		
 		int result = JOptionPane.showConfirmDialog(null, "<html><h3>Enable KEGG functions?", TITLE,
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		return result;
 	}
-
+	
 	/**
 	 * Whether the KEGG License agreement has been accepted by the user.
 	 * 
@@ -73,14 +72,15 @@ public final class KeggAccess {
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
-
+		
 		return isAccepted;
 	}
-
+	
 	/**
 	 * Create a new empty file, indicating the state of the KEGG license agreement.
 	 * 
-	 * @param state either "accepted" or "rejected"
+	 * @param state
+	 *           either "accepted" or "rejected"
 	 */
 	public static void createLicenseFile(String state) {
 		try {
@@ -89,12 +89,13 @@ public final class KeggAccess {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	/**
 	 * Deletes any existing file, indicating the state of the KEGG license
 	 * agreement.
 	 * 
-	 * @param state either "accepted" or "rejected"
+	 * @param state
+	 *           either "accepted" or "rejected"
 	 */
 	public static void deleteLicenseFile(String state) {
 		try {
@@ -104,7 +105,7 @@ public final class KeggAccess {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	/**
 	 * Full license available at http://www.genome.jp/kegg/legal.html
 	 * 
@@ -130,7 +131,7 @@ public final class KeggAccess {
 				+ "Pathway Solutions (https://www.pathway.jp) for more details." + "<br><br>"
 				+ "<h4>Reference website: http://www.genome.jp/kegg/legal.html</h4>" + "<br>";
 	}
-
+	
 	/**
 	 * For compatibility reasons, please do not use!
 	 * 

@@ -72,63 +72,63 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
 import de.ipk_gatersleben.ag_nw.graffiti.services.HandlesAlgorithmData;
 
 public class PreferencesDialog extends JDialog implements PluginManagerListener {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4809728583122792088L;
-
+	
 	public static JButton activeStartLayoutButton;
-
+	
 	JMenuBar myMenu;
-
+	
 	JTree myTree;
-
+	
 	DefaultMutableTreeNode rootNode;
 	DefaultMutableTreeNode rootNodeByPlugin;
 	DefaultMutableTreeNode rootNodeAlgorithms;
 	DefaultMutableTreeNode rootNodeThreadSafeAlgorithms;
 	DefaultMutableTreeNode rootNodeSettings;
 	DefaultMutableTreeNode rootNodeScripts;
-
+	
 	HashMap<String, MyPluginTreeNode> knownNodes;
-
+	
 	JPanel settingsPanel;
-
+	
 	private boolean showOnlyLayoutAlgorithms;
 	private boolean showThreadSafeLayoutAlgorithms;
-
+	
 	public ThreadSafeOptions optionsForPlugin = null;
-
+	
 	// public Algorithm selectedAlgorithm;
 	private MyPluginTreeNode lastSelectedMpt;
-
+	
 	@Override
 	protected void dialogInit() {
 		super.dialogInit();
-
+		
 		JMenuItem fileOpenAction = new JMenuItem("Import Settings...");
 		JMenuItem fileSaveAction = new JMenuItem("Export Settings...");
-
+		
 		JMenu fileItem = new JMenu("File");
 		fileItem.add(fileOpenAction);
 		fileItem.add(fileSaveAction);
-
+		
 		myMenu = new JMenuBar();
 		myMenu.add(fileItem);
-
+		
 		this.setJMenuBar(myMenu);
-
+		
 		this.setSize(640, 480);
-
+		
 		Container cp = this.getContentPane();
-
+		
 		initializeGUIforGivenContainer(cp, this, false, true, true, true, true, true, false, null, null, null, false);
-
+		
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
+		
 		addWindowListener(new WindowAdapter() {
-
+			
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (optionsForPlugin != null) {
@@ -139,7 +139,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			}
 		});
 	}
-
+	
 	/**
 	 * @param cp
 	 * @param selection
@@ -150,21 +150,21 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			boolean showCloseButton, boolean showAlgorithms, boolean showSettings, boolean showInteractiveAlgorithms,
 			boolean showScripts, boolean showOnlyLayoutAlgorithms, final Graph graph, final Selection selection,
 			final HandlesAlgorithmData setAlgorithmDataObject, final boolean executeMoveToTopAfterwards) {
-
+		
 		if (showScripts && !ReleaseInfo.getIsAllowedFeature(FeatureSet.SCRIPT_ACCESS))
 			showScripts = false;
-
+		
 		cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
-
+		
 		// cp.add(new JLabel("Select a Plugin"), "1,1");
 		// cp.add(new JLabel("Modify Settings"), "3,1");
-
+		
 		settingsPanel = new JPanel();
 		settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
 		rootNode = new DefaultMutableTreeNode("System Commands");
 		myTree = new JTree(rootNode);
 		// setBackgroundNonSelectionColor()
-
+		
 		// Here we can very well encounter an exception, so just in case to be on the
 		// safe side
 		try {
@@ -181,42 +181,42 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			tcr.setOpaque(true);
 			tcr.setBackgroundNonSelectionColor(Color.YELLOW);
 		}
-
+		
 		knownNodes = new HashMap<String, MyPluginTreeNode>();
 		this.showOnlyLayoutAlgorithms = showOnlyLayoutAlgorithms;
 		this.showThreadSafeLayoutAlgorithms = showInteractiveAlgorithms;
 		myTree.addTreeSelectionListener(new TreeSelectionListener() {
-
+			
 			public void valueChanged(TreeSelectionEvent e) {
 				processTreeSelectionEvent(e);
-
+				
 			}
-
+			
 			/**
 			 * @param e
 			 */
 			private void processTreeSelectionEvent(TreeSelectionEvent e) {
-
+				
 				if (optionsForPlugin != null) {
 					optionsForPlugin.setAbortWanted(true);
 				}
-
+				
 				if (e.getNewLeadSelectionPath() == null || e.getNewLeadSelectionPath().getLastPathComponent() == null)
 					return;
-
+				
 				PreferencesDialog.activeStartLayoutButton = null;
-
+				
 				MutableTreeNode mt = (MutableTreeNode) e.getNewLeadSelectionPath().getLastPathComponent();
 				if (mt instanceof MyPluginTreeNode) {
 					lastSelectedMpt = (MyPluginTreeNode) mt;
-
+					
 					updateSettingsPanel(thisDialog, graph, selection, setAlgorithmDataObject,
 							executeMoveToTopAfterwards);
 				}
 			}
-
+			
 		});
-
+		
 		JSplitPane mainComp;
 		// myTree.setOpaque(false);
 		JScrollPane sp = new JScrollPane(myTree);
@@ -228,11 +228,11 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 		mainComp.setDividerLocation(200); // 175
 		mainComp.setDividerSize(7);
 		mainComp.setOneTouchExpandable(true);
-
+		
 		mainComp.setBorder(null);
-
+		
 		cp.add(mainComp);
-
+		
 		rootNodeSettings = new DefaultMutableTreeNode("Settings");
 		rootNodeByPlugin = new DefaultMutableTreeNode("Dependencies");
 		if (showOnlyLayoutAlgorithms) {
@@ -245,9 +245,9 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			rootNodeThreadSafeAlgorithms = new DefaultMutableTreeNode("Interactive Algorithms");
 		}
 		rootNodeScripts = new DefaultMutableTreeNode("Script Commands");
-
+		
 		// rootNode.add(rootNodeByPlugin);
-
+		
 		if (showScripts)
 			rootNode.add(rootNodeScripts);
 		if (showAlgorithms && !showOnlyLayoutAlgorithms)
@@ -256,11 +256,11 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			rootNode.add(rootNodeThreadSafeAlgorithms);
 		if (showSettings)
 			rootNode.add(rootNodeSettings);
-
+		
 		final JMenu scriptContextMenu = new JMenu();
 		Timer scanForScripts = new Timer(20000, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				
 				// update settings
 				addSettings();
 				scriptContextMenu.removeAll();
@@ -285,7 +285,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 				try {
 					myTree.updateUI();
 				} catch (Exception e) {
-
+					
 				}
 			}
 		});
@@ -304,7 +304,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			cp.add(closeButton);
 		}
 		cp.validate();
-
+		
 		Collection<?> loadedPlugins = GravistoService.getInstance().getMainFrame().getPluginManager()
 				.getPluginEntries();
 		for (Iterator<?> it = loadedPlugins.iterator(); it.hasNext();) {
@@ -314,19 +314,19 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			}
 		}
 	}
-
+	
 	private JComponent getDependencyPanel(Dependency dep) {
 		return new JLabel(dep.getName() + " (" + dep.getMain() + ")");
 	}
-
+	
 	public void updateSettingsPanel(final JDialog thisDialog, final Graph graph, final Selection selection,
 			final HandlesAlgorithmData setAlgorithmDataObject, final boolean executeMoveToTopAfterwards) {
-
+		
 		if (lastSelectedMpt == null)
 			return;
-
+		
 		Object data = lastSelectedMpt.getUserObject();
-
+		
 		settingsPanel.removeAll();
 		settingsPanel.repaint();
 		if (lastSelectedMpt.getClassType() == BSHscriptMenuEntry.class) {
@@ -355,7 +355,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			ThreadSafeAlgorithm alg = (ThreadSafeAlgorithm) data;
 			JPanel pluginContent = new JPanel();
 			optionsForPlugin = new ThreadSafeOptions();
-
+			
 			if (alg.setControlInterface(optionsForPlugin, pluginContent)) {
 				JScrollPane sp = new JScrollPane(pluginContent);
 				sp.setBorder(null);
@@ -365,7 +365,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 		} else if (lastSelectedMpt.getClassType() == Algorithm.class) {
 			Algorithm alg = (Algorithm) data;
 			// selectedAlgorithm = alg;
-
+			
 			initAlgorithmPreferencesPanel(thisDialog, alg, graph, selection, setAlgorithmDataObject,
 					executeMoveToTopAfterwards);
 		} else if (lastSelectedMpt.getClassType() == OptionPane.class) {
@@ -376,29 +376,29 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			settingsPanel.validate();
 		}
 	}
-
+	
 	public void initAlgorithmPreferencesPanel(final JDialog thisDialog, final Algorithm alg, final Graph graph,
 			Selection sele, final HandlesAlgorithmData setAlgorithmDataObject,
 			final boolean executeMoveToTopAfterwards) {
 		// settingsPanel.add(new JLabel("Algorithm selection: "+alg.getName()));
 		settingsPanel.removeAll();
-
+		
 		JPanel progressAndStatus = new JPanel();
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED,
 						TableLayoutConstants.PREFERRED, border } }; // Rows
-
+		
 		progressAndStatus.setLayout(new TableLayout(size));
-
+		
 		JLabel info = new JLabel(HTMLScaleSupport.scaleText(alg.getDescription()));
 		info.setBorder(BorderFactory.createLoweredBevelBorder());
 		info.setOpaque(false);
-
+		
 		if (alg.getDescription() != null && alg.getDescription().length() > 0)
 			progressAndStatus.add(info, "1,3");
 		EditComponentManager editComponentManager = MainFrame.getInstance().getEditComponentManager();
-
+		
 		ParameterEditPanel paramPanel = null;
 		alg.attach(graph, sele);
 		boolean canNotStart = false;
@@ -483,27 +483,25 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 		});
 		runButton.setMinimumSize(new Dimension(10, 10));
 		progressAndStatus.add(runButton, "1,1");
-
+		
 		progressAndStatus.validate();
-
+		
 		JScrollPane sp = new JScrollPane(progressAndStatus);
 		sp.setBorder(null);
-
+		
 		settingsPanel.add(sp);
 		settingsPanel.validate();
 	}
-
+	
 	@Override
 	public String getTitle() {
 		return "Plugin Manager";
 	}
-
+	
 	/**
-	 * 
 	 * @param alg
 	 * @param graph
 	 * @param selection
-	 * 
 	 * @vanted.revision 2.7.0 Undoable Algorithm support
 	 */
 	void runAlgorithm(final Algorithm alg, Graph graph, Selection selection) {
@@ -513,16 +511,16 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 		alg.execute();
 		GravistoService.processUndoableAlgorithm(alg);
 	}
-
+	
 	@Override
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
-
+		
 		final String todoReplaceString = "DEPENDENCY NOT SOLVED:";
-
+		
 		Collection<?> pl = GravistoService.getInstance().getMainFrame().getPluginManager().getPluginEntries();
-
+		
 		PluginEntry pluginEntry = null;
-
+		
 		for (Iterator<?> it = pl.iterator(); it.hasNext();) {
 			PluginEntry entry = (PluginEntry) it.next();
 			if (entry.getPlugin() == plugin) {
@@ -543,18 +541,18 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 		rootNodeByPlugin.add(newNode);
 		knownNodes.put(pluginEntry.getDescription().getMain(), newNode);
 		findNotResolvedDependencies(todoReplaceString);
-
+		
 		addDependencies(todoReplaceString, pluginEntry, newNode);
-
+		
 		addAlgorithms(pluginEntry, newNode, showOnlyLayoutAlgorithms, showThreadSafeLayoutAlgorithms);
-
+		
 		addSettings();
-
+		
 		synchronized (rootNode) {
-
+			
 			SortJTree.sortJTree(rootNode, true);
 		}
-
+		
 		myTree.expandRow(0);
 		try {
 			myTree.updateUI();
@@ -562,7 +560,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			// ignore for now
 		}
 	}
-
+	
 	/**
 	 * @param todoReplaceString
 	 * @param pluginEntry
@@ -571,7 +569,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 	private void addDependencies(final String todoReplaceString, PluginEntry pluginEntry, MyPluginTreeNode newNode) {
 		MyPluginTreeNode depsNode = new MyPluginTreeNode("Dependencies", pluginEntry.getDescription().getDependencies(),
 				Dependency.class);
-
+		
 		List<?> deps = pluginEntry.getDescription().getDependencies();
 		if (!deps.isEmpty()) {
 			newNode.add(depsNode);
@@ -588,7 +586,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			}
 		}
 	}
-
+	
 	/**
 	 * @param pluginEntry
 	 * @param newNode
@@ -604,7 +602,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			}
 		}
 	}
-
+	
 	/**
 	 * @param pluginEntry
 	 * @param newNode
@@ -635,7 +633,7 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			}
 		}
 	}
-
+	
 	/**
 	 * @param todoReplaceString
 	 */

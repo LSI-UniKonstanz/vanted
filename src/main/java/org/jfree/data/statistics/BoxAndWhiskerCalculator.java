@@ -40,7 +40,7 @@ import java.util.List;
  * list of outlier values...all from an arbitrary list of Number objects.
  */
 public abstract class BoxAndWhiskerCalculator {
-
+	
 	/**
 	 * Calculates the statistics required for a {@link BoxAndWhiskerItem}.
 	 * <P>
@@ -48,32 +48,32 @@ public abstract class BoxAndWhiskerCalculator {
 	 * are ignored. Likewise, <code>null</code> values are ignored.
 	 * 
 	 * @param values
-	 *            A list of numbers (a <code>null</code> list is not permitted).
+	 *           A list of numbers (a <code>null</code> list is not permitted).
 	 * @return Box-and-whisker statistics.
 	 */
 	public static BoxAndWhiskerItem calculateBoxAndWhiskerStatistics(final List values) {
-
+		
 		Collections.sort(values);
-
+		
 		final double mean = Statistics.calculateMean(values);
 		final double median = Statistics.calculateMedian(values, false);
 		final double q1 = calculateQ1(values);
 		final double q3 = calculateQ3(values);
-
+		
 		final double interQuartileRange = q3 - q1;
-
+		
 		final double upperOutlierThreshold = q3 + (interQuartileRange * 1.5);
 		final double lowerOutlierThreshold = q1 - (interQuartileRange * 1.5);
-
+		
 		final double upperFaroutThreshold = q3 + (interQuartileRange * 2.0);
 		final double lowerFaroutThreshold = q1 - (interQuartileRange * 2.0);
-
+		
 		double minRegularValue = Double.POSITIVE_INFINITY;
 		double maxRegularValue = Double.NEGATIVE_INFINITY;
 		double minOutlier = Double.POSITIVE_INFINITY;
 		double maxOutlier = Double.NEGATIVE_INFINITY;
 		final List outliers = new ArrayList();
-
+		
 		final Iterator iterator = values.iterator();
 		while (iterator.hasNext()) {
 			final Object object = iterator.next();
@@ -102,23 +102,23 @@ public abstract class BoxAndWhiskerCalculator {
 						maxRegularValue = Math.max(maxRegularValue, value);
 					}
 				}
-
+				
 			}
 		}
 		minOutlier = Math.min(minOutlier, minRegularValue);
 		maxOutlier = Math.max(maxOutlier, maxRegularValue);
-
+		
 		return new BoxAndWhiskerItem(Double.valueOf(mean), Double.valueOf(median), Double.valueOf(q1), Double.valueOf(q3),
 				Double.valueOf(minRegularValue), Double.valueOf(maxRegularValue), Double.valueOf(minOutlier),
 				Double.valueOf(maxOutlier), outliers);
-
+		
 	}
-
+	
 	/**
 	 * Calculates the first quartile for a list of numbers in ascending order.
 	 * 
 	 * @param values
-	 *            the numbers in ascending order.
+	 *           the numbers in ascending order.
 	 * @return The first quartile.
 	 */
 	public static double calculateQ1(final List values) {
@@ -134,16 +134,16 @@ public abstract class BoxAndWhiskerCalculator {
 			} else {
 				result = Statistics.calculateMedian(values, 0, count / 2);
 			}
-
+			
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Calculates the third quartile for a list of numbers in ascending order.
 	 * 
 	 * @param values
-	 *            the list of values.
+	 *           the list of values.
 	 * @return The third quartile.
 	 */
 	public static double calculateQ3(final List values) {
@@ -159,24 +159,24 @@ public abstract class BoxAndWhiskerCalculator {
 			} else {
 				result = Statistics.calculateMedian(values, count / 2 + 1, count - 1);
 			}
-
+			
 		}
 		return result;
 	}
-
+	
 	// // DEPRECATED CODE
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the mean of a list of numbers.
 	 * 
 	 * @param values
-	 *            a list of numbers.
+	 *           a list of numbers.
 	 * @return The mean.
 	 * @deprecated This method has been moved to the {@link Statistics} class.
 	 */
 	public static double calculateMean(final List values) {
-
+		
 		double result = Double.NaN;
 		int count = 0;
 		double total = 0.0;
@@ -193,37 +193,37 @@ public abstract class BoxAndWhiskerCalculator {
 			result = total / count;
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Calculates the median for a list of values (<code>Number</code> objects) that
 	 * are in ascending order.
 	 * 
 	 * @param values
-	 *            the values in ascending order.
+	 *           the values in ascending order.
 	 * @return The median.
 	 * @deprecated Moved to the {@link Statistics} class.
 	 */
 	public static double calculateMedian(final List values) {
 		return calculateMedian(values, 0, values.size() - 1);
 	}
-
+	
 	/**
 	 * Calculates the median for a sublist within a list of values (Number objects)
 	 * that are in ascending order.
 	 * 
 	 * @param values
-	 *            the values in ascending order.
+	 *           the values in ascending order.
 	 * @param start
-	 *            the start index.
+	 *           the start index.
 	 * @param end
-	 *            the end index.
+	 *           the end index.
 	 * @return The median.
 	 * @deprecated Moved to the {@link Statistics} class.
 	 */
 	public static double calculateMedian(final List values, final int start, final int end) {
-
+		
 		double result = Double.NaN;
 		final int count = end - start + 1;
 		if (count > 0) {
@@ -242,7 +242,7 @@ public abstract class BoxAndWhiskerCalculator {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 }

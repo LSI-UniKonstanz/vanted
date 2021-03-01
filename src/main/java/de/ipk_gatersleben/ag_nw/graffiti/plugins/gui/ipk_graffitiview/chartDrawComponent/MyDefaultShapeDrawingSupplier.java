@@ -10,15 +10,14 @@ import org.jfree.chart.plot.DefaultDrawingSupplier;
 import org.jfree.chart.plot.DrawingSupplier;
 
 public class MyDefaultShapeDrawingSupplier extends DefaultDrawingSupplier implements DrawingSupplier {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2133112189697392220L;
-
+	
 	public MyDefaultShapeDrawingSupplier(float shapeSize) {
 		DEFAULT_SHAPE_SEQUENCE = createStandardSeriesShapes(shapeSize);
 	}
-
-
+	
 }

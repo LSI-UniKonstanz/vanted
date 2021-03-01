@@ -6,26 +6,26 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ExperimentDataAnnotationManager {
-
+	
 	private static ExperimentDataAnnotationManager instance;
-
+	
 	private ExperimentDataAnnotationManager() {
 		super();
 	}
-
+	
 	public static ExperimentDataAnnotationManager getInstance() {
 		if (instance == null)
 			instance = new ExperimentDataAnnotationManager();
 		return instance;
 	}
-
+	
 	public HashMap<File, ExperimentDataAnnotation> getExperimentAnnotation(
 			List<ExperimentDataProcessor> optUseTheseProcessors, Collection<File> files) {
 		HashMap<File, ExperimentDataAnnotation> res = new HashMap<File, ExperimentDataAnnotation>();
-
+		
 		if (files == null)
 			return res;
-
+		
 		Collection<ExperimentDataProcessor> processors = optUseTheseProcessors;
 		if (processors == null)
 			processors = ExperimentDataProcessingManager.getExperimentDataProcessors();
@@ -50,7 +50,7 @@ public class ExperimentDataAnnotationManager {
 			if (ea != null)
 				res.put(f, ea);
 		}
-
+		
 		return res;
 	}
 }

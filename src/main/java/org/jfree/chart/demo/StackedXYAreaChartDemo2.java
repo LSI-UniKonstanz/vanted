@@ -44,12 +44,12 @@ import org.jfree.ui.RefineryUtilities;
  * while investigating bug report 882890.
  */
 public class StackedXYAreaChartDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public StackedXYAreaChartDemo2(final String title) {
 		super(title);
@@ -59,43 +59,43 @@ public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return a sample dataset.
 	 */
 	private TableXYDataset createDataset() {
-
+		
 		final DefaultTableXYDataset dataset = new DefaultTableXYDataset();
-
+		
 		final XYSeries s1 = new XYSeries("Series 1", true, false);
 		s1.add(5.0, 5.0);
 		s1.add(10.0, 15.5);
 		s1.add(15.0, 9.5);
 		s1.add(20.0, 7.5);
 		dataset.addSeries(s1);
-
+		
 		final XYSeries s2 = new XYSeries("Series 2", true, false);
 		s2.add(5.0, 5.0);
 		s2.add(10.0, 15.5);
 		s2.add(15.0, 9.5);
 		s2.add(20.0, 3.5);
 		dataset.addSeries(s2);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset for the chart.
+	 *           the dataset for the chart.
 	 * @return a sample chart.
 	 */
 	private JFreeChart createChart(final TableXYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createStackedXYAreaChart("Stacked XY Area Chart Demo 2", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
@@ -106,9 +106,9 @@ public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 				false // urls
 		);
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -119,12 +119,12 @@ public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final StackedXYAreaChartDemo2 demo = new StackedXYAreaChartDemo2("Stacked XY Area Chart Demo 2");
@@ -132,5 +132,5 @@ public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 	}
-
+	
 }

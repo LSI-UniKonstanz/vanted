@@ -47,17 +47,17 @@ import org.jfree.util.PublicCloneable;
  * @author Richard Atkinson
  */
 public class CustomXYToolTipGenerator implements XYToolTipGenerator, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** Storage for the tooltip lists. */
 	private List toolTipSeries = new java.util.ArrayList();
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public CustomXYToolTipGenerator() {
 		super();
 	}
-
+	
 	/**
 	 * Returns the number of tool tip lists stored by the renderer.
 	 * 
@@ -66,16 +66,16 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator, Cloneable, 
 	public int getListCount() {
 		return this.toolTipSeries.size();
 	}
-
+	
 	/**
 	 * Returns the number of tool tips in a given list.
 	 * 
 	 * @param list
-	 *            the list index (zero based).
+	 *           the list index (zero based).
 	 * @return The tooltip count.
 	 */
 	public int getToolTipCount(int list) {
-
+		
 		int result = 0;
 		List tooltips = (List) this.toolTipSeries.get(list);
 		if (tooltips != null) {
@@ -83,20 +83,20 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator, Cloneable, 
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the tool tip text for an item.
 	 * 
 	 * @param series
-	 *            the series index.
+	 *           the series index.
 	 * @param item
-	 *            the item index.
+	 *           the item index.
 	 * @return The tool tip text.
 	 */
 	public String getToolTipText(int series, int item) {
-
+		
 		String result = null;
-
+		
 		if (series < getListCount()) {
 			List tooltips = (List) this.toolTipSeries.get(series);
 			if (tooltips != null) {
@@ -105,72 +105,72 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator, Cloneable, 
 				}
 			}
 		}
-
+		
 		return result;
 	}
-
+	
 	/**
 	 * Adds a list of tooltips for a series.
 	 * 
 	 * @param toolTips
-	 *            the list of tool tips.
+	 *           the list of tool tips.
 	 */
 	public void addToolTipSeries(List toolTips) {
 		this.toolTipSeries.add(toolTips);
 	}
-
+	
 	/**
 	 * Generates a tool tip text item for a particular item within a series.
 	 * 
 	 * @param data
-	 *            the dataset (ignored in this implementation).
+	 *           the dataset (ignored in this implementation).
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the tooltip text.
 	 */
 	public String generateToolTip(XYDataset data, int series, int item) {
-
+		
 		return getToolTipText(series, item);
-
+		
 	}
-
+	
 	/**
 	 * Returns an independent copy of the generator.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if cloning is not supported.
+	 *            if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		CustomXYToolTipGenerator clone = (CustomXYToolTipGenerator) super.clone();
-
+		
 		if (this.toolTipSeries != null) {
 			clone.toolTipSeries = new java.util.ArrayList(this.toolTipSeries);
 		}
-
+		
 		return clone;
-
+		
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if (o instanceof CustomXYToolTipGenerator) {
 			CustomXYToolTipGenerator generator = (CustomXYToolTipGenerator) o;
 			boolean result = true;
@@ -187,9 +187,9 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator, Cloneable, 
 			}
 			return result;
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 }

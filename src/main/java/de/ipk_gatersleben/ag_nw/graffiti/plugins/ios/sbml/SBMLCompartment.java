@@ -14,42 +14,42 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.exporters.sbml.SBML_SBase_W
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_SBase_Reader;
 
 public class SBMLCompartment {
-
+	
 	/**
 	 * Intern graph object
 	 */
 	Graph g;
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Writer attWriter;
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Reader attReader;
-
+	
 	/**
 	 * intern representation of the headline
 	 */
 	String internHeadline;
-
+	
 	/**
 	 * The user will see the headline this way
 	 */
 	String presentedHeadline;
-
+	
 	/**
 	 * The hidden compartment attributes are stored here
 	 */
 	HashSet<String> discardedRowIDs;
-
+	
 	/**
 	 * Constructor. Initializes the graph. Use in SBML_Compartment_Reader.java
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 */
 	public SBMLCompartment(Graph g, String internHeadline, String presentedHeadline) {
 		this.g = g;
@@ -58,19 +58,19 @@ public class SBMLCompartment {
 		this.presentedHeadline = presentedHeadline;
 		this.internHeadline = internHeadline;
 		initCompartmentNideIDs();
-
+		
 		Collection<String> colDiscardedRowIDs = DefaultEditPanel.getDiscardedRowIDs();
 		discardedRowIDs = new HashSet<String>(colDiscardedRowIDs);
 		DefaultEditPanel.setDiscardedRowIDs(discardedRowIDs);
 	}
-
+	
 	/**
 	 * Constructor. Initializes the graph. Use in SBML_Compartmetn_Writer.java
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            the intern headline of the current Compartment
+	 *           the intern headline of the current Compartment
 	 */
 	public SBMLCompartment(Graph g, String internHeadline) {
 		this.g = g;
@@ -78,12 +78,12 @@ public class SBMLCompartment {
 		attReader = new SBML_SBase_Reader();
 		this.internHeadline = internHeadline;
 	}
-
+	
 	public void countCompartments() {
 		int i = 0;
-
+		
 	}
-
+	
 	public Compartment getCompartment() {
 		Compartment comartment = new Compartment();
 		comartment.setId(getID());
@@ -94,7 +94,7 @@ public class SBMLCompartment {
 		comartment.setConstant(getConstant());
 		return comartment;
 	}
-
+	
 	public Boolean isSetID() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.COMPARTMENT_ID).toString())) {
@@ -103,7 +103,7 @@ public class SBMLCompartment {
 			return false;
 		}
 	}
-
+	
 	public String getID() {
 		if (isSetID()) {
 			return (String) attWriter.getAttribute(g, internHeadline,
@@ -112,21 +112,21 @@ public class SBMLCompartment {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void setID(String id) {
 		if (!id.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.COMPARTMENT_ID).toString(), id);
 		}
 	}
-
+	
 	public void setName(String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.COMPARTMENT_NAME).toString(), name);
 		}
 	}
-
+	
 	public Boolean isSetName() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.COMPARTMENT_NAME).toString())) {
@@ -135,7 +135,7 @@ public class SBMLCompartment {
 			return false;
 		}
 	}
-
+	
 	public String getName() {
 		if (isSetName()) {
 			return (String) attWriter.getAttribute(g, internHeadline,
@@ -144,7 +144,7 @@ public class SBMLCompartment {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void setSpatialDimensions(Double spatialDimensions) {
 		if (spatialDimensions != null) {
 			AttributeHelper.setAttribute(g, internHeadline,
@@ -152,7 +152,7 @@ public class SBMLCompartment {
 					spatialDimensions);
 		}
 	}
-
+	
 	public Boolean isSetSpatialDimensions() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.SPATIAL_DIMENSIONS).toString())) {
@@ -161,7 +161,7 @@ public class SBMLCompartment {
 			return false;
 		}
 	}
-
+	
 	public Double getSpatialDimensions() {
 		if (isSetSpatialDimensions()) {
 			return (Double) attWriter.getAttribute(g, internHeadline,
@@ -170,14 +170,14 @@ public class SBMLCompartment {
 			return null;
 		}
 	}
-
+	
 	public void setSize(Double size) {
 		if (size != null) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.SIZE).toString(), Double.toString(size));
 		}
 	}
-
+	
 	public Boolean isSetSize() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.SIZE).toString())) {
@@ -186,7 +186,7 @@ public class SBMLCompartment {
 			return false;
 		}
 	}
-
+	
 	public Double getSize() {
 		if (isSetSize()) {
 			return Double.parseDouble((String) attWriter.getAttribute(g, internHeadline,
@@ -195,14 +195,14 @@ public class SBMLCompartment {
 			return null;
 		}
 	}
-
+	
 	public void setUnits(String units) {
 		if (!units.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.UNITS).toString(), units);
 		}
 	}
-
+	
 	public Boolean isSetUnits() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.UNITS).toString())) {
@@ -211,7 +211,7 @@ public class SBMLCompartment {
 			return false;
 		}
 	}
-
+	
 	public String getUnits() {
 		if (isSetUnits()) {
 			return (String) attWriter.getAttribute(g, internHeadline,
@@ -220,14 +220,14 @@ public class SBMLCompartment {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void setConstant(Boolean constant) {
 		if (constant != null) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.CONSTANT).toString(), constant);
 		}
 	}
-
+	
 	public Boolean isSetConstant() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.CONSTANT).toString())) {
@@ -236,7 +236,7 @@ public class SBMLCompartment {
 			return false;
 		}
 	}
-
+	
 	public Boolean getConstant() {
 		if (isSetConstant()) {
 			return (Boolean) attWriter.getAttribute(g, internHeadline,
@@ -245,52 +245,52 @@ public class SBMLCompartment {
 			return false;
 		}
 	}
-
+	
 	public void setMetaID(String metaID) {
 		if (!metaID.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.META_ID).toString(), metaID);
 		}
 	}
-
+	
 	public void setSBOTerm(String sboTerm) {
 		if (!sboTerm.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(), sboTerm);
 		}
 	}
-
+	
 	public void setOutside(String outside) {
 		if (!outside.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.OUTSIDE).toString(), outside);
 		}
 	}
-
+	
 	public void setNotes(String notes, XMLNode notesObj) {
 		if (!notes.isEmpty()) {
 			attReader.addNotes(notesObj, notes, g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString());
 		}
-
+		
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString());
 	}
-
+	
 	public void setAnnotation(Annotation annotation) {
 		AttributeHelper.setAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.ANNOTATION).toString(), annotation);
-
+		
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.ANNOTATION).toString());
 	}
-
+	
 	public void setNonRDFAnnotation(XMLNode nonRDFAnnotation) {
 		AttributeHelper.setAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION).toString(),
 				nonRDFAnnotation);
-
+		
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION).toString());
 	}
-
+	
 	/**
 	 * Sets the nice id
 	 */
@@ -316,7 +316,7 @@ public class SBMLCompartment {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
 	}
-
+	
 }
 
 /*

@@ -18,20 +18,19 @@ package org.graffiti.attributes;
  */
 public class NoCollectionAttributeException extends RuntimeException {
 	// ~ Constructors ===========================================================
-
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 248160779981673909L;
-
+	
 	/**
 	 * Constructs a <code>NoCollectionAttributeException</code> with the specified
 	 * detail message.
 	 * 
 	 * @param msg
-	 *            The detail message which is saved for later retrieval by the
-	 *            <code>getMessage()</code> method.
+	 *           The detail message which is saved for later retrieval by the
+	 *           <code>getMessage()</code> method.
 	 */
 	NoCollectionAttributeException(String msg) {
 		super(msg);

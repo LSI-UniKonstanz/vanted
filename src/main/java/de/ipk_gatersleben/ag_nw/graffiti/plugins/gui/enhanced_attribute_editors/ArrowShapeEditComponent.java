@@ -26,13 +26,13 @@ import org.graffiti.plugin.editcomponent.ComboBoxEditComponent;
  */
 public class ArrowShapeEditComponent extends ComboBoxEditComponent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor sets the correct entries of the combo box. And creates a new
 	 * combo box.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ArrowShapeEditComponent(Displayable disp) {
 		super(disp);
@@ -41,19 +41,19 @@ public class ArrowShapeEditComponent extends ComboBoxEditComponent {
 				"org.graffiti.plugins.views.defaults.CircleNodeShape",
 				"org.graffiti.plugins.views.defaults.EllipseNodeShape" };
 		this.comboBox = new JComboBox<Object>(this.comboText) {
-
+			
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = -1469217374850031910L;
-
+			
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-
+			
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();

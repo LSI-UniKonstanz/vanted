@@ -56,28 +56,28 @@ import org.jfree.ui.RefineryUtilities;
  * lines) at each data point.
  */
 public class DualAxisDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to create a time series chart with
 	 * dual axes.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public DualAxisDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		// create a title...
 		final String chartTitle = "Dual Axis Demo 2";
 		final XYDataset dataset = createDataset1();
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Date", "Price Per Unit", dataset, true,
 				true, false);
-
+		
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setDisplaySeriesShapes(true);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		final NumberAxis axis2 = new NumberAxis("Secondary");
 		axis2.setAutoRangeIncludesZero(false);
@@ -91,29 +91,29 @@ public class DualAxisDemo2 extends ApplicationFrame {
 			rr.setPlotShapes(true);
 			rr.setShapesFilled(true);
 		}
-
+		
 		final StandardXYItemRenderer renderer2 = new StandardXYItemRenderer();
 		renderer2.setSeriesPaint(0, Color.black);
 		renderer2.setPlotShapes(true);
 		renderer.setToolTipGenerator(StandardXYToolTipGenerator.getTimeSeriesInstance());
 		plot.setRenderer(1, renderer2);
-
+		
 		final DateAxis axis = (DateAxis) plot.getDomainAxis();
 		axis.setDateFormatOverride(new SimpleDateFormat("MMM-yyyy"));
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private XYDataset createDataset1() {
-
+		
 		final TimeSeries s1 = new TimeSeries("Random Data 1", Month.class);
 		s1.add(new Month(2, 2001), 181.8);
 		s1.add(new Month(3, 2001), 167.3);
@@ -133,21 +133,21 @@ public class DualAxisDemo2 extends ApplicationFrame {
 		s1.add(new Month(5, 2002), 139.8);
 		s1.add(new Month(6, 2002), 137.0);
 		s1.add(new Month(7, 2002), 132.8);
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(s1);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private XYDataset createDataset2() {
-
+		
 		final TimeSeries s2 = new TimeSeries("Random Data 2", Month.class);
 		s2.add(new Month(2, 2001), 429.6);
 		s2.add(new Month(3, 2001), 323.2);
@@ -167,14 +167,14 @@ public class DualAxisDemo2 extends ApplicationFrame {
 		s2.add(new Month(5, 2002), 711.6);
 		s2.add(new Month(6, 2002), 708.8);
 		s2.add(new Month(7, 2002), 501.6);
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(s2);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -185,20 +185,20 @@ public class DualAxisDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final DualAxisDemo2 demo = new DualAxisDemo2("Dual Axis Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

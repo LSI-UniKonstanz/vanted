@@ -14,7 +14,7 @@ import org.graffiti.plugin.io.OutputSerializer;
 public class PNTSerializerPlugin extends GenericPluginAdapter {
 	public PNTSerializerPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.EXTENDED_FILE_FORMAT)) {
-
+			
 			this.outputSerializers = new OutputSerializer[] { new PNTSerializer() };
 			// this.inputSerializers = new InputSerializer[] {
 			// new PNTReader()

@@ -26,24 +26,24 @@ import org.graffiti.graph.Edge;
  */
 public class EdgeEvent extends AbstractEvent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5218501473013545622L;
-
+	
 	/**
 	 * Constructs an edge event object with the specified source component.
 	 * 
 	 * @param edge
-	 *            the edge that originated the event.
+	 *           the edge that originated the event.
 	 */
 	public EdgeEvent(Edge edge) {
 		super(edge);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the originator of the event.
 	 * 
@@ -52,7 +52,7 @@ public class EdgeEvent extends AbstractEvent {
 	public Edge getEdge() {
 		return (Edge) getSource();
 	}
-
+	
 	public Attributable getAttributeable() {
 		if (getEdge() != null)
 			return getEdge();

@@ -38,21 +38,21 @@ import org.jfree.chart.Legend;
  * legend.
  */
 public class LegendChangeEvent extends ChartChangeEvent {
-
+	
 	/** The chart legend that generated the event. */
 	private Legend legend;
-
+	
 	/**
 	 * Creates a new LegendChangeEvent.
 	 * 
 	 * @param legend
-	 *            the legend that generated the event.
+	 *           the legend that generated the event.
 	 */
 	public LegendChangeEvent(Legend legend) {
 		super(legend);
 		this.legend = legend;
 	}
-
+	
 	/**
 	 * Returns the legend that generated the event.
 	 * 
@@ -61,5 +61,5 @@ public class LegendChangeEvent extends ChartChangeEvent {
 	public Legend getLegend() {
 		return this.legend;
 	}
-
+	
 }

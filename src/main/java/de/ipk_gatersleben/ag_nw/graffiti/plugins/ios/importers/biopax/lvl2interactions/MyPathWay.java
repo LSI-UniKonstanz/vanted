@@ -11,16 +11,15 @@ import org.biopax.paxtools.model.level2.pathwayComponent;
  * data structure
  * 
  * @author ricardo
- * 
  */
 public class MyPathWay {
-
+	
 	private Set<pathwayComponent> components;
 	private String RDFId;
 	private String Name;
 	private boolean superPathWay;
 	private Set<MyPathWay> subPathWays;
-
+	
 	public MyPathWay(pathway p) {
 		superPathWay = false;
 		this.RDFId = p.getRDFId();
@@ -43,23 +42,23 @@ public class MyPathWay {
 			}
 		}
 	}
-
+	
 	public Set<MyPathWay> getSubPathWays() {
 		return subPathWays;
 	}
-
+	
 	public boolean isSuperPathWay() {
 		return superPathWay;
 	}
-
+	
 	public String getRDFId() {
 		return RDFId;
 	}
-
+	
 	public String getDisplayName() {
 		return Name;
 	}
-
+	
 	public Set<pathwayComponent> getPathwayComponents() {
 		return components;
 	}

@@ -42,43 +42,43 @@ import org.jfree.util.ObjectUtils;
  * A base class for creating item label generators.
  */
 public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
-
+	
 	/** The item label format string. */
 	private String formatString;
-
+	
 	/** A number formatter for the x value. */
 	private NumberFormat xFormat;
-
+	
 	/** A date formatter for the x value. */
 	private DateFormat xDateFormat;
-
+	
 	/** A formatter for the y value. */
 	private NumberFormat yFormat;
-
+	
 	/** A date formatter for the y value. */
 	private DateFormat yDateFormat;
-
+	
 	/**
 	 * Creates an item label generator using default number formatters.
 	 */
 	protected AbstractXYItemLabelGenerator() {
 		this("{2}", NumberFormat.getNumberInstance(), NumberFormat.getNumberInstance());
 	}
-
+	
 	/**
 	 * Creates an item label generator using the specified number formatters.
 	 * 
 	 * @param formatString
-	 *            the item label format string (<code>null</code> not permitted).
+	 *           the item label format string (<code>null</code> not permitted).
 	 * @param xFormat
-	 *            the format object for the x values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the x values (<code>null</code> not
+	 *           permitted).
 	 * @param yFormat
-	 *            the format object for the y values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the y values (<code>null</code> not
+	 *           permitted).
 	 */
 	protected AbstractXYItemLabelGenerator(String formatString, NumberFormat xFormat, NumberFormat yFormat) {
-
+		
 		if (formatString == null) {
 			throw new IllegalArgumentException("Null 'formatString' argument.");
 		}
@@ -91,46 +91,46 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 		this.formatString = formatString;
 		this.xFormat = xFormat;
 		this.yFormat = yFormat;
-
+		
 	}
-
+	
 	/**
 	 * Creates an item label generator using the specified number formatters.
 	 * 
 	 * @param formatString
-	 *            the item label format string (<code>null</code> not permitted).
+	 *           the item label format string (<code>null</code> not permitted).
 	 * @param xFormat
-	 *            the format object for the x values (<code>null</code> permitted).
+	 *           the format object for the x values (<code>null</code> permitted).
 	 * @param yFormat
-	 *            the format object for the y values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the y values (<code>null</code> not
+	 *           permitted).
 	 */
 	protected AbstractXYItemLabelGenerator(String formatString, DateFormat xFormat, NumberFormat yFormat) {
-
+		
 		this(formatString, NumberFormat.getInstance(), yFormat);
 		this.xDateFormat = xFormat;
-
+		
 	}
-
+	
 	/**
 	 * Creates an item label generator using the specified number formatters.
 	 * 
 	 * @param formatString
-	 *            the item label format string (<code>null</code> not permitted).
+	 *           the item label format string (<code>null</code> not permitted).
 	 * @param xFormat
-	 *            the format object for the x values (<code>null</code> permitted).
+	 *           the format object for the x values (<code>null</code> permitted).
 	 * @param yFormat
-	 *            the format object for the y values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the y values (<code>null</code> not
+	 *           permitted).
 	 */
 	protected AbstractXYItemLabelGenerator(String formatString, DateFormat xFormat, DateFormat yFormat) {
-
+		
 		this(formatString, NumberFormat.getInstance(), NumberFormat.getInstance());
 		this.xDateFormat = xFormat;
 		this.yDateFormat = yFormat;
-
+		
 	}
-
+	
 	/**
 	 * Returns the format string (this controls the overall structure of the label).
 	 * 
@@ -139,7 +139,7 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 	public String getFormatString() {
 		return this.formatString;
 	}
-
+	
 	/**
 	 * Returns the number formatter for the x-values.
 	 * 
@@ -148,7 +148,7 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 	public NumberFormat getXFormat() {
 		return this.xFormat;
 	}
-
+	
 	/**
 	 * Returns the date formatter for the x-values.
 	 * 
@@ -157,7 +157,7 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 	public DateFormat getXDateFormat() {
 		return this.xDateFormat;
 	}
-
+	
 	/**
 	 * Returns the number formatter for the y-values.
 	 * 
@@ -166,7 +166,7 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 	public NumberFormat getYFormat() {
 		return this.yFormat;
 	}
-
+	
 	/**
 	 * Returns the date formatter for the y-values.
 	 * 
@@ -175,16 +175,16 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 	public DateFormat getYDateFormat() {
 		return this.yDateFormat;
 	}
-
+	
 	/**
 	 * Generates a label string for an item in the dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The label (possibly <code>null</code>).
 	 */
 	public String generateLabelString(XYDataset dataset, int series, int item) {
@@ -193,17 +193,17 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 		result = MessageFormat.format(this.formatString, items);
 		return result;
 	}
-
+	
 	/**
 	 * Creates the array of items that can be passed to the {@link MessageFormat}
 	 * class for creating labels.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The items (never <code>null</code>).
 	 */
 	protected Object[] createItemArray(XYDataset dataset, int series, int item) {
@@ -223,12 +223,12 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the other object (<code>null</code> permitted).
+	 *           the other object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -256,28 +256,28 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns an independent copy of the generator.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if cloning is not supported.
+	 *            if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		AbstractXYItemLabelGenerator clone = (AbstractXYItemLabelGenerator) super.clone();
-
+		
 		if (this.xFormat != null) {
 			clone.xFormat = (NumberFormat) this.xFormat.clone();
 		}
-
+		
 		if (this.yFormat != null) {
 			clone.yFormat = (NumberFormat) this.yFormat.clone();
 		}
-
+		
 		return clone;
-
+		
 	}
-
+	
 }

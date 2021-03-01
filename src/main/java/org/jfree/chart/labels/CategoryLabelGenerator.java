@@ -54,19 +54,19 @@ import org.jfree.data.CategoryDataset;
  * also implement the {@link org.jfree.util.PublicCloneable} interface.
  */
 public interface CategoryLabelGenerator {
-
+	
 	/**
 	 * Generates a label for the specified item. The label is typically a formatted
 	 * version of the data value, but any text can be used.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param category
-	 *            the category index (zero-based).
+	 *           the category index (zero-based).
 	 * @return the label (possibly <code>null</code>).
 	 */
 	public String generateLabel(CategoryDataset dataset, int series, int category);
-
+	
 }

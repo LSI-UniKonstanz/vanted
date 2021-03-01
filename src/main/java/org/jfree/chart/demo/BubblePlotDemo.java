@@ -43,32 +43,32 @@ import org.jfree.ui.RefineryUtilities;
  * A bubble chart demo.
  */
 public class BubblePlotDemo extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing a bubble chart.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public BubblePlotDemo(final String title) {
-
+		
 		super(title);
 		final XYZDataset data = new SampleXYZDataset();
 		final JFreeChart chart = createChart(data);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel.setVerticalZoom(true);
 		chartPanel.setHorizontalZoom(true);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYZDataset dataset) {
@@ -76,7 +76,7 @@ public class BubblePlotDemo extends ApplicationFrame {
 				PlotOrientation.VERTICAL, true, true, false);
 		final XYPlot plot = chart.getXYPlot();
 		plot.setForegroundAlpha(0.65f);
-
+		
 		// increase the margins to account for the fact that the auto-range doesn't take
 		// into
 		// account the bubble size...
@@ -88,7 +88,7 @@ public class BubblePlotDemo extends ApplicationFrame {
 		rangeAxis.setUpperMargin(0.15);
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -99,20 +99,20 @@ public class BubblePlotDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final BubblePlotDemo demo = new BubblePlotDemo("Bubble Plot Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -11,15 +11,15 @@ package org;
  * @author klukas
  */
 public class SystemInfo implements HelperClass {
-
+	
 	public static boolean isMac() {
 		return AttributeHelper.macOSrunning();
 	}
-
+	
 	public static boolean isLinux() {
 		return AttributeHelper.linuxRunning();
 	}
-
+	
 	public static int getAccelModifier() {
 		return java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 		/*
@@ -28,5 +28,5 @@ public class SystemInfo implements HelperClass {
 		 * ActionEvent.CTRL_MASK;
 		 */
 	}
-
+	
 }

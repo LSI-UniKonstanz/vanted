@@ -17,7 +17,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableData;
 
 public class KeggExpressionReader {
-
+	
 	/*
 	 * http://www.genome.jp/download/KegArray/ReadMe-0_5_1Beta.txt - KEGG/EXPRESSION
 	 * formet First column KEGG/GENES id which is the unique identifier of the ORF
@@ -32,15 +32,15 @@ public class KeggExpressionReader {
 	 * intensity (4th column - 5th column and 6th column - 7th column) becomes
 	 * negative, KegArray considers the value as 1.
 	 */
-
+	
 	TableData tabledata;
 	int maxCommentRow = -1;
-
+	
 	public KeggExpressionReader(TableData tabledata) {
 		this.tabledata = tabledata;
 		maxCommentRow = getMaxCommentRow();
 	}
-
+	
 	private int getMaxCommentRow() {
 		if (tabledata == null)
 			return -1;
@@ -52,7 +52,7 @@ public class KeggExpressionReader {
 		}
 		return tabledata.getMaximumRow();
 	}
-
+	
 	private String getCommentValue(String option) {
 		for (int row = 1; row <= maxCommentRow; row++) {
 			String val = tabledata.getUnicodeStringCellData(1, row);
@@ -63,19 +63,19 @@ public class KeggExpressionReader {
 		}
 		return null;
 	}
-
+	
 	public String getOrganism() {
 		return getCommentValue("organism");
 	}
-
+	
 	public String getSubmitter() {
 		return getCommentValue("submitter");
 	}
-
+	
 	public String getCreationDate() {
 		return getCommentValue("created");
 	}
-
+	
 	public int getColumn(String columnDescription) {
 		int descRow = findCommentRowStartingWith("ORF");
 		if (descRow < 0)
@@ -93,7 +93,7 @@ public class KeggExpressionReader {
 		ErrorMsg.addErrorMessage("Column " + columnDescription + " not found!");
 		return -1;
 	}
-
+	
 	public int findCommentRowStartingWith(String startstring) {
 		for (int row = 1; row <= tabledata.getMaximumRow(); row++) {
 			String val = tabledata.getUnicodeStringCellData(1, row);
@@ -103,7 +103,7 @@ public class KeggExpressionReader {
 		}
 		return -1;
 	}
-
+	
 	public ArrayList<TextFileColumnInformation> getRawTextFileColumnInformation(boolean askUserForRelevantColumns) {
 		ArrayList<TextFileColumnInformation> result = new ArrayList<TextFileColumnInformation>();
 		HashSet<Integer> identifiedQualityTagColumns = new HashSet<Integer>();
@@ -176,5 +176,5 @@ public class KeggExpressionReader {
 		}
 		return result;
 	}
-
+	
 }

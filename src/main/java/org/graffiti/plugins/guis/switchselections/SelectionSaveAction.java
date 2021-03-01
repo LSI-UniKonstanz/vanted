@@ -27,20 +27,20 @@ public class SelectionSaveAction extends GraffitiAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 4154988989492357844L;
-
+	
 	// ~ Constructors ===========================================================
 	/**
 	 * Creates a new SelectionSaveAction object.
 	 * 
 	 * @param name
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public SelectionSaveAction(String name) {
 		super(name, null, null);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -48,7 +48,7 @@ public class SelectionSaveAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return super.enabled;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -56,7 +56,7 @@ public class SelectionSaveAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -65,9 +65,9 @@ public class SelectionSaveAction extends GraffitiAction {
 				"Selection " + System.currentTimeMillis());
 		Selection selClone = null;
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
-
+		
 		selClone = (Selection) session.getSelectionModel().getActiveSelection().clone();
-
+		
 		selClone.setName(selName);
 		session.getSelectionModel().add(selClone);
 	}

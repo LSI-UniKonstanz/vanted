@@ -31,54 +31,54 @@ import org.graffiti.options.AbstractOptionPane;
  */
 public class ToolBarOptionPane extends AbstractOptionPane {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1185481309539878864L;
-
+	
 	/** DOCUMENT ME! */
 	private JCheckBox showToolbar;
-
+	
 	/** The editor's preferences. */
 	private Preferences prefs;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for ToolBarOptionPane.
 	 * 
 	 * @param prefs
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ToolBarOptionPane(Preferences prefs) {
 		super("toolbar");
 		this.prefs = prefs.node("toolbar");
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/*
 	 * @see org.graffiti.options.AbstractOptionPane#initDefault()
 	 */
 	@Override
 	protected void initDefault() {
 		setLayout(new BorderLayout());
-
+		
 		JPanel panel = new JPanel(new GridLayout(2, 1));
-
+		
 		// show tool bar
 		showToolbar = new JCheckBox(sBundle.getString("options.toolbar.showToolBar"));
 		showToolbar.setSelected(prefs.getBoolean("view.showToolBar", true));
-
+		
 		panel.add(showToolbar);
-
+		
 		panel.add(new JLabel(sBundle.getString("options.toolbar.caption")));
 		add(BorderLayout.NORTH, panel);
-
+		
 		// TODO
 	}
-
+	
 	/*
 	 * @see org.graffiti.options.AbstractOptionPane#saveDefault()
 	 */
@@ -86,9 +86,9 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 	protected void saveDefault() {
 		// TODO
 	}
-
+	
 	// ~ Inner Classes ==========================================================
-
+	
 	/**
 	 * The action handler for this option panel.
 	 */
@@ -97,31 +97,31 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 		 * DOCUMENT ME!
 		 * 
 		 * @param e
-		 *            DOCUMENT ME!
+		 *           DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
 		}
 	}
-
+	
 	/**
 	 * The tool bar edit dialog.
 	 */
 	protected class ToolBarEditDialog extends JDialog {
-
+		
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 3247361229636300402L;
-
+		
 		/**
 		 * Constructs a new tool bar editor instance.
 		 * 
 		 * @param parent
-		 *            the parent frame.
+		 *           the parent frame.
 		 */
 		public ToolBarEditDialog(Frame parent) {
 		}
-
+		
 		/**
 		 * The action handler for the edit dialog.
 		 */
@@ -130,13 +130,13 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 			 * DOCUMENT ME!
 			 * 
 			 * @param e
-			 *            DOCUMENT ME!
+			 *           DOCUMENT ME!
 			 */
 			public void actionPerformed(ActionEvent e) {
 			}
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -146,7 +146,7 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 		//
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -156,7 +156,7 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 		//
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -164,9 +164,9 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 	 */
 	public void init(JComponent options) {
 		//
-
+		
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -174,7 +174,7 @@ public class ToolBarOptionPane extends AbstractOptionPane {
 	 */
 	public void save(JComponent options) {
 		//
-
+		
 	}
 }
 

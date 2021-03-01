@@ -51,15 +51,15 @@ import scenario.ScenarioServiceHandlesStoredParametersOption;
  */
 public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		implements ScenarioServiceHandlesStoredParametersOption {
-
+	
 	private static ArrayList<String> discardedSearchIDs = getDiscardedSearchIDs();
-
+	
 	/**
 	 * Constructs a new instance.
 	 */
 	public SearchAndSelecAlgorithm() {
 	}
-
+	
 	private static ArrayList<String> getDiscardedSearchIDs() {
 		ArrayList<String> result = new ArrayList<String>();
 		// result.add("red");
@@ -68,27 +68,27 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		result.add("transparency");
 		return result;
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return null;
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke('L', SystemInfo.getAccelModifier());
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-
+	
 	public void execute() {
 		ArrayList<AttributePathNameSearchType> possibleAttributes = new ArrayList<AttributePathNameSearchType>();
 		HashSet<SearchType> validSearchTypes = SearchType.getSetOfSearchTypes();
-
+		
 		enumerateAllAttributes(possibleAttributes, graph, validSearchTypes);
-
+		
 		final SearchDialog sd = new SearchDialog(getMainFrame(), possibleAttributes, false);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -98,12 +98,12 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		});
 		return;
 	}
-
+	
 	public static void enumerateAllAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes, Graph graph,
 			HashSet<SearchType> validSearchTypes) {
-
+		
 		SearchAttributeHelper sah = new SearchAttributeHelper();
-
+		
 		try {
 			sah.prepareSearch();
 			for (Node n : graph.getNodes()) {
@@ -126,7 +126,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 			sah.restoreDefintions();
 		}
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public static void enumerateAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes,
 			Collection<?> graphElements, HashSet<SearchType> validSearchTypes) {
@@ -144,7 +144,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		for (AttributePathNameSearchType a : sortedPossibleAttributes)
 			possibleAttributes.add(a);
 	}
-
+	
 	public static void enumerateAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes, Attributable attr,
 			HashSet<SearchType> validSearchTypes) {
 		CollectionAttribute ca = attr.getAttributes();
@@ -172,7 +172,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 						st = SearchType.searchDouble;
 					if (a instanceof ColorAttribute)
 						st = SearchType.searchColor;
-
+					
 					if (!(validSearchTypes.contains(st)))
 						continue;
 					if (st != null && a != null && a.getId() != null) {
@@ -198,7 +198,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 			}
 		}
 	}
-
+	
 	private static boolean listContains(ArrayList<AttributePathNameSearchType> possibleAttributes, String desc,
 			boolean inNode, boolean inEdge) {
 		boolean result = false;
@@ -214,40 +214,40 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		}
 		return result;
 	}
-
+	
 	@Override
 	public void reset() {
 		graph = null;
 		selection = null;
 	}
-
+	
 	public String getName() {
 		return "Search";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.SELECTION));
 	}
-
+	
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *            the selection
+	 *           the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
-
+	
 	@Override
 	public boolean activeForView(View v) {
 		return v != null;
 	}
-
+	
 }

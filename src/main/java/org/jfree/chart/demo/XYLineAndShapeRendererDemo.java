@@ -45,15 +45,15 @@ import org.jfree.ui.RefineryUtilities;
  * A simple demonstration of the {@link XYLineAndShapeRenderer} class.
  */
 public class XYLineAndShapeRendererDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYLineAndShapeRendererDemo(final String title) {
-
+		
 		super(title);
 		XYDataset dataset = createSampleDataset();
 		JFreeChart chart = ChartFactory.createXYLineChart(title, "X", "Y", dataset, PlotOrientation.VERTICAL, true,
@@ -68,9 +68,9 @@ public class XYLineAndShapeRendererDemo extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 300));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -91,7 +91,7 @@ public class XYLineAndShapeRendererDemo extends ApplicationFrame {
 		dataset.addSeries(series2);
 		return dataset;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -102,20 +102,20 @@ public class XYLineAndShapeRendererDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYLineAndShapeRendererDemo demo = new XYLineAndShapeRendererDemo("XYLineAndShapeRenderer Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

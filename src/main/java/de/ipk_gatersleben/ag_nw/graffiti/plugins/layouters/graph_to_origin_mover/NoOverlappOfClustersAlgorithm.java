@@ -29,30 +29,30 @@ public class NoOverlappOfClustersAlgorithm extends AbstractAlgorithm {
 		else
 			return "Separate Pathway-Subnetworks";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null) {
 			errors.add("The graph instance may not be null.");
 		}
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
 	}
-
+	
 	public void execute() {
 		MyClusterGraphBasedReLayoutService mcs = new MyClusterGraphBasedReLayoutService(false, graph);
 		mcs.setAlgorithm(new NoOverlappLayoutAlgorithmAS(), new NoOverlappLayoutAlgorithm());

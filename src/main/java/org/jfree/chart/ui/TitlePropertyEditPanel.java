@@ -64,72 +64,72 @@ import org.jfree.ui.PaintSample;
  * A panel for editing the properties of a chart title.
  */
 public class TitlePropertyEditPanel extends JPanel implements ActionListener {
-
+	
 	/** A field for displaying/editing the title text. */
 	private JTextField titleField;
-
+	
 	/** The font used to draw the title. */
 	private Font titleFont;
-
+	
 	/** A field for displaying a description of the title font. */
 	private JTextField fontfield;
-
+	
 	/** The paint (color) used to draw the title. */
 	private PaintSample titlePaint;
-
+	
 	/** The resourceBundle for the localization. */
 	protected static ResourceBundle localizationResources = ResourceBundle
 			.getBundle("org.jfree.chart.ui.LocalizationBundle");
-
+	
 	/**
 	 * Standard constructor: builds a panel for displaying/editing the properties of
 	 * the specified title.
 	 * 
 	 * @param title
-	 *            the title, which should be changed. This parameter is not used
-	 *            yet.
+	 *           the title, which should be changed. This parameter is not used
+	 *           yet.
 	 */
 	public TitlePropertyEditPanel(Title title) {
-
+		
 		setLayout(new BorderLayout());
-
+		
 		this.titlePaint = new PaintSample(Color.black);
-
+		
 		JPanel general = new JPanel(new BorderLayout());
 		general.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
 				localizationResources.getString("General")));
-
+		
 		JPanel interior = new JPanel(new LCBLayout(3));
 		interior.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		JLabel titleLabel = new JLabel(localizationResources.getString("Text"));
 		this.titleField = new JTextField();
-
+		
 		interior.add(titleLabel);
 		interior.add(this.titleField);
 		interior.add(new JPanel());
 		interior.add(new JLabel(localizationResources.getString("Font")));
-
+		
 		this.fontfield = new FontDisplayField(this.titleFont);
 		JButton b = new JButton(localizationResources.getString("Select..."));
 		b.setActionCommand("SelectFont");
 		b.addActionListener(this);
-
+		
 		interior.add(this.fontfield);
 		interior.add(b);
-
+		
 		interior.add(new JLabel(localizationResources.getString("Color")));
-
+		
 		b = new JButton(localizationResources.getString("Select..."));
 		b.setActionCommand("SelectPaint");
 		b.addActionListener(this);
 		interior.add(this.titlePaint);
 		interior.add(b);
-
+		
 		general.add(interior);
 		add(general, BorderLayout.NORTH);
-
+		
 	}
-
+	
 	/**
 	 * Returns the title entered in the panel.
 	 * 
@@ -138,7 +138,7 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 	public String getTitle() {
 		return this.titleField.getText();
 	}
-
+	
 	/**
 	 * Returns the font selected in the panel.
 	 * 
@@ -147,7 +147,7 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 	public Font getTitleFont() {
 		return this.titleFont;
 	}
-
+	
 	/**
 	 * Returns the paint selected in the panel.
 	 * 
@@ -156,41 +156,41 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 	public Paint getTitlePaint() {
 		return this.titlePaint.getPaint();
 	}
-
+	
 	/**
 	 * Handles button clicks by passing control to an appropriate handler method.
 	 * 
 	 * @param event
-	 *            the event
+	 *           the event
 	 */
 	public void actionPerformed(ActionEvent event) {
-
+		
 		String command = event.getActionCommand();
-
+		
 		if (command.equals("SelectFont")) {
 			attemptFontSelection();
 		} else if (command.equals("SelectPaint")) {
 			attemptPaintSelection();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Presents a font selection dialog to the user.
 	 */
 	public void attemptFontSelection() {
-
+		
 		FontChooserPanel panel = new FontChooserPanel(this.titleFont);
 		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Font_Selection"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
+		
 		if (result == JOptionPane.OK_OPTION) {
 			this.titleFont = panel.getSelectedFont();
 			this.fontfield.setText(this.titleFont.getFontName() + " " + this.titleFont.getSize());
 		}
-
+		
 	}
-
+	
 	/**
 	 * Allow the user the opportunity to select a Paint object. For now, we just use
 	 * the standard color chooser - all colors are Paint objects, but not all Paint
@@ -202,13 +202,13 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 			this.titlePaint.setPaint(c);
 		}
 	}
-
+	
 	/**
 	 * Sets the properties of the specified title to match the properties defined on
 	 * this panel. This method does nothing.
 	 * 
 	 * @param title
-	 *            an Title.
+	 *           an Title.
 	 */
 	public void setTitleProperties(Title title) {
 		if (title instanceof TextTitle) {
@@ -221,5 +221,5 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 			// raise an exception - not a recognised title class
 		}
 	}
-
+	
 }

@@ -74,57 +74,57 @@ import java.util.List;
  * A collection of useful static methods relating to datasets.
  */
 public final class DatasetUtilities {
-
+	
 	/**
 	 * Private constructor for non-instanceability.
 	 */
 	private DatasetUtilities() {
 		// now try to instanciate this ;-)
 	}
-
+	
 	/**
 	 * Constructs an array of <code>Number</code> objects from an array of
 	 * <code>double</code> primitives.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return an array of <code>Double</code>.
 	 */
 	public static Number[] createNumberArray(final double[] data) {
-
+		
 		final Number[] result = new Number[data.length];
-
+		
 		for (int i = 0; i < data.length; i++) {
 			result[i] = Double.valueOf(data[i]);
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Constructs an array of arrays of <code>Number</code> objects from a
 	 * corresponding structure containing <code>double</code> primitives.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return an array of <code>Double</code>.
 	 */
 	public static Number[][] createNumberArray2D(final double[][] data) {
-
+		
 		final int l1 = data.length;
 		final int l2 = data[0].length;
-
+		
 		final Number[][] result = new Number[l1][l2];
-
+		
 		for (int i = 0; i < l1; i++) {
 			result[i] = createNumberArray(data[i]);
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the range of values in the domain for the dataset.
 	 * <P>
@@ -132,26 +132,26 @@ public final class DatasetUtilities {
 	 * <code>null</code>.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return The range of values (possibly <code>null</code>).
 	 */
 	public static Range getDomainExtent(final Dataset dataset) {
-
+		
 		// check parameters...
 		if (dataset == null) {
 			return null;
 		}
-
+		
 		if ((dataset instanceof CategoryDataset) && !(dataset instanceof XYDataset)) {
 			throw new IllegalArgumentException("The dataset does not have a numerical domain.");
 		}
-
+		
 		// work out the minimum value...
 		if (dataset instanceof DomainInfo) {
 			final DomainInfo info = (DomainInfo) dataset;
 			return info.getDomainRange();
 		}
-
+		
 		// hasn't implemented DomainInfo, so iterate...
 		else if (dataset instanceof XYDataset) {
 			return iterateDomainExtent((XYDataset) dataset);
@@ -159,12 +159,12 @@ public final class DatasetUtilities {
 			return null; // unrecognised dataset...how should this be handled?
 		}
 	}
-
+	
 	/**
 	 * Iterates over the data item of the xy dataset to find the domain extent.
 	 * 
 	 * @param data
-	 *            the xy dataset to iterate over.
+	 *           the xy dataset to iterate over.
 	 * @return the domain extent of the data within the dataset.
 	 */
 	public static Range iterateDomainExtent(final XYDataset data) {
@@ -174,7 +174,7 @@ public final class DatasetUtilities {
 		for (int series = 0; series < seriesCount; series++) {
 			final int itemCount = data.getItemCount(series);
 			for (int item = 0; item < itemCount; item++) {
-
+				
 				final Number lvalue;
 				final Number uvalue;
 				if (data instanceof IntervalXYDataset) {
@@ -191,7 +191,7 @@ public final class DatasetUtilities {
 				if (uvalue != null) {
 					maximum = Math.max(maximum, uvalue.doubleValue());
 				}
-
+				
 			}
 		}
 		if (minimum == Double.POSITIVE_INFINITY) {
@@ -200,28 +200,28 @@ public final class DatasetUtilities {
 			return new Range(minimum, maximum);
 		}
 	}
-
+	
 	/**
 	 * Returns the range of values in the range for the dataset. This method is the
 	 * partner for the getDomainExtent method.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the range of values in the range for the dataset.
 	 */
 	public static Range getRangeExtent(final Dataset data) {
-
+		
 		// check parameters...
 		if (data == null) {
 			return null;
 		}
-
+		
 		// work out the minimum value...
 		if (data instanceof RangeInfo) {
 			final RangeInfo info = (RangeInfo) data;
 			return info.getValueRange();
 		}
-
+		
 		// hasn't implemented RangeInfo, so we'll have to iterate...
 		else if (data instanceof CategoryDataset) {
 			return iterateCategoryRangeExtent((CategoryDataset) data);
@@ -233,12 +233,12 @@ public final class DatasetUtilities {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Iterates over the data item of the category dataset to find the range extent.
 	 * 
 	 * @param data
-	 *            the category dataset to iterate over.
+	 *           the category dataset to iterate over.
 	 * @return the range extent of the data within the dataset.
 	 */
 	public static Range iterateCategoryRangeExtent(final CategoryDataset data) {
@@ -272,12 +272,12 @@ public final class DatasetUtilities {
 			return new Range(minimum, maximum);
 		}
 	}
-
+	
 	/**
 	 * Iterates over the data item of the xy dataset to find the range extent.
 	 * 
 	 * @param data
-	 *            the xy dataset to iterate over.
+	 *           the xy dataset to iterate over.
 	 * @return the range extent of the data within the dataset.
 	 */
 	public static Range iterateXYRangeExtent(final XYDataset data) {
@@ -287,7 +287,7 @@ public final class DatasetUtilities {
 		for (int series = 0; series < seriesCount; series++) {
 			final int itemCount = data.getItemCount(series);
 			for (int item = 0; item < itemCount; item++) {
-
+				
 				final Number lvalue;
 				final Number uvalue;
 				if (data instanceof IntervalXYDataset) {
@@ -308,7 +308,7 @@ public final class DatasetUtilities {
 				if (uvalue != null) {
 					maximum = Math.max(maximum, uvalue.doubleValue());
 				}
-
+				
 			}
 		}
 		if (minimum == Double.POSITIVE_INFINITY) {
@@ -317,7 +317,7 @@ public final class DatasetUtilities {
 			return new Range(minimum, maximum);
 		}
 	}
-
+	
 	/**
 	 * Returns the minimum domain value for the specified dataset.
 	 * <P>
@@ -328,27 +328,27 @@ public final class DatasetUtilities {
 	 * Returns null if all the data values in the dataset are null.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the minimum domain value in the dataset (or null).
 	 */
 	public static Number getMinimumDomainValue(final Dataset data) {
-
+		
 		// check parameters...
 		if (data == null) {
 			throw new IllegalArgumentException("DatasetUtilities.getMinimumDomainValue: null dataset not allowed.");
 		}
-
+		
 		if ((data instanceof CategoryDataset) && !(data instanceof XYDataset)) {
 			throw new IllegalArgumentException(
 					"DatasetUtilities.getMinimumDomainValue(...): " + "TableDataset does not have numerical domain.");
 		}
-
+		
 		// work out the minimum value...
 		if (data instanceof DomainInfo) {
 			final DomainInfo info = (DomainInfo) data;
 			return info.getMinimumDomainValue();
 		}
-
+		
 		// hasn't implemented DomainInfo, so iterate...
 		else if (data instanceof XYDataset) {
 			double minimum = Double.POSITIVE_INFINITY;
@@ -357,7 +357,7 @@ public final class DatasetUtilities {
 			for (int series = 0; series < seriesCount; series++) {
 				final int itemCount = xyData.getItemCount(series);
 				for (int item = 0; item < itemCount; item++) {
-
+					
 					final Number value;
 					if (data instanceof IntervalXYDataset) {
 						final IntervalXYDataset intervalXYData = (IntervalXYDataset) data;
@@ -368,7 +368,7 @@ public final class DatasetUtilities {
 					if (value != null) {
 						minimum = Math.min(minimum, value.doubleValue());
 					}
-
+					
 				}
 			}
 			if (minimum == Double.POSITIVE_INFINITY) {
@@ -377,13 +377,13 @@ public final class DatasetUtilities {
 				return Double.valueOf(minimum);
 			}
 		}
-
+		
 		else {
 			return null; // unrecognised dataset...how should this be handled?
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the maximum domain value for the specified dataset.
 	 * <P>
@@ -394,27 +394,27 @@ public final class DatasetUtilities {
 	 * Returns null if all the data values in the dataset are null.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the maximum domain value in the dataset (or null).
 	 */
 	public static Number getMaximumDomainValue(final Dataset data) {
-
+		
 		// check parameters...
 		if (data == null) {
 			throw new IllegalArgumentException("Datasets.getMaximumDomainValue: null dataset not allowed.");
 		}
-
+		
 		if ((data instanceof CategoryDataset) && !(data instanceof XYDataset)) {
 			throw new IllegalArgumentException(
 					"Datasets.getMaximumDomainValue(...): " + "CategoryDataset does not have numerical domain.");
 		}
-
+		
 		// work out the maximum value...
 		if (data instanceof DomainInfo) {
 			final DomainInfo info = (DomainInfo) data;
 			return info.getMaximumDomainValue();
 		}
-
+		
 		// hasn't implemented DomainInfo, so iterate...
 		else if (data instanceof XYDataset) {
 			final XYDataset xyData = (XYDataset) data;
@@ -423,7 +423,7 @@ public final class DatasetUtilities {
 			for (int series = 0; series < seriesCount; series++) {
 				final int itemCount = xyData.getItemCount(series);
 				for (int item = 0; item < itemCount; item++) {
-
+					
 					final Number value;
 					if (data instanceof IntervalXYDataset) {
 						final IntervalXYDataset intervalXYData = (IntervalXYDataset) data;
@@ -441,13 +441,13 @@ public final class DatasetUtilities {
 			} else {
 				return Double.valueOf(maximum);
 			}
-
+			
 		} else {
 			return null; // unrecognised dataset...how should this be handled?
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the minimum range value for the specified dataset.
 	 * <P>
@@ -458,25 +458,25 @@ public final class DatasetUtilities {
 	 * Returns null if all the data values in the dataset are null.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the minimum range value in the dataset (or null).
 	 */
 	public static Number getMinimumRangeValue(final Dataset data) {
-
+		
 		// check parameters...
 		if (data == null) {
 			throw new IllegalArgumentException("Datasets.getMinimumRangeValue: null dataset not allowed.");
 		}
-
+		
 		// work out the minimum value...
 		if (data instanceof RangeInfo) {
 			final RangeInfo info = (RangeInfo) data;
 			return info.getMinimumRangeValue();
 		}
-
+		
 		// hasn't implemented RangeInfo, so we'll have to iterate...
 		else if (data instanceof CategoryDataset) {
-
+			
 			final CategoryDataset categoryData = (CategoryDataset) data;
 			double minimum = Double.POSITIVE_INFINITY;
 			final int seriesCount = categoryData.getRowCount();
@@ -500,9 +500,9 @@ public final class DatasetUtilities {
 			} else {
 				return Double.valueOf(minimum);
 			}
-
+			
 		} else if (data instanceof XYDataset) {
-
+			
 			// hasn't implemented RangeInfo, so we'll have to iterate...
 			final XYDataset xyData = (XYDataset) data;
 			double minimum = Double.POSITIVE_INFINITY;
@@ -510,7 +510,7 @@ public final class DatasetUtilities {
 			for (int series = 0; series < seriesCount; series++) {
 				final int itemCount = xyData.getItemCount(series);
 				for (int item = 0; item < itemCount; item++) {
-
+					
 					final Number value;
 					if (data instanceof IntervalXYDataset) {
 						final IntervalXYDataset intervalXYData = (IntervalXYDataset) data;
@@ -524,7 +524,7 @@ public final class DatasetUtilities {
 					if (value != null) {
 						minimum = Math.min(minimum, value.doubleValue());
 					}
-
+					
 				}
 			}
 			if (minimum == Double.POSITIVE_INFINITY) {
@@ -532,13 +532,13 @@ public final class DatasetUtilities {
 			} else {
 				return Double.valueOf(minimum);
 			}
-
+			
 		} else {
 			return null;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the maximum range value for the specified dataset.
 	 * <P>
@@ -549,25 +549,25 @@ public final class DatasetUtilities {
 	 * Returns null if all the data values are null.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the maximum range value in the dataset (or null).
 	 */
 	public static Number getMaximumRangeValue(final Dataset data) {
-
+		
 		// check parameters...
 		if (data == null) {
 			throw new IllegalArgumentException("Datasets.getMinimumRangeValue: null dataset not allowed.");
 		}
-
+		
 		// work out the minimum value...
 		if (data instanceof RangeInfo) {
 			final RangeInfo info = (RangeInfo) data;
 			return info.getMaximumRangeValue();
 		}
-
+		
 		// hasn't implemented RangeInfo, so we'll have to iterate...
 		else if (data instanceof CategoryDataset) {
-
+			
 			final CategoryDataset categoryData = (CategoryDataset) data;
 			double maximum = Double.NEGATIVE_INFINITY;
 			final int seriesCount = categoryData.getRowCount();
@@ -591,9 +591,9 @@ public final class DatasetUtilities {
 			} else {
 				return Double.valueOf(maximum);
 			}
-
+			
 		} else if (data instanceof XYDataset) {
-
+			
 			final XYDataset xyData = (XYDataset) data;
 			double maximum = Double.NEGATIVE_INFINITY;
 			final int seriesCount = xyData.getSeriesCount();
@@ -620,42 +620,42 @@ public final class DatasetUtilities {
 			} else {
 				return Double.valueOf(maximum);
 			}
-
+			
 		} else {
 			return null;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Creates a pie dataset from a table dataset by taking all the values for a
 	 * single row.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @return a pie dataset.
 	 */
 	public static PieDataset createPieDatasetForRow(final CategoryDataset data, final Comparable rowKey) {
-
+		
 		final int row = data.getRowIndex(rowKey);
 		return createPieDatasetForRow(data, row);
-
+		
 	}
-
+	
 	/**
 	 * Creates a pie dataset from a table dataset by taking all the values for a
 	 * single row.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param row
-	 *            the row (zero-based index).
+	 *           the row (zero-based index).
 	 * @return a pie dataset.
 	 */
 	public static PieDataset createPieDatasetForRow(final CategoryDataset data, final int row) {
-
+		
 		final DefaultPieDataset result = new DefaultPieDataset();
 		final int columnCount = data.getColumnCount();
 		for (int current = 0; current < columnCount; current++) {
@@ -663,38 +663,38 @@ public final class DatasetUtilities {
 			result.setValue(columnKey, data.getValue(row, current));
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Creates a pie dataset from a table dataset by taking all the values for a
 	 * single column.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return a pie dataset.
 	 */
 	public static PieDataset createPieDatasetForColumn(final CategoryDataset data, final Comparable columnKey) {
-
+		
 		final int column = data.getColumnIndex(columnKey);
 		return createPieDatasetForColumn(data, column);
-
+		
 	}
-
+	
 	/**
 	 * Creates a pie dataset from a table dataset by taking all the values for a
 	 * single column.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param column
-	 *            the column (zero-based index).
+	 *           the column (zero-based index).
 	 * @return a pie dataset.
 	 */
 	public static PieDataset createPieDatasetForColumn(final CategoryDataset data, final int column) {
-
+		
 		final DefaultPieDataset result = new DefaultPieDataset();
 		final int rowCount = data.getRowCount();
 		for (int i = 0; i < rowCount; i++) {
@@ -702,15 +702,15 @@ public final class DatasetUtilities {
 			result.setValue(rowKey, data.getValue(i, column));
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Calculates the total of all the values in a {@link PieDataset}. If the
 	 * dataset contains negative or <code>null</code> values, they are ignored.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @return The total.
 	 */
 	public static double calculatePieDatasetTotal(final PieDataset dataset) {
@@ -735,17 +735,17 @@ public final class DatasetUtilities {
 		}
 		return totalValue;
 	}
-
+	
 	/**
 	 * Returns the minimum and maximum values for the dataset's range (as in
 	 * domain/range), assuming that the series in one category are stacked.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the value range.
 	 */
 	public static Range getStackedRangeExtent(final CategoryDataset data) {
-
+		
 		Range result = null;
 		if (data != null) {
 			double minimum = 0.0;
@@ -773,35 +773,35 @@ public final class DatasetUtilities {
 			result = new Range(minimum, maximum);
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the minimum and maximum values for the dataset's range (as in
 	 * domain/range), assuming that the series in one category are stacked.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param map
-	 *            a structure that maps series to groups.
+	 *           a structure that maps series to groups.
 	 * @return the value range.
 	 */
 	public static Range getStackedRangeExtent(final CategoryDataset dataset, final KeyToGroupMap map) {
-
+		
 		Range result = null;
 		if (dataset != null) {
-
+			
 			// create an array holding the group indices...
 			int[] groupIndex = new int[dataset.getRowCount()];
 			for (int i = 0; i < dataset.getRowCount(); i++) {
 				groupIndex[i] = map.getGroupIndex(map.getGroup(dataset.getRowKey(i)));
 			}
-
+			
 			// minimum and maximum for each group...
 			int groupCount = map.getGroupCount();
 			double[] minimum = new double[groupCount];
 			double[] maximum = new double[groupCount];
-
+			
 			final int categoryCount = dataset.getColumnCount();
 			for (int item = 0; item < categoryCount; item++) {
 				double[] positive = new double[groupCount];
@@ -830,29 +830,29 @@ public final class DatasetUtilities {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the minimum value in the dataset range, assuming that values in each
 	 * category are "stacked".
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the minimum value.
 	 */
 	public static Number getMinimumStackedRangeValue(final CategoryDataset data) {
-
+		
 		Number result = null;
-
+		
 		if (data != null) {
-
+			
 			double minimum = 0.0;
-
+			
 			final int categoryCount = data.getRowCount();
 			for (int item = 0; item < categoryCount; item++) {
 				double total = 0.0;
-
+				
 				final int seriesCount = data.getColumnCount();
 				for (int series = 0; series < seriesCount; series++) {
 					final Number number = data.getValue(series, item);
@@ -864,29 +864,29 @@ public final class DatasetUtilities {
 					}
 				}
 				minimum = Math.min(minimum, total);
-
+				
 			}
-
+			
 			result = Double.valueOf(minimum);
-
+			
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the maximum value in the dataset range, assuming that values in each
 	 * category are "stacked".
 	 * 
 	 * @param data
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return The maximum value (possibly <code>null</code>).
 	 */
 	public static Number getMaximumStackedRangeValue(final CategoryDataset data) {
-
+		
 		Number result = null;
-
+		
 		if (data != null) {
 			double maximum = 0.0;
 			final int categoryCount = data.getColumnCount();
@@ -906,31 +906,31 @@ public final class DatasetUtilities {
 			}
 			result = Double.valueOf(maximum);
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Creates an {@link XYDataset} by sampling the specified function over a fixed
 	 * range.
 	 * 
 	 * @param f
-	 *            the function (<code>null</code> not permitted).
+	 *           the function (<code>null</code> not permitted).
 	 * @param start
-	 *            the start value for the range.
+	 *           the start value for the range.
 	 * @param end
-	 *            the end value for the range.
+	 *           the end value for the range.
 	 * @param samples
-	 *            the number of sample points (must be > 1).
+	 *           the number of sample points (must be > 1).
 	 * @param seriesName
-	 *            the name to give the resulting series (<code>null</code> not
-	 *            permitted).
+	 *           the name to give the resulting series (<code>null</code> not
+	 *           permitted).
 	 * @return A dataset.
 	 */
 	public static XYDataset sampleFunction2D(final Function2D f, final double start, final double end,
 			final int samples, final String seriesName) {
-
+		
 		if (f == null) {
 			throw new IllegalArgumentException("Null 'f' argument.");
 		}
@@ -943,7 +943,7 @@ public final class DatasetUtilities {
 		if (samples < 2) {
 			throw new IllegalArgumentException("Requires 'samples' > 1");
 		}
-
+		
 		final XYSeries series = new XYSeries(seriesName);
 		final double step = (end - start) / samples;
 		for (int i = 0; i <= samples; i++) {
@@ -952,9 +952,9 @@ public final class DatasetUtilities {
 		}
 		final XYSeriesCollection collection = new XYSeriesCollection(series);
 		return collection;
-
+		
 	}
-
+	
 	/**
 	 * Creates a {@link CategoryDataset} that contains a copy of the data in an
 	 * array (instances of <code>Double</code> are created to represent the data
@@ -964,16 +964,16 @@ public final class DatasetUtilities {
 	 * prefixes.
 	 * 
 	 * @param rowKeyPrefix
-	 *            the row key prefix.
+	 *           the row key prefix.
 	 * @param columnKeyPrefix
-	 *            the column key prefix.
+	 *           the column key prefix.
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return the dataset.
 	 */
 	public static CategoryDataset createCategoryDataset(final String rowKeyPrefix, final String columnKeyPrefix,
 			final double[][] data) {
-
+		
 		final DefaultCategoryDataset result = new DefaultCategoryDataset();
 		for (int r = 0; r < data.length; r++) {
 			final String rowKey = rowKeyPrefix + (r + 1);
@@ -983,9 +983,9 @@ public final class DatasetUtilities {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Creates a {@link CategoryDataset} that contains a copy of the data in an
 	 * array.
@@ -994,16 +994,16 @@ public final class DatasetUtilities {
 	 * prefixes.
 	 * 
 	 * @param rowKeyPrefix
-	 *            the row key prefix.
+	 *           the row key prefix.
 	 * @param columnKeyPrefix
-	 *            the column key prefix.
+	 *           the column key prefix.
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return the dataset.
 	 */
 	public static CategoryDataset createCategoryDataset(final String rowKeyPrefix, final String columnKeyPrefix,
 			final Number[][] data) {
-
+		
 		final DefaultCategoryDataset result = new DefaultCategoryDataset();
 		for (int r = 0; r < data.length; r++) {
 			final String rowKey = rowKeyPrefix + (r + 1);
@@ -1013,9 +1013,9 @@ public final class DatasetUtilities {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Creates a {@link CategoryDataset} that contains a copy of the data in an
 	 * array (instances of <code>Double</code> are created to represent the data
@@ -1024,16 +1024,16 @@ public final class DatasetUtilities {
 	 * Row and column keys are taken from the supplied arrays.
 	 * 
 	 * @param rowKeys
-	 *            the row keys.
+	 *           the row keys.
 	 * @param columnKeys
-	 *            the column keys.
+	 *           the column keys.
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return The dataset.
 	 */
 	public static CategoryDataset createCategoryDataset(final String[] rowKeys, final String[] columnKeys,
 			final double[][] data) {
-
+		
 		// check arguments...
 		if (rowKeys == null) {
 			throw new IllegalArgumentException("Argument 'rowKeys' cannot be null.");
@@ -1053,7 +1053,7 @@ public final class DatasetUtilities {
 			throw new IllegalArgumentException(
 					"The number of column keys does not match the number of columns in the data array.");
 		}
-
+		
 		// now do the work...
 		final DefaultCategoryDataset result = new DefaultCategoryDataset();
 		for (int r = 0; r < data.length; r++) {
@@ -1064,41 +1064,41 @@ public final class DatasetUtilities {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Creates a {@link CategoryDataset} by copying the data from the supplied
 	 * {@link KeyedValues} instance.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param rowData
-	 *            the row data.
+	 *           the row data.
 	 * @return A dataset.
 	 */
 	public static CategoryDataset createCategoryDataset(final String rowKey, final KeyedValues rowData) {
-
+		
 		final DefaultCategoryDataset result = new DefaultCategoryDataset();
 		for (int i = 0; i < rowData.getItemCount(); i++) {
 			result.addValue(rowData.getValue(i), rowKey, rowData.getKey(i));
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the dataset is empty (or <code>null</code>), and
 	 * <code>false</code> otherwise.
 	 * 
 	 * @param data
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public static boolean isEmptyOrNull(final XYDataset data) {
-
+		
 		boolean result = true;
-
+		
 		if (data != null) {
 			for (int s = 0; s < data.getSeriesCount(); s++) {
 				if (data.getItemCount(s) > 0) {
@@ -1107,30 +1107,30 @@ public final class DatasetUtilities {
 				}
 			}
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the dataset is empty (or <code>null</code>), and
 	 * <code>false</code> otherwise.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public static boolean isEmptyOrNull(final PieDataset dataset) {
-
+		
 		if (dataset == null) {
 			return true;
 		}
-
+		
 		final int itemCount = dataset.getItemCount();
 		if (itemCount == 0) {
 			return true;
 		}
-
+		
 		for (int item = 0; item < itemCount; item++) {
 			final Number y = dataset.getValue(item);
 			if (y != null) {
@@ -1140,75 +1140,75 @@ public final class DatasetUtilities {
 				}
 			}
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the dataset is empty (or <code>null</code>), and
 	 * <code>false</code> otherwise.
 	 * 
 	 * @param data
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public static boolean isEmptyOrNull(final CategoryDataset data) {
-
+		
 		if (data == null) {
 			return true;
 		}
-
+		
 		final int rowCount = data.getRowCount();
 		final int columnCount = data.getColumnCount();
 		if (rowCount == 0 || columnCount == 0) {
 			return true;
 		}
-
+		
 		for (int r = 0; r < rowCount; r++) {
 			for (int c = 0; c < columnCount; c++) {
 				if (data.getValue(r, c) != null) {
 					return false;
 				}
-
+				
 			}
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Creates an "Other" slice for percentages below the percent threshold.
 	 * 
 	 * @param dataset
-	 *            the PieDataset.
+	 *           the PieDataset.
 	 * @param percentThreshold
-	 *            the percent threshold.
+	 *           the percent threshold.
 	 * @return A PieDataset.
 	 */
 	public static PieDataset limitPieDataset(final PieDataset dataset, final double percentThreshold) {
 		return DatasetUtilities.limitPieDataset(dataset, percentThreshold, 2, "Other");
 	}
-
+	
 	/**
 	 * Create an "Other" slice for percentages below the percent threshold providing
 	 * there are more slices below the percent threshold than specified in the slice
 	 * threshold.
 	 * 
 	 * @param dataset
-	 *            the source dataset.
+	 *           the source dataset.
 	 * @param percentThreshold
-	 *            the percent threshold (ten percent is 0.10).
+	 *           the percent threshold (ten percent is 0.10).
 	 * @param minItems
-	 *            only aggregate low values if there are at least this many.
+	 *           only aggregate low values if there are at least this many.
 	 * @return A PieDataset.
 	 */
 	public static PieDataset limitPieDataset(final PieDataset dataset, final double percentThreshold,
 			final int minItems) {
 		return DatasetUtilities.limitPieDataset(dataset, percentThreshold, minItems, "Other");
 	}
-
+	
 	/**
 	 * Creates a new pie dataset based on the supplied dataset, but modified by
 	 * aggregating all the low value items (those whose value is lower than the
@@ -1217,21 +1217,21 @@ public final class DatasetUtilities {
 	 * to aggregate.
 	 * 
 	 * @param dataset
-	 *            the source dataset.
+	 *           the source dataset.
 	 * @param percentThreshold
-	 *            the percent threshold (ten percent is 0.10).
+	 *           the percent threshold (ten percent is 0.10).
 	 * @param minItems
-	 *            only aggregate low values if there are at least this many.
+	 *           only aggregate low values if there are at least this many.
 	 * @param key
-	 *            the key to represent the aggregated items.
+	 *           the key to represent the aggregated items.
 	 * @return The pie dataset with (possibly) aggregated items.
 	 */
 	public static PieDataset limitPieDataset(final PieDataset dataset, final double percentThreshold,
 			final int minItems, final Comparable key) {
-
+		
 		final DefaultPieDataset result = new DefaultPieDataset();
 		final double total = DatasetUtilities.calculatePieDatasetTotal(dataset);
-
+		
 		// Iterate and find all keys below threshold percentThreshold
 		final List keys = dataset.getKeys();
 		final ArrayList otherKeys = new ArrayList();
@@ -1246,7 +1246,7 @@ public final class DatasetUtilities {
 				}
 			}
 		}
-
+		
 		// Create new dataset with keys above threshold percentThreshold
 		iterator = keys.iterator();
 		double otherValue = 0;
@@ -1269,13 +1269,13 @@ public final class DatasetUtilities {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the minimum and maximum values for the dataset's range, assuming that
 	 * the series are stacked.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the value range.
 	 */
 	public static Range getStackedRangeExtent(final TableXYDataset data) {
@@ -1305,21 +1305,21 @@ public final class DatasetUtilities {
 			return new Range(minimum, maximum);
 		}
 	}
-
+	
 	/**
 	 * Calculates the range of values for a dataset where each item is the running
 	 * total of the items for the current series.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The range.
 	 */
 	public static Range getCumulativeRangeExtent(final CategoryDataset dataset) {
-
+		
 		if (dataset == null) {
 			return null;
 		}
-
+		
 		boolean allItemsNull = true; // we'll set this to false if there is at least one
 		// non-null data item...
 		double minimum = 0.0;
@@ -1342,6 +1342,6 @@ public final class DatasetUtilities {
 		} else {
 			return null;
 		}
-
+		
 	}
 }

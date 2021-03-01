@@ -37,14 +37,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.C
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class PajekClusterColor extends AbstractAlgorithm {
-
+	
 	ClusterColorAttribute cca;
-
+	
 	private static String modeNode = "Colorize Nodes and Edges";
 	private static String modeSurr = "Colorize Surrounding of Nodes";
-
+	
 	private String modeOfOperation = modeNode;
-
+	
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -52,22 +52,22 @@ public class PajekClusterColor extends AbstractAlgorithm {
 		else
 			return "Color Clusters";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.VISUAL, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No graph available!");
-
+		
 		Collection<String> clusters = GraphHelper.getClusters(graph.getGraphElements());
 		if (clusters.size() <= 0)
 			throw new PreconditionException("No cluster information available for this graph!");
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		Graph g = graph;
@@ -75,30 +75,30 @@ public class PajekClusterColor extends AbstractAlgorithm {
 		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(g,
 				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
 				ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
-
+		
 		// if (cca.getClusterColors() != null && cca.getClusterColors().size() >
 		// clusters.size()) {
 		// cca.trimColorSelection(clusters.size());
 		// }
-
+		
 		// cca.ensureMinimumColorSelection(clusters.size());
 		cca.updateClusterList(clusters);
 		ClusterColorAttribute cca_new = new ClusterColorAttribute(ClusterColorAttribute.attributeName, cca.getString());
 		ClusterColorParameter op = new ClusterColorParameter(cca_new, "Cluster-Colors", ClusterColorAttribute.desc);
-
+		
 		ArrayList<String> modeList = new ArrayList<String>();
 		modeList.add(modeNode);
 		modeList.add(modeSurr);
 		ObjectListParameter modeParam = new ObjectListParameter(modeOfOperation, "Visualization Mode",
 				"Use either the node fill color or a coloring of the node surrounding to visualize different clusters.",
 				modeList);
-
+		
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return new Parameter[] { op };
 		else
 			return new Parameter[] { op, modeParam };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		ClusterColorAttribute cca = (ClusterColorAttribute) ((ClusterColorParameter) params[0]).getValue();
@@ -110,12 +110,12 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			modeOfOperation = (String) ((ObjectListParameter) params[1]).getValue();
 		}
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Please select the desired colors for the different subsets of graph elements,<br>"
@@ -124,7 +124,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 				+ "and the line color for edges.<br>" + "The second row determines the border coloring for nodes.<br>"
 				+ "If selected, edges with assigned cluster IDs are also colored.";
 	}
-
+	
 	@Override
 	public void execute() {
 		Graph g = graph;
@@ -135,12 +135,12 @@ public class PajekClusterColor extends AbstractAlgorithm {
 				if (!clusterId.equals(""))
 					clusters.add(clusterId);
 			}
-
+			
 			g.getListenerManager().transactionStarted(this);
 			ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(g,
 					ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
 					ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"));
-
+			
 			if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR || modeOfOperation.equals(modeNode))
 				executeClusterColoringOnGraph(g, clusters, cca);
 			if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR && modeOfOperation.equals(modeSurr)) {
@@ -149,7 +149,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR && modeOfOperation.equals(modeNode)) {
 				AttributeHelper.setAttribute(graph, "", "background_coloring", Boolean.valueOf(false));
 			}
-
+			
 			Graph emptyGraph = new AdjListGraph();
 			Graph clusterGraph = (Graph) AttributeHelper.getAttributeValue(g, "cluster", "clustergraph", emptyGraph,
 					new AdjListGraph(), false);
@@ -160,12 +160,13 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			g.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	/**
 	 * Colour clusters based on the stored {@linkplain ClusterColorAttribute} for
 	 * the graph.
 	 * 
-	 * @param g graph {@linkplain Graph}
+	 * @param g
+	 *           graph {@linkplain Graph}
 	 * @since 2.7.0
 	 */
 	public static void executeClusterColoringOnGraph(Graph g) {
@@ -173,17 +174,17 @@ public class PajekClusterColor extends AbstractAlgorithm {
 		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(g,
 				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
 				ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
-
+		
 		executeClusterColoringOnGraph(g, cca);
 	}
-
+	
 	public static void executeClusterColoringOnGraph(Graph g, ClusterColorAttribute cca) {
 		Collection<String> clusters = GraphHelper.getClusters(g.getGraphElements());
 		executeClusterColoringOnGraph(g, clusters, cca);
 	}
-
+	
 	public static void executeClusterColoringOnGraph(Graph g, Collection<String> clusters, ClusterColorAttribute cca) {
-
+		
 		// cca.ensureMinimumColorSelection(clusters.size());
 		cca.updateClusterList(clusters);
 		String[] clusterValues = clusters.toArray(new String[0]);
@@ -207,7 +208,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			g.getListenerManager().transactionFinished(g);
 		}
 	}
-
+	
 	/**
 	 * Re-colours graph elements to their default fill and outline colours.
 	 * Colouring attribute values are preserved.
@@ -226,7 +227,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 		}
 		g.getListenerManager().transactionFinished(g);
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return false; // would only work if all open graphs contain the same set of clusters

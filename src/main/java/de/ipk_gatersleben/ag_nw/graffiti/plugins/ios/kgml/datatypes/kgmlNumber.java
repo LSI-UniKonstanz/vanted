@@ -13,17 +13,19 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes;
  */
 public class kgmlNumber {
 	private int value;
-
+	
 	public kgmlNumber(int value) {
 		assert value >= 0;
 		if (value == 0)
 			value = 1;
 		this.value = value;
 	}
-
+	
 	/**
 	 * Parses a string to a kgml number.
-	 * @param s string number
+	 * 
+	 * @param s
+	 *           string number
 	 * @return Null, if the string cannot be parsed to an integer.
 	 * @vanted.revision 2.7.3
 	 */
@@ -39,12 +41,12 @@ public class kgmlNumber {
 		
 		return null;
 	}
-
+	
 	@Override
 	public String toString() {
 		return value + "";
 	}
-
+	
 	public int getValue() {
 		return value;
 	}

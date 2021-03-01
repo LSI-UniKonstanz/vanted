@@ -20,7 +20,7 @@ import java.util.List;
  */
 public interface PluginDescriptionCollector {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns an enumeration of
 	 * {@link org.graffiti.managers.pluginmgr.PluginEntry}s.

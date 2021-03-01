@@ -12,10 +12,10 @@ import org.w3c.dom.Node;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class MyComparableNode implements Comparable<Object> {
-
+	
 	public Node node;
 	public int timeValue;
-
+	
 	/**
 	 * @param i
 	 * @param n
@@ -24,7 +24,7 @@ public class MyComparableNode implements Comparable<Object> {
 		this.node = node;
 		this.timeValue = timeValue;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -38,5 +38,5 @@ public class MyComparableNode implements Comparable<Object> {
 			return -1;
 		return 0;
 	}
-
+	
 }

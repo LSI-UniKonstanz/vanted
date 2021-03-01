@@ -32,37 +32,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
  * @author Christian Klukas
  */
 public class CircleLayouterWithMinimumCrossingsAlgorithm extends AbstractAlgorithm {
-
+	
 	/**
 	 * The default radius.
 	 */
 	private double defaultRadius = 150;
-
+	
 	private boolean useSelection;
-
+	
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
 	 */
 	public CircleLayouterWithMinimumCrossingsAlgorithm() {
 		super();
 	}
-
+	
 	@Override
 	public void attach(Graph graph, Selection selection) {
 		super.attach(graph, selection);
 	}
-
+	
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
 	 * 
 	 * @param defaultRadius
-	 *            a value for the radius
+	 *           a value for the radius
 	 */
 	public CircleLayouterWithMinimumCrossingsAlgorithm(double defaultRadius) {
 		super();
 		this.defaultRadius = defaultRadius;
 	}
-
+	
 	/**
 	 * Returns the name of the algorithm.
 	 * 
@@ -71,57 +71,57 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends AbstractAlgorit
 	public String getName() {
 		return "Circle (min. crossings)";
 	}
-
+	
 	/**
 	 * Checks, if a graph was given and that the radius is positive.
 	 * 
 	 * @throws PreconditionException
-	 *             if no graph was given during algorithm invocation or the radius
-	 *             is negative
+	 *            if no graph was given during algorithm invocation or the radius
+	 *            is negative
 	 */
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null) {
 			errors.add("No network available!");
 		}
-
+		
 		// if (defaultRadius < 0) {
 		// errors.add("The radius may not be negative.");
 		// }
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
 		if (graph.getNumberOfNodes() <= 0) {
 			throw new PreconditionException("The network is empty. Cannot run layouter.");
 		}
-
+		
 	}
-
+	
 	/**
 	 * Performs the layout.
 	 */
 	public void execute() {
 		// EditorSession session = GravistoService.getInstance().getMainFrame()
 		// .getActiveEditorSession();
-
+		
 		Collection<Node> workNodes = new ArrayList<Node>();
 		if (useSelection)
 			workNodes.addAll(selection.getNodes());
 		else
 			workNodes.addAll(graph.getNodes());
-
+		
 		final Vector2d ctr = NodeTools.getCenter(workNodes);
-
+		
 		int numberOfNodes = workNodes.size();
 		final double singleStep = 2 * Math.PI / numberOfNodes;
-
+		
 		final Graph workGraph = graph;
 		final ArrayList<Node> sortedNodes = new ArrayList<Node>();
 		sortedNodes.addAll(workNodes);
-
+		
 		AlgorithmServices.doCircularEdgeCrossingsMinimization(this, sortedNodes, new Runnable() {
 			public void run() {
 				if (sortedNodes == null || workGraph == null || workGraph.getListenerManager() == null)
@@ -147,7 +147,7 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends AbstractAlgorit
 				for (Node n : sortedNodes) {
 					double newX = Math.sin(singleStep * i) * defaultRadius + ctr.x;
 					double newY = Math.cos(singleStep * i) * defaultRadius + ctr.y;
-
+					
 					nodes2newPositions.put(n, new Vector2d(newX, newY));
 					i = i + 1;
 				}
@@ -155,7 +155,7 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends AbstractAlgorit
 			}
 		});
 	}
-
+	
 	/**
 	 * Returns the parameter object for the radius and the minimize edge crossings
 	 * parameter.
@@ -165,21 +165,21 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends AbstractAlgorit
 	@Override
 	public Parameter[] getParameters() {
 		DoubleParameter radiusParam = new DoubleParameter("Radius", "The radius of the circle.");
-
+		
 		radiusParam.setDouble(defaultRadius);
-
+		
 		BooleanParameter useSelectionParam = new BooleanParameter(useSelection, "Work on Selection",
 				"Do the layout for the selected nodes");
-
+		
 		return new Parameter[] { radiusParam, useSelectionParam };
 	}
-
+	
 	/**
 	 * Sets the radius parameter and the minimize edge crossings flag to the given
 	 * values.
 	 * 
 	 * @param params
-	 *            An array with one DoubleParameter and a BooleanParameter.
+	 *           An array with one DoubleParameter and a BooleanParameter.
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
@@ -187,7 +187,7 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends AbstractAlgorit
 		defaultRadius = ((DoubleParameter) params[0]).getDouble().doubleValue();
 		useSelection = ((BooleanParameter) params[1]).getBoolean().booleanValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -197,12 +197,12 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends AbstractAlgorit
 	public String getCategory() {
 		return "Layout";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;

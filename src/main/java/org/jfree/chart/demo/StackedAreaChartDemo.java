@@ -50,12 +50,12 @@ import org.jfree.ui.RefineryUtilities;
  * using data from a {@link CategoryDataset}.
  */
 public class StackedAreaChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public StackedAreaChartDemo(final String title) {
 		super(title);
@@ -65,7 +65,7 @@ public class StackedAreaChartDemo extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -74,20 +74,20 @@ public class StackedAreaChartDemo extends ApplicationFrame {
 	public CategoryDataset createDataset() {
 		final double[][] data = new double[][] { { 1.0, 4.0, 3.0, 5.0, 5.0, 7.0, 7.0, 8.0 },
 				{ 5.0, 7.0, 6.0, 8.0, 4.0, 4.0, 2.0, 1.0 }, { 4.0, 3.0, 2.0, 3.0, 6.0, 3.0, 4.0, 3.0 } };
-
+		
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Type ", data);
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A sample chart.
 	 */
 	public JFreeChart createChart(CategoryDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createStackedAreaChart("Stacked Area Chart", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
@@ -95,30 +95,30 @@ public class StackedAreaChartDemo extends ApplicationFrame {
 				PlotOrientation.VERTICAL, // orientation
 				true, // include legend
 				true, false);
-
+		
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		plot.setForegroundAlpha(0.5f);
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		final CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setLowerMargin(0.0);
 		domainAxis.setUpperMargin(0.0);
-
+		
 		// change the auto tick unit selection to integer units only...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+		
 		final CategoryItemRenderer renderer = plot.getRenderer();
 		renderer.setItemLabelsVisible(true);
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -129,20 +129,20 @@ public class StackedAreaChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final StackedAreaChartDemo demo = new StackedAreaChartDemo("Stacked Area Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -19,15 +19,15 @@ import org.graffiti.plugin.editcomponent.ValueEditComponent;
  * @author Christian Klukas (c) 2008 IPK-Gatersleben
  */
 public class LineModeCellRenderer implements ListCellRenderer<Object> {
-
+	
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 			boolean cellHasFocus) {
-
+		
 		JLabel result = new JLabel();
-
+		
 		if (value == null)
 			result.setText(ValueEditComponent.EMPTY_STRING);
-
+		
 		if (isSelected)
 			result.setBackground(list.getSelectionBackground());
 		else {
@@ -36,14 +36,14 @@ public class LineModeCellRenderer implements ListCellRenderer<Object> {
 			else
 				result.setBackground(list.getBackground());
 		}
-
+		
 		if (value == null)
 			return result;
-
+		
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/') + "/images";
 		ImageIcon icon = null;
-
+		
 		LineModeSetting lms = (LineModeSetting) value;
 		try {
 			icon = new ImageIcon(cl.getResource(path + "/line_" + (int) lms.a + "_" + (int) lms.b + ".png"));
@@ -52,11 +52,11 @@ public class LineModeCellRenderer implements ListCellRenderer<Object> {
 			System.out.println("A/B: " + (int) lms.a + "/" + (int) lms.b);
 			result.setText("A/B: " + (int) lms.a + "/" + (int) lms.b);
 		}
-
+		
 		if (icon != null)
 			result.setIcon(icon);
-
+		
 		return result;
 	}
-
+	
 }

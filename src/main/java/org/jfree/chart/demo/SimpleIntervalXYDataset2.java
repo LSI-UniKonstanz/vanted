@@ -38,28 +38,28 @@ import org.jfree.data.IntervalXYDataset;
  * A quick and dirty sample dataset.
  */
 public class SimpleIntervalXYDataset2 extends AbstractIntervalXYDataset implements IntervalXYDataset {
-
+	
 	/** The start values. */
 	private Double[] yStart;
-
+	
 	/** The end values. */
 	private Double[] yEnd = new Double[3];
-
+	
 	/** The x values. */
 	private Double[] xValues = new Double[3];
-
+	
 	/**
 	 * Creates a new dataset.
 	 * 
 	 * @param itemCount
-	 *            the number of items to generate.
+	 *           the number of items to generate.
 	 */
 	public SimpleIntervalXYDataset2(final int itemCount) {
-
+		
 		this.xValues = new Double[itemCount];
 		this.yStart = new Double[itemCount];
 		this.yEnd = new Double[itemCount];
-
+		
 		double base = 100;
 		for (int i = 1; i <= itemCount; i++) {
 			this.xValues[i - 1] = Double.valueOf(i);
@@ -68,7 +68,7 @@ public class SimpleIntervalXYDataset2 extends AbstractIntervalXYDataset implemen
 			this.yEnd[i - 1] = Double.valueOf(this.yStart[i - 1].doubleValue() + Math.random() * 30);
 		}
 	}
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
@@ -77,29 +77,29 @@ public class SimpleIntervalXYDataset2 extends AbstractIntervalXYDataset implemen
 	public int getSeriesCount() {
 		return 1;
 	}
-
+	
 	/**
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the series name.
 	 */
 	public String getSeriesName(final int series) {
 		return "Series 1";
 	}
-
+	
 	/**
 	 * Returns the number of items in a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the number of items within a series.
 	 */
 	public int getItemCount(final int series) {
 		return this.xValues.length;
 	}
-
+	
 	/**
 	 * Returns the x-value for an item within a series.
 	 * <P>
@@ -107,98 +107,98 @@ public class SimpleIntervalXYDataset2 extends AbstractIntervalXYDataset implemen
 	 * presented in ascending order.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the x-value for an item within a series.
 	 */
 	public Number getXValue(final int series, final int item) {
 		return this.xValues[item];
 	}
-
+	
 	/**
 	 * Returns the y-value for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the y-value for an item within a series.
 	 */
 	public Number getYValue(final int series, final int item) {
 		return this.yEnd[item];
 	}
-
+	
 	/**
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the start x value.
 	 */
 	public Number getStartXValue(final int series, final int item) {
 		return this.xValues[item];
 	}
-
+	
 	/**
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the end x value.
 	 */
 	public Number getEndXValue(final int series, final int item) {
 		return this.xValues[item];
 	}
-
+	
 	/**
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the start y value.
 	 */
 	public Number getStartYValue(final int series, final int item) {
 		return this.yStart[item];
 	}
-
+	
 	/**
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the end y value.
 	 */
 	public Number getEndYValue(final int series, final int item) {
 		return this.yEnd[item];
 	}
-
+	
 	/**
 	 * Registers an object for notification of changes to the dataset.
 	 * 
 	 * @param listener
-	 *            the object to register.
+	 *           the object to register.
 	 */
 	public void addChangeListener(final DatasetChangeListener listener) {
 		// ignored
 	}
-
+	
 	/**
 	 * Deregisters an object for notification of changes to the dataset.
 	 * 
 	 * @param listener
-	 *            the object to deregister.
+	 *           the object to deregister.
 	 */
 	public void removeChangeListener(final DatasetChangeListener listener) {
 		// ignored
 	}
-
+	
 }

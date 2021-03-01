@@ -21,18 +21,18 @@ import org.ErrorMsg;
  */
 class TypeMap {
 	// ~ Instance fields ========================================================
-
+	
 	/** Maps Gravisto attribute types to graphML attribute types. */
 	private final HashMap<String, String> map;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>TypeMap</code>.
 	 */
 	TypeMap() {
 		this.map = new HashMap<String, String>();
-
+		
 		// add the straight forward mapping for the base attributes
 		this.map.put("org.graffiti.attributes.BooleanAttribute", "boolean");
 		this.map.put("org.graffiti.attributes.IntegerAttribute", "int");
@@ -40,7 +40,7 @@ class TypeMap {
 		this.map.put("org.graffiti.attributes.FloatAttribute", "float");
 		this.map.put("org.graffiti.attributes.DoubleAttribute", "double");
 		this.map.put("org.graffiti.attributes.StringAttribute", "string");
-
+		
 		// advanced mappings
 		this.map.put("org.graffiti.attributes.ShortAttribute", "int");
 		this.map.put("org.graffiti.attributes.ByteAttribute", "int");
@@ -49,15 +49,15 @@ class TypeMap {
 		this.map.put("org.graffiti.graphics.AWTImageAttribute", "string");
 		this.map.put("org.graffiti.graphics.LineModeAttribute", "string");
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the graphML attribute type for a given Gravisto attribute type,
 	 * <code>null</code> if there is no such type in the map.
 	 * 
 	 * @param gravistoType
-	 *            the Gravisto attribute type.
+	 *           the Gravisto attribute type.
 	 * @return the graphML attribute type.
 	 */
 	@SuppressWarnings("unchecked")

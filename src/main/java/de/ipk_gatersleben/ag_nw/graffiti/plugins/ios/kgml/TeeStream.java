@@ -8,12 +8,12 @@ import java.io.PrintStream;
 // All writes to this print stream are copied to two print streams
 public class TeeStream extends PrintStream {
 	PrintStream out;
-
+	
 	public TeeStream(PrintStream out1, PrintStream out2) {
 		super(out1);
 		this.out = out2;
 	}
-
+	
 	@Override
 	public void write(byte buf[], int off, int len) {
 		try {
@@ -22,7 +22,7 @@ public class TeeStream extends PrintStream {
 		} catch (Exception e) {
 		}
 	}
-
+	
 	@Override
 	public void flush() {
 		super.flush();

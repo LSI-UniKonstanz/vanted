@@ -71,94 +71,94 @@ import org.vanted.scaling.scalers.component.JLabelScaler;
  * @version $Revision: 1.25 $
  */
 public class DefaultParameterDialog extends AbstractParameterDialog implements ActionListener, WindowListener {
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2056323037374508608L;
-
+	
 	/** The <code>ImageBundle</code> of the view type chooser. */
 	protected ImageBundle iBundle = ImageBundle.getInstance();
-
+	
 	/** The panel used to display and change parameter values. */
 	protected ParameterEditPanel paramEditPanel;
-
+	
 	/** The <code>StringBundle</code> of the view type chooser. */
 	protected StringBundle sBundle = StringBundle.getInstance();
-
+	
 	/** The list of parameters, the user is editing. */
 	protected Parameter[] params;
-
+	
 	/** The value edit component manager, the edit panel needs. */
 	private final EditComponentManager editComponentManager;
-
+	
 	/** The dialog's buttons. */
 	private final JButton cancel;
-
+	
 	/** The dialog's buttons. */
 	private final JButton ok;
-
+	
 	/** The panel, which contains the parameters. */
 	private final JPanel paramsPanel;
-
+	
 	/** <code>true</code>, if the user selected the ok button in this dialog. */
 	private boolean selectedOk = false;
-
+	
 	private final String algorithmName;
-
+	
 	private final Collection<Session> validSessions = new ArrayList<Session>();
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for DefaultParameterDialog.
 	 * 
 	 * @param editComponentManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param parent
-	 *            the parent of this dialog.
+	 *           the parent of this dialog.
 	 * @param parameters
-	 *            the array of parameters to edit in this dialog.
+	 *           the array of parameters to edit in this dialog.
 	 * @param selection
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param algorithmName
-	 *            the name of the algorithm, to edit the parameters for.
+	 *           the name of the algorithm, to edit the parameters for.
 	 */
 	public DefaultParameterDialog(EditComponentManager editComponentManager, Component parent, Parameter[] parameters,
 			Selection selection, String algorithmName, Object description) {
 		this(editComponentManager, parent, parameters, selection, algorithmName, description, null, true);
 	}
-
+	
 	public DefaultParameterDialog(EditComponentManager editComponentManager, Component parent, Parameter[] parameters,
 			Selection selection, String algorithmName, Object description, boolean okOnly, boolean noButton,
 			boolean allowMultipleGraphTargets) {
 		this(editComponentManager, parent, parameters, selection, algorithmName, description, null, okOnly, noButton,
 				allowMultipleGraphTargets, "OK");
 	}
-
+	
 	public DefaultParameterDialog(EditComponentManager editComponentManager, Component parent, Parameter[] parameters,
 			Selection selection, String algorithmName, Object descriptionOrComponent, JComponent descComponent,
 			boolean allowMultipleGraphTargets) {
 		this(editComponentManager, parent, parameters, selection, algorithmName, descriptionOrComponent, descComponent,
 				false, false, allowMultipleGraphTargets, "OK");
 	}
-
+	
 	public DefaultParameterDialog(EditComponentManager editComponentManager, Component parent, Parameter[] parameters,
 			Selection selection, String algorithmName, Object descriptionOrComponent, JComponent descComponent,
 			boolean okOnly, boolean noButton, boolean allowMultipleGraphTargets, String okOnlyButtonText) {
 		this(editComponentManager, parent, parameters, selection, algorithmName, descriptionOrComponent, descComponent,
 				false, false, allowMultipleGraphTargets, "OK", true);
 	}
-
+	
 	public DefaultParameterDialog(EditComponentManager editComponentManager, Component parent, Parameter[] parameters,
 			Selection selection, String algorithmNameUsedAsTitle, Object descriptionOrComponent,
 			JComponent descComponent, boolean okOnly, boolean noButton, boolean allowMultipleGraphTargets,
 			String okOnlyButtonText, boolean modal) {
-
+		
 		super(parent instanceof Frame ? (Frame) parent : null, modal);
-
+		
 		validSessions.clear();
 		try {
 			Session s = MainFrame.getInstance().getActiveSession();
@@ -167,80 +167,80 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		} catch (Exception e) {
 			// empty
 		}
-
+		
 		String description = "";
 		if (descriptionOrComponent instanceof String)
 			description = (String) descriptionOrComponent;
 		else
 			descComponent = (JComponent) descriptionOrComponent;
-
+		
 		if (algorithmNameUsedAsTitle != null && algorithmNameUsedAsTitle.endsWith("..."))
 			algorithmNameUsedAsTitle = algorithmNameUsedAsTitle.substring(0,
 					algorithmNameUsedAsTitle.length() - "...".length());
-
+		
 		this.algorithmName = algorithmNameUsedAsTitle;
-
+		
 		this.editComponentManager = editComponentManager;
-
+		
 		this.params = parameters;
-
+		
 		getContentPane().setLayout(new BorderLayout());
-
+		
 		// setTitle("Set algorithm parameters");
 		setTitle(algorithmNameUsedAsTitle);
-
+		
 		setSize(420, 320);
 		setResizable(true);// false
 		setLocationRelativeTo(parent);
-
+		
 		ok = new JButton(sBundle.getString("run.dialog.button.run"));
 		cancel = new JButton(sBundle.getString("run.dialog.button.cancel"));
-
+		
 		if (okOnlyButtonText != null && okOnlyButtonText.indexOf(";") > 0) {
 			cancel.setText(okOnlyButtonText.substring(okOnlyButtonText.lastIndexOf(";") + ";".length()));
 			okOnlyButtonText = okOnlyButtonText.substring(0, okOnlyButtonText.lastIndexOf(";"));
 			okOnly = false;
 		}
-
+		
 		if (okOnlyButtonText != null && okOnlyButtonText.length() > 0)
 			ok.setText(okOnlyButtonText);
-
+		
 		// JPanel buttonsPanel = new JPanel();
 		//
 		// buttonsPanel.add(ok);
 		// buttonsPanel.add(cancel);
-
+		
 		paramsPanel = createValueEditContainer(params, selection,
 				(description != null && description.length() > 0) ? description : "", algorithmNameUsedAsTitle,
 				descComponent); // sBundle.getString("run.dialog.desc")
-
+		
 		// algorithmName + " parameters"
-
+		
 		ok.setEnabled(true);
-
+		
 		getRootPane().setDefaultButton(ok);
-
+		
 		getRootPane().getActionMap().put("escapeAction", new AbstractAction() {
-
+			
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 2233104321117610124L;
-
+			
 			public void actionPerformed(ActionEvent event) {
 				DefaultParameterDialog.this.dispose();
 			}
 		});
 		getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "escapeAction");
-
+		
 		defineLayout(okOnly, noButton, allowMultipleGraphTargets);
 		addListeners();
-
+		
 		pack();
 		pack();
 		setLocationRelativeTo(parent);
-
+		
 		// fixing dialogs, which are way too big for the screen -> scrollpanes may be
 		// useful
 		Dimension size = getSize();
@@ -249,21 +249,21 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 			size.height = screen.height - 50;
 		if (size.width > screen.width - 50)
 			size.width = screen.width - 50;
-
+		
 		setSize(size);
-
+		
 		// end fixing
-
+		
 		setVisible(true);
-
+		
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	public Parameter[] getEditedParameters() {
 		return this.paramEditPanel.getUpdatedParameters();
 	}
-
+	
 	@Override
 	public void pack() {
 		if (!SwingUtilities.isEventDispatchThread())
@@ -271,7 +271,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		else
 			super.pack();
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -280,10 +280,10 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 	public boolean isOkSelected() {
 		return selectedOk;
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
 		Object src = e.getSource();
-
+		
 		if (src == cancel) {
 			MainFrame.showMessage(algorithmName + " not started", MessageType.INFO, 3000);
 			dispose();
@@ -291,29 +291,29 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 			okSelected();
 		}
 	}
-
+	
 	public void windowActivated(WindowEvent arg0) {
 	}
-
+	
 	public void windowClosed(WindowEvent arg0) {
 	}
-
+	
 	public void windowClosing(WindowEvent arg0) {
 		dispose();
 	}
-
+	
 	public void windowDeactivated(WindowEvent arg0) {
 	}
-
+	
 	public void windowDeiconified(WindowEvent arg0) {
 	}
-
+	
 	public void windowIconified(WindowEvent arg0) {
 	}
-
+	
 	public void windowOpened(WindowEvent arg0) {
 	}
-
+	
 	/**
 	 * Adds the listeners to the dialog.
 	 */
@@ -322,14 +322,14 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		ok.addActionListener(this);
 		addWindowListener(this);
 	}
-
+	
 	/**
 	 * Creates and returns a value edit container for the given parameters.
 	 * 
 	 * @param parameters
-	 *            the list of parameters, the user wants to edit.
+	 *           the list of parameters, the user wants to edit.
 	 * @param selection
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param descComponent
 	 * @return DOCUMENT ME!
 	 */
@@ -338,10 +338,10 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		this.paramEditPanel = new ParameterEditPanel(parameters,
 				editComponentManager != null ? editComponentManager.getEditComponents() : null, selection, title, true,
 				heading, descComponent);
-
+		
 		return this.paramEditPanel;
 	}
-
+	
 	/**
 	 * Defines the layout of this dialog.
 	 */
@@ -350,43 +350,43 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		double[][] size = { new double[] { border, TableLayoutConstants.FILL, border }, new double[] { border,
 				TableLayoutConstants.FILL, border, TableLayoutConstants.PREFERRED, noButton ? 0 : border }, };
 		getContentPane().setLayout(new TableLayout(size));
-
+		
 		// paramsPanel.setBorder(BorderFactory.createEtchedBorder());
 		//
 		getContentPane().add(paramsPanel, "1,1");
-
+		
 		JComponent sessionselpan = null;
-
+		
 		if (allowMultipleGraphTargets) {
 			final ObjectRef ml = new ObjectRef();
 			sessionselpan = getSessionSelectionPanel(ml);
 			ok.addMouseListener(new MouseListener() {
-
+				
 				@Override
 				public void mouseReleased(MouseEvent e) {
-
+					
 				}
-
+				
 				@Override
 				public void mousePressed(MouseEvent e) {
-
+					
 				}
-
+				
 				@Override
 				public void mouseExited(MouseEvent e) {
 					if (ml != null && ml.getObject() != null)
 						((MouseListener) ml.getObject()).mouseExited(e);
 				}
-
+				
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					if (ml != null && ml.getObject() != null)
 						((MouseListener) ml.getObject()).mouseEntered(e);
 				}
-
+				
 				@Override
 				public void mouseClicked(MouseEvent e) {
-
+					
 				}
 			});
 		}
@@ -398,7 +398,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 					TableLayoutConstants.PREFERRED, TableLayout.FILL, border, 0), "1,3");
 		getContentPane().validate();
 	}
-
+	
 	private JComponent getSessionSelectionPanel(ObjectRef ml) {
 		MainFrame.getInstance();
 		if (MainFrame.getSessions().size() <= 1)
@@ -406,7 +406,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		else {
 			final String pre = "<html><font color='#777777'><small>";
 			final JLabel res = new JLabel(pre + getActiveWorkingSetDescription());
-
+			
 			Cursor c = new Cursor(Cursor.HAND_CURSOR);
 			res.setCursor(c);
 			final String hint = "Click &gt;here&lt; to modify working set";
@@ -415,20 +415,20 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 			MouseListener m = new MouseListener() {
 				public void mouseReleased(MouseEvent e) {
 				}
-
+				
 				public void mousePressed(MouseEvent e) {
 				}
-
+				
 				Color oldColor;
 				boolean oldOpaque;
-
+				
 				public void mouseExited(MouseEvent e) {
 					res.setOpaque(oldOpaque);
 					res.setBackground(oldColor);
 					res.setToolTipText(getActiveWorkingSetDescriptionDetails());
 					res.setText(pre + getActiveWorkingSetDescription());
 				}
-
+				
 				public void mouseEntered(MouseEvent e) {
 					oldOpaque = res.isOpaque();
 					res.setOpaque(true);
@@ -436,7 +436,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 					res.setBackground(new Color(240, 240, 255));
 					res.setText(pre + hint);
 				}
-
+				
 				public void mouseClicked(MouseEvent e) {
 					if (validSessions.size() <= 1) {
 						validSessions.clear();
@@ -451,11 +451,11 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 			};
 			ml.setObject(m);
 			res.addMouseListener(m);
-
+			
 			return res;
 		}
 	}
-
+	
 	private String getActiveWorkingSetDescription() {
 		boolean isActiveGraph = false;
 		try {
@@ -476,7 +476,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 				return "No graph available";
 		}
 	}
-
+	
 	private String getActiveWorkingSetDescriptionDetails() {
 		try {
 			StringBuilder res = new StringBuilder();
@@ -495,7 +495,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 			return null;
 		}
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
@@ -503,32 +503,32 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		selectedOk = true;
 		dispose();
 	}
-
+	
 	/**
 	 * @param description
-	 *            In case the description is of type JComponent, this GUI element
-	 *            will be shown at the top of the dialog. If this parameter is of
-	 *            type String, a <code>JLabel</code> object will show the provided
-	 *            text. If the description text starts with "[OK]", only the OK and
-	 *            not the Cancel button will be shown. If the description text
-	 *            starts with "[]", no button will be shown. If the description
-	 *            starts with "[Hello]", the single OK Button will be titled
-	 *            "Hello". If the description starts with [Yes;No], two buttons,
-	 *            titles 'Yes' and 'No' will be shown.
+	 *           In case the description is of type JComponent, this GUI element
+	 *           will be shown at the top of the dialog. If this parameter is of
+	 *           type String, a <code>JLabel</code> object will show the provided
+	 *           text. If the description text starts with "[OK]", only the OK and
+	 *           not the Cancel button will be shown. If the description text
+	 *           starts with "[]", no button will be shown. If the description
+	 *           starts with "[Hello]", the single OK Button will be titled
+	 *           "Hello". If the description starts with [Yes;No], two buttons,
+	 *           titles 'Yes' and 'No' will be shown.
 	 * @param title
-	 *            The shown dialog window will use this value as its window title.
+	 *           The shown dialog window will use this value as its window title.
 	 * @param parameters
 	 * @return The return value depends on the selected button (OK/Cancel).
 	 */
 	public static Object[] getInput(Object description, String title, Object... parameters) {
-
+		
 		title = StringManipulationTools.removeHTMLtags(title);
-
+		
 		description = getScaledHTMLDescription(description);
-
+		
 		if (title != null && title.endsWith("..."))
 			title = title.substring(0, title.length() - "...".length());
-
+		
 		// Buttons: OK => close and return input values
 		// Cancel => close and return null
 		// Reset => set to initial values
@@ -598,7 +598,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 				modal = false;
 				description = StringManipulationTools.stringReplace((String) description, "nonmodal", "");
 			}
-
+		
 		boolean noButton = (description != null && description instanceof String
 				&& ((String) description).startsWith("[]"));
 		if (noButton) {
@@ -620,14 +620,14 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 					&& !((String) description).toUpperCase().startsWith("<HTML>"))
 				description = "<html>" + (String) description;
 		}
-
+		
 		boolean vis = MainFrame.getInstance().isVisible();
 		Component ref;
 		if (!vis)
 			ref = ReleaseInfo.getApplet();
 		else
 			ref = MainFrame.getInstance();
-
+		
 		DefaultParameterDialog paramDialog = new DefaultParameterDialog(
 				MainFrame.getInstance() != null ? MainFrame.getInstance().getEditComponentManager() : null, ref, p,
 				(MainFrame.getInstance() != null && MainFrame.getInstance().getActiveEditorSession() != null
@@ -645,7 +645,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		} else
 			return null;
 	}
-
+	
 	/**
 	 * Scales the HTML given there is such, otherwise returns unchanged.
 	 */
@@ -653,13 +653,13 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		if (description instanceof String) {
 			JLabel holder = new JLabel((String) description);
 			new JLabelScaler(Toolbox.getDPIScalingRatio()).coscaleHTML(holder);
-
+			
 			return holder.getText();
 		}
-
+		
 		return description;
 	}
-
+	
 	private static boolean oneButtonDescription(Object description) {
 		if (description == null || !(description instanceof String))
 			return false;
@@ -670,19 +670,19 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		} else
 			return false;
 	}
-
+	
 	public Collection<Session> getTargetSessions() {
 		return validSessions;
 	}
-
+	
 	private static int scrollbarWidth = (int) (new JScrollBar(JScrollBar.VERTICAL).getPreferredSize().getWidth() + 1);
-
+	
 	@Override
 	public Dimension getPreferredSize() {
 		Dimension d = super.getPreferredSize();
 		return new Dimension((int) d.getWidth() + scrollbarWidth, (int) d.getHeight());
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

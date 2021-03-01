@@ -23,12 +23,12 @@ import org.graffiti.graphics.GraphicAttributeConstants;
 public abstract class GraphElementComponent extends JComponent
 		implements GraffitiViewComponent, GraphicAttributeConstants, GraphElementComponentInterface {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6496536237986687540L;
-
+	
 	/**
 	 * Returns whether the given coordinates lie within this component and within
 	 * its encapsulated shape. The coordinates are assumed to be relative to the
@@ -40,12 +40,12 @@ public abstract class GraphElementComponent extends JComponent
 	public boolean contains(int x, int y) {
 		return super.contains(x, y);
 	}
-
+	
 	/**
 	 * Paints the graph element contained in this component.
 	 * 
 	 * @param g
-	 *            the graphics context in which to paint.
+	 *           the graphics context in which to paint.
 	 * @see javax.swing.JComponent#paintComponent(Graphics)
 	 */
 	@Override

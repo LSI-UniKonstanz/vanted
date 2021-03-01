@@ -20,36 +20,36 @@ import java.util.EventObject;
  */
 public abstract class AbstractEvent extends EventObject {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2383616846719461551L;
-
+	
 	public enum EVENTTYPE {
 		CREATED, UPDATED, DELETED
 	};
-
+	
 	private EVENTTYPE eventType;
-
+	
 	/**
 	 * Constructs an AbstractEvent with object o as source.
 	 * 
 	 * @param o
-	 *            the object that is considered as source of the event.
+	 *           the object that is considered as source of the event.
 	 */
 	public AbstractEvent(Object o) {
 		super(o);
 	}
-
+	
 	public EVENTTYPE getEventType() {
 		return eventType;
 	}
-
+	
 	public void setEventType(EVENTTYPE eventType) {
 		this.eventType = eventType;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

@@ -46,45 +46,45 @@ import org.jfree.ui.RefineryUtilities;
  * This demo shows a plot of water temperature at various depths.
  */
 public class WaterTemperatureDemo extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing an XY series containing a null value.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public WaterTemperatureDemo(final String title) {
-
+		
 		super(title);
 		final XYDataset dataset = createDataset();
-
+		
 		final NumberAxis rangeAxis = new NumberAxis("Temperature");
 		rangeAxis.setRange(-0.55, -0.15);
-
+		
 		final NumberAxis domainAxis = new NumberAxis("Depth");
 		domainAxis.setInverted(true);
 		domainAxis.setRange(0.0, 35.0);
 		domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+		
 		final XYItemRenderer renderer = new StandardXYItemRenderer();
-
+		
 		final XYPlot plot = new XYPlot(dataset, domainAxis, rangeAxis, renderer);
 		plot.setOrientation(PlotOrientation.HORIZONTAL);
 		final JFreeChart chart = new JFreeChart("Water Temperature By Depth", plot);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private XYDataset createDataset() {
-
+		
 		final XYSeries series = new XYSeries("Zone 1");
 		series.add(1.0, -0.5);
 		series.add(5.0, -0.5);
@@ -94,11 +94,11 @@ public class WaterTemperatureDemo extends ApplicationFrame {
 		series.add(25.0, -0.3);
 		series.add(30.0, -0.2);
 		series.add(35.0, -0.2);
-
+		
 		return new XYSeriesCollection(series);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -109,20 +109,20 @@ public class WaterTemperatureDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final WaterTemperatureDemo demo = new WaterTemperatureDemo("Water Temperature Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

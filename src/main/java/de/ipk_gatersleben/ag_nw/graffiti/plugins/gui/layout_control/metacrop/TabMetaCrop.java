@@ -22,21 +22,21 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 	private static final long serialVersionUID = 9151183202582295365L;
 	static final String METACROP_PATHWAY_URL_PARAM = "Metacrop Pathway URL";
 	static String METACROP_PATHWAY_URL_VALUE = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/metacrop/gml-newsbgnshapes/";
-
+	
 	public TabMetaCrop() {
-
+		
 		super("MetaCrop", METACROP_PATHWAY_URL_VALUE, "pathways", "pathway", "http://metacrop.ipk-gatersleben.de/",
 				false);
-
+		
 	}
-
+	
 	public TabMetaCrop(String title, String url, String content, String contentSingle, String infoURL,
 			boolean ommitEmptyGroupItems, String downloadButtonText) {
-
+		
 		super(title, url, content, contentSingle, infoURL, ommitEmptyGroupItems, downloadButtonText);
-
+		
 	}
-
+	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
@@ -46,21 +46,21 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 				"<html>Set URL to MetaCrop pathway repository"));
 		return arrayList;
 	}
-
+	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		METACROP_PATHWAY_URL_VALUE = preferences.get(METACROP_PATHWAY_URL_PARAM, METACROP_PATHWAY_URL_VALUE);
 		setWebAddress(METACROP_PATHWAY_URL_VALUE);
 	}
-
+	
 	@Override
 	public String getPreferencesAlternativeName() {
 		return "MetaCrop";
 	}
-
+	
 	@Override
 	public void addAnnotationsToGraphElements(Graph graph) {
-
+		
 		// 'graph' should have set a reference url
 		// this is just a workaround in case there is no reference url
 		// try to create the reference url based on name first
@@ -79,11 +79,11 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 			if (sbmlID != null && sbmlID.trim().length() > 0)
 				AttributeHelper.setReferenceURL(node, prefURL + sbmlID);
 		}
-
+		
 	}
-
+	
 	private String getPathwayReference(String paramPathwayName, String returnIfUnknown) {
-
+		
 		String[] knownNamesAndIDs = new String[] { "Alanine degradation;123",
 				"Alanine, Valine, Leucine biosynthesis;12", "Arabinoxylan, Beta-Glucan, Cellulose biosynthesis;50",
 				"Arginine biosynthesis;19", "Arginine degradation;122", "Ascorbate biosynthesis;24",
@@ -107,7 +107,7 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 				"TCA cycle;68", "Threonine biosynthesis;14", "Threonine degradation;142", "Tryptophan degradation;139",
 				"Tyrosine degradation;138", "UDP sugars;128", "Valine degradation;124" };
 		String prefURL = "http://metacrop.ipk-gatersleben.de/pls/htmldb_pgrc/f?p=metacrop:7:::NO::P7_PATHWAY_ID:";
-
+		
 		String pathwayName = paramPathwayName.toUpperCase();
 		if (pathwayName.endsWith(".GML"))
 			pathwayName = pathwayName.substring(0, pathwayName.length() - ".GML".length());
@@ -124,28 +124,28 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 			}
 		}
 		return returnIfUnknown;
-
+		
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
-
+		
 		return v == null || v instanceof GraphView;
-
+		
 	}
-
+	
 	@Override
 	protected String[] getValidExtensions() {
-
+		
 		return new String[] { ".gml", ".graphml" };
-
+		
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Pathways";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;

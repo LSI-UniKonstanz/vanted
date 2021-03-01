@@ -7,6 +7,6 @@ import java.awt.Color;
 
 public interface ColorSetAndGetSupport {
 	public void setColor(Color newColor);
-
+	
 	public Color getColor();
 }

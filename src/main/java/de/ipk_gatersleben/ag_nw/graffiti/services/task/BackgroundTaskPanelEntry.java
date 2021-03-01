@@ -37,7 +37,7 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 	private static String closeText = "<html><small>OK";
 	private static String autoCloseText = "<html><small>OK!";
 	private static String proceedText = "<html><small>OK";
-
+	
 	private JLabel taskStatusLabel;
 	String taskMessage;
 	private final JButton stopButton;
@@ -49,21 +49,21 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 	private JPanel progressAndButton;
 	protected int closeCountDown = 10; // 10*0.2sec = 2sec
 	protected boolean continueButtonVisible = false;
-
+	
 	private BackgroundTaskStatusProvider statusProvider = null;
-
+	
 	private HashSet<ActionListener> progressClosedActionListener = new HashSet<ActionListener>();
 	private boolean taskFinished = false;
-
+	
 	private boolean inWindow = false;
 	private Timer updateCheck;
-
+	
 	public BackgroundTaskPanelEntry(boolean inWindow) {
-
+		
 		this.inWindow = inWindow;
-
+		
 		timeRemainLabel.setToolTipText("Remaining time");
-
+		
 		// setPreferredSize(new Dimension(320, 180));
 		// setLocationByPlatform(true);
 		double border = 5;
@@ -75,12 +75,12 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 						TableLayoutConstants.PREFERRED, 2, TableLayoutConstants.PREFERRED, border }
 				// fill
 		}; // Rows
-
+				
 		// XX setMinimumSize(new Dimension(80, (int)
 		// Math.round(border+20+2+20+2+20+2+20+border)));
 		// XX setMaximumSize(new Dimension(getMaximumSize().width, (int)
 		// Math.round(border+20+2+20+2+20+2+20+border)));
-
+		
 		/***********************************************/
 		// border
 		/**** taskStatusLabel ****/
@@ -99,44 +99,44 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 		// Progress, Stop
 		/***********************************************/
 		// border
-
+		
 		setLayout(new TableLayout(size));
-
+		
 		setDefaultBorder();
-
+		
 		taskStatusLabel = new JLabel("<html>&nbsp;");
 		taskStatusLabel.setBackground(Color.LIGHT_GRAY);
 		taskStatusLabel.setOpaque(true);
 		taskStatusLabel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-
+		
 		status1.setBorder(BorderFactory.createEmptyBorder(0, 2, 2, 0));
 		status2.setBorder(BorderFactory.createEmptyBorder(0, 2, 2, 0));
-
+		
 		add(taskStatusLabel, "1,1");
 		add(status1, "1,3");
 		add(status2, "1,5");
-
+		
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);
 		progressBar.setIndeterminate(true);
-
+		
 		stopButton = new JButton(stopText);
-
+		
 		stopButton.putClientProperty("JButton.buttonType", "textured");
 		stopButton.putClientProperty("JComponent.sizeVariant", "small");
 		int space = 0;
 		if (stopButton.getPreferredSize().height > progressBar.getPreferredSize().height) {
 			space = (stopButton.getPreferredSize().height - progressBar.getPreferredSize().height) / 2;
 		}
-
+		
 		double border2 = 0;
 		double[][] size2 = { { border2, TableLayoutConstants.FILL, 5, 60, 5, 80, border2 }, // Columns
 				// XX {border2, TableLayoutConstants.FILL, border2}
 				{ border2, TableLayoutConstants.PREFERRED, border2 } }; // Rows
-
+		
 		progressAndButton = new JPanel();
 		progressAndButton.setLayout(new TableLayout(size2));
-
+		
 		double border3 = 3;
 		double[][] size3 = { { 0, TableLayoutConstants.FILL, 0 }, // Columns
 				// XX {border3, TableLayoutConstants.FILL, border3}
@@ -148,17 +148,17 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 		else
 			jpForSmallerProgressBar.add(FolderPanel.getBorderedComponent(progressBar, space, 0, 0, 0), "1,1");
 		jpForSmallerProgressBar.revalidate();
-
+		
 		progressAndButton.add(jpForSmallerProgressBar, "1,1");
-
+		
 		progressAndButton.add(timeRemainLabel, "3,1");
 		progressAndButton.add(stopButton, "5,1");
-
+		
 		add(progressAndButton, "1,7");
-
+		
 		validate();
 	}
-
+	
 	private void setDefaultBorder() {
 		if (inWindow)
 			return;
@@ -171,7 +171,7 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 		} else
 			setBorder(BorderFactory.createEtchedBorder(Color.LIGHT_GRAY, Color.WHITE));
 	}
-
+	
 	private void setHighlightBorder() {
 		if (inWindow)
 			return;
@@ -184,7 +184,7 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 		} else
 			setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 	}
-
+	
 	private void blinkBorder() {
 		if (inWindow)
 			return;
@@ -195,34 +195,30 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 					try {
 						Thread.sleep(500);
 					} catch (Exception e) {
-					}
-					;
+					} ;
 					setHighlightBorder();
 					try {
 						Thread.sleep(500);
 					} catch (Exception e) {
-					}
-					;
+					} ;
 					setDefaultBorder();
 				}
 				try {
 					Thread.sleep(500);
 				} catch (Exception e) {
-				}
-				;
+				} ;
 				setHighlightBorder();
 				try {
 					Thread.sleep(5000);
 				} catch (Exception e) {
-				}
-				;
+				} ;
 				setDefaultBorder();
 			}
 		});
 		t.setName("Blink task panel entry border");
 		t.start();
 	}
-
+	
 	/**
 	 * Call this in case the task is finished.
 	 * 
@@ -251,13 +247,13 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 				stopButton.setText(closeText);
 		}
 	}
-
+	
 	public void removeStatusPanel() {
 		updateCheck.stop();
 		setVisible(false);
 		ToolButton.requestToolButtonFocus();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -281,11 +277,11 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 		final ProgressStatusService statusService = new ProgressStatusService();
 		updateCheck = new Timer(100, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				
 				if (SystemInfo.isMac()) {
 					progressBar.putClientProperty("JProgressBar.style", "circular");
 				}
-
+				
 				progressBar.setIndeterminate(statusProvider.getCurrentStatusValue() == -1);
 				progressBar.setValue(statusProvider.getCurrentStatusValue());
 				timeRemainLabel.setText("<html><small>" + statusService.getRemainTime(
@@ -304,7 +300,7 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 						shortT1 = t1.substring(0, t1.indexOf(" ", 70)) + "...";
 					}
 					if (t1.startsWith("<html>") && t1.length() > 80) {
-
+						
 					}
 					if (shortT1 == null || shortT1.equals(""))
 						shortT1 = "<html>&nbsp;";
@@ -340,15 +336,15 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 					progressAndButton.add(timeRemainLabel, "3,1");
 					progressAndButton.validate();
 				}
-
+				
 				if (taskFinished && stopButton.getText().equals(waitText))
 					stopButton.setText(autoCloseText);
-
+				
 				validate();
 			}
 		});
 		updateCheck.start();
-
+		
 		ActionListener[] ac = stopButton.getActionListeners();
 		for (int i = 0; i < ac.length; i++) {
 			stopButton.removeActionListener(ac[i]);
@@ -381,7 +377,7 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 				}
 			}
 		});
-
+		
 		continueButton = new JButton(proceedText);
 		continueButton.putClientProperty("JButton.buttonType", "textured");
 		continueButton.putClientProperty("JComponent.sizeVariant", "small");
@@ -410,7 +406,7 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 		if (title != null && title.toUpperCase().contains("ERROR"))
 			blinkBorder();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -420,17 +416,17 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 	public boolean isProgressViewVisible() {
 		return isVisible();
 	}
-
+	
 	public BackgroundTaskStatusProvider getStatusProvider() {
 		return statusProvider;
 	}
-
+	
 	public void disableTitleView() {
 		taskStatusLabel.setVisible(false);
 		taskStatusLabel.setText(null);
 		validate();
 	}
-
+	
 	public void addCloseActionListener(ActionListener al) {
 		progressClosedActionListener.add(al);
 	}

@@ -14,7 +14,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Christian Klukas
  */
 public class SVGPlugin extends IPK_PluginAdapter {
-
+	
 	/**
 	 * Empty constructor.
 	 * <p>
@@ -25,7 +25,7 @@ public class SVGPlugin extends IPK_PluginAdapter {
 	 */
 	public SVGPlugin() {
 		super();
-
+		
 		this.algorithms = new Algorithm[] { new GraphicExport(), new WebsiteGeneration()
 				/*
 				 * new JPGAlgorithm(), new PNGAlgorithm(), new PDFAlgorithm(), new

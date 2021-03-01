@@ -50,60 +50,60 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid.GridLayouterAlgo
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class DataMapping extends AbstractExperimentDataProcessor {
-
+	
 	ExperimentInterface experimentData;
-
+	
 	boolean addNewNodesForNotMappedSubstances;
 	boolean considerOnlySelectedNodes;
-
+	
 	int minimumLineCount = 0;
 	int numberOfChartsInRow = -1;
-
+	
 	boolean considerEnzymeDb;
 	boolean considerMappingToKEGGmapNodes;
-
+	
 	private boolean supressReset = false;
-
+	
 	ChartComponent diagramStyleRef = GraffitiCharts.AUTOMATIC;
-
+	
 	private ActionEvent ae;
-
+	
 	private JComboBox<?> dropDownChartStyle;
-
+	
 	private View activeView;
-
+	
 	private ShowMappingResults doShowResult = ShowMappingResults.NORMAL;
-
+	
 	public DataMapping() {
 		super();
 	}
-
+	
 	public DataMapping(boolean register) {
 		super(register);
 	}
-
+	
 	@Override
 	public void setExperimentData(ExperimentInterface md) {
 		experimentData = md;
 	}
-
+	
 	@Override
 	public void execute() {
 		processData();
 		// cleanup is called by background thread
 	}
-
+	
 	private void processDataResult() {
 		for (Runnable r : postProcessors)
 			r.run();
 		setExperimentData(null);
 	}
-
+	
 	public boolean activeForView(View v) {
 		activeView = v;
 		return true;
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Data mapping is performed, by connecting measured data with<br>"
@@ -115,29 +115,29 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 				+ "To map data to edges, edge labels could be specified, or experiment data<br>"
 				+ "substance names specify source and target node label, divided by '^'.<br><br>" + "";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
-
+		
 		ArrayList<Parameter> parameters = new ArrayList<Parameter>();
-
+		
 		considerOnlySelectedNodes = false;
-
+		
 		if (activeView != null) {
 			parameters.add(new BooleanParameter(true,
 					"<html>Create new nodes or edges for measured<br>substances that can not be mapped",
 					"<html>" + "Hint: Use substance IDs like A^B to specify edge datamapping<br>"
 							+ "for edges with no edge label, connecting node A and B."));
-
+			
 			if (selection != null && !selection.getNodes().isEmpty())
 				parameters.add(new BooleanParameter(false, "<html>Perform mapping only on selected nodes",
 						"Hint: By selecting this option, only selected nodes are considered for mapping"));
 			// parameters.add(new BooleanParameter(true, "<html>Consider compound synonyms",
 			// null));
-
+			
 			// parameters.add(new BooleanParameter(true, "<html>Consider enzyme synonyms",
 			// null));
-
+			
 			/*
 			 * if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS)) { //
 			 * parameters.add(new BooleanParameter(false,
@@ -151,10 +151,10 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		}
 		parameters.add(new IntegerParameter(0, "Minimum condition count",
 				"<html>" + "Omit mapping in case minimum<br>condition count is not met."));
-
+		
 		dropDownChartStyle = new JComboBox<>();
 		dropDownChartStyle.setOpaque(false);
-
+		
 		// ArrayList<String> chartOptions = new ArrayList<String>();
 		// // for(GraffitiCharts c : )
 		// chartOptions.add(GraffitiCharts.LINE.getName());
@@ -164,13 +164,13 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		// chartOptions.add(GraffitiCharts.PIE3D.getName());
 		// chartOptions.add(GraffitiCharts.HEATMAP.getName());
 		// chartOptions.add(GraffitiCharts.HIDDEN.getName());
-
+		
 		String[] times = Experiment.getTimes(experimentData);
 		String[] plants = Experiment.getConditionsAsString(experimentData);
-
+		
 		ChartComponent initChartStyle = GraffitiCharts.BAR_FLAT;
 		boolean shouldBeAutomatic = false;
-
+		
 		// if data already mapped onto graph, select the automatic option in order to
 		// keep
 		// chart styles of previous mappings
@@ -189,7 +189,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 				}
 		}
 		if (!shouldBeAutomatic) {
-
+			
 			if (times != null && times.length > 1)
 				initChartStyle = GraffitiCharts.LINE;
 			else if (times != null && times.length == 1 && plants != null && plants.length == 1)
@@ -197,17 +197,17 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			else
 				initChartStyle = GraffitiCharts.BAR_FLAT;
 		}
-
+		
 		Collection<ChartComponent> cc = ChartComponentManager.getInstance().getChartComponents();
 		cc.remove(GraffitiCharts.LEGEND_ONLY);
-
+		
 		ObjectListParameter chartOption = new ObjectListParameter(initChartStyle, "Initial charting-style",
 				"You may later use the Node-/Edge-Sidepanels to modify the charting style.", cc);
-
+		
 		chartOption.setRenderer(new MyChartCellRenderer());
-
+		
 		parameters.add(chartOption);
-
+		
 		if (activeView != null) {
 			ArrayList<Integer> validOptions = new ArrayList<Integer>();
 			for (int i = -2; i < 5; i++)
@@ -221,10 +221,10 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			chartNumbers.setRenderer(rr2);
 			parameters.add(chartNumbers);
 		}
-
+		
 		return parameters.toArray(new Parameter[] {});
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -232,7 +232,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			addNewNodesForNotMappedSubstances = ((BooleanParameter) params[i++]).getBoolean();
 		else
 			addNewNodesForNotMappedSubstances = true;
-
+		
 		if (activeView != null) {
 			if (selection != null && !selection.getNodes().isEmpty())
 				considerOnlySelectedNodes = ((BooleanParameter) params[i++]).getBoolean();
@@ -251,12 +251,12 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		} else
 			numberOfChartsInRow = -1;
 	}
-
+	
 	@Override
 	public void setActionEvent(ActionEvent a) {
 		this.ae = a;
 	}
-
+	
 	@Override
 	public void processData() {
 		boolean doLayoutP = graph == null;
@@ -265,12 +265,12 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 				? selection.getElements()
 				: new ArrayList<GraphElement>();
 		final int diagramsPerRow = numberOfChartsInRow;
-
+		
 		Graph workGraph = this.graph;
-
+		
 		if (selectedGraphElements.size() == 0 && workGraph != null)
 			selectedGraphElements.addAll(workGraph.getGraphElements());
-
+		
 		final Experiment2GraphHelper mappingService = new Experiment2GraphHelper();
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(
 				getMappingTask(experimentData, addNewNodesForNotMappedSubstances, doLayout, selectedGraphElements,
@@ -279,7 +279,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 				mappingService, "Data Mapping", "Data Mapping Task", true, false);
 		bth.startWork(this);
 	}
-
+	
 	private Runnable getMappingTask(final ExperimentInterface doc, final boolean createNodesIfNotMapped,
 			final boolean doLayout, final Collection<GraphElement> selectedGraphElements,
 			final Experiment2GraphHelper mappingService, final int minimumLineCount, final int diagramsPerRow,
@@ -290,7 +290,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 					considerMappingToKEGGmapNodes, workGraph);
 		};
 	}
-
+	
 	private static ArrayList<Node> getMappingNodes(List<Node> networkNodes, List<Node> searchThis) {
 		HashSet<String> searchIds = new HashSet<String>();
 		for (Node n : searchThis) {
@@ -313,29 +313,29 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		}
 		return res;
 	}
-
+	
 	public String getName() {
 		if (activeView != null)
 			return "<html><center>Perform data mapping<br><small>(integrate data into network)";
 		else
 			return "<html><center>Show data in new window<br><small>(open a network to integrate data into network)";
-
+		
 	}
-
+	
 	@Override
 	public String getShortName() {
 		if (activeView != null)
 			return "Integrate data into network";
 		else
 			return "Show all data in new window";
-
+		
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 	private synchronized void doMapping(final ExperimentInterface md, final boolean createNodesIfNotMapped,
 			final boolean doLayout, final Collection<GraphElement> selectedGraphElements,
 			final Experiment2GraphHelper mappingService, final int minimumLineCount, final int diagramsPerRow,
@@ -346,7 +346,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			workGraph = es.getGraph();
 		} else
 			es = null;
-
+		
 		// this should not happen, however it happened so we create a graph if there
 		// somehow no graph was generated...
 		if (workGraph == null) {
@@ -356,16 +356,16 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			workGraph = es.getGraph();
 		}
 		final EditorSession newlyCreatedWorkSession = es;
-
+		
 		workGraph.getListenerManager().transactionStarted(this);
 		try {
-
+			
 			final MapResult mapResult = mappingService.mapDataToGraphElements(true, md, selectedGraphElements,
 					(createNodesIfNotMapped ? workGraph : null), false, diagramStyleRef.getName(), minimumLineCount,
 					diagramsPerRow, considerEnzymeDb, considerMappingToKEGGmapNodes, true);
-
+			
 			boolean colorize = true;
-
+			
 			if (colorize) {
 				HashMap<String, ArrayList<Node>> coloredNodes = new HashMap<String, ArrayList<Node>>();
 				try {
@@ -393,7 +393,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 					int idx = 0;
 					for (String type : coloredNodes.keySet()) {
 						ArrayList<Node> nodes = coloredNodes.get(type);
-
+						
 						for (Node n : nodes)
 							AttributeHelper.setPosition(n, 100, 70 + 120 * idx);
 						GridLayouterAlgorithm.layoutOnGrid(nodes, Double.MAX_VALUE, 0, 0);
@@ -403,7 +403,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 					ErrorMsg.addErrorMessage(e);
 				}
 			}
-
+			
 			if (!mappingService.wantsToStop()) {
 				if (doLayout) {
 					boolean reactionMapping = false;
@@ -475,15 +475,15 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		}
 		processDataResult();
 	}
-
+	
 	public void setDoShowResult(ShowMappingResults showResult) {
 		this.doShowResult = showResult;
 	}
-
+	
 	public ShowMappingResults showResult() {
 		return doShowResult;
 	}
-
+	
 	@Override
 	public void reset() {
 		if (!isSupressReset()) {
@@ -491,25 +491,25 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			doShowResult = ShowMappingResults.NORMAL;
 		}
 	}
-
+	
 	public void setSupressReset(boolean supressReset) {
 		this.supressReset = supressReset;
 	}
-
+	
 	public boolean isSupressReset() {
 		return supressReset;
 	}
-
+	
 	@Override
 	public ImageIcon getIcon() {
 		return new ImageIcon(GravistoService.getResource(getClass(), "ExperimentdataInContextOfNetwork", "png"));
 	}
-
+	
 	public enum ShowMappingResults {
 		NORMAL, DONT_SHOW_RESULTDIALOG, MAP_WITHOUT_VIEW
-
+	
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.MAPPING, Category.GRAPH, Category.COMPUTATION));

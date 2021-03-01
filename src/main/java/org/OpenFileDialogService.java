@@ -16,9 +16,9 @@ import javax.swing.filechooser.FileFilter;
  * @author Christian Klukas (c) 2006 IPK-Gatersleben
  */
 public class OpenFileDialogService implements HelperClass {
-
+	
 	private static JFileChooser openDialog = null;
-
+	
 	public static File getFile(final String[] valid_extensions, final String description) {
 		if (openDialog == null) {
 			openDialog = new JFileChooser();
@@ -30,7 +30,7 @@ public class OpenFileDialogService implements HelperClass {
 			public boolean accept(File f) {
 				return (f.isDirectory()) || ((f.canRead() && extensionOK(f.getName(), valid_extensions)));
 			}
-
+			
 			private boolean extensionOK(String fileName, String[] valid_extensions) {
 				for (String ext : valid_extensions) {
 					if (fileName.toUpperCase().endsWith(ext.toUpperCase()))
@@ -38,7 +38,7 @@ public class OpenFileDialogService implements HelperClass {
 				}
 				return false;
 			}
-
+			
 			@Override
 			public String getDescription() {
 				return description;
@@ -50,7 +50,7 @@ public class OpenFileDialogService implements HelperClass {
 		} else
 			return null;
 	}
-
+	
 	public static File getFile(final String[] valid_extensions, final String description, String selectButtonText) {
 		if (openDialog == null) {
 			openDialog = new JFileChooser();
@@ -62,7 +62,7 @@ public class OpenFileDialogService implements HelperClass {
 			public boolean accept(File f) {
 				return (f.isDirectory()) || ((f.canRead() && extensionOK(f.getName(), valid_extensions)));
 			}
-
+			
 			private boolean extensionOK(String fileName, String[] valid_extensions) {
 				for (String ext : valid_extensions) {
 					if (fileName.toUpperCase().endsWith(ext.toUpperCase()))
@@ -70,7 +70,7 @@ public class OpenFileDialogService implements HelperClass {
 				}
 				return false;
 			}
-
+			
 			@Override
 			public String getDescription() {
 				return description;
@@ -82,7 +82,7 @@ public class OpenFileDialogService implements HelperClass {
 		else
 			return null;
 	}
-
+	
 	public static ArrayList<File> getFiles(final String[] valid_extensions, final String description) {
 		ArrayList<File> result = new ArrayList<File>();
 		if (openDialog == null) {
@@ -95,7 +95,7 @@ public class OpenFileDialogService implements HelperClass {
 			public boolean accept(File f) {
 				return (f.isDirectory()) || ((f.canRead() && extensionOK(f.getName(), valid_extensions)));
 			}
-
+			
 			private boolean extensionOK(String fileName, String[] valid_extensions) {
 				for (String ext : valid_extensions) {
 					if (fileName.toUpperCase().endsWith(ext.toUpperCase()))
@@ -103,7 +103,7 @@ public class OpenFileDialogService implements HelperClass {
 				}
 				return false;
 			}
-
+			
 			@Override
 			public String getDescription() {
 				return description;
@@ -119,7 +119,7 @@ public class OpenFileDialogService implements HelperClass {
 		} else
 			return null;
 	}
-
+	
 	public static File getSaveFile(final String[] valid_extensions, final String description) {
 		do {
 			if (openDialog == null) {
@@ -131,7 +131,7 @@ public class OpenFileDialogService implements HelperClass {
 				public boolean accept(File f) {
 					return (f.isDirectory()) || ((f.canRead() && extensionOK(f.getName(), valid_extensions)));
 				}
-
+				
 				private boolean extensionOK(String fileName, String[] valid_extensions) {
 					for (String ext : valid_extensions) {
 						if (fileName.toUpperCase().endsWith(ext.toUpperCase()))
@@ -139,13 +139,13 @@ public class OpenFileDialogService implements HelperClass {
 					}
 					return false;
 				}
-
+				
 				@Override
 				public String getDescription() {
 					return description;
 				}
 			});
-
+			
 			int option = openDialog.showSaveDialog(null);
 			if (option == JFileChooser.APPROVE_OPTION) {
 				if (UNCFileLocationCheck
@@ -153,36 +153,36 @@ public class OpenFileDialogService implements HelperClass {
 					return openDialog.getSelectedFile();
 			} else
 				return null;
-
+			
 		} while (true);
-
+		
 	}
-
+	
 	public static File getActiveDirectory() {
 		if (openDialog == null)
 			return null;
 		else
 			return openDialog.getCurrentDirectory();
 	}
-
+	
 	public static void setActiveDirectoryFrom(File currentDirectory) {
 		if (openDialog == null)
 			openDialog = new JFileChooser();
 		openDialog.setCurrentDirectory(currentDirectory);
 	}
-
+	
 	public static void setActiveDirectoryFor(JFileChooser fc) {
 		if (openDialog != null)
 			fc.setCurrentDirectory(openDialog.getCurrentDirectory());
 	}
-
+	
 	public static File getDirectoryFromUser(String okButtonText) {
 		if (openDialog == null) {
 			openDialog = new JFileChooser();
 		}
 		openDialog.setMultiSelectionEnabled(false);
 		openDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
+		
 		// openDialog.resetChoosableFileFilters();
 		// openDialog.setFileFilter(new FileFilter() {
 		// public boolean accept(File f) {

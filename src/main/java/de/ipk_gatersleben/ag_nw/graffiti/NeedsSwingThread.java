@@ -16,5 +16,5 @@ package de.ipk_gatersleben.ag_nw.graffiti;
  *         Thread.
  */
 public interface NeedsSwingThread {
-
+	
 }

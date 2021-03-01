@@ -18,7 +18,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.AttributeConstants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 public class EdgeHelper implements HelperClass {
-
+	
 	public static void moveBends(Edge edge, double offX, double offY) {
 		try {
 			EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute("graphics");
@@ -31,7 +31,7 @@ public class EdgeHelper implements HelperClass {
 			return;
 		}
 	}
-
+	
 	public static boolean hasMappingData(Edge e) {
 		try {
 			Attribute a = e.getAttribute(
@@ -41,7 +41,7 @@ public class EdgeHelper implements HelperClass {
 			return false;
 		}
 	}
-
+	
 	public static void moveBends(Edge e, double moveX, double moveY,
 			HashMap<CoordinateAttribute, Vector2d> bends2newPositions) {
 		LinkedHashMapAttribute ha = null;
@@ -60,5 +60,5 @@ public class EdgeHelper implements HelperClass {
 			bends2newPositions.put(co, new Vector2d(co.getX() + moveX, co.getY() + moveY));
 		}
 	}
-
+	
 }

@@ -34,17 +34,17 @@ import org.graffiti.selection.Selection;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
 public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean settingIncludeInnerEdges = false;
 	private boolean settingDirected = true;
 	private boolean settingIncludeEdges = true;
-
+	
 	/**
 	 * Constructs a new instance.
 	 */
 	public AllPathsSelectionAlgorithm() {
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -56,7 +56,7 @@ public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
 				new BooleanParameter(settingIncludeInnerEdges, "Select Inner-Edges",
 						"If selected, all edges connecting nodes of the shortest path(s) are selected") };
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#
 	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
@@ -68,7 +68,7 @@ public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
 		settingIncludeEdges = ((BooleanParameter) params[i++]).getBoolean();
 		settingIncludeInnerEdges = ((BooleanParameter) params[i++]).getBoolean();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
@@ -103,21 +103,21 @@ public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
 		sel.addAll(currentSelElements);
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 	}
-
+	
 	public static Collection<GraphElement> getPathElements(Collection<Node> validNodes, Node sourceNode,
 			Collection<Node> targetNodes, boolean includeInnerEdges, boolean directed, boolean includeEdges,
 			int maxDistance) {
-
+		
 		Queue<Node> findTheseNodes = new LinkedList<Node>();
 		findTheseNodes.addAll(targetNodes);
-
+		
 		HashSet<GraphElement> shortestPath = new HashSet<GraphElement>();
 		Queue<DistanceInfo> toDo = new LinkedList<DistanceInfo>();
 		HashMap<Node, DistanceInfo> node2distanceinfo = new HashMap<Node, DistanceInfo>();
 		DistanceInfo di = new DistanceInfo(0, sourceNode, sourceNode);
 		toDo.add(di);
 		node2distanceinfo.put(sourceNode, di);
-
+		
 		do {
 			DistanceInfo checkNeighbours = toDo.remove();
 			Node workNode = checkNeighbours.getNode();
@@ -155,7 +155,7 @@ public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
 		}
 		return shortestPath;
 	}
-
+	
 	private static void processReverseDistanceInfo(HashMap<Node, DistanceInfo> node2distanceinfo,
 			HashSet<GraphElement> path, DistanceInfo distInfo, boolean includeInnerEdges, boolean directed,
 			boolean includeEdges) {
@@ -203,7 +203,7 @@ public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
 			}
 		}
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -212,7 +212,7 @@ public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
 		graph = null;
 		selection = null;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
@@ -220,12 +220,12 @@ public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
 		return null;
 		// return "Find Paths";
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
 	}
-
+	
 	@Override
 	public String getCategory() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -233,17 +233,17 @@ public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
 		else
 			return "Analysis";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION));
 	}
-
+	
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *            the selection
+	 *           the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;

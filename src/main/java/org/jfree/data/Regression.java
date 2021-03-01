@@ -34,7 +34,7 @@ package org.jfree.data;
  * A utility class for fitting regression curves to data.
  */
 public abstract class Regression {
-
+	
 	/**
 	 * Returns the parameters 'a' and 'b' for an equation y = a + bx, fitted to the
 	 * data using ordinary least squares regression.
@@ -43,16 +43,16 @@ public abstract class Regression {
 	 * --> b.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return the parameters.
 	 */
 	public static double[] getOLSRegression(final double[][] data) {
-
+		
 		final int n = data.length;
 		if (n < 2) {
 			throw new IllegalArgumentException("Not enough data.");
 		}
-
+		
 		double sumX = 0;
 		double sumY = 0;
 		double sumXX = 0;
@@ -71,15 +71,15 @@ public abstract class Regression {
 		final double sxy = sumXY - (sumX * sumY) / n;
 		final double xbar = sumX / n;
 		final double ybar = sumY / n;
-
+		
 		final double[] result = new double[2];
 		result[1] = sxy / sxx;
 		result[0] = ybar - result[1] * xbar;
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the parameters 'a' and 'b' for an equation y = a + bx, fitted to the
 	 * data using ordinary least squares regression.
@@ -88,18 +88,18 @@ public abstract class Regression {
 	 * --> b.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the parameters.
 	 */
 	public static double[] getOLSRegression(final XYDataset data, final int series) {
-
+		
 		final int n = data.getItemCount(series);
 		if (n < 2) {
 			throw new IllegalArgumentException("Not enough data.");
 		}
-
+		
 		double sumX = 0;
 		double sumY = 0;
 		double sumXX = 0;
@@ -118,15 +118,15 @@ public abstract class Regression {
 		final double sxy = sumXY - (sumX * sumY) / n;
 		final double xbar = sumX / n;
 		final double ybar = sumY / n;
-
+		
 		final double[] result = new double[2];
 		result[1] = sxy / sxx;
 		result[0] = ybar - result[1] * xbar;
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the parameters 'a' and 'b' for an equation y = ax^b, fitted to the
 	 * data using a power regression equation.
@@ -135,16 +135,16 @@ public abstract class Regression {
 	 * b.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return the parameters.
 	 */
 	public static double[] getPowerRegression(final double[][] data) {
-
+		
 		final int n = data.length;
 		if (n < 2) {
 			throw new IllegalArgumentException("Not enough data.");
 		}
-
+		
 		double sumX = 0;
 		double sumY = 0;
 		double sumXX = 0;
@@ -163,15 +163,15 @@ public abstract class Regression {
 		final double sxy = sumXY - (sumX * sumY) / n;
 		final double xbar = sumX / n;
 		final double ybar = sumY / n;
-
+		
 		final double[] result = new double[2];
 		result[1] = sxy / sxx;
 		result[0] = Math.pow(Math.exp(1.0), ybar - result[1] * xbar);
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the parameters 'a' and 'b' for an equation y = ax^b, fitted to the
 	 * data using a power regression equation.
@@ -180,18 +180,18 @@ public abstract class Regression {
 	 * b.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param series
-	 *            the series to fit the regression line against.
+	 *           the series to fit the regression line against.
 	 * @return the parameters.
 	 */
 	public static double[] getPowerRegression(final XYDataset data, final int series) {
-
+		
 		final int n = data.getItemCount(series);
 		if (n < 2) {
 			throw new IllegalArgumentException("Not enough data.");
 		}
-
+		
 		double sumX = 0;
 		double sumY = 0;
 		double sumXX = 0;
@@ -210,13 +210,13 @@ public abstract class Regression {
 		final double sxy = sumXY - (sumX * sumY) / n;
 		final double xbar = sumX / n;
 		final double ybar = sumY / n;
-
+		
 		final double[] result = new double[2];
 		result[1] = sxy / sxx;
 		result[0] = Math.pow(Math.exp(1.0), ybar - result[1] * xbar);
-
+		
 		return result;
-
+		
 	}
-
+	
 }

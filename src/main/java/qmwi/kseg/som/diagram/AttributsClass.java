@@ -10,7 +10,7 @@ package qmwi.kseg.som.diagram;
  */
 public class AttributsClass {
 	public java.util.Vector<AttributsAttribut> attributs;
-
+	
 	/**
 	 * ClassAttributs constructor comment.
 	 */
@@ -18,55 +18,55 @@ public class AttributsClass {
 		super();
 		attributs = new java.util.Vector<AttributsAttribut>();
 	}
-
+	
 	/**
 	 * Insert the method's description here. Creation date: (17.12.2001 01:35:04)
 	 * 
 	 * @param attributsOneAttribut
-	 *            qmwi.kseq.som.processing.AttributsOneAttribut
+	 *           qmwi.kseq.som.processing.AttributsOneAttribut
 	 */
 	public void addAttribut(AttributsAttribut a) {
-
+		
 		attributs.add(a);
-
+		
 	}
-
+	
 	/**
 	 * Insert the method's description here. Creation date: (17.12.2001 01:33:16)
 	 * 
 	 * @return qmwi.kseq.som.processing.AttributsOneAttribut
 	 * @param attributsOneAttributIndex
-	 *            int
+	 *           int
 	 */
 	public AttributsAttribut getAttribut(int attributIndex) {
-
+		
 		if (attributs.size() != 0)
 			return (AttributsAttribut) attributs.elementAt(attributIndex);
-
+		
 		else
 			return null;
 	}
-
+	
 	/**
 	 * Insert the method's description here. Creation date: (18.12.2001 20:31:32)
 	 * 
 	 * @param attributIndex
-	 *            int
+	 *           int
 	 * @param valueIndex
-	 *            int
+	 *           int
 	 */
 	public double getAttributValueCount(int attributIndex, int valueIndex) {
-
+		
 		// Aus.a("attributs.size()",attributs.size());
-
+		
 		if (attributIndex < attributs.size())
 			return ((AttributsAttribut) attributs.elementAt(attributIndex)).getValueCount(valueIndex);
-
+		
 		else
 			return 0;
-
+		
 	}
-
+	
 	/**
 	 * Insert the method's description here. Creation date: (17.12.2001 01:58:06)
 	 * 
@@ -75,16 +75,16 @@ public class AttributsClass {
 	public int getCountAttributs() {
 		return attributs.size();
 	}
-
+	
 	/**
 	 * Insert the method's description here. Creation date: (17.12.2001 01:35:04)
 	 * 
 	 * @param attributsOneAttribut
-	 *            qmwi.kseq.som.processing.AttributsOneAttribut
+	 *           qmwi.kseq.som.processing.AttributsOneAttribut
 	 */
 	public void setAttribut(int attributIndex, AttributsAttribut a) {
-
+		
 		attributs.add(attributIndex, a);
-
+		
 	}
 }

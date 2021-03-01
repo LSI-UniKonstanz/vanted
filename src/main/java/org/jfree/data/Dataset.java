@@ -49,36 +49,36 @@ package org.jfree.data;
  * provides synchronised access to the datasets in multi-threaded code.
  */
 public interface Dataset {
-
+	
 	/**
 	 * Registers an object for notification of changes to the dataset.
 	 * 
 	 * @param listener
-	 *            the object to register.
+	 *           the object to register.
 	 */
 	public void addChangeListener(DatasetChangeListener listener);
-
+	
 	/**
 	 * Deregisters an object for notification of changes to the dataset.
 	 * 
 	 * @param listener
-	 *            the object to deregister.
+	 *           the object to deregister.
 	 */
 	public void removeChangeListener(DatasetChangeListener listener);
-
+	
 	/**
 	 * Returns the dataset group.
 	 * 
 	 * @return the dataset group.
 	 */
 	public DatasetGroup getGroup();
-
+	
 	/**
 	 * Sets the dataset group.
 	 * 
 	 * @param group
-	 *            the dataset group.
+	 *           the dataset group.
 	 */
 	public void setGroup(DatasetGroup group);
-
+	
 }

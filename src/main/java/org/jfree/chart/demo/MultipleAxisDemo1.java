@@ -55,16 +55,16 @@ import org.jfree.ui.Spacer;
  * This demo shows a time series chart that has multiple range axes.
  */
 public class MultipleAxisDemo1 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to create a time series chart with
 	 * muliple axes.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MultipleAxisDemo1(final String title) {
-
+		
 		super(title);
 		final JFreeChart chart = createChart();
 		final ChartPanel chartPanel = new ChartPanel(chart);
@@ -72,21 +72,21 @@ public class MultipleAxisDemo1 extends ApplicationFrame {
 		chartPanel.setHorizontalZoom(true);
 		chartPanel.setVerticalZoom(true);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates the demo chart.
 	 * 
 	 * @return The chart.
 	 */
 	private JFreeChart createChart() {
-
+		
 		final XYDataset dataset1 = createDataset("Series 1", 100.0, new Minute(), 200);
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Multiple Axis Demo 1", "Time of Day",
 				"Primary Range Axis", dataset1, true, true, false);
-
+		
 		chart.setBackgroundPaint(Color.white);
 		chart.addSubtitle(new TextTitle("Four datasets and four range axes."));
 		final XYPlot plot = chart.getXYPlot();
@@ -94,12 +94,12 @@ public class MultipleAxisDemo1 extends ApplicationFrame {
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-
+		
 		final StandardXYItemRenderer renderer = (StandardXYItemRenderer) plot.getRenderer();
 		renderer.setPaint(Color.black);
-
+		
 		// AXIS 2
 		final NumberAxis axis2 = new NumberAxis("Range Axis 2");
 		axis2.setAutoRangeIncludesZero(false);
@@ -107,44 +107,44 @@ public class MultipleAxisDemo1 extends ApplicationFrame {
 		axis2.setTickLabelPaint(Color.red);
 		plot.setRangeAxis(1, axis2);
 		plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_LEFT);
-
+		
 		final XYDataset dataset2 = createDataset("Series 2", 1000.0, new Minute(), 170);
 		plot.setDataset(1, dataset2);
 		plot.mapDatasetToRangeAxis(1, 1);
 		XYItemRenderer renderer2 = new StandardXYItemRenderer();
 		renderer2.setSeriesPaint(0, Color.red);
 		plot.setRenderer(1, renderer2);
-
+		
 		// AXIS 3
 		final NumberAxis axis3 = new NumberAxis("Range Axis 3");
 		axis3.setLabelPaint(Color.blue);
 		axis3.setTickLabelPaint(Color.blue);
 		plot.setRangeAxis(2, axis3);
-
+		
 		final XYDataset dataset3 = createDataset("Series 3", 10000.0, new Minute(), 170);
 		plot.setDataset(2, dataset3);
 		plot.mapDatasetToRangeAxis(2, 2);
 		XYItemRenderer renderer3 = new StandardXYItemRenderer();
 		renderer3.setSeriesPaint(0, Color.blue);
 		plot.setRenderer(2, renderer3);
-
+		
 		// AXIS 4
 		final NumberAxis axis4 = new NumberAxis("Range Axis 4");
 		axis4.setLabelPaint(Color.green);
 		axis4.setTickLabelPaint(Color.green);
 		plot.setRangeAxis(3, axis4);
-
+		
 		final XYDataset dataset4 = createDataset("Series 4", 25.0, new Minute(), 200);
 		plot.setDataset(3, dataset4);
 		plot.mapDatasetToRangeAxis(3, 3);
-
+		
 		XYItemRenderer renderer4 = new StandardXYItemRenderer();
 		renderer4.setSeriesPaint(0, Color.green);
 		plot.setRenderer(3, renderer4);
-
+		
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -155,23 +155,23 @@ public class MultipleAxisDemo1 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @param name
-	 *            the dataset name.
+	 *           the dataset name.
 	 * @param base
-	 *            the starting value.
+	 *           the starting value.
 	 * @param start
-	 *            the starting period.
+	 *           the starting period.
 	 * @param count
-	 *            the number of values to generate.
+	 *           the number of values to generate.
 	 * @return The dataset.
 	 */
 	private XYDataset createDataset(final String name, final double base, final RegularTimePeriod start,
 			final int count) {
-
+		
 		final TimeSeries series = new TimeSeries(name, start.getClass());
 		RegularTimePeriod period = start;
 		double value = base;
@@ -180,27 +180,27 @@ public class MultipleAxisDemo1 extends ApplicationFrame {
 			period = period.next();
 			value = value * (1 + (Math.random() - 0.495) / 10.0);
 		}
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(series);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final MultipleAxisDemo1 demo = new MultipleAxisDemo1("Multiple Axis Demo 1");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

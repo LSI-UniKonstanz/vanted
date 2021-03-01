@@ -15,14 +15,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
  * @author Dagmar Kutz, Matthias Klapperstück
  */
 public class SBML_XML_ReaderPlugin extends IPK_PluginAdapter {
-
+	
 	public SBML_XML_ReaderPlugin() {
-
+		
 		super();
 		SBMLNodesNiceIdHelper.initNiceIds();
 		SBML_Constants.init();
 		this.inputSerializers = new InputSerializer[] { new SBML_XML_Reader() };
-
+		
 	}
-
+	
 }

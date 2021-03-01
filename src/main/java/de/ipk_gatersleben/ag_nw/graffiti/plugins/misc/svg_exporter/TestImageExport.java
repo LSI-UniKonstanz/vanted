@@ -10,7 +10,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter;
  * @author klukas
  */
 public class TestImageExport {
-
+	
 	// @Test
 	// public void testPNGexportForGraph() {
 	// try {
@@ -28,5 +28,5 @@ public class TestImageExport {
 	// g.addEdge(n1, n2, true);
 	// PngJpegAlgorithm.createPNGimageFromGraph(g);
 	// }
-
+	
 }

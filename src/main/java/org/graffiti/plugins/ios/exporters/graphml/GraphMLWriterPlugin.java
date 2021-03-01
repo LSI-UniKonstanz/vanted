@@ -20,7 +20,7 @@ import org.graffiti.plugin.GenericPluginAdapter;
  */
 public class GraphMLWriterPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>GraphMLWriterPlugin</code>.
 	 */

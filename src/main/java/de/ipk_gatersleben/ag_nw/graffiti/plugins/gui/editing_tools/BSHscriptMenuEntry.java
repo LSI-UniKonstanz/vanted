@@ -37,39 +37,39 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  *         Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class BSHscriptMenuEntry extends JMenuItem {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 23061869481093260L;
-
+	
 	/**
 	 * The beanshell commando file-name
 	 */
 	private final String cmdFile;
-
+	
 	private boolean individualNodeCommand = false;
-
+	
 	/**
 	 * The menu title
 	 */
 	private final String menuTitle;
-
+	
 	/**
 	 * Creates a new ScriptMenuEntry object.
 	 * 
 	 * @param title
-	 *            Label text for the menu item
+	 *           Label text for the menu item
 	 * @param commandFile
-	 *            The name of the beanshell command file
+	 *           The name of the beanshell command file
 	 */
 	public BSHscriptMenuEntry(String title, String commandFile, boolean nodeCommand) {
 		cmdFile = commandFile;
 		menuTitle = title;
-
+		
 		individualNodeCommand = nodeCommand;
 	}
-
+	
 	/**
 	 * Returns the name of the beanshell commando file for this menuitem.
 	 * 
@@ -78,11 +78,11 @@ public class BSHscriptMenuEntry extends JMenuItem {
 	public String getCmdFile() {
 		return cmdFile;
 	}
-
+	
 	public String getCmdFileSrc() {
 		return DefaultContextMenuManager.getContent(getCmdFile());
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -92,14 +92,14 @@ public class BSHscriptMenuEntry extends JMenuItem {
 	public String getText() {
 		return menuTitle;
 	}
-
+	
 	public boolean isIndividualNodeCommand() {
 		return individualNodeCommand;
 	}
-
+	
 	public static void executeScript(final BSHinfo info, String title) {
 		final Interpreter interpr = new Interpreter(); // Construct an interpreter
-
+		
 		try {
 			EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 			interpr.eval("import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.*;");
@@ -120,54 +120,54 @@ public class BSHscriptMenuEntry extends JMenuItem {
 				boolean stop = false;
 				String status1 = "Perform Script Command...";
 				String status2 = "";
-
+				
 				public int getCurrentStatusValue() {
 					return (int) progress;
 				}
-
+				
 				public void setCurrentStatusValue(int value) {
 					progress = value;
 				}
-
+				
 				public double getCurrentStatusValueFine() {
 					return progress;
 				}
-
+				
 				public String getCurrentStatusMessage1() {
 					return status1;
 				}
-
+				
 				public String getCurrentStatusMessage2() {
 					return status2;
 				}
-
+				
 				public void pleaseStop() {
 					stop = true;
 				}
-
+				
 				public boolean pluginWaitsForUser() {
 					return false;
 				}
-
+				
 				public void pleaseContinueRun() {
 				}
-
+				
 				public void setCurrentStatusValueFine(double value) {
 					progress = value;
 				}
-
+				
 				public boolean wantsToStop() {
 					return stop;
 				}
-
+				
 				public void setCurrentStatusText1(String status) {
 					status1 = status;
 				}
-
+				
 				public void setCurrentStatusText2(String status) {
 					status2 = status;
 				}
-
+				
 				public void setCurrentStatusValueFineAdd(double smallProgressStep) {
 					progress += smallProgressStep;
 				}
@@ -209,12 +209,12 @@ public class BSHscriptMenuEntry extends JMenuItem {
 			}
 		}
 	}
-
+	
 	public void execute() {
 		BSHinfo info = new BSHinfo(FileSystemHandler.getURL(new File(cmdFile)));
 		executeScript(info, getName());
 	}
-
+	
 	/**
 	 * @param firstLine
 	 * @return Modified firstLine (if it is a node command), otherwise return NULL

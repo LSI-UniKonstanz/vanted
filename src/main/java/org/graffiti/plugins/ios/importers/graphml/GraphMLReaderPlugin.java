@@ -1,10 +1,10 @@
-//==============================================================================
+// ==============================================================================
 //
-//   GraphMLReaderPlugin.java
+// GraphMLReaderPlugin.java
 //
-//   Copyright (c) 2001-2004 Gravisto Team, University of Passau
+// Copyright (c) 2001-2004 Gravisto Team, University of Passau
 //
-//==============================================================================
+// ==============================================================================
 // $Id: GraphMLReaderPlugin.java,v 1.5 2011/01/16 16:39:47 klukas Exp $
 
 package org.graffiti.plugins.ios.importers.graphml;
@@ -18,7 +18,7 @@ import org.graffiti.plugin.GenericPluginAdapter;
  */
 public class GraphMLReaderPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>GraphMLReaderPlugin</code>.
 	 */

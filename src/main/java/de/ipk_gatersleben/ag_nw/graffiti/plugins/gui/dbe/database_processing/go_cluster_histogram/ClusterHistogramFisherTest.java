@@ -54,21 +54,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class ClusterHistogramFisherTest extends AbstractAlgorithm implements AlgorithmWithComponentDescription {
-
+	
 	private String groupA, groupB;
 	private boolean store1minusP, findClusters, addMatrixInfo, addDataMapping;
 	private double alpha = 0.05;
-
+	
 	private FisherOperationMode modeOfOperation = FisherOperationMode.selectSignificantNodes2s;
-
+	
 	private static String notInA = "[not in group A]";
-
+	
 	public void execute() {
 		if (groupA == null || groupB == null || groupA.equals(groupB)) {
 			MainFrame.showMessageDialog("Please select two different cluster IDs!", "Can not proceed");
 			return;
 		}
-
+		
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Init", "Please wait");
 		final Graph gg = graph;
@@ -81,7 +81,7 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 			}
 		}, null, status);
 	}
-
+	
 	private void processCommand(Graph graph, Collection<Node> workingSet,
 			final BackgroundTaskStatusProviderSupportingExternalCall status, int threadCount) {
 		status.setCurrentStatusValue(-1);
@@ -93,7 +93,7 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 		int frequencyGlobalA = 0;
 		int frequencyGlobalB = 0;
 		int frequencyGlobalAll = 0;
-
+		
 		for (Node n : workingSet) {
 			if (n == null)
 				continue;
@@ -123,9 +123,9 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 		int belowAlpha = 0;
 		int nodeCnt = 0;
 		ArrayList<Node> selNodes = new ArrayList<Node>();
-
+		
 		int iWorkLoad = 0;
-
+		
 		for (Node n : workingSet) {
 			NodeHelper nh = new NodeHelper(n);
 			String clusterId = nh.getClusterID(null);
@@ -133,19 +133,19 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 				iWorkLoad++;
 			}
 		}
-
+		
 		HashSet<Node> significantNodes = new HashSet<Node>();
-
+		
 		HashMap<Node, Integer> result = new HashMap<Node, Integer>();
-
+		
 		final int ffrequencyGlobalA = frequencyGlobalA;
 		final int ffrequencyGlobalB = frequencyGlobalB;
 		final int ffrequencyGlobalAll = frequencyGlobalAll;
-
+		
 		ExecutorService run = Executors.newFixedThreadPool(threadCount);
-
+		
 		ArrayList<Future<Entry<Node, Integer>>> results = new ArrayList<Future<Entry<Node, Integer>>>();
-
+		
 		status.setCurrentStatusText2("Calculate Probabilities (1/2)");
 		final ThreadSafeOptions tso = new ThreadSafeOptions();
 		final int fiWorkLoad = iWorkLoad;
@@ -201,9 +201,9 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 				ErrorMsg.addErrorMessage(e);
 			}
 		}
-
+		
 		nodeCnt = 0;
-
+		
 		if (!status.wantsToStop())
 			for (Node n : workingSet) {
 				status.setCurrentStatusValueFine(100d * nodeCnt / iWorkLoad);
@@ -253,7 +253,7 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 		if (modeOfOperation == FisherOperationMode.pruneTree1s || modeOfOperation == FisherOperationMode.pruneTree2s)
 			PruneTreeAlgorithm.pruneFromTheseNodes(significantNodes);
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	private int processNode(boolean twoSidedAlphaComparison, double alpha, NodeHelper nh,
 			TreeSet<String> knownClusterIDs, int frequencyGlobalA, int frequencyGlobalB, int frequencyGlobalAll,
@@ -267,13 +267,13 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 		TreeMap<String, Integer> cluster2frequencyAB = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
 			cluster2frequencyAB.put(ci, Integer.valueOf(0));
-
+		
 		cluster2frequencyAB.put(notInA, Integer.valueOf(0));
-
+		
 		TreeMap<String, Integer> cluster2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
 			cluster2frequency.put(ci, Integer.valueOf(0));
-
+		
 		int allChildrenCount = 0;
 		for (Node n : childNodes) {
 			if (n.getOutDegree() == 0) {
@@ -325,7 +325,7 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 			// evaluate all clusters for significance
 			// number of nodes belonging to current cluster ID vs. to not belonging to that
 			// cluster ID
-
+			
 			for (String currCluster : cluster2frequencyGlobal.keySet()) {
 				if (currCluster.length() <= 0)
 					continue;
@@ -394,7 +394,7 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 		else
 			return 0;
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command evaluates the frequency of assigned clustered leaf nodes.<br>"
@@ -414,10 +414,10 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 				+ "<td><small>d = Number of leaf nodes which are not connected<br> to current hierarchy node and whose cluster<br>ID equals group B</td></table><br><br>"
 				+ "Select two different cluster IDs:";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
-
+		
 		Collection<Node> workingSet = getSelectedOrAllNodes();
 		TreeSet<String> knownClusterIDs = new TreeSet<String>();
 		HashSet<Node> processedNodes = new HashSet<Node>();
@@ -444,7 +444,7 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 				new DoubleParameter(alpha, "Alpha",
 						"Nodes with at least one p value smaller than alpha will be attributed and selected") };
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		Collection<Node> workingSet = getSelectedOrAllNodes();
@@ -458,7 +458,7 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 			throw new PreconditionException("<html>" + "Hierarchy nodes need to be connected to leaf nodes<br>"
 					+ "which are attributed with at least two different cluster IDs.");
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -471,22 +471,22 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 		addDataMapping = ((BooleanParameter) params[i++]).getBoolean();
 		alpha = ((DoubleParameter) params[i++]).getDouble();
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
 	}
-
+	
 	public String getName() {
 		return "Fisher Test for Evaluation of Cluster Distribution";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.STATISTICS,
 				Category.CLUSTER, Category.MAPPING));
 	}
-
+	
 	public JComponent getDescriptionComponent() {
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');

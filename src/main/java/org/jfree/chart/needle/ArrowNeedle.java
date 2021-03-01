@@ -45,45 +45,45 @@ import java.io.Serializable;
  * @author Bryan Scott
  */
 public class ArrowNeedle extends MeterNeedle implements Serializable {
-
+	
 	/**
 	 * A flag controlling whether or not there is an arrow at the top of the needle.
 	 */
 	private boolean isArrowAtTop = true;
-
+	
 	/**
 	 * Constructs a new arrow needle.
 	 * 
 	 * @param isArrowAtTop
-	 *            a flag that controls whether or not there is an arrow at the top
-	 *            of the needle.
+	 *           a flag that controls whether or not there is an arrow at the top
+	 *           of the needle.
 	 */
 	public ArrowNeedle(boolean isArrowAtTop) {
 		this.isArrowAtTop = isArrowAtTop;
 	}
-
+	
 	/**
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param rotate
-	 *            the rotation point.
+	 *           the rotation point.
 	 * @param angle
-	 *            the angle.
+	 *           the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
-
+		
 		Line2D shape = new Line2D.Float();
 		Shape d = null;
-
+		
 		float x = (float) (plotArea.getMinX() + (plotArea.getWidth() / 2));
 		float minY = (float) plotArea.getMinY();
 		float maxY = (float) plotArea.getMaxY();
 		shape.setLine(x, minY, x, maxY);
-
+		
 		GeneralPath shape1 = new GeneralPath();
 		if (this.isArrowAtTop) {
 			shape1.moveTo(x, minY);
@@ -95,7 +95,7 @@ public class ArrowNeedle extends MeterNeedle implements Serializable {
 		shape1.lineTo(x + getSize(), minY);
 		shape1.lineTo(x - getSize(), minY);
 		shape1.closePath();
-
+		
 		if ((rotate != null) && (angle != 0)) {
 			getTransform().setToRotation(angle, rotate.getX(), rotate.getY());
 			d = getTransform().createTransformedShape(shape);
@@ -103,21 +103,21 @@ public class ArrowNeedle extends MeterNeedle implements Serializable {
 			d = shape;
 		}
 		defaultDisplay(g2, d);
-
+		
 		if ((rotate != null) && (angle != 0)) {
 			d = getTransform().createTransformedShape(shape1);
 		} else {
 			d = shape1;
 		}
 		defaultDisplay(g2, d);
-
+		
 	}
-
+	
 	/**
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -133,5 +133,5 @@ public class ArrowNeedle extends MeterNeedle implements Serializable {
 		}
 		return false;
 	}
-
+	
 }

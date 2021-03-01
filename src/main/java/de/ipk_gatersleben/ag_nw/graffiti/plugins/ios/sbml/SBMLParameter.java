@@ -13,37 +13,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.exporters.sbml.SBML_SBase_W
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_SBase_Reader;
 
 public class SBMLParameter {
-
+	
 	/**
 	 * Intern graph object
 	 */
 	Graph g;
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Writer attWriter;
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Reader attReader;
-
+	
 	/**
 	 * intern representation of the headline
 	 */
 	String internHeadline = SBML_Constants.EMPTY;
-
+	
 	/**
 	 * The user will see the headline this way
 	 */
 	String presentedHeadline;
-
+	
 	/**
 	 * The hidden parameter attributes are stored here
 	 */
 	HashSet<String> discardedRowIDs;
-
+	
 	public SBMLParameter(Graph g, String internHeadline, String presentedHeadline) {
 		this.g = g;
 		attWriter = new SBML_SBase_Writer();
@@ -51,19 +51,19 @@ public class SBMLParameter {
 		this.presentedHeadline = presentedHeadline;
 		this.internHeadline = internHeadline;
 		initParameterNideIDs();
-
+		
 		Collection<String> colDiscardedRowIDs = DefaultEditPanel.getDiscardedRowIDs();
 		discardedRowIDs = new HashSet<String>(colDiscardedRowIDs);
 		DefaultEditPanel.setDiscardedRowIDs(discardedRowIDs);
 	}
-
+	
 	public SBMLParameter(Graph g, String internHeadline) {
 		this.g = g;
 		attWriter = new SBML_SBase_Writer();
 		attReader = new SBML_SBase_Reader();
 		this.internHeadline = internHeadline;
 	}
-
+	
 	public Boolean isSetID() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString())) {
@@ -72,7 +72,7 @@ public class SBMLParameter {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetName() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_NAME).toString())) {
@@ -81,7 +81,7 @@ public class SBMLParameter {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetValue() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.VALUE).toString())) {
@@ -90,7 +90,7 @@ public class SBMLParameter {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetUnits() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_UNITS).toString())) {
@@ -99,7 +99,7 @@ public class SBMLParameter {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetConstant() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_CONSTANT).toString())) {
@@ -108,7 +108,7 @@ public class SBMLParameter {
 			return false;
 		}
 	}
-
+	
 	public String getID() {
 		if (isSetID()) {
 			return (String) attWriter.getAttribute(g, internHeadline,
@@ -117,7 +117,7 @@ public class SBMLParameter {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public String getName() {
 		if (isSetName()) {
 			return (String) attWriter.getAttribute(g, internHeadline,
@@ -126,7 +126,7 @@ public class SBMLParameter {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public Double getValue() {
 		if (isSetValue()) {
 			return (Double) attWriter.getAttribute(g, internHeadline,
@@ -135,7 +135,7 @@ public class SBMLParameter {
 			return null;
 		}
 	}
-
+	
 	public String getUnits() {
 		if (isSetUnits()) {
 			return (String) attWriter.getAttribute(g, internHeadline,
@@ -144,7 +144,7 @@ public class SBMLParameter {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public Boolean getConstant() {
 		if (isSetConstant()) {
 			return (Boolean) attWriter.getAttribute(g, internHeadline,
@@ -153,77 +153,77 @@ public class SBMLParameter {
 			return false;
 		}
 	}
-
+	
 	public void setID(String ID) {
 		if (!ID.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString(), ID);
 		}
 	}
-
+	
 	public void setName(String name) {
 		if (!name.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_NAME).toString(), name);
 		}
 	}
-
+	
 	public void setValue(Double value) {
 		if (value != null) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.VALUE).toString(), value);
 		}
 	}
-
+	
 	public void setUnits(String units) {
 		if (!units.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_UNITS).toString(), units);
 		}
 	}
-
+	
 	public void setConstant(Boolean constant) {
 		if (constant != null) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_CONSTANT).toString(), constant);
 		}
 	}
-
+	
 	public void setMetaID(String metaID) {
 		if (!metaID.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.META_ID).toString(), metaID);
 		}
 	}
-
+	
 	public void setSBOTerm(String sboTerm) {
 		if (!sboTerm.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(), sboTerm);
 		}
 	}
-
+	
 	public void setNotes(String notes, XMLNode notesObj) {
 		if (!notes.isEmpty()) {
 			attReader.addNotes(notesObj, notes, g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString());
 		}
-
+		
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString());
 	}
-
+	
 	public void setAnnotation(Annotation annotation) {
 		AttributeHelper.setAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.ANNOTATION).toString(), annotation);
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.ANNOTATION).toString());
 	}
-
+	
 	public void setNonRDFAnnotation(XMLNode xmlNode) {
 		AttributeHelper.setAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), xmlNode);
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION).toString());
 	}
-
+	
 	private void initParameterNideIDs() {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString(),
 				presentedHeadline + ": ID");
@@ -242,5 +242,5 @@ public class SBMLParameter {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
 	}
-
+	
 }

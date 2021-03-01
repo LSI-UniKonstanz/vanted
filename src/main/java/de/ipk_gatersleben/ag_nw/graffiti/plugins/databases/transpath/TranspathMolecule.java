@@ -13,19 +13,19 @@ import org.graffiti.graph.Node;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
 public class TranspathMolecule extends TranspathEntity {
-
+	
 	public String ID, NAME, ALIASES, TYPE, FIRST, LAST, CLASS, SUPERFAMILY, SUBFAMILY, RKOUT, RKIN, CATALYZES, INHIBITS,
 			COMMENT, REFERENCE, GENBANKID, ENSEMBLID, ENTREZGENEID, INTERPRODESCRIPTION, INTERPROID, OMIMID, PDBID,
 			PFAMID, PIRID, PROSITEID, REFSEQID, REFSEQPID, UNIGENEID, UNIPROTACCESSION, GOTYPE, GODESCRIPTION,
 			GOACCESSION, OTHERACCESION, OTHERGENOMICACCESION;
-
+	
 	// public String ID, CELLLINE, COMPARTMENT, SPECIES, METHOD, CYTOMERORGAN,
 	// CYTOMERSTAGE, EXPRESSIONLEVEL;
-
+	
 	public String getKey() {
 		return ID;
 	}
-
+	
 	public Node getGraphNode(Graph g, String clusterID, HashMap<String, Node> graphElementId2graphNode) {
 		if (graphElementId2graphNode.containsKey(ID))
 			return graphElementId2graphNode.get(ID);
@@ -65,16 +65,16 @@ public class TranspathMolecule extends TranspathEntity {
 		 */
 		return n;
 	}
-
+	
 	public static void connectMoleculeNodes(Graph g, Node moleculeNode1, Node moleculeNode2) {
 		g.addEdge(moleculeNode1, moleculeNode2, true,
 				AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 	}
-
+	
 	public String getXMLstartEndEntity() {
 		return "Molecule";
 	}
-
+	
 	/*
 	 * TRANSPATHMolecule:MO000000001 MO000000001 PKAc cAMP-dependent protein kinase
 	 * cAPK PKA catalytic subunit protein kinase A protein kinase A catalytic
@@ -91,5 +91,5 @@ public class TranspathMolecule extends TranspathEntity {
 	 * XN000024089 XN000027341 XN000027958 XN000033826 AN000033346 AN000036244
 	 * PA000016059
 	 */
-
+	
 }

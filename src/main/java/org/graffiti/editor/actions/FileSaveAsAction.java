@@ -49,27 +49,27 @@ import org.vanted.VantedPreferences;
  */
 public class FileSaveAsAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7524445118721655238L;
-
+	
 	/** DOCUMENT ME! */
 	private IOManager ioManager;
-
+	
 	/** DOCUMENT ME! */
 	private SessionManager sessionManager;
-
+	
 	/** DOCUMENT ME! */
 	private StringBundle sBundle;
-
+	
 	String fileTypeDescription;
 	JTextField jTextFieldFileName;
 	boolean isTextFieldFileNameSearchDone;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	// private JFileChooser fc;
 	public FileSaveAsAction(MainFrame mainFrame, IOManager ioManager, SessionManager sessionManager,
 			StringBundle sBundle) {
@@ -77,12 +77,12 @@ public class FileSaveAsAction extends GraffitiAction {
 		this.ioManager = ioManager;
 		this.sessionManager = sessionManager;
 		this.sBundle = sBundle;
-
+		
 		// fc = new JFileChooser();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -93,10 +93,10 @@ public class FileSaveAsAction extends GraffitiAction {
 		EditorSession session = (EditorSession) mainFrame.getActiveSession();
 		if (session != null && session.getActiveView() instanceof SuppressSaveActionsView)
 			return false;
-
+		
 		return ioManager.hasOutputSerializer() && sessionManager.isSessionActive();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -104,25 +104,26 @@ public class FileSaveAsAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @param e DOCUMENT ME!
+	 * @param e
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-
+		
 		final JFileChooser fc = ioManager.createSaveFileChooser(getGraph());
-
+		
 		OpenFileDialogService.setActiveDirectoryFor(fc);
-
+		
 		this.fileTypeDescription = null;
 		this.jTextFieldFileName = null;
 		this.isTextFieldFileNameSearchDone = false;
 		final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-
+				
 				JFileChooser fileChooser = (JFileChooser) propertyChangeEvent.getSource();
 				if (!FileSaveAsAction.this.isTextFieldFileNameSearchDone
 						&& propertyChangeEvent.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)
@@ -145,7 +146,7 @@ public class FileSaveAsAction extends GraffitiAction {
 								foundFileFilter = true;
 								break;
 							}
-
+						
 						// if new graph has no extension and we can't find one
 						// use the standard one from the preferences
 						if (!foundFileFilter) {
@@ -174,7 +175,7 @@ public class FileSaveAsAction extends GraffitiAction {
 					String fileName = FileSaveAsAction.this.jTextFieldFileName.getText();
 					if (fileName != null && fileName.length() > 0) {
 						String path = fileChooser.getCurrentDirectory().getAbsolutePath();
-
+						
 						// try to remove old file extension from file name
 						String oldFileExtension = ((GenericFileFilter) propertyChangeEvent.getOldValue())
 								.getExtension();
@@ -193,11 +194,11 @@ public class FileSaveAsAction extends GraffitiAction {
 							fileChooser.setSelectedFile(new File(path + File.separator + fileName + fileExtension));
 					}
 				}
-
+				
 			}
 		};
 		fc.addPropertyChangeListener(propertyChangeListener);
-
+		
 		try {
 			String n = getGraph().getName(true);
 			this.fileTypeDescription = getGraph().getFileTypeDescription();
@@ -220,32 +221,32 @@ public class FileSaveAsAction extends GraffitiAction {
 		} catch (Exception err) {
 			// empty
 		}
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-
+				
 				boolean needFile = true;
 				while (needFile) {
 					int returnVal = fc.showDialog(mainFrame, sBundle.getString("menu.file.saveAs"));
-
+					
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
-
+						
 						File oldfile = null;
 						try {
 							oldfile = new File(mainFrame.getActiveEditorSession().getFileNameFull()).getParentFile();
 						} catch (Exception e1) {
 						}
-
+						
 						File file = fc.getSelectedFile();
-
+						
 						if (UNCFileLocationCheck.showUNCPathConfirmDialogForPath(file) != UNCFileLocationCheck.CONFIRM)
 							continue;
-
+						
 						String ext = ((GenericFileFilter) fc.getFileFilter()).getExtension();
 						String description = ((GenericFileFilter) fc.getFileFilter()).getDescription();
 						description = description.substring(0, description.lastIndexOf("(") - 1);
-
+						
 						String path = fc.getCurrentDirectory().getAbsolutePath();
 						String fileName = file.getName();
 						// fall back if file name text field could not be found
@@ -271,11 +272,11 @@ public class FileSaveAsAction extends GraffitiAction {
 						// a known file extension '.def' is treated as unknown file extension
 						if (!fileName.endsWith(ext))
 							file = new File(path + File.separator + fileName + ext);
-
+						
 						needFile = safeFile(file, ext, description, getGraph());
-
+						
 						FileHandlingManager.getInstance().throwFileSavedAs(oldfile, file.getParentFile());
-
+						
 						if (!needFile) {
 							EditorSession session = (EditorSession) mainFrame.getActiveSession();
 							if (session != null) {
@@ -283,10 +284,10 @@ public class FileSaveAsAction extends GraffitiAction {
 									file = new File(file.getAbsolutePath() + ext);
 								session.setFileName(file.getAbsolutePath());
 								session.setFileTypeDescription(description);
-
+								
 								if (session != null && session.getUndoManager() != null)
 									session.getUndoManager().discardAllEdits();
-
+								
 								mainFrame.fireSessionDataChanged(session);
 								OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
 							}
@@ -302,19 +303,19 @@ public class FileSaveAsAction extends GraffitiAction {
 			}
 		});
 	}
-
+	
 	public static boolean safeFile(File file, String ext, String fileTypeDescription, Graph graph) {
 		String fileName = file.getName();
 		boolean needFile = true;
 		// System.err.println(fileName);
-
+		
 		if (fileName.indexOf(".") == -1) {
 			fileName = file.getName() + ext;
 			file = new File(file.getAbsolutePath() + ext);
 		} else {
 			ext = FileSaveAction.getFileExt(fileName);
 		}
-
+		
 		// System.err.println(fileName);
 		if (file.exists()) {
 			if (JOptionPane.showConfirmDialog(MainFrame.getInstance(),
@@ -325,7 +326,7 @@ public class FileSaveAsAction extends GraffitiAction {
 		} else {
 			needFile = false;
 		}
-
+		
 		if (!needFile) {
 			// store current graph name and file type description
 			String currentGraphName = graph.getName();
@@ -365,9 +366,9 @@ public class FileSaveAsAction extends GraffitiAction {
 		}
 		return needFile;
 	}
-
+	
 	JTextField getTextFieldFileName(Component[] components, String fileName) {
-
+		
 		JTextField jTextField = null;
 		for (Component component : components)
 			if (component instanceof JPanel) {
@@ -379,9 +380,9 @@ public class FileSaveAsAction extends GraffitiAction {
 				break;
 			}
 		return jTextField;
-
+		
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

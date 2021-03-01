@@ -87,48 +87,48 @@ import org.jfree.util.PublicCloneable;
  * A {@link CategoryItemRenderer} that draws individual data items as bars.
  */
 public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The default item margin percentage. */
 	public static final double DEFAULT_ITEM_MARGIN = 0.20;
-
+	
 	/**
 	 * Constant that controls the minimum width before a bar has an outline drawn.
 	 */
 	public static final double BAR_OUTLINE_WIDTH_THRESHOLD = 3.0;
-
+	
 	/** The margin between items (bars) within a category. */
 	private double itemMargin;
-
+	
 	/** A flag that controls whether or not bar outlines are drawn. */
 	private boolean drawBarOutline;
-
+	
 	/** The maximum bar width as a percentage of the available space. */
 	private double maxBarWidth;
-
+	
 	/** The minimum bar length (in Java2D units). */
 	private double minimumBarLength;
-
+	
 	/**
 	 * An optional class used to transform gradient paint objects to fit each bar.
 	 */
 	private GradientPaintTransformer gradientPaintTransformer;
-
+	
 	/**
 	 * The fallback position if a positive item label doesn't fit inside the bar.
 	 */
 	private ItemLabelPosition positiveItemLabelPositionFallback;
-
+	
 	/**
 	 * The fallback position if a negative item label doesn't fit inside the bar.
 	 */
 	private ItemLabelPosition negativeItemLabelPositionFallback;
-
+	
 	/** The upper clip (axis) value for the axis. */
 	private double upperClip; // TODO: this needs to move into the renderer state
-
+	
 	/** The lower clip (axis) value for the axis. */
 	private double lowerClip; // TODO: this needs to move into the renderer state
-
+	
 	/**
 	 * Creates a new bar renderer with default settings.
 	 */
@@ -142,7 +142,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		this.gradientPaintTransformer = new StandardGradientPaintTransformer();
 		this.minimumBarLength = 0.0;
 	}
-
+	
 	/**
 	 * Returns the item margin as a percentage of the available space for all bars.
 	 * 
@@ -151,7 +151,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public double getItemMargin() {
 		return this.itemMargin;
 	}
-
+	
 	/**
 	 * Sets the item margin and sends a {@link RendererChangeEvent} to all
 	 * registered listeners. The value is expressed as a percentage of the available
@@ -159,13 +159,13 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	 * between all the bars evenly.
 	 * 
 	 * @param percent
-	 *            the margin (where 0.10 is ten percent).
+	 *           the margin (where 0.10 is ten percent).
 	 */
 	public void setItemMargin(double percent) {
 		this.itemMargin = percent;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not bar outlines are drawn.
 	 * 
@@ -174,19 +174,19 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public boolean isDrawBarOutline() {
 		return this.drawBarOutline;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether or not bar outlines are drawn and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param draw
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setDrawBarOutline(boolean draw) {
 		this.drawBarOutline = draw;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the maximum bar width, as a percentage of the available drawing
 	 * space.
@@ -196,20 +196,20 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public double getMaxBarWidth() {
 		return this.maxBarWidth;
 	}
-
+	
 	/**
 	 * Sets the maximum bar width, which is specified as a percentage of the
 	 * available space for all bars, and sends a {@link RendererChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param percent
-	 *            the percent (where 0.05 is five percent).
+	 *           the percent (where 0.05 is five percent).
 	 */
 	public void setMaxBarWidth(double percent) {
 		this.maxBarWidth = percent;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the minimum bar length (in Java2D units).
 	 * 
@@ -218,7 +218,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public double getMinimumBarLength() {
 		return this.minimumBarLength;
 	}
-
+	
 	/**
 	 * Sets the minimum bar length and sends a {@link RendererChangeEvent} to all
 	 * registered listeners. The minimum bar length is specified in Java2D units,
@@ -226,13 +226,13 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	 * disappearing when drawn on the screen.
 	 * 
 	 * @param min
-	 *            the minimum bar length (in Java2D units).
+	 *           the minimum bar length (in Java2D units).
 	 */
 	public void setMinimumBarLength(double min) {
 		this.minimumBarLength = min;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the gradient paint transformer (an object used to transform gradient
 	 * paint objects to fit each bar.
@@ -242,19 +242,19 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public GradientPaintTransformer getGradientPaintTransformer() {
 		return this.gradientPaintTransformer;
 	}
-
+	
 	/**
 	 * Sets the gradient paint transformer and sends a {@link RendererChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param transformer
-	 *            the transformer (<code>null</code> permitted).
+	 *           the transformer (<code>null</code> permitted).
 	 */
 	public void setGradientPaintTransformer(GradientPaintTransformer transformer) {
 		this.gradientPaintTransformer = transformer;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the fallback position for positive item labels that don't fit within
 	 * a bar.
@@ -264,19 +264,19 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public ItemLabelPosition getPositiveItemLabelPositionFallback() {
 		return this.positiveItemLabelPositionFallback;
 	}
-
+	
 	/**
 	 * Sets the fallback position for positive item labels that don't fit within a
 	 * bar, and sends a {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 */
 	public void setPositiveItemLabelPositionFallback(ItemLabelPosition position) {
 		this.positiveItemLabelPositionFallback = position;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the fallback position for negative item labels that don't fit within
 	 * a bar.
@@ -286,19 +286,19 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public ItemLabelPosition getNegativeItemLabelPositionFallback() {
 		return this.negativeItemLabelPositionFallback;
 	}
-
+	
 	/**
 	 * Sets the fallback position for negative item labels that don't fit within a
 	 * bar, and sends a {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 */
 	public void setNegativeItemLabelPositionFallback(ItemLabelPosition position) {
 		this.negativeItemLabelPositionFallback = position;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the lower clip value.
 	 * <P>
@@ -309,7 +309,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public double getLowerClip() {
 		return this.lowerClip;
 	}
-
+	
 	/**
 	 * Returns the upper clip value.
 	 * <P>
@@ -320,7 +320,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	public double getUpperClip() {
 		return this.upperClip;
 	}
-
+	
 	/**
 	 * Initialises the renderer and returns a state object that will be passed to
 	 * subsequent calls to the drawItem method.
@@ -328,49 +328,49 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 	 * This method gets called once at the start of the process of drawing a chart.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area in which the data is to be plotted.
+	 *           the area in which the data is to be plotted.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param rendererIndex
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param info
-	 *            collects chart rendering information for return to caller.
+	 *           collects chart rendering information for return to caller.
 	 * @return The renderer state.
 	 */
 	public CategoryItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, CategoryPlot plot,
 			int rendererIndex, PlotRenderingInfo info) {
-
+		
 		CategoryItemRendererState state = super.initialise(g2, dataArea, plot, rendererIndex, info);
-
+		
 		// get the clipping values...
 		ValueAxis rangeAxis = getRangeAxis(plot, rendererIndex);
 		this.lowerClip = rangeAxis.getRange().getLowerBound();
 		this.upperClip = rangeAxis.getRange().getUpperBound();
-
+		
 		// calculate the bar width
 		calculateBarWidth(plot, dataArea, rendererIndex, state);
-
+		
 		return state;
-
+		
 	}
-
+	
 	/**
 	 * Calculates the bar width and stores it in the renderer state.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param rendererIndex
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 */
 	protected void calculateBarWidth(CategoryPlot plot, Rectangle2D dataArea, int rendererIndex,
 			CategoryItemRendererState state) {
-
+		
 		CategoryAxis domainAxis = getDomainAxis(plot, rendererIndex);
 		CategoryDataset dataset = plot.getDataset(rendererIndex);
 		if (dataset != null) {
@@ -401,26 +401,26 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 			}
 		}
 	}
-
+	
 	/**
 	 * Calculates the coordinate of the first "side" of a bar. This will be the
 	 * minimum x-coordinate for a vertical bar, and the minimum y-coordinate for a
 	 * horizontal bar.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param orientation
-	 *            the plot orientation.
+	 *           the plot orientation.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param state
-	 *            the renderer state (has the bar width precalculated).
+	 *           the renderer state (has the bar width precalculated).
 	 * @param row
-	 *            the row index.
+	 *           the row index.
 	 * @param column
-	 *            the column index.
+	 *           the column index.
 	 * @return the coordinate.
 	 */
 	protected double calculateBarW0(CategoryPlot plot, PlotOrientation orientation, Rectangle2D dataArea,
@@ -445,17 +445,17 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		}
 		return barW0;
 	}
-
+	
 	/**
 	 * Calculates the coordinates for the length of a single bar.
 	 * 
 	 * @param value
-	 *            the value represented by the bar.
+	 *           the value represented by the bar.
 	 * @return the coordinates for each end of the bar (or <code>null</code> if the
 	 *         bar is not visible for the current axis range).
 	 */
 	protected double[] calculateBarL0L1(double value) {
-
+		
 		double base = 0.0;
 		double lclip = getLowerClip();
 		double uclip = getUpperClip();
@@ -486,53 +486,53 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		}
 		return new double[] { base, value };
 	}
-
+	
 	/**
 	 * Draws the bar for a single (series, category) data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
-
+		
 		// nothing is drawn for null values...
 		Number dataValue = dataset.getValue(row, column);
 		if (dataValue == null) {
 			return;
 		}
-
+		
 		double value = dataValue.doubleValue();
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		double barW0 = calculateBarW0(plot, orientation, dataArea, domainAxis, state, row, column);
 		double[] barL0L1 = calculateBarL0L1(value);
 		if (barL0L1 == null) {
 			return; // the bar is not visible
 		}
-
+		
 		RectangleEdge edge = plot.getRangeAxisEdge();
 		double transL0 = rangeAxis.valueToJava2D(barL0L1[0], dataArea, edge);
 		double transL1 = rangeAxis.valueToJava2D(barL0L1[1], dataArea, edge);
 		double barL0 = Math.min(transL0, transL1);
 		double barLength = Math.max(Math.abs(transL1 - transL0), getMinimumBarLength());
-
+		
 		// draw the bar...
 		Rectangle2D bar = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
@@ -547,7 +547,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		}
 		g2.setPaint(itemPaint);
 		g2.fill(bar);
-
+		
 		// draw the outline...
 		if (isDrawBarOutline() && state.getBarWidth() > BAR_OUTLINE_WIDTH_THRESHOLD) {
 			Stroke stroke = getItemOutlineStroke(row, column);
@@ -558,12 +558,12 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 				g2.draw(bar);
 			}
 		}
-
+		
 		CategoryLabelGenerator generator = getLabelGenerator(row, column);
 		if (generator != null && isItemLabelVisible(row, column)) {
 			drawItemLabel(g2, dataset, row, column, plot, generator, bar, (value < 0.0));
 		}
-
+		
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -582,20 +582,20 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 				entities.addEntity(entity);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Calculates the available space for each series.
 	 * 
 	 * @param space
-	 *            the space along the entire axis (in Java2D units).
+	 *           the space along the entire axis (in Java2D units).
 	 * @param axis
-	 *            the category axis.
+	 *           the category axis.
 	 * @param categories
-	 *            the number of categories.
+	 *           the number of categories.
 	 * @param series
-	 *            the number of series.
+	 *           the number of series.
 	 * @return the width of one series.
 	 */
 	protected double calculateSeriesWidth(double space, CategoryAxis axis, int categories, int series) {
@@ -605,41 +605,41 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		}
 		return (space * factor) / (categories * series);
 	}
-
+	
 	/**
 	 * Draws an item label. This method is overridden so that the bar can be used to
 	 * calculate the label anchor point.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row.
+	 *           the row.
 	 * @param column
-	 *            the column.
+	 *           the column.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param generator
-	 *            the label generator.
+	 *           the label generator.
 	 * @param bar
-	 *            the bar.
+	 *           the bar.
 	 * @param negative
-	 *            a flag indicating a negative value.
+	 *           a flag indicating a negative value.
 	 */
 	protected void drawItemLabel(Graphics2D g2, CategoryDataset data, int row, int column, CategoryPlot plot,
 			CategoryLabelGenerator generator, Rectangle2D bar, boolean negative) {
-
+		
 		String label = generator.generateLabel(data, row, column);
 		if (label == null) {
 			return; // nothing to do
 		}
-
+		
 		Font labelFont = getItemLabelFont(row, column);
 		g2.setFont(labelFont);
 		Paint paint = getItemLabelPaint(row, column);
 		g2.setPaint(paint);
-
+		
 		// find out where to place the label...
 		ItemLabelPosition position = null;
 		if (!negative) {
@@ -647,15 +647,15 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		} else {
 			position = getNegativeItemLabelPosition(row, column);
 		}
-
+		
 		// work out the label anchor point...
 		Point2D anchorPoint = calculateLabelAnchorPoint(position.getItemLabelAnchor(), bar, plot.getOrientation());
-
+		
 		if (isInternalAnchor(position.getItemLabelAnchor())) {
 			Shape bounds = RefineryUtilities.calculateRotatedStringBounds(label, g2, (float) anchorPoint.getX(),
 					(float) anchorPoint.getY(), position.getTextAnchor(), position.getRotationAnchor(),
 					position.getAngle());
-
+			
 			if (bounds != null) {
 				if (!bar.contains(bounds.getBounds2D())) {
 					if (!negative) {
@@ -669,28 +669,28 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 					}
 				}
 			}
-
+			
 		}
-
+		
 		if (position != null) {
 			RefineryUtilities.drawRotatedString(label, g2, (float) anchorPoint.getX(), (float) anchorPoint.getY(),
 					position.getTextAnchor(), position.getRotationAnchor(), position.getAngle());
 		}
 	}
-
+	
 	/**
 	 * Calculates the item label anchor point.
 	 * 
 	 * @param anchor
-	 *            the anchor.
+	 *           the anchor.
 	 * @param bar
-	 *            the bar.
+	 *           the bar.
 	 * @param orientation
-	 *            the plot orientation.
+	 *           the plot orientation.
 	 * @return The anchor point.
 	 */
 	private Point2D calculateLabelAnchorPoint(ItemLabelAnchor anchor, Rectangle2D bar, PlotOrientation orientation) {
-
+		
 		Point2D result = null;
 		double offset = getItemLabelAnchorOffset();
 		double x0 = bar.getX() - offset;
@@ -700,7 +700,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		double x4 = bar.getMaxX() - offset;
 		double x5 = bar.getMaxX();
 		double x6 = bar.getMaxX() + offset;
-
+		
 		double y0 = bar.getMaxY() + offset;
 		double y1 = bar.getMaxY();
 		double y2 = bar.getMaxY() - offset;
@@ -708,7 +708,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		double y4 = bar.getMinY() + offset;
 		double y5 = bar.getMinY();
 		double y6 = bar.getMinY() - offset;
-
+		
 		if (anchor == ItemLabelAnchor.CENTER) {
 			result = new Point2D.Double(x3, y3);
 		} else if (anchor == ItemLabelAnchor.INSIDE1) {
@@ -760,16 +760,16 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 		} else if (anchor == ItemLabelAnchor.OUTSIDE12) {
 			result = new Point2D.Double(x3, y6);
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the specified anchor point is inside a bar.
 	 * 
 	 * @param anchor
-	 *            the anchor point.
+	 *           the anchor point.
 	 * @return A boolean.
 	 */
 	private boolean isInternalAnchor(ItemLabelAnchor anchor) {
@@ -781,26 +781,26 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 				|| anchor == ItemLabelAnchor.INSIDE10 || anchor == ItemLabelAnchor.INSIDE11
 				|| anchor == ItemLabelAnchor.INSIDE12;
 	}
-
+	
 	/**
 	 * Tests this instance for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
-
+		
 		if (object == null) {
 			return false;
 		}
-
+		
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (super.equals(object) && (object instanceof BarRenderer)) {
-
+			
 			BarRenderer r = (BarRenderer) object;
 			boolean b0 = (this.itemMargin == r.itemMargin);
 			boolean b1 = (this.drawBarOutline == r.drawBarOutline);
@@ -810,11 +810,11 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneab
 			boolean b5 = ObjectUtils.equal(this.positiveItemLabelPositionFallback, r.positiveItemLabelPositionFallback);
 			boolean b6 = ObjectUtils.equal(this.negativeItemLabelPositionFallback, r.negativeItemLabelPositionFallback);
 			return b0 && b1 && b2 && b3 && b4 && b5 && b6;
-
+			
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 }

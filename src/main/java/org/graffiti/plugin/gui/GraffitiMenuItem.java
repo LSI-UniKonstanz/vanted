@@ -25,30 +25,30 @@ public class GraffitiMenuItem extends JMenuItem implements GraffitiComponent {
 	// ~ Instance fields ========================================================
 	/** The id of the component the menu item prefers to be inserted in. */
 	protected String preferredComponent;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>GraffitiMenuItem</code>.
 	 * 
 	 * @param prefComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param a
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiMenuItem(String prefComp, Action a) {
 		super(a);
 		this.preferredComponent = prefComp;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see org.graffiti.plugin.gui.GraffitiComponent#setMainFrame(org.graffiti.editor.MainFrame)
 	 */
 	public void setMainFrame(MainFrame mf) {
 	}
-
+	
 	/**
 	 * Returns the id of the component the menu item prefers to be inserted in.
 	 * 

@@ -34,34 +34,36 @@ import org.graffiti.selection.Selection;
  */
 public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	// ~ Instance fields ========================================================
-
+	
 	/** The graph on which the algorithm will work. */
 	protected Graph graph;
-
+	
 	/** The selection on which the algorithm might work. */
 	protected Selection selection;
-
+	
 	/** The parameters this algorithm can use. */
 	protected Parameter[] parameters;
-
+	
 	protected ActionEvent actionEvent = null;
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
-	 * @param params Parameter array
+	 * @param params
+	 *           Parameter array
 	 */
 	public void setParameters(Parameter[] params) {
 		this.parameters = params;
 	}
-
+	
 	/**
 	 * Default: no accelerator for the menu item, created for this algorithm.
 	 */
+	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return null;
 	}
-
+	
 	/**
 	 * The algorithm description.
 	 * 
@@ -70,37 +72,37 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	public String getDescription() {
 		return null;
 	}
-
+	
 	/**
 	 * Default: no icon next to the menu item, which is created for this algorithm.
 	 */
 	public boolean showMenuIcon() {
 		return false;
 	}
-
+	
 	protected Collection<Node> getSelectedOrAllNodes() {
 		if (selection == null || selection.getNodes().size() <= 0)
 			return graph.getNodes();
 		else
 			return selection.getNodes();
 	}
-
+	
 	protected Collection<GraphElement> getSelectedOrAllGraphElements() {
 		if (selection == null || selection.getElements().size() <= 0)
 			return graph.getGraphElements();
 		else
 			return selection.getElements();
 	}
-
+	
 	public Parameter[] getParameters() {
 		return this.parameters;
 	}
-
+	
 	public void attach(Graph graph, Selection selection) {
 		this.graph = graph;
 		this.selection = selection;
 	}
-
+	
 	/**
 	 * @throws PreconditionException
 	 */
@@ -109,16 +111,16 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		if (v)
 			throw new PreconditionException();
 	}
-
+	
 	public String getCategory() {
 		return null;
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return null;
 	}
-
+	
 	/**
 	 * For backwards compatibility the standard implementation will return the
 	 * Category
@@ -127,30 +129,30 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	public String getMenuCategory() {
 		return getCategory();
 	}
-
+	
 	public void reset() {
 		this.graph = null;
 		this.parameters = null;
 		this.actionEvent = null;
 		this.selection = null;
 	}
-
+	
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	public ActionEvent getActionEvent() {
 		return actionEvent;
 	}
-
+	
 	public void setActionEvent(ActionEvent a) {
 		actionEvent = a;
 	}
-
+	
 	public boolean mayWorkOnMultipleGraphs() {
 		return false;
 	}
-
+	
 	/**
 	 * Indicates, if an algorithm is always executable - even without an active
 	 * session.
@@ -160,21 +162,21 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	public boolean isAlwaysExecutable() {
 		return false;
 	}
-
+	
 	// ~ UnboableEdit Impl. ========================================================
-
+	
 	/**
 	 * The number of undo operations in regards to stack selections. This is equal
 	 * to the number of times <code>execute()</code> has run.
 	 */
 	private ArrayDeque<Selection> undoStack = new ArrayDeque<>();
-
+	
 	/**
 	 * The number of redo operations in terms of selections. This is equal to the
 	 * number of times <code>undo()</code> has run.
 	 */
 	private ArrayDeque<Selection> redoStack = new ArrayDeque<>();
-
+	
 	/**
 	 * This is the selection handle for the Undo/Redo methods.
 	 */
@@ -182,13 +184,12 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	/**
 	 * This is the graph handle for the Undo/Redo methods, internally that is the
 	 * graph of the first graph element from the recycled selection.
-	 * 
 	 */
 	protected Graph recycledGraph;
 	
 	/**
 	 * The equivalent of {@linkplain AbstractAlgorithm#getSelectedOrAllNodes()}}, but for
-	 * the <code>undo()</code> and  <code>redo()</code> implementations.
+	 * the <code>undo()</code> and <code>redo()</code> implementations.
 	 * 
 	 * @return
 	 */
@@ -198,10 +199,10 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		else
 			return recycledSelection.getNodes();
 	}
-
+	
 	/**
 	 * The equivalent of {@linkplain AbstractAlgorithm#getSelectedOrAllGraphElements()}}, but for
-	 * the <code>undo()</code> and  <code>redo()</code> implementations.
+	 * the <code>undo()</code> and <code>redo()</code> implementations.
 	 * 
 	 * @return
 	 */
@@ -211,12 +212,11 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		else
 			return recycledSelection.getElements();
 	}
-
+	
 	/**
 	 * <p>
 	 * Must return <code>true</code> to allow Undo/Redo edits.
 	 * </p>
-	 * 
 	 * <b>Important:</b> If you use {@linkplain GraphHelper} for undoable edits or
 	 * any other UndoableEdit tools, do NOT return <code>true</code>, as those are
 	 * handled in that given class.
@@ -226,17 +226,17 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	public boolean doesUndo() {
 		return false;
 	}
-
+	
 	@Override
 	public boolean canUndo() {
 		return !undoStack.isEmpty();
 	}
-
+	
 	@Override
 	public boolean canRedo() {
 		return !redoStack.isEmpty();
 	}
-
+	
 	/**
 	 * Marks the performed algorithm execution as done, so that the operation can
 	 * later undo.
@@ -244,7 +244,7 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	public void markExecutionDone() {
 		undoStack.addFirst(new Selection(selection.getElements()));
 	}
-
+	
 	/**
 	 * Marks the performed algorithm undo as done, so that the operation can later
 	 * redo.
@@ -260,7 +260,7 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	public void markRedoDone() {
 		undoStack.addFirst(new Selection(recycledSelection.getElements()));
 	}
-
+	
 	@Override
 	public void die() {
 		undoStack.clear();
@@ -269,22 +269,22 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		recycledGraph = null;
 		reset();
 	}
-
+	
 	@Override
 	public String getPresentationName() {
 		return getName();
 	}
-
+	
 	@Override
 	public String getRedoPresentationName() {
 		return "Redo " + getName().toLowerCase();
 	}
-
+	
 	@Override
 	public String getUndoPresentationName() {
 		return "Undo " + getName().toLowerCase();
 	}
-
+	
 	/**
 	 * Whether this UndoableEdit should be considered on its own for Undo/Redo, when
 	 * performing any of them. Otherwise, it will get undone/redone once a
@@ -295,12 +295,11 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	public boolean isSignificant() {
 		return true;
 	}
-
+	
 	/**
 	 * <p>
 	 * Default behaviour is to run <code>execute()</code> again.
 	 * </p>
-	 * 
 	 * If implementing, don't forget to call <code>super()</code> at the top of your
 	 * implementation.
 	 */
@@ -327,15 +326,14 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		// Ideally, it would be called last in redo(), but since it bares information
 		// only to other methods, it is generally enough to call it anywhere in redo().
 		markRedoDone();
-
+		
 		// your code
 	}
-
+	
 	/**
 	 * <p>
 	 * Extend with your Undo functionality.
 	 * </p>
-	 * 
 	 * Don't forget to call <code>super()</code> at the top of your implementation.
 	 */
 	@Override
@@ -347,20 +345,20 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		// Ideally, it would be called last in undo(), but since it bares information
 		// only to other methods, it is generally enough to call it anywhere in undo().
 		markUndoDone();
-
+		
 		// your code
 	}
-
+	
 	@Override
 	public boolean addEdit(UndoableEdit anEdit) {
 		return false;
 	}
-
+	
 	@Override
 	public boolean replaceEdit(UndoableEdit anEdit) {
 		return false;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

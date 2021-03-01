@@ -41,30 +41,30 @@ import org.jfree.ui.RefineryUtilities;
  * A time series chart.
  */
 public class TimeSeriesDemo7 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to create a simple time series chart.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo7(final String title) {
-
+		
 		super(title);
-
+		
 		// create a title...
 		final String chartTitle = "Time Series Demo";
 		final XYDataset dataset = new TimeSeriesCollection(DemoDatasetFactory.createEURTimeSeries());
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Date", "Value", dataset, true, true,
 				false);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -75,20 +75,20 @@ public class TimeSeriesDemo7 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimeSeriesDemo7 demo = new TimeSeriesDemo7("Time Series Demo 7");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

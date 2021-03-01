@@ -32,29 +32,29 @@ public class JTreeTable extends JTable {
 	 */
 	private static final long serialVersionUID = 5935850330270429291L;
 	protected TreeTableCellRenderer tree;
-
+	
 	public JTreeTable(TreeTableModel treeTableModel) {
 		super();
-
+		
 		// Create the tree. It will be used as a renderer and editor.
 		tree = new TreeTableCellRenderer(treeTableModel);
-
+		
 		DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) tree.getCellRenderer();
 		dtcr.setLeafIcon(null);
 		dtcr.setClosedIcon(null);
 		dtcr.setOpenIcon(null);
-
+		
 		// Install a tableModel representing the visible rows in the tree.
 		super.setModel(new TreeTableModelAdapter(treeTableModel, tree));
-
+		
 		// Force the JTable and JTree to share their row selection models.
 		tree.setSelectionModel(new DefaultTreeSelectionModel() {
-
+			
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 3740517007939649585L;
-
+			
 			// Extend the implementation of the constructor, as if:
 			/* public this() */ {
 				setSelectionModel(listSelectionModel);
@@ -62,21 +62,21 @@ public class JTreeTable extends JTable {
 		});
 		// Make the tree and table row heights the same.
 		tree.setRowHeight(getRowHeight());
-
+		
 		// Install the tree editor renderer and editor.
 		setDefaultRenderer(TreeTableModel.class, tree);
 		setDefaultEditor(TreeTableModel.class, new TreeTableCellEditor());
-
+		
 		setShowGrid(false);
 		setIntercellSpacing(new Dimension(0, 0));
-
+		
 		setDefaultRenderer(SpecialTableValue.class, new MySpecialValueCellRenderer());
 	}
-
+	
 	public JTree getTree() {
 		return tree;
 	}
-
+	
 	/*
 	 * Workaround for BasicTableUI anomaly. Make sure the UI never tries to paint
 	 * the editor. The UI currently uses different techniques to paint the renderers
@@ -88,18 +88,18 @@ public class JTreeTable extends JTable {
 	public int getEditingRow() {
 		return (getColumnClass(editingColumn) == TreeTableModel.class) ? -1 : editingRow;
 	}
-
+	
 	//
 	// The renderer used to display the tree nodes, a JTree.
 	//
-
+	
 	public class TreeTableCellRenderer extends JTree implements TableCellRenderer {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 8553500254662497569L;
 		protected int visibleRow;
-
+		
 		public TreeTableCellRenderer(TreeModel model) {
 			super(model);
 			/*
@@ -107,39 +107,39 @@ public class JTreeTable extends JTable {
 			 * dtcr.setLeafIcon(null); dtcr.setClosedIcon(null); dtcr.setOpenIcon(null);
 			 */
 		}
-
+		
 		@Override
 		public void setBounds(int x, int y, int w, int h) {
 			super.setBounds(x, 0, w, JTreeTable.this.getHeight());
 		}
-
+		
 		@Override
 		public void paint(Graphics g) {
 			g.translate(0, -visibleRow * getRowHeight());
 			super.paint(g);
 		}
-
+		
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			if (isSelected)
 				setBackground(table.getSelectionBackground());
 			else
 				setBackground(table.getBackground());
-
+			
 			visibleRow = row;
-
+			
 			return this;
 		}
 	}
-
+	
 	//
 	// The editor used to interact with tree nodes, a JTree.
 	//
-
+	
 	public class TreeTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int r, int c) {
 			return tree;
 		}
 	}
-
+	
 }

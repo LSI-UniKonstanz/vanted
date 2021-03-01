@@ -19,34 +19,34 @@ import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
-
+	
 	@Override
 	public String getName() {
 		return "Introduce Bends";
 	}
-
+	
 	private int minPercent = 5;
 	private int lineStyle = 2;
 	private String edgeShape = "";
 	private boolean massCenterFromSelection = true;
-
+	
 	// private int maxDistance = 6;
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Edges.Bends";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.EDGE, Category.VISUAL));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "Introduce Bends Parameters";
 	}
-
+	
 	/**
 	 * @vanted.revision 2.7.0 - Added DPI scaling for text with HTML tags.
 	 */
@@ -68,24 +68,24 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 				// loop).")
 		};
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
-
+		
 		int i = 0;
 		lineStyle = ((IntegerParameter) params[i++]).getInteger().intValue();
 		minPercent = ((IntegerParameter) params[i++]).getInteger().intValue();
-
+		
 		if (lineStyle == 1)
 			edgeShape = "org.graffiti.plugins.views.defaults.PolyLineEdgeShape";
 		else
 			edgeShape = "org.graffiti.plugins.views.defaults.SmoothLineEdgeShape";
-
+		
 		massCenterFromSelection = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		// maxDistance = ((IntegerParameter) params[i++]).getInteger().intValue();
-
+		
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -96,7 +96,7 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 			throw new PreconditionException(
 					"Drawing Style \"" + lineStyle + "\" not supported.<br>" + "Use the drawing style 1, 2 or 3!");
 	}
-
+	
 	@Override
 	public void execute() {
 		HashSet<Edge> workEdges = new HashSet<Edge>();
@@ -129,12 +129,12 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 		// }
 		// }
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 	// private HashSet<Edge> getSubset(ArrayList<Edge> circle, HashSet<Node>
 	// workNodes) {
 	// HashSet<Edge> result = new HashSet<Edge>();
@@ -144,5 +144,5 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 	// }
 	// return result;
 	// }
-
+	
 }

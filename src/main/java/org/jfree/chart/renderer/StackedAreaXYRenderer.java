@@ -43,7 +43,7 @@ package org.jfree.chart.renderer;
  * @deprecated Renamed StackedXYAreaRenderer.
  */
 public class StackedAreaXYRenderer extends StackedXYAreaRenderer {
-
+	
 	// see base class
-
+	
 }

@@ -25,12 +25,12 @@ import org.graffiti.options.OptionPane;
  *         Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class OptionSetter extends JComponent {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2890355497496512055L;
-
+	
 	/**
 	 * @param component
 	 */
@@ -38,23 +38,23 @@ public class OptionSetter extends JComponent {
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.FILL, 5, TableLayoutConstants.PREFERRED, border } }; // Rows
-
+		
 		setLayout(new TableLayout(size));
 		final JComponent optionPaneDialog = optionPane.getOptionDialogComponent();
 		add(optionPaneDialog, "1,1");
-
+		
 		JPanel buttonGroup = new JPanel();
-
+		
 		double border2 = 0;
 		double[][] size2 = {
 				{ border2, TableLayoutConstants.PREFERRED, 5, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL,
 						border2 }, // Columns
 				{ border2, TableLayoutConstants.FILL, border2 } }; // Rows
 		buttonGroup.setLayout(new TableLayout(size2));
-
+		
 		JButton applyButton = new JButton("Apply");
 		JButton resetButton = new JButton("Reset");
-
+		
 		applyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				optionPane.save(optionPaneDialog);
@@ -65,13 +65,13 @@ public class OptionSetter extends JComponent {
 				optionPane.init(optionPaneDialog);
 			}
 		});
-
+		
 		buttonGroup.add(applyButton, "1,1");
 		buttonGroup.add(resetButton, "3,1");
 		buttonGroup.validate();
-
+		
 		add(buttonGroup, "1,3");
 		validate();
 	}
-
+	
 }

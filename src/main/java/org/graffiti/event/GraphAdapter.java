@@ -15,56 +15,55 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
  * 
  * @author D. Garkov
  * @since 2.7.0
- *
  */
 public class GraphAdapter implements GraphListener {
-
+	
 	@Override
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 	}
-
+	
 	@Override
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 	@Override
 	public void postEdgeAdded(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void postEdgeRemoved(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void postGraphCleared(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void postNodeAdded(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void postNodeRemoved(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void preEdgeAdded(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void preEdgeRemoved(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void preGraphCleared(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void preNodeAdded(GraphEvent e) {
 	}
-
+	
 	@Override
 	public void preNodeRemoved(GraphEvent e) {
 	}
-
+	
 }

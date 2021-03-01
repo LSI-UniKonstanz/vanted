@@ -28,15 +28,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.PatchedHTMLEditorKit;
  * @author klukas
  */
 public class ClickableHTMLtableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8433186541580953404L;
-
+	
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
-
+		
 		final JEditorPane jep;
 		jep = new JEditorPane();
 		jep.setEditorKitForContentType("text/html", new PatchedHTMLEditorKit());
@@ -65,8 +65,8 @@ public class ClickableHTMLtableCellRenderer extends DefaultTableCellRenderer imp
 				// System.out.println(e.getDescription()+": "+e.getURL().toString());
 			}
 		});
-
+		
 		return jep;
 	}
-
+	
 }

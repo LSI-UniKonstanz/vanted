@@ -62,58 +62,58 @@ import org.jfree.util.PrintStreamLogTarget;
  * bugs.
  */
 public class ChartPanelSerializationTest extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to create a simple time series chart.
 	 * This example uses monthly data.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ChartPanelSerializationTest(final String title) {
-
+		
 		super(title);
 		final XYDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel1 = new ChartPanel(chart);
 		chartPanel1.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel1.setMouseZoomable(true, false);
-
+		
 		ChartPanel chartPanel2 = null;
 		try {
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 			ObjectOutput out = new ObjectOutputStream(buffer);
 			out.writeObject(chartPanel1);
 			out.close();
-
+			
 			ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
 			chartPanel2 = (ChartPanel) in.readObject();
 			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		setContentPane(chartPanel2);
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            a dataset.
+	 *           a dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Legal & General Unit Trust Prices", "Date",
 				"Price Per Unit", dataset, true, true, false);
-
+		
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final StandardLegend sl = (StandardLegend) chart.getLegend();
 		sl.setDisplaySeriesShapes(true);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
@@ -121,7 +121,7 @@ public class ChartPanelSerializationTest extends ApplicationFrame {
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
 		plot.setDomainCrosshairVisible(true);
 		plot.setRangeCrosshairVisible(true);
-
+		
 		final XYItemRenderer renderer = plot.getRenderer();
 		if (renderer instanceof StandardXYItemRenderer) {
 			final StandardXYItemRenderer rr = (StandardXYItemRenderer) renderer;
@@ -129,14 +129,14 @@ public class ChartPanelSerializationTest extends ApplicationFrame {
 			rr.setShapesFilled(true);
 			rr.setItemLabelsVisible(true);
 		}
-
+		
 		final DateAxis axis = (DateAxis) plot.getDomainAxis();
 		axis.setDateFormatOverride(new SimpleDateFormat("MMM-yyyy"));
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -147,14 +147,14 @@ public class ChartPanelSerializationTest extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a dataset, consisting of two series of monthly data.
 	 * 
 	 * @return the dataset.
 	 */
 	private XYDataset createDataset() {
-
+		
 		final TimeSeries s1 = new TimeSeries("L&G European Index Trust", Month.class);
 		s1.add(new Month(2, 2001), 181.8);
 		s1.add(new Month(3, 2001), 167.3);
@@ -174,7 +174,7 @@ public class ChartPanelSerializationTest extends ApplicationFrame {
 		s1.add(new Month(5, 2002), 139.8);
 		s1.add(new Month(6, 2002), 137.0);
 		s1.add(new Month(7, 2002), 132.8);
-
+		
 		final TimeSeries s2 = new TimeSeries("L&G UK Index Trust", Month.class);
 		s2.add(new Month(2, 2001), 129.6);
 		s2.add(new Month(3, 2001), 123.2);
@@ -194,31 +194,31 @@ public class ChartPanelSerializationTest extends ApplicationFrame {
 		s2.add(new Month(5, 2002), 111.6);
 		s2.add(new Month(6, 2002), 108.8);
 		s2.add(new Month(7, 2002), 101.6);
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(s1);
 		dataset.addSeries(s2);
-
+		
 		dataset.setDomainIsPointsInTime(true);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		Log.getInstance().addTarget(new PrintStreamLogTarget());
 		final ChartPanelSerializationTest demo = new ChartPanelSerializationTest("Serialization Test");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

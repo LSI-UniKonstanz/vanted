@@ -28,84 +28,84 @@ import org.graffiti.util.MultipleIterator;
  */
 public abstract class AbstractNode extends AbstractGraphElement implements Node {
 	// ~ Static fields/initializers =============================================
-
+	
 	/** The logger for the current class. */
 	// private static final Logger logger =
 	// Logger.getLogger(AbstractNode.class.getName());
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>AbstractNode</code>. Sets the graph of the new
 	 * <code>AbstractNode</code>.
 	 * 
 	 * @param graph
-	 *            the <code>Graph</code> the new <code>AbstractNode</code> instance
-	 *            shall belong to.
+	 *           the <code>Graph</code> the new <code>AbstractNode</code> instance
+	 *           shall belong to.
 	 */
 	public AbstractNode(Graph graph) {
 		super(graph);
 		setViewID(-1); // nodes default = -1, edges default = 0 => nodes are painted before edges
 	}
-
+	
 	/**
 	 * Constructs a new <code>AbstractNode</code>. Sets the graph of the new
 	 * <code>AbstractNode</code>.
 	 * 
 	 * @param graph
-	 *            the <code>Graph</code> the new <code>AbstractNode</code> instance
-	 *            shall belong to.
+	 *           the <code>Graph</code> the new <code>AbstractNode</code> instance
+	 *           shall belong to.
 	 * @param coll
-	 *            the <code>CollectionAttribute</code> of the newly created
-	 *            <code>AbstractNode</code> instance.
+	 *           the <code>CollectionAttribute</code> of the newly created
+	 *           <code>AbstractNode</code> instance.
 	 */
 	public AbstractNode(Graph graph, CollectionAttribute coll) {
 		super(graph, coll);
 		setViewID(-1); // nodes default = -1, edges default = 0 => nodes are painted before edges
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see org.graffiti.graph.Node#getAllInEdges()
 	 */
 	public Collection<Edge> getAllInEdges() {
 		Collection<Edge> col = getDirectedInEdges();
 		col.addAll(getUndirectedEdges());
-
+		
 		return col;
 	}
-
+	
 	/**
 	 * @see org.graffiti.graph.Node#getAllInNeighbors()
 	 */
 	public Collection<Node> getAllInNeighbors() {
 		Collection<Node> col = getInNeighbors();
 		col.addAll(getUndirectedNeighbors());
-
+		
 		return col;
 	}
-
+	
 	/**
 	 * @see org.graffiti.graph.Node#getAllOutEdges()
 	 */
 	public Collection<Edge> getAllOutEdges() {
 		Collection<Edge> col = getDirectedOutEdges();
 		col.addAll(getUndirectedEdges());
-
+		
 		return col;
 	}
-
+	
 	/**
 	 * @see org.graffiti.graph.Node#getAllOutNeighbors()
 	 */
 	public Collection<Node> getAllOutNeighbors() {
 		Collection<Node> col = getOutNeighbors();
 		col.addAll(getUndirectedNeighbors());
-
+		
 		return col;
 	}
-
+	
 	/**
 	 * Returns a collection containing the directed, ingoing edges of the
 	 * <code>Node</code>.
@@ -115,14 +115,14 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	 */
 	public Collection<Edge> getDirectedInEdges() {
 		ArrayList<Edge> l = new ArrayList<Edge>();
-
+		
 		for (Iterator<Edge> it = getDirectedInEdgesIterator(); it.hasNext();) {
 			l.add(it.next());
 		}
-
+		
 		return l;
 	}
-
+	
 	/**
 	 * Returns a collection containing the directed outgoing edges of the
 	 * <code>Node</code>.
@@ -132,14 +132,14 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	 */
 	public Collection<Edge> getDirectedOutEdges() {
 		List<Edge> l = new ArrayList<Edge>();
-
+		
 		for (Iterator<Edge> it = getDirectedOutEdgesIterator(); it.hasNext();) {
 			l.add((it.next()));
 		}
-
+		
 		return l;
 	}
-
+	
 	/**
 	 * Returns a collection containing all the ingoing and outgoing directed and
 	 * undirected edges of the current <code>Node</code>. Ingoing and outgoing edges
@@ -159,7 +159,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 		 */
 		return c;
 	}
-
+	
 	/**
 	 * Returns the in-degree of the current <code>Node</code>. The in-degree is
 	 * defined as the number of ingoing, directed edges plus the number of
@@ -170,7 +170,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	public int getInDegree() {
 		return getDirectedInEdges().size() + getUndirectedEdges().size();
 	}
-
+	
 	/**
 	 * Returns a collection containing the neighbor nodes belonging to incoming
 	 * edges. The number of Elements returned by this function might be less than
@@ -183,14 +183,14 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	 */
 	public Set<Node> getInNeighbors() {
 		Set<Node> s = new LinkedHashSet<Node>(getUndirectedNeighbors());
-
+		
 		for (Iterator<Edge> it = getDirectedInEdgesIterator(); it.hasNext();) {
 			s.add((it.next()).getSource());
 		}
-
+		
 		return s;
 	}
-
+	
 	/**
 	 * Returns an iterator over the neighbor nodes belonging to incoming edges.
 	 * 
@@ -200,12 +200,12 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	public Iterator<Node> getInNeighborsIterator() {
 		return new MultipleIterator(getInNeighbors().iterator());
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public Iterator<Node> getUndirectedNeighborsIterator() {
 		return new MultipleIterator(getUndirectedNeighbors().iterator());
 	}
-
+	
 	/**
 	 * Returns a collection containing all the neighbor nodes of the current
 	 * <code>Node</code>. A neighbor <code>Node</code> is either the source or the
@@ -225,7 +225,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 		}
 		return s;
 	}
-
+	
 	/**
 	 * Returns an interator over the neighbor nodes of the current
 	 * <code>Node</code>. A neighbor nodes is either the source or the target of
@@ -237,7 +237,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 		// return new MultipleIterator(getNeighbors().iterator());
 		return getNeighbors().iterator();
 	}
-
+	
 	/**
 	 * Returns the out-degree of the current <code>Node</code>. The out-degree is
 	 * defined as the number of outgoing, directed edges plus the number of
@@ -248,7 +248,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	public int getOutDegree() {
 		return getDirectedOutEdges().size() + getUndirectedEdges().size();
 	}
-
+	
 	/**
 	 * Returns a collection containing all the neighbors of the current
 	 * <code>Node</code> which are connected by an outgoing <code>Edge</code>. The
@@ -262,14 +262,14 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	 */
 	public Set<Node> getOutNeighbors() {
 		Set<Node> s = new LinkedHashSet<Node>(getUndirectedNeighbors());
-
+		
 		for (Iterator<?> it = getDirectedOutEdgesIterator(); it.hasNext();) {
 			s.add(((Edge) (it.next())).getTarget());
 		}
-
+		
 		return s;
 	}
-
+	
 	/**
 	 * Returns an iterator containing all the neighbors of the current
 	 * <code>Node</code> which are connected by an outgoing <code>Edge</code>.
@@ -281,7 +281,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	public Iterator<Node> getOutNeighborsIterator() {
 		return new MultipleIterator(getOutNeighbors().iterator());
 	}
-
+	
 	/**
 	 * Returns a collection containing the undirected edges of the
 	 * <code>Node</code>.
@@ -291,14 +291,14 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	 */
 	public Collection<Edge> getUndirectedEdges() {
 		List<Edge> l = new ArrayList<Edge>();
-
+		
 		for (Iterator<Edge> it = getUndirectedEdgesIterator(); it.hasNext();) {
 			l.add((it.next()));
 		}
-
+		
 		return l;
 	}
-
+	
 	/**
 	 * Returns a collection containing all the neighbors which are connected to the
 	 * current <code>Node</code> by an undirected <code>Edge</code>.
@@ -309,17 +309,17 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node 
 	public Collection<Node> getUndirectedNeighbors() {
 		Set<Node> s = new LinkedHashSet<Node>();
 		Edge e;
-
+		
 		for (Iterator<?> it = getUndirectedEdgesIterator(); it.hasNext();) {
 			e = (Edge) (it.next());
-
+			
 			if (this == e.getSource()) {
 				s.add(e.getTarget());
 			} else {
 				s.add(e.getSource());
 			}
 		}
-
+		
 		return s;
 	}
 	// public Iterator getDirectedInEdgesIterator() {

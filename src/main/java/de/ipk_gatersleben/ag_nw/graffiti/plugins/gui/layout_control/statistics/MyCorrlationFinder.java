@@ -26,7 +26,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnable {
-
+	
 	private final Collection<Node> nodes;
 	private final Graph graph;
 	private final EditorSession session;
@@ -47,7 +47,7 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 	private final boolean rankOrder;
 	private final boolean showStatusResult;
 	private final boolean dontAddNewEdgesOnlyUpdateExisting;
-
+	
 	public MyCorrlationFinder(Collection<Node> nodes, Graph graph, EditorSession session, boolean considerTimeShifts,
 			boolean mergeDataset, boolean colorCodeEdgesWithCorrelationValue, double minimumR, int currGammaValue,
 			Color colR_1, Color colR0, Color colR1, Collection<Edge> correlationEdges, double prob, boolean plotAverage,
@@ -72,38 +72,38 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 		if (dontAddNewEdgesOnlyUpdateExisting)
 			this.considerTimeShifts = false;
 	}
-
+	
 	public int getCurrentStatusValue() {
 		return (int) getCurrentStatusValueFine();
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		currentStatus = value;
 	}
-
+	
 	public double getCurrentStatusValueFine() {
 		return currentStatus;
 	}
-
+	
 	public String getCurrentStatusMessage1() {
 		return "Calculate Correlation Factors...";
 	}
-
+	
 	public String getCurrentStatusMessage2() {
 		return (process == null || process.length() <= 0) ? "Please wait..." : process;
 	}
-
+	
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	public void pleaseContinueRun() {
 	}
-
+	
 	public void run() {
 		List<ResultPair> result = new ArrayList<ResultPair>();
 		ArrayList<Node> processed = new ArrayList<Node>();
@@ -153,7 +153,7 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 								if (correlation.isAnyOneSignificant(minimumR)) {
 									res.add(correlation);
 									rtimes += "r*=" + correlation.getMaxOrMinR2() + ", ";
-
+									
 								} else
 									rtimes += "r=" + correlation.getMaxOrMinR2() + ", ";
 							}
@@ -300,13 +300,13 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 					}
 				}
 				for (Edge nE : newEdge) {
-
+					
 					AttributeHelper.setAttribute(nE, "statistics", "correlation_r", Double.valueOf(r));
 					if (!Double.isNaN(truecorrprob)) {
 						double prob = 1d - truecorrprob;
 						AttributeHelper.setAttribute(nE, "statistics", "correlation_prob", prob);
 					}
-
+					
 				}
 			}
 		}
@@ -319,9 +319,9 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 		currentStatus = 100;
 		if (pleaseStop)
 			process = "Processing incomplete";
-
+		
 	}
-
+	
 	private MyXML_XYDataset initDataset(ExperimentInterface mappedDataList1, ExperimentInterface mappedDataList2) {
 		Iterator<SubstanceInterface> itXml1 = mappedDataList1.iterator();
 		Iterator<SubstanceInterface> itXml2 = mappedDataList2.iterator();

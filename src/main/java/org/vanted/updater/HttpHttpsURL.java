@@ -16,21 +16,22 @@ import org.graffiti.editor.MainFrame;
  * @since 2.7.0
  */
 public class HttpHttpsURL {
-
+	
 	private String spec;
-
+	
 	public HttpHttpsURL(String spec) {
 		this.setURL(spec);
 	}
-
+	
 	/**
 	 * This returns the URL's spec. Use it to initialize a {@linkplain URL} object.
+	 * 
 	 * @return URL's spec
 	 */
 	public String getURL() {
 		return spec;
 	}
-
+	
 	/**
 	 * Set URL's spec.
 	 * 
@@ -39,7 +40,7 @@ public class HttpHttpsURL {
 	public void setURL(String spec) {
 		this.spec = spec;
 	}
-
+	
 	/**
 	 * This method is a shorthand for:
 	 * <p>
@@ -58,7 +59,7 @@ public class HttpHttpsURL {
 		else
 			return url.openStream();
 	}
-
+	
 	/**
 	 * Use this method to open connections with both Http and Https protocols. Also
 	 * any errors are therewith reported to the user.
@@ -75,7 +76,7 @@ public class HttpHttpsURL {
 			int status = connection.getResponseCode();
 			if (status == HttpURLConnection.HTTP_OK)
 				return connection;
-
+			
 			if (status == HttpURLConnection.HTTP_MOVED_PERM || status == HttpURLConnection.HTTP_MOVED_TEMP
 					|| status == HttpURLConnection.HTTP_SEE_OTHER) {
 				String redirectedUrl = connection.getHeaderField("Location");
@@ -84,14 +85,14 @@ public class HttpHttpsURL {
 				url = new URL(redirectedUrl);
 				connection = (HttpURLConnection) url.openConnection();
 			}
-
+			
 			// There has been connection error, build user notification
 			InputStream errorStream = connection.getErrorStream();
 			String message = "";
 			String s = null;
 			if (errorStream != null) {
 				errorReader = new BufferedReader(new InputStreamReader(errorStream));
-
+				
 				while ((s = errorReader.readLine()) != null)
 					message += s;
 				// determine type of error
@@ -106,7 +107,7 @@ public class HttpHttpsURL {
 				// lastly, close any open streams, connections
 				errorStream.close();
 				connection.disconnect();
-
+				
 				return null;
 			}
 		} finally {
@@ -116,8 +117,8 @@ public class HttpHttpsURL {
 				connection.disconnect();
 			}
 		}
-
+		
 		return connection;
 	}
-
+	
 }

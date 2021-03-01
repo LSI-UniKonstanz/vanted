@@ -31,26 +31,26 @@ import org.ErrorMsg;
  */
 public class HashMapAttribute extends AbstractCollectionAttribute implements CollectionAttribute, Comparable<Object> {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Construct a new instance of a <code>HashMapAttribute</code>. The internal
 	 * HashMap is initialized empty.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 */
 	public HashMapAttribute(String id) {
 		super(id);
 		this.attributes = new TreeMap<String, Attribute>();
 	}
-
+	
 	public HashMapAttribute() {
 		super("undefined id");
 		this.attributes = new TreeMap<String, Attribute>();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the collection of attributes contained within this
 	 * <tt>CollectionAttribute</tt> For each entry in the map, pre- and post-
@@ -58,14 +58,14 @@ public class HashMapAttribute extends AbstractCollectionAttribute implements Col
 	 * a)</code> is called for each attribute in the map.
 	 * 
 	 * @param attrs
-	 *            the Map that contains all attributes.
+	 *           the Map that contains all attributes.
 	 */
 	public void setCollection(Map<String, Attribute> attrs) {
 		assert attrs != null;
 		attributes = new TreeMap<String, Attribute>();
-
+		
 		Iterator<Attribute> it = attrs.values().iterator();
-
+		
 		if (getAttributable() == null) {
 			while (it.hasNext()) {
 				Attribute attr = (Attribute) it.next();
@@ -83,7 +83,7 @@ public class HashMapAttribute extends AbstractCollectionAttribute implements Col
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns a cloned map (shallow copy of map: i.e.
 	 * <code>this.map.equals(getCollection())</code><b>but
@@ -95,7 +95,7 @@ public class HashMapAttribute extends AbstractCollectionAttribute implements Col
 	public Map<String, Attribute> getCollection() {
 		return attributes;
 	}
-
+	
 	/**
 	 * Already done in constructor for this attribute type.
 	 * 
@@ -105,7 +105,7 @@ public class HashMapAttribute extends AbstractCollectionAttribute implements Col
 		if (attributes == null)
 			this.attributes = new TreeMap<String, Attribute>();
 	}
-
+	
 	/**
 	 * Copies this <code>CollectionAttribute</code> and returns the copy. All
 	 * sub-attributes will be copied, too, i.e. a deep-copy is returned.
@@ -142,7 +142,7 @@ public class HashMapAttribute extends AbstractCollectionAttribute implements Col
 			}
 		}
 	}
-
+	
 	/**
 	 * Sets the value of the attribute by calling method
 	 * <code>setCollection(Map attrs)</code>. The "value" is the Collection of
@@ -150,18 +150,18 @@ public class HashMapAttribute extends AbstractCollectionAttribute implements Col
 	 * are generated.
 	 * 
 	 * @param o
-	 *            the new value of the attribute.
+	 *           the new value of the attribute.
 	 * @exception IllegalArgumentException
-	 *                if the parameter has not the appropriate class for this
-	 *                attribute.
+	 *               if the parameter has not the appropriate class for this
+	 *               attribute.
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void doSetValue(Object o) throws IllegalArgumentException {
 		assert o != null;
-
+		
 		Map<String, Attribute> attrs;
-
+		
 		try {
 			attrs = (Map<String, Attribute>) o;
 			setCollection(attrs);
@@ -170,14 +170,14 @@ public class HashMapAttribute extends AbstractCollectionAttribute implements Col
 					"Wrong argument type " + "(Collection's value: HashMap - expected): " + cce.getMessage());
 		}
 	}
-
+	
 	public int compareTo(Object o) {
 		if (o instanceof Attribute) {
 			return idd.compareTo(((Attribute) o).getId());
 		}
 		return 0;
 	}
-
+	
 	public int size() {
 		return attributes.size();
 	}

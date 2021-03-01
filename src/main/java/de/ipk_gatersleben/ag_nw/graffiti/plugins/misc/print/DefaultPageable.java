@@ -21,27 +21,27 @@ public class DefaultPageable implements Pageable {
 	private Printable printable;
 	private PageFormat format;
 	private int pages;
-
+	
 	public DefaultPageable(Printable printable, PageFormat format, int pages) {
 		this.printable = printable;
 		this.format = format;
 		this.pages = pages;
 	}
-
+	
 	public int getNumberOfPages() {
 		return pages;
 	}
-
+	
 	public void setNumberOfPages(int pages) {
 		this.pages = pages;
 	}
-
+	
 	public Printable getPrintable(int index) {
 		if (index >= pages)
 			throw new IndexOutOfBoundsException();
 		return printable;
 	}
-
+	
 	public PageFormat getPageFormat(int index) {
 		if (index >= pages)
 			throw new IndexOutOfBoundsException();

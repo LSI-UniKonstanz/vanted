@@ -19,28 +19,27 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityC
  * interface for all interactions when a model is read and a graph is created
  * 
  * @author ricardo
- * 
  */
 public class BPInteraction extends HelperClass {
-
+	
 	protected Graph graph;
 	protected Hashtable<Entity, Node> nodes;
 	protected Random rand;
 	protected StoichiometryWriter sW;
 	protected CollectionAttribute centerAttribute;
-
+	
 	public BPInteraction(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super();
 		rand = new Random();
 		sW = new StoichiometryWriter();
 		graph = Graph;
 		nodes = Nodes;
-
+		
 		int posx = rand.nextInt(100);
 		int posy = rand.nextInt(100);
 		centerAttribute = AttributeHelper.getDefaultGraphicsAttributeForNode(posx, posy);
 	}
-
+	
 	/**
 	 * used for linking nodes with other nodes via edges
 	 * 
@@ -61,7 +60,7 @@ public class BPInteraction extends HelperClass {
 		}
 		return node;
 	}
-
+	
 	/**
 	 * shortcut to add an edge without calling each time such a long method
 	 * 

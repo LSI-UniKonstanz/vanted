@@ -51,7 +51,7 @@ public class TypedAttributeService implements HelperClass {
 		}
 		return g;
 	}
-
+	
 	private static void processAttributable(Attributable attr, boolean isNode) {
 		CollectionAttribute ca = attr.getAttributes();
 		Stack<CollectionAttribute> catts = new Stack<CollectionAttribute>();
@@ -104,7 +104,7 @@ public class TypedAttributeService implements HelperClass {
 				AttributeHelper.setLabel((Node) attr, oldLabel);
 			attr.removeAttribute("label");
 		} catch (Exception err) {
-
+			
 		}
 		try {
 			HashMapAttribute charting = (HashMapAttribute) attr.getAttributes().getAttribute("charting");
@@ -118,7 +118,7 @@ public class TypedAttributeService implements HelperClass {
 			}
 			a.getParent().remove(a);
 		} catch (Exception err) {
-
+			
 		}
 		try {
 			HashMapAttribute charting = (HashMapAttribute) attr.getAttributes().getAttribute("data");
@@ -132,7 +132,7 @@ public class TypedAttributeService implements HelperClass {
 			}
 			a.getParent().remove(a);
 		} catch (Exception err) {
-
+			
 		}
 		if (attr instanceof Edge) {
 			try {
@@ -170,8 +170,8 @@ public class TypedAttributeService implements HelperClass {
 				ErrorMsg.addErrorMessage(e);
 			}
 		}
-
+		
 		PortableUrlService.processUrlAttributes(attr);
 	}
-
+	
 }

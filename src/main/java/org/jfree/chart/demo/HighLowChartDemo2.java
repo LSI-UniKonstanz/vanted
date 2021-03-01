@@ -47,26 +47,26 @@ import org.jfree.ui.RefineryUtilities;
  * top.
  */
 public class HighLowChartDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing a high-low-open-close chart.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public HighLowChartDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		final HighLowDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -75,30 +75,30 @@ public class HighLowChartDemo2 extends ApplicationFrame {
 	private HighLowDataset createDataset() {
 		return DemoDatasetFactory.createHighLowDataset();
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            a dataset.
+	 *           a dataset.
 	 * @return a sample chart.
 	 */
 	private JFreeChart createChart(final HighLowDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createHighLowChart("OHLC Demo 2", "Time", "Value", dataset, true);
-
+		
 		final DateAxis axis = (DateAxis) chart.getXYPlot().getDomainAxis();
 		axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
-
+		
 		final XYDataset dataset2 = MovingAverage.createMovingAverage(dataset, "-MAVG", 3 * 24 * 60 * 60 * 1000L, 0L);
 		final XYPlot plot = (XYPlot) chart.getPlot();
 		plot.setDataset(1, dataset2);
 		plot.setRenderer(1, new StandardXYItemRenderer());
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -109,20 +109,20 @@ public class HighLowChartDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final HighLowChartDemo2 demo = new HighLowChartDemo2("OHLC Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -19,42 +19,42 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.exporters.sbml.SBML_SBase_W
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_SBase_Reader;
 
 public class SBMLReactionHelper {
-
+	
 	/**
 	 * Intern graph object
 	 */
 	Graph g;
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Writer attWriter;
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Reader attReader;
-
+	
 	/**
 	 * contains all reaction ids and all nodes that belong to that reaction id
 	 */
 	private Map<String, List<Node>> _reactionClones;
-
+	
 	/**
 	 * the array contains the reaction id and the species id which is an reactant in
 	 * this reaction
 	 */
 	private Map<ReactionIDSpeciesIDWrapper, List<Edge>> _reactantClones;
-
+	
 	private Map<ReactionIDSpeciesIDWrapper, List<Edge>> _productClones;
-
+	
 	private Map<ReactionIDSpeciesIDWrapper, List<Edge>> _modifierClones;
-
+	
 	/**
 	 * Constructor. Initializes the graph
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 */
 	public SBMLReactionHelper(Graph g) {
 		this.g = g;
@@ -64,26 +64,26 @@ public class SBMLReactionHelper {
 		_modifierClones = new HashMap<ReactionIDSpeciesIDWrapper, List<Edge>>();
 		attWriter = new SBML_SBase_Writer();
 		attReader = new SBML_SBase_Reader();
-
+		
 		initReactionNideIDs(SBML_Constants.SBML_HEADLINE);
 	}
-
+	
 	public Map<String, List<Node>> getReactionClones() {
 		return _reactionClones;
 	}
-
+	
 	public Map<ReactionIDSpeciesIDWrapper, List<Edge>> getReactantClones() {
 		return _reactantClones;
 	}
-
+	
 	public Map<ReactionIDSpeciesIDWrapper, List<Edge>> getProductClones() {
 		return _productClones;
 	}
-
+	
 	public Map<ReactionIDSpeciesIDWrapper, List<Edge>> getModifierClones() {
 		return _modifierClones;
 	}
-
+	
 	public Node getReactionNode(String layoutId, String reactionId) {
 		List<Node> nodes = _reactionClones.get(reactionId);
 		for (Node reactionsNode : nodes) {
@@ -95,7 +95,7 @@ public class SBMLReactionHelper {
 		}
 		return null;
 	}
-
+	
 	public void addReactionCloneToList(String reactionId, Node reactionNode) {
 		List<Node> reactionNodes = _reactionClones.get(reactionId);
 		if (reactionNodes == null) {
@@ -104,7 +104,7 @@ public class SBMLReactionHelper {
 		reactionNodes.add(reactionNode);
 		_reactionClones.put(reactionId, reactionNodes);
 	}
-
+	
 	public void addReactantCloneToList(String reactionId, String speciesId, Edge reactantEdge) {
 		ReactionIDSpeciesIDWrapper reactionSpeciesPair = new ReactionIDSpeciesIDWrapper(reactionId, speciesId);
 		List<Edge> edgeList = _reactantClones.get(reactionSpeciesPair);
@@ -114,7 +114,7 @@ public class SBMLReactionHelper {
 		edgeList.add(reactantEdge);
 		_reactantClones.put(reactionSpeciesPair, edgeList);
 	}
-
+	
 	public void addProductCloneToList(String reactionId, String speciesId, Edge reactantEdge) {
 		ReactionIDSpeciesIDWrapper reactionSpeciesPair = new ReactionIDSpeciesIDWrapper(reactionId, speciesId);
 		List<Edge> edgeList = _productClones.get(reactionSpeciesPair);
@@ -124,7 +124,7 @@ public class SBMLReactionHelper {
 		edgeList.add(reactantEdge);
 		_productClones.put(reactionSpeciesPair, edgeList);
 	}
-
+	
 	public void addModifierCloneToList(String reactionId, String speciesId, Edge reactantEdge) {
 		ReactionIDSpeciesIDWrapper reactionSpeciesPair = new ReactionIDSpeciesIDWrapper(reactionId, speciesId);
 		List<Edge> edgeList = _modifierClones.get(reactionSpeciesPair);
@@ -134,7 +134,7 @@ public class SBMLReactionHelper {
 		edgeList.add(reactantEdge);
 		_modifierClones.put(reactionSpeciesPair, edgeList);
 	}
-
+	
 	public Boolean isSetCompartment(Node reactionNode) {
 		if (!NodeTools.getClusterID(reactionNode, SBML_Constants.EMPTY).equals(SBML_Constants.EMPTY)) {
 			return true;
@@ -142,7 +142,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetFast(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.FAST)) {
 			return true;
@@ -150,7 +150,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetReversible(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REVERSIBLE)) {
 			return true;
@@ -158,7 +158,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetName(Node reactionNode) {
 		if (!AttributeHelper.getLabel(reactionNode, SBML_Constants.EMPTY).equals(SBML_Constants.EMPTY)) {
 			return true;
@@ -166,7 +166,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetID(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_ID)) {
 			return true;
@@ -174,7 +174,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public String getID(Node reactionNode) {
 		if (isSetID(reactionNode)) {
 			return (String) attWriter.getAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_ID);
@@ -182,11 +182,11 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public String getName(Node reactionNode) {
 		return AttributeHelper.getLabel(reactionNode, SBML_Constants.EMPTY);
 	}
-
+	
 	public Boolean getReversible(Node reactionNode) {
 		if (isSetReversible(reactionNode)) {
 			return (Boolean) attWriter.getAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REVERSIBLE);
@@ -194,7 +194,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean getFast(Node reactionNode) {
 		if (isSetFast(reactionNode)) {
 			return (Boolean) attWriter.getAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.FAST);
@@ -202,17 +202,17 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public String getCompartment(Node reactionNode) {
 		return NodeTools.getClusterID(reactionNode, SBML_Constants.EMPTY);
 	}
-
+	
 	public void setID(Node reactionNode, String ID) {
 		if (!ID.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_ID, ID);
 		}
 	}
-
+	
 	public void setLabel(Node reactionNode, String name, String id, PositionGridGenerator pgg) {
 		String label = null;
 		if (!name.equals(SBML_Constants.EMPTY)) {
@@ -224,32 +224,32 @@ public class SBMLReactionHelper {
 			attReader.setAttributes(reactionNode, Color.white, label, pgg.getNextPosition(), 7);
 		}
 	}
-
+	
 	public void setReversible(Node reactionNode, Boolean reversible) {
 		if (reversible != null) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REVERSIBLE, reversible);
 		}
 	}
-
+	
 	public void setFast(Node reactionNode, Boolean fast) {
 		if (fast != null) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.FAST, fast);
 		}
 	}
-
+	
 	public void setCompartment(Node reactionNode, String compartment) {
 		if (!compartment.isEmpty()) {
 			NodeTools.setClusterID(reactionNode, compartment);
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.COMPARTMENT, compartment);
 		}
 	}
-
+	
 	public void setMetaID(Node reactionNode, String metaID) {
 		if (!metaID.isEmpty()) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_META_ID, metaID);
 		}
 	}
-
+	
 	public Boolean isSetMetaID(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_META_ID)) {
 			return true;
@@ -257,13 +257,13 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void deleteMetaID(Node reactinNode) {
 		if (isSetMetaID(reactinNode)) {
 			AttributeHelper.deleteAttribute(reactinNode, SBML_Constants.SBML, SBML_Constants.REACTION_META_ID);
 		}
 	}
-
+	
 	public String getMetaID(Node reactionNode) {
 		if (isSetMetaID(reactionNode)) {
 			return (String) attWriter.getAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_META_ID);
@@ -271,7 +271,7 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void deleteSBOTerm(Node reactinNode) {
 		if (isSetSBOTerm(reactinNode)) {
 			// AttributeHelper.deleteAttribute(reactinNode, SBML_Constants.SBML,
@@ -279,7 +279,7 @@ public class SBMLReactionHelper {
 			AttributeHelper.deleteAttribute(reactinNode, SBML_Constants.SBML, SBML_Constants.SBOTERM);
 		}
 	}
-
+	
 	public void setSBOTerm(Node reactionNode, String sboTerm) {
 		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML,
@@ -287,7 +287,7 @@ public class SBMLReactionHelper {
 					SBML_Constants.SBOTERM, sboTerm);
 		}
 	}
-
+	
 	public Boolean isSetSBOTerm(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML,
 				// SBML_Constants.REACTION_SBOTERM)) {
@@ -297,7 +297,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public String getSBOTerm(Node reactionNode) {
 		if (isSetSBOTerm(reactionNode)) {
 			return (String) attWriter.getAttribute(reactionNode,
@@ -307,11 +307,11 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void setAnnotation(Node reactionNode, Annotation annotation) {
 		AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_ANNOTATION, annotation);
 	}
-
+	
 	public Annotation getAnnotation(Node reactionNode) {
 		if (isSetAnnotation(reactionNode)) {
 			return (Annotation) attWriter.getAttribute(reactionNode, SBML_Constants.SBML,
@@ -320,13 +320,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteAnnotation(Node reactinNode) {
 		if (isSetAnnotation(reactinNode)) {
 			AttributeHelper.deleteAttribute(reactinNode, SBML_Constants.SBML, SBML_Constants.REACTION_ANNOTATION);
 		}
 	}
-
+	
 	public Boolean isSetAnnotation(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_ANNOTATION)) {
 			return true;
@@ -334,12 +334,12 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setNonRDFAnnotation(Node reactionNode, XMLNode nonRDFAnnotation) {
 		AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_NON_RDF_ANNOTATION,
 				nonRDFAnnotation);
 	}
-
+	
 	public Annotation getNonRDFAnnotation(Node reactionNode) {
 		if (isSetNonRDFAnnotation(reactionNode)) {
 			return (Annotation) attWriter.getAttribute(reactionNode, SBML_Constants.SBML,
@@ -348,14 +348,14 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteNonRDFAnnotation(Node reactinNode) {
 		if (isSetNonRDFAnnotation(reactinNode)) {
 			AttributeHelper.deleteAttribute(reactinNode, SBML_Constants.SBML,
 					SBML_Constants.REACTION_NON_RDF_ANNOTATION);
 		}
 	}
-
+	
 	public Boolean isSetNonRDFAnnotation(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML,
 				SBML_Constants.REACTION_NON_RDF_ANNOTATION)) {
@@ -364,13 +364,13 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setNotes(Node reactionNode, String notes, XMLNode notesObj) {
 		if (!notes.equals(SBML_Constants.EMPTY)) {
 			attReader.addNotes(notesObj, notes, reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_NOTES);
 		}
 	}
-
+	
 	public XMLNode getNotes(Node reactionNode) {
 		if (isSetNotes(reactionNode)) {
 			return (XMLNode) attWriter.getAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_NOTES);
@@ -378,7 +378,7 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public Boolean isSetNotes(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_NOTES)) {
 			return true;
@@ -386,32 +386,32 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void deleteNotes(Node reactinNode) {
 		if (isSetNotes(reactinNode)) {
 			AttributeHelper.deleteAttribute(reactinNode, SBML_Constants.SBML, SBML_Constants.REACTION_NOTES);
 		}
 	}
-
+	
 	public void setSpecies(Edge reactionEdge, String species) {
 		if (!species.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES, species);
 		}
 	}
-
+	
 	public void setID(Edge reactionEdge, String ID) {
 		// if (!reactionEdge.equals(SBML_Constants.EMPTY)) {
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES_REFERENCE_ID, ID);
 		// }
 	}
-
+	
 	public void setName(Edge reactionEdge, String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES_REFERENCE_NAME,
 					name);
 		}
 	}
-
+	
 	public Boolean isSetSpecies(Edge reactionEdge) {
 		if (AttributeHelper.hasAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES)) {
 			return true;
@@ -419,7 +419,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetID(Edge reactionEdge) {
 		if (AttributeHelper.hasAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES_REFERENCE_ID)) {
 			return true;
@@ -427,7 +427,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetName(Edge reactionEdge) {
 		if (AttributeHelper.hasAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES_REFERENCE_NAME)) {
 			return true;
@@ -435,7 +435,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public String getSpecies(Edge reactionEdge) {
 		if (isSetSpecies(reactionEdge)) {
 			return (String) attWriter.getAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES);
@@ -443,7 +443,7 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public String getName(Edge reactionEdge) {
 		if (isSetName(reactionEdge)) {
 			return (String) attWriter.getAttribute(reactionEdge, SBML_Constants.SBML,
@@ -452,7 +452,7 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public String getID(Edge reactionEdge) {
 		if (isSetID(reactionEdge)) {
 			return (String) attWriter.getAttribute(reactionEdge, SBML_Constants.SBML,
@@ -461,13 +461,13 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void setMetaIDReactant(Edge reactionEdge, String metaID) {
 		if (!metaID.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.REACTANT_META_ID, metaID);
 		}
 	}
-
+	
 	public String getMetaIDReactant(Edge edge) {
 		if (isSetMetaIDReactant(edge)) {
 			return (String) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_META_ID);
@@ -475,13 +475,13 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void deleteMetaIDReactant(Edge edge) {
 		if (isSetMetaIDReactant(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_META_ID);
 		}
 	}
-
+	
 	public Boolean isSetMetaIDReactant(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_META_ID)) {
 			return true;
@@ -489,13 +489,13 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setMetaIDProduct(Edge reactionEdge, String metaID) {
 		if (!metaID.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.PRODUCT_META_ID, metaID);
 		}
 	}
-
+	
 	public String getMetaIDProduct(Edge edge) {
 		if (isSetMetaIDProduct(edge)) {
 			return (String) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_META_ID);
@@ -503,13 +503,13 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void deleteMetaIDProduct(Edge edge) {
 		if (isSetMetaIDProduct(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_META_ID);
 		}
 	}
-
+	
 	public Boolean isSetMetaIDProduct(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_META_ID)) {
 			return true;
@@ -517,13 +517,13 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setMetaIDModifier(Edge reactionEdge, String metaID) {
 		if (!metaID.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.MODIFIER_META_ID, metaID);
 		}
 	}
-
+	
 	public String getMetaIDModifier(Edge edge) {
 		if (isSetMetaIDModifier(edge)) {
 			return (String) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_META_ID);
@@ -531,13 +531,13 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void deleteMetaIDModifier(Edge edge) {
 		if (isSetMetaIDModifier(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_META_ID);
 		}
 	}
-
+	
 	public Boolean isSetMetaIDModifier(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_META_ID)) {
 			return true;
@@ -545,7 +545,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setSBOTermReactant(Edge reactionEdge, String sboTerm) {
 		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
@@ -553,7 +553,7 @@ public class SBMLReactionHelper {
 					SBML_Constants.SBOTERM, sboTerm);
 		}
 	}
-
+	
 	public String getSBOTermReactant(Edge edge) {
 		if (isSetSBOTermReactant(edge)) {
 			return (String) attWriter.getAttribute(edge,
@@ -563,7 +563,7 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void deleteSBOTermReactant(Edge edge) {
 		if (isSetSBOTermReactant(edge)) {
 			// AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML,
@@ -571,7 +571,7 @@ public class SBMLReactionHelper {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.SBOTERM);
 		}
 	}
-
+	
 	public Boolean isSetSBOTermReactant(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML,
 				// SBML_Constants.REACTANT_SBOTERM)) {
@@ -581,7 +581,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setSBOTermProduct(Edge reactionEdge, String sboTerm) {
 		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
@@ -589,7 +589,7 @@ public class SBMLReactionHelper {
 					SBML_Constants.SBOTERM, sboTerm);
 		}
 	}
-
+	
 	public String getSBOTermProduct(Edge edge) {
 		if (isSetSBOTermProduct(edge)) {
 			return (String) attWriter.getAttribute(edge,
@@ -599,7 +599,7 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void deleteSBOTermProduct(Edge edge) {
 		if (isSetSBOTermProduct(edge)) {
 			// AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML,
@@ -607,7 +607,7 @@ public class SBMLReactionHelper {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.SBOTERM);
 		}
 	}
-
+	
 	public Boolean isSetSBOTermProduct(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML,
 				// SBML_Constants.PRODUCT_SBOTERM)) {
@@ -617,7 +617,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setSBOTermModifier(Edge reactionEdge, String sboTerm) {
 		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
@@ -625,7 +625,7 @@ public class SBMLReactionHelper {
 					SBML_Constants.SBOTERM, sboTerm);
 		}
 	}
-
+	
 	public String getSBOTermModifier(Edge edge) {
 		if (isSetSBOTermModifier(edge)) {
 			return (String) attWriter.getAttribute(edge,
@@ -635,7 +635,7 @@ public class SBMLReactionHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	public void deleteSBOTermModifier(Edge edge) {
 		if (isSetSBOTermModifier(edge)) {
 			// AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML,
@@ -643,7 +643,7 @@ public class SBMLReactionHelper {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.SBOTERM);
 		}
 	}
-
+	
 	public Boolean isSetSBOTermModifier(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML,
 				// SBML_Constants.MODIFIER_SBOTERM)) {
@@ -653,11 +653,11 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setAnnotationProduct(Edge reactionEdge, Annotation annotation) {
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.PRODUCT_ANNOTATION, annotation);
 	}
-
+	
 	public Annotation getAnnotationProduct(Edge edge) {
 		if (isSetAnnotationProduct(edge)) {
 			return (Annotation) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_ANNOTATION);
@@ -665,13 +665,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteAnnotationProduct(Edge edge) {
 		if (isSetAnnotationProduct(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_ANNOTATION);
 		}
 	}
-
+	
 	public Boolean isSetAnnotationProduct(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_ANNOTATION)) {
 			return true;
@@ -679,12 +679,12 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setNonRDFAnnotationProduct(Edge reactionEdge, XMLNode xmlNode) {
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.PRODUCT_NON_RDF_ANNOTATION,
 				xmlNode);
 	}
-
+	
 	public XMLNode getNonRDFAnnotationProduct(Edge edge) {
 		if (isSetAnnotationProduct(edge)) {
 			return (XMLNode) attWriter.getAttribute(edge, SBML_Constants.SBML,
@@ -693,13 +693,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteNonRDFAnnotationProduct(Edge edge) {
 		if (isSetNonRDFAnnotationProduct(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_NON_RDF_ANNOTATION);
 		}
 	}
-
+	
 	public Boolean isSetNonRDFAnnotationProduct(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_NON_RDF_ANNOTATION)) {
 			return true;
@@ -707,11 +707,11 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setAnnotationModifier(Edge reactionEdge, Annotation annotation) {
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.MODIFIER_ANNOTATION, annotation);
 	}
-
+	
 	public Annotation getAnnotationModifier(Edge edge) {
 		if (isSetAnnotationModifier(edge)) {
 			return (Annotation) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_ANNOTATION);
@@ -719,13 +719,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteAnnotationModifier(Edge edge) {
 		if (isSetAnnotationModifier(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_ANNOTATION);
 		}
 	}
-
+	
 	public Boolean isSetAnnotationModifier(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_ANNOTATION)) {
 			return true;
@@ -733,12 +733,12 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setNonRDFAnnotationModifier(Edge reactionEdge, XMLNode xmlNode) {
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.MODIFIER_NON_RDF_ANNOTATION,
 				xmlNode);
 	}
-
+	
 	public XMLNode getNonRDFAnnotationModifier(Edge edge) {
 		if (isSetAnnotationModifier(edge)) {
 			return (XMLNode) attWriter.getAttribute(edge, SBML_Constants.SBML,
@@ -747,13 +747,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteNonRDFAnnotationModifier(Edge edge) {
 		if (isSetNonRDFAnnotationModifier(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_NON_RDF_ANNOTATION);
 		}
 	}
-
+	
 	public Boolean isSetNonRDFAnnotationModifier(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_NON_RDF_ANNOTATION)) {
 			return true;
@@ -761,11 +761,11 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setAnnotationReactant(Edge reactionEdge, Annotation annotation) {
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.REACTANT_ANNOTATION, annotation);
 	}
-
+	
 	public Annotation getAnnotationReactant(Edge edge) {
 		if (isSetAnnotationReactant(edge)) {
 			return (Annotation) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_ANNOTATION);
@@ -773,13 +773,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteAnnotationReactant(Edge edge) {
 		if (isSetAnnotationReactant(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_ANNOTATION);
 		}
 	}
-
+	
 	public Boolean isSetAnnotationReactant(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_ANNOTATION)) {
 			return true;
@@ -787,12 +787,12 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setNonRDFAnnotationReactant(Edge reactionEdge, XMLNode xmlNode) {
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.REACTANT_NON_RDF_ANNOTATION,
 				xmlNode);
 	}
-
+	
 	public XMLNode getNonRDFAnnotationReactant(Edge edge) {
 		if (isSetAnnotationReactant(edge)) {
 			return (XMLNode) attWriter.getAttribute(edge, SBML_Constants.SBML,
@@ -801,13 +801,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteNonRDFAnnotationReactant(Edge edge) {
 		if (isSetNonRDFAnnotationReactant(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_NON_RDF_ANNOTATION);
 		}
 	}
-
+	
 	public Boolean isSetNonRDFAnnotationReactant(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_NON_RDF_ANNOTATION)) {
 			return true;
@@ -815,13 +815,13 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setNotesReactant(Edge reactionEdge, String notes, XMLNode notesObj) {
 		if (!notes.equals(SBML_Constants.EMPTY)) {
 			attReader.addNotes(notesObj, notes, reactionEdge, SBML_Constants.SBML, SBML_Constants.REACTANT_NOTES);
 		}
 	}
-
+	
 	public Object getNotesReactant(Edge edge) {
 		if (isSetNotesReactant(edge)) {
 			return (Object) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_NOTES);
@@ -829,13 +829,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteNotesReactant(Edge edge) {
 		if (isSetNotesReactant(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_NOTES);
 		}
 	}
-
+	
 	public Boolean isSetNotesReactant(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTANT_NOTES)) {
 			return true;
@@ -843,13 +843,13 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setNotesProduct(Edge reactionEdge, String notes, XMLNode notesObj) {
 		if (!notes.equals(SBML_Constants.EMPTY)) {
 			attReader.addNotes(notesObj, notes, reactionEdge, SBML_Constants.SBML, SBML_Constants.PRODUCT_NOTES);
 		}
 	}
-
+	
 	public Object getNotesProduct(Edge edge) {
 		if (isSetNotesProduct(edge)) {
 			return (Object) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_NOTES);
@@ -857,13 +857,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteNotesProduct(Edge edge) {
 		if (isSetNotesProduct(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_NOTES);
 		}
 	}
-
+	
 	public Boolean isSetNotesProduct(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.PRODUCT_NOTES)) {
 			return true;
@@ -871,13 +871,13 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setNotesModifier(Edge reactionEdge, String notes, XMLNode notesObj) {
 		if (!notes.equals(SBML_Constants.EMPTY)) {
 			attReader.addNotes(notesObj, notes, reactionEdge, SBML_Constants.SBML, SBML_Constants.MODIFIER_NOTES);
 		}
 	}
-
+	
 	public Object getNotesModifier(Edge edge) {
 		if (isSetNotesModifier(edge)) {
 			return (Object) attWriter.getAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_NOTES);
@@ -885,13 +885,13 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public void deleteNotesModifier(Edge edge) {
 		if (isSetNotesModifier(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_NOTES);
 		}
 	}
-
+	
 	public Boolean isSetNotesModifier(Edge edge) {
 		if (AttributeHelper.hasAttribute(edge, SBML_Constants.SBML, SBML_Constants.MODIFIER_NOTES)) {
 			return true;
@@ -899,7 +899,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetStoichiometry(Edge reactionEdge) {
 		if (AttributeHelper.hasAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.STOICHIOMETRY)) {
 			return true;
@@ -907,7 +907,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public Boolean isSetConstant(Edge reactionEdge) {
 		if (AttributeHelper.hasAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.REACTION_CONSTANT)) {
 			return true;
@@ -915,7 +915,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public String getStoichiometry(Edge reactionEdge) {
 		if (!AttributeHelper.getSBMLrole(reactionEdge).equals(SBML_Constants.ROLE_MODIFIER)) {
 			if (isSetStoichiometry(reactionEdge)) {
@@ -927,7 +927,7 @@ public class SBMLReactionHelper {
 			return null;
 		}
 	}
-
+	
 	public Boolean getConstant(Edge reactionEdge) {
 		if (!AttributeHelper.getAttributeValue(reactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.EMPTY, SBML_Constants.EMPTY).equals(SBML_Constants.ROLE_MODIFIER)) {
@@ -941,7 +941,7 @@ public class SBMLReactionHelper {
 			return false;
 		}
 	}
-
+	
 	public void setStoichiometry(Edge reactionEdge, Double stoichiometry) {
 		if (!AttributeHelper.getAttributeValue(reactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.EMPTY, SBML_Constants.EMPTY).equals(SBML_Constants.ROLE_MODIFIER)) {
@@ -951,7 +951,7 @@ public class SBMLReactionHelper {
 			}
 		}
 	}
-
+	
 	public void setConstant(Edge reactionEdge, Boolean constant) {
 		if (!AttributeHelper.getAttributeValue(reactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.EMPTY, SBML_Constants.EMPTY).equals(SBML_Constants.ROLE_MODIFIER)) {
@@ -961,7 +961,7 @@ public class SBMLReactionHelper {
 			}
 		}
 	}
-
+	
 	private void initReactionNideIDs(String presentedHeadline) {
 		// AttributeHelper.setNiceId(SBML_Constants.REACTION_NAME,
 		// presentedHeadline+": Name");
@@ -992,5 +992,5 @@ public class SBMLReactionHelper {
 		// AttributeHelper.setNiceId(SBML_Constants.MODIFIER_SBOTERM,
 		// presentedHeadline + ": SBOTerm");
 	}
-
+	
 }

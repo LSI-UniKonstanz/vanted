@@ -24,51 +24,51 @@ import org.graffiti.event.ListenerManager;
  */
 public abstract class AbstractGraphElement extends AbstractAttributable implements GraphElement {
 	// ~ Static fields/initializers =============================================
-
+	
 	/** The logger for the current class. */
 	// static protected final Logger logger =
 	// Logger.getLogger(AbstractGraphElement.class.getName());
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/** The graph the current <code>AbstractGraphElement</code> belongs to. */
 	protected Graph graph;
-
+	
 	private long id;
-
+	
 	/**
 	 * Used for sorting the graphical output in Z-order. (e.g. nodes before edges)
 	 */
 	private int viewID;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>AbstrctGraphElement</code>.
 	 */
 	public AbstractGraphElement() {
 	}
-
+	
 	/**
 	 * Constructs a new <code>AbstrctGraphElement</code>.
 	 * 
 	 * @param coll
-	 *            the <code>CollectionAttribute</code> of the new
-	 *            <code>AbstractGraphElement</code> instance.
+	 *           the <code>CollectionAttribute</code> of the new
+	 *           <code>AbstractGraphElement</code> instance.
 	 */
 	public AbstractGraphElement(CollectionAttribute coll) {
 		super(coll);
 	}
-
+	
 	/**
 	 * Constructs a new <code>AbstrctGraphElement</code>. Sets the graph of the
 	 * current <code>AbstrctGraphElement</code>.
 	 * 
 	 * @param graph
-	 *            the graph the <code>AbstrctGraphElement</code> belongs to.
+	 *           the graph the <code>AbstrctGraphElement</code> belongs to.
 	 * @param coll
-	 *            the <code>CollectionAttribute</code> of the new
-	 *            <code>AbstractGraphElement</code> instance.
+	 *           the <code>CollectionAttribute</code> of the new
+	 *           <code>AbstractGraphElement</code> instance.
 	 */
 	public AbstractGraphElement(Graph graph, CollectionAttribute coll) {
 		super(coll);
@@ -76,22 +76,22 @@ public abstract class AbstractGraphElement extends AbstractAttributable implemen
 		this.graph = graph;
 		setID(graph.generateNextUniqueGraphElementId());
 	}
-
+	
 	/**
 	 * Constructs a new <code>AbstrctGraphElement</code>. Sets the graph of the
 	 * current <code>AbstrctGraphElement</code>.
 	 * 
 	 * @param graph
-	 *            the graph the <code>AbstrctGraphElement</code> belongs to.
+	 *           the graph the <code>AbstrctGraphElement</code> belongs to.
 	 */
 	public AbstractGraphElement(Graph graph) {
 		assert graph != null;
 		this.graph = graph;
 		setID(graph.generateNextUniqueGraphElementId());
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the Graph the <code>AbstractGraphElement</code> belongs to.
 	 * 
@@ -100,7 +100,7 @@ public abstract class AbstractGraphElement extends AbstractAttributable implemen
 	public Graph getGraph() {
 		return graph;
 	}
-
+	
 	/**
 	 * Returns the ListenerManager of the <code>GraphElement</code>.
 	 * 
@@ -113,15 +113,15 @@ public abstract class AbstractGraphElement extends AbstractAttributable implemen
 		else
 			return getGraph().getListenerManager();
 	}
-
+	
 	public void setViewID(int viewID) {
 		this.viewID = viewID;
 	}
-
+	
 	public int getViewID() {
 		return viewID;
 	}
-
+	
 	public int compareTo(AbstractGraphElement o) {
 		if (getViewID() > ((GraphElement) o).getViewID())
 			return -1;
@@ -129,16 +129,16 @@ public abstract class AbstractGraphElement extends AbstractAttributable implemen
 			return 1;
 		return 0;
 	}
-
+	
 	public long getID() {
 		return id;
 	}
-
+	
 	public void setID(long id) {
 		this.id = id;
 		// getGraph().checkMaxGraphElementId(id);
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

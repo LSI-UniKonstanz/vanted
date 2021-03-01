@@ -17,7 +17,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Christian Klukas
  */
 public class RatioViewPlugin extends IPK_PluginAdapter {
-
+	
 	public RatioViewPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			this.algorithms = new Algorithm[] { new RatioViewAlgorithm(), new SubstanceRatioCalculationAlgorithm(),

@@ -19,7 +19,7 @@ public class BackgroundTaskWindow extends JDialog implements BackgroundTaskGUIpr
 	private static final long serialVersionUID = -4862794883295382225L;
 	private BackgroundTaskPanelEntry panel;
 	private boolean isModal;
-
+	
 	public BackgroundTaskWindow(boolean modal) {
 		super(GravistoService.getInstance().getMainFrame(), "", false);
 		// setSize(320, 180);
@@ -27,43 +27,43 @@ public class BackgroundTaskWindow extends JDialog implements BackgroundTaskGUIpr
 		double border = 10;
 		double[][] size = { { border, TableLayoutConstants.PREFERRED, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, border } }; // Rows
-
+		
 		setLayout(new TableLayout(size));
-
+		
 		panel = new BackgroundTaskPanelEntry(true);
-
+		
 		add(panel, "1,1");
-
+		
 		panel.addCloseActionListener(this);
-
+		
 		this.isModal = modal;
-
+		
 		if (isModal) {
 			setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 			GravistoService.getInstance().getMainFrame().setEnabled(false);
 		}
-
+		
 		validate();
 	}
-
+	
 	@Override
 	public String getTitle() {
 		return panel.taskMessage;
 	}
-
+	
 	@Override
 	public boolean isResizable() {
 		return false;
 	}
-
+	
 	public BackgroundTaskStatusProvider getStatusProvider() {
 		return panel.getStatusProvider();
 	}
-
+	
 	public boolean isProgressViewVisible() {
 		return panel.isProgressViewVisible();
 	}
-
+	
 	public void setStatusProvider(BackgroundTaskStatusProvider statusProvider, String title, String taskMessage) {
 		panel.setStatusProvider(statusProvider, title, taskMessage);
 		panel.disableTitleView();
@@ -72,14 +72,14 @@ public class BackgroundTaskWindow extends JDialog implements BackgroundTaskGUIpr
 		setLocationRelativeTo(MainFrame.getInstance());
 		setVisible(true);
 	}
-
+	
 	public void setTaskFinished(boolean autoClose, long duration) {
 		panel.setTaskFinished(autoClose, duration);
 		if (isModal) {
 			GravistoService.getInstance().getMainFrame().setEnabled(true);
 		}
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
 		dispose();
 	}

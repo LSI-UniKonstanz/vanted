@@ -28,25 +28,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class RunAlgorithmDialog extends JDialog implements HandlesAlgorithmData {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6882567547201105027L;
-
+	
 	private Algorithm algorithm;
-
+	
 	private String title;
-
+	
 	@Override
 	public String getTitle() {
 		return title;
 	}
-
+	
 	public RunAlgorithmDialog(String title, Graph graph, Selection selection, boolean returnAlgorithmInsteadOfRun,
 			boolean executeMoveToTopAfterwards) {
 		algorithm = null;
-
+		
 		if (title == null)
 			this.title = "Apply Layout";
 		else
@@ -55,7 +55,7 @@ public class RunAlgorithmDialog extends JDialog implements HandlesAlgorithmData 
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.FILL, border } }; // Rows
 		getContentPane().setLayout(new TableLayout(size));
-
+		
 		final PreferencesDialog pd = new PreferencesDialog();
 		GravistoService.getInstance().getMainFrame().getPluginManager().addPluginManagerListener(pd);
 		JPanel newPanel = new JPanel();
@@ -65,19 +65,19 @@ public class RunAlgorithmDialog extends JDialog implements HandlesAlgorithmData 
 		else
 			pd.initializeGUIforGivenContainer(newPanel, this, false, false, true, false, true, false, true, graph,
 					selection, null, executeMoveToTopAfterwards);
-
+		
 		getContentPane().add(newPanel, "1,1");
 		getContentPane().validate();
 		setSize(600, 450);
 		setLocationRelativeTo(MainFrame.getInstance());
-
+		
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
+		
 		addWindowListener(new WindowListener() {
-
+			
 			public void windowOpened(WindowEvent e) {
 			}
-
+			
 			@SuppressWarnings("deprecation")
 			public void windowClosing(WindowEvent e) {
 				if (pd.optionsForPlugin != null) {
@@ -86,24 +86,24 @@ public class RunAlgorithmDialog extends JDialog implements HandlesAlgorithmData 
 				hide();
 				dispose();
 			}
-
+			
 			public void windowClosed(WindowEvent e) {
 			}
-
+			
 			public void windowIconified(WindowEvent e) {
 			}
-
+			
 			public void windowDeiconified(WindowEvent e) {
 			}
-
+			
 			public void windowActivated(WindowEvent e) {
 			}
-
+			
 			public void windowDeactivated(WindowEvent e) {
 			}
 		});
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -114,7 +114,7 @@ public class RunAlgorithmDialog extends JDialog implements HandlesAlgorithmData 
 	public synchronized void setAlgorithm(Algorithm algorithm) {
 		this.algorithm = algorithm;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

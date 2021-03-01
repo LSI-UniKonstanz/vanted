@@ -45,31 +45,31 @@ import java.util.List;
  * associated with two keys (a 'row' key and a 'column' key).
  */
 public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializable {
-
+	
 	/** The row keys. */
 	private List rowKeys;
-
+	
 	/** The column keys. */
 	private List columnKeys;
-
+	
 	/** The row data. */
 	private List rows;
-
+	
 	/** If the row keys should be sorted by their comparable order. */
 	private boolean sortRowKeys;
-
+	
 	/**
 	 * Creates a new instance (initially empty).
 	 */
 	public DefaultKeyedValues2D() {
 		this(false);
 	}
-
+	
 	/**
 	 * Creates a new instance (initially empty).
 	 * 
 	 * @param sortRowKeys
-	 *            if the row keys should be sorted.
+	 *           if the row keys should be sorted.
 	 */
 	public DefaultKeyedValues2D(final boolean sortRowKeys) {
 		this.rowKeys = new java.util.ArrayList();
@@ -77,7 +77,7 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 		this.rows = new java.util.ArrayList();
 		this.sortRowKeys = sortRowKeys;
 	}
-
+	
 	/**
 	 * Returns the row count.
 	 * 
@@ -86,7 +86,7 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 	public int getRowCount() {
 		return this.rowKeys.size();
 	}
-
+	
 	/**
 	 * Returns the column count.
 	 * 
@@ -95,18 +95,18 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 	public int getColumnCount() {
 		return this.columnKeys.size();
 	}
-
+	
 	/**
 	 * Returns the value for a given row and column.
 	 * 
 	 * @param row
-	 *            the row index.
+	 *           the row index.
 	 * @param column
-	 *            the column index.
+	 *           the column index.
 	 * @return the value.
 	 */
 	public Number getValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final DefaultKeyedValues rowData = (DefaultKeyedValues) this.rows.get(row);
 		if (rowData != null) {
@@ -116,25 +116,25 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the key for a given row.
 	 * 
 	 * @param row
-	 *            the row index (zero based).
+	 *           the row index (zero based).
 	 * @return the row index.
 	 */
 	public Comparable getRowKey(final int row) {
 		return (Comparable) this.rowKeys.get(row);
 	}
-
+	
 	/**
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(final Comparable key) {
@@ -144,7 +144,7 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 			return this.rowKeys.indexOf(key);
 		}
 	}
-
+	
 	/**
 	 * Returns the row keys.
 	 * 
@@ -153,29 +153,29 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 	public List getRowKeys() {
 		return Collections.unmodifiableList(this.rowKeys);
 	}
-
+	
 	/**
 	 * Returns the key for a given column.
 	 * 
 	 * @param column
-	 *            the column.
+	 *           the column.
 	 * @return the key.
 	 */
 	public Comparable getColumnKey(final int column) {
 		return (Comparable) this.columnKeys.get(column);
 	}
-
+	
 	/**
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(final Comparable key) {
 		return this.columnKeys.indexOf(key);
 	}
-
+	
 	/**
 	 * Returns the column keys.
 	 * 
@@ -184,58 +184,58 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 	public List getColumnKeys() {
 		return Collections.unmodifiableList(this.columnKeys);
 	}
-
+	
 	/**
 	 * Returns the value for the given row and column keys.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return the value.
 	 */
 	public Number getValue(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final int row = getRowIndex(rowKey);
-
+		
 		if (row >= 0) {
 			final DefaultKeyedValues rowData = (DefaultKeyedValues) this.rows.get(row);
 			result = rowData.getValue(columnKey);
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Adds a value to the table. Performs the same function as setValue(...).
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 */
 	public void addValue(final Number value, final Comparable rowKey, final Comparable columnKey) {
 		setValue(value, rowKey, columnKey);
 	}
-
+	
 	/**
 	 * Adds or updates a value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 */
 	public void setValue(final Number value, final Comparable rowKey, final Comparable columnKey) {
-
+		
 		final DefaultKeyedValues row;
 		int rowIndex = getRowIndex(rowKey);
-
+		
 		if (rowIndex >= 0) {
 			row = (DefaultKeyedValues) this.rows.get(rowIndex);
 		} else {
@@ -250,45 +250,45 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 			}
 		}
 		row.setValue(columnKey, value);
-
+		
 		final int columnIndex = this.columnKeys.indexOf(columnKey);
 		if (columnIndex < 0) {
 			this.columnKeys.add(columnKey);
 		}
 	}
-
+	
 	/**
 	 * Removes a value.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 */
 	public void removeValue(final Comparable rowKey, final Comparable columnKey) {
 		setValue(null, rowKey, columnKey);
-
+		
 		// 1. check wether the row is now empty.
 		boolean allNull = true;
 		final int rowIndex = getRowIndex(rowKey);
 		DefaultKeyedValues row = (DefaultKeyedValues) this.rows.get(rowIndex);
-
+		
 		for (int item = 0, itemCount = row.getItemCount(); item < itemCount; item++) {
 			if (row.getValue(item) != null) {
 				allNull = false;
 				break;
 			}
 		}
-
+		
 		if (allNull) {
 			this.rowKeys.remove(rowIndex);
 			this.rows.remove(rowIndex);
 		}
-
+		
 		// 2. check wether the column is now empty.
 		allNull = true;
 		final int columnIndex = getColumnIndex(columnKey);
-
+		
 		for (int item = 0, itemCount = this.rows.size(); item < itemCount; item++) {
 			row = (DefaultKeyedValues) this.rows.get(item);
 			if (row.getValue(columnIndex) != null) {
@@ -296,7 +296,7 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 				break;
 			}
 		}
-
+		
 		if (allNull) {
 			for (int item = 0, itemCount = this.rows.size(); item < itemCount; item++) {
 				row = (DefaultKeyedValues) this.rows.get(item);
@@ -305,44 +305,44 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 			this.columnKeys.remove(columnIndex);
 		}
 	}
-
+	
 	/**
 	 * Removes a row.
 	 * 
 	 * @param rowIndex
-	 *            the row index.
+	 *           the row index.
 	 */
 	public void removeRow(final int rowIndex) {
 		this.rowKeys.remove(rowIndex);
 		this.rows.remove(rowIndex);
 	}
-
+	
 	/**
 	 * Removes a row.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 */
 	public void removeRow(final Comparable rowKey) {
 		removeRow(getRowIndex(rowKey));
 	}
-
+	
 	/**
 	 * Removes a column.
 	 * 
 	 * @param columnIndex
-	 *            the column index.
+	 *           the column index.
 	 */
 	public void removeColumn(final int columnIndex) {
 		final Comparable columnKey = getColumnKey(columnIndex);
 		removeColumn(columnKey);
 	}
-
+	
 	/**
 	 * Removes a column.
 	 * 
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 */
 	public void removeColumn(final Comparable columnKey) {
 		final Iterator iterator = this.rows.iterator();
@@ -352,7 +352,7 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 		}
 		this.columnKeys.remove(columnKey);
 	}
-
+	
 	/**
 	 * Clears all the data and associated keys.
 	 */
@@ -361,23 +361,23 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 		this.columnKeys.clear();
 		this.rows.clear();
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if (!(o instanceof KeyedValues2D)) {
 			return false;
 		}
@@ -392,12 +392,12 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 		if (rowCount != kv2D.getRowCount()) {
 			return false;
 		}
-
+		
 		final int colCount = getColumnCount();
 		if (colCount != kv2D.getColumnCount()) {
 			return false;
 		}
-
+		
 		for (int r = 0; r < rowCount; r++) {
 			for (int c = 0; c < colCount; c++) {
 				final Number v1 = getValue(r, c);
@@ -415,7 +415,7 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 		}
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -428,17 +428,17 @@ public class DefaultKeyedValues2D implements KeyedValues2D, Cloneable, Serializa
 		result = 29 * result + this.rows.hashCode();
 		return result;
 	}
-
+	
 	/**
 	 * Returns a clone.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             this class will not throw this exception, but subclasses (if any)
-	 *             might.
+	 *            this class will not throw this exception, but subclasses (if any)
+	 *            might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

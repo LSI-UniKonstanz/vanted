@@ -18,21 +18,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
  * @author Christian Klukas (c) 2004-2006 IPK-Gatersleben
  */
 public class KEGG2_XML_Reader extends AbstractInputSerializer {
-
+	
 	private final String fileNameExt = ".xml";
-
+	
 	/**
 	 *
 	 */
 	public KEGG2_XML_Reader() {
 		super();
 	}
-
+	
 	@Override
 	public void read(String filename, Graph g) throws IOException {
 		super.read(filename, g);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -46,7 +46,7 @@ public class KEGG2_XML_Reader extends AbstractInputSerializer {
 		p.getGraph(g);
 		in.close();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -55,7 +55,7 @@ public class KEGG2_XML_Reader extends AbstractInputSerializer {
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -64,13 +64,13 @@ public class KEGG2_XML_Reader extends AbstractInputSerializer {
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "KGML File" };
 	}
-
+	
 	public void read(Reader reader, Graph g) throws Exception {
 		Pathway p = Pathway.getPathwayFromKGML(reader);
 		p.getGraph(g);
 		reader.close();
 	}
-
+	
 	@Override
 	public boolean validFor(InputStream reader) {
 		try {

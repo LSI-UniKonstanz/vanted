@@ -21,12 +21,12 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  */
 public class IntegerEditComponent extends NumberEditComponent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new IntegerEditComponent object.
 	 * 
 	 * @param disp
-	 *            containing the attributes to be displayed
+	 *           containing the attributes to be displayed
 	 */
 	public IntegerEditComponent(Displayable disp) {
 		super(disp);

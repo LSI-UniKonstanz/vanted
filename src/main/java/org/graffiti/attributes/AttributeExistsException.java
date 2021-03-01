@@ -17,19 +17,19 @@ package org.graffiti.attributes;
  */
 public class AttributeExistsException extends RuntimeException {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3362429836953824423L;
-
+	
 	/**
 	 * Constructs an <code>AttributeExistsException</code> with the specified detail
 	 * message.
 	 * 
 	 * @param msg
-	 *            the detail message which is saved for later retrieval by the
-	 *            <code>getMessage()</code> method.
+	 *           the detail message which is saved for later retrieval by the
+	 *           <code>getMessage()</code> method.
 	 */
 	public AttributeExistsException(String msg) {
 		super(msg);

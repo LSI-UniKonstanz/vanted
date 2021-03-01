@@ -16,21 +16,21 @@ import java.awt.geom.Point2D;
  *         Comments
  */
 public class Vector2d {
-
+	
 	public double x;
-
+	
 	public double y;
-
+	
 	public Vector2d(double a, double b) {
 		x = a;
 		y = b;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Vector2d[" + x + ", " + y + "]";
 	}
-
+	
 	/**
 	 * @param position
 	 */
@@ -38,10 +38,10 @@ public class Vector2d {
 		x = position.getX();
 		y = position.getY();
 	}
-
+	
 	public Vector2d(Vector2d position) {
 		x = position.x;
 		y = position.y;
 	}
-
+	
 }

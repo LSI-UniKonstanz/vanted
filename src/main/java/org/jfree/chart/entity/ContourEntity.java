@@ -39,36 +39,36 @@ import java.io.Serializable;
  * @author David M. O'Donnell
  */
 public class ContourEntity extends ChartEntity implements Cloneable, Serializable {
-
+	
 	/** Holds the index into the dataset for this entity. */
 	private int index = -1;
-
+	
 	/**
 	 * Constructor for ContourEntity.
 	 * 
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 * @param toolTipText
-	 *            the tooltip text.
+	 *           the tooltip text.
 	 */
 	public ContourEntity(Shape area, String toolTipText) {
 		super(area, toolTipText);
 	}
-
+	
 	/**
 	 * Constructor for ContourEntity.
 	 * 
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 * @param toolTipText
-	 *            the tooltip text.
+	 *           the tooltip text.
 	 * @param urlText
-	 *            the URL text.
+	 *           the URL text.
 	 */
 	public ContourEntity(Shape area, String toolTipText, String urlText) {
 		super(area, toolTipText, urlText);
 	}
-
+	
 	/**
 	 * Returns the index.
 	 * 
@@ -77,22 +77,22 @@ public class ContourEntity extends ChartEntity implements Cloneable, Serializabl
 	public int getIndex() {
 		return this.index;
 	}
-
+	
 	/**
 	 * Sets the index.
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 */
 	public void setIndex(int index) {
 		this.index = index;
 	}
-
+	
 	/**
 	 * Tests the entity for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -108,16 +108,16 @@ public class ContourEntity extends ChartEntity implements Cloneable, Serializabl
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone of the entity.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if cloning is not supported.
+	 *            if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

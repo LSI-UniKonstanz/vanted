@@ -28,7 +28,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
  * this class's functions sets attributes to each node
  * 
  * @author ricardo
- * 
  */
 public class UtilitySuperClassToGraph extends HelperClass {
 	protected static void setLabels(GraphElement elem, entity i) {
@@ -44,22 +43,22 @@ public class UtilitySuperClassToGraph extends HelperClass {
 		}
 		setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.126"), i.getClass().getName());
 	}
-
+	
 	protected static void setAvailability(GraphElement elem, Set<String> availability) {
 		setAttributeOfSetOfString(elem, Messages.getString("UtilitySuperClassToGraph.0"), availability); //$NON-NLS-1$
 	}
-
+	
 	protected static void setCatalysisDirection(GraphElement elem, Direction direction) {
 		if (direction != null) {
 			setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.1"), direction.name()); //$NON-NLS-1$
 		}
 	}
-
+	
 	protected static void setChemicalFormula(GraphElement elem, String chemical_FORMULA) {
 		if (chemical_FORMULA != null)
 			setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.105"), chemical_FORMULA); //$NON-NLS-1$
 	}
-
+	
 	protected static void setCofactor(GraphElement elem, Set<physicalEntityParticipant> cofactor) {
 		/*
 		 * left-out attributes: - cellularLocation, feature, memberPhysicalEntity,
@@ -74,11 +73,11 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			i++;
 		}
 	}
-
+	
 	protected static void setComment(GraphElement elem, Set<String> comment) {
 		setAttributeOfSetOfString(elem, Messages.getString("UtilitySuperClassToGraph.12"), comment); //$NON-NLS-1$
 	}
-
+	
 	protected static void setComponent(GraphElement elem, Set<physicalEntityParticipant> components) {
 		/*
 		 * left-out attributes: - cellularLocation, feature, memberPhysicalEntity,
@@ -93,7 +92,7 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			i++;
 		}
 	}
-
+	
 	protected static void setControlType(GraphElement elem, ControlType control_TYPE) {
 		/*
 		 * left-out attributes: - comments, xref
@@ -102,7 +101,7 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.19"), control_TYPE.name()); //$NON-NLS-1$
 		}
 	}
-
+	
 	protected static void setDataSource(GraphElement elem, Set<dataSource> data_SOURCE) {
 		int i = 1;
 		for (dataSource p : data_SOURCE) {
@@ -120,7 +119,7 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			i++;
 		}
 	}
-
+	
 	protected static void setDeltaG(GraphElement elem, Set<deltaGprimeO> delta_G) {
 		/*
 		 * left-out attributes: - Comments
@@ -142,19 +141,19 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			i++;
 		}
 	}
-
+	
 	protected static void setDeltaH(GraphElement elem, Set<Double> delta_H) {
 		setAttributeOfSetOfDouble(elem, Messages.getString("UtilitySuperClassToGraph.30"), delta_H); //$NON-NLS-1$
 	}
-
+	
 	protected static void setDeltaS(GraphElement elem, Set<Double> delta_S) {
 		setAttributeOfSetOfDouble(elem, Messages.getString("UtilitySuperClassToGraph.31"), delta_S); //$NON-NLS-1$
 	}
-
+	
 	protected static void setECNumber(GraphElement elem, Set<String> ec_NUMBER) {
 		setAttributeOfSetOfString(elem, Messages.getString("UtilitySuperClassToGraph.32"), ec_NUMBER); //$NON-NLS-1$
 	}
-
+	
 	protected static void setEvidence(GraphElement elem, Set<evidence> evidence) {
 		/*
 		 * left-out attributes: - confidence, evidenceCode, experimentalForm, xref,
@@ -167,7 +166,7 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			i++;
 		}
 	}
-
+	
 	protected static void setInteractionType(GraphElement elem, Set<openControlledVocabulary> interaction_TYPE) {
 		/*
 		 * left-out attributes: - xref, comment
@@ -184,7 +183,7 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			x++;
 		}
 	}
-
+	
 	protected static void setKPrime(GraphElement elem, Set<kPrime> keq) {
 		int i = 1;
 		for (kPrime k : keq) {
@@ -208,15 +207,15 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			i++;
 		}
 	}
-
+	
 	protected static void setMolecularWeight(GraphElement elem, double molecular_WEIGHT) {
 		setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.106"), String.valueOf(molecular_WEIGHT)); //$NON-NLS-1$
 	}
-
+	
 	protected static void setName(GraphElement elem, String name) {
 		setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.107"), name); //$NON-NLS-1$
 	}
-
+	
 	protected static void setOrganism(GraphElement elem, bioSource organism) {
 		/*
 		 * left-out attributes: - name, xref, comment
@@ -234,24 +233,24 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			}
 		}
 	}
-
+	
 	protected static void setRDFId(GraphElement elem, String rdfId) {
 		setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"), rdfId); //$NON-NLS-1$
 	}
-
+	
 	protected static void setSequence(GraphElement elem, String sequence) {
 		setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.108"), sequence); //$NON-NLS-1$
 	}
-
+	
 	protected static void setShortName(GraphElement elem, String short_NAME) {
 		setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.109"), short_NAME); //$NON-NLS-1$
 	}
-
+	
 	protected static void setSpontaneous(GraphElement elem, SpontaneousType spontaneous) {
 		if (spontaneous != null)
 			setAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.83"), spontaneous.toString()); //$NON-NLS-1$
 	}
-
+	
 	protected static void setStructure(GraphElement elem, Set<chemicalStructure> structure) {
 		/*
 		 * left-out attributes: - comment
@@ -267,11 +266,11 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			i++;
 		}
 	}
-
+	
 	protected static void setSynonyms(GraphElement elem, Set<String> synonyms) {
 		setAttributeOfSetOfString(elem, Messages.getString("UtilitySuperClassToGraph.113"), synonyms); //$NON-NLS-1$
 	}
-
+	
 	protected static void setXRef(GraphElement elem, Set<xref> xref) {
 		int i = 1;
 		for (xref x : xref) {
@@ -305,7 +304,7 @@ public class UtilitySuperClassToGraph extends HelperClass {
 						xx.getID());
 				setAttributeWithOneInnerReplacement(elem, Messages.getString("UtilitySuperClassToGraph.99"), i, //$NON-NLS-1$
 						xx.getID_VERSION());
-
+				
 				setAttributeWithOneInnerReplacement(elem, Messages.getString("UtilitySuperClassToGraph.100"), i, //$NON-NLS-1$
 						xx.getTITLE());
 				setAttributeWithOneInnerReplacement(elem, Messages.getString("UtilitySuperClassToGraph.101"), i, //$NON-NLS-1$
@@ -322,7 +321,7 @@ public class UtilitySuperClassToGraph extends HelperClass {
 							s);
 					j++;
 				}
-
+				
 				j = 1;
 				for (String u : xx.getURL()) {
 					setAttributeWithTwoInnerReplacements(elem, Messages.getString("UtilitySuperClassToGraph.104"), i, j, //$NON-NLS-1$
@@ -332,6 +331,6 @@ public class UtilitySuperClassToGraph extends HelperClass {
 			}
 			i++;
 		}
-
+		
 	}
 }

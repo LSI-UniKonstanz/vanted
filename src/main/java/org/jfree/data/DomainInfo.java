@@ -38,7 +38,7 @@ package org.jfree.data;
  * determining the minimum and maximum values.
  */
 public interface DomainInfo {
-
+	
 	/**
 	 * Returns the minimum value in the dataset (or <code>null</code> if all the
 	 * values in the domain are <code>null</code>).
@@ -46,7 +46,7 @@ public interface DomainInfo {
 	 * @return The minimum value.
 	 */
 	public Number getMinimumDomainValue();
-
+	
 	/**
 	 * Returns the maximum value in the dataset (or <code>null</code> if all the
 	 * values in the domain are <code>null</code>).
@@ -54,12 +54,12 @@ public interface DomainInfo {
 	 * @return The maximum value.
 	 */
 	public Number getMaximumDomainValue();
-
+	
 	/**
 	 * Returns the range of the values in this dataset's domain.
 	 * 
 	 * @return The range.
 	 */
 	public Range getDomainRange();
-
+	
 }

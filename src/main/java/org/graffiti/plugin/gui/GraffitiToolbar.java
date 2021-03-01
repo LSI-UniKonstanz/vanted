@@ -19,38 +19,38 @@ public class GraffitiToolbar extends JToolBar implements GraffitiContainer {
 	 * 
 	 */
 	private static final long serialVersionUID = -4954611265049333475L;
-
+	
 	// ~ Instance fields ========================================================
 	/** The id of the toolbar. */
 	protected String id;
-
+	
 	/** The id of the component the toolbar prefers to be inserted in. */
 	protected String preferredComponent;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Standardconstructor for <code>GraffitiToolbar</code>.
 	 */
 	public GraffitiToolbar() {
 		this("[not named toolbar]");
 	}
-
+	
 	/**
 	 * Constructor that sets the id of this <code>GraffitiToolbar</code>.
 	 * 
 	 * @param name
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiToolbar(String name) {
 		super(name);
 		this.id = name;
 		this.preferredComponent = "toolbarPanel";
-
+		
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the id of this toolbar.
 	 * 
@@ -59,7 +59,7 @@ public class GraffitiToolbar extends JToolBar implements GraffitiContainer {
 	public String getId() {
 		return this.id;
 	}
-
+	
 	/**
 	 * Returns the id of the component the toolbar prefers to be inserted.
 	 * 

@@ -26,29 +26,28 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonManagerPlugin;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
- * 
  * @vanted.revision 2.7.0
  */
 public class AddonsOptionsPane extends AbstractOptionPane {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7064954066138435049L;
 	private static double border = 5;
-
+	
 	/**
 	 * @vanted.revision 2.7.0
 	 */
 	protected AddonsOptionsPane() {
 		super("Add-on Manager");
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return null;
 	}
-
+	
 	/**
 	 * @vanted.revision 2.7.0
 	 */
@@ -56,45 +55,44 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	public String getOptionName() {
 		return "Add-on Manager";
 	}
-
+	
 	@Override
 	public JComponent getOptionDialogComponent() {
 		return super.getOptionDialogComponent();
 	}
-
+	
 	@Override
 	public String getName() {
 		return super.getName();
 	}
-
+	
 	@Override
 	protected void initDefault() {
 		createUI();
 	}
-
+	
 	@Override
 	protected void saveDefault() {
 	}
-
+	
 	/**
 	 * @vanted.revision 2.7.0
 	 */
 	private void createUI() {
 		double[][] size = {
-				 // Columns
+				// Columns
 				{ border, TableLayoutConstants.FILL, border },
-				 // Rows
+				// Rows
 				{ border, TableLayoutConstants.PREFERRED, border }
 		};
 		setLayout(new TableLayout(size));
-
 		
 		add(TableLayout.get4SplitVertical(
 				new JLabel(getAddonManagerInfo()), getAddOnManagerButton(),
 				new JLabel(getPreferencesFolderInfo()), getPreferencesFolderButton(),
 				TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, 0, 0), "1,1");
 	}
-
+	
 	/**
 	 * @vanted.revision 2.7.0
 	 */
@@ -113,9 +111,9 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 					p.showManageAddonDialog(SwingUtilities.windowForComponent(AddonsOptionsPane.this));
 			}
 		});
-
+		
 		final String oldText = result.getText();
-
+		
 		FileDrop.Listener fdl = new FileDrop.Listener() {
 			public void filesDropped(File[] files) {
 				if (files != null && files.length > 0) {
@@ -137,13 +135,13 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 				}
 			}
 		};
-
+		
 		Runnable dragdetected = new Runnable() {
 			public void run() {
 				result.setText("<html><br><b>Drop file to install Add-on<br><br>");
 			}
 		};
-
+		
 		Runnable dragenddetected = new Runnable() {
 			public void run() {
 				if (!result.getText().contains("!"))
@@ -151,13 +149,13 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 			}
 		};
 		new FileDrop(null, result, null, false, fdl, dragdetected, dragenddetected);
-
+		
 		return result;
 	}
-
+	
 	private JButton getPreferencesFolderButton() {
 		JButton result = new JMButton("<html>Open Preferences Folder");
-
+		
 		result.setOpaque(false);
 		result.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -166,7 +164,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 		});
 		return result;
 	}
-
+	
 	/**
 	 * @since 2.7.0
 	 */
@@ -178,7 +176,6 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	}
 	
 	/**
-	 * 
 	 * @return
 	 * @since 2.7.0
 	 */
@@ -189,7 +186,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 				+ "Quick-search commands (<i>Edit</i> &#8594; <i>Search...</i>&#8594; <i>Create new menu command</i>) are stored as '.bsh'.<br>"
 				+ "BSH files can be deleted from the file system, once the command is not needed anymore.";
 	}
-
+	
 	/**
 	 * @vanted.revision 2.7.0
 	 */

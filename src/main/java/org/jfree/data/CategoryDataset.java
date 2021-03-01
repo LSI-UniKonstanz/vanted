@@ -48,7 +48,7 @@ package org.jfree.data;
  * category label being provided by the <code>toString</code> method.
  */
 public interface CategoryDataset extends KeyedValues2D, Dataset {
-
+	
 	// no additional methods required
-
+	
 }

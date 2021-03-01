@@ -39,40 +39,40 @@ import org.jfree.util.ObjectUtils;
  * A tick for a {@link CategoryAxis}.
  */
 public class CategoryTick extends Tick {
-
+	
 	/** The category. */
 	private Comparable category;
-
+	
 	/** The label. */
 	private TextBlock label;
-
+	
 	/** The label anchor. */
 	private TextBlockAnchor labelAnchor;
-
+	
 	/**
 	 * Creates a new tick.
 	 * 
 	 * @param category
-	 *            the category.
+	 *           the category.
 	 * @param label
-	 *            the label.
+	 *           the label.
 	 * @param labelAnchor
-	 *            the label anchor.
+	 *           the label anchor.
 	 * @param rotationAnchor
-	 *            the rotation anchor.
+	 *           the rotation anchor.
 	 * @param angle
-	 *            the rotation angle (in radians).
+	 *           the rotation angle (in radians).
 	 */
 	public CategoryTick(Comparable category, TextBlock label, TextBlockAnchor labelAnchor, TextAnchor rotationAnchor,
 			double angle) {
-
+		
 		super("", TextAnchor.CENTER, rotationAnchor, angle);
 		this.category = category;
 		this.label = label;
 		this.labelAnchor = labelAnchor;
-
+		
 	}
-
+	
 	/**
 	 * Returns the category.
 	 * 
@@ -81,7 +81,7 @@ public class CategoryTick extends Tick {
 	public Comparable getCategory() {
 		return this.category;
 	}
-
+	
 	/**
 	 * Returns the label.
 	 * 
@@ -90,7 +90,7 @@ public class CategoryTick extends Tick {
 	public TextBlock getLabel() {
 		return this.label;
 	}
-
+	
 	/**
 	 * Returns the label anchor.
 	 * 
@@ -99,12 +99,12 @@ public class CategoryTick extends Tick {
 	public TextBlockAnchor getLabelAnchor() {
 		return this.labelAnchor;
 	}
-
+	
 	/**
 	 * Tests this category tick for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -126,5 +126,5 @@ public class CategoryTick extends Tick {
 		}
 		return false;
 	}
-
+	
 }

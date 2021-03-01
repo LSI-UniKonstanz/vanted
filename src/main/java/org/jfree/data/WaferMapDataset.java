@@ -40,56 +40,56 @@ import java.util.TreeSet;
  * @author Robert Redburn
  */
 public class WaferMapDataset extends AbstractDataset {
-
+	
 	/** Storage structure for the data values (row key is chipx, column is chipy) */
 	private DefaultKeyedValues2D data;
-
+	
 	/** wafer x dimension */
 	private int maxChipX;
-
+	
 	/** wafer y dimension */
 	private int maxChipY;
-
+	
 	/** space to draw between chips */
 	private double chipSpace;
-
+	
 	/** maximum value in this dataset */
 	private Double maxValue;
-
+	
 	/** minimum value in this dataset */
 	private Double minValue;
-
+	
 	/** default chip spacing */
 	private static final double DEFAULT_CHIP_SPACE = 1d;
-
+	
 	/**
 	 * Creates a new dataset using the default chipspace.
 	 * 
 	 * @param maxChipX
-	 *            the wafer x-dimension.
+	 *           the wafer x-dimension.
 	 * @param maxChipY
-	 *            the wafer y-dimension.
+	 *           the wafer y-dimension.
 	 */
 	public WaferMapDataset(final int maxChipX, final int maxChipY) {
 		this(maxChipX, maxChipY, null);
 	}
-
+	
 	/**
 	 * Creates a new dataset.
 	 * 
 	 * @param maxChipX
-	 *            the wafer x-dimension.
+	 *           the wafer x-dimension.
 	 * @param maxChipY
-	 *            the wafer y-dimension.
+	 *           the wafer y-dimension.
 	 * @param chipSpace
-	 *            the space between chips.
+	 *           the space between chips.
 	 */
 	public WaferMapDataset(final int maxChipX, final int maxChipY, final Number chipSpace) {
-
+		
 		this.maxValue = Double.valueOf(Double.NEGATIVE_INFINITY);
 		this.minValue = Double.valueOf(Double.POSITIVE_INFINITY);
 		this.data = new DefaultKeyedValues2D();
-
+		
 		this.maxChipX = maxChipX;
 		this.maxChipY = maxChipY;
 		if (chipSpace == null) {
@@ -97,46 +97,46 @@ public class WaferMapDataset extends AbstractDataset {
 		} else {
 			this.chipSpace = chipSpace.doubleValue();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Sets a value in the dataset.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @param chipx
-	 *            the x-index for the chip.
+	 *           the x-index for the chip.
 	 * @param chipy
-	 *            the y-index for the chip.
+	 *           the y-index for the chip.
 	 */
 	public void addValue(final Number value, final Comparable chipx, final Comparable chipy) {
 		setValue(value, chipx, chipy);
 	}
-
+	
 	/**
 	 * Adds a value to the dataset.
 	 * 
 	 * @param v
-	 *            the value.
+	 *           the value.
 	 * @param x
-	 *            the x-index.
+	 *           the x-index.
 	 * @param y
-	 *            the y-index.
+	 *           the y-index.
 	 */
 	public void addValue(final int v, final int x, final int y) {
 		setValue(Double.valueOf(v), Integer.valueOf(x), Integer.valueOf(y));
 	}
-
+	
 	/**
 	 * Sets a value in the dataset and updates min and max value entries.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @param chipx
-	 *            the x-index.
+	 *           the x-index.
 	 * @param chipy
-	 *            the y-index.
+	 *           the y-index.
 	 */
 	public void setValue(final Number value, final Comparable chipx, final Comparable chipy) {
 		this.data.setValue(value, chipx, chipy);
@@ -147,7 +147,7 @@ public class WaferMapDataset extends AbstractDataset {
 			this.minValue = (Double) value;
 		}
 	}
-
+	
 	/**
 	 * Returns the number of unique values.
 	 * 
@@ -156,7 +156,7 @@ public class WaferMapDataset extends AbstractDataset {
 	public int getUniqueValueCount() {
 		return getUniqueValues().size();
 	}
-
+	
 	/**
 	 * Returns the set of unique values.
 	 * 
@@ -175,27 +175,27 @@ public class WaferMapDataset extends AbstractDataset {
 		}
 		return unique;
 	}
-
+	
 	/**
 	 * Returns the data value for a chip.
 	 * 
 	 * @param chipx
-	 *            the x-index.
+	 *           the x-index.
 	 * @param chipy
-	 *            the y-index.
+	 *           the y-index.
 	 * @return the data value.
 	 */
 	public Number getChipValue(final int chipx, final int chipy) {
 		return getChipValue(Integer.valueOf(chipx), Integer.valueOf(chipy));
 	}
-
+	
 	/**
 	 * Returns the value for a given chip x and y or null.
 	 * 
 	 * @param chipx
-	 *            the x-index.
+	 *           the x-index.
 	 * @param chipy
-	 *            the y-index.
+	 *           the y-index.
 	 * @return the data value.
 	 */
 	public Number getChipValue(final Comparable chipx, final Comparable chipy) {
@@ -209,12 +209,12 @@ public class WaferMapDataset extends AbstractDataset {
 		}
 		return this.data.getValue(rowIndex, colIndex);
 	}
-
+	
 	/**
 	 * Tests to see if the passed value is larger than the stored maxvalue.
 	 * 
 	 * @param check
-	 *            the number to check.
+	 *           the number to check.
 	 * @return true or false.
 	 */
 	public boolean isMaxValue(final Number check) {
@@ -223,12 +223,12 @@ public class WaferMapDataset extends AbstractDataset {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Tests to see if the passed value is smaller than the stored minvalue.
 	 * 
 	 * @param check
-	 *            the number to check.
+	 *           the number to check.
 	 * @return true or false.
 	 */
 	public boolean isMinValue(final Number check) {
@@ -237,7 +237,7 @@ public class WaferMapDataset extends AbstractDataset {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns the maximum value stored in the dataset.
 	 * 
@@ -246,7 +246,7 @@ public class WaferMapDataset extends AbstractDataset {
 	public Number getMaxValue() {
 		return this.maxValue;
 	}
-
+	
 	/**
 	 * Returns the minimum value stored in the dataset.
 	 * 
@@ -255,7 +255,7 @@ public class WaferMapDataset extends AbstractDataset {
 	public Number getMinValue() {
 		return this.minValue;
 	}
-
+	
 	/**
 	 * Returns the wafer x-dimension.
 	 * 
@@ -264,17 +264,17 @@ public class WaferMapDataset extends AbstractDataset {
 	public int getMaxChipX() {
 		return this.maxChipX;
 	}
-
+	
 	/**
 	 * Sets wafer x dimension.
 	 * 
 	 * @param maxChipX
-	 *            the number of chips in the x-dimension.
+	 *           the number of chips in the x-dimension.
 	 */
 	public void setMaxChipX(final int maxChipX) {
 		this.maxChipX = maxChipX;
 	}
-
+	
 	/**
 	 * Returns the number of chips in the y-dimension.
 	 * 
@@ -283,17 +283,17 @@ public class WaferMapDataset extends AbstractDataset {
 	public int getMaxChipY() {
 		return this.maxChipY;
 	}
-
+	
 	/**
 	 * Sets the number of chips in the y-dimension.
 	 * 
 	 * @param maxChipY
-	 *            the number of chips.
+	 *           the number of chips.
 	 */
 	public void setMaxChipY(final int maxChipY) {
 		this.maxChipY = maxChipY;
 	}
-
+	
 	/**
 	 * Returns the space to draw between chips.
 	 * 
@@ -302,15 +302,15 @@ public class WaferMapDataset extends AbstractDataset {
 	public double getChipSpace() {
 		return this.chipSpace;
 	}
-
+	
 	/**
 	 * Sets the space to draw between chips.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 */
 	public void setChipSpace(final double space) {
 		this.chipSpace = space;
 	}
-
+	
 }

@@ -41,38 +41,38 @@ import java.io.Serializable;
  */
 public abstract class AbstractSeriesDataset extends AbstractDataset
 		implements SeriesDataset, SeriesChangeListener, Serializable {
-
+	
 	/**
 	 * Creates a new dataset.
 	 */
 	protected AbstractSeriesDataset() {
 		super();
 	}
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
 	 * @return The series count.
 	 */
 	public abstract int getSeriesCount();
-
+	
 	/**
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return The series name.
 	 */
 	public abstract String getSeriesName(int series);
-
+	
 	/**
 	 * Called when a series belonging to the dataset changes.
 	 * 
 	 * @param event
-	 *            information about the change.
+	 *           information about the change.
 	 */
 	public void seriesChanged(final SeriesChangeEvent event) {
 		fireDatasetChanged();
 	}
-
+	
 }

@@ -45,24 +45,24 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 
 public class XGMMLDelegatorHandler extends DefaultHandler {
-
+	
 	private XGMMLHandler delegate;
-
+	
 	private String nodeElementName;
 	private String edgeElementName;
-
+	
 	/**
 	 * Creates a XGMMLDelegatorHandler instance.
 	 * 
 	 * @param handler
-	 *            - handler to delegate the events to.
+	 *           - handler to delegate the events to.
 	 */
 	public XGMMLDelegatorHandler(XGMMLHandler handler) {
 		this.delegate = handler;
 		this.nodeElementName = handler.getNodeElementName();
 		this.edgeElementName = handler.getEdgeElementName();
 	}
-
+	
 	/**
 	 * Handle start document event.
 	 */
@@ -70,7 +70,7 @@ public class XGMMLDelegatorHandler extends DefaultHandler {
 	public void startDocument() {
 		this.delegate.startDocument();
 	}
-
+	
 	/**
 	 * Handle end document event.
 	 */
@@ -78,30 +78,30 @@ public class XGMMLDelegatorHandler extends DefaultHandler {
 	public void endDocument() throws SAXException {
 		this.delegate.endDocument();
 	}
-
+	
 	/**
 	 * Handle start tag event.
 	 */
 	@Override
 	public void startElement(String uri, String localName, String qualifiedName, Attributes attribs) {
-
+		
 		if (localName.equals(this.nodeElementName) && this.delegate.getGraph() == null) {
-
+			
 			try {
 				this.delegate.instantiateGraph();
 			} catch (Exception ex) {
 				System.err.println("Error instantiating graph: " + ex);
 			}
 		}
-
+		
 		String methodName = "start" + localName.substring(0, 1).toUpperCase() + localName.substring(1) + "Element";
 		Class<?> attribInterface = new AttributesImpl().getClass().getInterfaces()[0];
 		Class<?> paramClasses[] = { attribInterface };
 		Method method;
-
+		
 		try {
 			method = this.delegate.getClass().getMethod(methodName, paramClasses);
-
+			
 			// System.out.println("Dynamically invoking " + methodName);
 			Object paramObjects[] = { attribs };
 			method.invoke(this.delegate, paramObjects);
@@ -110,10 +110,10 @@ public class XGMMLDelegatorHandler extends DefaultHandler {
 		} catch (InvocationTargetException ex) {
 		} catch (Exception ex) {
 		}
-
+		
 		this.delegate.startElement(uri, localName, qualifiedName, attribs);
 	}
-
+	
 	/**
 	 * Handle end tag event.
 	 */
@@ -121,7 +121,7 @@ public class XGMMLDelegatorHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qualifiedName) {
 		String methodName = "end" + localName.substring(0, 1).toUpperCase() + localName.substring(1) + "Element";
 		Method method;
-
+		
 		try {
 			method = this.delegate.getClass().getMethod(methodName, (Class<?>) null);
 			method.invoke(this.delegate, (Class<?>) null);
@@ -130,14 +130,14 @@ public class XGMMLDelegatorHandler extends DefaultHandler {
 		} catch (InvocationTargetException ex) {
 		} catch (Exception ex) {
 		}
-
+		
 		if (localName.equals(this.nodeElementName)) {
 			try {
 				this.delegate.instantiateNode();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-
+			
 		} else if (localName.equals(this.edgeElementName)) {
 			try {
 				this.delegate.instantiateEdge();
@@ -145,8 +145,8 @@ public class XGMMLDelegatorHandler extends DefaultHandler {
 				ex.printStackTrace();
 			}
 		}
-
+		
 		this.delegate.endElement(uri, localName, qualifiedName);
 	}
-
+	
 }

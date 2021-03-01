@@ -41,115 +41,115 @@ package org.jfree.data;
  * high-low-open-close plots.
  */
 public interface HighLowDataset extends XYDataset {
-
+	
 	/**
 	 * Returns the high-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The value.
 	 */
 	public Number getHighValue(int series, int item);
-
+	
 	/**
 	 * Returns the high-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The high-value.
 	 */
 	public double getHigh(int series, int item);
-
+	
 	/**
 	 * Returns the low-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The value.
 	 */
 	public Number getLowValue(int series, int item);
-
+	
 	/**
 	 * Returns the low-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The low-value.
 	 */
 	public double getLow(int series, int item);
-
+	
 	/**
 	 * Returns the open-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The value.
 	 */
 	public Number getOpenValue(int series, int item);
-
+	
 	/**
 	 * Returns the open-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The open-value.
 	 */
 	public double getOpen(int series, int item);
-
+	
 	/**
 	 * Returns the y-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The value.
 	 */
 	public Number getCloseValue(int series, int item);
-
+	
 	/**
 	 * Returns the close-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The close-value.
 	 */
 	public double getClose(int series, int item);
-
+	
 	/**
 	 * Returns the volume for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The value.
 	 */
 	public Number getVolumeValue(int series, int item);
-
+	
 	/**
 	 * Returns the volume-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The volume-value.
 	 */
 	public double getVolume(int series, int item);
-
+	
 }

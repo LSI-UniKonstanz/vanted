@@ -9,17 +9,17 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes;
 public class EnzClassEntry {
 	QuadNumber quadNumber;
 	String description;
-
+	
 	@Override
 	public String toString() {
 		return quadNumber.toString() + " " + description;
 	}
-
+	
 	public EnzClassEntry(EnzClassEntry template) {
 		description = template.description;
 		quadNumber = template.quadNumber;
 	}
-
+	
 	/**
 	 * @param number12
 	 * @param number22
@@ -31,15 +31,15 @@ public class EnzClassEntry {
 		quadNumber = new QuadNumber(number1, number2, number3, number4);
 		this.description = description;
 	}
-
+	
 	/**
 	 * @param line
-	 *            A enzyme class entry, e.g. "1. 1. 5.- weiterer Text." The format
-	 *            is anum.bnum.cnum.dnum[space]description each number is either a
-	 *            "-" or a number. Spaces are removed for this part. The numbers are
-	 *            divided with the description by two or more spaces. The last point
-	 *            (which must be existent!) is removed autmatically be this
-	 *            constructor.
+	 *           A enzyme class entry, e.g. "1. 1. 5.- weiterer Text." The format
+	 *           is anum.bnum.cnum.dnum[space]description each number is either a
+	 *           "-" or a number. Spaces are removed for this part. The numbers are
+	 *           divided with the description by two or more spaces. The last point
+	 *           (which must be existent!) is removed autmatically be this
+	 *           constructor.
 	 */
 	public static EnzClassEntry getEnzClassEntry(String line) {
 		try {
@@ -49,7 +49,7 @@ public class EnzClassEntry {
 			QuadNumber qn = new QuadNumber(line);
 			line = qn.restOfLine;
 			String description = line;
-
+			
 			if (qn.isValidQuadNumber())
 				return new EnzClassEntry(qn.number1, qn.number2, qn.number3, qn.number4, description);
 			else
@@ -58,7 +58,7 @@ public class EnzClassEntry {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Determines if a given line is a valid start for a enzyme class entry. Example
 	 * for a valid entry: " 6. 3. 1.-"
@@ -82,7 +82,7 @@ public class EnzClassEntry {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * If a entry is the same as the given, true is returned. The entry may contain
 	 * "-", but then the entry must be same for this number. The other way around,
@@ -109,7 +109,7 @@ public class EnzClassEntry {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * @param id
 	 * @return
@@ -129,7 +129,7 @@ public class EnzClassEntry {
 			return false;
 		}
 	}
-
+	
 	public boolean isValidMatchFor_Inversed(QuadNumber testNumber) {
 		if (!quadNumber.isValidQuadNumber())
 			return false;
@@ -144,5 +144,5 @@ public class EnzClassEntry {
 			return false;
 		}
 	}
-
+	
 }

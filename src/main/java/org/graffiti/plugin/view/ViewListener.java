@@ -19,14 +19,14 @@ package org.graffiti.plugin.view;
  */
 public interface ViewListener {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * This method is called when the view changes. This method is not called when
 	 * another session is activated. Implement <code>SessionListener</code> if you
 	 * are interested in session changed events.
 	 * 
 	 * @param newView
-	 *            the new View.
+	 *           the new View.
 	 */
 	public void viewChanged(View newView);
 }

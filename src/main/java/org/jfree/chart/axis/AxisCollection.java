@@ -38,19 +38,19 @@ import org.jfree.ui.RectangleEdge;
  * RIGHT of a chart.
  */
 public class AxisCollection {
-
+	
 	/** The axes that need to be drawn at the top of the plot area. */
 	private List<Axis> axesAtTop;
-
+	
 	/** The axes that need to be drawn at the bottom of the plot area. */
 	private List<Axis> axesAtBottom;
-
+	
 	/** The axes that need to be drawn at the left of the plot area. */
 	private List<Axis> axesAtLeft;
-
+	
 	/** The axes that need to be drawn at the right of the plot area. */
 	private List<Axis> axesAtRight;
-
+	
 	/**
 	 * Creates a new empty collection.
 	 */
@@ -60,7 +60,7 @@ public class AxisCollection {
 		this.axesAtLeft = new java.util.ArrayList<>();
 		this.axesAtRight = new java.util.ArrayList<>();
 	}
-
+	
 	/**
 	 * Returns a list of the axes (if any) that need to be drawn at the top of the
 	 * plot area.
@@ -70,7 +70,7 @@ public class AxisCollection {
 	public List<Axis> getAxesAtTop() {
 		return this.axesAtTop;
 	}
-
+	
 	/**
 	 * Returns a list of the axes (if any) that need to be drawn at the bottom of
 	 * the plot area.
@@ -80,7 +80,7 @@ public class AxisCollection {
 	public List<Axis> getAxesAtBottom() {
 		return this.axesAtBottom;
 	}
-
+	
 	/**
 	 * Returns a list of the axes (if any) that need to be drawn at the left of the
 	 * plot area.
@@ -90,7 +90,7 @@ public class AxisCollection {
 	public List<Axis> getAxesAtLeft() {
 		return this.axesAtLeft;
 	}
-
+	
 	/**
 	 * Returns a list of the axes (if any) that need to be drawn at the right of the
 	 * plot area.
@@ -100,15 +100,15 @@ public class AxisCollection {
 	public List<Axis> getAxesAtRight() {
 		return this.axesAtRight;
 	}
-
+	
 	/**
 	 * Adds an axis to the collection.
 	 * 
 	 * @param axis
-	 *            the axis (<code>null</code> not permitted).
+	 *           the axis (<code>null</code> not permitted).
 	 * @param edge
-	 *            the edge of the plot that the axis should be drawn on
-	 *            (<code>null</code> not permitted).
+	 *           the edge of the plot that the axis should be drawn on
+	 *           (<code>null</code> not permitted).
 	 */
 	public void add(Axis axis, RectangleEdge edge) {
 		if (axis == null) {
@@ -127,5 +127,5 @@ public class AxisCollection {
 			this.axesAtRight.add(axis);
 		}
 	}
-
+	
 }

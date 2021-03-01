@@ -17,52 +17,52 @@ package org.graffiti.event;
  */
 public interface AttributeListener extends TransactionListener {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Called after an attribute has been added.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	void postAttributeAdded(AttributeEvent e);
-
+	
 	/**
 	 * Called after an attribute has been changed.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	void postAttributeChanged(AttributeEvent e);
-
+	
 	/**
 	 * Called after an attribute has been removed.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	void postAttributeRemoved(AttributeEvent e);
-
+	
 	/**
 	 * Called just before an attribute is added.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	void preAttributeAdded(AttributeEvent e);
-
+	
 	/**
 	 * Called before a change of an attribute takes place.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	void preAttributeChanged(AttributeEvent e);
-
+	
 	/**
 	 * Called just before an attribute is removed.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	void preAttributeRemoved(AttributeEvent e);
 }

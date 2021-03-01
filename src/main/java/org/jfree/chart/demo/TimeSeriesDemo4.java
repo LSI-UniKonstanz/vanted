@@ -55,16 +55,16 @@ import org.jfree.ui.RefineryUtilities;
  * is added to the plot.
  */
 public class TimeSeriesDemo4 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing a quarterly time series containing a null
 	 * value.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo4(final String title) {
-
+		
 		super(title);
 		final TimeSeries series = new TimeSeries("Random Data", Hour.class);
 		final Day today = new Day();
@@ -77,12 +77,12 @@ public class TimeSeriesDemo4 extends ApplicationFrame {
 		series.add(new Hour(12, today), 734.4);
 		series.add(new Hour(16, today), 453.2);
 		final TimeSeriesCollection dataset = new TimeSeriesCollection(series);
-
+		
 		// create a title with Unicode characters (currency symbols in this case)...
 		final String chartTitle = "\u20A2\u20A2\u20A3\u20A4\u20A5\u20A6\u20A7\u20A8\u20A9\u20AA";
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Time", "Value", dataset, true, true,
 				false);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		plot.setInsets(new Insets(0, 0, 0, 20));
 		final Marker marker = new ValueMarker(700.0);
@@ -101,9 +101,9 @@ public class TimeSeriesDemo4 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel.setMouseZoomable(true, false);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -114,20 +114,20 @@ public class TimeSeriesDemo4 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimeSeriesDemo4 demo = new TimeSeriesDemo4("Time Series Demo 4");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

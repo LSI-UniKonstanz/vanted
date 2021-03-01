@@ -62,48 +62,48 @@ import org.jfree.util.ObjectUtils;
  * missing values.
  */
 public class XYSeries extends Series implements Cloneable, Serializable {
-
+	
 	/** Storage for the data items in the series. */
 	protected List data;
-
+	
 	// In version 0.9.12, in response to several developer requests, I changed the
 	// 'data' attribute
 	// from 'private' to 'protected', so that others can make subclasses that work
 	// directly with
 	// the underlying data structure.
-
+	
 	/** The maximum number of items for the series. */
 	private int maximumItemCount = Integer.MAX_VALUE;
-
+	
 	/** A flag that controls whether the items are automatically sorted. */
 	private boolean autoSort;
-
+	
 	/** A flag that controls whether or not duplicate x-values are allowed. */
 	private boolean allowDuplicateXValues;
-
+	
 	/**
 	 * Creates a new empty series. By default, items added to the series will be
 	 * sorted into ascending order by x-value, and duplicate x-values will be
 	 * allowed (these defaults can be modified with another constructor.
 	 * 
 	 * @param name
-	 *            the series name (<code>null</code> not permitted).
+	 *           the series name (<code>null</code> not permitted).
 	 */
 	public XYSeries(final String name) {
 		this(name, true, true);
 	}
-
+	
 	/**
 	 * Constructs a new xy-series that contains no data. You can specify whether or
 	 * not duplicate x-values are allowed for the series.
 	 * 
 	 * @param name
-	 *            the series name (<code>null</code> not permitted).
+	 *           the series name (<code>null</code> not permitted).
 	 * @param autoSort
-	 *            a flag that controls whether or not the items in the series are
-	 *            sorted.
+	 *           a flag that controls whether or not the items in the series are
+	 *           sorted.
 	 * @param allowDuplicateXValues
-	 *            a flag that controls whether duplicate x-values are allowed.
+	 *           a flag that controls whether duplicate x-values are allowed.
 	 */
 	public XYSeries(final String name, final boolean autoSort, final boolean allowDuplicateXValues) {
 		super(name);
@@ -111,7 +111,7 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 		this.autoSort = autoSort;
 		this.allowDuplicateXValues = allowDuplicateXValues;
 	}
-
+	
 	/**
 	 * Returns the flag that controls whether the items in the series are
 	 * automatically sorted. There is no setter for this flag, it must be defined in
@@ -122,7 +122,7 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	public boolean getAutoSort() {
 		return this.autoSort;
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether duplicate x-values are allowed. This
 	 * flag can only be set in the constructor.
@@ -132,7 +132,7 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	public boolean getAllowDuplicateXValues() {
 		return this.allowDuplicateXValues;
 	}
-
+	
 	/**
 	 * Returns the number of items in the series.
 	 * 
@@ -141,7 +141,7 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	public int getItemCount() {
 		return this.data.size();
 	}
-
+	
 	/**
 	 * Returns the list of data items for the series (the list contains
 	 * {@link XYDataItem} objects and is unmodifiable).
@@ -151,7 +151,7 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	public List getItems() {
 		return Collections.unmodifiableList(this.data);
 	}
-
+	
 	/**
 	 * Returns the maximum number of items that will be retained in the series.
 	 * <P>
@@ -162,7 +162,7 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	public int getMaximumItemCount() {
 		return this.maximumItemCount;
 	}
-
+	
 	/**
 	 * Sets the maximum number of items that will be retained in the series.
 	 * <P>
@@ -171,40 +171,40 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	 * removed, ensuring that the maximum item count is not exceeded.
 	 * 
 	 * @param maximum
-	 *            the maximum.
+	 *           the maximum.
 	 */
 	public void setMaximumItemCount(final int maximum) {
 		this.maximumItemCount = maximum;
 	}
-
+	
 	/**
 	 * Adds a data item to the series and sends a {@link SeriesChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param item
-	 *            the (x, y) item (<code>null</code> not permitted).
+	 *           the (x, y) item (<code>null</code> not permitted).
 	 */
 	public void add(final XYDataItem item) {
 		// argument checking delegated...
 		add(item, true);
 	}
-
+	
 	/**
 	 * Adds a data item to the series and, if requested, sends a
 	 * {@link SeriesChangeEvent} to all registered listeners.
 	 * 
 	 * @param item
-	 *            the (x, y) item (<code>null</code> not permitted).
+	 *           the (x, y) item (<code>null</code> not permitted).
 	 * @param notify
-	 *            a flag that controls whether or not a {@link SeriesChangeEvent} is
-	 *            sent to all registered listeners.
+	 *           a flag that controls whether or not a {@link SeriesChangeEvent} is
+	 *           sent to all registered listeners.
 	 */
 	public void add(final XYDataItem item, final boolean notify) {
-
+		
 		if (item == null) {
 			throw new IllegalArgumentException("Null 'item' argument.");
 		}
-
+		
 		final int index = Collections.binarySearch(this.data, item);
 		if (index < 0) {
 			if (this.autoSort) {
@@ -212,7 +212,7 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 			} else {
 				this.data.add(item);
 			}
-
+			
 			if (getItemCount() > this.maximumItemCount) {
 				this.data.remove(0);
 			}
@@ -230,42 +230,42 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 				throw new SeriesException("XYSeries.add(...): x-value already exists.");
 			}
 		}
-
+		
 		if (notify) {
 			fireSeriesChanged();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Adds a data item to the series and sends a {@link SeriesChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param x
-	 *            the x value.
+	 *           the x value.
 	 * @param y
-	 *            the y value.
+	 *           the y value.
 	 */
 	public void add(final double x, final double y) {
 		add(Double.valueOf(x), Double.valueOf(y), true);
 	}
-
+	
 	/**
 	 * Adds a data item to the series and, if requested, sends a
 	 * {@link SeriesChangeEvent} to all registered listeners.
 	 * 
 	 * @param x
-	 *            the x value.
+	 *           the x value.
 	 * @param y
-	 *            the y value.
+	 *           the y value.
 	 * @param notify
-	 *            a flag that controls whether or not a {@link SeriesChangeEvent} is
-	 *            sent to all registered listeners.
+	 *           a flag that controls whether or not a {@link SeriesChangeEvent} is
+	 *           sent to all registered listeners.
 	 */
 	public void add(final double x, final double y, final boolean notify) {
 		add(Double.valueOf(x), Double.valueOf(y), notify);
 	}
-
+	
 	/**
 	 * Adds a data item to the series and sends a {@link SeriesChangeEvent} to all
 	 * registered listeners.
@@ -274,14 +274,14 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	 * <code>null</code> y-values.
 	 * 
 	 * @param x
-	 *            the x value.
+	 *           the x value.
 	 * @param y
-	 *            the y value (<code>null</code> permitted).
+	 *           the y value (<code>null</code> permitted).
 	 */
 	public void add(final double x, final Number y) {
 		add(Double.valueOf(x), y);
 	}
-
+	
 	/**
 	 * Adds a data item to the series and, if requested, sends a
 	 * {@link SeriesChangeEvent} to all registered listeners.
@@ -290,17 +290,17 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	 * y-values.
 	 * 
 	 * @param x
-	 *            the x value.
+	 *           the x value.
 	 * @param y
-	 *            the y value (<code>null</code> permitted).
+	 *           the y value (<code>null</code> permitted).
 	 * @param notify
-	 *            a flag that controls whether or not a {@link SeriesChangeEvent} is
-	 *            sent to all registered listeners.
+	 *           a flag that controls whether or not a {@link SeriesChangeEvent} is
+	 *           sent to all registered listeners.
 	 */
 	public void add(final double x, final Number y, final boolean notify) {
 		add(Double.valueOf(x), y, notify);
 	}
-
+	
 	/**
 	 * Adds new data to the series and sends a {@link SeriesChangeEvent} to all
 	 * registered listeners.
@@ -309,15 +309,15 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	 * allowDuplicateXValues flag is false.
 	 * 
 	 * @param x
-	 *            the x-value (<code>null</code> not permitted).
+	 *           the x-value (<code>null</code> not permitted).
 	 * @param y
-	 *            the y-value (<code>null</code> permitted).
+	 *           the y-value (<code>null</code> permitted).
 	 */
 	public void add(final Number x, final Number y) {
 		// argument checking delegated...
 		add(x, y, true);
 	}
-
+	
 	/**
 	 * Adds new data to the series and, if requested, sends a
 	 * {@link SeriesChangeEvent} to all registered listeners.
@@ -326,12 +326,12 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 	 * allowDuplicateXValues flag is false.
 	 * 
 	 * @param x
-	 *            the x-value (<code>null</code> not permitted).
+	 *           the x-value (<code>null</code> not permitted).
 	 * @param y
-	 *            the y-value (<code>null</code> permitted).
+	 *           the y-value (<code>null</code> permitted).
 	 * @param notify
-	 *            a flag the controls whether or not a {@link SeriesChangeEvent} is
-	 *            sent to all registered listeners.
+	 *           a flag the controls whether or not a {@link SeriesChangeEvent} is
+	 *           sent to all registered listeners.
 	 */
 	public void add(final Number x, final Number y, final boolean notify) {
 		if (x == null) {
@@ -340,15 +340,15 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 		final XYDataItem item = new XYDataItem(x, y);
 		add(item, notify);
 	}
-
+	
 	/**
 	 * Deletes a range of items from the series and sends a
 	 * {@link SeriesChangeEvent} to all registered listeners.
 	 * 
 	 * @param start
-	 *            the start index (zero-based).
+	 *           the start index (zero-based).
 	 * @param end
-	 *            the end index (zero-based).
+	 *           the end index (zero-based).
 	 */
 	public void delete(final int start, final int end) {
 		for (int i = start; i <= end; i++) {
@@ -356,29 +356,29 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 		}
 		fireSeriesChanged();
 	}
-
+	
 	/**
 	 * Removes the item at the specified index.
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @return the item removed.
 	 */
 	public XYDataItem remove(final int index) {
 		return (XYDataItem) this.data.remove(index);
 	}
-
+	
 	/**
 	 * Removes the item(s) with the specified x-value.
 	 * 
 	 * @param x
-	 *            the x-value.
+	 *           the x-value.
 	 * @return the item removed.
 	 */
 	public XYDataItem remove(final Number x) {
 		return remove(indexOf(x));
 	}
-
+	
 	/**
 	 * Removes all data items from the series.
 	 */
@@ -388,94 +388,94 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 			fireSeriesChanged();
 		}
 	}
-
+	
 	/**
 	 * Return the data item with the specified index.
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @return the data item with the specified index.
 	 */
 	public XYDataItem getDataItem(final int index) {
 		return (XYDataItem) this.data.get(index);
 	}
-
+	
 	/**
 	 * Returns the x-value at the specified index.
 	 * 
 	 * @param index
-	 *            the index (zero-based).
+	 *           the index (zero-based).
 	 * @return the x-value (never <code>null</code>).
 	 */
 	public Number getXValue(final int index) {
 		return getDataItem(index).getX();
 	}
-
+	
 	/**
 	 * Returns the y-value at the specified index.
 	 * 
 	 * @param index
-	 *            the index (zero-based).
+	 *           the index (zero-based).
 	 * @return the y-value (possibly <code>null</code>).
 	 */
 	public Number getYValue(final int index) {
 		return getDataItem(index).getY();
 	}
-
+	
 	/**
 	 * Updates the value of an item in the series and sends a
 	 * {@link SeriesChangeEvent} to all registered listeners.
 	 * 
 	 * @param index
-	 *            the item (zero based index).
+	 *           the item (zero based index).
 	 * @param y
-	 *            the new value (<code>null</code> permitted).
+	 *           the new value (<code>null</code> permitted).
 	 */
 	public void update(final int index, final Number y) {
 		final XYDataItem item = getDataItem(index);
 		item.setY(y);
 		fireSeriesChanged();
 	}
-
+	
 	/**
 	 * Returns the index of the item with the specified x-value. Note: if the series
 	 * is not sorted in order of ascending x-values, the result is undefined.
 	 * 
 	 * @param x
-	 *            the x-value (<code>null</code> not permitted).
+	 *           the x-value (<code>null</code> not permitted).
 	 * @return the index.
 	 */
 	public int indexOf(final Number x) {
 		return Collections.binarySearch(this.data, new XYDataItem(x, null));
 	}
-
+	
 	/**
 	 * Returns a clone of the series.
 	 * 
 	 * @return a clone of the time series.
 	 * @throws CloneNotSupportedException
-	 *             if there is a cloning problem.
+	 *            if there is a cloning problem.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final Object clone = createCopy(0, getItemCount() - 1);
 		return clone;
 	}
-
+	
 	/**
 	 * Creates a new series by copying a subset of the data in this time series.
 	 * 
 	 * @param start
-	 *            the index of the first item to copy.
+	 *           the index of the first item to copy.
 	 * @param end
-	 *            the index of the last item to copy.
+	 *           the index of the last item to copy.
 	 * @return a series containing a copy of this series from start until end.
 	 * @throws CloneNotSupportedException
-	 *             if there is a cloning problem.
+	 *            if there is a cloning problem.
 	 */
 	public XYSeries createCopy(final int start, final int end) throws CloneNotSupportedException {
-
+		
 		final XYSeries copy = (XYSeries) super.clone();
-
+		
 		copy.data = new java.util.ArrayList();
 		if (this.data.size() > 0) {
 			for (int index = start; index <= end; index++) {
@@ -488,29 +488,29 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 				}
 			}
 		}
-
+		
 		return copy;
-
+		
 	}
-
+	
 	/**
 	 * Tests this series for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *            the object to test against for equality (<code>null</code>
-	 *            permitted).
+	 *           the object to test against for equality (<code>null</code>
+	 *           permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object object) {
-
+		
 		if (object == null) {
 			return false;
 		}
-
+		
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (!super.equals(object)) {
 			return false;
 		}
@@ -532,7 +532,7 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 		}
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -546,34 +546,34 @@ public class XYSeries extends Series implements Cloneable, Serializable {
 		result = 29 * result + (this.allowDuplicateXValues ? 1 : 0);
 		return result;
 	}
-
+	
 	// // DEPRECATED METHODS
 	// ///////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Constructs a new xy-series that contains no data. You can specify whether or
 	 * not duplicate x-values are allowed for the series.
 	 * 
 	 * @param name
-	 *            the series name.
+	 *           the series name.
 	 * @param allowDuplicateXValues
-	 *            a flag that controls whether duplicate x-values are allowed.
+	 *           a flag that controls whether duplicate x-values are allowed.
 	 * @deprecated Use a XYSeries(String, boolean, boolean) instead.
 	 */
 	public XYSeries(final String name, final boolean allowDuplicateXValues) {
 		this(name, true, allowDuplicateXValues);
 	}
-
+	
 	/**
 	 * Return the data pair with the specified index.
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @return the data pair with the specified index.
 	 * @deprecated Use getDataItem(index).
 	 */
 	public XYDataPair getDataPair(final int index) {
 		return (XYDataPair) this.data.get(index);
 	}
-
+	
 }

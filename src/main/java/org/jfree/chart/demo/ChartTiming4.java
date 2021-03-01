@@ -50,38 +50,38 @@ import org.jfree.chart.plot.Plot;
  * charts per second.
  */
 public class ChartTiming4 implements ActionListener {
-
+	
 	/** A flag that indicates when time is up. */
 	private boolean finished;
-
+	
 	/** Storage for the data. */
 	private float[][] data = new float[2][1440];
-
+	
 	/**
 	 * Creates a new application.
 	 */
 	public ChartTiming4() {
 		// nothing to do
 	}
-
+	
 	/**
 	 * Runs the test.
 	 */
 	public void run() {
-
+		
 		this.finished = false;
-
+		
 		// create a dataset...
 		populateData();
-
+		
 		// create a fast scatter chart...
 		final Plot plot = new FastScatterPlot(this.data, new NumberAxis("X"), new NumberAxis("Y"));
 		final JFreeChart chart = new JFreeChart("Fast Scatter Plot Timing", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-
+		
 		final BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g2 = image.createGraphics();
 		final Rectangle2D chartArea = new Rectangle2D.Double(0, 0, 400, 300);
-
+		
 		// set up the timer...
 		final Timer timer = new Timer(10000, this);
 		timer.setRepeats(false);
@@ -95,44 +95,44 @@ public class ChartTiming4 implements ActionListener {
 			}
 		}
 		System.out.println("DONE");
-
+		
 	}
-
+	
 	/**
 	 * Receives notification of action events (in this case, from the Timer).
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		this.finished = true;
 	}
-
+	
 	/**
 	 * Populates the data array with random values.
 	 */
 	private void populateData() {
-
+		
 		for (int i = 0; i < this.data[0].length; i++) {
-
+			
 			final float x = i;
 			this.data[0][i] = x;
 			this.data[1][i] = 100 + (2 * x) + (float) Math.random() * 1440;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ChartTiming4 app = new ChartTiming4();
 		app.run();
-
+		
 	}
-
+	
 }

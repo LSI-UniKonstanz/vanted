@@ -38,27 +38,26 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityC
  * takes an OWL model and fills the graph with edges, nodes and attributes
  * 
  * @author ricardo
- * 
  */
 public class LVL3ModelConverter {
-
+	
 	private Graph graph;
 	private Hashtable<Entity, Node> nodes;
 	private boolean debug = false;
-
+	
 	public void convertLVL3Model(Model model, Graph g, boolean all)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-
+		
 		graph = g;
 		nodes = new Hashtable<Entity, Node>();
 		if (all)
 			readInteractionsFromModel(model);
 	}
-
+	
 	public Graph getGraph() {
 		return this.graph;
 	}
-
+	
 	/**
 	 * reads all nodes and edges of the graph first all physical entities will be
 	 * read so pointing in interactions to them is possible afterwards the
@@ -68,9 +67,9 @@ public class LVL3ModelConverter {
 	 * @param g
 	 */
 	public void readGraph(Model model, Graph g) {
-
+		
 		// first export all PhysicalEntities
-
+		
 		Set<String> physicalEntities_1 = new HashSet<String>();
 		physicalEntities_1.add(Messages.getString("UtilitySuperClassToGraph.150")); //$NON-NLS-1$
 		physicalEntities_1.add(Messages.getString("UtilitySuperClassToGraph.151")); //$NON-NLS-1$
@@ -80,37 +79,37 @@ public class LVL3ModelConverter {
 		physicalEntities_1.add(Messages.getString("UtilitySuperClassToGraph.155")); //$NON-NLS-1$
 		physicalEntities_1.add(Messages.getString("UtilitySuperClassToGraph.156")); //$NON-NLS-1$
 		physicalEntities_1.add(Messages.getString("UtilitySuperClassToGraph.157")); //$NON-NLS-1$
-
+		
 		for (int i = 0; i < g.getNodes().size(); i++) {
 			Node node = g.getNodes().get(i);
 			Attribute attr = node.getAttribute(Messages.getString("UtilitySuperClassToGraph.126")); //$NON-NLS-1$
 			String NodeType = attr.getValue().toString();
-
+			
 			if (physicalEntities_1.contains(NodeType)) {
 				UtilityClassSelectorFromGraph.chooseClassToPutAttributesToModell(node, g, model);
 			}
-
+			
 		}
 		// check whether there are plain physical entities in the graph
 		Set<String> physicalEntities_2 = new HashSet<String>();
 		physicalEntities_2.add(Messages.getString("UtilitySuperClassToGraph.158")); //$NON-NLS-1$
-
+		
 		for (int i = 0; i < g.getNodes().size(); i++) {
 			Node node = g.getNodes().get(i);
 			Attribute attr = node.getAttribute(Messages.getString("UtilitySuperClassToGraph.126")); //$NON-NLS-1$
 			String NodeType = attr.getValue().toString();
-
+			
 			if (physicalEntities_2.contains(NodeType) && !physicalEntities_1.contains(NodeType)) {
 				UtilityClassSelectorFromGraph.chooseClassToPutAttributesToModell(node, g, model);
 			}
-
+			
 		}
 		// read all interactions now
 		for (int i = 0; i < g.getNodes().size(); i++) {
 			Node node = g.getNodes().get(i);
 			Attribute attr = node.getAttribute(Messages.getString("UtilitySuperClassToGraph.126")); //$NON-NLS-1$
 			String NodeType = attr.getValue().toString();
-
+			
 			if (!physicalEntities_2.contains(NodeType) && !physicalEntities_1.contains(NodeType)) {
 				UtilityClassSelectorFromGraph.chooseClassToPutAttributesToModell(node, g, model);
 			}
@@ -136,12 +135,12 @@ public class LVL3ModelConverter {
 			}
 		}
 		// read all PathWays
-
+		
 		PathWayHandler myPathWayHandler = new PathWayHandler(model, g);
 		myPathWayHandler.readPathwaysFromGraphAndWriteToModel();
-
+		
 	}
-
+	
 	/**
 	 * made for reading all interactions in a biopax level 3 model and writing it to
 	 * the graph
@@ -156,7 +155,7 @@ public class LVL3ModelConverter {
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Set<Class> Interactions = new HashSet<Class>();
 		// look for top-level interactions
-
+		
 		// Interactions.add(Interaction.class);
 		Interactions.add(GeneticInteraction.class);
 		Interactions.add(MolecularInteraction.class);
@@ -175,19 +174,19 @@ public class LVL3ModelConverter {
 		Interactions.add(Transport.class);
 		// and their Subclasses
 		Interactions.add(TransportWithBiochemicalReaction.class);
-
+		
 		// second: add to a set every Entity you are looking for
 		Set<Interaction> inters = new HashSet<Interaction>();
 		for (Class c : Interactions) {
 			inters.addAll(model.getObjects(c));
 		}
-
+		
 		writeInteractionsToGraph(inters);
-
+		
 		PathWayHandler PathWH = new PathWayHandler(model, graph);
 		PathWH.writePathWaysToGraph();
 	}
-
+	
 	/**
 	 * made for partial import of one or more pathway components
 	 * 
@@ -200,14 +199,14 @@ public class LVL3ModelConverter {
 	public void readInteractionsFromPathway(Model originalModel,
 			ArrayList<de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3interactions.MyPathWay> arrayList)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-
+		
 		Set<Interaction> inters = new HashSet<Interaction>();
 		for (de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3interactions.MyPathWay path : arrayList) {
 			if (debug)
 				System.out.println("Number of Components: " + path.getPathwayComponents().size());
 			if (path.isSuperPathWay()) {
 				getSubProcesses(path.getSubPathWays(), inters);
-
+				
 				for (Process proc : path.getPathwayComponents()) {
 					inters.add((Interaction) proc);
 				}
@@ -216,16 +215,16 @@ public class LVL3ModelConverter {
 					inters.add((Interaction) proc);
 				}
 			}
-
+			
 		}
 		System.out.println("here");
 		mayLoadAdditionalControls(inters, originalModel);
 		writeInteractionsToGraph(inters);
-
+		
 		PathWayHandler PathWH = new PathWayHandler(originalModel, graph);
 		PathWH.writePathWaysToGraph();
 	}
-
+	
 	/**
 	 * some times subset pathways aren't constructed write and contain only the main
 	 * interactions. if so on can simply iterate over all control statements and
@@ -286,7 +285,7 @@ public class LVL3ModelConverter {
 			}
 		}
 	}
-
+	
 	/**
 	 * if it is a main pathway that is loaded this function looks for all subpathway
 	 * compenents and loads them as well
@@ -300,7 +299,7 @@ public class LVL3ModelConverter {
 		for (de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3interactions.MyPathWay mypath : set) {
 			if (mypath.isSuperPathWay()) {
 				getSubProcesses(mypath.getSubPathWays(), inters);
-
+				
 				for (Process proc : mypath.getPathwayComponents()) {
 					inters.add((Interaction) proc);
 				}
@@ -311,7 +310,7 @@ public class LVL3ModelConverter {
 			}
 		}
 	}
-
+	
 	/**
 	 * function to read all interactions and writing them to the graph independent
 	 * of the model
@@ -347,13 +346,13 @@ public class LVL3ModelConverter {
 				BPConversion BP = new BPConversion(this.graph, this.nodes);
 				BP.read(i);
 			}
-
+			
 			// INTERACTION TOP CLASSES
 			else if (i instanceof GeneticInteraction) {
 				BPGeneticInteraction BP = new BPGeneticInteraction(this.graph, this.nodes);
 				BP.read(i);
 			}
-
+			
 			else if (i instanceof MolecularInteraction) {
 				BPMolecularInteraction BP = new BPMolecularInteraction(this.graph, this.nodes);
 				BP.read(i);
@@ -364,7 +363,7 @@ public class LVL3ModelConverter {
 			if (debug) {
 				System.out.println("Gelesen: " + i.toString() + " " + i.getClass()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-
+			
 		}
 		// now read the controls that point to the interactions already read
 		for (Interaction i : inters) {
@@ -386,7 +385,7 @@ public class LVL3ModelConverter {
 				System.out.println("Gelesen: " + i.toString() + " " + i.getClass()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
-
+		
 	}
-
+	
 }

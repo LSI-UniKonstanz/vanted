@@ -38,16 +38,16 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 	private boolean values = false;
 	private boolean valuesAvg = false;
 	private boolean correlation = false;
-
+	
 	public void execute() {
 		StringBuilder result = new StringBuilder();
-
+		
 		result = doIt(result);
-
+		
 		ClipboardService.writeToClipboardAsText(result.toString());
 		MainFrame.showMessage("Information copied to clipboard!", MessageType.INFO);
 	}
-
+	
 	StringBuilder doIt(StringBuilder result) {
 		StringBuilder curRow = new StringBuilder();
 		graph.numberGraphElements();
@@ -180,12 +180,12 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 					val = null;
 				addCol(result, curRow, val == null ? null : val + "");
 			}
-
+			
 			curRow = addRow(result);
 		}
 		return result;
 	}
-
+	
 	private void addCols(StringBuilder result, StringBuilder curRow, Stack<Double> values2) {
 		if (values2 != null) {
 			ArrayList<Object> vals = new ArrayList<Object>(values2);
@@ -193,12 +193,12 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 		} else
 			addCol(result, curRow, null);
 	}
-
+	
 	private StringBuilder addRow(StringBuilder result) {
 		result.append("\n");
 		return new StringBuilder();
 	}
-
+	
 	void addCol(StringBuilder result, StringBuilder curRow, String col) {
 		if (curRow.length() > 0) {
 			result.append("\t");
@@ -209,7 +209,7 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 		result.append(col);
 		curRow.append(col);
 	}
-
+	
 	private void addCols(StringBuilder result, StringBuilder curRow, Collection<Object> vals) {
 		if (curRow.length() > 0) {
 			result.append("\t");
@@ -232,13 +232,13 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 			}
 		}
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>With this command you may transfer attribute values<br>"
 				+ "from the selected graph elements into a file.<br>" + "Please specify relevant attributes:";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(rownum, "Row", null), new BooleanParameter(label, "Label", null),
@@ -250,7 +250,7 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 				new BooleanParameter(valuesAvg, "Average data mapping values", null),
 				new BooleanParameter(correlation, "Correlation", "The correlation (r) of this node") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -267,22 +267,22 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 		valuesAvg = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		correlation = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
-
+	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			return "Copy Data Table...";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.DATA, Category.EXPORT));
 	}
-
+	
 }

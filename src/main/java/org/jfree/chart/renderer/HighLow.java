@@ -47,106 +47,106 @@ import java.awt.geom.Rectangle2D;
  * @author Andrzej Porebski
  */
 public class HighLow {
-
+	
 	/** Useful constant for open/close value types. */
 	public static final int OPEN = 0;
-
+	
 	/** Useful constant for open/close value types. */
 	public static final int CLOSE = 1;
-
+	
 	/** The position of the line. */
 	private Line2D line;
-
+	
 	/** The bounds. */
 	private Rectangle2D bounds;
-
+	
 	/** The open value. */
 	private double open;
-
+	
 	/** The close value. */
 	private double close;
-
+	
 	/** The pen/brush used to draw the lines. */
 	private Stroke stroke;
-
+	
 	/** The color used to draw the lines. */
 	private Paint paint;
-
+	
 	/** The tick size. */
 	private double tickSize = 2;
-
+	
 	/**
 	 * Constructs a high-low item, with default values for the open/close and
 	 * colors.
 	 * 
 	 * @param x
-	 *            the x value.
+	 *           the x value.
 	 * @param high
-	 *            the high value.
+	 *           the high value.
 	 * @param low
-	 *            the low value.
+	 *           the low value.
 	 */
 	public HighLow(double x, double high, double low) {
 		this(x, high, low, high, low, new BasicStroke(), Color.blue);
 	}
-
+	
 	/**
 	 * Constructs a high-low item, with default values for the colors.
 	 * 
 	 * @param x
-	 *            the x value.
+	 *           the x value.
 	 * @param high
-	 *            the high value.
+	 *           the high value.
 	 * @param low
-	 *            the low value.
+	 *           the low value.
 	 * @param open
-	 *            the open value.
+	 *           the open value.
 	 * @param close
-	 *            the close value.
+	 *           the close value.
 	 */
 	public HighLow(double x, double high, double low, double open, double close) {
 		this(x, high, low, open, close, new BasicStroke(), Color.blue);
 	}
-
+	
 	/**
 	 * Constructs a high-low item.
 	 * 
 	 * @param x
-	 *            the x value.
+	 *           the x value.
 	 * @param high
-	 *            the high value.
+	 *           the high value.
 	 * @param low
-	 *            the low value.
+	 *           the low value.
 	 * @param open
-	 *            the open value.
+	 *           the open value.
 	 * @param close
-	 *            the close value.
+	 *           the close value.
 	 * @param stroke
-	 *            the stroke.
+	 *           the stroke.
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public HighLow(double x, double high, double low, double open, double close, Stroke stroke, Paint paint) {
-
+		
 		this.line = new Line2D.Double(x, high, x, low);
 		this.bounds = new Rectangle2D.Double(x - this.tickSize, high, 2 * this.tickSize, low - high);
 		this.open = open;
 		this.close = close;
 		this.stroke = stroke;
 		this.paint = paint;
-
+		
 	}
-
+	
 	/**
 	 * Sets the width of the open/close tick.
 	 * 
 	 * @param newSize
-	 *            the new tick size.
+	 *           the new tick size.
 	 */
 	public void setTickSize(double newSize) {
 		this.tickSize = newSize;
 	}
-
+	
 	/**
 	 * Returns the width of the open/close tick.
 	 * 
@@ -155,7 +155,7 @@ public class HighLow {
 	public double getTickSize() {
 		return this.tickSize;
 	}
-
+	
 	/**
 	 * Returns the line.
 	 * 
@@ -164,7 +164,7 @@ public class HighLow {
 	public Line2D getLine() {
 		return this.line;
 	}
-
+	
 	/**
 	 * Returns the bounds.
 	 * 
@@ -173,12 +173,12 @@ public class HighLow {
 	public Rectangle2D getBounds() {
 		return this.bounds;
 	}
-
+	
 	/**
 	 * Returns either OPEN or CLOSE value depending on the valueType.
 	 * 
 	 * @param valueType
-	 *            which value <code>{OPEN|CLOSE}</code>.
+	 *           which value <code>{OPEN|CLOSE}</code>.
 	 * @return the open value for valueType <code>OPEN</code>, the close value
 	 *         otherwise.
 	 */
@@ -189,14 +189,14 @@ public class HighLow {
 			return this.close;
 		}
 	}
-
+	
 	/**
 	 * Sets either OPEN or Close value depending on the valueType.
 	 * 
 	 * @param type
-	 *            the value type (OPEN or CLOSE).
+	 *           the value type (OPEN or CLOSE).
 	 * @param value
-	 *            the new value.
+	 *           the new value.
 	 */
 	public void setValue(int type, double value) {
 		if (type == OPEN) {
@@ -205,7 +205,7 @@ public class HighLow {
 			this.close = value;
 		}
 	}
-
+	
 	/**
 	 * Returns the line for open tick.
 	 * 
@@ -214,7 +214,7 @@ public class HighLow {
 	public Line2D getOpenTickLine() {
 		return getTickLine(getLine().getX1(), getValue(OPEN), (-1) * getTickSize());
 	}
-
+	
 	/**
 	 * Returns the line for close tick
 	 * 
@@ -223,22 +223,22 @@ public class HighLow {
 	public Line2D getCloseTickLine() {
 		return getTickLine(getLine().getX1(), getValue(CLOSE), getTickSize());
 	}
-
+	
 	/**
 	 * Helper to get the tickLine for the OPEN/CLOSE value.
 	 * 
 	 * @param x
-	 *            the X coordinate of the start point of the tick line.
+	 *           the X coordinate of the start point of the tick line.
 	 * @param value
-	 *            the OPEN or the CLOSE value.
+	 *           the OPEN or the CLOSE value.
 	 * @param width
-	 *            the width of the tickLine.
+	 *           the width of the tickLine.
 	 * @return a tickLine for the OPEN or the CLOSE value.
 	 */
 	private Line2D getTickLine(double x, double value, double width) {
 		return new Line2D.Double(x, value, x + width, value);
 	}
-
+	
 	/**
 	 * Returns the Stroke object used to draw the line.
 	 * 
@@ -247,7 +247,7 @@ public class HighLow {
 	public Stroke getStroke() {
 		return this.stroke;
 	}
-
+	
 	/**
 	 * Returns the Paint object used to color the line.
 	 * 
@@ -256,5 +256,5 @@ public class HighLow {
 	public Paint getPaint() {
 		return this.paint;
 	}
-
+	
 }

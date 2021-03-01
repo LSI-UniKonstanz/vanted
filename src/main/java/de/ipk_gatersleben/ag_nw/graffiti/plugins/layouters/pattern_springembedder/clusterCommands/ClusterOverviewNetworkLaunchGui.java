@@ -14,7 +14,7 @@ import org.graffiti.plugin.algorithm.Category;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
 public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
-
+	
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -25,12 +25,12 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 		res.add(new ShowClusterGraphAlgorithm());
 		return res;
 	}
-
+	
 	@Override
 	public boolean closeDialogBeforeExecution(Algorithm algorithm) {
 		return algorithm instanceof ShowClusterGraphAlgorithm;
 	}
-
+	
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -43,16 +43,15 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 	public String getCategory() {
 		return "Network.Cluster";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
-
+	
 	@Override
 	public boolean isModal() {
 		return false;
 	}
-
 	
 }

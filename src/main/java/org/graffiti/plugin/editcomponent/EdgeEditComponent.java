@@ -22,19 +22,19 @@ import org.graffiti.plugin.Displayable;
  */
 public class EdgeEditComponent extends SingleGraphElementEditComponent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>EdgeEditComponent</code>.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public EdgeEditComponent(Displayable disp) {
 		super(disp);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#getComponent()
 	 */
@@ -42,7 +42,7 @@ public class EdgeEditComponent extends SingleGraphElementEditComponent {
 	public JComponent getComponent() {
 		return super.getComponent();
 	}
-
+	
 	/*
 	 * @see
 	 * org.graffiti.plugin.editcomponent.AbstractValueEditComponent#setDisplayable(
@@ -51,13 +51,13 @@ public class EdgeEditComponent extends SingleGraphElementEditComponent {
 	@Override
 	public void setDisplayable(Displayable attr) {
 	}
-
+	
 	/**
 	 * Sets the graph component selectable by this edit component.
 	 */
 	public void setGraphComponent() {
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setValue()
 	 */

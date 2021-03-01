@@ -22,81 +22,81 @@ import scenario.ProvidesScenarioSupportCommand;
  */
 public class DoubleParameter extends AbstractLimitableParameter implements ProvidesScenarioSupportCommand {
 	// ~ Instance fields ========================================================
-
+	
 	/* Limits of this parameter. */
 	private Double max = null;
 	private Double min = null;
-
+	
 	/** The value of this parameter. */
 	private Double value = null;
-
+	
 	/** The distance between two values. If unset, the default value is 0.5. */
 	private Double ball = .5;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new double parameter.
 	 * 
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public DoubleParameter(String name, String description) {
 		super(name, description);
 	}
-
+	
 	/**
 	 * Constructs a new Double parameter.
 	 * 
 	 * @param value
-	 *            the new Double value of the parameter
+	 *           the new Double value of the parameter
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public DoubleParameter(Double value, String name, String description) {
 		super(name, description);
 		this.value = value;
 	}
-
+	
 	/**
 	 * Constructs a new Double parameter.
 	 * 
 	 * @param value
-	 *            the new Double value. May be null.
+	 *           the new Double value. May be null.
 	 * @param min
-	 *            the minimum value.
+	 *           the minimum value.
 	 * @param max
-	 *            the maximum value.
+	 *           the maximum value.
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public DoubleParameter(Double value, Double min, Double max, String name, String description) {
 		this(value, name, description);
 		this.min = min;
 		this.max = max;
 	}
-
+	
 	/**
 	 * Constructs a new Double parameter.
 	 * 
 	 * @param value
-	 *            the new Double value. May be null.
+	 *           the new Double value. May be null.
 	 * @param min
-	 *            the minimum value.
+	 *           the minimum value.
 	 * @param max
-	 *            the maximum value.
+	 *           the maximum value.
 	 * @param distance
-	 *            the distance between any two points in the [min, max] interval.
+	 *           the distance between any two points in the [min, max] interval.
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public DoubleParameter(Double value, Double min, Double max, Double distance, String name, String description) {
 		this(value, name, description);
@@ -104,46 +104,46 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 		this.max = max;
 		this.ball = distance;
 	}
-
+	
 	/**
 	 * Constructs a new Double parameter.
 	 * 
 	 * @param value
-	 *            the new Double value. May be null.
+	 *           the new Double value. May be null.
 	 * @param distance
-	 *            the distance between any two points in the open interval.
+	 *           the distance between any two points in the open interval.
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public DoubleParameter(Double value, Double distance, String name, String description) {
 		this(value, name, description);
 		this.ball = distance;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets this parameter's value.
 	 * 
 	 * @param val
-	 *            a Double value
+	 *           a Double value
 	 */
 	public void setDouble(Double val) {
 		this.value = val;
 	}
-
+	
 	/**
 	 * Sets this parameter's value.
 	 * 
 	 * @param val
-	 *            a double value
+	 *           a double value
 	 */
 	public void setDouble(double val) {
 		this.value = Double.valueOf(val);
 	}
-
+	
 	/**
 	 * Returns the value of this parameter as a <code>Double</code>.
 	 * 
@@ -152,7 +152,7 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 	public Double getDouble() {
 		return value;
 	}
-
+	
 	/**
 	 * Returns the max defined value of this Double parameter.
 	 * 
@@ -162,7 +162,7 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 	public Comparable<Double> getMax() {
 		return max == null ? Double.MAX_VALUE : max;
 	}
-
+	
 	/**
 	 * Returns the min defined value of this Double parameter.
 	 * 
@@ -172,25 +172,25 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 	public Comparable<Double> getMin() {
 		return min == null ? Double.MIN_VALUE : min;
 	}
-
+	
 	@Override
 	public boolean isValid() {
 		boolean valid = true;
 		if (value == null)
 			return false;
-
+		
 		if (min != null && min.compareTo(value) > 0)
 			valid = false;
 		if (max != null && max.compareTo(value) < 0)
 			valid = false;
 		return valid;
 	}
-
+	
 	/**
 	 * Sets the value of the <code>AttributeParameter</code>.
 	 * 
 	 * @param value
-	 *            the new value of the <code>AttributeParameter</code>.
+	 *           the new value of the <code>AttributeParameter</code>.
 	 */
 	@Override
 	public void setValue(Object value) {
@@ -204,7 +204,7 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns the value of this parameter.
 	 * 
@@ -214,34 +214,34 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 	public Object getValue() {
 		return value;
 	}
-
+	
 	public void setMax(Double max) {
 		this.max = max;
 	}
-
+	
 	public void setMin(Double min) {
 		this.min = min;
 	}
-
+	
 	/**
 	 * Set new intervalue distance.
 	 * 
 	 * @param ball
-	 *            the change-size between two valid values
+	 *           the change-size between two valid values
 	 */
 	public void setValuesBallSize(Double ball) {
 		this.ball = ball;
 	}
-
+	
 	@Override
 	public Number getValuesBall() {
 		return ball;
 	}
-
+	
 	public String getScenarioCommand() {
 		return "new DoubleParameter(" + getDouble() + ", \"" + getName() + "\", \"" + getDescription() + "\")";
 	}
-
+	
 	public Collection<String> getScenarioImports() {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add("import org.graffiti.plugin.parameter.DoubleParameter;");

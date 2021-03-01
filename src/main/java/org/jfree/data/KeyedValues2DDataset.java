@@ -36,7 +36,7 @@ package org.jfree.data;
  * {@link CategoryDataset} and is included for completeness only.
  */
 public interface KeyedValues2DDataset extends CategoryDataset {
-
+	
 	// no new methods required
-
+	
 }

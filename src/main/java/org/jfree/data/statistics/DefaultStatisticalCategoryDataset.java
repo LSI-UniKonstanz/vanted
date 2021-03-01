@@ -49,162 +49,162 @@ import org.jfree.data.RangeInfo;
  */
 public class DefaultStatisticalCategoryDataset extends AbstractDataset
 		implements StatisticalCategoryDataset, RangeInfo {
-
+	
 	/** Storage for the data. */
 	protected KeyedObjects2D data;
-
+	
 	/** The minimum range value. */
 	private Number minimumRangeValue;
-
+	
 	/** The maximum range value. */
 	private Number maximumRangeValue;
-
+	
 	/** The range of values. */
 	private Range valueRange;
-
+	
 	private boolean drawOnlyTopOfErrorBar;
 	private double errorBarLen;
-
+	
 	/**
 	 * Creates a new dataset.
 	 */
 	public DefaultStatisticalCategoryDataset() {
-
+		
 		this.data = new KeyedObjects2D();
 		this.minimumRangeValue = Double.valueOf(0.0);
 		this.maximumRangeValue = Double.valueOf(0.0);
 		this.valueRange = new Range(0.0, 0.0);
-
+		
 	}
-
+	
 	/**
 	 * Returns the mean value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the mean value.
 	 */
 	public Number getMeanValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final MeanAndStandardDeviation masd = (MeanAndStandardDeviation) this.data.getObject(row, column);
 		if (masd != null && (!Double.isNaN(masd.getMean().doubleValue()))) {
 			result = masd.getMean();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the value for an item.
 	 * 
 	 * @param row
-	 *            the row index.
+	 *           the row index.
 	 * @param column
-	 *            the column index.
+	 *           the column index.
 	 * @return the value.
 	 */
 	public Number getValue(final int row, final int column) {
 		return getMeanValue(row, column);
 	}
-
+	
 	/**
 	 * Returns the value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the columnKey.
+	 *           the columnKey.
 	 * @return the value.
 	 */
 	public Number getValue(final Comparable rowKey, final Comparable columnKey) {
 		return getMeanValue(rowKey, columnKey);
 	}
-
+	
 	/**
 	 * Returns the mean value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the columnKey.
+	 *           the columnKey.
 	 * @return the mean value.
 	 */
 	public Number getMeanValue(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final MeanAndStandardDeviation masd = (MeanAndStandardDeviation) this.data.getObject(rowKey, columnKey);
 		if (masd != null) {
 			result = masd.getMean();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the standard deviation value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the standard deviation.
 	 */
 	public Number getStdDevValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final MeanAndStandardDeviation masd = (MeanAndStandardDeviation) this.data.getObject(row, column);
 		if (masd != null) {
 			result = masd.getStandardDeviation();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the standard deviation value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the columnKey.
+	 *           the columnKey.
 	 * @return the standard deviation.
 	 */
 	public Number getStdDevValue(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final MeanAndStandardDeviation masd = (MeanAndStandardDeviation) this.data.getObject(rowKey, columnKey);
 		if (masd != null) {
 			result = masd.getStandardDeviation();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *            the column key.
+	 *           the column key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(final Comparable key) {
 		return this.data.getColumnIndex(key);
 	}
-
+	
 	/**
 	 * Returns a column key.
 	 * 
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the column key.
 	 */
 	public Comparable getColumnKey(final int column) {
 		return this.data.getColumnKey(column);
 	}
-
+	
 	/**
 	 * Returns the column keys.
 	 * 
@@ -213,29 +213,29 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public List getColumnKeys() {
 		return this.data.getColumnKeys();
 	}
-
+	
 	/**
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *            the row key.
+	 *           the row key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(final Comparable key) {
 		return this.data.getRowIndex(key);
 	}
-
+	
 	/**
 	 * Returns a row key.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getRowKey(final int row) {
 		return this.data.getRowKey(row);
 	}
-
+	
 	/**
 	 * Returns the row keys.
 	 * 
@@ -244,7 +244,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public List getRowKeys() {
 		return this.data.getRowKeys();
 	}
-
+	
 	/**
 	 * Returns the number of rows in the table.
 	 * 
@@ -253,7 +253,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public int getRowCount() {
 		return this.data.getRowCount();
 	}
-
+	
 	/**
 	 * Returns the number of columns in the table.
 	 * 
@@ -262,28 +262,28 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public int getColumnCount() {
 		return this.data.getColumnCount();
 	}
-
+	
 	/**
 	 * Adds a mean and standard deviation to the table.
 	 * 
 	 * @param mean
-	 *            the mean.
+	 *           the mean.
 	 * @param standardDeviation
-	 *            the standard deviation.
+	 *           the standard deviation.
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 */
 	public void add(final double mean, final double standardDeviation, final Comparable rowKey,
 			final Comparable columnKey, boolean showOnlyHalfErrorBar) {
-
+		
 		final MeanAndStandardDeviation item = new MeanAndStandardDeviation(Double.valueOf(mean),
 				Double.valueOf(standardDeviation));
 		addDataObject(item, rowKey, columnKey);
 		addStep2(mean, standardDeviation, rowKey, columnKey, showOnlyHalfErrorBar);
 	}
-
+	
 	public void add(final double mean, final double standardDeviation, final Comparable rowKey,
 			final Comparable columnKey) {
 		final MeanAndStandardDeviation item = new MeanAndStandardDeviation(Double.valueOf(mean),
@@ -291,11 +291,11 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 		addDataObject(item, rowKey, columnKey);
 		addStep2(mean, standardDeviation, rowKey, columnKey, false);
 	}
-
+	
 	protected void addDataObject(MeanAndStandardDeviation item, final Comparable rowKey, final Comparable columnKey) {
 		this.data.addObject(item, rowKey, columnKey);
 	}
-
+	
 	protected void addStep2(double mean, double standardDeviation, final Comparable rowKey, final Comparable columnKey,
 			boolean showOnlyHalfErrorBar) {
 		if (Double.isInfinite(standardDeviation) || Double.isNaN(standardDeviation))
@@ -313,7 +313,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 			fireDatasetChanged();
 		}
 	}
-
+	
 	/**
 	 * Returns the minimum value in the dataset's range (or null if all the values
 	 * in the range are null).
@@ -323,7 +323,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public Number getMinimumRangeValue() {
 		return this.minimumRangeValue;
 	}
-
+	
 	/**
 	 * Returns the maximum value in the dataset's range (or null if all the values
 	 * in the range are null).
@@ -333,7 +333,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public Number getMaximumRangeValue() {
 		return this.maximumRangeValue;
 	}
-
+	
 	/**
 	 * Returns the range of the values in this dataset's range.
 	 * 
@@ -342,21 +342,21 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public Range getValueRange() {
 		return this.valueRange;
 	}
-
+	
 	public boolean drawOnlyTopOfErrorBar() {
 		return drawOnlyTopOfErrorBar;
 	}
-
+	
 	public void setDrawOnlyTopOfErrorBar(boolean value) {
 		this.drawOnlyTopOfErrorBar = value;
 	}
-
+	
 	public double getErrorBarLen() {
 		return errorBarLen;
 	}
-
+	
 	public void setErrorBarLen(double value) {
 		this.errorBarLen = value;
 	}
-
+	
 }

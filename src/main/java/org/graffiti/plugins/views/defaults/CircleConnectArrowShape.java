@@ -13,7 +13,7 @@ public class CircleConnectArrowShape extends AbstractArrowShape {
 		super();
 		updateSize(size);
 	}
-
+	
 	@Override
 	public void updateSize(double size) {
 		super.updateSize(size);
@@ -24,13 +24,13 @@ public class CircleConnectArrowShape extends AbstractArrowShape {
 		// arrow.lineTo(SIZE/2f, SIZE/6f);
 		// arrow.lineTo(SIZE, SIZE/2f);
 		// arrow.closePath();
-
+		
 		this.head = new Point2D.Double(SIZE / 2.5, SIZE / 2d);
 		this.anchor = new Point2D.Double(SIZE / 2.5, SIZE / 2d);
 		this.arrowShape = arrow;
 		this.arrowWidth = SIZE; // this.arrowShape.getBounds2D().getHeight();
 	}
-
+	
 	public CircleConnectArrowShape() {
 		// this(10f);
 	}

@@ -17,7 +17,7 @@ package org.graffiti.plugin.algorithm;
  * @see org.graffiti.plugin.parameter.LimitableParameter
  */
 public class ParameterOutOfBoundsException extends Exception {
-
+	
 	/**
 	 * 
 	 */

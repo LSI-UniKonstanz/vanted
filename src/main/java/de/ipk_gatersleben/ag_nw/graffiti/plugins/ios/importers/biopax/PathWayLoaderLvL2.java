@@ -16,7 +16,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
  * This Class sets the related pathway information to each node of the graph
  * 
  * @author ricardo
- * 
  */
 public class PathWayLoaderLvL2 extends HelperClass {
 	public PathWayLoaderLvL2(Model model, Graph g) {
@@ -31,7 +30,7 @@ public class PathWayLoaderLvL2 extends HelperClass {
 						setAttributeSecure(node, Messages.getString("UtilityClassSelectorFromGraph.180"),
 								pathway.getRDFId());
 					}
-
+					
 				}
 			}
 		}

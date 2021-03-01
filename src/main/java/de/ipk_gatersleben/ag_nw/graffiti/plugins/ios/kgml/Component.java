@@ -13,10 +13,10 @@ import org.jdom2.Element;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.IdRef;
 
 public class Component {
-
+	
 	public static Collection<IdRef> getComponentElementsFromKgmlElement(List<?> componentKgmlElements) {
 		Collection<IdRef> result = new ArrayList<IdRef>();
-
+		
 		for (Object o : componentKgmlElements) {
 			Element component = (Element) o;
 			String id = component.getAttributeValue("id");
@@ -25,11 +25,11 @@ public class Component {
 		}
 		return result;
 	}
-
+	
 	public static Element getKgmlComponentElement(IdRef compRef) {
 		Element result = new Element("component");
 		result.getAttributes().add(new Attribute("id", compRef.getValue()));
 		return result;
 	}
-
+	
 }

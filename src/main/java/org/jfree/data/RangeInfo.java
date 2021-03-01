@@ -37,7 +37,7 @@ package org.jfree.data;
  * determining the minimum and maximum values.
  */
 public interface RangeInfo {
-
+	
 	/**
 	 * Returns the minimum value in the dataset's range (or null if all the values
 	 * in the range are null).
@@ -45,7 +45,7 @@ public interface RangeInfo {
 	 * @return the minimum value.
 	 */
 	public Number getMinimumRangeValue();
-
+	
 	/**
 	 * Returns the maximum value in the dataset's range (or null if all the values
 	 * in the range are null).
@@ -53,12 +53,12 @@ public interface RangeInfo {
 	 * @return the maximum value.
 	 */
 	public Number getMaximumRangeValue();
-
+	
 	/**
 	 * Returns the range of the values in this dataset's range.
 	 * 
 	 * @return the range.
 	 */
 	public Range getValueRange();
-
+	
 }

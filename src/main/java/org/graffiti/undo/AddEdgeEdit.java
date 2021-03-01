@@ -30,9 +30,9 @@ public class AddEdgeEdit extends GraphElementsEdit {
 	// ~ Instance fields ========================================================
 	/** added edge */
 	private Edge edge;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for AddEdgeEdit.
 	 * 
@@ -44,9 +44,9 @@ public class AddEdgeEdit extends GraphElementsEdit {
 		super(graph, geMap);
 		this.edge = edge;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Used to display the name for this edit.
 	 * 
@@ -57,32 +57,32 @@ public class AddEdgeEdit extends GraphElementsEdit {
 	public String getPresentationName() {
 		return sBundle.getString("undo.addEdge");
 	}
-
+	
 	@Override
 	public void execute() {
 	}
-
+	
 	/**
 	 * Adds the same edge that was added through the method that created this edit.
 	 */
 	@Override
 	public void redo() {
 		super.redo();
-
+		
 		Node source = (Node) getNewGraphElement(edge.getSource());
 		Node target = (Node) getNewGraphElement(edge.getTarget());
 		Edge newEdge = graph.addEdgeCopy(edge, source, target);
 		assert newEdge.getGraph() != null;
 		geMap.put(edge, newEdge);
 	}
-
+	
 	/**
 	 * Deletes the edge whose addition is stored in this edit.
 	 */
 	@Override
 	public void undo() {
 		super.undo();
-
+		
 		edge = (Edge) getNewGraphElement(edge);
 		graph.deleteEdge(edge);
 	}

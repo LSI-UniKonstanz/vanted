@@ -32,9 +32,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @author Christian Klukas
  */
 public class SelectLeafNodesAlgorithm extends AbstractAlgorithm implements ActionListener, ProvidesNodeContextMenu {
-
+	
 	JMenuItem m1selectLeafNodes;
-
+	
 	/**
 	 * Constructs a new instance.
 	 */
@@ -42,7 +42,7 @@ public class SelectLeafNodesAlgorithm extends AbstractAlgorithm implements Actio
 		m1selectLeafNodes = new JMenuItem("Select leaf nodes");
 		m1selectLeafNodes.addActionListener(this);
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
@@ -57,7 +57,7 @@ public class SelectLeafNodesAlgorithm extends AbstractAlgorithm implements Actio
 		} else
 			MainFrame.showMessage("No leaf nodes could be found!", MessageType.INFO);
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -66,37 +66,37 @@ public class SelectLeafNodesAlgorithm extends AbstractAlgorithm implements Actio
 		graph = null;
 		selection = null;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return null; // "Show leaf nodes in new window";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return null; // "Hierarchy";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(
 				Arrays.asList(Category.NODE, Category.SELECTION, Category.HIDDEN, Category.HIERARCHY
-
+				
 				));
 	}
-
+	
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *            the selection
+	 *           the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -108,7 +108,7 @@ public class SelectLeafNodesAlgorithm extends AbstractAlgorithm implements Actio
 			execute();
 		}
 	}
-
+	
 	public JMenuItem[] getCurrentNodeContextMenuItem(Collection<Node> selectedNodes) {
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 		if (session == null)

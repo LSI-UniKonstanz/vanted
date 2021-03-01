@@ -21,21 +21,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.transpath.TranspathSe
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class DatabaseFileStatusService implements HelperClass {
-
+	
 	public static void showStatusDialog() {
 		if (BackgroundTaskHelper.isTaskWithGivenReferenceRunning("Download")) {
 			MainFrame.showMessageDialog("Please wait until the active download is finished.", "Download in progress");
 			return;
 		}
 		final FolderPanel exp = new FolderPanel("");
-
+		
 		ArrayList<FileDownloadStatusInformationProvider> statusProviders = new ArrayList<FileDownloadStatusInformationProvider>();
-
+		
 		statusProviders.add(EnzymeService.getInstance());
-
+		
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG)
 			statusProviders.add(new TranspathService());
-
+		
 		exp.setFrameColor(null, null, 0, 0);
 		exp.addGuiComponentRow(null, new JLabel(
 				"<html>&nbsp;&nbsp;<font color='#BB22222'>Important: Evaluate license before downloading database files."),
@@ -44,9 +44,9 @@ public class DatabaseFileStatusService implements HelperClass {
 		for (FileDownloadStatusInformationProvider sp : statusProviders) {
 			final GuiRow guiRow = new GuiRow(new JLabel(sp.getDescription()),
 					FolderPanel.getBorderedComponent(sp.getStatusPane(true), b, b, b, b));
-
+			
 			exp.addGuiComponentRow(guiRow, true);
-
+			
 			final FileDownloadStatusInformationProvider spf = sp;
 			Runnable r = new Runnable() {
 				public void run() {
@@ -64,8 +64,8 @@ public class DatabaseFileStatusService implements HelperClass {
 			t.start();
 		}
 		exp.layoutRows();
-
+		
 		MainFrame.showMessageDialogPlain("Database Status", exp);
 	}
-
+	
 }

@@ -14,12 +14,12 @@ package org.graffiti.editor;
  */
 public class EditComponentNotFoundException extends Exception {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3292699801893305791L;
-
+	
 	/**
 	 * Constructor for AttributeComponentNotFoundException.
 	 * 

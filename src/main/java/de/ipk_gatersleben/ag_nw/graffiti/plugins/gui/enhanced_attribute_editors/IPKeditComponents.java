@@ -21,19 +21,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
  */
 public class IPKeditComponents extends IPK_EditorPluginAdapter implements PluginManagerListener {
 	// ~ Constructors ===========================================================
-
+	
 	public IPKeditComponents() {
 		super();
-
+		
 		// register the ui compoents for the displayable types
 		// //// valueEditComponents.put(DoubleAttribute.class,
 		// EnhDoubleEditComponent.class);
-
+		
 		// register the ui compoents for the parameter types
 		// //// valueEditComponents.put(DoubleParameter.class,
 		// EnhDoubleEditComponent.class);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

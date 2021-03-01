@@ -25,24 +25,24 @@ import org.graffiti.selection.SelectionEvent;
  */
 public class DeleteAttributeAction extends SelectionAction {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -797556201684320153L;
-
+	
 	/**
 	 * Constructs a new delete attribute action.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public DeleteAttributeAction(MainFrame mainFrame) {
 		super("action.delete.attribute", mainFrame);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the help context of this action.
 	 * 
@@ -52,7 +52,7 @@ public class DeleteAttributeAction extends SelectionAction {
 	public HelpContext getHelpContext() {
 		return null; // TODO
 	}
-
+	
 	/**
 	 * Returns the name of this action.
 	 * 
@@ -62,27 +62,27 @@ public class DeleteAttributeAction extends SelectionAction {
 	public String getName() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// TODO
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void selectionChanged(SelectionEvent e) {
 		// TODO
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if this action should survive a focus change in
 	 * the editor.
@@ -94,19 +94,19 @@ public class DeleteAttributeAction extends SelectionAction {
 	public boolean surviveFocusChange() {
 		return true;
 	}
-
+	
 	/**
 	 * Sets the internal <code>enable</code> flag, which depends on the given list
 	 * of selected items.
 	 * 
 	 * @param selectedItems
-	 *            the items, which determine the internal state of
-	 *            the<code>enable</code> flag.
+	 *           the items, which determine the internal state of
+	 *           the<code>enable</code> flag.
 	 */
 	@Override
 	protected void enable(List<?> selectedItems) {
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

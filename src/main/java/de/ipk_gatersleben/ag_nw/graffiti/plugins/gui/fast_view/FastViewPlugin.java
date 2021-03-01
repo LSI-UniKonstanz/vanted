@@ -15,5 +15,5 @@ public class FastViewPlugin extends IPK_EditorPluginAdapter {
 			this.views[0] = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.fast_view.FastView";
 		}
 	}
-
+	
 }

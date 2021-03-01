@@ -27,13 +27,13 @@ import org.graffiti.selection.Selection;
  * labels.
  */
 public class InvertSelectionAlgorithm extends AbstractAlgorithm {
-
+	
 	/**
 	 * Constructs a new instance.
 	 */
 	public InvertSelectionAlgorithm() {
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -41,7 +41,7 @@ public class InvertSelectionAlgorithm extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		return null;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#
 	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
@@ -49,7 +49,7 @@ public class InvertSelectionAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
@@ -68,7 +68,7 @@ public class InvertSelectionAlgorithm extends AbstractAlgorithm {
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 		graph.getListenerManager().transactionFinished(this);
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -77,34 +77,34 @@ public class InvertSelectionAlgorithm extends AbstractAlgorithm {
 		graph = null;
 		selection = null;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Invert Selection";
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke('I', SystemInfo.getAccelModifier());
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION));
 	}
-
+	
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *            the selection
+	 *           the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;

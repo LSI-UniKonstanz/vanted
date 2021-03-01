@@ -26,18 +26,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.font_label_color
  * @version $Revision$
  */
 public class IPKDefaultView extends DBE_EditorPluginAdapter {
-
+	
 	/**
 	 * Constructor for DefaultView.
 	 */
 	@SuppressWarnings("unchecked")
 	public IPKDefaultView() {
 		super();
-
+		
 		this.views = new String[] { "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView",
-
+				
 				// "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.ButtonOverlayView"//,
-
+				
 				// "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.NullView"
 		};
 		/*
@@ -45,7 +45,7 @@ public class IPKDefaultView extends DBE_EditorPluginAdapter {
 		 * "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.ipk_graffitiview.IPKGraffitiViewFast";
 		 */
 		// GravistoService.getInstance().getMainFrame().getViewManager().removeViews();
-
+		
 		this.attributeDescriptions = new AttributeDescription[] {
 				new AttributeDescription("graphbackgroundcolor", LabelColorAttribute.class,
 						"Network Attributes: Background Color", false, false, null),
@@ -57,28 +57,28 @@ public class IPKDefaultView extends DBE_EditorPluginAdapter {
 						null),
 				new AttributeDescription(".graphics.docking.target", TargetDockingAttribute.class, null, false, true,
 						null), };
-
+		
 		StringAttribute.putAttributeType("graphbackgroundcolor", LabelColorAttribute.class);
-
+		
 		AttributeHelper.setNiceId("Node:gradient", "Shape:<html>&nbsp;Gradient Fill (%)");
 		AttributeHelper.setNiceId("Edge:gradient", "<html>Gradient");
-
+		
 		attributes = new Class[] { GradientFillAttribute.class, ThicknessAttribute.class, SourceDockingAttribute.class,
 				TargetDockingAttribute.class, };
-
+		
 		valueEditComponents = new HashMap<>();
 		valueEditComponents.put(GradientFillAttribute.class, GradientFillAttributeEditor.class);
 		valueEditComponents.put(ThicknessAttribute.class, ThicknessAttributeEditor.class);
 		valueEditComponents.put(SourceDockingAttribute.class, DockingAttributeEditor.class);
 		valueEditComponents.put(TargetDockingAttribute.class, DockingAttributeEditor.class);
-
+		
 	}
-
+	
 	@Override
 	public String getDefaultView() {
 		return "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView";
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

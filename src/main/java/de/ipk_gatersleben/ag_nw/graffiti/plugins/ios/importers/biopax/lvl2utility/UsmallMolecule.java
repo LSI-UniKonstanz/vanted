@@ -6,7 +6,7 @@ import org.graffiti.graph.GraphElement;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class UsmallMolecule extends UtilitySuperClassToGraph {
-
+	
 	public static void addAttributesToNode(GraphElement elem, smallMolecule i) {
 		// first set label to node
 		setLabels(elem, i);
@@ -20,7 +20,7 @@ public class UsmallMolecule extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setSynonyms(elem, i.getSYNONYMS());
 		setXRef(elem, i.getXREF());
-
+		
 		setChemicalFormula(elem, i.getCHEMICAL_FORMULA());
 		setStructure(elem, i.getSTRUCTURE());
 		setMolecularWeight(elem, i.getMOLECULAR_WEIGHT());

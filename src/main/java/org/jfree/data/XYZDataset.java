@@ -34,27 +34,27 @@ package org.jfree.data;
  * items - used for XY and XYZ plots.
  */
 public interface XYZDataset extends XYDataset {
-
+	
 	/**
 	 * Returns the z-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The z-value (possibly <code>null</code>).
 	 */
 	public Number getZValue(int series, int item);
-
+	
 	/**
 	 * Returns the z-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The z-value.
 	 */
 	public double getZ(int series, int item);
-
+	
 }

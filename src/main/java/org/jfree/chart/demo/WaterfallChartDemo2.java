@@ -53,33 +53,33 @@ import org.jfree.ui.RefineryUtilities;
  * A sample waterfall chart.
  */
 public class WaterfallChartDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new WaterFall Chart demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public WaterfallChartDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel.setEnforceFileExtensions(false);
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset for the demo.
 	 * 
 	 * @return A sample dataset.
 	 */
 	private CategoryDataset createDataset() {
-
+		
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(-890.76, "S1", "PY OM");
 		dataset.addValue(-3021.51, "S1", "Vol CM");
@@ -90,25 +90,25 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 		dataset.addValue(3503.3, "S1", "CM FX");
 		dataset.addValue(-6561.97, "S1", "Base");
 		dataset.addValue(-824.25, "S1", "OM");
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Returns the chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		final CategoryAxis xAxis = new CategoryAxis("Category");
 		final NumberAxis yAxis = new NumberAxis("$ in Thousands");
 		yAxis.setLowerMargin(0.10);
 		yAxis.setUpperMargin(0.10);
-
+		
 		// create a custom tick unit collection...
 		final DecimalFormat formatter = new DecimalFormat("##,###");
 		formatter.setNegativePrefix("(");
@@ -119,9 +119,9 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 		standardUnits.add(new NumberTickUnit(1000, formatter));
 		standardUnits.add(new NumberTickUnit(2000, formatter));
 		standardUnits.add(new NumberTickUnit(5000, formatter));
-
+		
 		yAxis.setStandardTickUnits(standardUnits);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -132,15 +132,15 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		final DecimalFormat labelFormatter = new DecimalFormat("##,###");
 		labelFormatter.setNegativePrefix("(");
 		labelFormatter.setNegativeSuffix(")");
-
+		
 		final WaterfallBarRenderer renderer = new WaterfallBarRenderer();
 		renderer.setLabelGenerator(new StandardCategoryLabelGenerator("{2}", labelFormatter));
 		renderer.setItemLabelsVisible(Boolean.TRUE);
-
+		
 		final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setRangeGridlinePaint(Color.white);
@@ -149,17 +149,17 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 		baseline.setPaint(Color.blue);
 		baseline.setStroke(new BasicStroke(1.1f));
 		plot.addRangeMarker(baseline, Layer.FOREGROUND);
-
+		
 		final JFreeChart chart = new JFreeChart("OM WaterFall Chart", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
 		chart.setBackgroundPaint(Color.white);
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final WaterfallChartDemo2 demo = new WaterfallChartDemo2("Waterfall Chart Demo 2");

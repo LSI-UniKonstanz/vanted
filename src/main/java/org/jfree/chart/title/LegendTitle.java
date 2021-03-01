@@ -45,63 +45,63 @@ import org.jfree.chart.StandardLegendItemLayout;
  * created to match the dataset.
  */
 public abstract class LegendTitle extends Title {
-
+	
 	/** A container for the legend items. */
 	private LegendItemCollection items;
-
+	
 	/**
 	 * The object responsible for arranging the legend items to fit in whatever
 	 * space is available.
 	 */
 	// private LegendItemLayout layout;
-
+	
 	/**
 	 * Constructs a new, empty LegendTitle.
 	 */
 	public LegendTitle() {
 		this(new StandardLegendItemLayout(0, 0.0));
 	}
-
+	
 	/**
 	 * Creates a new legend title.
 	 * 
 	 * @param layout
-	 *            the layout.
+	 *           the layout.
 	 */
 	public LegendTitle(LegendItemLayout layout) {
 		// this.layout = layout;
 	}
-
+	
 	/**
 	 * Adds a legend item to the LegendTitle.
 	 * 
 	 * @param item
-	 *            the item to add.
+	 *           the item to add.
 	 */
 	public void addLegendItem(LegendItem item) {
 		this.items.add(item);
 	}
-
+	
 	/**
 	 * Draws the title on a Java 2D graphics device (such as the screen or a
 	 * printer). Currently it does nothing.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area for the chart and all its titles.
+	 *           the area for the chart and all its titles.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D area) {
-
+		
 		// if the position is TOP or BOTTOM then the constraint is on the width
 		// so layout the items accordingly
-
+		
 		// if the position is LEFT or RIGHT then the constraint is on the height
 		// so layout the items accordingly
-
+		
 		// get the height and width of the items, then add the space around the outside
 		// work out where to start drawing...
 		// and draw...
 	}
-
+	
 }

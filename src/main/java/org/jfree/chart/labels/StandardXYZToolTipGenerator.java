@@ -42,22 +42,22 @@ import org.jfree.util.ObjectUtils;
  * combinations of number and date formatters.
  */
 public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator implements XYZToolTipGenerator {
-
+	
 	/** The default tooltip format. */
 	public static final String DEFAULT_TOOL_TIP_FORMAT = "{0}: ({1}, {2}, {3})";
-
+	
 	/**
 	 * A number formatter for the z value - if this is null, then zDateFormat must
 	 * be non-null.
 	 */
 	private NumberFormat zFormat;
-
+	
 	/**
 	 * A date formatter for the z-value - if this is null, then zFormat must be
 	 * non-null.
 	 */
 	private DateFormat zDateFormat;
-
+	
 	/**
 	 * Creates a new tool tip generator using default number formatters for the x, y
 	 * and z-values.
@@ -66,21 +66,21 @@ public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator impl
 		this(DEFAULT_TOOL_TIP_FORMAT, NumberFormat.getNumberInstance(), NumberFormat.getNumberInstance(),
 				NumberFormat.getNumberInstance());
 	}
-
+	
 	/**
 	 * Constructs a new tool tip generator using the specified number formatters.
 	 * 
 	 * @param formatString
-	 *            the format string.
+	 *           the format string.
 	 * @param xFormat
-	 *            the format object for the x values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the x values (<code>null</code> not
+	 *           permitted).
 	 * @param yFormat
-	 *            the format object for the y values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the y values (<code>null</code> not
+	 *           permitted).
 	 * @param zFormat
-	 *            the format object for the z values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the z values (<code>null</code> not
+	 *           permitted).
 	 */
 	public StandardXYZToolTipGenerator(String formatString, NumberFormat xFormat, NumberFormat yFormat,
 			NumberFormat zFormat) {
@@ -90,21 +90,21 @@ public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator impl
 		}
 		this.zFormat = zFormat;
 	}
-
+	
 	/**
 	 * Constructs a new tool tip generator using the specified date formatters.
 	 * 
 	 * @param formatString
-	 *            the format string.
+	 *           the format string.
 	 * @param xFormat
-	 *            the format object for the x values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the x values (<code>null</code> not
+	 *           permitted).
 	 * @param yFormat
-	 *            the format object for the y values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the y values (<code>null</code> not
+	 *           permitted).
 	 * @param zFormat
-	 *            the format object for the z values (<code>null</code> not
-	 *            permitted).
+	 *           the format object for the z values (<code>null</code> not
+	 *           permitted).
 	 */
 	public StandardXYZToolTipGenerator(String formatString, DateFormat xFormat, DateFormat yFormat,
 			DateFormat zFormat) {
@@ -114,7 +114,7 @@ public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator impl
 		}
 		this.zDateFormat = zFormat;
 	}
-
+	
 	/**
 	 * Returns the number formatter for the z-values.
 	 * 
@@ -123,7 +123,7 @@ public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator impl
 	public NumberFormat getZFormat() {
 		return this.zFormat;
 	}
-
+	
 	/**
 	 * Returns the date formatter for the z-values.
 	 * 
@@ -132,55 +132,55 @@ public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator impl
 	public DateFormat getZDateFormat() {
 		return this.zDateFormat;
 	}
-
+	
 	/**
 	 * Generates a tool tip text item for a particular item within a series.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The tooltip text.
 	 */
 	public String generateToolTip(XYZDataset data, int series, int item) {
-
+		
 		String result = data.getSeriesName(series) + ": ";
 		Number x = data.getXValue(series, item);
 		result = result + "x: " + getXFormat().format(x);
-
+		
 		Number y = data.getYValue(series, item);
 		result = result + "y: " + getYFormat().format(y);
-
+		
 		Number z = data.getZValue(series, item);
 		if (z != null) {
 			result = result + ", z: " + zFormat.format(z);
 		} else {
 			result = result + ", z: null";
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Creates the array of items that can be passed to the {@link MessageFormat}
 	 * class for creating labels.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The items (never <code>null</code>).
 	 */
 	protected Object[] createItemArray(XYZDataset dataset, int series, int item) {
-
+		
 		Object[] result = new Object[4];
 		result[0] = dataset.getSeriesName(series);
-
+		
 		Number x = dataset.getXValue(series, item);
 		DateFormat xf = getXDateFormat();
 		if (xf != null) {
@@ -188,7 +188,7 @@ public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator impl
 		} else {
 			result[1] = getXFormat().format(x);
 		}
-
+		
 		Number y = dataset.getYValue(series, item);
 		DateFormat yf = getYDateFormat();
 		if (yf != null) {
@@ -196,23 +196,23 @@ public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator impl
 		} else {
 			result[2] = getYFormat().format(y);
 		}
-
+		
 		Number z = dataset.getZValue(series, item);
 		if (this.zDateFormat != null) {
 			result[3] = this.zDateFormat.format(z);
 		} else {
 			result[3] = this.zFormat.format(z);
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the other object (<code>null</code> permitted).
+	 *           the other object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -226,7 +226,7 @@ public class StandardXYZToolTipGenerator extends StandardXYToolTipGenerator impl
 			return b0 && b1;
 		}
 		return false;
-
+		
 	}
-
+	
 }

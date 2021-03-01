@@ -27,25 +27,25 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class SearchOptionEditorGUI extends JComponent {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6633404387535282784L;
 	private SearchOption option;
-
+	
 	public SearchOptionEditorGUI(final SearchOption option,
 			final Collection<AttributePathNameSearchType> possibleAttributes, boolean showAndOrField) {
 		this(option, possibleAttributes, showAndOrField, false);
 	}
-
+	
 	public SearchOptionEditorGUI(final SearchOption option,
 			final Collection<AttributePathNameSearchType> possibleAttributes, boolean showAndOrField,
 			final boolean isFindReplaceDialog) {
 		this.option = option;
-
+		
 		final JComboBox andOrSel = new JComboBox(new String[] { "AND", "OR" });
-
+		
 		double border = 5;
 		double[][] size = { { border,
 				// AND/OR
@@ -64,7 +64,7 @@ public class SearchOptionEditorGUI extends JComponent {
 				{ border, TableLayoutConstants.PREFERRED, border } }; // Rows
 		setLayout(new TableLayout(size));
 		// [AND/OR] Node Attribute | AttributeName | Is / Is Not | Equals | Text
-
+		
 		if (option.getLogicalConnection() == LogicConnection.AND)
 			andOrSel.setSelectedIndex(0);
 		if (option.getLogicalConnection() == LogicConnection.OR)
@@ -101,7 +101,7 @@ public class SearchOptionEditorGUI extends JComponent {
 			add(new JLabel(), "4,1");
 		else
 			add(matchOrNotSel, "4,1");
-
+		
 		final JCheckBox jCheckBoxSearchBoolean = new JCheckBox("Selected");
 		jCheckBoxSearchBoolean.setSelected(option.isSearchAttributeBoolean());
 		jCheckBoxSearchBoolean.addActionListener(new ActionListener() {
@@ -109,22 +109,22 @@ public class SearchOptionEditorGUI extends JComponent {
 				option.setSearchAttributeBoolean(jCheckBoxSearchBoolean.isSelected());
 			}
 		});
-
+		
 		final JTextField jTextFieldString = new JTextField(option.getSearchAttributeString());
 		jTextFieldString.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 			}
-
+			
 			public void focusLost(FocusEvent e) {
 				option.setSearchAttributeString(jTextFieldString.getText());
 			}
 		});
-
+		
 		final JTextField jTextFieldInteger = new JTextField(Integer.valueOf(option.getSearchAttributeInteger()).toString());
 		jTextFieldInteger.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 			}
-
+			
 			public void focusLost(FocusEvent e) {
 				try {
 					int i = Integer.parseInt(jTextFieldInteger.getText());
@@ -136,12 +136,12 @@ public class SearchOptionEditorGUI extends JComponent {
 				}
 			}
 		});
-
+		
 		final JTextField jTextFieldDouble = new JTextField(Double.valueOf(option.getSearchAttributeDouble()).toString());
 		jTextFieldDouble.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 			}
-
+			
 			public void focusLost(FocusEvent e) {
 				try {
 					double d = Double.parseDouble(jTextFieldDouble.getText());
@@ -153,26 +153,26 @@ public class SearchOptionEditorGUI extends JComponent {
 				}
 			}
 		});
-
+		
 		final JComponent equalSel = new JComboBox(
 				new String[] { "containing text", "greater than", "smaller than", "equal to", "ending with",
 						"starting with", "matching reg. expr.", "sort asc., top n:", "sort desc., top n:" });
-
+		
 		final JComboBox attributeSel = new JComboBox();
 		attributeSel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object o = attributeSel.getSelectedItem();
 				if (o != null && (o instanceof AttributePathNameSearchType)) {
 					AttributePathNameSearchType pns = (AttributePathNameSearchType) o;
-
+					
 					option.setSearchAttributePath(pns.getAttributePath());
-
+					
 					option.setSearchAttributeName(pns.getAttributeName());
-
+					
 					option.setSearchAttributeBoolean(jCheckBoxSearchBoolean.isSelected());
-
+					
 					option.setSearchAttributeString(jTextFieldString.getText());
-
+					
 					try {
 						int i = Integer.parseInt(jTextFieldInteger.getText());
 						option.setSearchAttributeInteger(i);
@@ -181,7 +181,7 @@ public class SearchOptionEditorGUI extends JComponent {
 						option.setSearchAttributeInteger(Integer.MAX_VALUE);
 						jTextFieldInteger.setBackground(Color.RED);
 					}
-
+					
 					try {
 						double d = Double.parseDouble(jTextFieldDouble.getText());
 						option.setSearchAttributeDouble(d);
@@ -190,18 +190,18 @@ public class SearchOptionEditorGUI extends JComponent {
 						option.setSearchAttributeDouble(Double.NaN);
 						jTextFieldInteger.setBackground(Color.RED);
 					}
-
+					
 					option.setSearchType(pns.getSearchType());
-
+					
 					equalSel.setVisible(true);
-
+					
 					updateInputField(option, isFindReplaceDialog, jCheckBoxSearchBoolean, jTextFieldString,
 							jTextFieldInteger, jTextFieldDouble, equalSel, pns);
 				}
 			}
 		});
 		add(attributeSel, "3,1");
-
+		
 		final JComboBox nodeOrEdgeSel = new JComboBox(
 				new String[] { "Node Attribute", "Edge Attribute", "Node Or Edge Attribute" });
 		if (option.getSearchNodeOrEdge() == NodeOrEdge.Nodes)
@@ -225,9 +225,9 @@ public class SearchOptionEditorGUI extends JComponent {
 			}
 		});
 		add(nodeOrEdgeSel, "2,1");
-
+		
 		if (!isFindReplaceDialog) {
-
+			
 			if (option.getSearchOperation() == SearchOperation.include)
 				((JComboBox) equalSel).setSelectedIndex(0);
 			if (option.getSearchOperation() == SearchOperation.greater)
@@ -275,16 +275,16 @@ public class SearchOptionEditorGUI extends JComponent {
 				}
 			});
 		}
-
+		
 		if (!isFindReplaceDialog)
 			add(equalSel, "5,1");
 		else
 			add(new JLabel(), "5,1");
 		processBorder(emptyLabel, andOrSel, matchOrNotSel, nodeOrEdgeSel, attributeSel, equalSel);
 		processInputBorder(jTextFieldDouble, jTextFieldInteger, jTextFieldString, jCheckBoxSearchBoolean);
-
+		
 		validate();
-
+		
 		if (!showAndOrField) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -293,7 +293,7 @@ public class SearchOptionEditorGUI extends JComponent {
 			});
 		}
 	}
-
+	
 	private void propagateAttributeList(SearchOption option, Collection<AttributePathNameSearchType> possibleAttributes,
 			final JComboBox attributeSel) {
 		attributeSel.removeAllItems();
@@ -341,25 +341,25 @@ public class SearchOptionEditorGUI extends JComponent {
 		if (jct != null && (jct instanceof JDialog))
 			((JDialog) jct).pack();
 	}
-
+	
 	private void processBorder(JComponent... comps) {
 		for (JComponent c : comps) {
 			c.setOpaque(false);
 			c.setBorder(BorderFactory.createEmptyBorder(1, 3, 1, 3));
 		}
 	}
-
+	
 	private void processInputBorder(JComponent... comps) {
 		for (JComponent c : comps) {
 			c.setOpaque(false);
 			c.setBorder(BorderFactory.createEtchedBorder());
 		}
 	}
-
+	
 	public SearchOption getSearchOption() {
 		return option;
 	}
-
+	
 	private void updateInputField(final SearchOption option, final boolean isFindReplaceDialog,
 			final JCheckBox jCheckBoxSearchBoolean, final JTextField jTextFieldString,
 			final JTextField jTextFieldInteger, final JTextField jTextFieldDouble, final JComponent equalSel,
@@ -373,24 +373,24 @@ public class SearchOptionEditorGUI extends JComponent {
 			add(jTextFieldInteger, "6,1");
 		} else {
 			switch (pns.getSearchType()) {
-			case searchBoolean:
-				add(jCheckBoxSearchBoolean, "6,1");
-				equalSel.setVisible(false);
-				((JComboBox) equalSel).setSelectedIndex(3);
-				option.setSearchOperation(SearchOperation.equals);
-				break;
-			case searchInteger:
-				add(jTextFieldInteger, "6,1");
-				break;
-			case searchString:
-				if (!isFindReplaceDialog)
-					add(jTextFieldString, "6,1");
-				else
-					add(new JLabel(""), "6,1");
-				break;
-			case searchDouble:
-				add(jTextFieldDouble, "6,1");
-				break;
+				case searchBoolean:
+					add(jCheckBoxSearchBoolean, "6,1");
+					equalSel.setVisible(false);
+					((JComboBox) equalSel).setSelectedIndex(3);
+					option.setSearchOperation(SearchOperation.equals);
+					break;
+				case searchInteger:
+					add(jTextFieldInteger, "6,1");
+					break;
+				case searchString:
+					if (!isFindReplaceDialog)
+						add(jTextFieldString, "6,1");
+					else
+						add(new JLabel(""), "6,1");
+					break;
+				case searchDouble:
+					add(jTextFieldDouble, "6,1");
+					break;
 			}
 		}
 		repaint();

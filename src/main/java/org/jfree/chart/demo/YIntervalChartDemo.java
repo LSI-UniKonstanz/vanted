@@ -43,53 +43,53 @@ import org.jfree.ui.RefineryUtilities;
  * A simple demonstration application showing how to create a Y Interval Chart.
  */
 public class YIntervalChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public YIntervalChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		final IntervalXYDataset dataset = new SimpleIntervalXYDataset2(100);
-
+		
 		// create the chart...
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 300));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final IntervalXYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createScatterPlot("Y Interval Chart Demo", // chart title
 				"X", // domain axis label
 				"Y", // range axis label
 				dataset, // data
 				PlotOrientation.VERTICAL, true, // include legend
 				true, false);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		plot.setRenderer(new YIntervalRenderer());
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -100,20 +100,20 @@ public class YIntervalChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final YIntervalChartDemo demo = new YIntervalChartDemo("Y Interval Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

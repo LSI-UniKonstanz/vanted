@@ -18,7 +18,7 @@ public class HeatMapOptions {
 	public Color heatMapMiddleColor;
 	public Color heatMapUpperColor;
 	private double heatMapGamma;
-
+	
 	public HeatMapOptions(double heatMapLowerBound, double heatMapMiddleBound, double heatMapUpperBound,
 			Color heatMapLowerColor, Color heatMapMiddleColor, Color heatMapUpperColor, double heatMapGamma) {
 		this.heatMapLowerBound = heatMapLowerBound;
@@ -29,7 +29,7 @@ public class HeatMapOptions {
 		this.heatMapUpperColor = heatMapUpperColor;
 		this.heatMapGamma = heatMapGamma;
 	}
-
+	
 	public HeatMapOptions(Graph graph) {
 		heatMapLowerColor = NodeTools.getColorAttributeValue(graph, GraphicAttributeConstants.HEATMAP_LOWER_COL,
 				Color.BLUE);
@@ -37,13 +37,13 @@ public class HeatMapOptions {
 				Color.RED);
 		heatMapMiddleColor = NodeTools.getColorAttributeValue(graph, GraphicAttributeConstants.HEATMAP_MIDDLE_COL,
 				Color.WHITE);
-
+		
 		heatMapLowerBound = AttributeHelper.getHeatMapLowerBound(graph);
 		heatMapMiddleBound = AttributeHelper.getHeatMapMiddleBound(graph);
 		heatMapUpperBound = AttributeHelper.getHeatMapUpperBound(graph);
 		heatMapGamma = AttributeHelper.getHeatMapGamma(graph);
 	}
-
+	
 	public void writeToGraph(Graph g) {
 		AttributeHelper.setAttribute(g, "", GraphicAttributeConstants.HEATMAP_LOWER_COL,
 				ColorUtil.getHexFromColor(heatMapLowerColor));
@@ -56,7 +56,7 @@ public class HeatMapOptions {
 		AttributeHelper.setAttribute(g, "", "hm_upper_bound", heatMapUpperBound);
 		AttributeHelper.setAttribute(g, "", "hm_gamma", heatMapGamma);
 	}
-
+	
 	public Color getHeatmapColor(double doubleValue) {
 		return RecolorEdgesAlgorithm.get3Color(heatMapLowerBound, heatMapUpperBound, heatMapMiddleBound, doubleValue,
 				heatMapGamma, heatMapLowerColor, heatMapMiddleColor, heatMapUpperColor);

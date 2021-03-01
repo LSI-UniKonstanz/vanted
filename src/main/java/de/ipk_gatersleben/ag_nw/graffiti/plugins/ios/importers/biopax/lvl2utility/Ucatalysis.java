@@ -6,7 +6,7 @@ import org.graffiti.graph.GraphElement;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class Ucatalysis extends UtilitySuperClassToGraph {
-
+	
 	public static void addAttributesToNode(GraphElement elem, catalysis i) {
 		// first set label to node
 		setLabels(elem, i);
@@ -23,7 +23,7 @@ public class Ucatalysis extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setSynonyms(elem, i.getSYNONYMS());
 		setXRef(elem, i.getXREF());
-
+		
 		setCatalysisDirection(elem, i.getDIRECTION());
 		setCofactor(elem, i.getCOFACTOR());
 		setControlType(elem, i.getCONTROL_TYPE());

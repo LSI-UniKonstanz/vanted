@@ -50,54 +50,54 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 	/*************************************************************/
 	/* Member variables */
 	/*************************************************************/
-
+	
 	/**
 	 * The list of current graphs
 	 */
 	// private Collection<Graph> listOfGraphs;
-
+	
 	/**
 	 * The list of current sessions (for the graph names)
 	 */
 	// private Collection allSessions;
-
+	
 	/**
 	 * The number of current graphs (size of listOfGraphs)
 	 */
 	// private int numberOfGraphs;
-
+	
 	/**
 	 * Parameter to consider nodes
 	 */
 	private boolean consNodes = true;
-
+	
 	private boolean useLoadedGraphs;
-
+	
 	/**
 	 * Parameter to consider edges
 	 */
 	private boolean consEdges = true;
-
+	
 	/**
 	 * Parameter to consider edge labels
 	 */
 	private boolean consEdgeLabels;
-
+	
 	/**
 	 * Parameter for hamming distance for nodes
 	 */
 	private int nodesDistance;
-
+	
 	/**
 	 * Parameter for hamming distance for edges
 	 */
 	private int edgesDistance;
-
+	
 	/**
 	 * Parameter to compute order of graphs
 	 */
 	private boolean computeOrder;
-
+	
 	/**
 	 * Returns the name of the algorithm.
 	 * 
@@ -106,7 +106,7 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Hamming Distance";
 	}
-
+	
 	/**
 	 * Checks the preconditions of the algorithm.
 	 * 
@@ -115,22 +115,22 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (useLoadedGraphs) {
 			if (graph == null) {
 				errors.add("The graph instance may not be null.");
 			}
 			Collection<Graph> listOfGraphs = GravistoService.getInstance().getMainGraphs();
-
+			
 			if (listOfGraphs == null || listOfGraphs.size() < 2) {
 				errors.add("The list of graphs has to contain more than one graph.");
 			}
-
+			
 			Iterator<Graph> it = listOfGraphs.iterator();
-
+			
 			while (it.hasNext()) {
 				Graph g = (Graph) it.next();
-
+				
 				if (g.getNumberOfNodes() == 0) {
 					errors.add("A graph may not be empty.");
 				}
@@ -139,16 +139,16 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 		if (nodesDistance <= 0) {
 			errors.add("The value of the hamming distance between nodes may not <= 0.");
 		}
-
+		
 		if (edgesDistance <= 0) {
 			errors.add("The value of the hamming distance between edges may not <= 0.");
 		}
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
 	}
-
+	
 	/**
 	 * The main method
 	 */
@@ -161,13 +161,13 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 			JFileChooser fc = MainFrame.getInstance().getIoManager().createOpenFileChooser();
 			fc.setMultiSelectionEnabled(true);
 			// fc.resetChoosableFileFilters();
-
+			
 			OpenFileDialogService.setActiveDirectoryFor(fc);
-
+			
 			int returnVal = fc.showDialog(MainFrame.getInstance(), "Compute Hamming-Distances");
-
+			
 			OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
-
+			
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File[] selfiles = fc.getSelectedFiles();
 				// ask if they should be opened into one graph view
@@ -178,7 +178,7 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 			processGraphs(null, files);
 		}
 	}
-
+	
 	public static void main(String[] args) {
 		if (args == null || args.length != 2) {
 			System.out.println("VANTED COMMAND LINE ANALYSIS (HAMMING DISTANCES)");
@@ -225,14 +225,14 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 		}
 		return;
 	}
-
+	
 	private void processGraphs(Collection<Graph> listOfGraphs, ArrayList<File> listOfGraphFileNames) {
 		HammingCalculator hc = new HammingCalculator(listOfGraphs, listOfGraphFileNames, consNodes, consEdges,
 				consEdgeLabels, nodesDistance, edgesDistance, computeOrder, 0, null);
 		BackgroundTaskHelper.issueSimpleTask("Hamming Distance Calculation", "Compute Hamming-Distances...", hc, null,
 				hc);
 	}
-
+	
 	/**
 	 * Get parameters
 	 * 
@@ -254,16 +254,16 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 				"Each different node increases the hamming distance by this value.");
 		IntegerParameter edgesDistanceParam = new IntegerParameter(1, "Edges distance",
 				"Each different edge increases the hamming distance by this value.");
-
+		
 		return new Parameter[] { loadedGraphsParam, nodesParam, edgesParam, edgeLabelsParam, computeOrderParam,
 				nodesDistanceParam, edgesDistanceParam };
 	}
-
+	
 	/**
 	 * Sets parameters
 	 * 
 	 * @param params
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
@@ -277,15 +277,15 @@ public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 		nodesDistance = ((IntegerParameter) params[i++]).getInteger().intValue();
 		edgesDistance = ((IntegerParameter) params[i++]).getInteger().intValue();
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Analysis";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANALYSIS));
 	}
-
+	
 }

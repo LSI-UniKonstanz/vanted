@@ -58,31 +58,31 @@ import org.jfree.data.DatasetUtilities;
  * A demo showing how to create an HTML image map for a bar chart.
  */
 public class ImageMapDemo1 {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public ImageMapDemo1() {
 		super();
 	}
-
+	
 	/**
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		// create a chart
 		final double[][] data = new double[][] { { 56.0, -12.0, 34.0, 76.0, 56.0, 100.0, 67.0, 45.0 },
 				{ 37.0, 45.0, 67.0, 25.0, 34.0, 34.0, 100.0, 53.0 },
 				{ 43.0, 54.0, 34.0, 34.0, 87.0, 64.0, 73.0, 12.0 } };
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Type ", data);
-
+		
 		JFreeChart chart = null;
 		final boolean drilldown = true;
-
+		
 		if (drilldown) {
 			final CategoryAxis categoryAxis = new CategoryAxis("Category");
 			final ValueAxis valueAxis = new NumberAxis("Value");
@@ -101,7 +101,7 @@ public class ImageMapDemo1 {
 					true, false);
 		}
 		chart.setBackgroundPaint(java.awt.Color.white);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -112,13 +112,13 @@ public class ImageMapDemo1 {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// save it to an image
 		try {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File file1 = new File("barchart100.png");
 			ChartUtilities.saveChartAsPNG(file1, chart, 600, 400, info);
-
+			
 			// write an HTML page incorporating the image with an image map
 			final File file2 = new File("barchart100.html");
 			final OutputStream out = new BufferedOutputStream(new FileOutputStream(file2));
@@ -132,11 +132,11 @@ public class ImageMapDemo1 {
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();
-
+			
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
-
+		
 	}
-
+	
 }

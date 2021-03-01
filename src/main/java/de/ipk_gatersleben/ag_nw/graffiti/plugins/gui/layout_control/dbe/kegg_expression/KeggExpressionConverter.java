@@ -19,39 +19,39 @@ import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableData;
 
 public class KeggExpressionConverter {
-
+	
 	ArrayList<KeggExpressionDataset> datasets;
 	HashMap<String, JTextField> filename2organism = new HashMap<String, JTextField>();
 	HashMap<String, JTextField> filename2organismId = new HashMap<String, JTextField>();
 	HashMap<String, JTextField> filename2time = new HashMap<String, JTextField>();
 	HashMap<String, JTextField> filename2replicate = new HashMap<String, JTextField>();
-
+	
 	String expName = "expression analysis";
 	String coordinator = "experiment coordinator";
 	String startOfExp = "";
 	String timeUnit = "-1";
 	String measurementUnit = "expression";
-
+	
 	public KeggExpressionConverter(ArrayList<KeggExpressionDataset> datasets) {
 		this.datasets = datasets;
 	}
-
+	
 	public String getDesiredExperimentName() {
 		return expName;
 	}
-
+	
 	public String getDesiredCoordinatorValue() {
 		return coordinator;
 	}
-
+	
 	public String getDesiredTimeUnit() {
 		return timeUnit;
 	}
-
+	
 	public String getDesiredMeasurementUnit() {
 		return measurementUnit;
 	}
-
+	
 	public void getDescriptionDataFromUser() {
 		// ask user for:
 		// experiment name
@@ -64,7 +64,7 @@ public class KeggExpressionConverter {
 		// (no edit) | ? | ? | ?
 		//
 		// evaluate datasets for fileName, and ask for remaining field data
-
+		
 		FolderPanel table = new FolderPanel("[organism] [line or treatment] [time point] [replicate]", false, true,
 				false, null);
 		table.setMaximumRowCount(10);
@@ -103,7 +103,7 @@ public class KeggExpressionConverter {
 					false);
 		}
 		table.layoutRows();
-
+		
 		Object[] res = MyInputHelper.getInput(
 				"<html>" + "Please specify additional dataset information:<br>" + "* these values are optional<br>"
 						+ "time-point and replicate fields need to be filled with<br>"
@@ -114,7 +114,7 @@ public class KeggExpressionConverter {
 				"Prepare Dataset",
 				new Object[] { "Experiment - Name", expName, "Coordinator*", coordinator, "Start of Experiment*", "",
 						"Time Unit*", timeUnit, "Measurement Unit*", measurementUnit, "", table
-
+				
 				});
 		if (res != null) {
 			int i = 0;
@@ -130,7 +130,7 @@ public class KeggExpressionConverter {
 			filename2replicate.clear();
 		}
 	}
-
+	
 	public TableData getDatasetTable() {
 		TableData tab = new TableData();
 		int row = 1;
@@ -174,7 +174,7 @@ public class KeggExpressionConverter {
 						tab.addCellData(col - 1, knownRow - 1, dp.getControlValue());
 					else
 						tab.addCellData(col - 1, knownRow - 1, dp.getControlValue() + dp.getOptQualityTag(":", ""));
-
+					
 					if (ked.isTrueKeggExpressionFormatControlTarget())
 						tab.addCellData(col + 1 - 1, knownRow - 1, dp.getTargetValue());
 					if (ked.isTrueKeggExpressionFormatControlTarget())
@@ -184,12 +184,12 @@ public class KeggExpressionConverter {
 					tab.addCellData(1 - 1, row - 1, activeGeneId);
 					if (dp.getOptX() != null && dp.getOptY() != null)
 						tab.addCellData(2 - 1, row - 1, dp.getOptX() + ":" + dp.getOptY());
-
+					
 					if (ked.isTrueKeggExpressionFormatControlTarget())
 						tab.addCellData(col - 1, row - 1, dp.getControlValue());
 					else
 						tab.addCellData(col - 1, row - 1, dp.getControlValue() + dp.getOptQualityTag(":", ""));
-
+					
 					if (ked.isTrueKeggExpressionFormatControlTarget())
 						tab.addCellData(col + 1 - 1, row - 1, dp.getTargetValue());
 					if (ked.isTrueKeggExpressionFormatControlTarget())

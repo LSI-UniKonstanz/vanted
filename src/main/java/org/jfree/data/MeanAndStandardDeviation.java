@@ -35,27 +35,27 @@ package org.jfree.data;
  * {@link org.jfree.data.statistics.DefaultStatisticalCategoryDataset} class.
  */
 public class MeanAndStandardDeviation {
-
+	
 	/** The mean. */
 	private Number mean;
-
+	
 	/** The standard deviation. */
 	private Number standardDeviation;
-
+	
 	/**
 	 * Creates a new mean and standard deviation record.
 	 * 
 	 * @param mean
-	 *            the mean.
+	 *           the mean.
 	 * @param standardDeviation
-	 *            the standard deviation.
+	 *           the standard deviation.
 	 */
 	public MeanAndStandardDeviation(final Number mean, final Number standardDeviation) {
 		this.mean = mean;
 		if (standardDeviation != null && !Double.isNaN(standardDeviation.doubleValue()))
 			this.standardDeviation = standardDeviation;
 	}
-
+	
 	/**
 	 * Returns the mean.
 	 * 
@@ -64,7 +64,7 @@ public class MeanAndStandardDeviation {
 	public Number getMean() {
 		return this.mean;
 	}
-
+	
 	/**
 	 * Returns the standard deviation.
 	 * 
@@ -73,5 +73,5 @@ public class MeanAndStandardDeviation {
 	public Number getStandardDeviation() {
 		return this.standardDeviation;
 	}
-
+	
 }

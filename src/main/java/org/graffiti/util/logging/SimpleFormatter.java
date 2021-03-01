@@ -19,12 +19,12 @@ import java.util.logging.LogRecord;
  */
 public class SimpleFormatter extends Formatter {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the message of the given <code>LogRecord</code>
 	 * 
 	 * @param record
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return a human readable string of the log record's message.
 	 */
 	@Override

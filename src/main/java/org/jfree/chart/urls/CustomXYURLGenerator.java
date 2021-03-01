@@ -42,17 +42,17 @@ import org.jfree.data.XYDataset;
  * @author Richard Atkinson
  */
 public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
-
+	
 	/** Storage for the URLs. */
 	private ArrayList urlSeries = new ArrayList();
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public CustomXYURLGenerator() {
 		super();
 	}
-
+	
 	/**
 	 * Returns the number of URL lists stored by the renderer.
 	 * 
@@ -61,16 +61,16 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 	public int getListCount() {
 		return this.urlSeries.size();
 	}
-
+	
 	/**
 	 * Returns the number of URLs in a given list.
 	 * 
 	 * @param list
-	 *            the list index (zero based).
+	 *           the list index (zero based).
 	 * @return The URL count.
 	 */
 	public int getURLCount(int list) {
-
+		
 		int result = 0;
 		List tooltips = (List) this.urlSeries.get(list);
 		if (tooltips != null) {
@@ -78,20 +78,20 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the URL for an item.
 	 * 
 	 * @param series
-	 *            the series index.
+	 *           the series index.
 	 * @param item
-	 *            the item index.
+	 *           the item index.
 	 * @return The URL.
 	 */
 	public String getURL(int series, int item) {
-
+		
 		String result = null;
-
+		
 		if (series < getListCount()) {
 			List tooltips = (List) this.urlSeries.get(series);
 			if (tooltips != null) {
@@ -100,51 +100,51 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 				}
 			}
 		}
-
+		
 		return result;
 	}
-
+	
 	/**
 	 * Generates a URL.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return a string containing the URL.
 	 */
 	public String generateURL(XYDataset data, int series, int item) {
 		return getURL(series, item);
 	}
-
+	
 	/**
 	 * Adds a list of URLs.
 	 * 
 	 * @param urls
-	 *            the list of URLs.
+	 *           the list of URLs.
 	 */
 	public void addURLSeries(List urls) {
 		this.urlSeries.add(urls);
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if (!(o instanceof CustomXYURLGenerator)) {
 			return false;
 		}
@@ -153,13 +153,13 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 		if (listCount != generator.getListCount()) {
 			return false;
 		}
-
+		
 		for (int series = 0; series < listCount; series++) {
 			final int urlCount = getURLCount(series);
 			if (urlCount != generator.getURLCount(series)) {
 				return false;
 			}
-
+			
 			for (int item = 0; item < urlCount; item++) {
 				String u1 = getURL(series, item);
 				String u2 = generator.getURL(series, item);
@@ -175,7 +175,7 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 			}
 		}
 		return true;
-
+		
 	}
-
+	
 }

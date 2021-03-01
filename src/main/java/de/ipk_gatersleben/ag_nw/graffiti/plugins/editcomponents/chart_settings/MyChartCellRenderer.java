@@ -16,7 +16,7 @@ import javax.swing.ListCellRenderer;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class MyChartCellRenderer implements ListCellRenderer<Object> {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -26,11 +26,11 @@ public class MyChartCellRenderer implements ListCellRenderer<Object> {
 	 */
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 			boolean cellHasFocus) {
-
+		
 		JLabel result = new JLabel();
-
+		
 		result.setText(value.toString());
-
+		
 		if (isSelected)
 			result.setBackground(list.getSelectionBackground());
 		else {
@@ -45,5 +45,5 @@ public class MyChartCellRenderer implements ListCellRenderer<Object> {
 		}
 		return result;
 	}
-
+	
 }

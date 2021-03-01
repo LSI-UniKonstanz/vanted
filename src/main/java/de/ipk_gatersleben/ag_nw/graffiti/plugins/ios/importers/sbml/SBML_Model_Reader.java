@@ -36,21 +36,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class SBML_Model_Reader extends SBML_SBase_Reader {
-
+	
 	static Logger logger = Logger.getLogger(SBML_Model_Reader.class);
-
+	
 	/**
 	 * Passes the import on to other classes
 	 * 
 	 * @param document
-	 *            contains the model for the import
+	 *           contains the model for the import
 	 * @param g
-	 *            the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 */
 	public void controlImport(SBMLDocument document, Graph g,
 			BackgroundTaskStatusProviderSupportingExternalCallImpl status) {
 		if (document.isSetModel()) {
-
+			
 			Model model = document.getModel();
 			String modelID = "";
 			if (model.isSetId()) {
@@ -59,26 +59,26 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 				}
 			}
 			PositionGridGenerator pgg = new PositionGridGenerator(100, 100, 1000);
-
+			
 			addModel(model, g);
-
+			
 			if (model.isSetListOfFunctionDefinitions()) {
 				SBML_FunctionDefinition_Reader readFunctionDef = new SBML_FunctionDefinition_Reader();
 				readFunctionDef.addFunktionDefinition(model.getListOfFunctionDefinitions(), g);
 			}
-
+			
 			if (model.isSetListOfUnitDefinitions()) {
 				SBML_UnitDefinition_Reader readUnitDef = new SBML_UnitDefinition_Reader();
 				readUnitDef.addUnitDefinitions(model.getListOfUnitDefinitions(), g);
 			}
-
+			
 			if (model.isSetListOfCompartments()) {
 				SBML_Compartment_Reader readCompartment = new SBML_Compartment_Reader();
 				readCompartment.addCompartment(model.getListOfCompartments(), g);
 			}
 			status.setCurrentStatusText1("create species list");
 			status.setCurrentStatusValue(40);
-
+			
 			SBMLSpeciesHelper speciesHelper = null;
 			if (model.isSetListOfSpecies()) {
 				speciesHelper = new SBMLSpeciesHelper(g);
@@ -93,46 +93,46 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 				SBML_InitialAssignment_Reader readInitialAssignment = new SBML_InitialAssignment_Reader();
 				readInitialAssignment.addInitialAssignments(model.getListOfInitialAssignments(), g);
 			}
-
+			
 			if (model.isSetListOfRules()) {
 				SBML_Rule_Reader readRule = new SBML_Rule_Reader();
 				readRule.addRule(model.getListOfRules(), g);
 			}
-
+			
 			if (model.isSetListOfConstraints()) {
 				SBML_Constraint_Reader readConstraint = new SBML_Constraint_Reader();
 				readConstraint.addConstraint(model.getListOfConstraints(), g);
 			}
-
+			
 			status.setCurrentStatusText1("create reaction list");
 			status.setCurrentStatusValue(80);
-
+			
 			SBMLReactionHelper reactionHelper = null;
 			if (model.isSetListOfReactions()) {
 				reactionHelper = new SBMLReactionHelper(g);
 				SBML_Reaction_Reader readReaction = new SBML_Reaction_Reader();
 				readReaction.addReactions(g, model.getListOfReactions(), modelID, pgg, reactionHelper);
 			}
-
+			
 			if (model.isSetListOfEvents()) {
 				SBML_Event_Reader readEvent = new SBML_Event_Reader();
 				readEvent.addEvents(model.getListOfEvents(), g);
 			}
-
+			
 			List<String> listCompartmentNames = new ArrayList<>();
 			for (Compartment compartment : document.getModel().getListOfCompartments()) {
 				listCompartmentNames.add(compartment.getName());
 			}
-
+			
 			boolean showBackgroundColoring = true;
 			if ((model.getListOfSpecies().size() + model.getListOfReactions().size()) > 1000)
 				showBackgroundColoring = false;
-
+			
 			// sets background-color for compartments
 			AttributeHelper.setAttribute(g, "", ClusterColorAttribute.attributeName,
 					ClusterColorAttribute.getDefaultValue(listCompartmentNames));
 			AttributeHelper.setAttribute(g, "", "background_coloring", Boolean.valueOf(showBackgroundColoring));
-
+			
 			ListOf<Compartment> liste = model.getListOfCompartments();
 			for (Compartment compartment : liste) {
 				if (!compartment.isSetName()) {
@@ -153,7 +153,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 			}
 		}
 	}
-
+	
 	// only used by addAdditionalEdges
 	//
 	// private List<Reaction> getListOfReactions(String speciesID, Model model) {
@@ -168,7 +168,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 	// }
 	// return newReactionList;
 	// }
-
+	
 	// never used locally
 	//
 	// private List<Point2D> getPointList(List<Node> nodeList) {
@@ -179,7 +179,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 	// }
 	// return pointList;
 	// }
-
+	
 	// only used by addAdditionalEdges
 	//
 	// private Edge getEdge(Node reactionNode, String speciesID) {
@@ -201,7 +201,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 	// }
 	// return null;
 	// }
-
+	
 	// old method, has been replaced by new method reassignEdges below on 09/09/2015
 	//
 	// private void addAdditionalEdges(Graph g, Model model, SBMLSpeciesHelper
@@ -258,16 +258,16 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 	// }
 	// }
 	// }
-
+	
 	private static void reassignEdges(Model model, SBMLSpeciesHelper speciesHelper) {
-
+		
 		LayoutModelPlugin layoutModel = (LayoutModelPlugin) model
 				.getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
 		if (layoutModel == null)
 			return;
 		Layout layout = layoutModel.getListOfLayouts().iterator().next();
 		ListOf<ReactionGlyph> reactionGlyphs = layout.getListOfReactionGlyphs();
-
+		
 		Iterator<Entry<String, List<Node>>> speciesClonesEntrySetIterator = (speciesHelper.getSpeicesClones())
 				.entrySet().iterator();
 		while (speciesClonesEntrySetIterator.hasNext()) {
@@ -305,12 +305,12 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 				}
 			}
 		}
-
+		
 	}
-
+	
 	private static ListOf<SpeciesReferenceGlyph> getSpeciesReferenceGlyphs(ListOf<ReactionGlyph> reactionGlyphs,
 			Node reactionNode) {
-
+		
 		ListOf<SpeciesReferenceGlyph> speciesReferenceGlyphs = null;
 		if (reactionNode == null
 				|| !AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_GLYPH_ID))
@@ -319,16 +319,16 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 				SBML_Constants.REACTION_GLYPH_ID, "", "", false);
 		ReactionGlyph reactionGlyph = reactionGlyphs.get(reactionGlyphID);
 		return reactionGlyph.getListOfSpeciesReferenceGlyphs();
-
+		
 	}
-
+	
 	/**
 	 * Reads in the model
 	 * 
 	 * @param model
-	 *            contains the model for the import
+	 *           contains the model for the import
 	 * @param g
-	 *            the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 */
 	private void addModel(Model model, Graph g) {
 		String modelID = model.getId();
@@ -342,7 +342,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 		String conversionFactor = model.getConversionFactor();
 		String metaID = model.getMetaId();
 		String sboTerm = model.getSBOTermID();
-
+		
 		if (model.isSetNotes()) {
 			String notesString;
 			try {
@@ -362,7 +362,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 		if (!modelName.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, SBML_Constants.SBML, SBML_Constants.MODEL_NAME, modelName);
 		}
-
+		
 		if (model.getLevel() == 3 && model.getVersion() == 1) {
 			if (model.isSetSubstanceUnits()) {
 				AttributeHelper.setAttribute(g, SBML_Constants.SBML, SBML_Constants.SUBSTANCE_UNITS, substanceUnits);
@@ -387,7 +387,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 						conversionFactor);
 			}
 		}
-
+		
 		if (!metaID.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, SBML_Constants.SBML, SBML_Constants.MODEL_META_ID, metaID);
 		}
@@ -405,7 +405,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 			}
 		}
 	}
-
+	
 	/**
 	 * iterates over all speices of every reaction and set the reaction position to
 	 * the average position of all their speices nodes.
@@ -434,7 +434,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 		// }
 		// }
 		// }
-
+		
 		for (Node reaction : SBMLHelper.getReactionNodes(g))
 			if (!SBMLHelper.isSetLayoutID(g, reaction)) {
 				Set<Node> reactionNeighbours = reaction.getNeighbors();
@@ -448,6 +448,6 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 							newReactionPosition.y / reactionNeighbours.size());
 				}
 			}
-
+		
 	}
 }

@@ -44,12 +44,12 @@ public class UDegradation extends UtilitySuperClassToGraph {
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		Degradation interaction = model.addNew(Degradation.class, RDFID);
-
+		
 		UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 		UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 		UtilitySuperClassFromGraph.getComment(elem, interaction);
@@ -63,7 +63,7 @@ public class UDegradation extends UtilitySuperClassToGraph {
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
 		StoichiometryWriter sW = new StoichiometryWriter();
 		for (Edge ingoing : elem.getAllInEdges()) {
-
+			
 			CollectionAttribute map = ingoing.getAttributes();
 			boolean isAControl = false;
 			try {
@@ -71,22 +71,22 @@ public class UDegradation extends UtilitySuperClassToGraph {
 					// only controls put RDFIds on edges
 					isAControl = true;// do nothing
 				}
-
+				
 			} catch (AttributeNotFoundException e) {
 				ErrorMsg.addErrorMessage(e);
 			} finally {
 				Node in = ingoing.getSource();
-
+				
 				String RDFId = in.getAttribute(Messages.getString("UtilitySuperClassToGraph.82")).getValue().toString();
 				PhysicalEntity p = (PhysicalEntity) model.getByID(RDFId);
-
+				
 				if (!isAControl) {
 					// so the node can be added to the conversion
 					interaction.addLeft(p);
 				}
 				sW.readParticipantStoichiometry(p, interaction, ingoing, model);
 			}
-
+			
 		}
 		for (Edge outgoing : elem.getAllOutEdges()) {
 			CollectionAttribute map = outgoing.getAttributes();
@@ -96,15 +96,15 @@ public class UDegradation extends UtilitySuperClassToGraph {
 					// only controls put RDFIds on edges
 					isAControl = true;// do nothing
 				}
-
+				
 			} catch (AttributeNotFoundException e) {
 				ErrorMsg.addErrorMessage(e);
 			} finally {
 				Node in = outgoing.getTarget();
-
+				
 				String RDFId = in.getAttribute(Messages.getString("UtilitySuperClassToGraph.82")).getValue().toString();
 				PhysicalEntity p = (PhysicalEntity) model.getByID(RDFId);
-
+				
 				if (!isAControl) {
 					// so the node can be added to the conversion
 					interaction.addRight(p);
@@ -112,7 +112,7 @@ public class UDegradation extends UtilitySuperClassToGraph {
 				sW.readParticipantStoichiometry(p, interaction, outgoing, model);
 			}
 		}
-
+		
 	}
-
+	
 }

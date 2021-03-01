@@ -50,79 +50,79 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 	// ~ Instance fields
 	// ========================================================
 	private static final long serialVersionUID = 3256442525387600951L;
-
+	
 	private static Logger logger = Logger.getLogger(EdgeComponent.class);
 	static {
 		logger.setLevel(Level.INFO);
 	}
-
+	
 	/** The component of the source node of this edge. */
 	private NodeComponentInterface sourceComp;
-
+	
 	/** The component of the target node of this edge. */
 	private NodeComponentInterface targetComp;
-
+	
 	private EdgeGraphicAttribute edgeAttr = null;
-
+	
 	private Stroke stroke = null;
-
+	
 	private GradientPaint gp = null;
-
+	
 	private Color fillColorOpaque;
-
+	
 	private Color frameColorOpaque;
-
+	
 	// ~ Constructors
 	// ===========================================================
-
+	
 	/**
 	 * Constructor for EdgeComponent.
 	 * 
 	 * @param ge
-	 *            the edge to which this component belongs.
+	 *           the edge to which this component belongs.
 	 * @param source
-	 *            the <code>NodeComponent</code> of the source node of this edge.
+	 *           the <code>NodeComponent</code> of the source node of this edge.
 	 * @param target
-	 *            the <code>NodeComponent</code> of the target node of this edge.
+	 *           the <code>NodeComponent</code> of the target node of this edge.
 	 */
 	public EdgeComponent(GraphElement ge, NodeComponent source, NodeComponent target) {
 		super(ge);
 		this.sourceComp = source;
 		this.targetComp = target;
 	}
-
+	
 	// ~ Methods
 	// ================================================================
-
+	
 	/**
 	 * Sets the source component.
 	 * 
 	 * @param snc
-	 *            the source component to be set.
+	 *           the source component to be set.
 	 */
 	public void setSourceComponent(NodeComponentInterface snc) {
 		// System.out.println("setting source comp to " + snc);
 		this.sourceComp = snc;
 		nodeComponentChanged();
 	}
-
+	
 	/**
 	 * Sets the source component.
 	 * 
 	 * @param tnc
-	 *            the source component to be set.
+	 *           the source component to be set.
 	 */
 	public void setTargetComponent(NodeComponentInterface tnc) {
 		this.targetComp = tnc;
 		nodeComponentChanged();
 	}
-
+	
 	/**
 	 * Sets a standard shape for this edge. It uses a
 	 * <code>StraightLineEdgeShape</code>.
 	 * 
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void createStandardShape() {
@@ -141,13 +141,13 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 				if (((Edge) graphElement).getGraph().isDirected()) {
 					edgeAttr.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
 				}
-
+				
 				graphElement.getAttributes().remove(gattr);
 				graphElement.getAttributes().add(edgeAttr, false);
 			} else
 				edgeAttr = (EdgeGraphicAttribute) gattr;
 		}
-
+		
 		try {
 			newShape.buildShape(edgeAttr, (NodeShape) this.sourceComp.getShape(),
 					(NodeShape) this.targetComp.getShape());
@@ -155,28 +155,28 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 			throw new RuntimeException(
 					"this should never happen since the " + "standard edge shape should always " + "exist." + e);
 		}
-
+		
 		this.shape = newShape;
 		edgeAttr.setShape("org.graffiti.plugins.views.defaults.StraightLineEdgeShape");
-
+		
 		this.adjustComponentSize();
 	}
-
+	
 	/**
 	 * Draws the shape associated with this component onto the graphics context of
 	 * this component. This method uses the graphics attributes defined for line
 	 * color, thickness etc.
 	 * 
 	 * @param g
-	 *            the <code>Graphics</code> context to draw on.
+	 *           the <code>Graphics</code> context to draw on.
 	 */
 	@Override
 	public void drawShape(Graphics g) {
 		// super.drawShape(g);
 		// logger.debug("drawShape for edge id:" + getGraphElement().getID());
-
+		
 		Graphics2D g2d = (Graphics2D) g;
-
+		
 		if (edgeAttr.getFrameThickness() < 0) {
 			try {
 				recreate();
@@ -185,9 +185,9 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 			}
 			return;
 		}
-
+		
 		LineEdgeShape edgeShape = (LineEdgeShape) this.shape;
-
+		
 		// outline (includes linewidth, linemode)
 		if (stroke == null) {
 			if (edgeShape.getFrameThickness() <= 1)
@@ -197,11 +197,11 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 				stroke = new BasicStroke((float) edgeShape.getFrameThickness(), DEFAULT_CAP_B, DEFAULT_JOIN,
 						DEFAULT_MITER, edgeAttr.getLineMode().getDashArray(), edgeAttr.getLineMode().getDashPhase());
 		}
-
+		
 		Shape hArrow = edgeShape.getHeadArrow();
-
+		
 		g2d.setPaint(frameColorOpaque);
-
+		
 		if (getViewDrawMode() == DrawMode.NORMAL) {
 			g2d.setStroke(stroke);
 			if (edgeAttr.getUseGradient() > 0)
@@ -210,9 +210,9 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 		// draw the outline of the shape according to attributes
 		// must not be transparent because otherwise would lead to
 		// problems with overlapping fill and frame
-
+		
 		g2d.draw(shape);
-
+		
 		if (getViewDrawMode() == DrawMode.NORMAL) {
 			if (hArrow != null) {
 				if (((LineEdgeShape) shape).hollowTargetArrowShape) {
@@ -225,7 +225,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 					g2d.fill(hArrow);
 				}
 			}
-
+			
 			Shape tArrow = edgeShape.getTailArrow();
 			if (tArrow != null) {
 				if (((LineEdgeShape) shape).hollowSourceArrowShape) {
@@ -240,27 +240,27 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 			}
 		}
 	}
-
+	
 	/**
 	 * Called when a graphic attribute of the edge represented by this component has
 	 * changed.
 	 * 
 	 * @param attr
-	 *            the graphic attribute that has triggered the event.
+	 *           the graphic attribute that has triggered the event.
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void graphicAttributeChanged(Attribute attr) throws ShapeNotFoundException {
 		logger.debug(
 				"graphicAttributeChanged for edge id:" + getGraphElement().getID() + " attribute " + attr.getName());
-
+		
 		/*
 		 * if the type of the shape or the size changed then we have to rebuild the
 		 * shape
 		 */
 		String id = attr.getId();
-
+		
 		if (id.equals(LINEMODE) || id.equals(FRAMETHICKNESS) || id.equals(FRAMECOLOR)) {
 			updateEdgeColors();
 		} else if (id.equals(DOCKING)) {
@@ -275,9 +275,9 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 				createNewShape(coordinateSystem);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Calls buildShape if no NodeShapes have changed.
 	 */
@@ -294,9 +294,9 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 		} catch (ShapeNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		
 		this.adjustComponentSize();
-
+		
 		boolean hidden = AttributeHelper.isHiddenGraphElement(graphElement);
 		for (Iterator<?> it = this.attributeComponents.values().iterator(); it.hasNext();) {
 			AttributeComponent attrComp = (AttributeComponent) it.next();
@@ -305,23 +305,23 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 			attrComp.setHidden(hidden);
 			// attrComp.adjustComponentSize();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Used when the shape changed in the datastructure. Makes the painter create a
 	 * new shape.
 	 * 
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	protected void recreate() throws ShapeNotFoundException {
 		logger.debug("recreate for edge id:" + getGraphElement().getID());
-
+		
 		if (edgeAttr == null) {
 			Attribute gattr = ((Edge) graphElement)
-
+					
 					.getAttribute(GRAPHICS);
 			/*
 			 * if someone creates an edge with graph.addedge(source, target, directed)
@@ -348,12 +348,12 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 		geAttr = (EdgeGraphicAttribute) this.graphElement.getAttribute(GRAPHICS);
 		String shapeClass = geAttr.getShape();
 		String curShapeNameClassName = null;
-
+		
 		EdgeShape newShape = null;
-
+		
 		if (this.shape != null)
 			curShapeNameClassName = this.shape.getClass().getName();
-
+		
 		if (!shapeClass.equals(curShapeNameClassName)) {
 			try {
 				newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
@@ -371,14 +371,14 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 				(targetComp != null ? (NodeShape) this.targetComp.getShape() : null));
 		// this.shape = newShape;
 		this.adjustComponentSize();
-
+		
 		for (Iterator<?> it = this.attributeComponents.values().iterator(); it.hasNext();) {
 			AttributeComponent attrComp = (AttributeComponent) it.next();
 			attrComp.setShift(this.getLocation());
 			attrComp.setGraphElementShape(this.shape);
 			attrComp.createNewShape(coordinateSystem);
 		}
-
+		
 		if (geAttr.getUseGradient() > 0) {
 			Edge e = (Edge) geAttr.getAttributable();
 			Vector2d a = AttributeHelper.getPositionVec2d(e.getSource());
@@ -389,12 +389,12 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 			double minY = a.y < b.y ? a.y : b.y;
 			double maxX = a.x > b.x ? a.x : b.x;
 			double maxY = a.y > b.y ? a.y : b.y;
-
+			
 			a.x = 0;
 			a.y = 0;
 			b.x = maxX - minX;
 			b.y = maxY - minY;
-
+			
 			if (ao.x > bo.x) {
 				double t = a.x;
 				a.x = b.x;
@@ -405,28 +405,28 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 				a.y = b.y;
 				b.y = t;
 			}
-
+			
 			gp = new GradientPaint(a.getPoint2D(), geAttr.getFillcolor().getColor(), b.getPoint2D(),
 					geAttr.getFramecolor().getColor(), false);
 		} else
 			gp = null;
-
+		
 		updateEdgeColors();
 	}
-
+	
 	private void updateEdgeColors() {
 		ColorAttribute fillColor = edgeAttr.getFillcolor();
 		fillColorOpaque = fillColor.getColor();
-
+		
 		ColorAttribute frameColor = edgeAttr.getFramecolor();
 		frameColorOpaque = frameColor.getColor();
 	}
-
+	
 	/**
 	 * Called when source or target node shape have not changed.
 	 * 
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	private void nodeComponentChanged() {
 		try {
@@ -435,7 +435,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -443,13 +443,13 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 	 * adjustComponentSize()
 	 */
 	protected void adjustComponentSize() {
-
+		
 		// handle hidden graphelement state
 		if (edgeAttr.getFrameThickness() < 0) {
 			Rectangle bounds = getBounds();
 			setBounds(bounds.x, bounds.y, -bounds.width, -bounds.height);
 		} else {
-
+			
 			Rectangle2D bounds = shape.getRealBounds2D();
 			setBounds((int) Math.floor(bounds.getX()), (int) Math.floor(bounds.getY()),
 					(int) (Math.floor(bounds.getWidth() + 1)), (int) (Math.floor(bounds.getHeight() + 1)));
@@ -461,7 +461,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 		// }
 		// }
 	}
-
+	
 	@Override
 	public String getToolTipText() {
 		try {
@@ -487,14 +487,14 @@ public class EdgeComponent extends AbstractGraphElementComponent implements Edge
 		}
 		return null;
 	}
-
+	
 	private String doubleClickHelp(Edge e) {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			return "";
 		else
 			return "Double-click to edit relations / reactions | ";
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

@@ -54,31 +54,31 @@ import org.jfree.ui.RefineryUtilities;
  * {@link XYPlot}.
  */
 public class XYTextAnnotation extends TextAnnotation implements XYAnnotation, Cloneable, Serializable {
-
+	
 	/** The x-coordinate. */
 	private double x;
-
+	
 	/** The y-coordinate. */
 	private double y;
-
+	
 	/**
 	 * Creates a new annotation to be displayed at the given coordinates. The
 	 * coordinates are specified in data space (they will be converted to Java2D
 	 * space for display).
 	 * 
 	 * @param text
-	 *            the text.
+	 *           the text.
 	 * @param x
-	 *            the x-coordinate.
+	 *           the x-coordinate.
 	 * @param y
-	 *            the y-coordinate.
+	 *           the y-coordinate.
 	 */
 	public XYTextAnnotation(String text, double x, double y) {
 		super(text);
 		this.x = x;
 		this.y = y;
 	}
-
+	
 	/**
 	 * Returns the x coordinate for the text anchor point (measured against the
 	 * domain axis).
@@ -88,18 +88,18 @@ public class XYTextAnnotation extends TextAnnotation implements XYAnnotation, Cl
 	public double getX() {
 		return this.x;
 	}
-
+	
 	/**
 	 * Sets the x coordinate for the text anchor point (measured against the domain
 	 * axis).
 	 * 
 	 * @param x
-	 *            the x coordinate.
+	 *           the x coordinate.
 	 */
 	public void setX(double x) {
 		this.x = x;
 	}
-
+	
 	/**
 	 * Returns the y coordinate for the text anchor point (measured against the
 	 * range axis).
@@ -109,63 +109,63 @@ public class XYTextAnnotation extends TextAnnotation implements XYAnnotation, Cl
 	public double getY() {
 		return this.y;
 	}
-
+	
 	/**
 	 * Sets the y coordinate for the text anchor point (measured against the range
 	 * axis).
 	 * 
 	 * @param y
-	 *            the y coordinate.
+	 *           the y coordinate.
 	 */
 	public void setY(double y) {
 		this.y = y;
 	}
-
+	
 	/**
 	 * Draws the annotation.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 */
 	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea, ValueAxis domainAxis, ValueAxis rangeAxis) {
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(plot.getDomainAxisLocation(), orientation);
 		RectangleEdge rangeEdge = Plot.resolveRangeAxisLocation(plot.getRangeAxisLocation(), orientation);
-
+		
 		float anchorX = (float) domainAxis.valueToJava2D(this.x, dataArea, domainEdge);
 		float anchorY = (float) rangeAxis.valueToJava2D(this.y, dataArea, rangeEdge);
-
+		
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			float tempAnchor = anchorX;
 			anchorX = anchorY;
 			anchorY = tempAnchor;
 		}
-
+		
 		g2.setFont(getFont());
 		g2.setPaint(getPaint());
 		RefineryUtilities.drawRotatedString(getText(), g2, anchorX, anchorY, getTextAnchor(), getRotationAnchor(),
 				getRotationAngle());
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the annotation.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the annotation can't be cloned.
+	 *            if the annotation can't be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

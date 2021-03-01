@@ -36,27 +36,27 @@ package org.jfree.data;
  * @author Achilleus Mantzios
  */
 public interface WindDataset extends XYDataset {
-
+	
 	/**
 	 * Returns the wind direction (should be in the range 0 to 12).
 	 * 
 	 * @param series
-	 *            The series (zero-based index).
+	 *           The series (zero-based index).
 	 * @param item
-	 *            The item (zero-based index).
+	 *           The item (zero-based index).
 	 * @return The wind direction.
 	 */
 	public Number getWindDirection(int series, int item);
-
+	
 	/**
 	 * Returns the wind force on the Beaufort scale (0 to 12).
 	 * 
 	 * @param series
-	 *            The series (zero-based index).
+	 *           The series (zero-based index).
 	 * @param item
-	 *            The item (zero-based index).
+	 *           The item (zero-based index).
 	 * @return The wind force.
 	 */
 	public Number getWindForce(int series, int item);
-
+	
 }

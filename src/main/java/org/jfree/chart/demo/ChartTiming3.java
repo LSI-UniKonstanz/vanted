@@ -54,24 +54,24 @@ import org.jfree.data.XYSeriesCollection;
  * charts per second.
  */
 public class ChartTiming3 implements ActionListener {
-
+	
 	/** A flag that indicates when time is up. */
 	private boolean finished;
-
+	
 	/**
 	 * Creates a new application.
 	 */
 	public ChartTiming3() {
 		// nothing to do
 	}
-
+	
 	/**
 	 * Runs the test.
 	 */
 	public void run() {
-
+		
 		this.finished = false;
-
+		
 		// create a dataset...
 		final XYSeries series = new XYSeries("Random Data");
 		for (int i = 0; i < 1440; i++) {
@@ -80,19 +80,19 @@ public class ChartTiming3 implements ActionListener {
 			series.add(x, y);
 		}
 		final XYDataset data = new XYSeriesCollection(series);
-
+		
 		// create a scatter chart...
 		final boolean withLegend = true;
 		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter plot timing", "X", "Y", data,
 				PlotOrientation.VERTICAL, withLegend, false, false);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		plot.setRenderer(new XYDotRenderer());
-
+		
 		final BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g2 = image.createGraphics();
 		final Rectangle2D chartArea = new Rectangle2D.Double(0, 0, 400, 300);
-
+		
 		// set up the timer...
 		final Timer timer = new Timer(10000, this);
 		timer.setRepeats(false);
@@ -106,30 +106,30 @@ public class ChartTiming3 implements ActionListener {
 			}
 		}
 		System.out.println("DONE");
-
+		
 	}
-
+	
 	/**
 	 * Receives notification of action events (in this case, from the Timer).
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		this.finished = true;
 	}
-
+	
 	/**
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ChartTiming3 app = new ChartTiming3();
 		app.run();
-
+		
 	}
-
+	
 }

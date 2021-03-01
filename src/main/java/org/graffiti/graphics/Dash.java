@@ -17,19 +17,19 @@ package org.graffiti.graphics;
  */
 public class Dash {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * @see java.awt.BasicStroke
 	 */
 	private float[] dashArray;
-
+	
 	/**
 	 * @see java.awt.BasicStroke
 	 */
 	private float dashPhase;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new Dash. Initializes the dashArray with <code>null</code> and
 	 * the dashPhase with 0.0.
@@ -38,33 +38,33 @@ public class Dash {
 		this.dashArray = null;
 		this.dashPhase = 0f;
 	}
-
+	
 	/**
 	 * Constructs a new Dash. Sets the dashArray and the dashPhase to the given
 	 * values.
 	 * 
 	 * @param da
-	 *            the array to set the dashArray to.
+	 *           the array to set the dashArray to.
 	 * @param dp
-	 *            the value to set the dashPhase to.
+	 *           the value to set the dashPhase to.
 	 */
 	public Dash(float[] da, float dp) {
 		this.dashArray = da;
 		this.dashPhase = dp;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the dashArray to the given array.
 	 * 
 	 * @param da
-	 *            the array to set the dashArray to.
+	 *           the array to set the dashArray to.
 	 */
 	public void setDashArray(float[] da) {
 		this.dashArray = da;
 	}
-
+	
 	/**
 	 * Returns the dashArray.
 	 * 
@@ -73,17 +73,17 @@ public class Dash {
 	public float[] getDashArray() {
 		return dashArray;
 	}
-
+	
 	/**
 	 * Sets the dashPhase to the given value.
 	 * 
 	 * @param dp
-	 *            the new value for the dashPhase.
+	 *           the new value for the dashPhase.
 	 */
 	public void setDashPhase(float dp) {
 		this.dashPhase = dp;
 	}
-
+	
 	/**
 	 * Returns the dashPhase.
 	 * 
@@ -92,7 +92,7 @@ public class Dash {
 	public float getDashPhase() {
 		return dashPhase;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Dash))
@@ -100,10 +100,10 @@ public class Dash {
 		Dash otherDash = (Dash) obj;
 		if (Math.abs(otherDash.dashPhase - dashPhase) > Double.MIN_NORMAL)
 			return false;
-
+		
 		if (otherDash.dashArray == null && dashArray == null)
 			return true;
-
+		
 		if (otherDash.dashArray != null && dashArray != null && otherDash.dashArray.length == dashArray.length) {
 			for (int i = 0; i < dashArray.length; i++) {
 				if (Math.abs(otherDash.dashArray[i] - dashArray[i]) > Double.MIN_NORMAL)
@@ -113,7 +113,7 @@ public class Dash {
 		} else
 			return false;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

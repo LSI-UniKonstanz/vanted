@@ -37,29 +37,29 @@ import java.io.Serializable;
  * enum tip in 'Effective Java'
  */
 public class HistogramType implements Serializable {
-
+	
 	/** Frequency histogram. */
 	public static final HistogramType FREQUENCY = new HistogramType("FREQUENCY");
-
+	
 	/** Relative frequency. */
 	public static final HistogramType RELATIVE_FREQUENCY = new HistogramType("RELATIVE_FREQUENCY");
-
+	
 	/** Scale area to one. */
 	public static final HistogramType SCALE_AREA_TO_1 = new HistogramType("SCALE_AREA_TO_1");
-
+	
 	/** The type name. */
 	private String name;
-
+	
 	/**
 	 * Creates a new type.
 	 * 
 	 * @param name
-	 *            the name.
+	 *           the name.
 	 */
 	private HistogramType(final String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * Returns a string representing the object.
 	 * 
@@ -68,37 +68,37 @@ public class HistogramType implements Serializable {
 	public String toString() {
 		return this.name;
 	}
-
+	
 	/**
 	 * Tests this type for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test against.
+	 *           the object to test against.
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (!(obj instanceof HistogramType)) {
 			return false;
 		}
-
+		
 		final HistogramType t = (HistogramType) obj;
 		if (!this.name.equals(t.name)) {
 			return false;
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code value for the object.
 	 * 
@@ -107,13 +107,13 @@ public class HistogramType implements Serializable {
 	public int hashCode() {
 		return this.name.hashCode();
 	}
-
+	
 	/**
 	 * Ensures that serialization returns the unique instances.
 	 * 
 	 * @return the object.
 	 * @throws ObjectStreamException
-	 *             if there is a problem.
+	 *            if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(HistogramType.FREQUENCY)) {
@@ -125,5 +125,5 @@ public class HistogramType implements Serializable {
 		}
 		return null;
 	}
-
+	
 }

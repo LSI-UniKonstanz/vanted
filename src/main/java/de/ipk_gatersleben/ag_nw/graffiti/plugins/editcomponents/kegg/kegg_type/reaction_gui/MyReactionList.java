@@ -25,7 +25,6 @@ import org.ErrorMsg;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 
 /**
- * 
  * @vanted.revision 2.6.5
  */
 public class MyReactionList extends JList<Reaction> {
@@ -39,7 +38,7 @@ public class MyReactionList extends JList<Reaction> {
 	CompoundListEditor l1;
 	CompoundListEditor l2;
 	CompoundListEditor l3;
-
+	
 	public MyReactionList(Reaction[] reactions, JLabel reactionDescription, ReactionIdEditor reactionIdEditor,
 			ReactionTypeSelection reactionTypeSelection, CompoundListEditor l1, CompoundListEditor l2,
 			CompoundListEditor l3) {
@@ -53,17 +52,17 @@ public class MyReactionList extends JList<Reaction> {
 		this.l1 = l1;
 		this.l2 = l2;
 		this.l3 = l3;
-
+		
 		reactionTypeSelection.setCallBack(this);
 		l1.setCallBack(this);
 		l2.setCallBack(this);
 		l3.setCallBack(this);
-
+		
 		reactionIdEditor.setCallBack(this);
-
+		
 		setCellRenderer(getReactionCellRenderer());
 	}
-
+	
 	public void updateReactionInfo(Reaction r) {
 		if (r != null) {
 			reactionDescription.setText(r.toStringWithDetails(true, true));
@@ -72,19 +71,19 @@ public class MyReactionList extends JList<Reaction> {
 			reactionDescription.setText("");
 			// reactionDescription.setToolTipText("");
 		}
-
+		
 		reactionIdEditor.updateReactionSelection(r);
 		reactionTypeSelection.updateReactionSelection(r);
 		l1.updateReactionSelection(r);
 		l2.updateReactionSelection(r);
 		l3.updateReactionSelection(r);
 		repaint();
-
+		
 		JDialog jd = (JDialog) ErrorMsg.findParentComponent(this, JDialog.class);
 		if (jd != null)
 			jd.pack();
 	}
-
+	
 	/**
 	 * Static factory for this <code>MyReactionList</code> list cell renderer.
 	 * 

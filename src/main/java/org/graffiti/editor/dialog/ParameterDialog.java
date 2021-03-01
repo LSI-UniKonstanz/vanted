@@ -23,30 +23,30 @@ import org.graffiti.session.Session;
  */
 public interface ParameterDialog {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the array of edited parameters.
 	 * 
 	 * @return the array of edited parameters.
 	 */
 	Parameter[] getEditedParameters();
-
+	
 	/**
 	 * Returns <code>true</code>, if the user selected the ok button.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	boolean isOkSelected();
-
+	
 	/**
 	 * Sets the <code>ValueEditContainer</code> of this <code>ParameterDialog</code>
 	 * to the specified value.
 	 * 
 	 * @param vec
-	 *            the <code>ValueEditContainer</code> to be set.
+	 *           the <code>ValueEditContainer</code> to be set.
 	 */
 	void setValueEditContainer(ValueEditContainer vec);
-
+	
 	/**
 	 * Checks if all the edit components have a syntactically correct input.
 	 * 
@@ -54,7 +54,7 @@ public interface ParameterDialog {
 	 *         have a syntactically incorrect input.
 	 */
 	List<?> validateComponents();
-
+	
 	Collection<Session> getTargetSessions();
 }
 

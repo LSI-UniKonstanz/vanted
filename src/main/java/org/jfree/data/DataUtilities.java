@@ -34,7 +34,7 @@ package org.jfree.data;
  * see {@link DatasetUtilities}).
  */
 public abstract class DataUtilities {
-
+	
 	/**
 	 * Returns a {@link KeyedValues} instance that contains the cumulative
 	 * percentage values for the data in another {@link KeyedValues} instance.
@@ -42,13 +42,13 @@ public abstract class DataUtilities {
 	 * The percentages are values between 0.0 and 1.0 (where 1.0 = 100%).
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return The cumulative percentages.
 	 */
 	public static KeyedValues getCumulativePercentages(final KeyedValues data) {
-
+		
 		final DefaultKeyedValues result = new DefaultKeyedValues();
-
+		
 		double total = 0.0;
 		for (int i = 0; i < data.getItemCount(); i++) {
 			final Number v = data.getValue(i);
@@ -56,7 +56,7 @@ public abstract class DataUtilities {
 				total = total + v.doubleValue();
 			}
 		}
-
+		
 		double runningTotal = 0.0;
 		for (int i = 0; i < data.getItemCount(); i++) {
 			final Number v = data.getValue(i);
@@ -65,9 +65,9 @@ public abstract class DataUtilities {
 			}
 			result.addValue(data.getKey(i), Double.valueOf(runningTotal / total));
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 }

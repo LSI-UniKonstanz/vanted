@@ -17,7 +17,7 @@ package org.graffiti.plugin.gui;
  */
 public interface GraffitiContainer extends GraffitiComponent {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns an unique identifier for this <code>GraffitiComponent</code>.
 	 * 

@@ -39,23 +39,23 @@ import java.io.Serializable;
  * @author Jelai Wang, jelaiw AT mindspring.com
  */
 public class HistogramBin implements Cloneable, Serializable {
-
+	
 	/** The number of items in the bin. */
 	private int count;
-
+	
 	/** The start boundary. */
 	private double startBoundary;
-
+	
 	/** The end boundary. */
 	private double endBoundary;
-
+	
 	/**
 	 * Creates a new bin.
 	 * 
 	 * @param startBoundary
-	 *            the start boundary.
+	 *           the start boundary.
 	 * @param endBoundary
-	 *            the end boundary.
+	 *           the end boundary.
 	 */
 	public HistogramBin(final double startBoundary, final double endBoundary) {
 		if (startBoundary > endBoundary) {
@@ -65,7 +65,7 @@ public class HistogramBin implements Cloneable, Serializable {
 		this.startBoundary = startBoundary;
 		this.endBoundary = endBoundary;
 	}
-
+	
 	/**
 	 * Returns the number of items in the bin.
 	 * 
@@ -74,14 +74,14 @@ public class HistogramBin implements Cloneable, Serializable {
 	public int getCount() {
 		return this.count;
 	}
-
+	
 	/**
 	 * Increments the item count.
 	 */
 	public void incrementCount() {
 		this.count++;
 	}
-
+	
 	/**
 	 * Returns the start boundary.
 	 * 
@@ -90,7 +90,7 @@ public class HistogramBin implements Cloneable, Serializable {
 	public double getStartBoundary() {
 		return this.startBoundary;
 	}
-
+	
 	/**
 	 * Returns the end boundary.
 	 * 
@@ -99,7 +99,7 @@ public class HistogramBin implements Cloneable, Serializable {
 	public double getEndBoundary() {
 		return this.endBoundary;
 	}
-
+	
 	/**
 	 * Returns the bin width.
 	 * 
@@ -108,12 +108,12 @@ public class HistogramBin implements Cloneable, Serializable {
 	public double getBinWidth() {
 		return this.endBoundary - this.startBoundary;
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test against.
+	 *           the object to test against.
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {
@@ -132,16 +132,16 @@ public class HistogramBin implements Cloneable, Serializable {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone of the bin.
 	 * 
 	 * @return a clone.
 	 * @throws CloneNotSupportedException
-	 *             not thrown by this class.
+	 *            not thrown by this class.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

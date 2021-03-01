@@ -44,54 +44,54 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SelectNod
  * @version $Revision$
  */
 public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewListener, SessionListener {
-
+	
 	/**
 	 * The <code>ImageBundle</code> of the main frame.
 	 */
 	private final ImageBundle iBundle = ImageBundle.getInstance();
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
 	// private Tool label;
-
+	
 	/**
 	 * The tools this plugin provides.
 	 */
 	private final Tool megaCreate;
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
 	private final Tool megaMove;
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
 	// private Tool megaIPKsubstrat;
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
 	// private ToolButton labelButton;
-
+	
 	/**
 	 * The buttons for the tools this plugin provides.
 	 */
 	ToolButton megaCreateButton;
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
 	private final ToolButton megaMoveButton;
-
+	
 	/**
 	 * Creates a new StandardTools object.
 	 */
 	public IPK_StandardTools() {
-
+		
 		this.algorithms = new Algorithm[] { new RecreateView(), new CloseAllWindows(), new EvaluateKGML() };
-
+		
 		// label = new IPK_AdvancedLabelTool();
 		megaCreate = new IPK_MegaCreateTool();
 		megaMove = new IPK_MegaMoveTool();
@@ -100,10 +100,10 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 				// label,
 				// megaIPKsubstrat
 		};
-
+				
 		megaCreateButton = new ToolButton(megaCreate, DefaultEditMode.sid, iBundle.getImageIcon("tool.megaCreate"));
 		megaCreateButton.addAncestorListener(new AncestorListener() {
-
+			
 			public void ancestorAdded(AncestorEvent event) {
 				// look for other tools in the enclosing container
 				// AND REMOVE THEM
@@ -127,23 +127,23 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 				megaCreateButton.getParent().validate();
 				megaCreateButton.getParent().repaint();
 			}
-
+			
 			public void ancestorMoved(AncestorEvent event) {
-
+				
 			}
-
+			
 			public void ancestorRemoved(AncestorEvent event) {
-
+				
 			}
 		});
-
+		
 		megaCreateButton.setToolTipText("Create Nodes and Edges");
-
+		
 		megaMoveButton = new ToolButton(megaMove, DefaultEditMode.sid, iBundle.getImageIcon("tool.megaMove"));
-
+		
 		megaMoveButton.setToolTipText("<html>Select Nodes and Edges (press shift to change selection behaviour)<br>"
 				+ "and move selected Nodes and Edge-Bends and edit Labels");
-
+		
 		megaCreateButton.addKeyListener(getLabelKeylistener());
 		megaMoveButton.addKeyListener(getLabelKeylistener());
 		/*
@@ -157,7 +157,7 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 		// guiComponents[2] = labelButton;
 		// guiComponents[3] = megaIPKsubstratButton;
 	}
-
+	
 	private static KeyListener getLabelKeylistener() {
 		KeyListener result = new KeyListener() {
 			public void keyTyped(KeyEvent e) {
@@ -182,7 +182,7 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 				if (processLabelEdit(c))
 					e.consume();
 			}
-
+			
 			private boolean processLabelEdit(char c) {
 				// if (!(Character.isLetterOrDigit(c) || (c==8) || (c=='\n')))
 				// return false;
@@ -224,21 +224,21 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 					return false;
 				}
 			}
-
+			
 			public void keyPressed(KeyEvent e) {
 			}
-
+			
 			public void keyReleased(KeyEvent e) {
 			}
 		};
 		return result;
 	}
-
+	
 	/**
 	 * Sets the preferences in all tools this plugin provides.
 	 * 
 	 * @param preferences
-	 *            the preferences node for this plugin.
+	 *           the preferences node for this plugin.
 	 * @see org.graffiti.plugin.GenericPlugin#configure(Preferences)
 	 */
 	@Override
@@ -249,12 +249,12 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 		// label.setPrefs(this.prefs.node("labelTool"));
 		// megaIPKsubstrat.setPrefs(this.prefs.node("IPKsubstrat"));
 	}
-
+	
 	// JComponent lastComp = null;
 	// KeyListener lastListener = null;
-
+	
 	public void viewChanged(View newView) {
-
+		
 		if (newView == null || !(newView instanceof GraffitiView)) {
 			megaCreateButton.setEnabled(false);
 			megaMoveButton.setEnabled(false);
@@ -262,7 +262,7 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 			megaCreateButton.setEnabled(true);
 			megaMoveButton.setEnabled(true);
 		}
-
+		
 		// if (lastComp!=null && lastListener!=null) {
 		// lastComp.removeKeyListener(lastListener);
 		// lastComp = null;
@@ -284,17 +284,17 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 		// }});
 		// }
 	}
-
+	
 	@Override
 	public boolean isViewListener() {
 		return true;
 	}
-
+	
 	@Override
 	public boolean isSessionListener() {
 		return true;
 	}
-
+	
 	public void sessionChanged(Session s) {
 		if (s == null) {
 			megaCreateButton.setEnabled(false);
@@ -305,7 +305,7 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 			viewChanged(s.getActiveView());
 		}
 	}
-
+	
 	public void sessionDataChanged(Session s) {
 		// empty
 	}

@@ -15,16 +15,16 @@ import javax.swing.JPopupMenu;
  * @version $Revision$
  */
 public interface IContextMenuManager {
-
+	
 	/**
 	 * This Method returns a Context Menu.
 	 * 
 	 * @param e
-	 *            The MouseEvent to be processed.
+	 *           The MouseEvent to be processed.
 	 * @return ContextMenu for the MouseEvent
 	 */
 	public JPopupMenu getContextMenu(MouseEvent e);
-
+	
 	// /**
 	// * This Method processes a mouse click.
 	// *
@@ -37,14 +37,14 @@ public interface IContextMenuManager {
 	// * the mouse event should be processed by the caller.
 	// */
 	// public boolean processMouseButton(MouseEvent e);
-
+	
 	/**
 	 * This Method should be called by the editing tools in the mouse entered
 	 * event-handler. It should activate the view and session where the mouse button
 	 * is over.
 	 * 
 	 * @param e
-	 *            The <code>MouseEvent</code>.
+	 *           The <code>MouseEvent</code>.
 	 */
 	public void ensureActiveSession(MouseEvent e);
 }

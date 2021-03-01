@@ -21,8 +21,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EtchedBorder;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
+
 /**
- * 
  * @vanted.revision 2.6.5
  */
 public class MyRelationList extends JList<Relation> {
@@ -35,7 +35,7 @@ public class MyRelationList extends JList<Relation> {
 	JLabel relationDescription;
 	SubtypeCompoundEditor subtypeCompoundEditor;
 	SrcTargetEditor srcTargetEditor;
-
+	
 	public MyRelationList(Relation[] relations, RelationTypeEditor relationTypeEditor,
 			SubComponentTypesEditor subComponentTypesEditor, JLabel relationDescription,
 			SrcTargetEditor srcTargetEditor, SubtypeCompoundEditor subtypeCompoundEditor) {
@@ -52,11 +52,11 @@ public class MyRelationList extends JList<Relation> {
 		subComponentTypesEditor.setCallBack(this);
 		srcTargetEditor.setCallBack(this);
 		subtypeCompoundEditor.setCallBack(this);
-
+		
 		setCellRenderer(getRelationCellRenderer());
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-
+	
 	public void updateRelationInfo(Relation r) {
 		relationTypeEditor.updateRelationSelection(r);
 		subComponentTypesEditor.updateRelationSelection(r);
@@ -68,7 +68,7 @@ public class MyRelationList extends JList<Relation> {
 		subtypeCompoundEditor.updateRelationSelection(r);
 		repaint();
 	}
-
+	
 	private static ListCellRenderer<Relation> getRelationCellRenderer() {
 		ListCellRenderer<Relation> res = new ListCellRenderer<Relation>() {
 			public Component getListCellRendererComponent(JList<? extends Relation> list, Relation value, int index, boolean isSelected,

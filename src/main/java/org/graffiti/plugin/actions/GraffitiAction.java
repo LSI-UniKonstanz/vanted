@@ -32,32 +32,32 @@ public abstract class GraffitiAction extends AbstractAction {
 	 */
 	private static final long serialVersionUID = -1318016336412400036L;
 	// ~ Instance fields ========================================================
-
+	
 	private static HashSet<GraffitiAction> knownActions = new HashSet<GraffitiAction>();
-
+	
 	/** The <code>ImageBundle</code> instance. */
 	protected ImageBundle iBundle = ImageBundle.getInstance();
-
+	
 	/** The main frame. */
 	protected MainFrame mainFrame;
-
+	
 	/** The abstract name of the action. */
 	protected String name;
-
+	
 	protected String helpID;
-
+	
 	/** The <code>StringBundle</code> instance. */
 	protected StringBundle sBundle = StringBundle.getInstance();
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new GraffitiAction from the given name.
 	 * 
 	 * @param name
-	 *            the name for the action
+	 *           the name for the action
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiAction(String name, MainFrame mainFrame, String helpID) {
 		super(name);
@@ -67,7 +67,7 @@ public abstract class GraffitiAction extends AbstractAction {
 		this.helpID = helpID;
 		knownActions.add(this);
 	}
-
+	
 	public static boolean performAction(String name) {
 		GraffitiAction ka = null;
 		for (GraffitiAction g : knownActions) {
@@ -82,16 +82,16 @@ public abstract class GraffitiAction extends AbstractAction {
 		} else
 			return false;
 	}
-
+	
 	protected Graph getGraph() {
 		if (mainFrame == null || mainFrame.getActiveSession() == null)
 			return null;
 		else
 			return mainFrame.getActiveSession().getGraph();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns <code>true</code>, if this action is enabled.
 	 * 
@@ -99,7 +99,7 @@ public abstract class GraffitiAction extends AbstractAction {
 	 */
 	@Override
 	public abstract boolean isEnabled();
-
+	
 	/**
 	 * Returns the help context for this action.
 	 * 
@@ -108,7 +108,7 @@ public abstract class GraffitiAction extends AbstractAction {
 	public HelpContext getHelpContext() {
 		return new HelpContext(helpID);
 	}
-
+	
 	/**
 	 * @see javax.swing.AbstractAction#setEnabled(boolean)
 	 */
@@ -121,7 +121,7 @@ public abstract class GraffitiAction extends AbstractAction {
 			super.setEnabled(!enableNow);
 		super.setEnabled(enableNow);
 	}
-
+	
 	/**
 	 * Returns the abstract name of the action.
 	 * 
@@ -130,7 +130,7 @@ public abstract class GraffitiAction extends AbstractAction {
 	public String getName() {
 		return name;
 	}
-
+	
 	/**
 	 * Updates the state of the action. Calls:
 	 * <code>setEnabled(isEnabled());</code>.
@@ -138,38 +138,38 @@ public abstract class GraffitiAction extends AbstractAction {
 	public void update() {
 		setEnabled(isEnabled());
 	}
-
+	
 	/**
 	 * Shows an error in a modal dialog box.
 	 * 
 	 * @param msg
-	 *            the message to be shown.
+	 *           the message to be shown.
 	 */
 	protected void showError(String msg) {
 		JOptionPane.showMessageDialog(mainFrame, msg, StringBundle.getInstance().getString("message.dialog.title"),
 				JOptionPane.ERROR_MESSAGE);
 	}
-
+	
 	/**
 	 * Shows a warning in a modal dialog box.
 	 * 
 	 * @param msg
-	 *            the message to be shown.
+	 *           the message to be shown.
 	 */
 	protected void showWarning(String msg) {
 		JOptionPane.showMessageDialog(mainFrame, msg, StringBundle.getInstance().getString("message.dialog.title"),
 				JOptionPane.WARNING_MESSAGE);
 	}
-
+	
 	public static void updateAllActions() {
 		if (MainFrame.blockUpdates)
 			return;
 		ArrayList<GraffitiAction> ka = new ArrayList<GraffitiAction>();
 		synchronized (knownActions) {
-
+			
 			ka.addAll(knownActions);
 		}
-
+		
 		for (GraffitiAction ga : ka) {
 			ga.update();
 		}

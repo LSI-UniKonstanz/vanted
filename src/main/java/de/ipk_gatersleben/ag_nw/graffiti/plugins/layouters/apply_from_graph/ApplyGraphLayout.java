@@ -38,35 +38,35 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.hamming_distance.Ham
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.hamming_distance.WorkSettings;
 
 public class ApplyGraphLayout implements Algorithm {
-
+	
 	Graph g;
 	Selection s;
-
+	
 	public String getName() {
 		return "Apply from Layouted File";
 	}
-
+	
 	public void setParameters(Parameter[] params) {
 	}
-
+	
 	public Parameter[] getParameters() {
 		return null;
 	}
-
+	
 	public void attach(Graph g, Selection selection) {
 		this.g = g;
 		this.s = selection;
 	}
-
+	
 	public void check() throws PreconditionException {
 		if (g == null)
 			throw new PreconditionException("No active graph");
 		if (g.getNumberOfNodes() <= 0)
 			throw new PreconditionException("Graph contains no nodes!");
 	}
-
+	
 	public void execute() {
-
+		
 		MainFrame.showMessageDialog("<html>" + "With this command you may apply the layout of another graph (file)<br>"
 				+ "to the active graph.<br>"
 				+ "A node matching is done on on the basis of node-labels. If a label in<br>"
@@ -87,9 +87,9 @@ public class ApplyGraphLayout implements Algorithm {
 				+ "certain graphical aspects, supported by this application, but which are<br>"
 				+ "not supported by the DOT format or by the DOT export/import - so this<br>"
 				+ "is not a good choice for many cases)", "Apply Layout");
-
+		
 		WorkSettings hammingCalculationSettings = new WorkSettings(true, 1, true, false, 1, 0);
-
+		
 		Collection<File> files = FileOpenAction.getGraphFilesFromUser();
 		if (files != null) {
 			Graph withLowestDistance = null;
@@ -142,7 +142,7 @@ public class ApplyGraphLayout implements Algorithm {
 			}
 		}
 	}
-
+	
 	/**
 	 * @param layoutedGraph
 	 * @return Nodes which are not relayouted, because they could not be found in
@@ -171,10 +171,10 @@ public class ApplyGraphLayout implements Algorithm {
 		else
 			workNodes.addAll(g.getNodes());
 		ArrayList<Node> nodesWithNoMatch = new ArrayList<Node>();
-
+		
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		HashMap<Node, Node> nodes2refNode = new HashMap<Node, Node>();
-
+		
 		for (Node n : workNodes) {
 			String lbl = AttributeHelper.getLabel(n, null);
 			if (lbl != null) {
@@ -186,7 +186,7 @@ public class ApplyGraphLayout implements Algorithm {
 				} else if (possiblePositions != null && possiblePositions.size() > 1) {
 					int idxWithLowestDistance = -1;
 					int lowestNodeDistance = Integer.MAX_VALUE;
-
+					
 					for (int i = 0; i < possiblePositions.size(); i++) {
 						Node layoutedNode = label2otherNode.get(lbl).get(i);
 						int dist = calcNodeDifferenceDistance(n, layoutedNode);
@@ -195,7 +195,7 @@ public class ApplyGraphLayout implements Algorithm {
 							idxWithLowestDistance = i;
 						}
 					}
-
+					
 					if (idxWithLowestDistance >= 0) {
 						nodes2newPositions.put(n, possiblePositions.get(idxWithLowestDistance));
 						nodes2refNode.put(n, possibleNodes.get(idxWithLowestDistance));
@@ -233,7 +233,7 @@ public class ApplyGraphLayout implements Algorithm {
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, commandName);
 		return nodesWithNoMatch;
 	}
-
+	
 	private static void copyBends(Edge e, Edge e2) {
 		ArrayList<Vector2d> eb = AttributeHelper.getEdgeBends(e);
 		AttributeHelper.removeEdgeBends(e2);
@@ -242,7 +242,7 @@ public class ApplyGraphLayout implements Algorithm {
 		}
 		AttributeHelper.setEdgeBendStyle(e2, AttributeHelper.getEdgeBendStyle(e));
 	}
-
+	
 	public static int calcNodeDifferenceDistance(Node n, Node layoutedNode) {
 		HashSet<String> surroundingLabelsA = new HashSet<String>();
 		for (Node nei : n.getNeighbors()) {
@@ -274,48 +274,48 @@ public class ApplyGraphLayout implements Algorithm {
 		differences += Math.abs(n.getDegree() - layoutedNode.getDegree());
 		return differences;
 	}
-
+	
 	public void reset() {
 	}
-
+	
 	public String getCategory() {
 		return null;
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.LAYOUT));
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return null;
 	}
-
+	
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-
+	
 	public boolean showMenuIcon() {
 		return false;
 	}
-
+	
 	public KeyStroke getAcceleratorKeyStroke() {
 		return null;
 	}
-
+	
 	public String getDescription() {
 		return null;
 	}
-
+	
 	public ActionEvent getActionEvent() {
 		return null;
 	}
-
+	
 	public void setActionEvent(ActionEvent a) {
 		// empty
 	}
-
+	
 	public boolean mayWorkOnMultipleGraphs() {
 		return false;
 	}

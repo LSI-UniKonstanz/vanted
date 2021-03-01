@@ -35,12 +35,12 @@ package org.jfree.data;
  * @see DefaultKeyedValue
  */
 public interface KeyedValue extends Value {
-
+	
 	/**
 	 * Returns the key associated with the value.
 	 * 
 	 * @return the key.
 	 */
 	public Comparable getKey();
-
+	
 }

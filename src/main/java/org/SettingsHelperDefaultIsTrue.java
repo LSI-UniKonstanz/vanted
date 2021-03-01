@@ -13,15 +13,15 @@ import javax.swing.Timer;
  * @author klukas
  */
 public class SettingsHelperDefaultIsTrue implements HelperClass {
-
+	
 	public boolean isEnabled(String name) {
 		return !new File(ReleaseInfo.getAppFolderWithFinalSep() + "feature_disabled_" + encode(name)).exists();
 	}
-
+	
 	public static String encode(String name) {
 		return StringManipulationTools.removeHTMLtags(name).replaceAll(" ", "_").replaceAll("/", "_");
 	}
-
+	
 	public void setEnabled(String name, boolean b) {
 		if (!b)
 			try {
@@ -33,7 +33,7 @@ public class SettingsHelperDefaultIsTrue implements HelperClass {
 			new File(ReleaseInfo.getAppFolderWithFinalSep() + "feature_disabled_" + encode(name)).delete();
 		}
 	}
-
+	
 	public JComponent getBooleanSettingsEditor(String description, final String option, final Runnable enable,
 			final Runnable disable) {
 		final JCheckBox result = new JCheckBox(description, isEnabled(option));
@@ -62,5 +62,5 @@ public class SettingsHelperDefaultIsTrue implements HelperClass {
 		t.start();
 		return result;
 	}
-
+	
 }

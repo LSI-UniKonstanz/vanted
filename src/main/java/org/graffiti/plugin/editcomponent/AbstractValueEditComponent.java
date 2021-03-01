@@ -22,34 +22,34 @@ import org.graffiti.plugin.Displayable;
  */
 public abstract class AbstractValueEditComponent extends ValueEditComponentAdapter {
 	// ~ Instance fields ========================================================
-
+	
 	/** The field to edit the value of the displayable. */
 	protected JComponent editField;
-
+	
 	/**
 	 * Set to true if this component should display nothing instead of the value of
 	 * the attribute it represents.
 	 */
 	public boolean showEmpty = false;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	protected AbstractValueEditComponent() {
 		this(null);
 	}
-
+	
 	/**
 	 * Constructs a new <code>AbstractValueEditComponent</code>.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	protected AbstractValueEditComponent(Displayable disp) {
 		super(disp);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the displayable.
 	 * 
@@ -58,7 +58,7 @@ public abstract class AbstractValueEditComponent extends ValueEditComponentAdapt
 	public void setDisplayable(Displayable disp) {
 		this.displayable = disp;
 	}
-
+	
 	/**
 	 * Returns the <code>Attribute</code> instance the current
 	 * <code>ValueEditComponent</code> contains.
@@ -69,29 +69,29 @@ public abstract class AbstractValueEditComponent extends ValueEditComponentAdapt
 	public Displayable getDisplayable() {
 		return this.displayable;
 	}
-
+	
 	public void setEnabled(boolean enabled) {
 		getComponent().setEnabled(enabled);
 	}
-
+	
 	public boolean isEnabled() {
 		return getComponent().isEnabled();
 	}
-
+	
 	public void setShowEmpty(boolean showEmpty) {
 		this.showEmpty = showEmpty;
 		setEditFieldValue();
 	}
-
+	
 	public boolean getShowEmpty() {
 		return this.showEmpty;
 	}
-
+	
 	/**
 	 * Called after a change of an displayable took place.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
@@ -99,17 +99,17 @@ public abstract class AbstractValueEditComponent extends ValueEditComponentAdapt
 			setEditFieldValue();
 		}
 	}
-
+	
 	/**
 	 * Called before a change of an displayable takes place.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	@Override
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	// /**
 	// * Called just before an displayable is added.
 	// *

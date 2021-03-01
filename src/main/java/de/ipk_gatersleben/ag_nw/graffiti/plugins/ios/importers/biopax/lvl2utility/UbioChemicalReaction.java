@@ -6,7 +6,7 @@ import org.graffiti.graph.GraphElement;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class UbioChemicalReaction extends UtilitySuperClassToGraph {
-
+	
 	public static void addAttributesToNode(GraphElement elem, biochemicalReaction i) {
 		// first set label to node
 		setLabels(elem, i);
@@ -23,7 +23,7 @@ public class UbioChemicalReaction extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setSynonyms(elem, i.getSYNONYMS());
 		setXRef(elem, i.getXREF());
-
+		
 		setDeltaG(elem, i.getDELTA_G());
 		setDeltaH(elem, i.getDELTA_H());
 		setDeltaS(elem, i.getDELTA_S());
@@ -31,5 +31,5 @@ public class UbioChemicalReaction extends UtilitySuperClassToGraph {
 		setKPrime(elem, i.getKEQ());
 		setSpontaneous(elem, i.getSPONTANEOUS());
 	}
-
+	
 }

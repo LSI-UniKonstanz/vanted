@@ -1,10 +1,10 @@
-//==============================================================================
+// ==============================================================================
 //
-//   GraphMLReader.java
+// GraphMLReader.java
 //
-//   Copyright (c) 2001-2004 Gravisto Team, University of Passau
+// Copyright (c) 2001-2004 Gravisto Team, University of Passau
 //
-//==============================================================================
+// ==============================================================================
 // $Id: GraphMLReader.java,v 1.7 2011/01/16 16:39:47 klukas Exp $
 
 package org.graffiti.plugins.ios.importers.graphml;
@@ -25,17 +25,17 @@ import org.graffiti.plugins.ios.importers.graphml.parser.GraphMLParser;
  */
 public class GraphMLReader extends AbstractInputSerializer implements InputSerializer {
 	// ~ Static fields/initializers =============================================
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/** The parser for reading the graphml input. */
 	private GraphMLParser graphmlParser;
-
+	
 	/** The supported extension. */
 	private String[] extensions = { ".graphml" /* , ".xml" */ };
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>GraphMLReader</code>.
 	 */
@@ -43,16 +43,16 @@ public class GraphMLReader extends AbstractInputSerializer implements InputSeria
 		super();
 		this.graphmlParser = new GraphMLParser();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/*
 	 *
 	 */
 	public String[] getExtensions() {
 		return this.extensions;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -61,7 +61,7 @@ public class GraphMLReader extends AbstractInputSerializer implements InputSeria
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "GraphML" /* , "GraphXML" */ };
 	}
-
+	
 	/*
 	 *
 	 */
@@ -70,7 +70,7 @@ public class GraphMLReader extends AbstractInputSerializer implements InputSeria
 		this.graphmlParser.parse(in, g);
 		in.close();
 	}
-
+	
 	public void read(Reader reader, Graph newGraph) throws Exception {
 		this.graphmlParser.parse(reader, newGraph);
 	}

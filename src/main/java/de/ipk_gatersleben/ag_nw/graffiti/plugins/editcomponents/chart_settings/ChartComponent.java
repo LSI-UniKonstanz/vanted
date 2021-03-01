@@ -6,15 +6,15 @@ import javax.swing.JComponent;
 import org.graffiti.graph.GraphElement;
 
 public interface ChartComponent {
-
+	
 	public String getName();
-
+	
 	public String getShortDescription();
-
+	
 	public ImageIcon getIcon();
-
+	
 	public JComponent getChart(GraphElement ge);
-
+	
 	public String getComboboxText();
-
+	
 }

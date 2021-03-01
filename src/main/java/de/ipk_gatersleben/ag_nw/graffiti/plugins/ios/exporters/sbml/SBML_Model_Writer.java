@@ -11,14 +11,14 @@ import org.sbml.jsbml.Model;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_Model_Writer extends SBML_SBase_Writer {
-
+	
 	/**
 	 * Add attributes to the model. The ID has already been set when it exists
 	 * 
 	 * @param model
-	 *            has the attribute which will be set
+	 *           has the attribute which will be set
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 */
 	public void addModel(Model model, Graph g) {
 		addSBaseAttributes(model, g);
@@ -26,7 +26,7 @@ public class SBML_Model_Writer extends SBML_SBase_Writer {
 		// "SBML Model"+ATT+"ID");
 		// if(id.length()>0)
 		// model.setId(id);
-
+		
 		/*
 		 * if(AttributeHelper.hasAttribute(annotationNode, "SBML", "modelannotation")){
 		 * Annotation anno =

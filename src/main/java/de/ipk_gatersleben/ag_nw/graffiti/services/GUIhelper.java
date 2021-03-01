@@ -56,7 +56,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class GUIhelper {
-
+	
 	public static Component getHelpTextComponent(String plainText, String title, String helpTopic) {
 		JPanel result = new JPanel();
 		plainText = plainText.replaceAll("<br>", "\n");
@@ -72,7 +72,7 @@ public class GUIhelper {
 		fp.addGuiComponentRow(new JLabel(""), helpText, false);
 		fp.layoutRows();
 		fp.setFrameColor(Color.LIGHT_GRAY, Color.WHITE, 1, 5);
-
+		
 		double border = 2;
 		double topBorder = 12;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
@@ -81,27 +81,27 @@ public class GUIhelper {
 		result.add(fp, "1,1");
 		return result;
 	}
-
+	
 	// returns index of pressed button or -1 if no button was clicked but the
 	// window is
 	// closed
 	public static int showMessageDialog(Object guiComponentOrText, String title, String[] buttons) {
-
+		
 		JComponent content = null;
-
+		
 		if (guiComponentOrText instanceof String) {
 			content = new JLabel((String) guiComponentOrText);
 			((JLabel) content).setOpaque(false);
 			((JLabel) content).setBackground(null);
 		} else
 			content = (JComponent) guiComponentOrText;
-
+		
 		MyDialog md = new MyDialog(MainFrame.getInstance(), title, buttons, content, 5);
 		md.setBounds(MainFrame.getRelativeCenterPosition(md));
 		md.setVisible(true);
 		return md.getReturnValue();
 	}
-
+	
 	public static JComponent getWebsiteButton(String title, final String url, final String opt_local_folder,
 			final String optIntroText, final String optIntroDialogTitle) {
 		JButton res = new JButton(title);
@@ -109,7 +109,7 @@ public class GUIhelper {
 		res.addActionListener(getDialogAction(url, opt_local_folder, optIntroText, optIntroDialogTitle));
 		return res;
 	}
-
+	
 	private static ActionListener getDialogAction(final String url, final String opt_local_folder,
 			final String optIntroText, final String optIntroDialogTitle) {
 		return new ActionListener() {
@@ -138,19 +138,19 @@ public class GUIhelper {
 			}
 		};
 	}
-
+	
 	public static JComponent getWebsiteDownloadButton(final String title, final String optUrlManualDownloadWebsite,
 			final String target_dir_null_ask_user, final String optIntroText, final String[] downloadURLs,
 			final String optIntroDialogTitle, final FileDownloadStatusInformationProvider statusProvider) {
 		return getWebsiteDownloadButton(title, optUrlManualDownloadWebsite, target_dir_null_ask_user, optIntroText,
 				downloadURLs, optIntroDialogTitle, statusProvider, null);
 	}
-
+	
 	public static JComponent getWebsiteDownloadButton(final String title, final String optUrlManualDownloadWebsite,
 			final String target_dir_null_ask_user, final String optIntroText, final String[] downloadURLs,
 			final String optIntroDialogTitle, final FileDownloadStatusInformationProvider statusProvider,
 			final Runnable optFinishSwingTask) {
-
+		
 		final JButton res = new JMButton("Download/Update");
 		res.setToolTipText("<html>Click button to start automatic download<br><code><b>Check License first!");
 		res.addActionListener(new ActionListener() {
@@ -170,7 +170,7 @@ public class GUIhelper {
 				} else {
 					opt_local_folder = target_dir_null_ask_user;
 				}
-
+				
 				res.setEnabled(false);
 				res.setText("Downloading");
 				final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
@@ -200,7 +200,7 @@ public class GUIhelper {
 								//
 							}
 						}
-
+						
 						if (!allOK) {
 							res.setEnabled(true);
 							res.setText("<html><small>Automatic download failure<br>Click here for manual download");
@@ -236,27 +236,27 @@ public class GUIhelper {
 		});
 		return res;
 	}
-
+	
 	public static boolean performDownload(String downloadURL, String opt_local_folder,
 			BackgroundTaskStatusProviderSupportingExternalCallImpl status) {
 		return performDownload(downloadURL, opt_local_folder, status, null);
 	}
-
+	
 	public static ArrayList<String> performDirectoryListing(String downloadURL,
 			BackgroundTaskStatusProviderSupportingExternalCall status) {
 		if (status == null)
 			status = new BackgroundTaskConsoleLogger("downloading: " + downloadURL, "please wait", false);
 		String server, remote;
-
+		
 		runIdx++;
 		final int thisRun = runIdx;
-
+		
 		server = downloadURL.substring("ftp://".length());
 		remote = server.substring(server.indexOf("/") + "/".length());
 		server = server.substring(0, server.indexOf("/"));
-
+		
 		ArrayList<String> result = null;
-
+		
 		final FTPClient ftp;
 		ThreadSafeOptions tso;
 		synchronized (host2ftp) {
@@ -269,11 +269,11 @@ public class GUIhelper {
 			ftp = (FTPClient) tso.getParam(0, null);
 		}
 		status.setCurrentStatusValue(0);
-
+		
 		try {
 			result = listFiles(status, downloadURL, server, remote, ftp);
 			status.setCurrentStatusText2("Finished: " + downloadURL);
-
+			
 			BackgroundTaskHelper.executeLaterOnSwingTask(10000, new Runnable() {
 				public void run() {
 					try {
@@ -293,7 +293,7 @@ public class GUIhelper {
 		}
 		return result;
 	}
-
+	
 	public static boolean performDownload(String downloadURL, String opt_local_folder,
 			BackgroundTaskStatusProviderSupportingExternalCallImpl status, String targetfilename) {
 		if (status == null)
@@ -307,7 +307,7 @@ public class GUIhelper {
 			target += "/";
 		String targetFileName = target + fileName;
 		boolean downloadOK = true;
-
+		
 		OutputStream out = null;
 		URLConnection conn = null;
 		InputStream in = null;
@@ -371,10 +371,10 @@ public class GUIhelper {
 		}
 		return downloadOK;
 	}
-
+	
 	private static final HashMap<String, ThreadSafeOptions> host2ftp = new HashMap<String, ThreadSafeOptions>();
 	private static int runIdx = 0;
-
+	
 	private static boolean processFTPdownload(final BackgroundTaskStatusProviderSupportingExternalCallImpl status,
 			String downloadURL, String targetFileName, ObjectRef lastStatus) throws InterruptedException {
 		runIdx++;
@@ -382,11 +382,11 @@ public class GUIhelper {
 		status.setCurrentStatusText1(downloadURL);
 		status.setCurrentStatusText2("FTP DOWNLOAD...");
 		String server, remote;
-
+		
 		server = downloadURL.substring("ftp://".length());
 		remote = server.substring(server.indexOf("/") + "/".length());
 		server = server.substring(0, server.indexOf("/"));
-
+		
 		final FTPClient ftp;
 		ThreadSafeOptions tso;
 		synchronized (host2ftp) {
@@ -400,10 +400,10 @@ public class GUIhelper {
 		}
 		status.setCurrentStatusValue(0);
 		boolean res;
-
+		
 		try {
 			boolean wait = false;
-
+			
 			BackgroundTaskHelper.lockAquire(server, 1);
 			if (wait) {
 				while (wait) {
@@ -427,7 +427,7 @@ public class GUIhelper {
 		}
 		return res;
 	}
-
+	
 	private static boolean processDownload(final BackgroundTaskStatusProviderSupportingExternalCallImpl status,
 			String downloadURL, String targetFileName, ObjectRef lastStatus, final int thisRun, String server,
 			String remote, final FTPClient ftp) {
@@ -437,18 +437,18 @@ public class GUIhelper {
 		username = "anonymous@" + server;
 		password = "anonymous";
 		local = targetFileName;
-
+		
 		final ObjectRef myoutputstream = new ObjectRef();
-
+		
 		if (ftp == null)
 			return false;
-
+		
 		ftp.addProtocolCommandListener(new ProtocolCommandListener() {
 			public void protocolCommandSent(ProtocolCommandEvent arg0) {
 				// System.out.print("out: " + arg0.getMessage());
 				status.setCurrentStatusText1("Command: " + arg0.getMessage());
 			}
-
+			
 			public void protocolReplyReceived(ProtocolCommandEvent arg0) {
 				// System.out.print("in : " + arg0.getMessage());
 				status.setCurrentStatusText2("Message: " + arg0.getMessage());
@@ -473,9 +473,9 @@ public class GUIhelper {
 				}
 			}
 		});
-
+		
 		System.out.println("FTP DOWNLOAD: " + downloadURL);
-
+		
 		try {
 			if (ftp.isConnected()) {
 				status.setCurrentStatusText2("Using open FTP connection");
@@ -504,9 +504,9 @@ public class GUIhelper {
 			}
 			status.setCurrentStatusText1("Start download...");
 			status.setCurrentStatusText2("Please Wait.");
-
+			
 			// ftp.listFiles(pathname);
-
+			
 			OutputStream output = new MyOutputStream(lastStatus, status, new FileOutputStream(local));
 			myoutputstream.setObject(output);
 			ftp.setRemoteVerificationEnabled(false);
@@ -550,14 +550,14 @@ public class GUIhelper {
 			return false;
 		}
 	}
-
+	
 	private static ArrayList<String> listFiles(final BackgroundTaskStatusProviderSupportingExternalCall status,
 			String downloadURL, String server, String remotePath, final FTPClient ftp) {
 		String username;
 		String password;
 		username = "anonymous@" + server;
 		password = "anonymous";
-
+		
 		final ObjectRef myoutputstream = new ObjectRef();
 		if (ftp == null)
 			return new ArrayList<String>();
@@ -565,7 +565,7 @@ public class GUIhelper {
 			public void protocolCommandSent(ProtocolCommandEvent arg0) {
 				status.setCurrentStatusText1("Command: " + arg0.getMessage());
 			}
-
+			
 			public void protocolReplyReceived(ProtocolCommandEvent arg0) {
 				status.setCurrentStatusText2("Message: " + arg0.getMessage());
 				if (myoutputstream.getObject() != null) {
@@ -589,9 +589,9 @@ public class GUIhelper {
 				}
 			}
 		});
-
+		
 		System.out.println("FTP LIST DIRECTORY: " + downloadURL);
-
+		
 		try {
 			if (ftp.isConnected()) {
 				status.setCurrentStatusText2("Using open FTP connection");
@@ -620,17 +620,17 @@ public class GUIhelper {
 			}
 			status.setCurrentStatusText1("Start download...");
 			status.setCurrentStatusText2("Please Wait.");
-
+			
 			ftp.setRemoteVerificationEnabled(false);
-
+			
 			FTPFile[] res = ftp.listFiles(remotePath);
-
+			
 			ArrayList<String> result = new ArrayList<String>();
-
+			
 			for (FTPFile r : res) {
 				result.add(r.getName());
 			}
-
+			
 			return result;
 		} catch (Exception err) {
 			ErrorMsg.addErrorMessage(err);
@@ -648,7 +648,7 @@ public class GUIhelper {
 }
 
 class MyDialog extends JDialog {
-
+	
 	/**
 	 * 
 	 */
@@ -658,7 +658,7 @@ class MyDialog extends JDialog {
 	private int returnValue;
 	private final JComponent mainView;
 	private final double border;
-
+	
 	public MyDialog(Frame instance, String title, String[] buttons, JComponent mainView, int border) {
 		super(instance);
 		this.title = title;
@@ -668,15 +668,15 @@ class MyDialog extends JDialog {
 		setReturnValue(-1);
 		myInit();
 	}
-
+	
 	private void myInit() {
 		super.dialogInit();
 		setTitle(title);
-
+		
 		double[][] size = { { border, TableLayoutConstants.PREFERRED, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, border } }; // Rows
 		setLayout(new TableLayout(size));
-
+		
 		JButton[] commandButtons = new JButton[buttons.length];
 		ArrayList<JComponent> buttonArr = new ArrayList<JComponent>();
 		for (int i = 0; i < buttons.length; i++) {
@@ -701,36 +701,36 @@ class MyDialog extends JDialog {
 				TableLayout.getMultiSplit(buttonArr, TableLayoutConstants.PREFERRED, 5, 0, 5, 3),
 				TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED), "1,1");
 		validate();
-
+		
 		setResizable(false);
 		// setSize(getPreferredSize());
 		setModal(true);
 		getRootPane().setDefaultButton(commandButtons[0]);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
+		
 		final String ESC_ACTION_KEY = "ESC_ACTION_KEY";
 		getRootPane().getActionMap().put(ESC_ACTION_KEY, new AbstractAction() {
-
+			
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = -1251109539079548033L;
-
+			
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();
 			}
 		});
-
+		
 		getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), ESC_ACTION_KEY);
 		pack();
 	}
-
+	
 	public void setReturnValue(int returnValue) {
 		this.returnValue = returnValue;
 	}
-
+	
 	public int getReturnValue() {
 		return returnValue;
 	}

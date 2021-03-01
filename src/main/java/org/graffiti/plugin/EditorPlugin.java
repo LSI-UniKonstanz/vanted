@@ -25,21 +25,21 @@ import org.graffiti.plugin.view.GraffitiShape;
  */
 public interface EditorPlugin extends GenericPlugin {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns a mapping between attribute paths and attributeComponent classes.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents();
-
+	
 	/**
 	 * Returns the array of <code>GraffitiComponent</code>s the plugin contains.
 	 * 
 	 * @return the array of <code>GraffitiComponent</code>s the plugin contains.
 	 */
 	public GraffitiComponent[] getGUIComponents();
-
+	
 	/**
 	 * Returns the array of <code>org.graffiti.plugin.mode.Mode</code>s the plugin
 	 * contains.
@@ -48,7 +48,7 @@ public interface EditorPlugin extends GenericPlugin {
 	 *         contains.
 	 */
 	public Mode[] getModes();
-
+	
 	/**
 	 * Returns the array of <code>org.graffiti.plugin.view.GraffitiShape</code>s the
 	 * plugin contains.
@@ -57,7 +57,7 @@ public interface EditorPlugin extends GenericPlugin {
 	 *         plugin contains.
 	 */
 	public GraffitiShape[] getShapes();
-
+	
 	/**
 	 * Returns an array of <code>org.graffiti.plugin.mode.Tool</code>s the plugin
 	 * provides.
@@ -65,7 +65,7 @@ public interface EditorPlugin extends GenericPlugin {
 	 * @return an array of tools the plugin provides.
 	 */
 	public Tool[] getTools();
-
+	
 	/**
 	 * Returns a mapping between attribute classnames and attributeComponent
 	 * classes.
@@ -73,7 +73,7 @@ public interface EditorPlugin extends GenericPlugin {
 	 * @return DOCUMENT ME!
 	 */
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents();
-
+	
 	public InspectorTab[] getInspectorTabs();
 }
 

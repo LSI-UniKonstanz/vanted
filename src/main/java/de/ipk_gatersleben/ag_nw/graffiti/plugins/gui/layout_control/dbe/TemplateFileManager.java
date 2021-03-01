@@ -11,26 +11,26 @@ import org.FolderPanel;
 import org.JLabelJavaHelpLink;
 
 public class TemplateFileManager {
-
+	
 	private static TemplateFileManager instance;
 	private ArrayList<TemplateFile> templates;
 	private FolderPanel buttonPanelExcelTemplates = null;
-
+	
 	private TemplateFileManager() {
 		super();
 		templates = new ArrayList<TemplateFile>();
 	}
-
+	
 	public static TemplateFileManager getInstance() {
 		if (instance == null)
 			instance = new TemplateFileManager();
 		return instance;
 	}
-
+	
 	public Component getTemplateFolderPanel() {
 		return buttonPanelExcelTemplates;
 	}
-
+	
 	private void refreshFolderPanel() {
 		if (buttonPanelExcelTemplates == null) {
 			buttonPanelExcelTemplates = new FolderPanel("Data Input Templates", true, true, false,
@@ -39,24 +39,24 @@ public class TemplateFileManager {
 			buttonPanelExcelTemplates.setBackground(null);
 			// buttonPanelExcelTemplates.setBackground(Color.white);
 			buttonPanelExcelTemplates.setRowColSpacing(5, 0);
-
+			
 		}
-
+		
 		buttonPanelExcelTemplates.clearGuiComponentList();
-
+		
 		for (TemplateFile tf : templates)
 			buttonPanelExcelTemplates.addGuiComponentRow(null, tf.getButton(), false);
 		buttonPanelExcelTemplates.layoutRows();
 	}
-
+	
 	public void addTemplate(String title, URL url, RunnableForFile openAfterSaving) {
 		templates.add(new TemplateFile(title, url, openAfterSaving));
 		refreshFolderPanel();
 	}
-
+	
 	public void addTemplateFile(TemplateFile templateFile) {
 		templates.add(templateFile);
 		refreshFolderPanel();
 	}
-
+	
 }

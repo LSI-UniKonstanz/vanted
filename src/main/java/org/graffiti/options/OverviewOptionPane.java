@@ -31,27 +31,27 @@ public class OverviewOptionPane extends AbstractOptionPane {
 	private static final long serialVersionUID = -5031482675780050322L;
 	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for OverviewOptionPane.
 	 */
 	public OverviewOptionPane() {
 		super(sBundle.getString("options.overview.title"));
 	}
-
+	
 	@Override
 	protected void initDefault() {
 		setLayout(new BorderLayout());
-
+		
 		// add a JEditorPane, which contains an overview html page.
 		JEditorPane ep = new JEditorPane();
 		ep.setContentType("text/html");
 		ep.setEditable(false);
-
+		
 		// scale the newly initialized component
 		JTextComponentScaler epScaler = new JTextComponentScaler(Toolbox.getDPIScalingRatio());
 		epScaler.scaleComponent(ep);
-
+		
 		try {
 			ep.setPage(sBundle.getRes("options.overview.html"));
 		} catch (IOException ioe) {
@@ -60,22 +60,22 @@ public class OverviewOptionPane extends AbstractOptionPane {
 		// take file escape chars without replacing, due to sync loading issues
 		Toolbox.scaleJEditorPaneUnorderedLists(ep, -1, null);
 		ep.setBackground(new java.awt.Color(200, 221, 242)); // #C8DDF2
-
+		
 		JScrollPane scroller = new JScrollPane(ep);
 		scroller.setPreferredSize(new Dimension(400, 0));
-
+		
 		add(BorderLayout.CENTER, scroller);
 	}
-
+	
 	@Override
 	protected void saveDefault() {
 		/* do nothing */
 	}
-
+	
 	public String getCategory() {
 		return "Gravisto Passau";
 	}
-
+	
 	public String getOptionName() {
 		return "Default Option";
 	}

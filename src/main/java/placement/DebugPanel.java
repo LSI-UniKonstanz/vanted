@@ -11,22 +11,22 @@ import java.util.Hashtable;
 import javax.swing.JPanel;
 
 public class DebugPanel extends JPanel {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3122140808738568084L;
-
+	
 	private Constraints constraints;
-
+	
 	private Blocks blocks;
-
+	
 	public DebugPanel(Blocks blocks, Constraints constraints) {
 		super();
 		this.blocks = blocks;
 		this.constraints = constraints;
 	}
-
+	
 	@Override
 	synchronized public void paintComponent(Graphics gOld) {
 		Graphics2D g = (Graphics2D) gOld;
@@ -87,11 +87,11 @@ public class DebugPanel extends JPanel {
 			g.drawOval(xr - 5, yLookup.get(r) - 5, 10, 10);
 		}
 	}
-
+	
 	public void updateDrawing() {
 		paintComponent(getGraphics());
 	}
-
+	
 	Hashtable<Variable, Integer> yLookup = new Hashtable<Variable, Integer>();
-
+	
 }

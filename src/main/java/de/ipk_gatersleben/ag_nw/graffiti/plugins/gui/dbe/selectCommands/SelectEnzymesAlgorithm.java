@@ -29,13 +29,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeSer
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectEnzymesAlgorithm extends AbstractAlgorithm implements Algorithm {
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -49,17 +49,17 @@ public class SelectEnzymesAlgorithm extends AbstractAlgorithm implements Algorit
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -91,10 +91,10 @@ public class SelectEnzymesAlgorithm extends AbstractAlgorithm implements Algorit
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(enzymes.size() + " enzyme-nodes added to selection", MessageType.INFO);
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 }

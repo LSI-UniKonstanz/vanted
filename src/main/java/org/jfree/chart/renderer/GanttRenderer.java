@@ -55,25 +55,25 @@ import org.jfree.ui.RectangleEdge;
  * A renderer for simple Gantt charts.
  */
 public class GanttRenderer extends IntervalBarRenderer {
-
+	
 	/** The paint for displaying the percentage complete. */
 	private Paint completePaint;
-
+	
 	/** The paint for displaying the incomplete part of a task. */
 	private Paint incompletePaint;
-
+	
 	/**
 	 * Controls the starting edge of the progress indicator (expressed as a
 	 * percentage of the overall bar width).
 	 */
 	private double startPercent;
-
+	
 	/**
 	 * Controls the ending edge of the progress indicator (expressed as a percentage
 	 * of the overall bar width).
 	 */
 	private double endPercent;
-
+	
 	/**
 	 * Creates a new renderer.
 	 */
@@ -84,7 +84,7 @@ public class GanttRenderer extends IntervalBarRenderer {
 		this.startPercent = 0.35;
 		this.endPercent = 0.65;
 	}
-
+	
 	/**
 	 * Returns the paint used to show the percentage complete.
 	 * 
@@ -93,13 +93,13 @@ public class GanttRenderer extends IntervalBarRenderer {
 	public Paint getCompletePaint() {
 		return this.completePaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to show the percentage complete and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setCompletePaint(Paint paint) {
 		if (paint == null) {
@@ -108,7 +108,7 @@ public class GanttRenderer extends IntervalBarRenderer {
 		this.completePaint = paint;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint used to show the percentage incomplete.
 	 * 
@@ -117,13 +117,13 @@ public class GanttRenderer extends IntervalBarRenderer {
 	public Paint getIncompletePaint() {
 		return this.incompletePaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to show the percentage incomplete and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setIncompletePaint(Paint paint) {
 		if (paint == null) {
@@ -132,7 +132,7 @@ public class GanttRenderer extends IntervalBarRenderer {
 		this.incompletePaint = paint;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the position of the start of the progress indicator, as a percentage
 	 * of the bar width.
@@ -142,19 +142,19 @@ public class GanttRenderer extends IntervalBarRenderer {
 	public double getStartPercent() {
 		return this.startPercent;
 	}
-
+	
 	/**
 	 * Sets the position of the start of the progress indicator, as a percentage of
 	 * the bar width.
 	 * 
 	 * @param percent
-	 *            the percent.
+	 *           the percent.
 	 */
 	public void setStartPercent(double percent) {
 		this.startPercent = percent;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the position of the end of the progress indicator, as a percentage of
 	 * the bar width.
@@ -164,111 +164,111 @@ public class GanttRenderer extends IntervalBarRenderer {
 	public double getEndPercent() {
 		return this.endPercent;
 	}
-
+	
 	/**
 	 * Sets the position of the end of the progress indicator, as a percentage of
 	 * the bar width.
 	 * 
 	 * @param percent
-	 *            the percent.
+	 *           the percent.
 	 */
 	public void setEndPercent(double percent) {
 		this.endPercent = percent;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Draws the bar for a single (series, category) data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
-
+		
 		if (dataset instanceof GanttCategoryDataset) {
 			GanttCategoryDataset gcd = (GanttCategoryDataset) dataset;
 			drawTasks(g2, state, dataArea, plot, domainAxis, rangeAxis, gcd, row, column);
 		} else { // let the superclass handle it...
 			super.drawItem(g2, state, dataArea, plot, domainAxis, rangeAxis, dataset, row, column);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the tasks/subtasks for one item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the data plot area.
+	 *           the data plot area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the data.
+	 *           the data.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	protected void drawTasks(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, GanttCategoryDataset dataset, int row, int column) {
-
+		
 		int count = dataset.getSubIntervalCount(row, column);
 		if (count == 0) {
 			drawTask(g2, state, dataArea, plot, domainAxis, rangeAxis, dataset, row, column);
 		}
-
+		
 		for (int subinterval = 0; subinterval < count; subinterval++) {
-
+			
 			RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
 			RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
-
+			
 			// value 0
 			Number value0 = dataset.getStartValue(row, column, subinterval);
 			if (value0 == null) {
 				return;
 			}
 			double translatedValue0 = rangeAxis.valueToJava2D(value0.doubleValue(), dataArea, rangeAxisLocation);
-
+			
 			// value 1
 			Number value1 = dataset.getEndValue(row, column, subinterval);
 			if (value1 == null) {
 				return;
 			}
 			double translatedValue1 = rangeAxis.valueToJava2D(value1.doubleValue(), dataArea, rangeAxisLocation);
-
+			
 			if (translatedValue1 < translatedValue0) {
 				double temp = translatedValue1;
 				translatedValue1 = translatedValue0;
 				translatedValue0 = temp;
 			}
-
+			
 			// rectStart
 			double rectStart = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, domainAxisLocation);
-
+			
 			int rows = getRowCount();
 			int columns = getColumnCount();
 			if (rows > 1) {
@@ -277,22 +277,22 @@ public class GanttRenderer extends IntervalBarRenderer {
 			} else {
 				rectStart = rectStart + row * state.getBarWidth();
 			}
-
+			
 			// LENGTH
 			double rectLength = Math.abs(translatedValue1 - translatedValue0);
-
+			
 			// BREADTH
 			double rectBreadth = state.getBarWidth();
-
+			
 			// DRAW THE BARS...
 			Rectangle2D bar = null;
-
+			
 			if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
 				bar = new Rectangle2D.Double(translatedValue0, rectStart, rectLength, rectBreadth);
 			} else if (plot.getOrientation() == PlotOrientation.VERTICAL) {
 				bar = new Rectangle2D.Double(rectStart, translatedValue0, rectBreadth, rectLength);
 			}
-
+			
 			Rectangle2D completeBar = null;
 			Rectangle2D incompleteBar = null;
 			Number percent = dataset.getPercentComplete(row, column, subinterval);
@@ -311,9 +311,9 @@ public class GanttRenderer extends IntervalBarRenderer {
 					incompleteBar = new Rectangle2D.Double(rectStart + start * rectBreadth, translatedValue0,
 							rectBreadth * (end - start), rectLength * (1 - p));
 				}
-
+				
 			}
-
+			
 			Paint seriesPaint = getItemPaint(row, column);
 			g2.setPaint(seriesPaint);
 			g2.fill(bar);
@@ -330,7 +330,7 @@ public class GanttRenderer extends IntervalBarRenderer {
 				g2.setPaint(getItemOutlinePaint(row, column));
 				g2.draw(bar);
 			}
-
+			
 			// collect entity and tool tip information...
 			if (state.getInfo() != null) {
 				EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -350,54 +350,54 @@ public class GanttRenderer extends IntervalBarRenderer {
 			}
 		}
 	}
-
+	
 	/**
 	 * Draws a single task.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the data plot area.
+	 *           the data plot area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the data.
+	 *           the data.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	protected void drawTask(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, GanttCategoryDataset dataset, int row, int column) {
-
+		
 		int seriesCount = getRowCount();
 		int categoryCount = getColumnCount();
-
+		
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
 		RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
-
+		
 		// Y0
 		Number value0 = dataset.getEndValue(row, column);
 		if (value0 == null) {
 			return;
 		}
 		double java2dValue0 = rangeAxis.valueToJava2D(value0.doubleValue(), dataArea, rangeAxisLocation);
-
+		
 		// Y1
 		Number value1 = dataset.getStartValue(row, column);
 		if (value1 == null) {
 			return;
 		}
 		double java2dValue1 = rangeAxis.valueToJava2D(value1.doubleValue(), dataArea, rangeAxisLocation);
-
+		
 		if (java2dValue1 < java2dValue0) {
 			double temp = java2dValue1;
 			java2dValue1 = java2dValue0;
@@ -406,15 +406,15 @@ public class GanttRenderer extends IntervalBarRenderer {
 			value1 = value0;
 			value0 = tempNum;
 		}
-
+		
 		double rectStart = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, domainAxisLocation);
-
+		
 		// BREADTH
 		double rectBreadth = state.getBarWidth();
-
+		
 		// BAR HEIGHT
 		double rectLength = Math.abs(java2dValue1 - java2dValue0);
-
+		
 		Rectangle2D bar = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			if (seriesCount > 1) {
@@ -433,7 +433,7 @@ public class GanttRenderer extends IntervalBarRenderer {
 			}
 			bar = new Rectangle2D.Double(rectStart, java2dValue1, rectBreadth, rectLength);
 		}
-
+		
 		Rectangle2D completeBar = null;
 		Rectangle2D incompleteBar = null;
 		Number percent = dataset.getPercentComplete(row, column);
@@ -452,13 +452,13 @@ public class GanttRenderer extends IntervalBarRenderer {
 				incompleteBar = new Rectangle2D.Double(rectStart + start * rectBreadth, java2dValue1,
 						rectBreadth * (end - start), rectLength * (1 - p));
 			}
-
+			
 		}
-
+		
 		Paint seriesPaint = getItemPaint(row, column);
 		g2.setPaint(seriesPaint);
 		g2.fill(bar);
-
+		
 		if (completeBar != null) {
 			g2.setPaint(getCompletePaint());
 			g2.fill(completeBar);
@@ -467,7 +467,7 @@ public class GanttRenderer extends IntervalBarRenderer {
 			g2.setPaint(getIncompletePaint());
 			g2.fill(incompleteBar);
 		}
-
+		
 		// draw the outline...
 		if (state.getBarWidth() > BAR_OUTLINE_WIDTH_THRESHOLD) {
 			Stroke stroke = getItemOutlineStroke(row, column);
@@ -478,12 +478,12 @@ public class GanttRenderer extends IntervalBarRenderer {
 				g2.draw(bar);
 			}
 		}
-
+		
 		CategoryLabelGenerator generator = getLabelGenerator(row, column);
 		if (generator != null && isItemLabelVisible(row, column)) {
 			drawItemLabel(g2, dataset, row, column, plot, generator, bar, false);
 		}
-
+		
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -502,7 +502,7 @@ public class GanttRenderer extends IntervalBarRenderer {
 				entities.addEntity(entity);
 			}
 		}
-
+		
 	}
-
+	
 }

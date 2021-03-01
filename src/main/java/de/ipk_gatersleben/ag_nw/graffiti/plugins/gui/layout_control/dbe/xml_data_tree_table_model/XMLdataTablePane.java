@@ -33,7 +33,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  * @author Christian Klukas
  */
 public class XMLdataTablePane extends JComponent {
-
+	
 	/**
 	 * 
 	 */
@@ -41,15 +41,15 @@ public class XMLdataTablePane extends JComponent {
 	String myCompoundID;
 	String mySubstrateName;
 	String myFormula;
-
+	
 	public XMLdataTablePane(ExperimentInterface experiment, final JTabbedPane parentPane) {
-
+		
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border } }; // Rows
-
+		
 		this.setLayout(new TableLayout(size));
-
+		
 		JButton closeTab = new JButton("Close this Tab");
 		closeTab.setOpaque(false);
 		final JComponent thisTab = this;
@@ -58,9 +58,9 @@ public class XMLdataTablePane extends JComponent {
 				parentPane.remove(thisTab);
 			}
 		});
-
+		
 		this.add(closeTab, "1,1");
-
+		
 		/*
 		 * String mapping=""; try { if (mappedDataList!=null) for (Iterator
 		 * it=mappedDataList.iterator(); it.hasNext(); ) { // w3c node ! not a gravisto
@@ -71,15 +71,15 @@ public class XMLdataTablePane extends JComponent {
 		 * JTextArea(mapping); jta.setLineWrap(true); jta.setWrapStyleWord(true);
 		 * jta.setAutoscrolls(true); this.add(new JScrollPane(jta), "1,2");
 		 */
-
+		
 		/*
 		 * System.out.println("-----"); try{
 		 * System.out.println(XMLHelper.getOuterXml(doc.getFirstChild())); }
 		 * catch(Exception e) { System.out.println("xml output error"); }
 		 */
-
+		
 		JTabbedPane dataPanes = new JTabbedPane();
-
+		
 		int mapCnt = 0;
 		for (SubstanceInterface n : experiment) {
 			mapCnt++;
@@ -87,9 +87,9 @@ public class XMLdataTablePane extends JComponent {
 		}
 		this.add(dataPanes, "1,2");
 		this.revalidate();
-
+		
 	}
-
+	
 	private static JComponent getXMLeditView(SubstanceInterface n) {
 		JEditorPane jep = null;
 		try {

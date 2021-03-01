@@ -32,7 +32,7 @@ public class RelationLabel extends JLabel {
 	 */
 	private static final long serialVersionUID = -2184482924076036978L;
 	private Relation relation;
-
+	
 	public RelationLabel(final Relation r, final HashMap<Entry, Node> entry2graphNode, final Pathway pathway,
 			final Collection<Gml2PathwayWarningInformation> warnings,
 			final Collection<Gml2PathwayErrorInformation> errors, final Graph graph) {
@@ -42,7 +42,7 @@ public class RelationLabel extends JLabel {
 		setOpaque(false);
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
 		setToolTipText("<html>" + "<b>Click to select</b> related graph-elements<br>");
-
+		
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				HashSet<Node> nodes = new HashSet<Node>();
@@ -71,21 +71,21 @@ public class RelationLabel extends JLabel {
 					MainFrame.showMessage(nodes.size() + " nodes selected", MessageType.INFO);
 				}
 			}
-
+			
 			public void mouseEntered(MouseEvent e) {
 			}
-
+			
 			public void mouseExited(MouseEvent e) {
 			}
-
+			
 			public void mousePressed(MouseEvent e) {
 			}
-
+			
 			public void mouseReleased(MouseEvent e) {
 			}
 		});
 	}
-
+	
 	public Relation getRelation() {
 		return relation;
 	}

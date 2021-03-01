@@ -28,7 +28,7 @@ public class SubComponentTypesEditor extends JPanel {
 	private static final long serialVersionUID = -7189168789279095009L;
 	private JLabel subComponentTypesHelp;
 	private ArrayList<SubComponentNameCheckBox> checkBoxes = new ArrayList<SubComponentNameCheckBox>();
-
+	
 	public SubComponentTypesEditor(Relation initialRelation, JLabel subComponentTypesHelp) {
 		setLayout(TableLayout.getLayout(TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		this.subComponentTypesHelp = subComponentTypesHelp;
@@ -38,7 +38,7 @@ public class SubComponentTypesEditor extends JPanel {
 		// fp.setMaximumRowCount(5);
 		fp.addCollapseListenerDialogSizeUpdate();
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 2);
-
+		
 		for (SubtypeName stn : SubtypeName.values()) {
 			if (stn == SubtypeName.compound)
 				continue;
@@ -60,14 +60,14 @@ public class SubComponentTypesEditor extends JPanel {
 		add(fp, "0,0");
 		validate();
 	}
-
+	
 	public void updateRelationSelection(Relation r) {
 		subComponentTypesHelp.setText("");
 		for (SubComponentNameCheckBox sccp : checkBoxes) {
 			sccp.updateRelationSelection(r);
 		}
 	}
-
+	
 	public void setCallBack(MyRelationList list) {
 		for (SubComponentNameCheckBox sccp : checkBoxes) {
 			sccp.setCallBack(list);

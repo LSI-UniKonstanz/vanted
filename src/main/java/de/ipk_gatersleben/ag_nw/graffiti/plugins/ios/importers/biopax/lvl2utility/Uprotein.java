@@ -6,7 +6,7 @@ import org.graffiti.graph.GraphElement;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class Uprotein extends UtilitySuperClassToGraph {
-
+	
 	public static void addAttributesToNode(GraphElement elem, protein i) {
 		// first set label to node
 		setLabels(elem, i);
@@ -21,10 +21,10 @@ public class Uprotein extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setSynonyms(elem, i.getSYNONYMS());
 		setXRef(elem, i.getXREF());
-
+		
 		setSequence(elem, i.getSEQUENCE());
 		setOrganism(elem, i.getORGANISM());
-
+		
 	}
-
+	
 }

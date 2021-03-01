@@ -83,31 +83,31 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  */
 public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContainer {
 	// to avoid collisions let ID be package name + menu + name of the menu
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6671696188380122625L;
-
+	
 	private static final Logger logger = Logger.getLogger(MenuItemInfoDialog.class.getName());
-
+	
 	private static String extractText = "[Save license text to file and open with system editor]";
-
+	
 	public String errorMessagesMenuTitle = "Error Messages";
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
 	public static final String ID = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInfoDialog";
-
+	
 	private int lastErrorCount = 0;
-
+	
 	final JMenuItem info;
-
+	
 	private JDialog dialogExamples;
-
+	
 	private JDialog dialogWorkflow;
-
+	
 	/**
 	 * Create Menu.
 	 */
@@ -117,9 +117,9 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		setText("?");
 		setMnemonic('?');
 		setEnabled(true);
-
+		
 		info = new JMenuItem("About " + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT);
-
+		
 		ClassLoader cl = this.getClass().getClassLoader();
 		// String path = this.getClass().getPackage().getName().replace('.', '/');
 		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_16x16.png"));
@@ -136,7 +136,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				// ImageIcon icon = new ImageIcon(cl.getResource(path +
 				// "/pattern_graffiti_logo.png"));
 				int divisor = 1024;
-
+		
 //				String otherParties, otherParties2; 
 //				if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH)) {
 //					// otherParties = "The node overlap removal algorithm is developed by Dr. Tim
@@ -154,20 +154,20 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 //				} else {
 //					otherParties2 = "";
 //				}
-
+				
 				String copyR, copyRMonash, copyRKonstanz;
 				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 					copyR = "&copy; 2003 - 2012 Leibniz Institute of Plant Genetics and Crop Plant Research (IPK)";
 				else
 					copyR = "&copy; 2003 - 2014 IPK Gatersleben";
-
+				
 				copyRMonash = "&copy; 2014 - 2016 Monash University";
-
+				
 				copyRKonstanz = "&copy; 2016 - 2021 Konstanz University";
-
+				
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();
-
+				
 				int rrr = JOptionPane.showOptionDialog(GravistoService.getInstance().getMainFrame(),
 						"<html>" + "<h2>" + DBEgravistoHelper.DBE_GRAVISTO_VERSION + " <small>"
 								+ DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE_SUBVERSION + "</small></h2>" + ""
@@ -177,7 +177,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 								+ "Graph Visualization Toolkit (Gravisto) - http://gravisto.fim.uni-passau.de/"
 								+ "<p><p>To view copyright information about the used libraries and web services click"
 								+ "<br>the \"Foreign Copyrights\" button." + "<p><p>"
-
+								
 								+ "<small><small><small><br><font color=\"gray\"><br>System-Info: "
 								+ Java_1_5_compatibility.getJavaVersion() + ", " + SystemAnalysis.getNumberOfCPUs()
 								+ " CPU" + (SystemAnalysis.getNumberOfCPUs() > 1 ? "s, " : ", ")
@@ -244,7 +244,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				 */
 			}
 		});
-
+		
 		if (SystemInfo.isMac() && !ReleaseInfo.isRunningAsApplet()) {
 			try {
 				// old code using class OSXAdapter from package apple.dts.samplecode.osxadapter
@@ -255,11 +255,11 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				// (Class[]) null));
 				// OSXAdapter.setPreferencesHandler(this,
 				// getClass().getDeclaredMethod("showPreferences", (Class[]) null));
-
+				
 				Action aboutAction = new AbstractAction() {
-
+					
 					private static final long serialVersionUID = 6335335736808369654L;
-
+					
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						logger.debug("about action emtpy");
@@ -268,7 +268,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				};
 				OSXSupport.addOSXHandler("com.apple.eawt.AboutHandler", OSXSupport.HANDLE_ABOUT, "setAboutHandler",
 						aboutAction);
-
+				
 				// implement About menu specific for Mac OS in the top menu bar
 				// macApplication.setAboutHandler(new AboutHandler() {
 				//
@@ -312,9 +312,9 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				ErrorMsg.addErrorMessage(e);
 			}
 		}
-
+		
 		JMenuItem jMenuItemJavaHelp = new JMenuItem("Help Contents");
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp)) {
 			try {
 				String helpHS = "main.hs";
@@ -344,9 +344,9 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				try {
 					temp = File.createTempFile("documentation", ".pdf");
 					temp.deleteOnExit();
-
+					
 					ClassLoader cl = this.getClass().getClassLoader();
-
+					
 					try {
 						FileOutputStream out = new FileOutputStream(temp);
 						InputStream inpS = cl.getResourceAsStream("doc.pdf");
@@ -382,10 +382,10 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				}
 			}
 		});
-
+		
 		JMenuItem jMenuItemReleaseInfo = new JMenuItem("Release Info");
 		jMenuItemReleaseInfo.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				boolean ext = true;
 				if (ext) {
@@ -403,7 +403,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				w.setVisible(true);
 			}
 		});
-
+		
 		JMenuItem feedback = new JMenuItem("Send E-Mail Feedback");
 		feedback.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -411,7 +411,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 						+ DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT + "%20feedback");
 			}
 		});
-
+		
 		JMenuItem cite = new JMenuItem("How to cite?");
 		cite.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -449,14 +449,14 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				}
 			}
 		});
-
+		
 		JMenuItem database = new JMenuItem("Database Status");
 		database.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DatabaseFileStatusService.showStatusDialog();
 			}
 		});
-
+		
 		final JMenuItem error = new JMenuItem(errorMessagesMenuTitle);
 		error.setMnemonic('E');
 		error.addActionListener(new ActionListener() {
@@ -491,7 +491,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				JEditorPane errMsg = new JEditorPane("text/html", HTMLScaleSupport.scaleText(err.toString()));
 				errMsg.setEditable(false);
 				errMsg.setAutoscrolls(false);
-
+				
 				final JScrollPane scp = new JScrollPane(errMsg);
 				scp.setMaximumSize(new Dimension(800, 600));
 				scp.setPreferredSize(new Dimension(800, 600));
@@ -507,17 +507,17 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 					if (JOptionPane.showConfirmDialog(GravistoService.getInstance().getMainFrame(), scp,
 							"Send E-Mail to help fixing these bugs?", JOptionPane.YES_NO_OPTION,
 							JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
-
+						
 						long divisor = 1024;
 						Runtime r = Runtime.getRuntime();
 						StringBuffer errorText = new StringBuffer();
 						errorText.append(DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT + " "
 								+ DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE);
 						errorText.append(System.getProperty("line.separator"));
-
+						
 						errorText.append("Java version: " + Java_1_5_compatibility.getJavaVersion());
 						errorText.append(System.getProperty("line.separator"));
-
+						
 						errorText.append("used/free/max memory: ");
 						errorText.append(((r.totalMemory() / divisor / divisor) - (r.freeMemory() / divisor / divisor))
 								+ "" + "/" + (r.freeMemory() / divisor / divisor) + "/"
@@ -541,7 +541,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 								+ "the bugs you just experienced will be fixed very soon!<br>"
 								+ "If you have general suggestions for improvement, use the Send feedback command<br>"
 								+ "from the Help menu!", "Information");
-
+						
 						AttributeHelper.showInBrowser("mailto:feedback@vanted.org?subject="
 								+ DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT + "%20errorlog&body=" + errorText);
 					}
@@ -549,26 +549,26 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 					MainFrame.showMessageDialog("No error messages logged!", "Information");
 				}
 				ErrorMsg.clearErrorMessages();
-
+				
 			}
 		});
-
+		
 		// JMenuItem newsitem = new JMenuItem("News");
 		// newsitem.addActionListener(new ShowNewsAction());
-
+		
 		JMenuItem examplesItem = new JMenuItem("Examples");
 		examplesItem.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				
 				if (dialogExamples == null)
 					createExamplesDialog();
 				dialogExamples.setVisible(true);
 				dialogExamples.toFront();
 			}
 		});
-
+		
 		/* Workflow Tutorial has been moved to vanted.org. */
 //		JMenuItem workflowItem = new JMenuItem("Workflow Tutorial");
 //		workflowItem.addActionListener(new ActionListener() {
@@ -583,10 +583,10 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 //
 //			}
 //		});
-
+		
 		JMenuItem scanUpdate = new JMenuItem("Scan for updates");
 		scanUpdate.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ScanForUpdate.issueScan(true); // issue scan and ignore date. so we always want to scan
@@ -596,7 +596,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		insert(error, pos++);
 		insert(examplesItem, pos++);
 		// insert(workflowItem, pos++);
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
 			insert(jMenuItemJavaHelp, pos++);
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
@@ -607,16 +607,16 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 			insert(jMenuItemReleaseInfo, pos++);
 		insert(database, pos++);
 		insert(feedback, pos++);
-
+		
 		if (!ReleaseInfo.isRunningAsWebstart()) {
 			insert(scanUpdate, pos++);
 		}
 		// if (ReleaseInfo.getRunningReleaseStatus()==Release.KGML_EDITOR ||
 		// ReleaseInfo.getRunningReleaseStatus()==Release.RELEASE_PUBLIC)
 		// insert(cite, pos++);
-
+		
 		insert(info, pos++);
-
+		
 		// mark Help Menu and Error menu item in case error messages are available
 		Timer t = new Timer(200, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -642,7 +642,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				if (errorMsg != null) {
 					if (errorMsg.length > lastErrorCount
 							&& !MainFrame.getInstance().isTaskPanelVisible("Error Watch")) {
-
+						
 						String string = ErrorMsg.getErrorMessages()[errorMsg.length - 1];
 						String header;
 						int indexOf = string.indexOf("<br");
@@ -650,18 +650,18 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 							header = "<html>" + string.substring(0, indexOf);
 						else
 							header = string;
-
+						
 						BackgroundTaskPanelEntry backgroundTaskPanelEntry = new BackgroundTaskPanelEntry(false);
-
+						
 						BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 								header, "<html><small>Click 'Help/Error Messages' for more details.");
-
+						
 						status.setCurrentStatusValue(100);
 						backgroundTaskPanelEntry.setStatusProvider(status, "Error", "Error");
 						backgroundTaskPanelEntry.setTaskFinished(false, 0);
-
+						
 						MainFrame.getInstance().addStatusPanel(backgroundTaskPanelEntry);
-
+						
 						// BackgroundTaskHelper.isTaskWithGivenReferenceRunning()
 						/*
 						 * BackgroundTaskHelper.issueSimpleTask("Error Watch",
@@ -679,19 +679,19 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		});
 		t.start();
 	}
-
+	
 	public void showAbout() {
 		if (info != null)
 			info.doClick();
 	}
-
+	
 	/**
 	 * Needed for Mac compatibility (used by reflection code)
 	 */
 	public void doQuit() {
 		MainFrame.getInstance().closeGravisto();
 	}
-
+	
 	protected void createExamplesDialog() {
 		dialogExamples = new JDialog(MainFrame.getInstance());
 		dialogExamples.setTitle("Examples");
@@ -702,39 +702,39 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		dialogExamples.getContentPane().add(new TabExampleFiles(), BorderLayout.CENTER);
 		dialogExamples.pack();
 		dialogExamples.setLocationRelativeTo(MainFrame.getInstance());
-
+		
 	}
-
+	
 	/**
 	 * @deprecated The workflow tutorial has been moved to the website
 	 *             <code>vanted.org</code>.
 	 */
 	protected void createWorkflowDialog() {
 		final JPanel workFlowHelp = WorkflowHelper.getWorkFlowHelp();
-
+		
 		double border = 5;
 		Dimension preferred = new Dimension(350, 600);
-
+		
 		final JPanel myPanel = new JPanel();
 		myPanel.setLayout(new TableLayout(new double[][] { { border, TableLayoutConstraints.FILL, border }, // Columns
 				{ TableLayoutConstraints.PREFERRED } }));
 		myPanel.setPreferredSize(preferred);
-
+		
 		myPanel.add(workFlowHelp, "1,0");
-
+		
 		dialogWorkflow = new JDialog(MainFrame.getInstance());
 		dialogWorkflow.setTitle("Workflow Tutorial");
 		dialogWorkflow.setModalityType(JDialog.ModalityType.MODELESS);
 		dialogWorkflow.setSize(preferred);
-
+		
 		JScrollPane scrollpane = new JScrollPane(myPanel);
 		scrollpane.setPreferredSize(preferred);
-
+		
 		dialogWorkflow.getContentPane().setLayout(new BorderLayout());
 		dialogWorkflow.getContentPane().add(scrollpane, BorderLayout.CENTER);
 		// dialogWorkflow.pack();
 		dialogWorkflow.setLocationRelativeTo(MainFrame.getInstance());
-
+		
 		/*
 		 * dialogframe.setSize(new Dimension(350, 600));
 		 * dialogframe.getContentPane().setLayout(new BorderLayout()); JScrollPane
@@ -745,7 +745,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		 * dialogframe.setVisible(true);
 		 */
 	}
-
+	
 	public void showPreferences() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 			WorkflowHelper.showPreferencesFolder();
@@ -763,7 +763,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 			t.start();
 		}
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	protected void saveFiles() {
 		String targetFileName = FileHelper.getFileName("txt", "License text");
@@ -772,7 +772,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 			return;
 		}
 		ClassLoader cl = this.getClass().getClassLoader();
-
+		
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		try {
 			File tgt = new File(targetFileName);
@@ -781,7 +781,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 			for (String fileName : getLibLicenseFileNames()) {
 				InputStream inpS = cl.getResourceAsStream(path + "/license/" + fileName);
 				InputStream in = inpS;
-
+				
 				int b;
 				while ((b = inpS.read()) != -1) {
 					out.write(b);
@@ -801,11 +801,11 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 			ErrorMsg.addErrorMessage(err);
 		}
 	}
-
+	
 	private static String[] getLibLicenseFileNames() {
 		return new String[] { "apache.txt", "cpl.txt", "cupparser.txt", "lesser.txt", "secondstring.txt", "spl.txt" };
 	}
-
+	
 	protected String getLibsText() {
 		return getLibText("SecondString", "a open-source Java-based package of approximate string-matching techniques",
 				"University of Illinois/NCSA Open Source License",
@@ -880,9 +880,8 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 						"This library is distributed under the GNU Library or Lesser General Public License version 2.0 (LGPLv2).",
 						new String[] { "http://www.gnu.org/licenses/old-licenses/lgpl-2.0" });
 	}
-
+	
 	/**
-	 * 
 	 * @see {@link KeggAccess}
 	 */
 	@Deprecated
@@ -911,7 +910,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				+ "access rights to the FTP site and the website, while the business license includes access rights to the FTP site only. Please contact<br>"
 				+ "Pathway Solutions (https://www.pathway.jp) for more details." + "<br><br>"
 				+ "<h4>Reference website: http://www.genome.jp/kegg/legal.html</h4>" + "<br>";
-
+		
 //		return getLibText("KEGG libraries and SOAP access",
 //				"KEGG: Kyoto Encyclopedia of Genes and Genomes (Kanehisa Laboratory of Kyoto University Bioinformatics Center)",
 //				"(at the listed website possible updates to this license text might be available and should be considered)"
@@ -980,9 +979,9 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		 * String[] { "http://www.genome.jp/kegg/kegg5.html" } );
 		 */
 	}
-
+	
 	private static ArrayList<String> knownUrls = new ArrayList<String>();
-
+	
 	protected static String getLibText(String lib, String desc, String licenseDesc, String[] licenseTextURLS) {
 		String res = "<li><b>" + lib + "</b><br>- " + StringManipulationTools.getWordWrap(desc, 60) + "<p><small>"
 				+ StringManipulationTools.getWordWrap(licenseDesc, 80) + "</small>";
@@ -1001,14 +1000,14 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		// System.out.println(res2);
 		return res;
 	}
-
+	
 	protected ArrayList<String> getLibLicenseUrls() {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(extractText);
 		res.addAll(knownUrls);
 		return res;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -1017,7 +1016,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 	public String getId() {
 		return ID;
 	}
-
+	
 	/**
 	 * @return A pane with info about the program
 	 */
@@ -1038,7 +1037,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		editorPane.addHyperlinkListener(createHyperLinkListener(editorPane));
 		return new JScrollPane(editorPane);
 	}
-
+	
 	/**
 	 * @param editorPane
 	 * @return
@@ -1065,7 +1064,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 					}
 				}
 			}
-
+			
 			private void closeHelp() {
 				// TODO
 			}

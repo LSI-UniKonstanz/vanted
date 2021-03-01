@@ -19,28 +19,28 @@ package org.graffiti.plugin.parameter;
  */
 public interface ParameterList extends Parameter {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @link aggregation
 	 */
-
+	
 	/* #SingleParameter lnkSingleParameter; */
-
+	
 	/**
 	 * Adds a <code>SingleParameter</code> to the list.
 	 * 
 	 * @param sp
-	 *            the <code>SingleParameter</code> to add to the list.
+	 *           the <code>SingleParameter</code> to add to the list.
 	 */
 	void addParameter(SingleParameter sp);
-
+	
 	/**
 	 * Removes a <code>SingleParameter</code> from the list.
 	 * 
 	 * @param sp
-	 *            the <code>SingleParameter</code> to remove from the list.
+	 *           the <code>SingleParameter</code> to remove from the list.
 	 */
 	void removeParameter(SingleParameter sp);
 }

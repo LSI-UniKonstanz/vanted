@@ -20,21 +20,21 @@ public class ToolTipHelper implements HelperClass {
 		if (toolTipText == null)
 			return;
 		toolTipText = toolTipText.trim();
-
+		
 		String oldTooltip = "";
 		if (jcomp.getToolTipText() != null && jcomp.getToolTipText().length() > 0)
 			oldTooltip = jcomp.getToolTipText();
-
+		
 		while (toolTipText.startsWith("."))
 			toolTipText = toolTipText.substring(1);
-
+		
 		while (toolTipText.endsWith("."))
 			toolTipText = toolTipText.substring(0, toolTipText.length() - 1);
-
+		
 		if (toolTipText.length() >= 1) {
 			toolTipText = toolTipText.substring(0, 1).toUpperCase() + toolTipText.substring(1);
 		}
-
+		
 		if (toolTipText.contains(".") && !toolTipText.endsWith(".")) {
 			String[] parts = toolTipText.split("\\.");
 			String res = parts[0];
@@ -51,10 +51,10 @@ public class ToolTipHelper implements HelperClass {
 			res += ": " + parts[i];
 			toolTipText = res;
 		}
-
+		
 		if (oldTooltip.length() > 0)
 			toolTipText = "<html>" + toolTipText + "<br><b>" + oldTooltip + "</b>";
-
+		
 		Stack<Component> s = new Stack<Component>();
 		s.add(jcomp);
 		while (!s.empty()) {
@@ -75,6 +75,6 @@ public class ToolTipHelper implements HelperClass {
 					((JComponent) se).setToolTipText(toolTipText);
 			}
 		}
-
+		
 	}
 }

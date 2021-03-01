@@ -17,22 +17,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.ExperimentDataAnnotation;
 
 public interface TemplateLoaderInterface {
-
+	
 	public abstract JPanel getAttributeDialog(int filenumber) throws Exception;
-
+	
 	public abstract List<NumericMeasurementInterface> addMeasurementsToHierarchy(SampleInterface sample,
 			String experimentname);
-
+	
 	public abstract String getSubstance();
-
+	
 	public abstract void setFormularData(TemplateLoaderInterface loader, Object[] formularData);
-
+	
 	public abstract File getFile();
-
+	
 	public abstract Object[] getFormData();
-
+	
 	public abstract String toString();
-
+	
 	public abstract void setAnnotation(ExperimentDataAnnotation ed);
-
+	
 }

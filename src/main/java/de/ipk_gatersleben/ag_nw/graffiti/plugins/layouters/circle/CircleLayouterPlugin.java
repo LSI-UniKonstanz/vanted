@@ -16,7 +16,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Dirk Koschützki, Christian Klukas
  */
 public class CircleLayouterPlugin extends IPK_PluginAdapter {
-
+	
 	/**
 	 * Creates a new CircleLayouterPlugin object.
 	 */

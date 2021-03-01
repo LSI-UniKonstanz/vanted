@@ -15,7 +15,7 @@ import javax.swing.JMenuItem;
  */
 public interface ProvidesGeneralContextMenu {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * This method should be implemented, as that it returns the desired
 	 * Context-MenuItem for the Plugin. It will be added on the fly to a newly

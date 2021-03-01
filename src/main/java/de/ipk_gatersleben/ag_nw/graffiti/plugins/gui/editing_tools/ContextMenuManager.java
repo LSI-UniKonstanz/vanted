@@ -10,5 +10,4 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools;
  * @author Christian Klukas
  * @version $Revision$
  */
-public abstract class ContextMenuManager implements IContextMenuManager {
-}
+public abstract class ContextMenuManager implements IContextMenuManager {}

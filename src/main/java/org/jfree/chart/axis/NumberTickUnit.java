@@ -43,22 +43,22 @@ import java.util.Locale;
  * A numerical tick unit.
  */
 public class NumberTickUnit extends TickUnit implements Serializable {
-
+	
 	/** A formatter for the tick unit. */
 	private NumberFormat formatter;
-
+	
 	private static final NumberFormat defaultFormat = getDefaultFormat();
-
+	
 	/**
 	 * Creates a new number tick unit.
 	 * 
 	 * @param size
-	 *            the size of the tick unit.
+	 *           the size of the tick unit.
 	 */
 	public NumberTickUnit(double size) {
 		this(size, defaultFormat);
 	}
-
+	
 	private static NumberFormat getDefaultFormat() {
 		NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
 		if (nf instanceof DecimalFormat) {
@@ -69,33 +69,33 @@ public class NumberTickUnit extends TickUnit implements Serializable {
 		nf.setGroupingUsed(false);
 		return nf;
 	}
-
+	
 	/**
 	 * Creates a new number tick unit.
 	 * 
 	 * @param size
-	 *            the size of the tick unit.
+	 *           the size of the tick unit.
 	 * @param formatter
-	 *            a number formatter for the tick unit.
+	 *           a number formatter for the tick unit.
 	 */
 	public NumberTickUnit(double size, NumberFormat formatter) {
 		super(size);
 		this.formatter = formatter;
 	}
-
+	
 	/**
 	 * Converts a value to a string.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return the formatted string.
 	 */
 	public String valueToString(double value) {
 		return formatter.format(value);/*
-										 * String res = this.defaultFormat.format(value); res =
-										 * ErrorMsg.stringReplace(res, ",", ""); if (res.startsWith(".")) return
-										 * "0"+res; return res;
-										 */
+													* String res = this.defaultFormat.format(value); res =
+													* ErrorMsg.stringReplace(res, ",", ""); if (res.startsWith(".")) return
+													* "0"+res; return res;
+													*/
 	}
-
+	
 }

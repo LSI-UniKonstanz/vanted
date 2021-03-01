@@ -71,29 +71,29 @@ import org.jfree.util.PublicCloneable;
  * @author Richard Atkinson
  */
 public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/**
 	 * A state object for use by this renderer.
 	 */
 	static class StackedXYAreaRendererState extends XYItemRendererState {
-
+		
 		/** The area for the current series. */
 		private Polygon seriesArea;
-
+		
 		/** The line. */
 		private Line2D line;
-
+		
 		/** The points from the last series. */
 		private Stack lastSeriesPoints;
-
+		
 		/** The points for the current series. */
 		private Stack currentSeriesPoints;
-
+		
 		/**
 		 * Creates a new state for the renderer.
 		 * 
 		 * @param info
-		 *            the plot rendering info.
+		 *           the plot rendering info.
 		 */
 		public StackedXYAreaRendererState(PlotRenderingInfo info) {
 			super(info);
@@ -102,7 +102,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 			this.lastSeriesPoints = new Stack();
 			this.currentSeriesPoints = null;
 		}
-
+		
 		/**
 		 * Returns the series area.
 		 * 
@@ -111,17 +111,17 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 		public Polygon getSeriesArea() {
 			return this.seriesArea;
 		}
-
+		
 		/**
 		 * Sets the series area.
 		 * 
 		 * @param area
-		 *            the area.
+		 *           the area.
 		 */
 		public void setSeriesArea(Polygon area) {
 			this.seriesArea = area;
 		}
-
+		
 		/**
 		 * Returns the working line.
 		 * 
@@ -130,7 +130,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 		public Line2D getLine() {
 			return this.line;
 		}
-
+		
 		/**
 		 * Returns the current series points.
 		 * 
@@ -139,17 +139,17 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 		public Stack getCurrentSeriesPoints() {
 			return this.currentSeriesPoints;
 		}
-
+		
 		/**
 		 * Sets the current series points.
 		 * 
 		 * @param points
-		 *            the points.
+		 *           the points.
 		 */
 		public void setCurrentSeriesPoints(Stack points) {
 			this.currentSeriesPoints = points;
 		}
-
+		
 		/**
 		 * Returns the last series points.
 		 * 
@@ -158,42 +158,42 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 		public Stack getLastSeriesPoints() {
 			return this.lastSeriesPoints;
 		}
-
+		
 		/**
 		 * Sets the last series points.
 		 * 
 		 * @param points
-		 *            the points.
+		 *           the points.
 		 */
 		public void setLastSeriesPoints(Stack points) {
 			this.lastSeriesPoints = points;
 		}
-
+		
 	}
-
+	
 	/** Custom Paint for drawing all shapes, if null defaults to series shapes */
 	private Paint shapePaint = null;
-
+	
 	/** Custom Stroke for drawing all shapes, if null defaults to series strokes */
 	private Stroke shapeStroke = null;
-
+	
 	/**
 	 * Creates a new renderer.
 	 */
 	public StackedXYAreaRenderer() {
 		this(AREA);
 	}
-
+	
 	/**
 	 * Constructs a new renderer.
 	 * 
 	 * @param type
-	 *            the type of the renderer.
+	 *           the type of the renderer.
 	 */
 	public StackedXYAreaRenderer(int type) {
 		this(type, null, null);
 	}
-
+	
 	/**
 	 * Constructs a new renderer.
 	 * <p>
@@ -201,17 +201,17 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 	 * SHAPES_AND_LINES, AREA or AREA_AND_SHAPES.
 	 * 
 	 * @param type
-	 *            the type of renderer.
+	 *           the type of renderer.
 	 * @param labelGenerator
-	 *            the tool tip generator to use. <code>null</code> is none.
+	 *           the tool tip generator to use. <code>null</code> is none.
 	 * @param urlGenerator
-	 *            the URL generator (null permitted).
+	 *           the URL generator (null permitted).
 	 */
 	public StackedXYAreaRenderer(int type, XYToolTipGenerator labelGenerator, XYURLGenerator urlGenerator) {
-
+		
 		super(type, labelGenerator, urlGenerator);
 	}
-
+	
 	/**
 	 * Returns the range type.
 	 * 
@@ -220,20 +220,20 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 	public RangeType getRangeType() {
 		return RangeType.STACKED;
 	}
-
+	
 	/**
 	 * Returns the range of values the renderer requires to display all the items
 	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
 	 *         or empty).
 	 */
 	public Range getRangeExtent(XYDataset dataset) {
 		return DatasetUtilities.getStackedRangeExtent((TableXYDataset) dataset);
 	}
-
+	
 	/**
 	 * Initialises the renderer.
 	 * <P>
@@ -242,26 +242,26 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 	 * maintain. The renderer can do nothing if it chooses.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area inside the axes.
+	 *           the area inside the axes.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param info
-	 *            an optional info collection object to return data back to the
-	 *            caller.
+	 *           an optional info collection object to return data back to the
+	 *           caller.
 	 * @return A state object that should be passed to subsequent calls to the
 	 *         drawItem() method.
 	 */
 	public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, XYPlot plot, XYDataset data,
 			PlotRenderingInfo info) {
-
+		
 		return new StackedXYAreaRendererState(info);
-
+		
 	}
-
+	
 	/**
 	 * Returns the number of passes required by the renderer.
 	 * 
@@ -270,46 +270,46 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 	public int getPassCount() {
 		return 2;
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the data is being drawn.
+	 *           the area within which the data is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            information about crosshairs on a plot.
+	 *           information about crosshairs on a plot.
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		StackedXYAreaRendererState areaState = (StackedXYAreaRendererState) state;
 		// Get the item count for the series, so that we can know which is the end of
 		// the series.
 		TableXYDataset tableXYDataset = (TableXYDataset) dataset;
 		int itemCount = tableXYDataset.getItemCount();
-
+		
 		// get the data point...
 		Number x1 = dataset.getXValue(series, item);
 		Number y1 = dataset.getYValue(series, item);
@@ -318,28 +318,28 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 			y1 = Double.valueOf(0);
 			nullPoint = true;
 		}
-
+		
 		// Get height adjustment based on stack and translate to Java2D values
 		double ph1 = this.getPreviousHeight(dataset, series, item);
 		double transX1 = domainAxis.valueToJava2D(x1.doubleValue(), dataArea, plot.getDomainAxisEdge());
 		double transY1 = rangeAxis.valueToJava2D(y1.doubleValue() + ph1, dataArea, plot.getRangeAxisEdge());
-
+		
 		// Get series Paint and Stroke
 		Paint seriesPaint = getItemPaint(series, item);
 		Stroke seriesStroke = getItemStroke(series, item);
-
+		
 		if (pass == 0) {
 			// On first pass renderer the areas, line and outlines
-
+			
 			if (item == 0) {
 				// Create a new Area for the series
 				areaState.setSeriesArea(new Polygon());
 				areaState.setLastSeriesPoints(areaState.getCurrentSeriesPoints());
 				areaState.setCurrentSeriesPoints(new Stack());
-
+				
 				// start from previous height (ph1)
 				double transY2 = rangeAxis.valueToJava2D(ph1, dataArea, plot.getRangeAxisEdge());
-
+				
 				// The first point is (x, 0)
 				if (orientation == PlotOrientation.VERTICAL) {
 					areaState.getSeriesArea().addPoint((int) transX1, (int) transY2);
@@ -347,7 +347,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 					areaState.getSeriesArea().addPoint((int) transY2, (int) transX1);
 				}
 			}
-
+			
 			// Add each point to Area (x, y)
 			if (orientation == PlotOrientation.VERTICAL) {
 				Point point = new Point((int) transX1, (int) transY1);
@@ -356,7 +356,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 			} else if (orientation == PlotOrientation.HORIZONTAL) {
 				areaState.getSeriesArea().addPoint((int) transY1, (int) transX1);
 			}
-
+			
 			if (this.getPlotLines()) {
 				if (item > 0) {
 					// get the previous data point...
@@ -365,7 +365,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 					double ph0 = this.getPreviousHeight(dataset, series, item - 1);
 					double transX0 = domainAxis.valueToJava2D(x0.doubleValue(), dataArea, plot.getDomainAxisEdge());
 					double transY0 = rangeAxis.valueToJava2D(y0.doubleValue() + ph0, dataArea, plot.getRangeAxisEdge());
-
+					
 					if (orientation == PlotOrientation.VERTICAL) {
 						areaState.getLine().setLine(transX0, transY0, transX1, transY1);
 					} else if (orientation == PlotOrientation.HORIZONTAL) {
@@ -374,13 +374,13 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 					g2.draw(areaState.getLine());
 				}
 			}
-
+			
 			// Check if the item is the last item for the series.
 			// and number of items > 0. We can't draw an area for a single point.
 			if (this.getPlotArea() && item > 0 && item == (itemCount - 1)) {
-
+				
 				double transY2 = rangeAxis.valueToJava2D(ph1, dataArea, plot.getRangeAxisEdge());
-
+				
 				if (orientation == PlotOrientation.VERTICAL) {
 					// Add the last point (x,0)
 					areaState.getSeriesArea().addPoint((int) transX1, (int) transY2);
@@ -388,7 +388,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 					// Add the last point (x,0)
 					areaState.getSeriesArea().addPoint((int) transY2, (int) transX1);
 				}
-
+				
 				// Add points from last series to complete the base of the polygon
 				if (series != 0) {
 					Stack points = areaState.getLastSeriesPoints();
@@ -397,12 +397,12 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 						areaState.getSeriesArea().addPoint((int) point.getX(), (int) point.getY());
 					}
 				}
-
+				
 				// Fill the polygon
 				g2.setPaint(seriesPaint);
 				g2.setStroke(seriesStroke);
 				g2.fill(areaState.getSeriesArea());
-
+				
 				// Draw an outline around the Area.
 				if (this.isOutline()) {
 					g2.setStroke(plot.getOutlineStroke());
@@ -410,12 +410,12 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 					g2.draw(areaState.getSeriesArea());
 				}
 			}
-
+			
 			updateCrosshairValues(crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1, orientation);
-
+			
 		} else if (pass == 1) {
 			// On second pass render shapes and collect entity and tooltip information
-
+			
 			Shape shape = null;
 			if (this.getPlotShapes()) {
 				shape = getItemShape(series, item);
@@ -444,7 +444,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 					shape = new Rectangle2D.Double(transY1 - 3, transX1 - 3, 6.0, 6.0);
 				}
 			}
-
+			
 			// collect entity and tool tip information...
 			if (state.getInfo() != null) {
 				EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -462,28 +462,28 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 					entities.addEntity(entity);
 				}
 			}
-
+			
 		}
 	}
-
+	
 	/**
 	 * Calculates the stacked value of the all series up to, but not including
 	 * <code>series</code> for the specified category, <code>category</code>. It
 	 * returns 0.0 if <code>series</code> is the first series, i.e. 0.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param series
-	 *            the series.
+	 *           the series.
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @return double returns a cumulative value for all series' values up to but
 	 *         excluding <code>series</code> for <code>index</code>.
 	 */
 	protected double getPreviousHeight(XYDataset data, int series, int index) {
-
+		
 		double result = 0.0;
-
+		
 		Number tmp;
 		for (int i = 0; i < series; i++) {
 			tmp = data.getYValue(i, index);
@@ -491,22 +491,22 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 				result += tmp.doubleValue();
 			}
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 	/**
 	 * Returns the Paint used for rendering shapes, or null if using series Paints
 	 * 
@@ -515,7 +515,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 	public Paint getShapePaint() {
 		return this.shapePaint;
 	}
-
+	
 	/**
 	 * Returns the Stroke used for rendering shapes, or null if using series
 	 * Strokes.
@@ -525,25 +525,25 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 	public Stroke getShapeStroke() {
 		return this.shapeStroke;
 	}
-
+	
 	/**
 	 * Sets the Paint for rendering shapes.
 	 * 
 	 * @param shapePaint
-	 *            The Paint.
+	 *           The Paint.
 	 */
 	public void setShapePaint(Paint shapePaint) {
 		this.shapePaint = shapePaint;
 	}
-
+	
 	/**
 	 * Sets the Stroke for rendering shapes.
 	 * 
 	 * @param shapeStroke
-	 *            The Stroke.
+	 *           The Stroke.
 	 */
 	public void setShapeStroke(Stroke shapeStroke) {
 		this.shapeStroke = shapeStroke;
 	}
-
+	
 }

@@ -44,19 +44,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Entry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
 
 public class SrcTargetEditor extends JPanel {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9070929659063869964L;
-
+	
 	private Relation currentRelation;
-
+	
 	private MyRelationList list;
-
+	
 	public SrcTargetEditor(String title, Relation initialRelation, final List<Entry> entries,
 			final HashMap<Entry, Node> entry2graphNode) {
-
+		
 		this.currentRelation = initialRelation;
 		final MutableList<Entry> entrySelection = new MutableList<>(new DefaultListModel<Entry>());
 		Collections.sort(entries, new Comparator<Object>() {
@@ -70,11 +70,11 @@ public class SrcTargetEditor extends JPanel {
 		entrySelection.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, entrySelection));
 		entrySelection.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		final JLabel searchResult = new JLabel("<html><small><font color='gray'>" + entries.size() + " entries");
-
+		
 		JScrollPane entrySelectionScrollPane = new JScrollPane(entrySelection);
-
+		
 		entrySelectionScrollPane.setPreferredSize(new Dimension(300, 100));
-
+		
 		// ///////////
 		final MutableList<Entry> subProdSelection = new MutableList<>(new DefaultListModel<Entry>());
 		Collections.sort(entries, new Comparator<Object>() {
@@ -82,23 +82,23 @@ public class SrcTargetEditor extends JPanel {
 				return arg0.toString().compareTo(arg1.toString());
 			}
 		});
-
+		
 		subProdSelection.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, subProdSelection));
-
+		
 		JScrollPane subProdScrollPane = new JScrollPane(subProdSelection);
-
+		
 		subProdScrollPane.setPreferredSize(new Dimension(300, 100));
 		// ///////////
-
+		
 		final JTextField filter = new JTextField("");
-
+		
 		filter.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 			}
-
+			
 			public void keyReleased(KeyEvent e) {
 			}
-
+			
 			public void keyTyped(KeyEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
@@ -114,12 +114,12 @@ public class SrcTargetEditor extends JPanel {
 				});
 			}
 		});
-
+		
 		JButton setSrcCmd = new JButton("Set Source");
 		JButton setTgtCmd = new JButton("Set Target");
 		setTgtCmd.setOpaque(false);
 		setSrcCmd.setOpaque(false);
-
+		
 		setSrcCmd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (entrySelection.getSelectedValue() == null)
@@ -144,17 +144,17 @@ public class SrcTargetEditor extends JPanel {
 				}
 			}
 		});
-
+		
 		JComponent addPane = TableLayout.getSplit(setSrcCmd, setTgtCmd, TableLayoutConstants.FILL,
 				TableLayoutConstants.FILL);
-
+		
 		JComponent searchPane = TableLayout.getSplitVertical(entrySelectionScrollPane,
 				TableLayout.getSplitVertical(
 						TableLayout.get3Split(new JLabel("Search "), new JLabel(), filter,
 								TableLayoutConstants.PREFERRED, 2, TableLayoutConstants.FILL),
 						searchResult, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
 				TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
-
+		
 		JComponent result = TableLayout.getSplitVertical(addPane, searchPane, TableLayoutConstants.PREFERRED,
 				TableLayoutConstants.FILL);
 		final FolderPanel fp = new FolderPanel(title, true, true, false, null);
@@ -163,12 +163,12 @@ public class SrcTargetEditor extends JPanel {
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 2);
 		fp.layoutRows();
 		fp.addCollapseListenerDialogSizeUpdate();
-
+		
 		this.setLayout(TableLayout.getLayout(TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		add(fp, "0,0");
 		validate();
 	}
-
+	
 	private static ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
 			final MutableList<Entry> entrySelection) {
 		return new ListSelectionListener() {
@@ -193,11 +193,11 @@ public class SrcTargetEditor extends JPanel {
 			}
 		};
 	}
-
+	
 	public void updateRelationSelection(Relation r) {
 		this.currentRelation = r;
 	}
-
+	
 	public void setCallBack(MyRelationList list) {
 		this.list = list;
 	}

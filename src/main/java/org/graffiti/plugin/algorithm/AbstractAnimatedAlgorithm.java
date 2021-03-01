@@ -15,7 +15,7 @@ package org.graffiti.plugin.algorithm;
  */
 public abstract class AbstractAnimatedAlgorithm extends AbstractAlgorithm implements AnimatedAlgorithm {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Executes the whole algorithm as one big step. This is the standard
 	 * implementation that calls <code>nextStep()</code> repeatedly without pauses

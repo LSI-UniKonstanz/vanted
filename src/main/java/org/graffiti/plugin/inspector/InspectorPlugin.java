@@ -27,7 +27,7 @@ import org.graffiti.plugin.EditorPlugin;
  */
 public interface InspectorPlugin extends EditorPlugin {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns an array containing all the <code>InspectorTab</code>s of the
 	 * <code>InspectorPlugin</code>.
@@ -36,17 +36,17 @@ public interface InspectorPlugin extends EditorPlugin {
 	 *         <code>InspectorPlugin</code>.
 	 */
 	public InspectorTab[] getTabs();
-
+	
 	/**
 	 * Adds another <code>InspectorTab</code> to the current
 	 * <code>InspectorPlugin</code>.
 	 * 
 	 * @param tab
-	 *            the <code>InspectorTab</code> to be added to the
-	 *            <code>InspectorPlugin</code>.
+	 *           the <code>InspectorTab</code> to be added to the
+	 *           <code>InspectorPlugin</code>.
 	 */
 	public void addTab(InspectorTab tab);
-
+	
 	public void setSelectedTab(InspectorTab tab);
 }
 

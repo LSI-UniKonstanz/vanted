@@ -43,94 +43,94 @@ package org.jfree.data;
  *             presentation items.
  */
 public interface MeterDataset extends ValueDataset {
-
+	
 	/** A constant representing the 'normal' level. */
 	public static final int NORMAL_DATA = 0;
-
+	
 	/** A constant representing the 'warning' level. */
 	public static final int WARNING_DATA = 1;
-
+	
 	/** A constant representing the 'critical' level. */
 	public static final int CRITICAL_DATA = 2;
-
+	
 	/** A constant representing the full data range. */
 	public static final int FULL_DATA = 3;
-
+	
 	/**
 	 * Returns the lower value in the overall range.
 	 * 
 	 * @return The lower value.
 	 */
 	public Number getMinimumValue();
-
+	
 	/**
 	 * Returns the upper value in the overall range.
 	 * 
 	 * @return The upper value.
 	 */
 	public Number getMaximumValue();
-
+	
 	/**
 	 * Returns the lower value in the normal range.
 	 * 
 	 * @return The lower value.
 	 */
 	public Number getMinimumNormalValue();
-
+	
 	/**
 	 * Returns the upper value in the normal range.
 	 * 
 	 * @return The upper value.
 	 */
 	public Number getMaximumNormalValue();
-
+	
 	/**
 	 * Returns the lower value in the warning range.
 	 * 
 	 * @return The lower value.
 	 */
 	public Number getMinimumWarningValue();
-
+	
 	/**
 	 * Returns the upper value in the warning range.
 	 * 
 	 * @return The upper value.
 	 */
 	public Number getMaximumWarningValue();
-
+	
 	/**
 	 * Returns the lower value in the critical range.
 	 * 
 	 * @return The lower value.
 	 */
 	public Number getMinimumCriticalValue();
-
+	
 	/**
 	 * Returns the upper value in the critical range.
 	 * 
 	 * @return The upper value.
 	 */
 	public Number getMaximumCriticalValue();
-
+	
 	/**
 	 * Returns true if the value is valid, and false otherwise.
 	 * 
 	 * @return A boolean
 	 */
 	public boolean isValueValid();
-
+	
 	/**
 	 * Returns a string representing the units on the dial.
 	 * 
 	 * @return The units.
 	 */
 	public String getUnits();
-
+	
 	/**
 	 * Returns the border type for the data.
 	 * 
 	 * @return The border type.
 	 */
 	public int getBorderType();
-
+	
 }

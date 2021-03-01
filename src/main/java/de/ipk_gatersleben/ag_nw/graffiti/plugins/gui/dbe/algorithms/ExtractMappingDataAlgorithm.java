@@ -35,40 +35,40 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
-
+	
 	public String getName() {
 		return "Extract Mapping Data";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>Gather all experimental data from the graph/selection<br/>and put it in Experiments Tab.";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.DATA, Category.UI, Category.EXPORT));
 	}
-
+	
 	private boolean onlyOne = false;
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(onlyOne, "Extract single experiment  ",
 				"If enabled, all experiments will be merged together.") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int idx = 0;
 		onlyOne = ((BooleanParameter) params[idx++]).getBoolean();
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
@@ -78,7 +78,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		}
 		throw new PreconditionException("Network does not contain experimental data");
 	}
-
+	
 	@Override
 	public void execute() {
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
@@ -91,7 +91,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 			try {
 				status.setCurrentStatusText2("Getting mapping data from elements");
 				status.setCurrentStatusValue(0);
-
+				
 				for (ExperimentInterface e : getExperiments(workNodes, onlyOne, status)) {
 					String expname = e.getName();
 					if (expname == null) {
@@ -109,11 +109,11 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 			else
 				status.setCurrentStatusText1("Finished");
 			status.setCurrentStatusText2("");
-
+			
 		}, null, status);
-
+		
 	}
-
+	
 	public static Collection<ExperimentInterface> getExperiments(Collection<GraphElement> workNodes, boolean onlyOne,
 			BackgroundTaskStatusProviderSupportingExternalCall status) {
 		HashMap<String, ExperimentInterface> allData = new HashMap<String, ExperimentInterface>();
@@ -132,7 +132,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		}
 		if (status != null && status.wantsToStop())
 			return new ArrayList<ExperimentInterface>();
-
+		
 		if (status != null)
 			status.setCurrentStatusText2("Loading experiments into Experiment-Tab");
 		if (onlyOne) {
@@ -144,12 +144,12 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 			return lst;
 		} else
 			return allData.values();
-
+		
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 }

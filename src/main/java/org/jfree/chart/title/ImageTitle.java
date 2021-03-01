@@ -64,71 +64,71 @@ import org.jfree.ui.VerticalAlignment;
  * @author David Berry
  */
 public class ImageTitle extends Title {
-
+	
 	/** The title image. */
 	private Image image;
-
+	
 	/** The height used to draw the image (may involve scaling). */
 	private int height;
-
+	
 	/** The width used to draw the image (may involve scaling). */
 	private int width;
-
+	
 	/**
 	 * Creates a new image title.
 	 * 
 	 * @param image
-	 *            the image.
+	 *           the image.
 	 */
 	public ImageTitle(Image image) {
-
+		
 		this(image, image.getHeight(null), image.getWidth(null), Title.DEFAULT_POSITION,
 				Title.DEFAULT_HORIZONTAL_ALIGNMENT, Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new image title.
 	 * 
 	 * @param image
-	 *            the image.
+	 *           the image.
 	 * @param position
-	 *            the title position.
+	 *           the title position.
 	 * @param horizontalAlignment
-	 *            the horizontal alignment.
+	 *           the horizontal alignment.
 	 * @param verticalAlignment
-	 *            the vertical alignment.
+	 *           the vertical alignment.
 	 */
 	public ImageTitle(Image image, RectangleEdge position, HorizontalAlignment horizontalAlignment,
 			VerticalAlignment verticalAlignment) {
-
+		
 		this(image, image.getHeight(null), image.getWidth(null), position, horizontalAlignment, verticalAlignment,
 				Title.DEFAULT_SPACER);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new image title with the given image scaled to the given width and
 	 * height in the given location.
 	 * 
 	 * @param image
-	 *            the image (not null).
+	 *           the image (not null).
 	 * @param height
-	 *            the height used to draw the image.
+	 *           the height used to draw the image.
 	 * @param width
-	 *            the width used to draw the image.
+	 *           the width used to draw the image.
 	 * @param position
-	 *            the title position.
+	 *           the title position.
 	 * @param horizontalAlignment
-	 *            the horizontal alignment.
+	 *           the horizontal alignment.
 	 * @param verticalAlignment
-	 *            the vertical alignment.
+	 *           the vertical alignment.
 	 * @param spacer
-	 *            the amount of space to leave around the outside of the title.
+	 *           the amount of space to leave around the outside of the title.
 	 */
 	public ImageTitle(Image image, int height, int width, RectangleEdge position,
 			HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Spacer spacer) {
-
+		
 		super(position, horizontalAlignment, verticalAlignment, spacer);
 		if (image == null) {
 			throw new NullPointerException("ImageTitle(..): Image argument is null.");
@@ -136,9 +136,9 @@ public class ImageTitle extends Title {
 		this.image = image;
 		this.height = height;
 		this.width = width;
-
+		
 	}
-
+	
 	/**
 	 * Returns the image for the title.
 	 * 
@@ -147,35 +147,35 @@ public class ImageTitle extends Title {
 	public Image getImage() {
 		return this.image;
 	}
-
+	
 	/**
 	 * Sets the image for the title and notifies registered listeners that the title
 	 * has been modified.
 	 * 
 	 * @param image
-	 *            the new image (<code>null</code> not permitted).
+	 *           the new image (<code>null</code> not permitted).
 	 */
 	public void setImage(Image image) {
-
+		
 		if (image == null) {
 			throw new NullPointerException("ImageTitle.setImage (..): Image must not be null.");
 		}
 		this.image = image;
 		notifyListeners(new TitleChangeEvent(this));
-
+		
 	}
-
+	
 	/**
 	 * Draws the title on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param titleArea
-	 *            the area within which the title (and plot) should be drawn.
+	 *           the area within which the title (and plot) should be drawn.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D titleArea) {
-
+		
 		RectangleEdge position = getPosition();
 		if (position == RectangleEdge.TOP || position == RectangleEdge.BOTTOM) {
 			drawHorizontal(g2, titleArea);
@@ -185,30 +185,30 @@ public class ImageTitle extends Title {
 			throw new RuntimeException("ImageTitle.draw(...) - invalid title position.");
 		}
 	}
-
+	
 	/**
 	 * Returns the preferred width of the title.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param height
-	 *            the height (ignored).
+	 *           the height (ignored).
 	 * @return the preferred width of the title.
 	 */
 	public float getPreferredWidth(Graphics2D g2, float height) {
 		Spacer spacer = getSpacer();
 		float result = (float) spacer.getAdjustedWidth(this.width);
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the preferred height of the title.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param width
-	 *            the width (ignored).
+	 *           the width (ignored).
 	 * @return the preferred height of the title.
 	 */
 	public float getPreferredHeight(Graphics2D g2, float width) {
@@ -216,37 +216,37 @@ public class ImageTitle extends Title {
 		float result = (float) spacer.getAdjustedHeight(this.height);
 		return result;
 	}
-
+	
 	/**
 	 * Draws the title on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param chartArea
-	 *            the area within which the title (and plot) should be drawn.
+	 *           the area within which the title (and plot) should be drawn.
 	 * @return the area used by the title.
 	 */
 	protected Size2D drawHorizontal(Graphics2D g2, Rectangle2D chartArea) {
-
+		
 		double startY = 0.0;
 		double topSpace = 0.0;
 		double bottomSpace = 0.0;
 		double leftSpace = 0.0;
 		double rightSpace = 0.0;
-
+		
 		Spacer spacer = getSpacer();
 		topSpace = spacer.getTopSpace(this.height);
 		bottomSpace = spacer.getBottomSpace(this.height);
 		leftSpace = spacer.getLeftSpace(this.width);
 		rightSpace = spacer.getRightSpace(this.width);
-
+		
 		if (getPosition() == RectangleEdge.TOP) {
 			startY = chartArea.getY() + topSpace;
 		} else {
 			startY = chartArea.getY() + chartArea.getHeight() - bottomSpace - this.height;
 		}
-
+		
 		// what is our alignment?
 		HorizontalAlignment horizontalAlignment = getHorizontalAlignment();
 		double startX = 0.0;
@@ -257,31 +257,31 @@ public class ImageTitle extends Title {
 		} else if (horizontalAlignment == HorizontalAlignment.RIGHT) {
 			startX = chartArea.getX() + chartArea.getWidth() - rightSpace - this.width;
 		}
-
+		
 		g2.drawImage(this.image, (int) startX, (int) startY, this.width, this.height, null);
-
+		
 		return new Size2D(chartArea.getWidth() + leftSpace + rightSpace, this.height + topSpace + bottomSpace);
-
+		
 	}
-
+	
 	/**
 	 * Draws the title on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param chartArea
-	 *            the area within which the title (and plot) should be drawn.
+	 *           the area within which the title (and plot) should be drawn.
 	 * @return the area used by the title.
 	 */
 	protected Size2D drawVertical(Graphics2D g2, Rectangle2D chartArea) {
-
+		
 		double startX = 0.0;
 		double topSpace = 0.0;
 		double bottomSpace = 0.0;
 		double leftSpace = 0.0;
 		double rightSpace = 0.0;
-
+		
 		Spacer spacer = getSpacer();
 		if (spacer != null) {
 			topSpace = spacer.getTopSpace(this.height);
@@ -289,13 +289,13 @@ public class ImageTitle extends Title {
 			leftSpace = spacer.getLeftSpace(this.width);
 			rightSpace = spacer.getRightSpace(this.width);
 		}
-
+		
 		if (getPosition() == RectangleEdge.LEFT) {
 			startX = chartArea.getX() + leftSpace;
 		} else {
 			startX = chartArea.getMaxX() - rightSpace - this.width;
 		}
-
+		
 		// what is our alignment?
 		VerticalAlignment alignment = getVerticalAlignment();
 		double startY = 0.0;
@@ -306,11 +306,11 @@ public class ImageTitle extends Title {
 		} else if (alignment == VerticalAlignment.BOTTOM) {
 			startY = chartArea.getMaxY() - bottomSpace - this.height;
 		}
-
+		
 		g2.drawImage(this.image, (int) startX, (int) startY, this.width, this.height, null);
-
+		
 		return new Size2D(chartArea.getWidth() + leftSpace + rightSpace, this.height + topSpace + bottomSpace);
-
+		
 	}
-
+	
 }

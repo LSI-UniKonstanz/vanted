@@ -18,21 +18,21 @@ import java.util.LinkedList;
  */
 public class Queue {
 	// ~ Instance fields ========================================================
-
+	
 	/** The queue's data structure. */
 	private LinkedList<Object> list;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new queue.
 	 */
 	public Queue() {
 		list = new LinkedList<Object>();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns <code>true</code>, if the queue is empty.
 	 * 
@@ -41,24 +41,24 @@ public class Queue {
 	public boolean isEmpty() {
 		return list.isEmpty();
 	}
-
+	
 	/**
 	 * Adds the given object to the end of the queue.
 	 * 
 	 * @param o
-	 *            the object to add to the end of the queue.
+	 *           the object to add to the end of the queue.
 	 */
 	public void addLast(Object o) {
 		list.addLast(o);
 	}
-
+	
 	/**
 	 * @see java.util.Collection#clear()
 	 */
 	public void clear() {
 		list.clear();
 	}
-
+	
 	/**
 	 * Returns and removes the first element in the queue.
 	 * 

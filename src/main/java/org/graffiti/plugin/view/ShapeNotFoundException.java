@@ -19,17 +19,17 @@ package org.graffiti.plugin.view;
  */
 public class ShapeNotFoundException extends Exception {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5984889433963582264L;
-
+	
 	/**
 	 * Constructs a ShapeNotFoundException.
 	 * 
 	 * @param msg
-	 *            the message to set.
+	 *           the message to set.
 	 */
 	public ShapeNotFoundException(String msg) {
 		super(msg);

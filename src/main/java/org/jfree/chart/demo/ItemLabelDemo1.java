@@ -50,40 +50,40 @@ import org.jfree.ui.RefineryUtilities;
  * with a value that is greater than some threshold.
  */
 public class ItemLabelDemo1 extends ApplicationFrame {
-
+	
 	/**
 	 * A custom label generator.
 	 */
 	static class LabelGenerator implements CategoryLabelGenerator {
-
+		
 		/** The threshold. */
 		private double threshold;
-
+		
 		/**
 		 * Creates a new generator that only displays labels that are greater than or
 		 * equal to the threshold value.
 		 * 
 		 * @param threshold
-		 *            the threshold value.
+		 *           the threshold value.
 		 */
 		public LabelGenerator(final double threshold) {
 			this.threshold = threshold;
 		}
-
+		
 		/**
 		 * Generates a label for the specified item. The label is typically a formatted
 		 * version of the data value, but any text can be used.
 		 * 
 		 * @param dataset
-		 *            the dataset (<code>null</code> not permitted).
+		 *           the dataset (<code>null</code> not permitted).
 		 * @param series
-		 *            the series index (zero-based).
+		 *           the series index (zero-based).
 		 * @param category
-		 *            the category index (zero-based).
+		 *           the category index (zero-based).
 		 * @return the label (possibly <code>null</code>).
 		 */
 		public String generateLabel(final CategoryDataset dataset, final int series, final int category) {
-
+			
 			String result = null;
 			final Number value = dataset.getValue(series, category);
 			if (value != null) {
@@ -93,35 +93,35 @@ public class ItemLabelDemo1 extends ApplicationFrame {
 				}
 			}
 			return result;
-
+			
 		}
-
+		
 	}
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ItemLabelDemo1(final String title) {
-
+		
 		super(title);
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Returns a sample dataset.
 	 * 
 	 * @return the dataset.
 	 */
 	private CategoryDataset createDataset() {
-
+		
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(11.0, "S1", "C1");
 		dataset.addValue(44.3, "S1", "C2");
@@ -129,18 +129,18 @@ public class ItemLabelDemo1 extends ApplicationFrame {
 		dataset.addValue(35.6, "S1", "C4");
 		dataset.addValue(75.1, "S1", "C5");
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart("Item Label Demo 1", // chart title
 				"Category", // domain axis label
@@ -151,38 +151,38 @@ public class ItemLabelDemo1 extends ApplicationFrame {
 				true, // tooltips?
 				false // URLs?
 		);
-
+		
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setUpperMargin(0.15);
-
+		
 		final CategoryItemRenderer renderer = plot.getRenderer();
 		renderer.setLabelGenerator(new LabelGenerator(50.0));
 		renderer.setItemLabelsVisible(true);
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ItemLabelDemo1 demo = new ItemLabelDemo1("Item Label Demo 1");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -48,44 +48,44 @@ import org.jfree.ui.RefineryUtilities;
  * data from an XML data file.
  */
 public class XMLBarChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XMLBarChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		CategoryDataset dataset = null;
 		final URL url = getClass().getResource("/org/jfree/chart/demo/categorydata.xml");
-
+		
 		try {
 			final InputStream in = url.openStream();
 			dataset = DatasetReader.readCategoryDatasetFromXML(in);
 		} catch (IOException ioe) {
 			System.out.println(ioe.getMessage());
 		}
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart", // chart title
 				"Domain", "Range", dataset, // data
 				PlotOrientation.VERTICAL, true, // include legend
 				true, false);
-
+		
 		// set the background color for the chart...
 		chart.setBackgroundPaint(Color.yellow);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -96,20 +96,20 @@ public class XMLBarChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XMLBarChartDemo demo = new XMLBarChartDemo("XML Bar Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -38,9 +38,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implements ProvidesNodeContextMenu {
-
+	
 	private static GoProcessing gp = null;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -49,12 +49,12 @@ public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implemen
 	public String getName() {
 		return null;
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -62,7 +62,7 @@ public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implemen
 	 */
 	public void execute() {
 	}
-
+	
 	public static Node processGoHierarchy(PositionGridGenerator pgg, HashMap<String, Node> goTerm2goNode,
 			GoProcessing gp, String goTerm, Graph g) {
 		Node gn;
@@ -88,7 +88,7 @@ public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implemen
 				System.out.println("Size:" + d.getWidth() + " x " + d.getHeight());
 			}
 			goTerm2goNode.put(goTerm, gn);
-
+			
 			Collection<String> parents = gi.getDirectParents();
 			for (String gt : parents)
 				connectNodeWithNodes(gn, processGoHierarchy(pgg, goTerm2goNode, gp, gt, g));
@@ -96,7 +96,7 @@ public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implemen
 		gn = goTerm2goNode.get(goTerm);
 		return gn;
 	}
-
+	
 	private static void connectNodeWithNodes(Node goNode, Node newGoNode) {
 		if (goNode == null || newGoNode == null)
 			return;
@@ -106,19 +106,19 @@ public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implemen
 			AttributeHelper.setBorderWidth(e, 3d);
 		}
 	}
-
+	
 	public JMenuItem[] getCurrentNodeContextMenuItem(final Collection<Node> selectedNodes) {
 		JMenuItem addParents = new JMenuItem("Add GO-Term-Parent-Nodes");
 		JMenuItem addChildren = new JMenuItem("Add GO-Term-Children-Nodes");
-
+		
 		addParents.addActionListener(getGoActionListener(selectedNodes, true));
 		addChildren.addActionListener(getGoActionListener(selectedNodes, false));
 		return new JMenuItem[] { addParents, addChildren };
 	}
-
+	
 	private ActionListener getGoActionListener(final Collection<Node> selectedNodes, boolean addParentNodes) {
 		ActionListener result = new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent e) {
 				if (gp == null) {
 					File obofile = OpenFileDialogService.getFile(new String[] { ".obo-xml" },

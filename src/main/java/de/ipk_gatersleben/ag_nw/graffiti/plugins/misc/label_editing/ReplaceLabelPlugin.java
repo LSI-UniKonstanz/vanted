@@ -9,7 +9,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
 public class ReplaceLabelPlugin extends IPK_PluginAdapter {
-
+	
 	public ReplaceLabelPlugin() {
 		this.algorithms = new Algorithm[] {
 				// new ChangeLabelsAlgorithm()

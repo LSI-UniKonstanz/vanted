@@ -20,7 +20,7 @@ import org.graffiti.plugin.io.InputSerializer;
  */
 public class GMLReaderPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new GMLReaderPlugin object.
 	 */

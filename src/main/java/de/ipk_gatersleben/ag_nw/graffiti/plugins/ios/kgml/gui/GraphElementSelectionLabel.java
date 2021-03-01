@@ -35,7 +35,7 @@ public class GraphElementSelectionLabel extends JLabel {
 	private Node n = null;
 	private Edge e = null;
 	private Collection<Attributable> errorSources = null;
-
+	
 	public GraphElementSelectionLabel(Attributable causingGraphElement) {
 		if (causingGraphElement instanceof Graph) {
 			g = (Graph) causingGraphElement;
@@ -59,7 +59,7 @@ public class GraphElementSelectionLabel extends JLabel {
 		setToolTipText("Click here, to select graph-element");
 		addMouseListener();
 	}
-
+	
 	public GraphElementSelectionLabel(Collection<Attributable> causingGraphElements) {
 		errorSources = causingGraphElements;
 		String lbl = "<html><table border='0'>";
@@ -90,7 +90,7 @@ public class GraphElementSelectionLabel extends JLabel {
 		setToolTipText("Click here, to select graph-elements");
 		addMouseListener();
 	}
-
+	
 	private void addMouseListener() {
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -138,21 +138,21 @@ public class GraphElementSelectionLabel extends JLabel {
 					}
 				});
 			}
-
+			
 			public void mouseEntered(MouseEvent arg0) {
 			}
-
+			
 			public void mouseExited(MouseEvent arg0) {
 			}
-
+			
 			public void mousePressed(MouseEvent arg0) {
 			}
-
+			
 			public void mouseReleased(MouseEvent arg0) {
 			}
 		});
 	}
-
+	
 	private void processTab(AbstractTab nt, boolean mark, boolean showInFront) {
 		nt.getTitle();
 		int index = ((JTabbedPane) nt.getParent()).indexOfComponent(nt);

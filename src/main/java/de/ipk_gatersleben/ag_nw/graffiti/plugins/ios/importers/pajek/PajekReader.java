@@ -28,7 +28,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.database.dbe.StringScanner;
 
 /**
- * 
  * edges in list form (not supported): vertices <# of vertices> 1 "x" 2 "y" 3
  * "z" arcslist 1 2 3 2 3 non-list form for edges: vertices <# of vertices> 1
  * "a" x y z 2 "b" x y 3 "c" edges 1 2 0.3 1 3 0.7 2 3 1.0 arcs 1 2 0.3 1 3 0.7
@@ -37,22 +36,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.database.dbe.StringScanner;
  * @author Christian Klukas
  */
 public class PajekReader extends AbstractInputSerializer {
-
+	
 	private String fileNameExt = ".net";
-
+	
 	private String specialStart = "*";
 	private String nodeStart = "*Vertices".toUpperCase();
 	private String edgeStart = "*Arcs".toUpperCase();
 	private String edgeUnDirStart = "*Edges".toUpperCase();
 	private String filename;
-
+	
 	/**
 	 *
 	 */
 	public PajekReader() {
 		super();
 	}
-
+	
 	@Override
 	public void read(String filename, Graph g) throws IOException {
 		this.filename = filename;
@@ -61,7 +60,7 @@ public class PajekReader extends AbstractInputSerializer {
 			g.setName(filename);
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -75,7 +74,7 @@ public class PajekReader extends AbstractInputSerializer {
 		read(g, bi);
 		isr.close();
 	}
-
+	
 	private void read(Graph g, BufferedReader bi) throws IOException, FileNotFoundException {
 		HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();
 		/**
@@ -84,7 +83,7 @@ public class PajekReader extends AbstractInputSerializer {
 		 * "*Edges" found, now we read undirected edges
 		 */
 		int mode = 0;
-
+		
 		PositionGridGenerator positionGen = new PositionGridGenerator(30, 30, 500);
 		boolean performPositionScaling = true;
 		String currLine;
@@ -106,18 +105,17 @@ public class PajekReader extends AbstractInputSerializer {
 				} else {
 					StringScanner s = new StringScanner(currLine, " ", " ", " ");
 					switch (mode) {
-					case 1:
-						if (!mode1node(g, nodes, positionGen, s))
-							performPositionScaling = false;
-						break;
-					case 2:
-						mode2dirEdge(g, nodes, s);
-						break;
-					case 3:
-						mode3undirEdge(g, nodes, s);
-						break;
-					default:
-						; // ignore
+						case 1:
+							if (!mode1node(g, nodes, positionGen, s))
+								performPositionScaling = false;
+							break;
+						case 2:
+							mode2dirEdge(g, nodes, s);
+							break;
+						case 3:
+							mode3undirEdge(g, nodes, s);
+							break;
+						default:; // ignore
 					}
 				}
 			}
@@ -151,7 +149,7 @@ public class PajekReader extends AbstractInputSerializer {
 			}
 		}
 	}
-
+	
 	private void mode2dirEdge(Graph g, HashMap<Integer, Node> nodes, StringScanner s) {
 		Node node1 = nodes.get(Integer.valueOf(s.nextInt()));
 		Node node2 = nodes.get(Integer.valueOf(s.nextInt()));
@@ -163,7 +161,7 @@ public class PajekReader extends AbstractInputSerializer {
 		if (weight != null)
 			AttributeHelper.setAttribute(newEdge, "pajek", "weight", weight);
 	}
-
+	
 	private void mode3undirEdge(Graph g, HashMap<Integer, Node> nodes, StringScanner s) {
 		Node node1 = nodes.get(Integer.valueOf(s.nextInt()));
 		Node node2 = nodes.get(Integer.valueOf(s.nextInt()));
@@ -175,7 +173,7 @@ public class PajekReader extends AbstractInputSerializer {
 		if (weight != null)
 			AttributeHelper.setAttribute(newEdge, "pajek", "weight", weight);
 	}
-
+	
 	/**
 	 * @return true, in case x, y and z position is less or equal to 1 and greater
 	 *         or equal to 0
@@ -207,7 +205,7 @@ public class PajekReader extends AbstractInputSerializer {
 		}
 		return requestScale;
 	}
-
+	
 	/**
 	 * @param in
 	 * @param bi
@@ -252,7 +250,7 @@ public class PajekReader extends AbstractInputSerializer {
 		isrCl.close();
 		fisCl.close();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -261,7 +259,7 @@ public class PajekReader extends AbstractInputSerializer {
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -270,7 +268,7 @@ public class PajekReader extends AbstractInputSerializer {
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "Pajek" };
 	}
-
+	
 	public void read(Reader reader, Graph g) throws Exception {
 		BufferedReader bi = new BufferedReader(reader);
 		read(g, bi);

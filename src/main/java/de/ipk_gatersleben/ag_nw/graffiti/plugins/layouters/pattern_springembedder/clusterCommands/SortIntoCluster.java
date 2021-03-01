@@ -43,81 +43,81 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * @vanted.revision 2.7.0 Moved to Set Cluster ID LaunchGui window, Java 8 Minimum Compat; Undo/Redo
  */
 public class SortIntoCluster extends AbstractAlgorithm {
-
+	
 	private enum EnumAttrType {
 		STRING, NUMERIC
 	}
-
+	
 	static final Logger logger = Logger.getLogger(SortIntoCluster.class);
-
+	
 	private Collection<Node> selectedOrAllNodes;
-
+	
 	private String selAttrPath;
 	private String selAttrName;
-
+	
 	private EnumAttrType attrType;
-
+	
 	double lowerLimit = -1;
 	double upperLimit = 1;
-
+	
 	@Override
 	public String getName() {
 		return "Sort into Clusters by Attribute";
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		super.setParameters(params);
 		if (params == null || params.length == 0)
 			return;
-
+		
 		Parameter paramSelAttribute = params[0];
 		AttributePathNameSearchType value = (AttributePathNameSearchType) paramSelAttribute.getValue();
 		selAttrName = value.getAttributeName();
 		selAttrPath = value.getAttributePath();
-
+		
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>Puts network nodes (selected or all) in<br/>cluster, based on the selected Attribute.";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
-
+		
 		selectedOrAllNodes = getSelectedOrAllNodes();
 		if (selectedOrAllNodes == null)
 			return null;
-
+		
 		ArrayList<AttributePathNameSearchType> listAttributes = new ArrayList<>();
 		SearchAndSelecAlgorithm.enumerateAttributes(listAttributes, selectedOrAllNodes,
 				SearchType.getSetOfSearchTypes());
-
+		
 		ObjectListParameter paramListAttributes = new ObjectListParameter(null, "Select Attribute",
 				"Select the attribute, that contains the value (String or Numeric), to cluster upon", listAttributes);
-
+		
 		Parameter[] returnParameters = new Parameter[1];
 		returnParameters[0] = paramListAttributes;
-
+		
 		return returnParameters;
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.COMPUTATION));
 	}
-
+	
 	@Override
 	public void execute() {
-
+		
 		/*
 		 * get attribute type, where the clustering depends on
 		 */
-
+		
 		Object attrValue = null;
 		attrType = null;
-
+		
 		List<Node> nodesWithSelectedAttribute = new ArrayList<>();
 		for (Node curNode : selectedOrAllNodes) {
 			if ((attrValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null,
@@ -125,21 +125,21 @@ public class SortIntoCluster extends AbstractAlgorithm {
 				nodesWithSelectedAttribute.add(curNode);
 			}
 		}
-
+		
 		if (nodesWithSelectedAttribute.isEmpty())
 			return;
-
+		
 		attrValue = AttributeHelper.getAttributeValue(nodesWithSelectedAttribute.get(0), selAttrPath, selAttrName, null,
 				null);
-
+		
 		// attrValue should still be set with the last value of the last checked node
 		if (attrValue instanceof String) {
 			attrType = EnumAttrType.STRING;
-
+			
 		} else if (attrValue instanceof Long || attrValue instanceof Integer || attrValue instanceof Double
 				|| attrValue instanceof Float) {
 			attrType = EnumAttrType.NUMERIC;
-
+			
 		} else {
 			/*
 			 * we only support string and numberic values
@@ -150,41 +150,41 @@ public class SortIntoCluster extends AbstractAlgorithm {
 			return;
 		}
 		logger.debug(attrType);
-
+		
 		switch (attrType) {
-		case STRING:
+			case STRING:
 //			JOptionPane.showMessageDialog(MainFrame.getInstance(),
 //					"<html>Creating cluster from selected String attribute.<br/>Nodes with the same string value will be put<br?> into the same cluster",
 //					"Cluster Creation", JOptionPane.INFORMATION_MESSAGE);
-			clusterByString(nodesWithSelectedAttribute);
-			break;
-		case NUMERIC:
-			clusterByValue(nodesWithSelectedAttribute);
-			break;
+				clusterByString(nodesWithSelectedAttribute);
+				break;
+			case NUMERIC:
+				clusterByValue(nodesWithSelectedAttribute);
+				break;
 		}
-
+		
 	}
-
+	
 	private void clusterByString(List<Node> nodesWithSelectedAttribute) {
 		HashMap<GraphElement, String> ge2newClusterID = new HashMap<>();
 		nodesWithSelectedAttribute.forEach(node -> ge2newClusterID.put(node,
 				(String) AttributeHelper.getAttributeValue(node, selAttrPath, selAttrName, null, new String())));
 		GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newClusterID, getName(), true);
 	}
-
+	
 	/**
 	 * clusters the nodes into three cluster. The values are the average
 	 * experimental values of the node's experiment values. We calculate two Min /
 	 * Max/ 0
 	 */
 	private void clusterByValue(final List<Node> nodesWithSelectedAttribute) {
-
+		
 		double min = Double.MAX_VALUE;
 		double max = Double.MIN_VALUE;
-
+		
 		for (Node curNode : nodesWithSelectedAttribute) {
 			Object attributeValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, null);
-
+			
 			double value = 0;
 			if (attributeValue instanceof Number)
 				value = ((Number) attributeValue).doubleValue();
@@ -193,27 +193,27 @@ public class SortIntoCluster extends AbstractAlgorithm {
 			if (value > max)
 				max = value;
 		}
-
+		
 		DefaultParameterDialog paramDialog;
-
+		
 		/*
 		 * ask user, how many clusters he wants the numeric to be split into currently
 		 * limited to 10
 		 */
 		Parameter[] numberOfSplitsParameter = new Parameter[] {
 				new IntegerParameter(2, 2, 10, "Number of clusters", "Choose the number of clusters") };
-
+		
 		paramDialog = new DefaultParameterDialog(MainFrame.getInstance().getEditComponentManager(),
 				MainFrame.getInstance(), numberOfSplitsParameter, selection, "Select Number of Cluster",
 				"<html>Choose the number of clusters, in which the numeric<br/>" + "values will be sorted in", null,
 				false);
-
+		
 		if (!paramDialog.isOkSelected()) {
 			return;
 		}
-
+		
 		int numClusters = ((IntegerParameter) paramDialog.getEditedParameters()[0]).getInteger();
-
+		
 		paramDialog = new DefaultParameterDialog(MainFrame.getInstance().getEditComponentManager(),
 				MainFrame.getInstance(), getClusterSplitValueParameters(min, max, numClusters), selection,
 				"Select Cluster split points",
@@ -221,49 +221,49 @@ public class SortIntoCluster extends AbstractAlgorithm {
 						+ " Maximum value found: <strong>" + max + "</strong><br/>Minimum value found: <strong>" + min
 						+ "</strong>.",
 				null, false);
-
+		
 		if (!paramDialog.isOkSelected()) {
 			return;
 		}
 		Parameter[] editedParameters = paramDialog.getEditedParameters();
-
+		
 		final double[] limits = new double[numClusters];
-
+		
 		for (int i = 0; i < numClusters - 1; i++) {
 			limits[i] = ((DoubleParameter) editedParameters[i]).getDouble();
 		}
 		limits[numClusters - 1] = max; // last limit is the maximum (which should never be exceeded)
-
+		
 		final String[] clusterNames = new String[numClusters];
-
+		
 		int i = 0;
 		clusterNames[i] = "Cluster between " + min + " and " + limits[i];
 		i++;
 		for (; i < numClusters; i++)
 			clusterNames[i] = "Cluster between " + limits[i - 1] + " and " + limits[i];
-
+		
 		BackgroundTaskHelper.issueSimpleTask("Sorting into Clusters", null, () -> {
-
-				HashMap<GraphElement, String> ge2newCLusterID = new HashMap<>();
-				nodesWithSelectedAttribute.forEach((node) -> {
-					Object attributeValue = AttributeHelper.getAttributeValue(node, selAttrPath, selAttrName, null,
-							null);
-					double value = 0;
-					if (attributeValue instanceof Number) {
-						value = ((Number) attributeValue).doubleValue();
-						
-						int curIdx = 0;
-						while ((value - limits[curIdx++]) > 0);
-						
-						ge2newCLusterID.put(node, clusterNames[curIdx - 1]); // +2 because undo the decrement (+1) and
-																				// the splitpoint cluster name is
-																				// splitpoint + 1 (+1)
-					}
-				});
-				GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newCLusterID, getName(), true);
-			}, null);
+			
+			HashMap<GraphElement, String> ge2newCLusterID = new HashMap<>();
+			nodesWithSelectedAttribute.forEach((node) -> {
+				Object attributeValue = AttributeHelper.getAttributeValue(node, selAttrPath, selAttrName, null,
+						null);
+				double value = 0;
+				if (attributeValue instanceof Number) {
+					value = ((Number) attributeValue).doubleValue();
+					
+					int curIdx = 0;
+					while ((value - limits[curIdx++]) > 0);
+					
+					ge2newCLusterID.put(node, clusterNames[curIdx - 1]); // +2 because undo the decrement (+1) and
+					// the splitpoint cluster name is
+					// splitpoint + 1 (+1)
+				}
+			});
+			GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newCLusterID, getName(), true);
+		}, null);
 	}
-
+	
 	/**
 	 * returns numClusters-1 DoubleParameters (NumSplitpoints = Numclusters - 1) The
 	 * initial values for the split points are calculated evenly based on the given
@@ -273,15 +273,15 @@ public class SortIntoCluster extends AbstractAlgorithm {
 	 * @return
 	 */
 	private static Parameter[] getClusterSplitValueParameters(double min, double max, int numClusters) {
-
+		
 		double increment = (max - min) / (double) numClusters;
-
+		
 		Parameter[] splitParameters = new Parameter[numClusters];
-
+		
 		for (int i = 0; i < numClusters - 1; i++) {
 			splitParameters[i] = new DoubleParameter(min + increment * (i + 1), "Split point (" + (i + 1) + ")", null);
 		}
-
+		
 		return splitParameters;
 	}
 }

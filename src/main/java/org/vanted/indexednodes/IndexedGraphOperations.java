@@ -14,13 +14,12 @@ import java.util.List;
  * 
  * @since 2.8
  * @author Benjamin Moser
- * 
  */
 public class IndexedGraphOperations {
-
+	
 	private IndexedGraphOperations() {
 	}
-
+	
 	/**
 	 * Get all connected components in the induced `subgraph`
 	 *
@@ -29,7 +28,8 @@ public class IndexedGraphOperations {
 	 */
 	public static List<IndexedComponent> getComponents(IndexedNodeSet subgraph) {
 		List<IndexedComponent> components = new ArrayList<>();
-		if (subgraph.isEmpty()) return components;
+		if (subgraph.isEmpty())
+			return components;
 		IndexedNodeSet nodesToProcess = subgraph.copy();
 		while (!nodesToProcess.isEmpty()) {
 			int startNode = nodesToProcess.first();
@@ -41,32 +41,30 @@ public class IndexedGraphOperations {
 		}
 		return components;
 	}
-
+	
 	/**
 	 * Calculates the distance vector from the specified node to all other nodes in the given
 	 * org.vanted.indexednodes.IndexedNodeSet.
 	 *
-	 * @param from the distances from this node to all others will be calculated.
+	 * @param from
+	 *           the distances from this node to all others will be calculated.
 	 * @return the distance vector from the from node to all others
 	 */
 	public static RealVector calcDistances(final Node from, IndexedNodeSet inSet) {
 		int fromIndex = inSet.getIndex(from);
 		return calcDistances(fromIndex, inSet);
 	}
-
+	
 	public static void breadthFirstSearch(
 			int startNode,
 			IndexedNodeSet subgraph,
-			StatefulAccumulator<?, IndexedComponent>... accumulators
-	) {
+			StatefulAccumulator<?, IndexedComponent>... accumulators) {
 		IndexedNodeSet firstNeighbours = subgraph.getInducedNeighboursOf(startNode);
 		// submit start node and its edges to accumulator
 		Arrays.stream(accumulators).forEach((acc) -> {
 			acc.apply(new IndexedComponent(
-							subgraph.singletonSubset(startNode),
-							(new IndexedEdgeList()).addFan(startNode, firstNeighbours)
-					)
-			);
+					subgraph.singletonSubset(startNode),
+					(new IndexedEdgeList()).addFan(startNode, firstNeighbours)));
 		});
 		// initialise queue with all neighbours of startNode
 		IndexedNodeSet nodesToConsider = firstNeighbours;
@@ -85,9 +83,8 @@ public class IndexedGraphOperations {
 						// node is newly encountered, add it to DS of newly encountered nodes
 						// that will be passed to consumers
 						newNodesToReport.add(newNodeIndex);
-
-						IndexedNodeSet neighbours =
-								subgraph.getInducedNeighboursOf(newNodeIndex);
+						
+						IndexedNodeSet neighbours = subgraph.getInducedNeighboursOf(newNodeIndex);
 						// add neighbourhood of newly encountered node to queue
 						// here we potentially add already-seen nodes. technically, we could
 						// also filter here, but we do so after the loop for increased
@@ -100,7 +97,7 @@ public class IndexedGraphOperations {
 						neighbours.setMinus(alreadyVisited);
 						// now any edge is a new edge. report edges.
 						newEdgesToReport.addFan(newNodeIndex, neighbours);
-
+						
 						alreadyVisited.add(newNodeIndex);
 					});
 			Arrays.stream(accumulators).forEach((acc) -> {
@@ -110,23 +107,23 @@ public class IndexedGraphOperations {
 			nodesToConsider = nodesToConsiderNext;
 		}
 	}
-
+	
 	public static int countNodes(final int fromIndex, IndexedNodeSet subgraph) {
 		NodeCountAccumulator acc = new NodeCountAccumulator(0);
 		breadthFirstSearch(fromIndex, subgraph, acc);
 		return acc.get();
 	}
-
+	
 	public static int countEdges(final int fromIndex, IndexedNodeSet subgraph) {
 		EdgeCountAccumulator acc = new EdgeCountAccumulator(0);
 		breadthFirstSearch(fromIndex, subgraph, acc);
 		return acc.get();
 	}
-
+	
 	public static RealVector calcDistances(final int fromIndex, IndexedNodeSet inSet) {
 		DistanceAccumulator acc = new DistanceAccumulator(inSet.size());
 		breadthFirstSearch(fromIndex, inSet, acc);
 		return acc.get();
 	}
-
+	
 }

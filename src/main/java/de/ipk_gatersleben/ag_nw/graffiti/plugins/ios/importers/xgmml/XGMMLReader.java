@@ -30,17 +30,17 @@ import org.xml.sax.XMLReader;
 public class XGMMLReader extends AbstractInputSerializer {
 	/** The supported extensions. */
 	private String[] extensions = { ".gr", ".xgmml" };
-
+	
 	/** Referenz to the parser to read the graph. */
 	// private parser p;
-
+	
 	/**
 	 * Constructs a <code>XGMMReader</code> instance.
 	 */
 	public XGMMLReader() {
 		// Currently do nothing
 	}
-
+	
 	/**
 	 * Returns the extensions supported by this reader.
 	 * 
@@ -49,7 +49,7 @@ public class XGMMLReader extends AbstractInputSerializer {
 	public String[] getExtensions() {
 		return this.extensions;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -58,80 +58,80 @@ public class XGMMLReader extends AbstractInputSerializer {
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "XGMML", "XGMML" };
 	}
-
+	
 	/**
 	 * Reads a graph from the given input stream. <code>GraphElements</code> read
 	 * are <b>cloned</b> when added to the graph. Consider using the
 	 * <code>read(InputStream)</code> method when you start with an empty graph.
 	 * 
 	 * @param in_Stream
-	 *            the <code>InputStream</code> to import the graph from.
+	 *           the <code>InputStream</code> to import the graph from.
 	 * @param out_Graph
-	 *            the graph to add the imported graph to.
+	 *           the graph to add the imported graph to.
 	 * @exception ParserException
-	 *                if an error occurs while parsing the stream.
+	 *               if an error occurs while parsing the stream.
 	 */
 	@Override
 	public void read(InputStream in_Stream, Graph out_Graph) throws ParserException {
-
+		
 		XGMMLContentHandler contentHandler = new XGMMLContentHandler();
 		XGMMLDelegatorHandler delegatorHandler = new XGMMLDelegatorHandler(contentHandler);
-
+		
 		try {
-
+			
 			XMLReader reader = new SAXParser();//XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
-
+			
 			reader.setContentHandler(delegatorHandler);
 			reader.setEntityResolver(new XGMMLDTDResolver());
 			reader.parse(new InputSource(in_Stream));
 		} catch (Exception e) {
 			throw new ParserException("Error parsing inputstream. Root exception = " + e);
 		}
-
+		
 		Graph graph = contentHandler.getGraph();
-
+		
 		if (graph != null) {
 			System.out.println("ading graph");
 			out_Graph.addGraph(graph);
 		} else
 			System.out.println("graph is null");
 	}
-
+	
 	/**
 	 * Reads a graph from the given input stream. This implementation returns an
 	 * instance of <code>OptAdjListGraph</code>
 	 * 
 	 * @param in
-	 *            The input stream to read the graph from.
+	 *           The input stream to read the graph from.
 	 * @return The newly read graph (an instance of <code>OptAdjListGraph</code>).
 	 * @exception ParserException
-	 *                if an error occurs while parsing the stream.
+	 *               if an error occurs while parsing the stream.
 	 */
 	@Override
 	public Graph read(InputStream in_Stream) throws ParserException {
 		Graph graph = new OptAdjListGraph();
 		read(in_Stream, graph);
-
+		
 		return graph;
 	}
-
+	
 	public void read(Reader in, Graph out_Graph) throws Exception {
 		XGMMLContentHandler contentHandler = new XGMMLContentHandler();
 		XGMMLDelegatorHandler delegatorHandler = new XGMMLDelegatorHandler(contentHandler);
-
+		
 		try {
-
+			
 			XMLReader reader = new SAXParser();//XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
-
+			
 			reader.setContentHandler(delegatorHandler);
 			reader.setEntityResolver(new XGMMLDTDResolver());
 			reader.parse(new InputSource(in));
 		} catch (Exception e) {
 			throw new ParserException("Error parsing inputstream. Root exception = " + e);
 		}
-
+		
 		Graph graph = contentHandler.getGraph();
-
+		
 		if (graph != null) {
 			System.out.println("ading graph");
 			out_Graph.addGraph(graph);

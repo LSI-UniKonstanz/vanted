@@ -60,56 +60,56 @@ import org.jfree.ui.RefineryUtilities;
  * chart is displayed on the left, and a line chart on the right.
  */
 public class CombinedXYPlotDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public CombinedXYPlotDemo2(final String title) {
-
+		
 		super(title);
 		final JFreeChart chart = createCombinedChart();
 		final ChartPanel panel = new ChartPanel(chart, true, true, true, false, true);
 		panel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(panel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a combined XYPlot chart.
 	 * 
 	 * @return the combined chart.
 	 */
 	private JFreeChart createCombinedChart() {
-
+		
 		// create subplot 1...
 		final IntervalXYDataset data1 = createDataset1();
 		final XYItemRenderer renderer1 = new XYBarRenderer(0.20);
 		renderer1.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
 				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.0")));
 		final XYPlot subplot1 = new XYPlot(data1, new DateAxis("Date"), null, renderer1);
-
+		
 		// create subplot 2...
 		final XYDataset data2 = createDataset2();
 		final XYItemRenderer renderer2 = new StandardXYItemRenderer();
 		renderer2.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
 				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.0")));
 		final XYPlot subplot2 = new XYPlot(data2, new DateAxis("Date"), null, renderer2);
-
+		
 		// create a parent plot...
 		final CombinedRangeXYPlot plot = new CombinedRangeXYPlot(new NumberAxis("Value"));
-
+		
 		// add the subplots...
 		plot.add(subplot1, 1);
 		plot.add(subplot2, 1);
-
+		
 		// return a new chart containing the overlaid plot...
 		return new JFreeChart("Combined (Range) XY Plot", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -120,14 +120,14 @@ public class CombinedXYPlotDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return Series 1.
 	 */
 	private IntervalXYDataset createDataset1() {
-
+		
 		// create dataset 1...
 		final TimeSeries series1 = new TimeSeries("Series 1", Day.class);
 		series1.add(new Day(1, SerialDate.MARCH, 2002), 12353.3);
@@ -145,7 +145,7 @@ public class CombinedXYPlotDemo2 extends ApplicationFrame {
 		series1.add(new Day(13, SerialDate.MARCH, 2002), 13102.2);
 		series1.add(new Day(14, SerialDate.MARCH, 2002), 14230.2);
 		series1.add(new Day(15, SerialDate.MARCH, 2002), 11235.2);
-
+		
 		final TimeSeriesCollection collection = new TimeSeriesCollection(series1);
 		collection.setDomainIsPointsInTime(false); // this tells the time series collection that
 		// we intend the data to represent time periods
@@ -153,19 +153,19 @@ public class CombinedXYPlotDemo2 extends ApplicationFrame {
 		// determining the min/max values in the
 		// dataset's domain.
 		return collection;
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return Series 2.
 	 */
 	private XYDataset createDataset2() {
-
+		
 		// create dataset 2...
 		final TimeSeries series2 = new TimeSeries("Series 2", Day.class);
-
+		
 		series2.add(new Day(3, SerialDate.MARCH, 2002), 16853.2);
 		series2.add(new Day(4, SerialDate.MARCH, 2002), 19642.3);
 		series2.add(new Day(5, SerialDate.MARCH, 2002), 18253.5);
@@ -180,24 +180,24 @@ public class CombinedXYPlotDemo2 extends ApplicationFrame {
 		series2.add(new Day(14, SerialDate.MARCH, 2002), 17943.6);
 		series2.add(new Day(15, SerialDate.MARCH, 2002), 18500.7);
 		series2.add(new Day(16, SerialDate.MARCH, 2002), 19595.9);
-
+		
 		return new TimeSeriesCollection(series2);
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final CombinedXYPlotDemo2 demo = new CombinedXYPlotDemo2("Combined XY Plot Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

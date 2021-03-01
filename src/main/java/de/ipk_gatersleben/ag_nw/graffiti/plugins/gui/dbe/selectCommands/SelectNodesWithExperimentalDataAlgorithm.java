@@ -37,7 +37,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean extendSelection = true;
 	private boolean onlyWithMapping = false;
 	private boolean onlyWithoutMapping = false;
@@ -46,18 +46,18 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 	private boolean onlyConnectedToSelectedEdges = false;
 	private boolean onlyVisibleNodes = false;
 	private boolean onlyHiddenNodes = false;
-
+	
 	private int minDistance = -1;
 	private int maxDistance = -1;
 	private boolean directedDistanceCalculation = true;
 	private boolean selectUnconnected = false;
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -66,12 +66,12 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 	public String getName() {
 		return "Select Nodes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
@@ -85,7 +85,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 					+ "<b>Leave degree limits unchanged to select all nodes</b><br><br>";
 		}
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
@@ -128,7 +128,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 					new IntegerParameter(-1, "Degree smaller than (-1 = no limit)", "Degree <") };
 		}
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -176,12 +176,12 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 			selectUnconnected = false;
 		}
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -210,7 +210,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 					if (minDistance >= 0 && (dist == null || dist <= minDistance))
 						continue;
 				}
-
+				
 				if (maximumDegree >= 0 && n.getDegree() >= maximumDegree)
 					continue;
 				if (minimumDegree >= 0 && n.getDegree() <= minimumDegree)
@@ -259,7 +259,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 		}
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 	}
-
+	
 	private Collection<Node> getNodesLimitedByEdgeSelectionSetting(Graph graph) {
 		if (!onlyConnectedToSelectedEdges)
 			return graph.getNodes();
@@ -272,7 +272,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 			return result;
 		}
 	}
-
+	
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}

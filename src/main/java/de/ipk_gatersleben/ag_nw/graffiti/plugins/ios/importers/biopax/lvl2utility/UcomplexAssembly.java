@@ -6,7 +6,7 @@ import org.graffiti.graph.GraphElement;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class UcomplexAssembly extends UtilitySuperClassToGraph {
-
+	
 	public static void addAttributesToNode(GraphElement elem, complexAssembly i) {
 		// first set label to node
 		setLabels(elem, i);
@@ -23,9 +23,9 @@ public class UcomplexAssembly extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setSynonyms(elem, i.getSYNONYMS());
 		setXRef(elem, i.getXREF());
-
+		
 		setSpontaneous(elem, i.getSPONTANEOUS());
-
+		
 	}
-
+	
 }

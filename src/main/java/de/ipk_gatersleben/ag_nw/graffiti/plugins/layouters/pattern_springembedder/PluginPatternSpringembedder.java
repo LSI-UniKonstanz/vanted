@@ -25,11 +25,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouter
  * @author Christian Klukas
  */
 public class PluginPatternSpringembedder extends IPK_PluginAdapter {
-
+	
 	public PluginPatternSpringembedder() {
 		this.attributeDescriptions = new AttributeDescription[] { new AttributeDescription("background_coloring",
 				BooleanAttribute.class, "Cluster-Coloring: Background-Coloring", true, true, null) };
-
+		
 		this.algorithms = new Algorithm[] { new PatternSpringembedder(),
 				// new CreateClusterGraphAlgorithm(),
 				// new ShowClusterGraphAlgorithm(),
@@ -40,7 +40,7 @@ public class PluginPatternSpringembedder extends IPK_PluginAdapter {
 				// new SelectClusterAlgorithm(),
 				//
 				// new SetCluster(),
-
+				
 				new ResizeNodesDepDegreeAlgorithm(),
 				// new BendsLaunchGUI(),
 				new BundleParallelEdges(), new IntroduceParallelEdgeBends(), new RemoveParallelEdges(),
@@ -50,7 +50,7 @@ public class PluginPatternSpringembedder extends IPK_PluginAdapter {
 				// new PatternSpringembedder3d(),
 				new RemoveBendsAlgorithm(), new IntroduceSelfEdgeBends(), new IntroduceBendsAlgorithm() };
 	}
-
+	
 	@Override
 	public void configure(Preferences p) {
 		super.configure(p);

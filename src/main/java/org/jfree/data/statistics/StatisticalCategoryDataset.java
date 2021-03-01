@@ -40,57 +40,57 @@ import org.jfree.data.CategoryDataset;
  * @author Pascal Collet
  */
 public interface StatisticalCategoryDataset extends CategoryDataset {
-
+	
 	public boolean drawOnlyTopOfErrorBar();
-
+	
 	public void setDrawOnlyTopOfErrorBar(boolean value);
-
+	
 	public double getErrorBarLen();
-
+	
 	public void setErrorBarLen(double value);
-
+	
 	/**
 	 * Returns the mean value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the mean value.
 	 */
 	public Number getMeanValue(int row, int column);
-
+	
 	/**
 	 * Returns the mean value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the columnKey.
+	 *           the columnKey.
 	 * @return the mean value.
 	 */
 	public Number getMeanValue(Comparable rowKey, Comparable columnKey);
-
+	
 	/**
 	 * Returns the standard deviation value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the standard deviation.
 	 */
 	public Number getStdDevValue(int row, int column);
-
+	
 	/**
 	 * Returns the standard deviation value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the columnKey.
+	 *           the columnKey.
 	 * @return the standard deviation.
 	 */
 	public Number getStdDevValue(Comparable rowKey, Comparable columnKey);
-
+	
 }

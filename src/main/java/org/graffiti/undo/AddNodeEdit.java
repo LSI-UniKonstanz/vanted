@@ -29,9 +29,9 @@ public class AddNodeEdit extends GraphElementsEdit {
 	// ~ Instance fields ========================================================
 	/** added node */
 	private Node node;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for AddNodeEdit.
 	 * 
@@ -43,9 +43,9 @@ public class AddNodeEdit extends GraphElementsEdit {
 		super(graph, geMap);
 		this.node = node;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Used to display the name for this edit.
 	 * 
@@ -56,32 +56,32 @@ public class AddNodeEdit extends GraphElementsEdit {
 	public String getPresentationName() {
 		return sBundle.getString("undo.addNode");
 	}
-
+	
 	/*
 	 * @see org.graffiti.undo.GraffitiAbstractUndoableEdit#execute()
 	 */
 	@Override
 	public void execute() {
 	}
-
+	
 	/**
 	 * Adds the same node that was added through the method that created this edit.
 	 */
 	@Override
 	public void redo() {
 		super.redo();
-
+		
 		Node newNode = graph.addNodeCopy(node);
 		geMap.put(node, newNode);
 	}
-
+	
 	/**
 	 * Deletes the node that is stored in this edit.
 	 */
 	@Override
 	public void undo() {
 		super.undo();
-
+		
 		node = (Node) getNewGraphElement(node);
 		graph.deleteNode(node);
 	}

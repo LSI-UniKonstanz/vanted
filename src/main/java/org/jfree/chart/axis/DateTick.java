@@ -39,31 +39,31 @@ import org.jfree.util.ObjectUtils;
  * A tick used by the {@link DateAxis} class.
  */
 public class DateTick extends ValueTick {
-
+	
 	/** The date. */
 	private Date date;
-
+	
 	/**
 	 * Creates a new date tick.
 	 * 
 	 * @param date
-	 *            the date.
+	 *           the date.
 	 * @param label
-	 *            the label.
+	 *           the label.
 	 * @param textAnchor
-	 *            the part of the label that is aligned to the anchor point.
+	 *           the part of the label that is aligned to the anchor point.
 	 * @param rotationAnchor
-	 *            defines the rotation point relative to the text.
+	 *           defines the rotation point relative to the text.
 	 * @param angle
-	 *            the rotation angle (in radians).
+	 *           the rotation angle (in radians).
 	 */
 	public DateTick(Date date, String label, TextAnchor textAnchor, TextAnchor rotationAnchor, double angle) {
-
+		
 		super(date.getTime(), label, textAnchor, rotationAnchor, angle);
 		this.date = date;
-
+		
 	}
-
+	
 	/**
 	 * Returns the date.
 	 * 
@@ -72,12 +72,12 @@ public class DateTick extends ValueTick {
 	public Date getDate() {
 		return this.date;
 	}
-
+	
 	/**
 	 * Tests this tick for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test (<code>null</code> permitted).
+	 *           the object to test (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -93,5 +93,5 @@ public class DateTick extends ValueTick {
 		}
 		return false;
 	}
-
+	
 }

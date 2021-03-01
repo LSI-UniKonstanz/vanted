@@ -36,105 +36,105 @@ public class ClusterColorAttribute extends StringAttribute {
 	public static String attributeName = "cluster_colors";
 	public static String attributeFolder = "";
 	public static String desc = "<html>Modify the color (fill/first row and outline/second row)<br>of the nodes with cluster information and the color of the nodes in the cluster-graph";
-
+	
 	private String notSet = "undefined";
-
+	
 	private ArrayList<String> listClusterNames;
 	private ArrayList<Color> listClusterColors;
-
+	
 	private ArrayList<Color> listOutlineColors;
-
+	
 	public ClusterColorAttribute() {
 		super(attributeName);
 		init();
 	}
-
+	
 	public ClusterColorAttribute(String id) {
 		super(id);
 		init();
 	}
-
+	
 	public ClusterColorAttribute(String id, String value) {
 		super(id);
 		init();
 		this.value = value;
 		fillColorFields();
-
+		
 	}
-
+	
 	private void init() {
 		setDescription(desc); // tooltip
 		setDefaultValue();
 	}
-
+	
 	@Override
 	public void setDefaultValue() {
 		value = notSet;
 		listClusterColors = new ArrayList<Color>();
 		listClusterNames = new ArrayList<String>();
 		listOutlineColors = new ArrayList<Color>();
-
+		
 	}
-
+	
 	@Override
 	public void setString(String value) {
 		assert value != null;
-
+		
 		AttributeEvent ae = new AttributeEvent(this);
 		callPreAttributeChanged(ae);
-
+		
 		this.value = value;
 		fillColorFields();
-
+		
 		callPostAttributeChanged(ae);
 	}
-
+	
 	@Override
 	public String getString() {
 		convertColorArrayToString();
 		return value;
 	}
-
+	
 	@Override
 	public Object getValue() {
 		convertColorArrayToString();
 		return value;
 	}
-
+	
 	@Override
 	public Object copy() {
 		convertColorArrayToString();
 		return new ClusterColorAttribute(this.getId(), this.value);
 	}
-
+	
 	@Override
 	public String toString(int n) {
 		convertColorArrayToString();
 		return getSpaces(n) + getId() + " = \"" + value + "\"";
 	}
-
+	
 	@Override
 	public String toXMLString() {
 		convertColorArrayToString();
 		return getStandardXML(value);
 	}
-
+	
 	public ArrayList<Color> getClusterColors() {
 		return listClusterColors;
 	}
-
+	
 	public ArrayList<Color> getClusterOutlineColors() {
 		return listOutlineColors;
 	}
-
+	
 	public Color getClusterColor(int clusterID) {
 		return listClusterColors.get(clusterID);
 	}
-
+	
 	public Color getClusterOutlineColor(int clusterID) {
 		return listOutlineColors.get(clusterID);
 	}
-
+	
 	/**
 	 * That method must be called when the value is set. The value is a String
 	 * object and needs to be parsed and put into the designated lists that keep the
@@ -149,7 +149,7 @@ public class ClusterColorAttribute extends StringAttribute {
 		if (colorstringOutline != null)
 			listOutlineColors = colorstringOutline;
 	}
-
+	
 	private void convertColorArrayToString() {
 		value = notSet;
 		ensureMinimumColorSelection(listClusterColors.size());
@@ -158,7 +158,7 @@ public class ClusterColorAttribute extends StringAttribute {
 			setColorString(INDEX_CLUSTEROUTLINECOLOR, clusterID, listOutlineColors.get(clusterID));
 		}
 	}
-
+	
 	private ArrayList<Color> interpreteColorString(int type0bar_1outline) {
 		if (value == null || value.equals(notSet))
 			return null;
@@ -194,10 +194,10 @@ public class ClusterColorAttribute extends StringAttribute {
 			return result;
 		}
 	}
-
+	
 	private void setColorString(int idx0bar_1outline, int series, Paint newColor) {
 		String[] cols = value.split(";");
-
+		
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < cols.length; i++) {
 			if (i != series) {
@@ -211,7 +211,7 @@ public class ClusterColorAttribute extends StringAttribute {
 					barCol_outCol = " : ";
 				if (result.length() > 0)
 					result.append(";");
-
+				
 				String colorCode;
 				if (newColor == null)
 					colorCode = "null";
@@ -222,7 +222,7 @@ public class ClusterColorAttribute extends StringAttribute {
 					} else
 						colorCode = "null";
 				}
-
+				
 				String s;
 				if (idx0bar_1outline == 0) {
 					s = barCol_outCol.split(":")[1];
@@ -238,7 +238,7 @@ public class ClusterColorAttribute extends StringAttribute {
 		value = result.toString();
 		// setValue(result);
 	}
-
+	
 	private void ensureMinimumColorSelection(int clusterCount) {
 		if (value.equals(notSet)) {
 			value = "null:null";
@@ -246,9 +246,9 @@ public class ClusterColorAttribute extends StringAttribute {
 		while (value.length() - value.replaceAll(";", "").length() < clusterCount - 1) {
 			value = value + ";null:null";
 		}
-
+		
 	}
-
+	
 	/**
 	 * Must be called on an existing ClusterColorAttribute to update the cluster
 	 * information. Clusters will be recoloured given there is a change, because
@@ -264,7 +264,7 @@ public class ClusterColorAttribute extends StringAttribute {
 			setDefaultValue();
 			return;
 		}
-
+		
 		/*
 		 * If this attribute is created, only colors are known, since clusternames are
 		 * not stored in GML or when this string attribute is read.. Compatibility Sooo.
@@ -285,7 +285,7 @@ public class ClusterColorAttribute extends StringAttribute {
 		} else {
 			if (listClusterNames.size() == listClusterColors.size())
 				return;
-
+			
 			Color[] colors = Colors.getColors(clusterNames.size());
 			int colorIdx = clusterNames.size() - 1;
 			ArrayList<Color> newListClusterColors = new ArrayList<Color>();
@@ -296,63 +296,63 @@ public class ClusterColorAttribute extends StringAttribute {
 				newListOutlineColors.add(Color.BLACK);
 				newListClusterNames.add(curClusterName);
 			}
-
+			
 			listClusterColors = newListClusterColors;
 			listOutlineColors = newListOutlineColors;
 			listClusterNames = newListClusterNames;
 		}
 	}
-
+	
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
 		try {
 			setString((String) o);
-
+			
 		} catch (ClassCastException cce) {
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-
+	
 	public int getDefinedClusterColorCount() {
 		/*
 		 * if (value == null || value.equals(notSet)) return 0; else return
 		 * value.length() - value.replaceAll(";", "").length() + 1;
 		 */
 		return listClusterColors.size();
-
+		
 	}
-
+	
 	public void setClusterColor(int clusterID, Color color) {
 		// ensureMinimumColorSelection(clusterID);
 		listClusterColors.remove(clusterID);
 		listClusterColors.add(clusterID, color);
 		// setColorString(0, clusterID, color);
 	}
-
+	
 	public void setClusterOutlineColor(int clusterID, Color color) {
 		// ensureMinimumColorSelection(clusterID);
 		listOutlineColors.remove(clusterID);
 		listOutlineColors.add(clusterID, color);
 		// setColorString(1, clusterID, color);
 	}
-
+	
 	public static ClusterColorAttribute getDefaultValue(int clusterSize) {
 		ClusterColorAttribute cca = new ClusterColorAttribute(attributeName);
 		Color[] defCols = Colors.getColors(clusterSize);
-
+		
 		for (int i = 0; i < defCols.length; i++) {
 			cca.listClusterColors.add(defCols[i]);
 			cca.listOutlineColors.add(Color.BLACK);
 		}
 		return cca;
 	}
-
+	
 	public static ClusterColorAttribute getDefaultValue(Collection<String> clusterNames) {
 		ClusterColorAttribute cca = new ClusterColorAttribute(attributeName);
 		// cca.ensureMinimumColorSelection(clusterNames.size());
 		Color[] defCols = Colors.getColors(clusterNames.size());
 		Iterator<String> clusternamesiterator = clusterNames.iterator();
-
+		
 		for (int i = 0; i < defCols.length; i++) {
 			cca.listClusterNames.add(clusternamesiterator.next());
 			cca.listClusterColors.add(defCols[i]);
@@ -362,5 +362,5 @@ public class ClusterColorAttribute extends StringAttribute {
 		}
 		return cca;
 	}
-
+	
 }

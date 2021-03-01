@@ -18,20 +18,20 @@ import org.vanted.plugins.layout.stressminimization.visualtesting.algorithms.Whe
  * Plugin container for visual testing of the stress minimization addon
  */
 public class VisualTestingAddon extends StressMinimizationPlugin {
-
-    protected VisualTestingAddon() {
-        super();
-
-        List<Algorithm> algs = new ArrayList<>(Arrays.asList(this.algorithms));
-        algs.add(new StarGraphGenerationAlgorithm());
-        algs.add(new WheelGraphGenerationAlgorithm());
-        algs.add(new CompleteGraphGenerationAlgorithm());
-        algs.add(new LineGraphGenerationAlgorithm());
-        algs.add(new SierpinskyTriangleGenerationAlgorithm());
-        algs.add(new BarabasiAlbertNetworkGenerationAlgorithm());
-
-        this.algorithms = algs.toArray(this.algorithms);
-
-    }
-
+	
+	protected VisualTestingAddon() {
+		super();
+		
+		List<Algorithm> algs = new ArrayList<>(Arrays.asList(this.algorithms));
+		algs.add(new StarGraphGenerationAlgorithm());
+		algs.add(new WheelGraphGenerationAlgorithm());
+		algs.add(new CompleteGraphGenerationAlgorithm());
+		algs.add(new LineGraphGenerationAlgorithm());
+		algs.add(new SierpinskyTriangleGenerationAlgorithm());
+		algs.add(new BarabasiAlbertNetworkGenerationAlgorithm());
+		
+		this.algorithms = algs.toArray(this.algorithms);
+		
+	}
+	
 }

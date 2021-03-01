@@ -44,50 +44,50 @@ import org.jfree.data.YisSymbolic;
  * @author Anthony Boulestreau
  */
 public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XYDataset, XisSymbolic, YisSymbolic {
-
+	
 	/** Series names. */
 	private String[] seriesName;
-
+	
 	/** Items. */
 	private int[] item;
-
+	
 	/** A series index. */
 	private int serie;
-
+	
 	/** X values. */
 	private Integer[][] xValues;
-
+	
 	/** Y values. */
 	private Integer[][] yValues;
-
+	
 	/** X symbolic values. */
 	private String[] xSymbolicValues;
-
+	
 	/** Y symbolic values. */
 	private String[] ySymbolicValues;
-
+	
 	/** The dataset name. */
 	private String datasetName;
-
+	
 	/**
 	 * Creates a new dataset.
 	 * 
 	 * @param datasetName
-	 *            the dataset name.
+	 *           the dataset name.
 	 * @param xValues
-	 *            the x values.
+	 *           the x values.
 	 * @param yValues
-	 *            the y values.
+	 *           the y values.
 	 * @param xSymbolicValues
-	 *            the x symbols.
+	 *           the x symbols.
 	 * @param ySymbolicValues
-	 *            the y symbols.
+	 *           the y symbols.
 	 * @param seriesName
-	 *            the series name.
+	 *           the series name.
 	 */
 	public SampleXYSymbolicDataset(final String datasetName, final Integer[][] xValues, final Integer[][] yValues,
 			final String[] xSymbolicValues, final String[] ySymbolicValues, final String[] seriesName) {
-
+		
 		this.datasetName = datasetName;
 		this.xValues = xValues;
 		this.yValues = yValues;
@@ -99,30 +99,30 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 			this.item[i] = xValues[i].length;
 		}
 		this.seriesName = seriesName;
-
+		
 	}
-
+	
 	/**
 	 * Returns the x-value for the specified series and item. Series are numbered 0,
 	 * 1, ...
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @param item
-	 *            the index (zero-based) of the required item.
+	 *           the index (zero-based) of the required item.
 	 * @return the x-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
 		return this.xValues[series][item];
 	}
-
+	
 	/**
 	 * Returns the x-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The x-value.
 	 */
 	public double getX(int series, int item) {
@@ -133,28 +133,28 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the y-value for the specified series and item. Series are numbered 0,
 	 * 1, ...
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @param item
-	 *            the index (zero-based) of the required item.
+	 *           the index (zero-based) of the required item.
 	 * @return the y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int item) {
 		return this.yValues[series][item];
 	}
-
+	
 	/**
 	 * Returns the y-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The y-value.
 	 */
 	public double getY(int series, int item) {
@@ -165,7 +165,7 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Sets the x-value for the specified series and item with the specified new
 	 * <CODE>Number</CODE> value. Series are numbered 0, 1, ...
@@ -174,16 +174,16 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 	 * symbolic value ...
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @param item
-	 *            the index (zero-based) of the required item.
+	 *           the index (zero-based) of the required item.
 	 * @param newValue
-	 *            the value to set.
+	 *           the value to set.
 	 */
 	public void setXValue(final int series, final int item, final Number newValue) {
 		this.xValues[series][item] = (Integer) newValue;
 	}
-
+	
 	/**
 	 * Sets the y-value for the specified series and item with the specified new
 	 * <CODE>Number</CODE> value. Series are numbered 0, 1, ...
@@ -192,16 +192,16 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 	 * symbolic value ...
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @param item
-	 *            the index (zero-based) of the required item.
+	 *           the index (zero-based) of the required item.
 	 * @param newValue
-	 *            the value to set.
+	 *           the value to set.
 	 */
 	public void setYValue(final int series, final int item, final Number newValue) {
 		this.yValues[series][item] = (Integer) newValue;
 	}
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
@@ -210,12 +210,12 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 	public int getSeriesCount() {
 		return this.serie;
 	}
-
+	
 	/**
 	 * Returns the name of the series.
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(final int series) {
@@ -225,18 +225,18 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 			return this.datasetName + series;
 		}
 	}
-
+	
 	/**
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
 		return this.item[series];
 	}
-
+	
 	/**
 	 * Returns the list of X symbolic values.
 	 * 
@@ -245,7 +245,7 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 	public String[] getXSymbolicValues() {
 		return this.xSymbolicValues;
 	}
-
+	
 	/**
 	 * Returns the list of Y symbolic values.
 	 * 
@@ -254,79 +254,79 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 	public String[] getYSymbolicValues() {
 		return this.ySymbolicValues;
 	}
-
+	
 	/**
 	 * Sets the list of X symbolic values.
 	 * 
 	 * @param sValues
-	 *            the new list of symbolic value.
+	 *           the new list of symbolic value.
 	 */
 	public void setXSymbolicValues(final String[] sValues) {
 		this.xSymbolicValues = sValues;
 	}
-
+	
 	/**
 	 * Sets the list of Y symbolic values.
 	 * 
 	 * @param sValues
-	 *            the new list of symbolic value.
+	 *           the new list of symbolic value.
 	 */
 	public void setYSymbolicValues(final String[] sValues) {
 		this.ySymbolicValues = sValues;
 	}
-
+	
 	/**
 	 * Returns the X symbolic value of the data set specified by <CODE>series</CODE>
 	 * and <CODE>item</CODE> parameters.
 	 * 
 	 * @param series
-	 *            value of the serie.
+	 *           value of the serie.
 	 * @param item
-	 *            value of the item.
+	 *           value of the item.
 	 * @return the symbolic value.
 	 */
 	public String getXSymbolicValue(final int series, final int item) {
 		final Integer intValue = (Integer) getXValue(series, item);
 		return getXSymbolicValue(intValue);
 	}
-
+	
 	/**
 	 * Returns the Y symbolic value of the data set specified by <CODE>series</CODE>
 	 * and <CODE>item</CODE> parameters.
 	 * 
 	 * @param series
-	 *            value of the serie.
+	 *           value of the serie.
 	 * @param item
-	 *            value of the item.
+	 *           value of the item.
 	 * @return the symbolic value.
 	 */
 	public String getYSymbolicValue(final int series, final int item) {
 		final Integer intValue = (Integer) getYValue(series, item);
 		return getYSymbolicValue(intValue);
 	}
-
+	
 	/**
 	 * Returns the X symbolic value linked with the specified <CODE>Integer</CODE>.
 	 * 
 	 * @param val
-	 *            value of the integer linked with the symbolic value.
+	 *           value of the integer linked with the symbolic value.
 	 * @return the symbolic value.
 	 */
 	public String getXSymbolicValue(final Integer val) {
 		return this.xSymbolicValues[val.intValue()];
 	}
-
+	
 	/**
 	 * Returns the Y symbolic value linked with the specified <CODE>Integer</CODE>.
 	 * 
 	 * @param val
-	 *            value of the integer linked with the symbolic value.
+	 *           value of the integer linked with the symbolic value.
 	 * @return the symbolic value.
 	 */
 	public String getYSymbolicValue(final Integer val) {
 		return this.ySymbolicValues[val.intValue()];
 	}
-
+	
 	/**
 	 * This function modify <CODE>dataset1</CODE> and <CODE>dataset1</CODE> in order
 	 * that they share the same Y symbolic value list.
@@ -337,18 +337,18 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 	 * This function is use with the <I>combined plot</I> functions of JFreeChart.
 	 * 
 	 * @param dataset1
-	 *            the first data set to combine.
+	 *           the first data set to combine.
 	 * @param dataset2
-	 *            the second data set to combine.
+	 *           the second data set to combine.
 	 * @return the shared Y symbolic array.
 	 */
 	public static String[] combineYSymbolicDataset(final YisSymbolic dataset1, final YisSymbolic dataset2) {
-
+		
 		final SampleXYSymbolicDataset sDataset1 = (SampleXYSymbolicDataset) dataset1;
 		final SampleXYSymbolicDataset sDataset2 = (SampleXYSymbolicDataset) dataset2;
 		final String[] sDatasetSymbolicValues1 = sDataset1.getYSymbolicValues();
 		final String[] sDatasetSymbolicValues2 = sDataset2.getYSymbolicValues();
-
+		
 		// Combine the two list of symbolic value of the two data set
 		final int s1length = sDatasetSymbolicValues1.length;
 		final int s2length = sDatasetSymbolicValues2.length;
@@ -361,7 +361,7 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 				ySymbolicValuesCombined.add(sDatasetSymbolicValues2[i]);
 			}
 		}
-
+		
 		// Change the Integer reference of the second data set
 		int newIndex;
 		for (int i = 0; i < sDataset2.getSeriesCount(); i++) {
@@ -370,16 +370,16 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 				sDataset2.setYValue(i, j, Integer.valueOf(newIndex));
 			}
 		}
-
+		
 		// Set the new list of symbolic value on the two data sets
 		final String[] ySymbolicValuesCombinedA = new String[ySymbolicValuesCombined.size()];
 		ySymbolicValuesCombined.toArray(ySymbolicValuesCombinedA);
 		sDataset1.setYSymbolicValues(ySymbolicValuesCombinedA);
 		sDataset2.setYSymbolicValues(ySymbolicValuesCombinedA);
-
+		
 		return ySymbolicValuesCombinedA;
 	}
-
+	
 	/**
 	 * This function modify <CODE>dataset1</CODE> and <CODE>dataset1</CODE> in order
 	 * that they share the same X symbolic value list.
@@ -390,9 +390,9 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 	 * This function is use with the <I>combined plot</I> functions of JFreeChart.
 	 * 
 	 * @param dataset1
-	 *            the first data set to combine.
+	 *           the first data set to combine.
 	 * @param dataset2
-	 *            the second data set to combine.
+	 *           the second data set to combine.
 	 * @return the shared X symbolic array.
 	 */
 	public static String[] combineXSymbolicDataset(final XisSymbolic dataset1, final XisSymbolic dataset2) {
@@ -400,7 +400,7 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 		final SampleXYSymbolicDataset sDataset2 = (SampleXYSymbolicDataset) dataset2;
 		final String[] sDatasetSymbolicValues1 = sDataset1.getXSymbolicValues();
 		final String[] sDatasetSymbolicValues2 = sDataset2.getXSymbolicValues();
-
+		
 		// Combine the two list of symbolic value of the two data set
 		final int s1length = sDatasetSymbolicValues1.length;
 		final int s2length = sDatasetSymbolicValues2.length;
@@ -413,7 +413,7 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 				xSymbolicValuesCombined.add(sDatasetSymbolicValues2[i]);
 			}
 		}
-
+		
 		// Change the Integer reference of the second data set
 		int newIndex;
 		for (int i = 0; i < sDataset2.getSeriesCount(); i++) {
@@ -422,16 +422,16 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 				sDataset2.setXValue(i, j, Integer.valueOf(newIndex));
 			}
 		}
-
+		
 		// Set the new list of symbolic value on the two data sets
 		final String[] xSymbolicValuesCombinedA = new String[xSymbolicValuesCombined.size()];
 		xSymbolicValuesCombined.toArray(xSymbolicValuesCombinedA);
 		sDataset1.setXSymbolicValues(xSymbolicValuesCombinedA);
 		sDataset2.setXSymbolicValues(xSymbolicValuesCombinedA);
-
+		
 		return xSymbolicValuesCombinedA;
 	}
-
+	
 	/**
 	 * Clone the SampleXYSymbolicDataset object
 	 * 
@@ -446,30 +446,30 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 		final String[] sName = (String[]) cloneArray(this.seriesName);
 		return new SampleXYSymbolicDataset(nDatasetName, nXValues, nYValues, nXSymbolicValues, nYSymbolicValues, sName);
 	}
-
+	
 	/**
 	 * Returns a clone of the array.
 	 * 
 	 * @param arr
-	 *            the array.
+	 *           the array.
 	 * @return a clone.
 	 */
 	private static Object cloneArray(final Object arr) {
-
+		
 		if (arr == null) {
 			return arr;
 		}
-
+		
 		final Class cls = arr.getClass();
 		if (!cls.isArray()) {
 			return arr;
 		}
-
+		
 		final int length = Array.getLength(arr);
 		final Object[] newarr = (Object[]) Array.newInstance(cls.getComponentType(), length);
-
+		
 		Object obj;
-
+		
 		for (int i = 0; i < length; i++) {
 			obj = Array.get(arr, i);
 			if (obj.getClass().isArray()) {
@@ -478,8 +478,8 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 				newarr[i] = obj;
 			}
 		}
-
+		
 		return newarr;
 	}
-
+	
 }

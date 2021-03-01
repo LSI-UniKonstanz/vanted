@@ -44,15 +44,15 @@ import org.jfree.ui.RefineryUtilities;
  * A demo showing the use of very small numbers in a dataset.
  */
 public class SmallNumberDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public SmallNumberDemo(final String title) {
-
+		
 		super(title);
 		final XYSeries series = new XYSeries("Small Numbers");
 		series.add(1.0E-5, 1.0E-16);
@@ -65,13 +65,13 @@ public class SmallNumberDemo extends ApplicationFrame {
 		final XYPlot plot = chart.getXYPlot();
 		plot.getDomainAxis().setStandardTickUnits(new StandardTickUnitSource());
 		plot.getRangeAxis().setStandardTickUnits(new StandardTickUnitSource());
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -82,21 +82,21 @@ public class SmallNumberDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		System.out.println("Min Double: " + Double.MIN_VALUE);
 		final SmallNumberDemo demo = new SmallNumberDemo("Small Number Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

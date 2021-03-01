@@ -40,32 +40,32 @@ import org.jfree.chart.entity.ChartEntity;
  * A mouse event for a chart that is displayed in a ChartPanel.
  */
 public class ChartMouseEvent {
-
+	
 	/** The chart that the mouse event relates to. */
 	private JFreeChart chart;
-
+	
 	/** The Java mouse event that triggered this event. */
 	private MouseEvent trigger;
-
+	
 	/** The chart entity (if any). */
 	private ChartEntity entity;
-
+	
 	/**
 	 * Constructs a new event.
 	 * 
 	 * @param chart
-	 *            the source chart.
+	 *           the source chart.
 	 * @param trigger
-	 *            the mouse event that triggered this event.
+	 *           the mouse event that triggered this event.
 	 * @param entity
-	 *            the chart entity (if any) under the mouse point.
+	 *           the chart entity (if any) under the mouse point.
 	 */
 	public ChartMouseEvent(JFreeChart chart, MouseEvent trigger, ChartEntity entity) {
 		this.chart = chart;
 		this.trigger = trigger;
 		this.entity = entity;
 	}
-
+	
 	/**
 	 * Returns the chart that the mouse event relates to.
 	 * 
@@ -74,7 +74,7 @@ public class ChartMouseEvent {
 	public JFreeChart getChart() {
 		return this.chart;
 	}
-
+	
 	/**
 	 * Returns the mouse event that triggered this event.
 	 * 
@@ -83,7 +83,7 @@ public class ChartMouseEvent {
 	public MouseEvent getTrigger() {
 		return this.trigger;
 	}
-
+	
 	/**
 	 * Returns the chart entity (if any) under the mouse point.
 	 * 
@@ -92,5 +92,5 @@ public class ChartMouseEvent {
 	public ChartEntity getEntity() {
 		return this.entity;
 	}
-
+	
 }

@@ -42,57 +42,57 @@ import org.jfree.data.XYDataset;
  * @author Richard Atkinson
  */
 public class TimeSeriesURLGenerator implements XYURLGenerator, Serializable {
-
+	
 	/** A formatter for the date. */
 	private DateFormat dateFormat = DateFormat.getInstance();
-
+	
 	/** Prefix to the URL */
 	private String prefix = "index.html";
-
+	
 	/** Name to use to identify the series */
 	private String seriesParameterName = "series";
-
+	
 	/** Name to use to identify the item */
 	private String itemParameterName = "item";
-
+	
 	/**
 	 * Blank constructor
 	 */
 	public TimeSeriesURLGenerator() {
 		super();
 	}
-
+	
 	/**
 	 * Construct TimeSeriesURLGenerator overriding defaults
 	 * 
 	 * @param dDateFormat
-	 *            a formatter for the date.
+	 *           a formatter for the date.
 	 * @param sPrefix
-	 *            the prefix of the URL.
+	 *           the prefix of the URL.
 	 * @param sSeriesParameterName
-	 *            the name of the series parameter in the URL.
+	 *           the name of the series parameter in the URL.
 	 * @param sItemParameterName
-	 *            the name of the item parameter in the URL.
+	 *           the name of the item parameter in the URL.
 	 */
 	public TimeSeriesURLGenerator(DateFormat dDateFormat, String sPrefix, String sSeriesParameterName,
 			String sItemParameterName) {
-
+		
 		this.dateFormat = dDateFormat;
 		this.prefix = sPrefix;
 		this.seriesParameterName = sSeriesParameterName;
 		this.itemParameterName = sItemParameterName;
-
+		
 	}
-
+	
 	/**
 	 * Generates a URL for a particular item within a series.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series number (zero-based index).
+	 *           the series number (zero-based index).
 	 * @param item
-	 *            the item number (zero-based index).
+	 *           the item number (zero-based index).
 	 * @return the generated URL.
 	 */
 	public String generateURL(XYDataset dataset, int series, int item) {
@@ -104,13 +104,13 @@ public class TimeSeriesURLGenerator implements XYURLGenerator, Serializable {
 			result += this.seriesParameterName + "=" + seriesName;
 			firstParameter = false;
 		}
-
+		
 		long x = dataset.getXValue(series, item).longValue();
 		String xValue = this.dateFormat.format(new Date(x));
 		result += firstParameter ? "?" : "&";
 		result += this.itemParameterName + "=" + xValue;
-
+		
 		return result;
 	}
-
+	
 }

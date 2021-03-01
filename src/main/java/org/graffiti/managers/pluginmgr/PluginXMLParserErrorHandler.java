@@ -20,38 +20,38 @@ import org.xml.sax.SAXParseException;
  */
 public class PluginXMLParserErrorHandler implements ErrorHandler {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Error Event Handler.
 	 * 
 	 * @param e
-	 *            The SAXException, which was thrown by the parser.
+	 *           The SAXException, which was thrown by the parser.
 	 * @exception SAXException
-	 *                if this method is called by the parser.
+	 *               if this method is called by the parser.
 	 */
 	public void error(SAXParseException e) throws SAXException {
 		throw e;
 	}
-
+	
 	/**
 	 * Fatal Error Event Handler.
 	 * 
 	 * @param e
-	 *            The SAXException, which was thrown by the parser.
+	 *           The SAXException, which was thrown by the parser.
 	 * @exception SAXException
-	 *                if this method is called by the parser.
+	 *               if this method is called by the parser.
 	 */
 	public void fatalError(SAXParseException e) throws SAXException {
 		throw e;
 	}
-
+	
 	/**
 	 * Warning Event Handler.
 	 * 
 	 * @param e
-	 *            The SAXException, which was thrown by the parser.
+	 *           The SAXException, which was thrown by the parser.
 	 * @exception SAXException
-	 *                if this method is called by the parser.
+	 *               if this method is called by the parser.
 	 */
 	public void warning(SAXParseException e) throws SAXException {
 		throw e;

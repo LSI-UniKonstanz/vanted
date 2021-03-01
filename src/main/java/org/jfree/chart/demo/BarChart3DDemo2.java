@@ -56,7 +56,7 @@ import org.jfree.util.PrintStreamLogTarget;
  * chart using data from a {@link CategoryDataset}.
  */
 public class BarChart3DDemo2 extends ApplicationFrame {
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -67,17 +67,17 @@ public class BarChart3DDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public BarChart3DDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		// create the chart...
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(23.0, "Series 1", "London");
@@ -92,25 +92,25 @@ public class BarChart3DDemo2 extends ApplicationFrame {
 		dataset.addValue(9.0, "Series 3", "New York");
 		dataset.addValue(9.0, "Series 3", "Istanbul");
 		dataset.addValue(9.0, "Series 3", "Cairo");
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createBarChart3D("3D Bar Chart Demo 2", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
@@ -120,36 +120,36 @@ public class BarChart3DDemo2 extends ApplicationFrame {
 				true, // tooltips
 				false // urls
 		);
-
+		
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setForegroundAlpha(1.0f);
-
+		
 		// left align the category labels...
 		final CategoryAxis axis = plot.getDomainAxis();
 		final CategoryLabelPositions p = axis.getCategoryLabelPositions();
-
+		
 		final CategoryLabelPosition left = new CategoryLabelPosition(RectangleAnchor.LEFT, TextBlockAnchor.CENTER_LEFT,
 				TextAnchor.CENTER_LEFT, 0.0, CategoryLabelWidthType.RANGE, 0.30f);
 		axis.setCategoryLabelPositions(CategoryLabelPositions.replaceLeftPosition(p, left));
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		Log.getInstance().addTarget(new PrintStreamLogTarget());
 		final BarChart3DDemo2 demo = new BarChart3DDemo2("3D Bar Chart Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

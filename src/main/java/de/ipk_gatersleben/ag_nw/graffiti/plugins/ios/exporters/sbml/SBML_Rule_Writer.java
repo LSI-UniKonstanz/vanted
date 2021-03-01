@@ -22,14 +22,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLRuleHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_Rule_Writer extends SBML_SBase_Writer {
-
+	
 	/**
 	 * Controls the processing of rules
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param model
-	 *            the rules will be added to this model
+	 *           the rules will be added to this model
 	 */
 	public void addRules(Graph g, Model model) {
 		SBMLRuleHelper ruleHelperObject = new SBMLRuleHelper();
@@ -45,7 +45,7 @@ public class SBML_Rule_Writer extends SBML_SBase_Writer {
 				assignmentRuleCount++;
 			}
 		}
-
+		
 		ArrayList<String> algebraicRules = headlineHelper(g, SBML_Constants.SBML_ALGEBRAIC_RULE);
 		if (algebraicRules.size() > 0) {
 			Iterator<String> itAlgebraicRules = algebraicRules.iterator();
@@ -58,7 +58,7 @@ public class SBML_Rule_Writer extends SBML_SBase_Writer {
 				algebraicRuleCount++;
 			}
 		}
-
+		
 		ArrayList<String> rateRules = headlineHelper(g, SBML_Constants.SBML_RATE_RULE);
 		if (rateRules.size() > 0) {
 			Iterator<String> itRateRules = rateRules.iterator();
@@ -71,16 +71,16 @@ public class SBML_Rule_Writer extends SBML_SBase_Writer {
 			}
 		}
 	}
-
+	
 	/**
 	 * Adds an algebraic rule and its variables to the model
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param model
-	 *            the algebraic rule will be added to this model
+	 *           the algebraic rule will be added to this model
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @niceID intern representation of headline
 	 */
 	private void addAlgebraicRule(Graph g, Model model, String internHeadline, SBMLRuleHelper ruleHelperObject) {
@@ -94,7 +94,7 @@ public class SBML_Rule_Writer extends SBML_SBase_Writer {
 				e.printStackTrace();
 			}
 		}
-
+		
 		/*
 		 * if(AttributeHelper.hasAttribute(annotationNode, "SBML",
 		 * "algebraic"+algebraicRuleCount+"annotation")){ Annotation anno =
@@ -103,16 +103,16 @@ public class SBML_Rule_Writer extends SBML_SBase_Writer {
 		 * algebraicRule.setAnnotation(anno); }
 		 */
 	}
-
+	
 	/**
 	 * Adds an assignment rule and its variables to the model
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param model
-	 *            the assignment rule will be added to this model
+	 *           the assignment rule will be added to this model
 	 * @param interHeadline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @niceID intern representation of headline
 	 */
 	private void addAssignmentRule(Graph g, Model model, String internHeadline, SBMLRuleHelper ruleHelperObject) {
@@ -129,7 +129,7 @@ public class SBML_Rule_Writer extends SBML_SBase_Writer {
 				e.printStackTrace();
 			}
 		}
-
+		
 		/*
 		 * if(AttributeHelper.hasAttribute(annotationNode, "SBML",
 		 * "assignmet"+assignmentRuleCount+"annotation")){ Annotation anno =
@@ -137,18 +137,18 @@ public class SBML_Rule_Writer extends SBML_SBase_Writer {
 		 * "assignmet"+assignmentRuleCount+"annotation", SBML_Constants.EMPTY, null);
 		 * assignmentRule.setAnnotation(anno); }
 		 */
-
+		
 	}
-
+	
 	/**
 	 * Adds a rate rule and its variables to the model
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param model
-	 *            the rate rule will be added to this model
+	 *           the rate rule will be added to this model
 	 * @param internHeadline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @niceID intern representation of headline
 	 */
 	private void addRateRules(Graph g, Model model, String internHeadline, SBMLRuleHelper ruleHelperObject) {
@@ -165,7 +165,7 @@ public class SBML_Rule_Writer extends SBML_SBase_Writer {
 				e.printStackTrace();
 			}
 		}
-
+		
 		/*
 		 * if(AttributeHelper.hasAttribute(annotationNode, "SBML",
 		 * "rate"+RateRuleCount+"annotation")){ Annotation anno =

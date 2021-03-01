@@ -37,30 +37,31 @@ import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
  * @author klukas
  */
 public class RimasTab extends InspectorTab implements PreferencesInterface {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -9077025357135383654L;
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		return v == null || v instanceof GraphView;
 	}
-
+	
 	public RimasTab() {
 		setLayout(new TableLayout(new double[][] { { 5, TableLayout.FILL, 5 }, { TableLayout.PREFERRED, 5,
 				TableLayout.PREFERRED, 5, TableLayout.PREFERRED, 10, TableLayout.PREFERRED, 5, TableLayout.FILL } }));
-
+		
 		add(new JLabel("<html>" + "<h2>RIMAS SBGN maps</h2>"), "1,0");
 		add(new JLabelHTMLlink("<html><u>R</u>egulatory <u>I</u>nteraction <u>M</u>aps of <u>A</u>rabidopsis <u>S</u>eed Development<br><br>",
 				"https://kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/rimas"), "1,2");
-		add(new JLabel("<html>RIMAS is a web-based information portal which provides a comprehensive overview of regulatory pathways and genetic interactions during Arabidopsis embryo and seed development."),
+		add(new JLabel(
+				"<html>RIMAS is a web-based information portal which provides a comprehensive overview of regulatory pathways and genetic interactions during Arabidopsis embryo and seed development."),
 				"1,4");
 		add(new JLabel("<html>" + "Download or switch to a map:"), "1,6");
 		add(getRIMASdownloadGUI(), "1,8");
 	}
-
+	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
@@ -68,16 +69,16 @@ public class RimasTab extends InspectorTab implements PreferencesInterface {
 				"Enable/Disable this option to show/hide the RIMAS Tab"));
 		return arrayList;
 	}
-
+	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 	}
-
+	
 	@Override
 	public String getPreferencesAlternativeName() {
 		return "Rimas";
 	}
-
+	
 	private JComponent getRIMASdownloadGUI() {
 		String i = "<font color='gray'>@";
 		ArrayList<JComponent> pathways = new ArrayList<JComponent>();
@@ -104,7 +105,7 @@ public class RimasTab extends InspectorTab implements PreferencesInterface {
 				TableLayout.FILL, 5, TableLayout.PREFERRED));
 		return TableLayout.getMultiSplitVertical(pathways, 5);
 	}
-
+	
 	public static ImageIcon getIcon(String fn) {
 		ClassLoader cl = RimasTab.class.getClassLoader();
 		String path = RimasTab.class.getPackage().getName().replace('.', '/');
@@ -115,7 +116,7 @@ public class RimasTab extends InspectorTab implements PreferencesInterface {
 			return null;
 		}
 	}
-
+	
 	protected JComponent getPathwayButton(final String url, String title, String image) {
 		JButton res = new JButton("<html>" + title);
 		// res.setIcon(getIcon(image));
@@ -135,22 +136,22 @@ public class RimasTab extends InspectorTab implements PreferencesInterface {
 		});
 		return res;
 	}
-
+	
 	@Override
 	public String getName() {
 		return getTitle();
 	}
-
+	
 	@Override
 	public String getTitle() {
 		return "RIMAS";
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Pathways";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;

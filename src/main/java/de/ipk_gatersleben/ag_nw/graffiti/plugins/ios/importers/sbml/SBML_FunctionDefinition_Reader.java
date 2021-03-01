@@ -16,15 +16,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLFunctionDefinition
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_FunctionDefinition_Reader {
-
+	
 	/**
 	 * Method reads in function definitions and is called from class
 	 * SBML_XML_Reader.java
 	 * 
 	 * @param functionDefinitionList
-	 *            contains the function definitions for the import
+	 *           contains the function definitions for the import
 	 * @param g
-	 *            the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 */
 	public void addFunktionDefinition(ListOf<FunctionDefinition> functionDefinitionList, Graph g) {
 		Iterator<FunctionDefinition> itFunctionDefinition = functionDefinitionList.iterator();
@@ -43,7 +43,7 @@ public class SBML_FunctionDefinition_Reader {
 				String functionName = functionDefinition.getName();
 				String sboTerm = functionDefinition.getSBOTermID();
 				String metaID = functionDefinition.getMetaId();
-
+				
 				if (functionDefinition.isSetId()) {
 					functionDefinitionHelper.setID(functionID);
 				}
@@ -75,7 +75,7 @@ public class SBML_FunctionDefinition_Reader {
 						}
 					}
 				}
-
+				
 				functionCount++;
 			} catch (Exception e) {
 				e.printStackTrace();

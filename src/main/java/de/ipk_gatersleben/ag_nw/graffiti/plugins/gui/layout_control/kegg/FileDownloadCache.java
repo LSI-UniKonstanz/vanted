@@ -21,7 +21,7 @@ import org.HomeFolder;
 import de.ipk_gatersleben.ag_nw.graffiti.services.GUIhelper;
 
 public class FileDownloadCache {
-
+	
 	/**
 	 * If the parameter specifies a remote file, it is downloaded and saved at the
 	 * hard disc drive. A URL to the downloaded file will be returned. In case of
@@ -30,7 +30,7 @@ public class FileDownloadCache {
 	 * file is existant, the file is not downloaded again.
 	 * 
 	 * @param url
-	 *            The (remote) URL to the file.
+	 *           The (remote) URL to the file.
 	 * @return If possible, a local URL to a downloaded caching file.
 	 */
 	@SuppressWarnings("deprecation")
@@ -41,7 +41,7 @@ public class FileDownloadCache {
 		else {
 			String fileName = HomeFolder.getTemporaryFolderWithFinalSep() + "downloaded/"
 					+ url.toString().substring(url.toString().lastIndexOf("/") + 1);
-
+			
 			if (new File(fileName).canRead()) {
 				try {
 					return new File(fileName).toURL();
@@ -73,7 +73,7 @@ public class FileDownloadCache {
 			}
 		}
 	}
-
+	
 	private static boolean downloadFile(URL url, File targetFile) throws IOException {
 		String path = HomeFolder.getTemporaryFolderWithFinalSep() + "downloaded/";
 		new File(path).mkdirs();
@@ -84,7 +84,7 @@ public class FileDownloadCache {
 		else {
 			InputStream in = url.openStream();
 			OutputStream out = new FileOutputStream(targetFile);
-
+			
 			// Transfer bytes from in to out
 			byte[] buf = new byte[1024];
 			int len;
@@ -96,9 +96,9 @@ public class FileDownloadCache {
 			return true;
 		}
 	}
-
+	
 	public static boolean isCacheURL(URL url) {
 		return (!url.toExternalForm().contains("http:/") && !url.toExternalForm().contains("ftp:/"));
 	}
-
+	
 }

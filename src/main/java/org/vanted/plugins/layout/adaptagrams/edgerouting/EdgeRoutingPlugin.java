@@ -19,7 +19,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
  * @author Tobias Czauderna
  */
 public class EdgeRoutingPlugin extends GenericPluginAdapter {
-
+	
 	/**
 	 * Initializes the edge routing plugin. Registers the edge routing algorithm and
 	 * copies the native Adaptagrams libraries if necessary.
@@ -28,7 +28,7 @@ public class EdgeRoutingPlugin extends GenericPluginAdapter {
 		
 		// register the edge routing algorithm
 		this.algorithms = new Algorithm[] { new EdgeRoutingAlgorithm() };
-
+		
 		// initial step to use the Adaptagrams libraries in Vanted
 		// copy native Adaptagrams libraries from the jar to folder on the file system
 		String sourceFolder = "libs";
@@ -63,7 +63,7 @@ public class EdgeRoutingPlugin extends GenericPluginAdapter {
 						FileHelper.copyFileFromStream(sourceFolder, targetFolder, libName);
 			}
 		}
-
+		
 	}
-
+	
 }

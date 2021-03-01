@@ -24,18 +24,18 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.session.Session;
 
 public class MergeWindowsAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean setClusterInformation = true;
 	private boolean closeSourceGraphs = false;
 	private boolean setFileSrcAttribute = false;
-
+	
 	public String getName() {
 		// if (ReleaseInfo.getRunningReleaseStatus()!=Release.KGML_EDITOR)
 		return "Combine Open Networks";
 		// else
 		// return null;
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
@@ -51,15 +51,15 @@ public class MergeWindowsAlgorithm extends AbstractAlgorithm {
 					new BooleanParameter(setFileSrcAttribute, "Set File-Src Attribute",
 							"<html>" + "If enabled, a new attribute, containing the elements<br>"
 									+ "file-source will be added to the graph elements.")
-
+			
 			};
 		else
 			return new Parameter[] { new BooleanParameter(closeSourceGraphs, "Close Graph Windows",
 					"<html>" + "If enabled, the graph windows will be closed.")
-
+			
 			};
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -73,22 +73,22 @@ public class MergeWindowsAlgorithm extends AbstractAlgorithm {
 		else
 			setFileSrcAttribute = false;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.window";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT, Category.COMPUTATION));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Create a new graph which contains all graph<br>" + "elements from the open graph windows";
 	}
-
+	
 	public void execute() {
 		// MainFrame.
 		Graph newGraph = new AdjListGraph();
@@ -103,11 +103,11 @@ public class MergeWindowsAlgorithm extends AbstractAlgorithm {
 			if (setClusterInformation)
 				for (GraphElement ge : tempGraph.getGraphElements())
 					AttributeHelper.setAttribute(ge, "cluster", "cluster", name);
-
+				
 			if (setFileSrcAttribute)
 				for (GraphElement ge : tempGraph.getGraphElements())
 					AttributeHelper.setAttribute(ge, "src", "fileName", name);
-
+				
 			newGraph.addGraph(tempGraph);
 			if (closeSourceGraphs) {
 				MainFrame.getInstance().getSessionManager().closeSession(s);

@@ -8,7 +8,7 @@ package org.graffiti.plugins.ios.importers.gml;
  */
 public class MyBoolean {
 	boolean value = false;
-
+	
 	public MyBoolean(String val) {
 		if (val.equals("0"))
 			value = false;
@@ -17,7 +17,7 @@ public class MyBoolean {
 		else
 			value = Boolean.parseBoolean(val);
 	}
-
+	
 	public boolean booleanValue() {
 		return value;
 	}

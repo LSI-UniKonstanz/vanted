@@ -31,25 +31,25 @@ import org.graffiti.session.EditorSession;
 public class FileCloseAction extends GraffitiAction {
 	// ~ Constructors
 	// ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1753053200351459126L;
-
+	
 	/**
 	 * Creates a new FileCloseAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public FileCloseAction(MainFrame mainFrame) {
 		super("file.close", mainFrame, "filemenu_close");
 	}
-
+	
 	// ~ Methods
 	// ================================================================
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -59,7 +59,7 @@ public class FileCloseAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return mainFrame.isSessionActive();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -67,12 +67,12 @@ public class FileCloseAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		EditorSession es = mainFrame.getActiveEditorSession();
@@ -81,7 +81,7 @@ public class FileCloseAction extends GraffitiAction {
 			closeInternalFrame(v.getViewComponent());
 		}
 	}
-
+	
 	private void closeInternalFrame(JComponent viewComponent) {
 		if (viewComponent instanceof JInternalFrame) {
 			JInternalFrame jif = (JInternalFrame) viewComponent;

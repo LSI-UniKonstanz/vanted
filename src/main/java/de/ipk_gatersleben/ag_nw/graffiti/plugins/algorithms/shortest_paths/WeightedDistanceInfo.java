@@ -24,7 +24,7 @@ public class WeightedDistanceInfo {
 	private double myDistancePenality;
 	private GraphElement thisGraphElement;
 	private static double epsilon = 0.000000000001;
-
+	
 	public WeightedDistanceInfo(double initDistance, GraphElement sourceNode, GraphElement thisNode,
 			boolean considerNodeWeight, boolean considerEdgeWeight, AttributePathNameSearchType weightattribute,
 			boolean putWeightOnEdges, boolean addAttribute) {
@@ -51,15 +51,15 @@ public class WeightedDistanceInfo {
 		if (addAttribute)
 			AttributeHelper.setAttribute(thisNode, "properties", "weight", myDistancePenality);
 	}
-
+	
 	public GraphElement getGraphElement() {
 		return thisGraphElement;
 	}
-
+	
 	public double getMinDistance() {
 		return currentlyKnownMinimumDistance;
 	}
-
+	
 	public void checkDistanceAndMemorizePossibleSourceElement(GraphElement workGraphElement,
 			double distanceUntilNeighbourElement) {
 		if (Math.abs(distanceUntilNeighbourElement + myDistancePenality - currentlyKnownMinimumDistance) < epsilon) {
@@ -72,7 +72,7 @@ public class WeightedDistanceInfo {
 			rejectedGraphElementsBecauseOfNonOptimalDistance.add(workGraphElement);
 		}
 	}
-
+	
 	public Collection<GraphElement> getConnectedGraphElements(boolean directed) {
 		Collection<GraphElement> neighbours = new ArrayList<GraphElement>();
 		if (directed) {
@@ -93,7 +93,7 @@ public class WeightedDistanceInfo {
 		}
 		return neighbours;
 	}
-
+	
 	public boolean allPossibleSourcePathsTraversed(boolean directed) {
 		boolean foundNotProcessed = false;
 		for (GraphElement ge : getConnectedGraphElements(directed)) {
@@ -105,7 +105,7 @@ public class WeightedDistanceInfo {
 		}
 		return !foundNotProcessed;
 	}
-
+	
 	public Collection<GraphElement> getSourceGraphElementsWithMinimalDistance() {
 		return sourceGraphElementsWithShortestDistance;
 	}

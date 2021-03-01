@@ -41,26 +41,26 @@ import org.jfree.data.time.TimePeriod;
  * You can add sub-tasks to the task.
  */
 public class Task {
-
+	
 	/** The task description. */
 	private String description;
-
+	
 	/** The time period for the task (estimated or actual). */
 	private TimePeriod duration;
-
+	
 	/** The percent complete (<code>null</code> is permitted). */
 	private Double percentComplete;
-
+	
 	/** Storage for the sub-tasks (if any). */
 	private List subtasks;
-
+	
 	/**
 	 * Creates a new task.
 	 * 
 	 * @param description
-	 *            the task description.
+	 *           the task description.
 	 * @param duration
-	 *            the task duration.
+	 *           the task duration.
 	 */
 	public Task(final String description, final TimePeriod duration) {
 		this.description = description;
@@ -68,21 +68,21 @@ public class Task {
 		this.percentComplete = null;
 		this.subtasks = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Creates a new task.
 	 * 
 	 * @param description
-	 *            the task description.
+	 *           the task description.
 	 * @param start
-	 *            the start date.
+	 *           the start date.
 	 * @param end
-	 *            the end date.
+	 *           the end date.
 	 */
 	public Task(final String description, final Date start, final Date end) {
 		this(description, new SimpleTimePeriod(start, end));
 	}
-
+	
 	/**
 	 * Returns the task description.
 	 * 
@@ -91,17 +91,17 @@ public class Task {
 	public String getDescription() {
 		return this.description;
 	}
-
+	
 	/**
 	 * Sets the task description.
 	 * 
 	 * @param description
-	 *            the new description.
+	 *           the new description.
 	 */
 	public void setDescription(final String description) {
 		this.description = description;
 	}
-
+	
 	/**
 	 * Returns the duration (actual or estimated) of the task.
 	 * 
@@ -110,17 +110,17 @@ public class Task {
 	public TimePeriod getDuration() {
 		return this.duration;
 	}
-
+	
 	/**
 	 * Sets the task duration (actual or estimated).
 	 * 
 	 * @param duration
-	 *            the duration.
+	 *           the duration.
 	 */
 	public void setDuration(final TimePeriod duration) {
 		this.duration = duration;
 	}
-
+	
 	/**
 	 * Returns the percentage complete for this task.
 	 * 
@@ -129,47 +129,47 @@ public class Task {
 	public Double getPercentComplete() {
 		return this.percentComplete;
 	}
-
+	
 	/**
 	 * Sets the percentage complete for the task.
 	 * 
 	 * @param percent
-	 *            the percentage.
+	 *           the percentage.
 	 */
 	public void setPercentComplete(final double percent) {
 		setPercentComplete(Double.valueOf(percent));
 	}
-
+	
 	/**
 	 * Sets the percentage complete for the task.
 	 * 
 	 * @param percent
-	 *            the percentage (<code>null</code> permitted).
+	 *           the percentage (<code>null</code> permitted).
 	 */
 	public void setPercentComplete(final Double percent) {
 		this.percentComplete = percent;
 	}
-
+	
 	/**
 	 * Adds a sub-task to the task.
 	 * 
 	 * @param subtask
-	 *            the subtask.
+	 *           the subtask.
 	 */
 	public void addSubtask(final Task subtask) {
 		this.subtasks.add(subtask);
 	}
-
+	
 	/**
 	 * Removes a sub-task from the task.
 	 * 
 	 * @param subtask
-	 *            the subtask.
+	 *           the subtask.
 	 */
 	public void removeSubtask(final Task subtask) {
 		this.subtasks.remove(subtask);
 	}
-
+	
 	/**
 	 * Returns the sub-task count.
 	 * 
@@ -178,16 +178,16 @@ public class Task {
 	public int getSubtaskCount() {
 		return this.subtasks.size();
 	}
-
+	
 	/**
 	 * Returns a sub-task.
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @return The sub-task.
 	 */
 	public Task getSubtask(final int index) {
 		return (Task) this.subtasks.get(index);
 	}
-
+	
 }

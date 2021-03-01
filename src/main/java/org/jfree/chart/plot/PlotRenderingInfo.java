@@ -45,31 +45,31 @@ import org.jfree.util.ObjectUtils;
  * Stores information about the dimensions of a plot and its subplots.
  */
 public class PlotRenderingInfo implements Cloneable, Serializable {
-
+	
 	/** The owner of this info. */
 	private transient ChartRenderingInfo owner;
-
+	
 	/** The plot area. */
 	private transient Rectangle2D plotArea;
-
+	
 	/** The data area. */
 	private transient Rectangle2D dataArea;
-
+	
 	/** Storage for the plot rendering info objects belonging to the subplots. */
 	private List subplotInfo;
-
+	
 	/**
 	 * Default constructor.
 	 * 
 	 * @param owner
-	 *            the owner.
+	 *           the owner.
 	 */
 	public PlotRenderingInfo(ChartRenderingInfo owner) {
 		this.owner = owner;
 		this.dataArea = new Rectangle2D.Double();
 		this.subplotInfo = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Returns the owner.
 	 * 
@@ -78,7 +78,7 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	public ChartRenderingInfo getOwner() {
 		return this.owner;
 	}
-
+	
 	/**
 	 * Returns the plot area (in Java2D space).
 	 * 
@@ -87,17 +87,17 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	public Rectangle2D getPlotArea() {
 		return this.plotArea;
 	}
-
+	
 	/**
 	 * Sets the plot area.
 	 * 
 	 * @param area
-	 *            the plot area (in Java2D space)
+	 *           the plot area (in Java2D space)
 	 */
 	public void setPlotArea(Rectangle2D area) {
 		this.plotArea = area;
 	}
-
+	
 	/**
 	 * Returns the plot's data area (in Java2D space).
 	 * 
@@ -106,43 +106,43 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	public Rectangle2D getDataArea() {
 		return this.dataArea;
 	}
-
+	
 	/**
 	 * Sets the data area.
 	 * 
 	 * @param area
-	 *            the data area (in Java2D space).
+	 *           the data area (in Java2D space).
 	 */
 	public void setDataArea(Rectangle2D area) {
 		this.dataArea = area;
 	}
-
+	
 	/**
 	 * Adds the info for a subplot.
 	 * 
 	 * @param info
-	 *            the subplot info.
+	 *           the subplot info.
 	 */
 	public void addSubplotInfo(PlotRenderingInfo info) {
 		this.subplotInfo.add(info);
 	}
-
+	
 	/**
 	 * Returns the info for a subplot.
 	 * 
 	 * @param index
-	 *            the subplot index.
+	 *           the subplot index.
 	 * @return The info.
 	 */
 	public PlotRenderingInfo getSubplotInfo(int index) {
 		return (PlotRenderingInfo) this.subplotInfo.get(index);
 	}
-
+	
 	/**
 	 * Tests this instance for equality against an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -167,46 +167,46 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone of this object.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if there is a problem cloning.
+	 *            if there is a problem cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 		SerialUtilities.writeShape(this.dataArea, stream);
 		SerialUtilities.writeShape(this.plotArea, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.dataArea = (Rectangle2D) SerialUtilities.readShape(stream);
 		this.plotArea = (Rectangle2D) SerialUtilities.readShape(stream);
 	}
-
+	
 }

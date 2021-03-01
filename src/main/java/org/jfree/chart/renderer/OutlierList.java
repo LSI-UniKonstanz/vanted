@@ -47,40 +47,40 @@ import java.util.List;
  * @author David Browning
  */
 public class OutlierList {
-
+	
 	/** Storage for the outliers. */
 	private List outliers;
-
+	
 	/** The averaged outlier. */
 	private Outlier averagedOutlier;
-
+	
 	/**
 	 * A flag that indicates whether or not there are multiple outliers in the list.
 	 */
 	private boolean multiple = false;
-
+	
 	/**
 	 * Creates a new list containing a single outlier.
 	 * 
 	 * @param outlier
-	 *            the outlier.
+	 *           the outlier.
 	 */
 	public OutlierList(Outlier outlier) {
 		this.outliers = new ArrayList();
 		setAveragedOutlier(outlier);
 	}
-
+	
 	/**
 	 * Adds an outlier to the list.
 	 * 
 	 * @param outlier
-	 *            the outlier.
+	 *           the outlier.
 	 * @return A boolean.
 	 */
 	public boolean add(Outlier outlier) {
 		return this.outliers.add(outlier);
 	}
-
+	
 	/**
 	 * Returns the number of outliers in the list.
 	 * 
@@ -89,7 +89,7 @@ public class OutlierList {
 	public int getItemCount() {
 		return this.outliers.size();
 	}
-
+	
 	/**
 	 * Returns the averaged outlier.
 	 * 
@@ -98,17 +98,17 @@ public class OutlierList {
 	public Outlier getAveragedOutlier() {
 		return this.averagedOutlier;
 	}
-
+	
 	/**
 	 * Sets the averaged outlier.
 	 * 
 	 * @param averagedOutlier
-	 *            the averaged outlier.
+	 *           the averaged outlier.
 	 */
 	public void setAveragedOutlier(Outlier averagedOutlier) {
 		this.averagedOutlier = averagedOutlier;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the list contains multiple outliers, and
 	 * <code>false</code> otherwise.
@@ -118,37 +118,37 @@ public class OutlierList {
 	public boolean isMultiple() {
 		return this.multiple;
 	}
-
+	
 	/**
 	 * Sets the flag that indicates whether or not this list represents multiple
 	 * outliers.
 	 * 
 	 * @param multiple
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setMultiple(boolean multiple) {
 		this.multiple = multiple;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the outlier overlaps, and <code>false</code>
 	 * otherwise.
 	 * 
 	 * @param other
-	 *            the outlier.
+	 *           the outlier.
 	 * @return A boolean.
 	 */
 	public boolean isOverlapped(Outlier other) {
-
+		
 		if (other == null) {
 			return false;
 		}
-
+		
 		boolean result = other.overlaps(getAveragedOutlier());
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Updates the averaged outlier.
 	 */
@@ -163,5 +163,5 @@ public class OutlierList {
 		}
 		getAveragedOutlier().getPoint().setLocation(new Point2D.Double(totalXCoords / size, totalYCoords / size));
 	}
-
+	
 }

@@ -61,20 +61,20 @@ import java.io.Serializable;
  * sorting can be used to keep the data items in order.
  */
 public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
-
+	
 	/** The time period. */
 	private RegularTimePeriod period;
-
+	
 	/** The value associated with the time period. */
 	private Number value;
-
+	
 	/**
 	 * Constructs a new data item that associates a value with a time period.
 	 * 
 	 * @param period
-	 *            the time period (<code>null</code> not permitted).
+	 *           the time period (<code>null</code> not permitted).
 	 * @param value
-	 *            the value (<code>null</code> permitted).
+	 *           the value (<code>null</code> permitted).
 	 */
 	public TimeSeriesDataItem(final RegularTimePeriod period, final Number value) {
 		if (period == null) {
@@ -83,19 +83,19 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 		this.period = period;
 		this.value = value;
 	}
-
+	
 	/**
 	 * Constructs a new data item that associates a value with a time period.
 	 * 
 	 * @param period
-	 *            the time period (<code>null</code> not permitted).
+	 *           the time period (<code>null</code> not permitted).
 	 * @param value
-	 *            the value associated with the time period.
+	 *           the value associated with the time period.
 	 */
 	public TimeSeriesDataItem(final RegularTimePeriod period, final double value) {
 		this(period, Double.valueOf(value));
 	}
-
+	
 	/**
 	 * Returns the time period.
 	 * 
@@ -104,7 +104,7 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	public RegularTimePeriod getPeriod() {
 		return this.period;
 	}
-
+	
 	/**
 	 * Returns the value.
 	 * 
@@ -113,22 +113,22 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	public Number getValue() {
 		return this.value;
 	}
-
+	
 	/**
 	 * Sets the value for this data item.
 	 * 
 	 * @param value
-	 *            the value (<code>null</code> permitted).
+	 *           the value (<code>null</code> permitted).
 	 */
 	public void setValue(final Number value) {
 		this.value = value;
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -146,7 +146,7 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 		} else if (timeSeriesDataItem.period != null) {
 			return false;
 		}
-
+		
 		if (this.value != null) {
 			if (!this.value.equals(timeSeriesDataItem.value)) {
 				return false;
@@ -154,10 +154,10 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 		} else if (timeSeriesDataItem.value != null) {
 			return false;
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -169,7 +169,7 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 		result = 29 * result + (this.value != null ? this.value.hashCode() : 0);
 		return result;
 	}
-
+	
 	/**
 	 * Returns an integer indicating the order of this data pair object relative to
 	 * another object.
@@ -178,32 +178,32 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	 * positive == after.
 	 * 
 	 * @param o1
-	 *            The object being compared to.
+	 *           The object being compared to.
 	 * @return An integer indicating the order of the data pair object relative to
 	 *         another object.
 	 */
 	public int compareTo(final Object o1) {
-
+		
 		final int result;
-
+		
 		// CASE 1 : Comparing to another TimeSeriesDataPair object
 		// -------------------------------------------------------
 		if (o1 instanceof TimeSeriesDataItem) {
 			final TimeSeriesDataItem datapair = (TimeSeriesDataItem) o1;
 			result = getPeriod().compareTo(datapair.getPeriod());
 		}
-
+		
 		// CASE 2 : Comparing to a general object
 		// ---------------------------------------------
 		else {
 			// consider time periods to be ordered after general objects
 			result = 1;
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Clones the data item.
 	 * <P>
@@ -221,5 +221,5 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 		}
 		return clone;
 	}
-
+	
 }

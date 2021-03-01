@@ -42,13 +42,13 @@ import java.util.EventListener;
  * it displays, and whenever the chart changes, the panel redraws itself.
  */
 public interface ChartChangeListener extends EventListener {
-
+	
 	/**
 	 * Receives notification of a chart change event.
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void chartChanged(ChartChangeEvent event);
-
+	
 }

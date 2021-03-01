@@ -18,16 +18,16 @@ import org.graffiti.graphics.GraphicAttributeConstants;
  * @see org.graffiti.attributes.GraphicAttributeConstants
  */
 public class AttributeConstants {
-
+	
 	/**
 	 * Unique identifier for the group in Gatersleben.
 	 */
 	public static final String AGNW_PATH = "AGNW";
-
+	
 	/**
 	 * Dynamical defined edge bend attribute.
 	 */
 	public static final String BENDS = GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR
 			+ GraphicAttributeConstants.BENDS;
-
+	
 }

@@ -42,56 +42,56 @@ import org.jfree.util.PublicCloneable;
  */
 public class StandardCategoryLabelGenerator extends AbstractCategoryItemLabelGenerator
 		implements CategoryLabelGenerator, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The default format string. */
 	public static final String DEFAULT_LABEL_FORMAT_STRING = "{2}";
-
+	
 	/**
 	 * Creates a new generator with a default number formatter.
 	 */
 	public StandardCategoryLabelGenerator() {
 		super(DEFAULT_LABEL_FORMAT_STRING, NumberFormat.getInstance());
 	}
-
+	
 	/**
 	 * Creates a new generator with the specified number formatter.
 	 * 
 	 * @param labelFormat
-	 *            the label format string (<code>null</code> not permitted).
+	 *           the label format string (<code>null</code> not permitted).
 	 * @param formatter
-	 *            the number formatter (<code>null</code> not permitted).
+	 *           the number formatter (<code>null</code> not permitted).
 	 */
 	public StandardCategoryLabelGenerator(String labelFormat, NumberFormat formatter) {
 		super(labelFormat, formatter);
 	}
-
+	
 	/**
 	 * Creates a new generator with the specified date formatter.
 	 * 
 	 * @param labelFormat
-	 *            the label format string (<code>null</code> not permitted).
+	 *           the label format string (<code>null</code> not permitted).
 	 * @param formatter
-	 *            the date formatter (<code>null</code> not permitted).
+	 *           the date formatter (<code>null</code> not permitted).
 	 */
 	public StandardCategoryLabelGenerator(String labelFormat, DateFormat formatter) {
 		super(labelFormat, formatter);
 	}
-
+	
 	/**
 	 * Generates the label for an item in a dataset. Note: in the current dataset
 	 * implementation, each row is a series, and each column contains values for a
 	 * particular category.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The label (possibly <code>null</code>).
 	 */
 	public String generateLabel(CategoryDataset dataset, int row, int column) {
 		return generateLabelString(dataset, row, column);
 	}
-
+	
 }

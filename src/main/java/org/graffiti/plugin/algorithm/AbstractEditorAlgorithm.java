@@ -17,7 +17,7 @@ import org.graffiti.selection.Selection;
 
 public abstract class AbstractEditorAlgorithm extends AbstractAlgorithm implements EditorAlgorithm {
 	// ~ Methods ================================================================
-
+	
 	/*
 	 * @see
 	 * org.graffiti.plugin.algorithm.EditorAlgorithm#getParameterDialog(org.graffiti
@@ -26,15 +26,15 @@ public abstract class AbstractEditorAlgorithm extends AbstractAlgorithm implemen
 	public ParameterDialog getParameterDialog(Selection s) {
 		return null;
 	}
-
+	
 	protected MainFrame getMainFrame() {
 		return MainFrame.getInstance();
 	}
-
+	
 	public String getShortName() {
 		return getName();
 	}
-
+	
 	/**
 	 * Returns the icon of the algorithm (used, e.g. in the menu bar). Icon is only
 	 * shown if showMenuIcon returns true.

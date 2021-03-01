@@ -59,7 +59,7 @@ public class CompoundListEditor extends JComponent {
 	private boolean isSubstrateSelection;
 	private Pathway pathway;
 	private MyReactionList list;
-
+	
 	public CompoundListEditor(Reaction currReaction, Pathway p, boolean sub, boolean enz, boolean prod,
 			HashMap<Entry, Node> entry2graphNode) {
 		this.pathway = p;
@@ -83,7 +83,7 @@ public class CompoundListEditor extends JComponent {
 		add(mc, "0,0");
 		validate();
 	}
-
+	
 	private static Collection<Entry> getEntriesAcceptibleForEnzyme(Collection<Entry> entries) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
 		if (entries != null)
@@ -96,7 +96,7 @@ public class CompoundListEditor extends JComponent {
 			}
 		return result;
 	}
-
+	
 	private static Collection<Entry> getEntriesAcceptibleForSubstrateOrProduct(Collection<Entry> entries) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
 		HashSet<String> knownIds = new HashSet<String>();
@@ -113,7 +113,7 @@ public class CompoundListEditor extends JComponent {
 			}
 		return result;
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JComponent getEntryList(String title, final Collection<Entry> entries,
 			final HashMap<Entry, Node> entry2graphNode) {
@@ -132,41 +132,41 @@ public class CompoundListEditor extends JComponent {
 		else
 			entrySelection
 					.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, entrySelection, true));
-
+		
 		final JLabel searchResult = new JLabel("<html><small><font color='gray'>" + entries.size() + " entries");
-
+		
 		JScrollPane entrySelectionScrollPane = new JScrollPane(entrySelection);
-
+		
 		entrySelectionScrollPane.setPreferredSize(new Dimension(300, 100));
-
+		
 		// ///////////
 		Collections.sort((List) entries, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				return arg0.toString().compareTo(arg1.toString());
 			}
 		});
-
+		
 		if (isEnzymeSelection)
 			subProdSelection
 					.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, subProdSelection, false));
 		else
 			subProdSelection
 					.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, subProdSelection, true));
-
+		
 		JScrollPane subProdScrollPane = new JScrollPane(subProdSelection);
-
+		
 		subProdScrollPane.setPreferredSize(new Dimension(300, 100));
 		// ///////////
-
+		
 		final JTextField filter = new JTextField("");
-
+		
 		filter.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 			}
-
+			
 			public void keyReleased(KeyEvent e) {
 			}
-
+			
 			public void keyTyped(KeyEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
@@ -182,10 +182,10 @@ public class CompoundListEditor extends JComponent {
 				});
 			}
 		});
-
+		
 		JButton addCmd = new JButton();
 		JButton delCmd = new JButton();
-
+		
 		addCmd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (entrySelection.getSelectedValuesList() == null || entrySelection.getSelectedValuesList().size() <= 0)
@@ -228,10 +228,10 @@ public class CompoundListEditor extends JComponent {
 				}
 			}
 		});
-
+		
 		addCmd.setOpaque(false);
 		delCmd.setOpaque(false);
-
+		
 		if (isSubstrateSelection) {
 			delCmd.setText("Remove Substrate");
 			addCmd.setText("<< Add <<");
@@ -246,17 +246,17 @@ public class CompoundListEditor extends JComponent {
 		}
 		JComponent addRemoveCmds = TableLayout.getSplit(delCmd, new JLabel(), TableLayoutConstants.PREFERRED,
 				TableLayoutConstants.FILL);
-
+		
 		JComponent resultPane = TableLayout.getSplitVertical(subProdScrollPane, addRemoveCmds,
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
-
+		
 		JComponent searchPane = TableLayout.getSplitVertical(entrySelectionScrollPane,
 				TableLayout.getSplitVertical(
 						TableLayout.get3Split(new JLabel("Search"), new JLabel(), filter,
 								TableLayoutConstants.PREFERRED, 2, TableLayoutConstants.FILL),
 						searchResult, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
-
+		
 		JComponent addPane = TableLayout.get3SplitVertical(null, addCmd, null, 0, TableLayoutConstants.PREFERRED,
 				TableLayoutConstants.FILL);
 		JComponent result = TableLayout.get3Split(resultPane, addPane, searchPane, TableLayoutConstants.PREFERRED,
@@ -268,7 +268,7 @@ public class CompoundListEditor extends JComponent {
 		fp.addCollapseListenerDialogSizeUpdate();
 		return fp.getBorderedComponent(5, 0, 0, 0);
 	}
-
+	
 	private static ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
 			final MutableList<?> entrySelection, final boolean searchId) {
 		return new ListSelectionListener() {
@@ -306,32 +306,32 @@ public class CompoundListEditor extends JComponent {
 						}
 					}
 				});
-
+				
 			}
 		};
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public void updateReactionSelection(Reaction r) {
 		this.currReaction = r;
 		subProdSelection.getContents().clear();
-
+		
 		if (isProductSelection && currReaction != null)
 			for (Entry e : currReaction.getProducts()) {
 				subProdSelection.getContents().addElement(e);
 			}
-
+		
 		if (isEnzymeSelection && currReaction != null)
 			for (Entry e : currReaction.getEntriesRepresentingThisReaction(pathway.getEntries())) {
 				subProdSelection.getContents().addElement(e);
 			}
-
+		
 		if (isSubstrateSelection && currReaction != null)
 			for (Entry e : currReaction.getSubstrates()) {
 				subProdSelection.getContents().addElement(e);
 			}
 	}
-
+	
 	public void setCallBack(MyReactionList list) {
 		this.list = list;
 	}

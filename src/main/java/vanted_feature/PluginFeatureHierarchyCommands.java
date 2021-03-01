@@ -27,15 +27,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.ExpandSel
  * @author Christian Klukas
  */
 public class PluginFeatureHierarchyCommands extends IPK_PluginAdapter {
-
+	
 	private static Algorithm[] otherAlgorithms = null;
-
+	
 	public PluginFeatureHierarchyCommands() {
 		if (new SettingsHelperDefaultIsTrue().isEnabled("Hierarchy commands")) {
 			if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
 				this.algorithms = new Algorithm[] {
 						// new HierarchyAlgorithms(), //Old housing of the algorithms
-
+						
 						/*
 						 * some of the following algorithms will be removed from the final version of
 						 * vanted since they seem to be very implemented for very special use
@@ -68,32 +68,32 @@ public class PluginFeatureHierarchyCommands extends IPK_PluginAdapter {
 						 * creation algorithms think of a new interface with easy extension
 						 */
 						new ProcessHierarchynodesDepOnLeafNodes(), // Super-dialog that contains the actutal algorithms
-																	// to create the hierarchies
+						// to create the hierarchies
 						/*
 						 * including CreateGOchildrenAverageDataDiagramAlgorithm()
 						 * CreateGOchildrenClustersHistogramAlgorithm() ClusterHistogramFisherTest()
 						 * CreateGOchildrenTtestHistogramAlgorithm() AlternativeIDannotationStatistics()
 						 */
-
+						
 						new CreateKeggReactionNetworkAlgorithm(), // Disable. This would create the complete KEGG
-																	// reaction network, which we cannot create anymore
+						// reaction network, which we cannot create anymore
 						new HierarchyAlgorithm(), new SelectLeafNodesAlgorithm(),
-
+						
 						new CreateKEGGOrthologyGraphAlgorithm(), new InterpreteGOtermsAlgorithm(),
 						new CreateGOtreeAlgorithm()
-
+				
 				};
 				otherAlgorithms = new Algorithm[] { new ExpandSelectionAlgorithm(true, false),
 						new ExpandSelectionAlgorithm(false, false), new ExpandSelectionAlgorithm(true, true) };
 			}
 		}
 	}
-
+	
 	@Override
 	public void configure(Preferences p) {
 		super.configure(p);
 	}
-
+	
 	public static Algorithm[] getSelectionAlgorithms() {
 		Algorithm[] res = new Algorithm[] {};
 		if (otherAlgorithms != null)

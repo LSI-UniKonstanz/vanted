@@ -48,20 +48,20 @@ import java.io.Serializable;
  * @see ValueAxis
  */
 public abstract class TickUnit implements Comparable, Serializable {
-
+	
 	/** The size of the tick unit. */
 	private double size;
-
+	
 	/**
 	 * Constructs a new tick unit.
 	 * 
 	 * @param size
-	 *            the tick unit size.
+	 *           the tick unit size.
 	 */
 	public TickUnit(double size) {
 		this.size = size;
 	}
-
+	
 	/**
 	 * Returns the size of the tick unit.
 	 * 
@@ -70,31 +70,31 @@ public abstract class TickUnit implements Comparable, Serializable {
 	public double getSize() {
 		return this.size;
 	}
-
+	
 	/**
 	 * Converts the supplied value to a string.
 	 * <P>
 	 * Subclasses may implement special formatting by overriding this method.
 	 * 
 	 * @param value
-	 *            the data value.
+	 *           the data value.
 	 * @return value as string.
 	 */
 	public String valueToString(double value) {
 		return String.valueOf(value);
 	}
-
+	
 	/**
 	 * Compares this tick unit to an arbitrary object.
 	 * 
 	 * @param object
-	 *            the object to compare against.
+	 *           the object to compare against.
 	 * @return <code>1</code> if the size of the other object is less than this,
 	 *         <code>0</code> if both have the same size and <code>-1</code> this
 	 *         size is less than the others.
 	 */
 	public int compareTo(Object object) {
-
+		
 		if (object instanceof TickUnit) {
 			TickUnit other = (TickUnit) object;
 			if (this.size > other.getSize()) {
@@ -107,33 +107,33 @@ public abstract class TickUnit implements Comparable, Serializable {
 		} else {
 			return -1;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Tests this unit for equality with another object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof TickUnit) {
 			TickUnit tu = (TickUnit) obj;
 			return this.size == tu.size;
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 }

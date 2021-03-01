@@ -19,7 +19,7 @@ public interface GraffitiShape extends Shape {
 	 * Shapes itself according to the graphics attribute found in the
 	 * CollectionAttribute <code>graphics</code>
 	 */
-
+	
 	// public void create(CollectionAttribute graphics)
 	// throws ShapeNotFoundException;
 }

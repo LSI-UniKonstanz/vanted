@@ -27,7 +27,7 @@ import org.graffiti.graph.GraphElement;
  * @author ricardo
  */
 public class UtilityClassSelectorToGraph {
-
+	
 	public static void chooseClassToPutAttributesToNodes(GraphElement elem, Object i) {
 		if (i instanceof physicalEntityParticipant) {
 			i = ((physicalEntityParticipant) i).getPHYSICAL_ENTITY();
@@ -70,10 +70,10 @@ public class UtilityClassSelectorToGraph {
 			} else {
 				System.out.println("Object wasn't found while reading OWL-File. It was a: " + i.getClass());
 			}
-
+			
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 }

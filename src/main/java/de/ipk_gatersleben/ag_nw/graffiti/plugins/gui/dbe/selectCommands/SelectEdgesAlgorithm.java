@@ -33,10 +33,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectEdgesAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean selInnerClusterEdges = false;
 	private boolean selInterClusterEdges = false;
-
+	
 	private boolean selfLoops = false;
 	private boolean onlyWithMapping = false;
 	private boolean onlyWithoutMapping = false;
@@ -45,18 +45,18 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 	private boolean onlyAntiParallelEdges = false;
 	private boolean onlyVisibleEdges = false;
 	private boolean onlyNonVisibleEdges = false;
-
+	
 	private boolean extendSelection = true;
-
+	
 	public String getName() {
 		return "Select Edges";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.EDGE, Category.SELECTION));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
@@ -70,7 +70,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 					+ "You may also limit the selection to self-edges, where source and target<br>"
 					+ "of the edge are the same node.";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
@@ -99,7 +99,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 							onlyConnectingSelectedNodes, "Limit to edges connecting already selected nodes", ""), };
 		}
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -123,30 +123,30 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			onlyNonVisibleEdges = ((BooleanParameter) params[i++]).getBoolean();
 		}
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
-
+		
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
-
+		
 		if (graph.getEdges().size() <= 0)
 			throw new PreconditionException("Current graph contains no edges which may be selected.");
 	}
-
+	
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
-
+			
 			if (!extendSelection)
 				selection.clear();
-
+			
 			int cntA = selection.getEdges().size();
 			if (!selInnerClusterEdges && !selInterClusterEdges)
 				selection.addAll(limitByOptions(graph.getEdges()));
@@ -169,7 +169,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	private Collection<Edge> limitByOptions(Collection<Edge> edges) {
 		ArrayList<Edge> result = new ArrayList<Edge>();
 		for (Edge e : edges) {
@@ -194,7 +194,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		}
 		return result;
 	}
-
+	
 	private static boolean parallelEdgeExists(Edge e) {
 		if (e.isDirected()) {
 			for (Edge e2 : e.getSource().getDirectedOutEdges()) {
@@ -216,7 +216,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			return false;
 		}
 	}
-
+	
 	private static boolean antiParallelEdgeExists(Edge e) {
 		if (e.isDirected()) {
 			for (Edge e2 : e.getTarget().getDirectedOutEdges()) {
@@ -230,7 +230,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			return false;
 		}
 	}
-
+	
 	private static boolean isParallelRegardlessOfDirection(Edge e1, Edge e2) {
 		if (e1.getSource() == e2.getSource() && e1.getTarget() == e2.getTarget())
 			return true;
@@ -238,11 +238,11 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			return true;
 		return false;
 	}
-
+	
 	private boolean selectionContains(Node source, Node target) {
 		return selection.getNodes().contains(source) && selection.getNodes().contains(target);
 	}
-
+	
 	public static Collection<Edge> getInterClusterEdges(Collection<Edge> edges) {
 		ArrayList<Edge> result = new ArrayList<Edge>();
 		for (Edge e : edges) {
@@ -255,7 +255,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		}
 		return result;
 	}
-
+	
 	public static Collection<Edge> getInnerClusterEdges(Collection<Edge> edges) {
 		ArrayList<Edge> result = new ArrayList<Edge>();
 		for (Edge e : edges) {
@@ -268,7 +268,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		}
 		return result;
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

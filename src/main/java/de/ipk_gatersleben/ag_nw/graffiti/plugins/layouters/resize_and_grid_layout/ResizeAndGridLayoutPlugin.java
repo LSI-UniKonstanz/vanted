@@ -17,7 +17,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  *         Schreiber)
  */
 public class ResizeAndGridLayoutPlugin extends IPK_PluginAdapter {
-
+	
 	/**
 	 * Creates a new GridLayouterPlugin object.
 	 */

@@ -45,20 +45,20 @@ package org.jfree.chart.demo;
  * guarantee which pixels are rendered by the Graphics2D pipeline...
  */
 public class SampleXYDatasetThread implements Runnable {
-
+	
 	/** The data. */
 	private SampleXYDataset data;
-
+	
 	/**
 	 * Creates a new thread.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 */
 	public SampleXYDatasetThread(final SampleXYDataset data) {
 		this.data = data;
 	}
-
+	
 	/**
 	 * Runs the thread.
 	 */
@@ -71,7 +71,7 @@ public class SampleXYDatasetThread implements Runnable {
 				// ignore
 			}
 		}
-
+		
 	}
-
+	
 }

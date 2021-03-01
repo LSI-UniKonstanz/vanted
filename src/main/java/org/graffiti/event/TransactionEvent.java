@@ -19,7 +19,7 @@ package org.graffiti.event;
  */
 public class TransactionEvent extends AbstractEvent {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
@@ -29,35 +29,35 @@ public class TransactionEvent extends AbstractEvent {
 	 * transaction.
 	 */
 	private TransactionHashMap changedObjects;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a transaction event object with the specified source component.
 	 * 
 	 * @param source
-	 *            the source component of the transaction.
+	 *           the source component of the transaction.
 	 * @param changedObjects
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public TransactionEvent(Object source, TransactionHashMap changedObjects) {
 		this(source);
 		this.changedObjects = changedObjects;
 	}
-
+	
 	/**
 	 * Constructs a transaction event object with the specified source component.
 	 * 
 	 * @param source
-	 *            the graph that originated the event.
+	 *           the graph that originated the event.
 	 */
 	public TransactionEvent(Object source) {
 		super(source);
 		changedObjects = null;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the <code>Set</code> of objects that have been changed during the
 	 * transaction.

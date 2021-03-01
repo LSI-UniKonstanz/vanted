@@ -19,27 +19,27 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 
 public class ThicknessAttributeEditor extends AbstractValueEditComponent {
-
+	
 	private final JComboBox<Object> combo;
 	private final JSpinner spinner;
 	private final JPanel pan;
-
+	
 	public ThicknessAttributeEditor(Displayable disp) {
 		super(disp);
 		combo = new JComboBox<Object>(ArrowHeadModes.values()) {
-
+			
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 6344786893439460070L;
-
+			
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-
+			
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();
@@ -61,19 +61,19 @@ public class ThicknessAttributeEditor extends AbstractValueEditComponent {
 			}
 		});
 		spinner = new JSpinner(new SpinnerNumberModel(10d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0.5d));
-
+		
 		pan = new JPanel();
 		pan.setLayout(TableLayout.getLayout(TableLayout.FILL, TableLayout.FILL));
 	}
-
+	
 	@Override
 	public JComponent getComponent() {
 		return pan;
 	}
-
+	
 	@Override
 	public void setEditFieldValue() {
-
+		
 		if (showEmpty) {
 			combo.addItem(EMPTY_STRING);
 			combo.setSelectedItem(EMPTY_STRING);
@@ -81,14 +81,14 @@ public class ThicknessAttributeEditor extends AbstractValueEditComponent {
 			return;
 		}
 		double value = (Double) ((Attribute) getDisplayable()).getValue();
-
+		
 		pan.removeAll();
-
+		
 		setGuiFromMode(ArrowHeadModes.getMode(value));
 		pan.validate();
 		pan.repaint();
 	}
-
+	
 	private void setGuiFromMode(ArrowHeadModes mode) {
 		if (mode == ArrowHeadModes.ABSOLUTE) {
 			double value = (Double) ((Attribute) getDisplayable()).getValue();
@@ -103,7 +103,7 @@ public class ThicknessAttributeEditor extends AbstractValueEditComponent {
 		}
 		combo.setSelectedItem(mode);
 	}
-
+	
 	@Override
 	public void setValue() {
 		Object selitem = combo.getSelectedItem();
@@ -114,28 +114,28 @@ public class ThicknessAttributeEditor extends AbstractValueEditComponent {
 		else
 			((Attribute) getDisplayable()).setValue(spinner.getValue());
 	}
-
+	
 	public enum ArrowHeadModes {
 		ABSOLUTE("Absolute in Pixel"), RELATIVE("Relative to Thickness");
-
+		
 		private String name;
-
+		
 		private ArrowHeadModes(String name) {
 			this.name = name;
 		}
-
+		
 		@Override
 		public String toString() {
 			return name;
 		}
-
+		
 		public static ArrowHeadModes getMode(double value) {
 			if (Math.abs((value - 1d)) < 0.0001d)
 				return RELATIVE;
 			else
 				return ABSOLUTE;
 		}
-
+		
 	}
-
+	
 }

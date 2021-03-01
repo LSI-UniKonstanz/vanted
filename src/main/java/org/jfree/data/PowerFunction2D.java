@@ -33,35 +33,35 @@ package org.jfree.data;
  * A function of the form y = a * x ^ b.
  */
 public class PowerFunction2D implements Function2D {
-
+	
 	/** The 'a' coefficient. */
 	private double a;
-
+	
 	/** The 'b' coefficient. */
 	private double b;
-
+	
 	/**
 	 * Creates a new power function.
 	 * 
 	 * @param a
-	 *            the 'a' coefficient.
+	 *           the 'a' coefficient.
 	 * @param b
-	 *            the 'b' coefficient.
+	 *           the 'b' coefficient.
 	 */
 	public PowerFunction2D(final double a, final double b) {
 		this.a = a;
 		this.b = b;
 	}
-
+	
 	/**
 	 * Returns the value of the function for a given input ('x').
 	 * 
 	 * @param x
-	 *            the x-value.
+	 *           the x-value.
 	 * @return the value.
 	 */
 	public double getValue(final double x) {
 		return this.a * Math.pow(x, this.b);
 	}
-
+	
 }

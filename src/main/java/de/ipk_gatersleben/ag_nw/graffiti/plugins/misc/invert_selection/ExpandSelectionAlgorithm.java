@@ -29,9 +29,9 @@ import org.graffiti.selection.Selection;
  * labels.
  */
 public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean directed, inverseDirected;
-
+	
 	/**
 	 * Constructs a new instance.
 	 */
@@ -39,7 +39,7 @@ public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
 		this.directed = directed;
 		this.inverseDirected = inverseDirected;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -47,7 +47,7 @@ public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		return null;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#
 	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
@@ -55,7 +55,7 @@ public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
@@ -100,7 +100,7 @@ public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
 		sel.addAll(currentSelElements);
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -109,7 +109,7 @@ public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
 		graph = null;
 		selection = null;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
@@ -119,7 +119,7 @@ public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
 		else
 			return "Extend Selection (Upstream)";
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		if (directed) {
@@ -132,22 +132,22 @@ public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
 			// return KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
 			return KeyStroke.getKeyStroke('E', SystemInfo.getAccelModifier());
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION));
 	}
-
+	
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *            the selection
+	 *           the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;

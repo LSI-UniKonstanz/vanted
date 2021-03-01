@@ -104,7 +104,7 @@ import org.jfree.ui.TextAnchor;
  * non-<code>null</code> values.
  */
 public interface CategoryItemRenderer {
-
+	
 	/**
 	 * Returns the plot that the renderer has been assigned to (where
 	 * <code>null</code> indicates that the renderer is not currently assigned to a
@@ -113,244 +113,244 @@ public interface CategoryItemRenderer {
 	 * @return The plot (possibly <code>null</code>).
 	 */
 	public CategoryPlot getPlot();
-
+	
 	/**
 	 * Sets the plot that the renderer has been assigned to. This method is usually
 	 * called by the {@link CategoryPlot}, in normal usage you shouldn't need to
 	 * call this method directly.
 	 * 
 	 * @param plot
-	 *            the plot (<code>null</code> not permitted).
+	 *           the plot (<code>null</code> not permitted).
 	 */
 	public void setPlot(CategoryPlot plot);
-
+	
 	/**
 	 * Adds a change listener.
 	 * 
 	 * @param listener
-	 *            the listener.
+	 *           the listener.
 	 */
 	public void addChangeListener(RendererChangeListener listener);
-
+	
 	/**
 	 * Removes a change listener.
 	 * 
 	 * @param listener
-	 *            the listener.
+	 *           the listener.
 	 */
 	public void removeChangeListener(RendererChangeListener listener);
-
+	
 	/**
 	 * Returns the range of values the renderer requires to display all the items
 	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
 	 *         or empty).
 	 */
 	public Range getRangeExtent(CategoryDataset dataset);
-
+	
 	/**
 	 * Initialises the renderer. This method will be called before the first item is
 	 * rendered, giving the renderer an opportunity to initialise any state
 	 * information it wants to maintain. The renderer can do nothing if it chooses.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area inside the axes.
+	 *           the area inside the axes.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param rendererIndex
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param info
-	 *            collects chart rendering information for return to caller.
+	 *           collects chart rendering information for return to caller.
 	 * @return A state object (maintains state information relevant to one chart
 	 *         drawing).
 	 */
 	public CategoryItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, CategoryPlot plot,
 			int rendererIndex, PlotRenderingInfo info);
-
+	
 	// // PAINT
 	// ///////////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the paint used to fill data items as they are drawn.
 	 * 
 	 * @param row
-	 *            the row (or series) index (zero-based).
+	 *           the row (or series) index (zero-based).
 	 * @param column
-	 *            the column (or category) index (zero-based).
+	 *           the column (or category) index (zero-based).
 	 * @return the paint (never <code>null</code>).
 	 */
 	public Paint getItemPaint(int row, int column);
-
+	
 	/**
 	 * Sets the paint to be used for ALL series, and sends a
 	 * {@link RendererChangeEvent} to all registered listeners. If this is
 	 * <code>null</code>, the renderer will use the paint for the series.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setPaint(Paint paint);
-
+	
 	/**
 	 * Returns the paint used to fill an item drawn by the renderer.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return the paint (never <code>null</code>).
 	 */
 	public Paint getSeriesPaint(int series);
-
+	
 	/**
 	 * Sets the paint used for a series and sends a {@link RendererChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setSeriesPaint(int series, Paint paint);
-
+	
 	/**
 	 * Returns the base paint.
 	 * 
 	 * @return the base paint (never <code>null</code>).
 	 */
 	public Paint getBasePaint();
-
+	
 	/**
 	 * Sets the base paint and sends a {@link RendererChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setBasePaint(Paint paint);
-
+	
 	// // OUTLINE PAINT
 	// ///////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the paint used to outline data items as they are drawn.
 	 * 
 	 * @param row
-	 *            the row (or series) index (zero-based).
+	 *           the row (or series) index (zero-based).
 	 * @param column
-	 *            the column (or category) index (zero-based).
+	 *           the column (or category) index (zero-based).
 	 * @return the paint (never <code>null</code>).
 	 */
 	public Paint getItemOutlinePaint(int row, int column);
-
+	
 	/**
 	 * Sets the outline paint for ALL series (optional).
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setOutlinePaint(Paint paint);
-
+	
 	/**
 	 * Returns the paint used to outline an item drawn by the renderer.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the paint (never <code>null</code>).
 	 */
 	public Paint getSeriesOutlinePaint(int series);
-
+	
 	/**
 	 * Sets the paint used for a series outline and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setSeriesOutlinePaint(int series, Paint paint);
-
+	
 	/**
 	 * Returns the base outline paint.
 	 * 
 	 * @return the paint (never <code>null</code>).
 	 */
 	public Paint getBaseOutlinePaint();
-
+	
 	/**
 	 * Sets the base outline paint and sends a {@link RendererChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setBaseOutlinePaint(Paint paint);
-
+	
 	// // STROKE
 	// //////////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the stroke used to draw data items.
 	 * 
 	 * @param row
-	 *            the row (or series) index (zero-based).
+	 *           the row (or series) index (zero-based).
 	 * @param column
-	 *            the column (or category) index (zero-based).
+	 *           the column (or category) index (zero-based).
 	 * @return the stroke (never <code>null</code>).
 	 */
 	public Stroke getItemStroke(int row, int column);
-
+	
 	/**
 	 * Sets the stroke for ALL series and sends a {@link RendererChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setStroke(Stroke stroke);
-
+	
 	/**
 	 * Returns the stroke used to draw the items in a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the stroke (never <code>null</code>).
 	 */
 	public Stroke getSeriesStroke(int series);
-
+	
 	/**
 	 * Sets the stroke used for a series and sends a {@link RendererChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setSeriesStroke(int series, Stroke stroke);
-
+	
 	/**
 	 * Returns the base stroke.
 	 * 
 	 * @return the base stroke (never <code>null</code>).
 	 */
 	public Stroke getBaseStroke();
-
+	
 	/**
 	 * Sets the base stroke.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> not permitted).
+	 *           the stroke (<code>null</code> not permitted).
 	 */
 	public void setBaseStroke(Stroke stroke);
-
+	
 	// // OUTLINE STROKE
 	// //////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the stroke used to outline data items.
 	 * <p>
@@ -358,312 +358,312 @@ public interface CategoryItemRenderer {
 	 * method. You can override this method if you require different behaviour.
 	 * 
 	 * @param row
-	 *            the row (or series) index (zero-based).
+	 *           the row (or series) index (zero-based).
 	 * @param column
-	 *            the column (or category) index (zero-based).
+	 *           the column (or category) index (zero-based).
 	 * @return the stroke (never <code>null</code>).
 	 */
 	public Stroke getItemOutlineStroke(int row, int column);
-
+	
 	/**
 	 * Sets the outline stroke for ALL series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setOutlineStroke(Stroke stroke);
-
+	
 	/**
 	 * Returns the stroke used to outline the items in a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the stroke (never <code>null</code>).
 	 */
 	public Stroke getSeriesOutlineStroke(int series);
-
+	
 	/**
 	 * Sets the outline stroke used for a series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setSeriesOutlineStroke(int series, Stroke stroke);
-
+	
 	/**
 	 * Returns the base outline stroke.
 	 * 
 	 * @return the stroke (never <code>null</code>).
 	 */
 	public Stroke getBaseOutlineStroke();
-
+	
 	/**
 	 * Sets the base outline stroke and sends a {@link RendererChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> not permitted).
+	 *           the stroke (<code>null</code> not permitted).
 	 */
 	public void setBaseOutlineStroke(Stroke stroke);
-
+	
 	// // SHAPE
 	// ///////////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns a shape used to represent a data item.
 	 * 
 	 * @param row
-	 *            the row (or series) index (zero-based).
+	 *           the row (or series) index (zero-based).
 	 * @param column
-	 *            the column (or category) index (zero-based).
+	 *           the column (or category) index (zero-based).
 	 * @return the shape (never <code>null</code>).
 	 */
 	public Shape getItemShape(int row, int column);
-
+	
 	/**
 	 * Sets the shape for ALL series (optional) and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param shape
-	 *            the shape (<code>null</code> permitted).
+	 *           the shape (<code>null</code> permitted).
 	 */
 	public void setShape(Shape shape);
-
+	
 	/**
 	 * Returns a shape used to represent the items in a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the shape (never <code>null</code>).
 	 */
 	public Shape getSeriesShape(int series);
-
+	
 	/**
 	 * Sets the shape used for a series and sends a {@link RendererChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param shape
-	 *            the shape (<code>null</code> permitted).
+	 *           the shape (<code>null</code> permitted).
 	 */
 	public void setSeriesShape(int series, Shape shape);
-
+	
 	/**
 	 * Returns the base shape.
 	 * 
 	 * @return the shape (never <code>null</code>).
 	 */
 	public Shape getBaseShape();
-
+	
 	/**
 	 * Sets the base shape and sends a {@link RendererChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param shape
-	 *            the shape (<code>null</code> not permitted).
+	 *           the shape (<code>null</code> not permitted).
 	 */
 	public void setBaseShape(Shape shape);
-
+	
 	// ITEM LABELS VISIBLE
-
+	
 	/**
 	 * Returns <code>true</code> if an item label is visible, and <code>false</code>
 	 * otherwise.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return a boolean.
 	 */
 	public boolean isItemLabelVisible(int row, int column);
-
+	
 	/**
 	 * Returns <code>true</code> if the item labels for a series are visible, and
 	 * <code>false</code> otherwise.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return a boolean.
 	 */
 	public boolean isSeriesItemLabelsVisible(int series);
-
+	
 	/**
 	 * Sets a flag that controls whether or not the item labels for ALL series are
 	 * visible.
 	 * 
 	 * @param visible
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setItemLabelsVisible(boolean visible);
-
+	
 	/**
 	 * Sets a flag that controls whether or not the item labels for ALL series are
 	 * visible.
 	 * 
 	 * @param visible
-	 *            the flag (<code>null</code> permitted).
+	 *           the flag (<code>null</code> permitted).
 	 */
 	public void setItemLabelsVisible(Boolean visible);
-
+	
 	/**
 	 * Sets the visibility of item labels for ALL series and, if requested, sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param visible
-	 *            a flag that controls whether or not the item labels are visible
-	 *            (<code>null</code> permitted).
+	 *           a flag that controls whether or not the item labels are visible
+	 *           (<code>null</code> permitted).
 	 * @param notify
-	 *            a flag that controls whether or not listeners are notified.
+	 *           a flag that controls whether or not listeners are notified.
 	 */
 	public void setItemLabelsVisible(Boolean visible, boolean notify);
-
+	
 	/**
 	 * Sets a flag that controls the visibility of the item labels for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param visible
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setSeriesItemLabelsVisible(int series, boolean visible);
-
+	
 	/**
 	 * Sets a flag that controls the visibility of the item labels for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param visible
-	 *            the flag (<code>null</code> permitted).
+	 *           the flag (<code>null</code> permitted).
 	 */
 	public void setSeriesItemLabelsVisible(int series, Boolean visible);
-
+	
 	/**
 	 * Sets the visibility of item labels for a series and, if requested, sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param visible
-	 *            the visible flag.
+	 *           the visible flag.
 	 * @param notify
-	 *            a flag that controls whether or not listeners are notified.
+	 *           a flag that controls whether or not listeners are notified.
 	 */
 	public void setSeriesItemLabelsVisible(int series, Boolean visible, boolean notify);
-
+	
 	/**
 	 * Returns the base setting for item label visibility.
 	 * 
 	 * @return A flag (possibly <code>null</code>).
 	 */
 	public Boolean getBaseItemLabelsVisible();
-
+	
 	/**
 	 * Sets the base flag that controls whether or not item labels are visible.
 	 * 
 	 * @param visible
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setBaseItemLabelsVisible(boolean visible);
-
+	
 	/**
 	 * Sets the base setting for item label visibility.
 	 * 
 	 * @param visible
-	 *            the flag (<code>null</code> permitted).
+	 *           the flag (<code>null</code> permitted).
 	 */
 	public void setBaseItemLabelsVisible(Boolean visible);
-
+	
 	/**
 	 * Sets the base visibility for item labels and, if requested, sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param visible
-	 *            the visibility flag.
+	 *           the visibility flag.
 	 * @param notify
-	 *            a flag that controls whether or not listeners are notified.
+	 *           a flag that controls whether or not listeners are notified.
 	 */
 	public void setBaseItemLabelsVisible(Boolean visible, boolean notify);
-
+	
 	// LABEL GENERATOR
-
+	
 	/**
 	 * Returns the item label generator for the specified data item.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The generator (possibly <code>null</code>).
 	 */
 	public CategoryLabelGenerator getLabelGenerator(int series, int item);
-
+	
 	/**
 	 * Returns the item label generator for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The label generator (possibly <code>null</code>).
 	 */
 	public CategoryLabelGenerator getSeriesLabelGenerator(int series);
-
+	
 	/**
 	 * Sets the item label generator for ALL series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners. This overrides the
 	 * per-series settings.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setLabelGenerator(CategoryLabelGenerator generator);
-
+	
 	/**
 	 * Sets the item label generator for a series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param generator
-	 *            the generator.
+	 *           the generator.
 	 */
 	public void setSeriesLabelGenerator(int series, CategoryLabelGenerator generator);
-
+	
 	/**
 	 * Returns the base label generator.
 	 * 
 	 * @return The generator (possibly <code>null</code>).
 	 */
 	public CategoryLabelGenerator getBaseLabelGenerator();
-
+	
 	/**
 	 * Sets the base label generator and sends a {@link RendererChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setBaseLabelGenerator(CategoryLabelGenerator generator);
-
+	
 	// TOOL TIP GENERATOR
-
+	
 	/**
 	 * Returns the tool tip generator that should be used for the specified item.
 	 * This method looks up the generator using the "three-layer" approach outlined
 	 * in the general description of this interface.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The generator (possibly <code>null</code>).
 	 */
 	public CategoryToolTipGenerator getToolTipGenerator(int row, int column);
-
+	
 	/**
 	 * Returns the tool tip generator that will be used for ALL items in the dataset
 	 * (the "layer 0" generator).
@@ -671,70 +671,70 @@ public interface CategoryItemRenderer {
 	 * @return A tool tip generator (possibly <code>null</code>).
 	 */
 	public CategoryToolTipGenerator getToolTipGenerator();
-
+	
 	/**
 	 * Sets the tool tip generator for ALL series and sends a
 	 * {@link org.jfree.chart.event.RendererChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setToolTipGenerator(CategoryToolTipGenerator generator);
-
+	
 	/**
 	 * Returns the tool tip generator for the specified series (a "layer 1"
 	 * generator).
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The tool tip generator (possibly <code>null</code>).
 	 */
 	public CategoryToolTipGenerator getSeriesToolTipGenerator(int series);
-
+	
 	/**
 	 * Sets the tool tip generator for a series and sends a
 	 * {@link org.jfree.chart.event.RendererChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setSeriesToolTipGenerator(int series, CategoryToolTipGenerator generator);
-
+	
 	/**
 	 * Returns the base tool tip generator (the "layer 2" generator).
 	 * 
 	 * @return The tool tip generator (possibly <code>null</code>).
 	 */
 	public CategoryToolTipGenerator getBaseToolTipGenerator();
-
+	
 	/**
 	 * Sets the base tool tip generator and sends a
 	 * {@link org.jfree.chart.event.RendererChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setBaseToolTipGenerator(CategoryToolTipGenerator generator);
-
+	
 	// // ITEM LABEL FONT
 	// ////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the font for an item label.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The font (never <code>null</code>).
 	 */
 	public Font getItemLabelFont(int row, int column);
-
+	
 	/**
 	 * Returns the font used for all item labels. This may be <code>null</code>, in
 	 * which case the per series font settings will apply.
@@ -742,37 +742,37 @@ public interface CategoryItemRenderer {
 	 * @return The font (possibly <code>null</code>).
 	 */
 	public Font getItemLabelFont();
-
+	
 	/**
 	 * Sets the item label font for ALL series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners. You can set this to
 	 * <code>null</code> if you prefer to set the font on a per series basis.
 	 * 
 	 * @param font
-	 *            the font (<code>null</code> permitted).
+	 *           the font (<code>null</code> permitted).
 	 */
 	public void setItemLabelFont(Font font);
-
+	
 	/**
 	 * Returns the font for all the item labels in a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The font (possibly <code>null</code>).
 	 */
 	public Font getSeriesItemLabelFont(int series);
-
+	
 	/**
 	 * Sets the item label font for a series and sends a {@link RendererChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param font
-	 *            the font (<code>null</code> permitted).
+	 *           the font (<code>null</code> permitted).
 	 */
 	public void setSeriesItemLabelFont(int series, Font font);
-
+	
 	/**
 	 * Returns the base item label font (this is used when no other font setting is
 	 * available).
@@ -780,30 +780,30 @@ public interface CategoryItemRenderer {
 	 * @return The font (<code>never</code> null).
 	 */
 	public Font getBaseItemLabelFont();
-
+	
 	/**
 	 * Sets the base item label font and sends a {@link RendererChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param font
-	 *            the font (<code>null</code> not permitted).
+	 *           the font (<code>null</code> not permitted).
 	 */
 	public void setBaseItemLabelFont(Font font);
-
+	
 	// // ITEM LABEL PAINT
 	// ///////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the paint used to draw an item label.
 	 * 
 	 * @param row
-	 *            the row index (zero based).
+	 *           the row index (zero based).
 	 * @param column
-	 *            the column index (zero based).
+	 *           the column index (zero based).
 	 * @return The paint (never <code>null</code>).
 	 */
 	public Paint getItemLabelPaint(int row, int column);
-
+	
 	/**
 	 * Returns the paint used for all item labels. This may be <code>null</code>, in
 	 * which case the per series paint settings will apply.
@@ -811,468 +811,468 @@ public interface CategoryItemRenderer {
 	 * @return The paint (possibly <code>null</code>).
 	 */
 	public Paint getItemLabelPaint();
-
+	
 	/**
 	 * Sets the item label paint for ALL series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setItemLabelPaint(Paint paint);
-
+	
 	/**
 	 * Returns the paint used to draw the item labels for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero based).
+	 *           the series index (zero based).
 	 * @return The paint (possibly <code>null<code>).
 	 */
 	public Paint getSeriesItemLabelPaint(int series);
-
+	
 	/**
 	 * Sets the item label paint for a series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series (zero based index).
+	 *           the series (zero based index).
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setSeriesItemLabelPaint(int series, Paint paint);
-
+	
 	/**
 	 * Returns the base item label paint.
 	 * 
 	 * @return The paint (never <code>null<code>).
 	 */
 	public Paint getBaseItemLabelPaint();
-
+	
 	/**
 	 * Sets the base item label paint and sends a {@link RendererChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setBaseItemLabelPaint(Paint paint);
-
+	
 	// POSITIVE ITEM LABEL POSITION...
-
+	
 	/**
 	 * Returns the item label position for positive values.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the item label position (never <code>null</code>).
 	 */
 	public ItemLabelPosition getPositiveItemLabelPosition(int row, int column);
-
+	
 	/**
 	 * Returns the item label position for positive values in ALL series.
 	 * 
 	 * @return the item label position (possibly <code>null</code>).
 	 */
 	public ItemLabelPosition getPositiveItemLabelPosition();
-
+	
 	/**
 	 * Sets the item label position for positive values in ALL series, and sends a
 	 * {@link RendererChangeEvent} to all registered listeners. You need to set this
 	 * to <code>null</code> to expose the settings for individual series.
 	 * 
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 */
 	public void setPositiveItemLabelPosition(ItemLabelPosition position);
-
+	
 	/**
 	 * Sets the positive item label position for ALL series and (if requested) sends
 	 * a {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 * @param notify
-	 *            notify registered listeners?
+	 *           notify registered listeners?
 	 */
 	public void setPositiveItemLabelPosition(ItemLabelPosition position, boolean notify);
-
+	
 	/**
 	 * Returns the item label position for all positive values in a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The item label position.
 	 */
 	public ItemLabelPosition getSeriesPositiveItemLabelPosition(int series);
-
+	
 	/**
 	 * Sets the item label position for all positive values in a series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 */
 	public void setSeriesPositiveItemLabelPosition(int series, ItemLabelPosition position);
-
+	
 	/**
 	 * Sets the item label position for all positive values in a series and (if
 	 * requested) sends a {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 * @param notify
-	 *            notify registered listeners?
+	 *           notify registered listeners?
 	 */
 	public void setSeriesPositiveItemLabelPosition(int series, ItemLabelPosition position, boolean notify);
-
+	
 	/**
 	 * Returns the base positive item label position.
 	 * 
 	 * @return The position.
 	 */
 	public ItemLabelPosition getBasePositiveItemLabelPosition();
-
+	
 	/**
 	 * Sets the base positive item label position.
 	 * 
 	 * @param position
-	 *            the position.
+	 *           the position.
 	 */
 	public void setBasePositiveItemLabelPosition(ItemLabelPosition position);
-
+	
 	/**
 	 * Sets the base positive item label position and, if requested, sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *            the position.
+	 *           the position.
 	 * @param notify
-	 *            notify registered listeners?
+	 *           notify registered listeners?
 	 */
 	public void setBasePositiveItemLabelPosition(ItemLabelPosition position, boolean notify);
-
+	
 	// NEGATIVE ITEM LABEL POSITION...
-
+	
 	/**
 	 * Returns the item label position for negative values. This method can be
 	 * overridden to provide customisation of the item label position for individual
 	 * data items.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column (zero-based).
+	 *           the column (zero-based).
 	 * @return the item label position.
 	 */
 	public ItemLabelPosition getNegativeItemLabelPosition(int row, int column);
-
+	
 	/**
 	 * Returns the item label position for negative values in ALL series.
 	 * 
 	 * @return the item label position (possibly <code>null</code>).
 	 */
 	public ItemLabelPosition getNegativeItemLabelPosition();
-
+	
 	/**
 	 * Sets the item label position for negative values in ALL series, and sends a
 	 * {@link RendererChangeEvent} to all registered listeners. You need to set this
 	 * to <code>null</code> to expose the settings for individual series.
 	 * 
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 */
 	public void setNegativeItemLabelPosition(ItemLabelPosition position);
-
+	
 	/**
 	 * Sets the item label position for negative values in ALL series and (if
 	 * requested) sends a {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 * @param notify
-	 *            notify registered listeners?
+	 *           notify registered listeners?
 	 */
 	public void setNegativeItemLabelPosition(ItemLabelPosition position, boolean notify);
-
+	
 	/**
 	 * Returns the item label position for all negative values in a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The item label position.
 	 */
 	public ItemLabelPosition getSeriesNegativeItemLabelPosition(int series);
-
+	
 	/**
 	 * Sets the item label position for negative values in a series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 */
 	public void setSeriesNegativeItemLabelPosition(int series, ItemLabelPosition position);
-
+	
 	/**
 	 * Sets the item label position for negative values in a series and (if
 	 * requested) sends a. {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param position
-	 *            the position (<code>null</code> permitted).
+	 *           the position (<code>null</code> permitted).
 	 * @param notify
-	 *            notify registered listeners?
+	 *           notify registered listeners?
 	 */
 	public void setSeriesNegativeItemLabelPosition(int series, ItemLabelPosition position, boolean notify);
-
+	
 	/**
 	 * Returns the base item label position for negative values.
 	 * 
 	 * @return The position.
 	 */
 	public ItemLabelPosition getBaseNegativeItemLabelPosition();
-
+	
 	/**
 	 * Sets the base item label position for negative values and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *            the position.
+	 *           the position.
 	 */
 	public void setBaseNegativeItemLabelPosition(ItemLabelPosition position);
-
+	
 	/**
 	 * Sets the base negative item label position and, if requested, sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *            the position.
+	 *           the position.
 	 * @param notify
-	 *            notify registered listeners?
+	 *           notify registered listeners?
 	 */
 	public void setBaseNegativeItemLabelPosition(ItemLabelPosition position, boolean notify);
-
+	
 	// ITEM URL GENERATOR
-
+	
 	/**
 	 * Returns the URL generator for an item.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The item URL generator.
 	 */
 	public CategoryURLGenerator getItemURLGenerator(int series, int item);
-
+	
 	/**
 	 * Returns the item URL generator for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The URL generator.
 	 */
 	public CategoryURLGenerator getSeriesItemURLGenerator(int series);
-
+	
 	/**
 	 * Sets the item URL generator for ALL series.
 	 * 
 	 * @param generator
-	 *            the generator.
+	 *           the generator.
 	 */
 	public void setItemURLGenerator(CategoryURLGenerator generator);
-
+	
 	/**
 	 * Sets the item URL generator for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param generator
-	 *            the generator.
+	 *           the generator.
 	 */
 	public void setSeriesItemURLGenerator(int series, CategoryURLGenerator generator);
-
+	
 	/**
 	 * Returns the base item URL generator.
 	 * 
 	 * @return The item URL generator.
 	 */
 	public CategoryURLGenerator getBaseItemURLGenerator();
-
+	
 	/**
 	 * Sets the base item URL generator.
 	 * 
 	 * @param generator
-	 *            the item URL generator.
+	 *           the item URL generator.
 	 */
 	public void setBaseItemURLGenerator(CategoryURLGenerator generator);
-
+	
 	/**
 	 * Returns a legend item for a series.
 	 * 
 	 * @param datasetIndex
-	 *            the dataset index (zero-based).
+	 *           the dataset index (zero-based).
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return The legend item (possibly <code>null</code>).
 	 */
 	public LegendItem getLegendItem(int datasetIndex, int series);
-
+	
 	/**
 	 * Draws a background for the data area.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 */
 	public void drawBackground(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea);
-
+	
 	/**
 	 * Draws an outline for the data area.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 */
 	public void drawOutline(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea);
-
+	
 	/**
 	 * Draws a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            state information for one chart.
+	 *           state information for one chart.
 	 * @param dataArea
-	 *            the data plot area.
+	 *           the data plot area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset data, int row, int column);
-
+	
 	/**
 	 * Draws a grid line against the domain axis.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the area for plotting data (not yet adjusted for any 3D effect).
+	 *           the area for plotting data (not yet adjusted for any 3D effect).
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void drawDomainGridline(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea, double value);
-
+	
 	/**
 	 * Draws a grid line against the range axis.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param axis
-	 *            the value axis.
+	 *           the value axis.
 	 * @param dataArea
-	 *            the area for plotting data (not yet adjusted for any 3D effect).
+	 *           the area for plotting data (not yet adjusted for any 3D effect).
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void drawRangeGridline(Graphics2D g2, CategoryPlot plot, ValueAxis axis, Rectangle2D dataArea, double value);
-
+	
 	/**
 	 * Draws a line (or some other marker) to indicate a particular value on the
 	 * range axis.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param axis
-	 *            the value axis.
+	 *           the value axis.
 	 * @param marker
-	 *            the marker.
+	 *           the marker.
 	 * @param dataArea
-	 *            the area for plotting data (not including 3D effect).
+	 *           the area for plotting data (not including 3D effect).
 	 */
 	public void drawRangeMarker(Graphics2D g2, CategoryPlot plot, ValueAxis axis, Marker marker, Rectangle2D dataArea);
-
+	
 	// ////// DEPRECATED METHODS
 	// //////////////////////////////////////////////////////////////////
-
+	
 	// ITEM LABEL ANCHOR
-
+	
 	/**
 	 * Returns the item label anchor for an item.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The item label anchor.
 	 * @deprecated Use getPositiveItemLabelPosition() or
 	 *             getNegativeItemLabelPosition().
 	 */
 	public ItemLabelAnchor getItemLabelAnchor(int series, int item);
-
+	
 	/**
 	 * Returns the item label anchor for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The anchor.
 	 * @deprecated Use getSeriesPositiveItemLabelPosition() or
 	 *             getSeriesNegativeItemLabelPosition().
 	 */
 	public ItemLabelAnchor getSeriesItemLabelAnchor(int series);
-
+	
 	/**
 	 * Sets the item label anchor for ALL series.
 	 * 
 	 * @param anchor
-	 *            the anchor.
+	 *           the anchor.
 	 * @deprecated Use setPositiveItemLabelPosition() or
 	 *             setNegativeItemLabelPosition().
 	 */
 	public void setItemLabelAnchor(ItemLabelAnchor anchor);
-
+	
 	/**
 	 * Sets the item label anchor for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param anchor
-	 *            the anchor.
+	 *           the anchor.
 	 * @deprecated Use setSeriesPositiveItemLabelPosition() or
 	 *             setSeriesNegativeItemLabelPosition().
 	 */
 	public void setSeriesItemLabelAnchor(int series, ItemLabelAnchor anchor);
-
+	
 	/**
 	 * Returns the base item label anchor.
 	 * 
@@ -1281,65 +1281,65 @@ public interface CategoryItemRenderer {
 	 *             getBaseNegativeItemLabelPosition().
 	 */
 	public ItemLabelAnchor getBaseItemLabelAnchor();
-
+	
 	/**
 	 * Sets the base item label anchor.
 	 * 
 	 * @param anchor
-	 *            the base item label anchor.
+	 *           the base item label anchor.
 	 * @deprecated Use setBasePositiveItemLabelPosition() or
 	 *             setBaseNegativeItemLabelPosition().
 	 */
 	public void setBaseItemLabelAnchor(ItemLabelAnchor anchor);
-
+	
 	// ITEM LABEL TEXT ANCHOR
-
+	
 	/**
 	 * Returns the item label text anchor for an item.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The item label text anchor.
 	 * @deprecated Use getPositiveItemLabelPosition() or
 	 *             getNegativeItemLabelPosition().
 	 */
 	public TextAnchor getItemLabelTextAnchor(int series, int item);
-
+	
 	/**
 	 * Returns the item label text anchor for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The anchor.
 	 * @deprecated Use getSeriesPositiveItemLabelPosition() or
 	 *             getSeriesNegativeItemLabelPosition().
 	 */
 	public TextAnchor getSeriesItemLabelTextAnchor(int series);
-
+	
 	/**
 	 * Sets the item label text anchor for ALL series.
 	 * 
 	 * @param anchor
-	 *            the anchor.
+	 *           the anchor.
 	 * @deprecated Use setPositiveItemLabelPosition() or
 	 *             setNegativeItemLabelPosition().
 	 */
 	public void setItemLabelTextAnchor(TextAnchor anchor);
-
+	
 	/**
 	 * Sets the item label text anchor for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param anchor
-	 *            the anchor.
+	 *           the anchor.
 	 * @deprecated Use setSeriesPositiveItemLabelPosition() or
 	 *             setSeriesNegativeItemLabelPosition().
 	 */
 	public void setSeriesItemLabelTextAnchor(int series, TextAnchor anchor);
-
+	
 	/**
 	 * Returns the base item label text anchor.
 	 * 
@@ -1348,15 +1348,15 @@ public interface CategoryItemRenderer {
 	 *             setBaseNegativeItemLabelPosition().
 	 */
 	public TextAnchor getBaseItemLabelTextAnchor();
-
+	
 	/**
 	 * Sets the base item label text anchor.
 	 * 
 	 * @param anchor
-	 *            the item label text anchor.
+	 *           the item label text anchor.
 	 * @deprecated Use setBasePositiveItemLabelPosition() or
 	 *             setBaseNegativeItemLabelPosition().
 	 */
 	public void setBaseItemLabelTextAnchor(TextAnchor anchor);
-
+	
 }

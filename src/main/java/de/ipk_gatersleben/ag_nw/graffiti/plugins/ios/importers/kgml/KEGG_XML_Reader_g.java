@@ -44,17 +44,17 @@ import org.jdom2.input.SAXBuilder;
  *         (c) 2004-2006 IPK-Gatersleben
  */
 public class KEGG_XML_Reader_g extends AbstractInputSerializer {
-
+	
 	private String fileNameExt = ".kgml";
-
+	
 	public KEGG_XML_Reader_g() {
 		super();
 	}
-
+	
 	public void read(String filename, Graph g) throws IOException {
 		super.read(filename, g);
 	}
-
+	
 	public void read(InputStream in, Graph g) throws IOException {
 		Graph myGraph = g;
 		InputStream inpStream = in;
@@ -75,12 +75,12 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 				inpStream.close();
 		}
 	}
-
+	
 	private void processAttributes(Attributable attr, Element kegg, String... xmlAttributeNames) {
 		for (int i = 0; i < xmlAttributeNames.length; i++)
 			processAttribute(attr, kegg, xmlAttributeNames[i], "kegg_" + xmlAttributeNames[i]);
 	}
-
+	
 	private void processAttribute(Attributable attr, Element kegg, String xmlAttributeName, String gmlAttributeName) {
 		if (kegg.getAttribute(xmlAttributeName) != null) {
 			String attributeValue = kegg.getAttributeValue(xmlAttributeName);
@@ -88,9 +88,9 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			setAttribute(attr, "kegg", gmlAttributeName, attributeValue);
 		}
 	}
-
+	
 	private String attributeSeparator = String.valueOf(Attribute.SEPARATOR);
-
+	
 	private boolean hasAttribute(Attributable n, String attributeName) {
 		try {
 			Attribute attr = n.getAttribute(attributeName);
@@ -99,16 +99,16 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			return false;
 		}
 	}
-
+	
 	private void addAttributeFolder(Attributable attributeable, String path) {
 		CollectionAttribute nc = new HashMapAttribute(path);
 		attributeable.addAttribute(nc, "");
 	}
-
+	
 	private Attribute getAttribute(Attributable attributable, String attributeName) {
 		return attributable.getAttribute(attributeName);
 	}
-
+	
 	private void setAttribute(Attributable attributable, String path, String attributeName, Object attributeValue) {
 		if (!hasAttribute(attributable, path)) {
 			addAttributeFolder(attributable, path);
@@ -129,7 +129,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 						((Boolean) attributeValue).booleanValue());
 				return;
 			} catch (Exception e) {
-
+				
 			}
 		}
 		if (attributeValue instanceof Byte) {
@@ -183,7 +183,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		}
 		myNewAttribute.setValue(attributeValue);
 	}
-
+	
 	private void readEntryNodes(Graph myGraph, Element kegg, HashMap<Integer, Node> mapID2GraphNode,
 			HashMap<String, ArrayList<Node>> entryName2GraphNode) {
 		List<?> entries = kegg.getChildren("entry");
@@ -229,19 +229,19 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			}
 		}
 	}
-
+	
 	private CollectionAttribute getDefaultGraphicsAttributeForEdge(Color colArrow, Color colLine, boolean directed) {
 		CollectionAttribute col = new HashMapAttribute("");
 		EdgeGraphicAttribute graphics = getNewEdgeGraphicsAttribute(colArrow, colLine, directed);
 		col.add(graphics, false);
 		return col;
 	}
-
+	
 	private void setBorderWidth(Node node, double frameThickness) {
 		NodeGraphicAttribute na = (NodeGraphicAttribute) node.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		na.setFrameThickness(frameThickness);
 	}
-
+	
 	private EdgeGraphicAttribute getNewEdgeGraphicsAttribute(Color colArrow, Color colLine, boolean directed) {
 		EdgeGraphicAttribute graphics = new EdgeGraphicAttribute();
 		DockingAttribute dock = graphics.getDocking();
@@ -259,11 +259,11 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		graphics.getLineMode().setDashPhase(0.0f);
 		return graphics;
 	}
-
+	
 	private String getLabel(Attributable node, String defaultReturn) {
 		try {
 			LabelAttribute labelAttr;
-
+			
 			if (hasAttribute(node, GraphicAttributeConstants.LABELGRAPHICS)) {
 				labelAttr = (LabelAttribute) node.getAttribute(GraphicAttributeConstants.LABELGRAPHICS);
 				return labelAttr.getLabel();
@@ -274,23 +274,23 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			return defaultReturn;
 		}
 	}
-
+	
 	private void setDefaultGraphicsAttribute(Node node, double x, double y) {
 		setNodeGraphicsAttribute(x, y, 3, 20, 20, new Color(0, 0, 0, 255), new Color(0, 255, 255, 255),
 				node.getAttributes());
 	}
-
+	
 	private void setFillColor(Attributable attributable, Color color) {
 		try {
 			ColorAttribute colorAtt = null;
-
+			
 			colorAtt = (ColorAttribute) attributable.getAttribute(GraphicAttributeConstants.FILLCOLOR_PATH);
 			colorAtt.setColor(color);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-
+	
 	private void setNodeGraphicsAttribute(double posx, double posy, double frameThickness_3, double width_25,
 			double height_25, Color frameColor_0_0_0_255, Color fillColor_0_100_250_100, CollectionAttribute col) {
 		NodeGraphicAttribute graphics = new NodeGraphicAttribute();
@@ -299,7 +299,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		pos.setLocation(posx, posy);
 		cooAtt.setCoordinate(pos);
 		col.add(graphics, false);
-
+		
 		graphics.setFrameThickness(frameThickness_3);
 		double height = height_25;
 		double width = width_25;
@@ -309,7 +309,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		graphics.getFillcolor().setColor(fillColor_0_100_250_100);
 		graphics.setShape("org.graffiti.plugins.views.defaults.RectangleNodeShape");
 	}
-
+	
 	private void setLabel(Node node, String label) {
 		if (label == null) {
 			if (hasAttribute(node, GraphicAttributeConstants.LABELGRAPHICS)) {
@@ -332,7 +332,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			ex.printStackTrace();
 		}
 	}
-
+	
 	private void processGraphicsEntry(Node newNode, Element xmlGraphicsEntry) {
 		if (xmlGraphicsEntry.getAttributeValue("name") != null) {
 			setLabel(newNode, xmlGraphicsEntry.getAttributeValue("name"));
@@ -365,34 +365,34 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			sy = Double.parseDouble(xmlGraphicsEntry.getAttributeValue("height"));
 		else
 			sy = 17;
-
+		
 		setPosition(newNode, x, y);
 		setSize(newNode, sx, sy);
 	}
-
+	
 	private void setPosition(Node n, double x, double y) {
 		try {
 			CoordinateAttribute cn = (CoordinateAttribute) n.getAttribute(GraphicAttributeConstants.COORD_PATH);
-
+			
 			Point2D p = new Point2D.Double(x, y);
 			cn.setCoordinate(p);
 		} catch (AttributeNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void setSize(Node myNode, double width, double height) {
 		try {
 			DoubleAttribute da = (DoubleAttribute) myNode.getAttribute(GraphicAttributeConstants.DIMW_PATH);
-
+			
 			da.setDouble(width);
-
+			
 			da = (DoubleAttribute) myNode.getAttribute(GraphicAttributeConstants.DIMH_PATH);
 			da.setDouble(height);
 		} catch (Exception ex) {
 		}
 	}
-
+	
 	private void setFillColorHEX(Attributable attr, String hexStr) {
 		if (hexStr.startsWith("#") && hexStr.length() == "#FFFFFF".length()) {
 			hexStr = hexStr.substring(1);
@@ -403,7 +403,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			setFillColor(attr, c);
 		}
 	}
-
+	
 	private void readNetwork(Graph myGraph, Element kegg) {
 		processAttributes(myGraph, kegg, "name", "org", "number", "title", "image", "link");
 		HashMap<Integer, Node> mapID2GraphNode = new HashMap<Integer, Node>();
@@ -413,7 +413,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		ArrayList<Edge> reactionEdges = readReactionNodes(myGraph, kegg, entryName2GraphNode);
 		readRelationNodes(myGraph, kegg, mapID2GraphNode, reactionEdges);
 	}
-
+	
 	private void setOutlineColorHEX(Attributable attr, String hexStr) {
 		if (hexStr.startsWith("#") && hexStr.length() == "#FFFFFF".length()) {
 			hexStr = hexStr.substring(1);
@@ -424,7 +424,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			setOutlineColor(attr, c);
 		}
 	}
-
+	
 	private void setOutlineColor(Attributable attributable, Color color) {
 		try {
 			ColorAttribute colorAtt = null;
@@ -433,20 +433,20 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			} else {
 				colorAtt = (ColorAttribute) attributable.getAttribute(GraphicAttributeConstants.OUTLINE_PATH);
 			}
-
+			
 			colorAtt.setColor(color);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-
+	
 	private Node getNearestNode(Node reactionNode, ArrayList<Node> nodeList) {
 		if (nodeList == null)
 			return null;
-
+		
 		if (nodeList.size() == 1)
 			return nodeList.iterator().next();
-
+		
 		double distance = Double.MAX_VALUE;
 		Node resultNode = null;
 		Vector2d posA = getPositionVec2d(reactionNode);
@@ -460,7 +460,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		}
 		return resultNode;
 	}
-
+	
 	private Vector2d getPositionVec2d(Node a) {
 		try {
 			CoordinateAttribute coA = (CoordinateAttribute) a.getAttribute(GraphicAttributeConstants.COORD_PATH);
@@ -470,12 +470,12 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		}
 		return new Vector2d(Double.NaN, Double.NaN);
 	}
-
+	
 	private Edge addEdgeIfNotExistant(Graph graph, Node nodeA, Node nodeB, boolean directed,
 			CollectionAttribute graphicsAttributeForEdge) {
 		return graph.addEdge(nodeA, nodeB, directed, graphicsAttributeForEdge);
 	}
-
+	
 	private void readRelationNodes(Graph myGraph, Element kegg, HashMap<Integer, Node> mapID2GraphNode,
 			ArrayList<Edge> reactionEdges) {
 		List<?> entries = kegg.getChildren("relation");
@@ -499,7 +499,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 					int compID = Integer.parseInt(subType.getAttributeValue("value"));
 					Node compNode = mapID2GraphNode.get(Integer.valueOf(compID));
 					edgesToBeAdded.add(new NodePair(e1, compNode));
-
+					
 					NodePair np = new NodePair(compNode, e2);
 					edgesToBeAdded.add(np);
 				} else {
@@ -531,14 +531,14 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			}
 		}
 	}
-
+	
 	private String getKeggType(GraphElement ge, String resultIfNotAvailable) {
 		return (String) getAttributeValue(ge, "kegg", "kegg_type", resultIfNotAvailable);
 	}
-
+	
 	private Object getAttributeValue(Attributable attributable, String path, String attributeName,
 			Object defaultValue) {
-
+		
 		try {
 			HashMapAttribute a = (HashMapAttribute) getAttribute(attributable, path);
 			Object res = a.getAttribute(attributeName).getValue();
@@ -548,7 +548,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			return defaultValue;
 		}
 	}
-
+	
 	private boolean isMapLink(Edge e) {
 		String keggType = getKeggType(e, null);
 		if (keggType != null && keggType.equalsIgnoreCase("maplink"))
@@ -556,14 +556,14 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		else
 			return false;
 	}
-
+	
 	private ArrayList<Edge> readReactionNodes(Graph myGraph, Element kegg,
 			HashMap<String, ArrayList<Node>> entryName2GraphNode) {
 		ArrayList<Edge> reactionEdges = new ArrayList<Edge>();
 		List<?> entries = kegg.getChildren("reaction");
 		for (int i = 0; i < entries.size(); i++) {
 			Element entry = (Element) entries.get(i);
-
+			
 			String reactionName = entry.getAttributeValue("name");
 			String reactionType = entry.getAttributeValue("type");
 			ArrayList<Node> reactionNodeList = entryName2GraphNode.get(reactionName);
@@ -573,7 +573,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 				setAttribute(reactionNode, "kegg", "kegg_link_reaction", new String(
 						"http://www.genome.jp/dbget-bin/www_bget?reaction+" + reactionName.substring("rn:".length())));
 				processAttribute(reactionNode, entry, "type", "kegg_reaction_type");
-
+				
 				boolean reversible = reactionType.equalsIgnoreCase("reversible");
 				Color arrowColor = Color.BLACK;
 				List<?> substrates = entry.getChildren("substrate");
@@ -595,7 +595,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 								new String("http://www.genome.jp/dbget-bin/www_bget?reaction+"
 										+ reactionName.substring("rn:".length())));
 						processAttribute(e, entry, "type", "kegg_reaction_type");
-
+						
 					}
 				}
 				arrowColor = Color.BLACK;
@@ -624,15 +624,15 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 		}
 		return reactionEdges;
 	}
-
+	
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-
+	
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "KGML File" };
 	}
-
+	
 	public void read(Reader in, Graph g) throws Exception {
 		Graph myGraph = g;
 		try {

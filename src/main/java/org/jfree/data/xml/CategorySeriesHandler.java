@@ -40,66 +40,66 @@ import org.xml.sax.helpers.DefaultHandler;
  * A handler for reading a series for a category dataset.
  */
 public class CategorySeriesHandler extends DefaultHandler implements DatasetTags {
-
+	
 	/** The root handler. */
 	private RootHandler root;
-
+	
 	/** The series name. */
 	private String seriesName;
-
+	
 	/** The values. */
 	private DefaultKeyedValues values;
-
+	
 	/**
 	 * Creates a new item handler.
 	 * 
 	 * @param root
-	 *            the root handler.
+	 *           the root handler.
 	 */
 	public CategorySeriesHandler(final RootHandler root) {
 		this.root = root;
 		this.values = new DefaultKeyedValues();
 	}
-
+	
 	/**
 	 * Sets the series name.
 	 * 
 	 * @param name
-	 *            the name.
+	 *           the name.
 	 */
 	public void setSeriesName(final String name) {
 		this.seriesName = name;
 	}
-
+	
 	/**
 	 * Adds an item to the temporary storage for the series.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void addItem(final Comparable key, final Number value) {
 		this.values.addValue(key, value);
 	}
-
+	
 	/**
 	 * The start of an element.
 	 * 
 	 * @param namespaceURI
-	 *            the namespace.
+	 *           the namespace.
 	 * @param localName
-	 *            the element name.
+	 *           the element name.
 	 * @param qName
-	 *            the element name.
+	 *           the element name.
 	 * @param atts
-	 *            the attributes.
+	 *           the attributes.
 	 * @throws SAXException
-	 *             for errors.
+	 *            for errors.
 	 */
 	public void startElement(final String namespaceURI, final String localName, final String qName,
 			final Attributes atts) throws SAXException {
-
+		
 		if (qName.equals(SERIES_TAG)) {
 			setSeriesName(atts.getValue("name"));
 			final ItemHandler subhandler = new ItemHandler(this.root, this);
@@ -109,37 +109,37 @@ public class CategorySeriesHandler extends DefaultHandler implements DatasetTags
 			this.root.pushSubHandler(subhandler);
 			subhandler.startElement(namespaceURI, localName, qName, atts);
 		}
-
+		
 		else {
 			throw new SAXException("Expecting <Series> or <Item> tag...found " + qName);
 		}
 	}
-
+	
 	/**
 	 * The end of an element.
 	 * 
 	 * @param namespaceURI
-	 *            the namespace.
+	 *           the namespace.
 	 * @param localName
-	 *            the element name.
+	 *           the element name.
 	 * @param qName
-	 *            the element name.
+	 *           the element name.
 	 */
 	public void endElement(final String namespaceURI, final String localName, final String qName) {
-
+		
 		if (this.root instanceof CategoryDatasetHandler) {
 			final CategoryDatasetHandler handler = (CategoryDatasetHandler) this.root;
-
+			
 			final Iterator iterator = this.values.getKeys().iterator();
 			while (iterator.hasNext()) {
 				final Comparable key = (Comparable) iterator.next();
 				final Number value = this.values.getValue(key);
 				handler.addItem(this.seriesName, key, value);
 			}
-
+			
 			this.root.popSubHandler();
 		}
-
+		
 	}
-
+	
 }

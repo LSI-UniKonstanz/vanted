@@ -53,66 +53,66 @@ import org.jfree.data.WaferMapDataset;
  * @author Robert Redburn.
  */
 public class WaferMapRenderer extends AbstractRenderer {
-
+	
 	/** paint index */
 	private Map paintIndex;
-
+	
 	/** plot */
 	private WaferMapPlot plot;
-
+	
 	/** paint limit */
 	private int paintLimit;
-
+	
 	/** default paint limit */
 	private static final int DEFAULT_PAINT_LIMIT = 35;
-
+	
 	/** default multivalue paint calculation */
 	public static final int POSITION_INDEX = 0;
-
+	
 	/** The default value index. */
 	public static final int VALUE_INDEX = 1;
-
+	
 	/** paint index method */
 	private int paintIndexMethod;
-
+	
 	/**
 	 * Creates a new renderer.
 	 */
 	public WaferMapRenderer() {
 		this(null, null);
 	}
-
+	
 	/**
 	 * Creates a new renderer.
 	 * 
 	 * @param paintLimit
-	 *            the paint limit.
+	 *           the paint limit.
 	 * @param paintIndexMethod
-	 *            the paint index method.
+	 *           the paint index method.
 	 */
 	public WaferMapRenderer(int paintLimit, int paintIndexMethod) {
 		this(Integer.valueOf(paintLimit), Integer.valueOf(paintIndexMethod));
 	}
-
+	
 	/**
 	 * Creates a new renderer.
 	 * 
 	 * @param paintLimit
-	 *            the paint limit.
+	 *           the paint limit.
 	 * @param paintIndexMethod
-	 *            the paint index method.
+	 *           the paint index method.
 	 */
 	public WaferMapRenderer(Integer paintLimit, Integer paintIndexMethod) {
-
+		
 		super();
 		this.paintIndex = new HashMap();
-
+		
 		if (paintLimit == null) {
 			this.paintLimit = DEFAULT_PAINT_LIMIT;
 		} else {
 			this.paintLimit = paintLimit.intValue();
 		}
-
+		
 		this.paintIndexMethod = VALUE_INDEX;
 		if (paintIndexMethod != null) {
 			if (isMethodValid(paintIndexMethod.intValue())) {
@@ -120,25 +120,25 @@ public class WaferMapRenderer extends AbstractRenderer {
 			}
 		}
 	}
-
+	
 	/**
 	 * Verifies that the passed paint index method is valid.
 	 * 
 	 * @param method
-	 *            the method.
+	 *           the method.
 	 * @return true or false.
 	 */
 	private boolean isMethodValid(int method) {
 		switch (method) {
-		case POSITION_INDEX:
-			return true;
-		case VALUE_INDEX:
-			return true;
-		default:
-			return false;
+			case POSITION_INDEX:
+				return true;
+			case VALUE_INDEX:
+				return true;
+			default:
+				return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the drawing supplier from the plot.
 	 * 
@@ -152,7 +152,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the plot.
 	 * 
@@ -161,47 +161,47 @@ public class WaferMapRenderer extends AbstractRenderer {
 	public WaferMapPlot getPlot() {
 		return this.plot;
 	}
-
+	
 	/**
 	 * Sets the plot and build the paint index.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 */
 	public void setPlot(WaferMapPlot plot) {
 		this.plot = plot;
 		makePaintIndex();
 	}
-
+	
 	/**
 	 * 
 	 */
 	// public void addPropertyChangeListener(PropertyChangeListener ear) {
-
+	
 	// }
-
+	
 	/**
 	 * Returns the paint for a given chip value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return the paint.
 	 */
 	public Paint getChipColor(Number value) {
 		return getSeriesPaint(getPaintIndex(value));
 	}
-
+	
 	/**
 	 * Returns the paint index for a given chip value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return the paint index.
 	 */
 	private int getPaintIndex(Number value) {
 		return ((Integer) this.paintIndex.get(value)).intValue();
 	}
-
+	
 	/**
 	 * Builds a map of chip values to paint colors. paintlimit is the maximum
 	 * allowed number of colors.
@@ -223,24 +223,24 @@ public class WaferMapRenderer extends AbstractRenderer {
 			// more values than paints so map
 			// multiple values to the same color
 			switch (this.paintIndexMethod) {
-			case POSITION_INDEX:
-				makePositionIndex(uniqueValues);
-				break;
-			case VALUE_INDEX:
-				makeValueIndex(dataMax, dataMin, uniqueValues);
-				break;
-			default:
-				break;
+				case POSITION_INDEX:
+					makePositionIndex(uniqueValues);
+					break;
+				case VALUE_INDEX:
+					makeValueIndex(dataMax, dataMin, uniqueValues);
+					break;
+				default:
+					break;
 			}
 		}
 	}
-
+	
 	/**
 	 * Builds the paintindex by assigning colors based on the number of unique
 	 * values: totalvalues/totalcolors.
 	 * 
 	 * @param uniqueValues
-	 *            the set of unique values.
+	 *           the set of unique values.
 	 */
 	private void makePositionIndex(Set uniqueValues) {
 		int valuesPerColor = (int) Math.ceil((double) uniqueValues.size() / this.paintLimit);
@@ -256,17 +256,17 @@ public class WaferMapRenderer extends AbstractRenderer {
 			}
 		}
 	}
-
+	
 	/**
 	 * Builds the paintindex by assigning colors evenly across the range of values:
 	 * maxValue-minValue/totalcolors
 	 * 
 	 * @param max
-	 *            the maximum value.
+	 *           the maximum value.
 	 * @param min
-	 *            the minumum value.
+	 *           the minumum value.
 	 * @param uniqueValues
-	 *            the unique values.
+	 *           the unique values.
 	 */
 	private void makeValueIndex(Number max, Number min, Set uniqueValues) {
 		double valueRange = max.doubleValue() - min.doubleValue();
@@ -285,7 +285,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 			this.paintIndex.put(value, Integer.valueOf(paint));
 		}
 	}
-
+	
 	/**
 	 * Builds the list of legend entries. called by getLegendItems in WaferMapPlot
 	 * to populate the plot legend.
@@ -305,9 +305,9 @@ public class WaferMapRenderer extends AbstractRenderer {
 					Paint paint = this.getSeriesPaint(((Integer) entry.getValue()).intValue());
 					Paint outlinePaint = Color.black;
 					Stroke stroke = DEFAULT_STROKE;
-
+					
 					result.add(new LegendItem(label, description, shape, true, paint, stroke, outlinePaint, stroke));
-
+					
 				}
 			} else {
 				// in this case, every color has a range of values
@@ -322,7 +322,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 						Paint paint = getSeriesPaint(((Integer) entry.getValue()).intValue());
 						Paint outlinePaint = Color.black;
 						Stroke stroke = DEFAULT_STROKE;
-
+						
 						result.add(
 								new LegendItem(label, description, shape, true, paint, stroke, outlinePaint, stroke));
 					}
@@ -331,12 +331,12 @@ public class WaferMapRenderer extends AbstractRenderer {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the minimum chip value assigned to a color in the paintIndex
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @return the value.
 	 */
 	private Number getMinPaintValue(Integer index) {
@@ -351,12 +351,12 @@ public class WaferMapRenderer extends AbstractRenderer {
 		}
 		return Double.valueOf(minValue);
 	}
-
+	
 	/**
 	 * Returns the maximum chip value assigned to a color in the paintIndex
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @return the value
 	 */
 	private Number getMaxPaintValue(Integer index) {
@@ -371,5 +371,5 @@ public class WaferMapRenderer extends AbstractRenderer {
 		}
 		return Double.valueOf(maxValue);
 	}
-
+	
 } // end class wafermaprenderer

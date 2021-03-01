@@ -27,52 +27,52 @@ public abstract class GraffitiToggleButton extends JToggleButton implements Graf
 	// ~ Instance fields ========================================================
 	/** The preferred component of this button. */
 	protected String preferredComponent;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new GraffitiToggleButton object.
 	 */
 	public GraffitiToggleButton() {
 	}
-
+	
 	/**
 	 * Creates a new GraffitiToggleButton object.
 	 * 
 	 * @param preferredComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiToggleButton(String preferredComp) {
 		preferredComponent = preferredComp;
 	}
-
+	
 	/**
 	 * Creates a new GraffitiToggleButton object.
 	 * 
 	 * @param preferredComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param text
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiToggleButton(String preferredComp, String text) {
 		super(text);
 	}
-
+	
 	/**
 	 * Creates a new GraffitiToggleButton object.
 	 * 
 	 * @param preferredComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param i
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiToggleButton(String preferredComp, Icon i) {
 		super(i);
 		preferredComponent = preferredComp;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the id of the component the button prefers to be inserted in.
 	 * 

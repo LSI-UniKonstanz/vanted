@@ -1,10 +1,10 @@
-//==============================================================================
+// ==============================================================================
 //
-//   NodeAttributeCreator.java
+// NodeAttributeCreator.java
 //
-//   Copyright (c) 2001-2004 Gravisto Team, University of Passau
+// Copyright (c) 2001-2004 Gravisto Team, University of Passau
 //
-//==============================================================================
+// ==============================================================================
 // $Id: NodeAttributeCreator.java,v 1.6 2011/01/16 16:39:59 klukas Exp $
 
 package org.graffiti.plugins.ios.importers.graphml.parser;
@@ -20,16 +20,16 @@ import org.graffiti.graphics.NodeGraphicAttribute;
  */
 class NodeAttributeCreator extends AttributeCreator {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>NodeAttributeCreator</code>.
 	 */
 	NodeAttributeCreator() {
 		super();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/*
 	 *
 	 */

@@ -9,22 +9,22 @@ public class PathwayWebLinkTreeNode extends DefaultMutableTreeNode {
 	private static final long serialVersionUID = -7897804331599566418L;
 	private String label;
 	private PathwayWebLinkItem metaCropListItem;
-
+	
 	public PathwayWebLinkTreeNode(String label) {
 		this.label = label;
 		this.metaCropListItem = null;
 	}
-
+	
 	public PathwayWebLinkTreeNode(PathwayWebLinkItem i) {
 		this.label = i.toString();
 		this.metaCropListItem = i;
 	}
-
+	
 	@Override
 	public String toString() {
 		return label;
 	}
-
+	
 	public PathwayWebLinkItem getMetaCropListItem() {
 		return metaCropListItem;
 	}

@@ -50,56 +50,56 @@ import org.jfree.ui.RefineryUtilities;
  * @author Roger Studner
  */
 public class XYStepChartDemo {
-
+	
 	/** A frame for displaying the chart. */
 	private ChartFrame frame = null;
-
+	
 	/**
 	 * Displays a sample chart in its own frame.
 	 */
 	private void displayChart() {
-
+		
 		if (this.frame == null) {
-
+			
 			// create a default chart based on some sample data...
 			final String title = "LCACs in use at given time";
 			final String xAxisLabel = "Time";
 			final String yAxisLabel = "Number of Transports";
-
+			
 			final XYDataset data = createStepXYDataset();
-
+			
 			final JFreeChart chart = ChartFactory.createXYStepChart(title, xAxisLabel, yAxisLabel, data,
 					PlotOrientation.VERTICAL, true, // legend
 					true, // tooltips
 					false // urls
 			);
-
+			
 			// then customise it a little...
 			chart.setBackgroundPaint(new Color(216, 216, 216));
 			final XYPlot plot = chart.getXYPlot();
 			plot.getRenderer().setSeriesStroke(0, new BasicStroke(2.0f));
 			plot.getRenderer().setSeriesStroke(1, new BasicStroke(2.0f));
-
+			
 			// and present it in a frame...
 			this.frame = new ChartFrame("Plan Comparison", chart);
 			this.frame.pack();
 			RefineryUtilities.positionFrameRandomly(this.frame);
 			this.frame.setVisible(true);
-
+			
 		} else {
 			this.frame.setVisible(true);
 			this.frame.requestFocus();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Creates and returns a sample dataset for the XY 'Step' chart.
 	 * 
 	 * @return the sample dataset.
 	 */
 	public static XYDataset createStepXYDataset() {
-
+		
 		final int feb = 2;
 		final XYSeries s1 = new XYSeries("Plan 1", false, true);
 		s1.add(DateUtilities.createDate(2002, feb, 19, 8, 0).getTime(), 0);
@@ -112,7 +112,7 @@ public class XYStepChartDemo {
 		s1.add(DateUtilities.createDate(2002, feb, 19, 14, 6).getTime(), 6);
 		s1.add(DateUtilities.createDate(2002, feb, 19, 15, 30).getTime(), 2);
 		s1.add(DateUtilities.createDate(2002, feb, 19, 16, 7).getTime(), 0);
-
+		
 		final XYSeries s2 = new XYSeries("Plan 2");
 		s2.add(DateUtilities.createDate(2002, feb, 19, 8, 40).getTime(), 0);
 		s2.add(DateUtilities.createDate(2002, feb, 19, 8, 45).getTime(), 1);
@@ -124,13 +124,13 @@ public class XYStepChartDemo {
 		s2.add(DateUtilities.createDate(2002, feb, 19, 14, 6).getTime(), 4);
 		s2.add(DateUtilities.createDate(2002, feb, 19, 15, 15).getTime(), 4);
 		s2.add(DateUtilities.createDate(2002, feb, 19, 16, 0).getTime(), 0);
-
+		
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(s1);
 		dataset.addSeries(s2);
 		return dataset;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -141,18 +141,18 @@ public class XYStepChartDemo {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * The starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYStepChartDemo demo = new XYStepChartDemo();
 		demo.displayChart();
-
+		
 	}
-
+	
 }

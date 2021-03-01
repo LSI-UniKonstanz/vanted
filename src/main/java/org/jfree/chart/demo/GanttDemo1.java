@@ -53,27 +53,27 @@ import org.jfree.ui.RefineryUtilities;
  * polished implementation.
  */
 public class GanttDemo1 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public GanttDemo1(final String title) {
-
+		
 		super(title);
-
+		
 		final IntervalCategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -84,14 +84,14 @@ public class GanttDemo1 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset for a Gantt chart.
 	 * 
 	 * @return The dataset.
 	 */
 	public static IntervalCategoryDataset createDataset() {
-
+		
 		final TaskSeries s1 = new TaskSeries("Scheduled");
 		s1.add(new Task("Write Proposal",
 				new SimpleTimePeriod(date(1, Calendar.APRIL, 2001), date(5, Calendar.APRIL, 2001))));
@@ -117,7 +117,7 @@ public class GanttDemo1 extends ApplicationFrame {
 				new SimpleTimePeriod(date(1, Calendar.NOVEMBER, 2001), date(15, Calendar.NOVEMBER, 2001))));
 		s1.add(new Task("Signoff",
 				new SimpleTimePeriod(date(28, Calendar.NOVEMBER, 2001), date(30, Calendar.NOVEMBER, 2001))));
-
+		
 		final TaskSeries s2 = new TaskSeries("Actual");
 		s2.add(new Task("Write Proposal",
 				new SimpleTimePeriod(date(1, Calendar.APRIL, 2001), date(5, Calendar.APRIL, 2001))));
@@ -143,39 +143,39 @@ public class GanttDemo1 extends ApplicationFrame {
 				new SimpleTimePeriod(date(18, Calendar.NOVEMBER, 2001), date(5, Calendar.DECEMBER, 2001))));
 		s2.add(new Task("Signoff",
 				new SimpleTimePeriod(date(10, Calendar.DECEMBER, 2001), date(11, Calendar.DECEMBER, 2001))));
-
+		
 		final TaskSeriesCollection collection = new TaskSeriesCollection();
 		collection.add(s1);
 		collection.add(s2);
-
+		
 		return collection;
 	}
-
+	
 	/**
 	 * Utility method for creating <code>Date</code> objects.
 	 * 
 	 * @param day
-	 *            the date.
+	 *           the date.
 	 * @param month
-	 *            the month.
+	 *           the month.
 	 * @param year
-	 *            the year.
+	 *           the year.
 	 * @return a date.
 	 */
 	private static Date date(final int day, final int month, final int year) {
-
+		
 		final Calendar calendar = Calendar.getInstance();
 		calendar.set(year, month, day);
 		final Date result = calendar.getTime();
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final IntervalCategoryDataset dataset) {
@@ -190,20 +190,20 @@ public class GanttDemo1 extends ApplicationFrame {
 		chart.getCategoryPlot().getDomainAxis().setMaxCategoryLabelWidthRatio(10.0f);
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final GanttDemo1 demo = new GanttDemo1("Gantt Chart Demo 1");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

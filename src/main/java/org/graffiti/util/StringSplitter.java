@@ -17,7 +17,7 @@ package org.graffiti.util;
  */
 public class StringSplitter {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Splits String <code>toSplit</code> using <code>delim</code> as delimeter.
 	 * Fills the returned String array with the results. If <code>delim</code> does
@@ -25,9 +25,9 @@ public class StringSplitter {
 	 * entry of the returned String array.
 	 * 
 	 * @param toSplit
-	 *            the String that is split.
+	 *           the String that is split.
 	 * @param delim
-	 *            the String that is used as delimiter.
+	 *           the String that is used as delimiter.
 	 * @return the parts of the String in a String array.
 	 */
 	public static String[] split(String toSplit, String delim) {
@@ -35,33 +35,33 @@ public class StringSplitter {
 		int count = 0;
 		String restString = toSplit;
 		int nextSplitPos = restString.indexOf(delim);
-
+		
 		while (nextSplitPos != -1) {
 			count++;
 			restString = restString.substring(nextSplitPos + delim.length());
 			nextSplitPos = restString.indexOf(delim);
 		}
-
+		
 		if (count == 0) {
 			return new String[] { toSplit };
 		} else {
 			String[] splitted = new String[count + 1];
 			count = 0;
-
+			
 			nextSplitPos = toSplit.indexOf(delim);
-
+			
 			while (nextSplitPos != -1) {
 				splitted[count++] = toSplit.substring(0, nextSplitPos);
 				toSplit = toSplit.substring(nextSplitPos + delim.length());
 				nextSplitPos = toSplit.indexOf(delim);
 			}
-
+			
 			splitted[count] = toSplit;
-
+			
 			return splitted;
 		}
 	}
-
+	
 	/**
 	 * Splits String <code>toSplit</code> using <code>delim</code> as delimeter.
 	 * Splits into a maximum of <code>limit</code> Strings. Fills the returned
@@ -70,11 +70,11 @@ public class StringSplitter {
 	 * returned String array.
 	 * 
 	 * @param toSplit
-	 *            the String that is split.
+	 *           the String that is split.
 	 * @param delim
-	 *            the String that is used as delimiter.
+	 *           the String that is used as delimiter.
 	 * @param limit
-	 *            the maximum number of resulting Strings
+	 *           the maximum number of resulting Strings
 	 * @return the parts of the String in a String array.
 	 */
 	public static String[] split(String toSplit, String delim, int limit) {
@@ -84,35 +84,35 @@ public class StringSplitter {
 			return new String[] { toSplit };
 		} else {
 			assert limit > 1;
-
+			
 			// count how many entries the array is going to have
 			int count = 0;
 			String restString = toSplit;
 			int nextSplitPos = restString.indexOf(delim);
-
+			
 			while ((nextSplitPos != -1) && (count < (limit - 1))) {
 				count++;
 				restString = restString.substring(nextSplitPos + delim.length());
 				nextSplitPos = restString.indexOf(delim);
 			}
-
+			
 			String[] splitted = new String[count + 1];
 			count = 0;
-
+			
 			nextSplitPos = toSplit.indexOf(delim);
-
+			
 			while ((nextSplitPos != -1) && (count < (limit - 1))) {
 				splitted[count++] = toSplit.substring(0, nextSplitPos);
 				toSplit = toSplit.substring(nextSplitPos + delim.length());
 				nextSplitPos = toSplit.indexOf(delim);
 			}
-
+			
 			splitted[count] = toSplit;
-
+			
 			return splitted;
 		}
 	}
-
+	
 	/**
 	 * Splits String <code>toSplit</code> using <code>delim</code> as delimeter.
 	 * Splits into a maximum of 2 Strings. Fills the returned String array with the
@@ -122,14 +122,14 @@ public class StringSplitter {
 	 * otherwise has the same result.
 	 * 
 	 * @param toSplit
-	 *            the String that is split.
+	 *           the String that is split.
 	 * @param delim
-	 *            the String that is used as delimiter.
+	 *           the String that is used as delimiter.
 	 * @return the parts of the String in a String array.
 	 */
 	public static String[] splitInTwo(String toSplit, String delim) {
 		int splitPos = toSplit.indexOf(delim);
-
+		
 		if (splitPos == -1) {
 			return new String[] { toSplit };
 		} else {

@@ -51,45 +51,45 @@ import org.jfree.util.ObjectUtils;
  * location of the annotation.
  */
 public class TextAnnotation implements Serializable {
-
+	
 	/** The default font. */
 	public static final Font DEFAULT_FONT = new Font("SansSerif", Font.PLAIN, 10);
-
+	
 	/** The default paint. */
 	public static final Paint DEFAULT_PAINT = Color.black;
-
+	
 	/** The default text anchor. */
 	public static final TextAnchor DEFAULT_TEXT_ANCHOR = TextAnchor.CENTER;
-
+	
 	/** The default rotation anchor. */
 	public static final TextAnchor DEFAULT_ROTATION_ANCHOR = TextAnchor.CENTER;
-
+	
 	/** The default rotation angle. */
 	public static final double DEFAULT_ROTATION_ANGLE = 0.0;
-
+	
 	/** The text. */
 	private String text;
-
+	
 	/** The font. */
 	private Font font;
-
+	
 	/** The paint. */
 	private transient Paint paint;
-
+	
 	/** The text anchor. */
 	private TextAnchor textAnchor;
-
+	
 	/** The rotation anchor. */
 	private TextAnchor rotationAnchor;
-
+	
 	/** The rotation angle. */
 	private double rotationAngle;
-
+	
 	/**
 	 * Creates a text annotation with default settings.
 	 * 
 	 * @param text
-	 *            the text.
+	 *           the text.
 	 */
 	protected TextAnnotation(String text) {
 		this.text = text;
@@ -99,7 +99,7 @@ public class TextAnnotation implements Serializable {
 		this.rotationAnchor = DEFAULT_ROTATION_ANCHOR;
 		this.rotationAngle = DEFAULT_ROTATION_ANGLE;
 	}
-
+	
 	/**
 	 * Returns the text for the annotation.
 	 * 
@@ -108,17 +108,17 @@ public class TextAnnotation implements Serializable {
 	public String getText() {
 		return this.text;
 	}
-
+	
 	/**
 	 * Sets the text for the annotation.
 	 * 
 	 * @param text
-	 *            the text.
+	 *           the text.
 	 */
 	public void setText(String text) {
 		this.text = text;
 	}
-
+	
 	/**
 	 * Returns the font for the annotation.
 	 * 
@@ -127,17 +127,17 @@ public class TextAnnotation implements Serializable {
 	public Font getFont() {
 		return this.font;
 	}
-
+	
 	/**
 	 * Sets the font for the annotation.
 	 * 
 	 * @param font
-	 *            the font.
+	 *           the font.
 	 */
 	public void setFont(Font font) {
 		this.font = font;
 	}
-
+	
 	/**
 	 * Returns the paint for the annotation.
 	 * 
@@ -146,17 +146,17 @@ public class TextAnnotation implements Serializable {
 	public Paint getPaint() {
 		return this.paint;
 	}
-
+	
 	/**
 	 * Sets the paint for the annotation.
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setPaint(Paint paint) {
 		this.paint = paint;
 	}
-
+	
 	/**
 	 * Returns the text anchor.
 	 * 
@@ -165,18 +165,18 @@ public class TextAnnotation implements Serializable {
 	public TextAnchor getTextAnchor() {
 		return this.textAnchor;
 	}
-
+	
 	/**
 	 * Sets the text anchor (the point on the text bounding rectangle that is
 	 * aligned to the (x, y) coordinate of the annotation).
 	 * 
 	 * @param anchor
-	 *            the anchor point.
+	 *           the anchor point.
 	 */
 	public void setTextAnchor(TextAnchor anchor) {
 		this.textAnchor = anchor;
 	}
-
+	
 	/**
 	 * Returns the rotation anchor.
 	 * 
@@ -185,17 +185,17 @@ public class TextAnnotation implements Serializable {
 	public TextAnchor getRotationAnchor() {
 		return this.rotationAnchor;
 	}
-
+	
 	/**
 	 * Sets the rotation anchor point.
 	 * 
 	 * @param anchor
-	 *            the anchor.
+	 *           the anchor.
 	 */
 	public void setRotationAnchor(TextAnchor anchor) {
 		this.rotationAnchor = anchor;
 	}
-
+	
 	/**
 	 * Returns the rotation angle.
 	 * 
@@ -204,80 +204,80 @@ public class TextAnnotation implements Serializable {
 	public double getRotationAngle() {
 		return this.rotationAngle;
 	}
-
+	
 	/**
 	 * Sets the rotation angle.
 	 * <p>
 	 * The angle is measured clockwise in radians.
 	 * 
 	 * @param angle
-	 *            the angle (in radians).
+	 *           the angle (in radians).
 	 */
 	public void setRotationAngle(double angle) {
 		this.rotationAngle = angle;
 	}
-
+	
 	/**
 	 * Tests this object for equality with another object.
 	 * 
 	 * @param object
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object object) {
-
+		
 		if (object == null) {
 			return false;
 		}
-
+		
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (object instanceof TextAnnotation) {
 			TextAnnotation ta = (TextAnnotation) object;
-
+			
 			boolean b0 = ObjectUtils.equal(this.text, ta.getText());
 			boolean b1 = ObjectUtils.equal(this.font, ta.getFont());
 			boolean b2 = ObjectUtils.equal(this.paint, ta.getPaint());
 			boolean b3 = ObjectUtils.equal(this.textAnchor, ta.getTextAnchor());
 			boolean b4 = ObjectUtils.equal(this.rotationAnchor, ta.getRotationAnchor());
 			boolean b5 = (this.rotationAngle == ta.getRotationAngle());
-
+			
 			return b0 && b1 && b2 && b3 && b4 && b5;
-
+			
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 		SerialUtilities.writePaint(this.paint, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.paint = SerialUtilities.readPaint(stream);
 	}
-
+	
 }

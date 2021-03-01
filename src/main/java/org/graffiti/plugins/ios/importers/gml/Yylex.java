@@ -23,7 +23,7 @@ class Yylex implements java_cup.runtime.Scanner {
 	private final int YY_NO_ANCHOR = 4;
 	private final int YY_BOL = 65536;
 	private final int YY_EOF = 65537;
-
+	
 	private int nodeCount = 0;
 	private int edgeCount = 0;
 	private int graphicsCount = 0;
@@ -43,7 +43,7 @@ class Yylex implements java_cup.runtime.Scanner {
 	private int yyline;
 	private boolean yy_at_bol;
 	private int yy_lexical_state;
-
+	
 	Yylex(java.io.Reader reader) {
 		this();
 		if (null == reader) {
@@ -51,7 +51,7 @@ class Yylex implements java_cup.runtime.Scanner {
 		}
 		yy_reader = new java.io.BufferedReader(reader);
 	}
-
+	
 	Yylex(java.io.InputStream instream) {
 		this();
 		if (null == instream) {
@@ -59,7 +59,7 @@ class Yylex implements java_cup.runtime.Scanner {
 		}
 		yy_reader = new java.io.BufferedReader(new java.io.InputStreamReader(instream));
 	}
-
+	
 	private Yylex() {
 		yy_buffer = new char[YY_BUFFER_SIZE];
 		yy_buffer_read = 0;
@@ -71,7 +71,7 @@ class Yylex implements java_cup.runtime.Scanner {
 		yy_at_bol = true;
 		yy_lexical_state = YYINITIAL;
 	}
-
+	
 	private final int EDGESTYLE = 10;
 	private final int EDGE = 3;
 	private final int EDGELABELGRAPHICS = 8;
@@ -85,20 +85,20 @@ class Yylex implements java_cup.runtime.Scanner {
 	private final int NODELABELGRAPHICS = 7;
 	private final int LINE = 5;
 	private final int yy_state_dtrans[] = { 0, 18, 179, 185, 192, 217, 218, 219, 220, 221, 222, 82 };
-
+	
 	private void yybegin(int state) {
 		yy_lexical_state = state;
 	}
-
+	
 	private int yy_advance() throws java.io.IOException {
 		int next_read;
 		int i;
 		int j;
-
+		
 		if (yy_buffer_index < yy_buffer_read) {
 			return yy_buffer[yy_buffer_index++];
 		}
-
+		
 		if (0 != yy_buffer_start) {
 			i = yy_buffer_start;
 			j = 0;
@@ -117,7 +117,7 @@ class Yylex implements java_cup.runtime.Scanner {
 			}
 			yy_buffer_read = yy_buffer_read + next_read;
 		}
-
+		
 		while (yy_buffer_index >= yy_buffer_read) {
 			if (yy_buffer_index >= yy_buffer.length) {
 				yy_buffer = yy_double(yy_buffer);
@@ -130,16 +130,16 @@ class Yylex implements java_cup.runtime.Scanner {
 		}
 		return yy_buffer[yy_buffer_index++];
 	}
-
+	
 	private void yy_move_end() {
 		if (yy_buffer_end > yy_buffer_start && '\n' == yy_buffer[yy_buffer_end - 1])
 			yy_buffer_end--;
 		if (yy_buffer_end > yy_buffer_start && '\r' == yy_buffer[yy_buffer_end - 1])
 			yy_buffer_end--;
 	}
-
+	
 	private boolean yy_last_was_cr = false;
-
+	
 	private void yy_mark_start() {
 		int i;
 		for (i = yy_buffer_start; i < yy_buffer_index; ++i) {
@@ -155,22 +155,22 @@ class Yylex implements java_cup.runtime.Scanner {
 		yychar = yychar + yy_buffer_index - yy_buffer_start;
 		yy_buffer_start = yy_buffer_index;
 	}
-
+	
 	private void yy_mark_end() {
 		yy_buffer_end = yy_buffer_index;
 	}
-
+	
 	private void yy_to_mark() {
 		yy_buffer_index = yy_buffer_end;
 		yy_at_bol = (yy_buffer_end > yy_buffer_start) && ('\r' == yy_buffer[yy_buffer_end - 1]
 				|| '\n' == yy_buffer[yy_buffer_end - 1] || 2028/* LS */ == yy_buffer[yy_buffer_end - 1]
 				|| 2029/* PS */ == yy_buffer[yy_buffer_end - 1]);
 	}
-
+	
 	private java.lang.String yytext() {
 		return (new java.lang.String(yy_buffer, yy_buffer_start, yy_buffer_end - yy_buffer_start));
 	}
-
+	
 	private char[] yy_double(char buf[]) {
 		int i;
 		char newbuf[];
@@ -180,10 +180,10 @@ class Yylex implements java_cup.runtime.Scanner {
 		}
 		return newbuf;
 	}
-
+	
 	private final int YY_E_INTERNAL = 0;
 	private java.lang.String yy_error_string[] = { "Error: Internal error.\n", "Error: Unmatched input.\n" };
-
+	
 	private void yy_error(int code, boolean fatal) {
 		java.lang.System.out.print(yy_error_string[code]);
 		java.lang.System.out.flush();
@@ -191,16 +191,16 @@ class Yylex implements java_cup.runtime.Scanner {
 			throw new Error("Fatal Error.\n");
 		}
 	}
-
+	
 	private int[][] unpackFromString(int size1, int size2, String st) {
 		int colonIndex = -1;
 		String lengthString;
 		int sequenceLength = 0;
 		int sequenceInteger = 0;
-
+		
 		int commaIndex;
 		String workString;
-
+		
 		int res[][] = new int[size1][size2];
 		for (int i = 0; i < size1; i++) {
 			for (int j = 0; j < size2; j++) {
@@ -227,7 +227,7 @@ class Yylex implements java_cup.runtime.Scanner {
 		}
 		return res;
 	}
-
+	
 	private int yy_acpt[] = { /* 0 */YY_NO_ANCHOR, /* 1 */YY_NO_ANCHOR, /* 2 */YY_NO_ANCHOR, /* 3 */YY_NO_ANCHOR,
 			/* 4 */YY_NO_ANCHOR, /* 5 */YY_NO_ANCHOR, /* 6 */YY_END, /* 7 */YY_NOT_ACCEPT, /* 8 */YY_NO_ANCHOR,
 			/* 9 */YY_NO_ANCHOR, /* 10 */YY_NO_ANCHOR, /* 11 */YY_NO_ANCHOR, /* 12 */YY_NO_ANCHOR, /* 13 */YY_NO_ANCHOR,
@@ -349,7 +349,7 @@ class Yylex implements java_cup.runtime.Scanner {
 			"4:9,5,2,4,5,1,4:18,5,4,28,3,4:7,21,4,21,4:2,20:2,22:8,4:7,32:2,8,32,23,32,4"
 					+ "2,32,25,32:2,41,32,24,32:7,14,32:4,18,29,19,4,40,4,11,37,38,36,10,26,31,39,"
 					+ "16,48,47,30,35,17,13,34,32,9,15,12,33,46,45,43,27,44,4:1905,6:2,4:63506,0,7")[0];
-
+	
 	private int yy_rmap[] = unpackFromString(1, 477,
 			"0,1:3,2,3,4,2,5,1,6,5:2,7,5,8,9,5,10,1:2,11,12,13,14:3,1:2,5,1:2,5:5,1:2,5:"
 					+ "5,15,5:4,16,5:19,1:4,5:3,1:6,17,1:2,18,19:2,1,20,1,21,14,22,23,14,24,14,1:2"
@@ -372,7 +372,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					+ "5,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,3"
 					+ "44,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,"
 					+ "5,14,363,364,365,366,367,368,369,370,371,372")[0];
-
+	
 	private int yy_nxt[][] = unpackFromString(373, 49,
 			"1,2,3,4,88,2,88,1,85,465:5,469,346,102,465,88:2,5,103,5,465,224,472,465:2,1"
 					+ "18,88,349,352,465:6,418,465:7,469,465:2,-1:50,6,90,7:3,105,90,7:41,-1:3,91:"
@@ -638,7 +638,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					+ "424,-1,424,465:5,-1:2,465:19,-1:8,466:4,431,466:5,-1:2,425,-1,425,466:5,-1:"
 					+ "2,466:19,-1,116:6,-1,116:9,429,-1:2,116:29,-1:8,466:9,433,-1:2,425,-1,425,4"
 					+ "66:5,-1:2,466:19,-1:8,466:8,435,466,-1:2,425,-1,425,466:5,-1:2,466:19");
-
+	
 	public java_cup.runtime.Symbol next_token() throws java.io.IOException {
 		int yy_lookahead;
 		int yy_anchor = YY_NO_ANCHOR;
@@ -647,7 +647,7 @@ class Yylex implements java_cup.runtime.Scanner {
 		int yy_last_accept_state = YY_NO_STATE;
 		boolean yy_initial = true;
 		int yy_this_accept;
-
+		
 		yy_mark_start();
 		yy_this_accept = yy_acpt[yy_state];
 		if (YY_NOT_ACCEPT != yy_this_accept) {
@@ -682,2369 +682,2368 @@ class Yylex implements java_cup.runtime.Scanner {
 					}
 					yy_to_mark();
 					switch (yy_last_accept_state) {
-					case 0: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -2:
-						break;
-					case 1:
-
-					case -3:
-						break;
-					case 2: { /* ignore white space */
-					}
-					case -4:
-						break;
-					case 3: { /* System.out.println(); new line */
-						org.ErrorMsg.setStatusMessage(
-								"Process new line (" + (yyline + 1) + ") current state: " + yy_lexical_state);
-					}
-					case -5:
-						break;
-					case 4: {
-						System.out.println("\nUnmatched input: " + yytext() + " in line " + (yyline + 1));
-						org.ErrorMsg.addErrorMessage("Unmatched input: " + yytext() + " in line " + (yyline + 1));
-					}
-					case -6:
-						break;
-					case 5: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -7:
-						break;
-					case 6: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -8:
-						break;
-					case 8: {
-						return new Symbol(sym.ID);
-					}
-					case -9:
-						break;
-					case 9: {
-						return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1));
-					}
-					case -10:
-						break;
-					case 10: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -11:
-						break;
-					case 11: {
-						return new Symbol(sym.GRAPHICS_STYLE);
-					}
-					case -12:
-						break;
-					case 12: {
-						return new Symbol(sym.LABEL);
-					}
-					case -13:
-						break;
-					case 13: {
-						yybegin(GRAPH);
-						return new Symbol(sym.GRAPH);
-					}
-					case -14:
-						break;
-					case 14: {
-						System.out.println(yytext());
-					}
-					case -15:
-						break;
-					case 15: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -16:
-						break;
-					case 16: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -17:
-						break;
-					case 17: {
-						stateBeforeGraphics = yy_lexical_state;
-						yybegin(GRAPHICS);
-						// System.out.println("\nentering graphics state.");
-						return new Symbol(sym.GRAPHICS);
-					}
-					case -18:
-						break;
-					case 18: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -19:
-						break;
-					case 19: {
-						return new Symbol(sym.SBRACE);
-					}
-					case -20:
-						break;
-					case 20: {
-						return new Symbol(sym.CBRACE);
-					}
-					case -21:
-						break;
-					case 21: {
-						return new Symbol(sym.BOOLEAN, Boolean.valueOf(new MyBoolean(yytext()).booleanValue()));
-					}
-					case -22:
-						break;
-					case 22: {
-						yybegin(EDGE);
-						org.ErrorMsg.setStatusMessage("Create Edge: " + yytext() + " (line " + (yyline + 1) + ")");
-						return new Symbol(sym.EDGE);
-					}
-					case -23:
-						break;
-					case 23: {
-						yybegin(NODE);
-						org.ErrorMsg.setStatusMessage("Create Node: " + yytext() + " (line " + (yyline + 1) + ")");
-						return new Symbol(sym.NODE);
-					}
-					case -24:
-						break;
-					case 24: {
-						return new Symbol(sym.DIRECTED);
-					}
-					case -25:
-						break;
-					case 25: {
-						yybegin(EDGESTYLE);
-						org.ErrorMsg
-								.setStatusMessage("Process edge style: " + yytext() + " (line " + (yyline + 1) + ")");
-						// return new Symbol(sym.EDGE_STYLE);
-					}
-					case -26:
-						break;
-					case 26: {
-						yybegin(NODESTYLE);
-						// return new Symbol(sym.NODE_STYLE); }
-						org.ErrorMsg
-								.setStatusMessage("Process node style: " + yytext() + " (line " + (yyline + 1) + ")");
-					}
-					case -27:
-						break;
-					case 27: {
-						nodeCount++;
-						return new Symbol(sym.SBRACE);
-					}
-					case -28:
-						break;
-					case 28: {
-						nodeCount--;
-						if (nodeCount == 0) {
+						case 0: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -2:
+							break;
+						case 1:
+						
+						case -3:
+							break;
+						case 2: { /* ignore white space */
+						}
+						case -4:
+							break;
+						case 3: { /* System.out.println(); new line */
+							org.ErrorMsg.setStatusMessage(
+									"Process new line (" + (yyline + 1) + ") current state: " + yy_lexical_state);
+						}
+						case -5:
+							break;
+						case 4: {
+							System.out.println("\nUnmatched input: " + yytext() + " in line " + (yyline + 1));
+							org.ErrorMsg.addErrorMessage("Unmatched input: " + yytext() + " in line " + (yyline + 1));
+						}
+						case -6:
+							break;
+						case 5: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -7:
+							break;
+						case 6: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -8:
+							break;
+						case 8: {
+							return new Symbol(sym.ID);
+						}
+						case -9:
+							break;
+						case 9: {
+							return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1));
+						}
+						case -10:
+							break;
+						case 10: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -11:
+							break;
+						case 11: {
+							return new Symbol(sym.GRAPHICS_STYLE);
+						}
+						case -12:
+							break;
+						case 12: {
+							return new Symbol(sym.LABEL);
+						}
+						case -13:
+							break;
+						case 13: {
 							yybegin(GRAPH);
+							return new Symbol(sym.GRAPH);
 						}
-						return new Symbol(sym.CBRACE);
-					}
-					case -29:
-						break;
-					case 29: { // ignore for now
-						yybegin(NODELABELGRAPHICS);
-					}
-					case -30:
-						break;
-					case 30: {
-						edgeCount++;
-						return new Symbol(sym.SBRACE);
-					}
-					case -31:
-						break;
-					case 31: {
-						edgeCount--;
-						if (edgeCount == 0) {
+						case -14:
+							break;
+						case 14: {
+							System.out.println(yytext());
+						}
+						case -15:
+							break;
+						case 15: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -16:
+							break;
+						case 16: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -17:
+							break;
+						case 17: {
+							stateBeforeGraphics = yy_lexical_state;
+							yybegin(GRAPHICS);
+							// System.out.println("\nentering graphics state.");
+							return new Symbol(sym.GRAPHICS);
+						}
+						case -18:
+							break;
+						case 18: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -19:
+							break;
+						case 19: {
+							return new Symbol(sym.SBRACE);
+						}
+						case -20:
+							break;
+						case 20: {
+							return new Symbol(sym.CBRACE);
+						}
+						case -21:
+							break;
+						case 21: {
+							return new Symbol(sym.BOOLEAN, Boolean.valueOf(new MyBoolean(yytext()).booleanValue()));
+						}
+						case -22:
+							break;
+						case 22: {
+							yybegin(EDGE);
+							org.ErrorMsg.setStatusMessage("Create Edge: " + yytext() + " (line " + (yyline + 1) + ")");
+							return new Symbol(sym.EDGE);
+						}
+						case -23:
+							break;
+						case 23: {
+							yybegin(NODE);
+							org.ErrorMsg.setStatusMessage("Create Node: " + yytext() + " (line " + (yyline + 1) + ")");
+							return new Symbol(sym.NODE);
+						}
+						case -24:
+							break;
+						case 24: {
+							return new Symbol(sym.DIRECTED);
+						}
+						case -25:
+							break;
+						case 25: {
+							yybegin(EDGESTYLE);
+							org.ErrorMsg
+									.setStatusMessage("Process edge style: " + yytext() + " (line " + (yyline + 1) + ")");
+							// return new Symbol(sym.EDGE_STYLE);
+						}
+						case -26:
+							break;
+						case 26: {
+							yybegin(NODESTYLE);
+							// return new Symbol(sym.NODE_STYLE); }
+							org.ErrorMsg
+									.setStatusMessage("Process node style: " + yytext() + " (line " + (yyline + 1) + ")");
+						}
+						case -27:
+							break;
+						case 27: {
+							nodeCount++;
+							return new Symbol(sym.SBRACE);
+						}
+						case -28:
+							break;
+						case 28: {
+							nodeCount--;
+							if (nodeCount == 0) {
+								yybegin(GRAPH);
+							}
+							return new Symbol(sym.CBRACE);
+						}
+						case -29:
+							break;
+						case 29: { // ignore for now
+							yybegin(NODELABELGRAPHICS);
+						}
+						case -30:
+							break;
+						case 30: {
+							edgeCount++;
+							return new Symbol(sym.SBRACE);
+						}
+						case -31:
+							break;
+						case 31: {
+							edgeCount--;
+							if (edgeCount == 0) {
+								yybegin(GRAPH);
+							}
+							return new Symbol(sym.CBRACE);
+						}
+						case -32:
+							break;
+						case 32: {
+							stateBeforeLine = yy_lexical_state;
+							yybegin(LINE);
+							return new Symbol(sym.GRAPHICS_LINE);
+						}
+						case -33:
+							break;
+						case 33: {
+							stateBeforePoint = yy_lexical_state;
+							yybegin(POINT);
+							return new Symbol(sym.GRAPHICS_POINT);
+						}
+						case -34:
+							break;
+						case 34: {
+							return new Symbol(sym.TARGET);
+						}
+						case -35:
+							break;
+						case 35: {
+							return new Symbol(sym.SOURCE);
+						}
+						case -36:
+							break;
+						case 36: { // ignore for now
+							yybegin(EDGELABELGRAPHICS);
+						}
+						case -37:
+							break;
+						case 37: {
+							graphicsCount++;
+							return new Symbol(sym.SBRACE);
+						}
+						case -38:
+							break;
+						case 38: {
+							graphicsCount--;
+							if (graphicsCount == 0) {
+								yybegin(stateBeforeGraphics);
+							}
+							return new Symbol(sym.CBRACE);
+						}
+						case -39:
+							break;
+						case 39: {
+							return new Symbol(sym.GRAPHICS_Y);
+						}
+						case -40:
+							break;
+						case 40: {
+							return new Symbol(sym.GRAPHICS_D);
+						}
+						case -41:
+							break;
+						case 41: {
+							return new Symbol(sym.GRAPHICS_H);
+						}
+						case -42:
+							break;
+						case 42: {
+							return new Symbol(sym.GRAPHICS_X);
+						}
+						case -43:
+							break;
+						case 43: {
+							return new Symbol(sym.GRAPHICS_Z);
+						}
+						case -44:
+							break;
+						case 44: {
+							return new Symbol(sym.GRAPHICS_W);
+						}
+						case -45:
+							break;
+						case 45: {
+							return new Symbol(sym.GRAPHICS_TYPE);
+						}
+						case -46:
+							break;
+						case 46: {
+							return new Symbol(sym.GRAPHICS_FONT);
+						}
+						case -47:
+							break;
+						case 47: {
+							return new Symbol(sym.GRAPHICS_FILL);
+						}
+						case -48:
+							break;
+						case 48: {
+							stateBeforeLine = yy_lexical_state;
+							yybegin(LINE);
+							return new Symbol(sym.GRAPHICS_LINE);
+						}
+						case -49:
+							break;
+						case 49: {
+							return new Symbol(sym.GRAPHICS_ARROW);
+						}
+						case -50:
+							break;
+						case 50: {
+							return new Symbol(sym.GRAPHICS_START);
+						}
+						case -51:
+							break;
+						case 51: {
+							return new Symbol(sym.GRAPHICS_IMAGE);
+						}
+						case -52:
+							break;
+						case 52: {
+							stateBeforePoint = yy_lexical_state;
+							yybegin(POINT);
+							return new Symbol(sym.GRAPHICS_POINT);
+						}
+						case -53:
+							break;
+						case 53: {
+							return new Symbol(sym.GRAPHICS_WIDTH);
+						}
+						case -54:
+							break;
+						case 54: {
+							return new Symbol(sym.GRAPHICS_EXTENT);
+						}
+						case -55:
+							break;
+						case 55: {
+							return new Symbol(sym.GRAPHICS_ANCHOR);
+						}
+						case -56:
+							break;
+						case 56: {
+							return new Symbol(sym.GRAPHICS_SMOOTH);
+						}
+						case -57:
+							break;
+						case 57: {
+							return new Symbol(sym.GRAPHICS_BITMAP);
+						}
+						case -58:
+							break;
+						case 58: {
+							return new Symbol(sym.GRAPHICS_OUTLINE);
+						}
+						case -59:
+							break;
+						case 59: {
+							return new Symbol(sym.GRAPHICS_STIPPLE);
+						}
+						case -60:
+							break;
+						case 60: {
+							return new Symbol(sym.GRAPHICS_VISIBLE);
+						}
+						case -61:
+							break;
+						case 61: {
+							return new Symbol(sym.GRAPHICS_JUSTIFY);
+						}
+						case -62:
+							break;
+						case 62: {
+							return new Symbol(sym.GRAPHICS_CAPSTYLE);
+						}
+						case -63:
+							break;
+						case 63: {
+							return new Symbol(sym.GRAPHICS_ARROW_TAIL);
+						}
+						case -64:
+							break;
+						case 64: {
+							return new Symbol(sym.GRAPHICS_ARROW_HEAD);
+						}
+						case -65:
+							break;
+						case 65: {
+							return new Symbol(sym.GRAPHICS_JOINSTYLE);
+						}
+						case -66:
+							break;
+						case 66: {
+							return new Symbol(sym.GRAPHICS_FOREGROUND);
+						}
+						case -67:
+							break;
+						case 67: {
+							return new Symbol(sym.GRAPHICS_BACKGROUND);
+						}
+						case -68:
+							break;
+						case 68: {
+							return new Symbol(sym.GRAPHICS_SPLINESTEPS);
+						}
+						case -69:
+							break;
+						case 69: {
+							lineCount++;
+							return new Symbol(sym.SBRACE);
+						}
+						case -70:
+							break;
+						case 70: {
+							lineCount--;
+							if (lineCount == 0) {
+								yybegin(stateBeforeLine);
+							}
+							return new Symbol(sym.CBRACE);
+						}
+						case -71:
+							break;
+						case 71: {
+							pointCount++;
+							return new Symbol(sym.SBRACE);
+						}
+						case -72:
+							break;
+						case 72: {
+							pointCount--;
+							if (pointCount == 0) {
+								yybegin(stateBeforePoint);
+							}
+							return new Symbol(sym.CBRACE);
+						}
+						case -73:
+							break;
+						case 73: {
+							return new Symbol(sym.POINT_Y);
+						}
+						case -74:
+							break;
+						case 74: {
+							return new Symbol(sym.POINT_X);
+						}
+						case -75:
+							break;
+						case 75: {
+							return new Symbol(sym.POINT_Z);
+						}
+						case -76:
+							break;
+						case 76: {
+						}
+						case -77:
+							break;
+						case 77: {
+							yybegin(NODE);
+						}
+						case -78:
+							break;
+						case 78: {
+						}
+						case -79:
+							break;
+						case 79: {
+							yybegin(EDGE);
+						}
+						case -80:
+							break;
+						case 80: {
+							ignoreCount = 1;
+							/* System.out.println("in nodestyle sbrace"); */
+							yybegin(EMPTY);
+							// return new Symbol(sym.SBRACE);}
+						}
+						case -81:
+							break;
+						case 81: {
+							ignoreCount = 1;
+							/* System.out.println("in edgestyle sbrace"); */
+							yybegin(EMPTY);
+							// return new Symbol(sym.SBRACE);}
+						}
+						case -82:
+							break;
+						case 82: { /* System.out.println("in empty empty"); */
+						}
+						case -83:
+							break;
+						case 83: {
+							ignoreCount += 1;
+							/* System.out.println("in empty sbrace"); */
+							// yybegin(EMPTY);
+							// return new Symbol(sym.SBRACE); }
+						}
+						case -84:
+							break;
+						case 84: {
+							ignoreCount -= 1;
+							if (ignoreCount == 0) {
+								yybegin(GRAPH);
+								/* System.out.println("in empty cbrace, begin graph"); */
+								// return new Symbol(sym.CBRACE);
+							} else {
+								/* System.out.println("in empty cbrace"); */
+							} ;
+							// return new Symbol(sym.CBRACE);}
+						}
+						case -85:
+							break;
+						case 85: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -86:
+							break;
+						case 86: { /* ignore white space */
+						}
+						case -87:
+							break;
+						case 87: { /* System.out.println(); new line */
+							org.ErrorMsg.setStatusMessage(
+									"Process new line (" + (yyline + 1) + ") current state: " + yy_lexical_state);
+						}
+						case -88:
+							break;
+						case 88: {
+							System.out.println("\nUnmatched input: " + yytext() + " in line " + (yyline + 1));
+							org.ErrorMsg.addErrorMessage("Unmatched input: " + yytext() + " in line " + (yyline + 1));
+						}
+						case -89:
+							break;
+						case 89: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -90:
+							break;
+						case 90: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -91:
+							break;
+						case 92: {
+							return new Symbol(sym.ID);
+						}
+						case -92:
+							break;
+						case 93: {
+							return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1));
+						}
+						case -93:
+							break;
+						case 94: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -94:
+							break;
+						case 95: {
+							return new Symbol(sym.LABEL);
+						}
+						case -95:
+							break;
+						case 96: {
 							yybegin(GRAPH);
+							return new Symbol(sym.GRAPH);
 						}
-						return new Symbol(sym.CBRACE);
-					}
-					case -32:
-						break;
-					case 32: {
-						stateBeforeLine = yy_lexical_state;
-						yybegin(LINE);
-						return new Symbol(sym.GRAPHICS_LINE);
-					}
-					case -33:
-						break;
-					case 33: {
-						stateBeforePoint = yy_lexical_state;
-						yybegin(POINT);
-						return new Symbol(sym.GRAPHICS_POINT);
-					}
-					case -34:
-						break;
-					case 34: {
-						return new Symbol(sym.TARGET);
-					}
-					case -35:
-						break;
-					case 35: {
-						return new Symbol(sym.SOURCE);
-					}
-					case -36:
-						break;
-					case 36: { // ignore for now
-						yybegin(EDGELABELGRAPHICS);
-					}
-					case -37:
-						break;
-					case 37: {
-						graphicsCount++;
-						return new Symbol(sym.SBRACE);
-					}
-					case -38:
-						break;
-					case 38: {
-						graphicsCount--;
-						if (graphicsCount == 0) {
-							yybegin(stateBeforeGraphics);
+						case -96:
+							break;
+						case 97: {
+							System.out.println(yytext());
 						}
-						return new Symbol(sym.CBRACE);
-					}
-					case -39:
-						break;
-					case 39: {
-						return new Symbol(sym.GRAPHICS_Y);
-					}
-					case -40:
-						break;
-					case 40: {
-						return new Symbol(sym.GRAPHICS_D);
-					}
-					case -41:
-						break;
-					case 41: {
-						return new Symbol(sym.GRAPHICS_H);
-					}
-					case -42:
-						break;
-					case 42: {
-						return new Symbol(sym.GRAPHICS_X);
-					}
-					case -43:
-						break;
-					case 43: {
-						return new Symbol(sym.GRAPHICS_Z);
-					}
-					case -44:
-						break;
-					case 44: {
-						return new Symbol(sym.GRAPHICS_W);
-					}
-					case -45:
-						break;
-					case 45: {
-						return new Symbol(sym.GRAPHICS_TYPE);
-					}
-					case -46:
-						break;
-					case 46: {
-						return new Symbol(sym.GRAPHICS_FONT);
-					}
-					case -47:
-						break;
-					case 47: {
-						return new Symbol(sym.GRAPHICS_FILL);
-					}
-					case -48:
-						break;
-					case 48: {
-						stateBeforeLine = yy_lexical_state;
-						yybegin(LINE);
-						return new Symbol(sym.GRAPHICS_LINE);
-					}
-					case -49:
-						break;
-					case 49: {
-						return new Symbol(sym.GRAPHICS_ARROW);
-					}
-					case -50:
-						break;
-					case 50: {
-						return new Symbol(sym.GRAPHICS_START);
-					}
-					case -51:
-						break;
-					case 51: {
-						return new Symbol(sym.GRAPHICS_IMAGE);
-					}
-					case -52:
-						break;
-					case 52: {
-						stateBeforePoint = yy_lexical_state;
-						yybegin(POINT);
-						return new Symbol(sym.GRAPHICS_POINT);
-					}
-					case -53:
-						break;
-					case 53: {
-						return new Symbol(sym.GRAPHICS_WIDTH);
-					}
-					case -54:
-						break;
-					case 54: {
-						return new Symbol(sym.GRAPHICS_EXTENT);
-					}
-					case -55:
-						break;
-					case 55: {
-						return new Symbol(sym.GRAPHICS_ANCHOR);
-					}
-					case -56:
-						break;
-					case 56: {
-						return new Symbol(sym.GRAPHICS_SMOOTH);
-					}
-					case -57:
-						break;
-					case 57: {
-						return new Symbol(sym.GRAPHICS_BITMAP);
-					}
-					case -58:
-						break;
-					case 58: {
-						return new Symbol(sym.GRAPHICS_OUTLINE);
-					}
-					case -59:
-						break;
-					case 59: {
-						return new Symbol(sym.GRAPHICS_STIPPLE);
-					}
-					case -60:
-						break;
-					case 60: {
-						return new Symbol(sym.GRAPHICS_VISIBLE);
-					}
-					case -61:
-						break;
-					case 61: {
-						return new Symbol(sym.GRAPHICS_JUSTIFY);
-					}
-					case -62:
-						break;
-					case 62: {
-						return new Symbol(sym.GRAPHICS_CAPSTYLE);
-					}
-					case -63:
-						break;
-					case 63: {
-						return new Symbol(sym.GRAPHICS_ARROW_TAIL);
-					}
-					case -64:
-						break;
-					case 64: {
-						return new Symbol(sym.GRAPHICS_ARROW_HEAD);
-					}
-					case -65:
-						break;
-					case 65: {
-						return new Symbol(sym.GRAPHICS_JOINSTYLE);
-					}
-					case -66:
-						break;
-					case 66: {
-						return new Symbol(sym.GRAPHICS_FOREGROUND);
-					}
-					case -67:
-						break;
-					case 67: {
-						return new Symbol(sym.GRAPHICS_BACKGROUND);
-					}
-					case -68:
-						break;
-					case 68: {
-						return new Symbol(sym.GRAPHICS_SPLINESTEPS);
-					}
-					case -69:
-						break;
-					case 69: {
-						lineCount++;
-						return new Symbol(sym.SBRACE);
-					}
-					case -70:
-						break;
-					case 70: {
-						lineCount--;
-						if (lineCount == 0) {
-							yybegin(stateBeforeLine);
+						case -97:
+							break;
+						case 98: {
+							System.out.println(yytext()); /* ignore comments */
 						}
-						return new Symbol(sym.CBRACE);
-					}
-					case -71:
-						break;
-					case 71: {
-						pointCount++;
-						return new Symbol(sym.SBRACE);
-					}
-					case -72:
-						break;
-					case 72: {
-						pointCount--;
-						if (pointCount == 0) {
-							yybegin(stateBeforePoint);
+						case -98:
+							break;
+						case 99: {
+							System.out.println(yytext()); /* ignore comments */
 						}
-						return new Symbol(sym.CBRACE);
-					}
-					case -73:
-						break;
-					case 73: {
-						return new Symbol(sym.POINT_Y);
-					}
-					case -74:
-						break;
-					case 74: {
-						return new Symbol(sym.POINT_X);
-					}
-					case -75:
-						break;
-					case 75: {
-						return new Symbol(sym.POINT_Z);
-					}
-					case -76:
-						break;
-					case 76: {
-					}
-					case -77:
-						break;
-					case 77: {
-						yybegin(NODE);
-					}
-					case -78:
-						break;
-					case 78: {
-					}
-					case -79:
-						break;
-					case 79: {
-						yybegin(EDGE);
-					}
-					case -80:
-						break;
-					case 80: {
-						ignoreCount = 1;
-						/* System.out.println("in nodestyle sbrace"); */
-						yybegin(EMPTY);
-						// return new Symbol(sym.SBRACE);}
-					}
-					case -81:
-						break;
-					case 81: {
-						ignoreCount = 1;
-						/* System.out.println("in edgestyle sbrace"); */
-						yybegin(EMPTY);
-						// return new Symbol(sym.SBRACE);}
-					}
-					case -82:
-						break;
-					case 82: { /* System.out.println("in empty empty"); */
-					}
-					case -83:
-						break;
-					case 83: {
-						ignoreCount += 1;
-						/* System.out.println("in empty sbrace"); */
-						// yybegin(EMPTY);
-						// return new Symbol(sym.SBRACE); }
-					}
-					case -84:
-						break;
-					case 84: {
-						ignoreCount -= 1;
-						if (ignoreCount == 0) {
+						case -99:
+							break;
+						case 100: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -100:
+							break;
+						case 101: { /* System.out.println("in empty empty"); */
+						}
+						case -101:
+							break;
+						case 102: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -102:
+							break;
+						case 103: {
+							System.out.println("\nUnmatched input: " + yytext() + " in line " + (yyline + 1));
+							org.ErrorMsg.addErrorMessage("Unmatched input: " + yytext() + " in line " + (yyline + 1));
+						}
+						case -103:
+							break;
+						case 104: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -104:
+							break;
+						case 105: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -105:
+							break;
+						case 107: {
+							return new Symbol(sym.ID);
+						}
+						case -106:
+							break;
+						case 108: {
+							return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1));
+						}
+						case -107:
+							break;
+						case 109: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -108:
+							break;
+						case 110: {
+							return new Symbol(sym.LABEL);
+						}
+						case -109:
+							break;
+						case 111: {
 							yybegin(GRAPH);
-							/* System.out.println("in empty cbrace, begin graph"); */
-							// return new Symbol(sym.CBRACE);
-						} else {
-							/* System.out.println("in empty cbrace"); */
+							return new Symbol(sym.GRAPH);
 						}
-						;
-						// return new Symbol(sym.CBRACE);}
-					}
-					case -85:
-						break;
-					case 85: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -86:
-						break;
-					case 86: { /* ignore white space */
-					}
-					case -87:
-						break;
-					case 87: { /* System.out.println(); new line */
-						org.ErrorMsg.setStatusMessage(
-								"Process new line (" + (yyline + 1) + ") current state: " + yy_lexical_state);
-					}
-					case -88:
-						break;
-					case 88: {
-						System.out.println("\nUnmatched input: " + yytext() + " in line " + (yyline + 1));
-						org.ErrorMsg.addErrorMessage("Unmatched input: " + yytext() + " in line " + (yyline + 1));
-					}
-					case -89:
-						break;
-					case 89: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -90:
-						break;
-					case 90: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -91:
-						break;
-					case 92: {
-						return new Symbol(sym.ID);
-					}
-					case -92:
-						break;
-					case 93: {
-						return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1));
-					}
-					case -93:
-						break;
-					case 94: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -94:
-						break;
-					case 95: {
-						return new Symbol(sym.LABEL);
-					}
-					case -95:
-						break;
-					case 96: {
-						yybegin(GRAPH);
-						return new Symbol(sym.GRAPH);
-					}
-					case -96:
-						break;
-					case 97: {
-						System.out.println(yytext());
-					}
-					case -97:
-						break;
-					case 98: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -98:
-						break;
-					case 99: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -99:
-						break;
-					case 100: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -100:
-						break;
-					case 101: { /* System.out.println("in empty empty"); */
-					}
-					case -101:
-						break;
-					case 102: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -102:
-						break;
-					case 103: {
-						System.out.println("\nUnmatched input: " + yytext() + " in line " + (yyline + 1));
-						org.ErrorMsg.addErrorMessage("Unmatched input: " + yytext() + " in line " + (yyline + 1));
-					}
-					case -103:
-						break;
-					case 104: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -104:
-						break;
-					case 105: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -105:
-						break;
-					case 107: {
-						return new Symbol(sym.ID);
-					}
-					case -106:
-						break;
-					case 108: {
-						return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1));
-					}
-					case -107:
-						break;
-					case 109: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -108:
-						break;
-					case 110: {
-						return new Symbol(sym.LABEL);
-					}
-					case -109:
-						break;
-					case 111: {
-						yybegin(GRAPH);
-						return new Symbol(sym.GRAPH);
-					}
-					case -110:
-						break;
-					case 112: {
-						System.out.println(yytext());
-					}
-					case -111:
-						break;
-					case 113: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -112:
-						break;
-					case 114: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -113:
-						break;
-					case 115: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -114:
-						break;
-					case 116: { /* System.out.println("in empty empty"); */
-					}
-					case -115:
-						break;
-					case 117: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -116:
-						break;
-					case 118: {
-						System.out.println("\nUnmatched input: " + yytext() + " in line " + (yyline + 1));
-						org.ErrorMsg.addErrorMessage("Unmatched input: " + yytext() + " in line " + (yyline + 1));
-					}
-					case -117:
-						break;
-					case 119: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -118:
-						break;
-					case 120: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -119:
-						break;
-					case 122: {
-						return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1));
-					}
-					case -120:
-						break;
-					case 123: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -121:
-						break;
-					case 124: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -122:
-						break;
-					case 125: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -123:
-						break;
-					case 126: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -124:
-						break;
-					case 127: { /* System.out.println("in empty empty"); */
-					}
-					case -125:
-						break;
-					case 128: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -126:
-						break;
-					case 129: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -127:
-						break;
-					case 131: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -128:
-						break;
-					case 132: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -129:
-						break;
-					case 133: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -130:
-						break;
-					case 134: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -131:
-						break;
-					case 135: { /* System.out.println("in empty empty"); */
-					}
-					case -132:
-						break;
-					case 136: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -133:
-						break;
-					case 137: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -134:
-						break;
-					case 139: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -135:
-						break;
-					case 140: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -136:
-						break;
-					case 141: {
-						System.out.println(yytext()); /* ignore comments */
-					}
-					case -137:
-						break;
-					case 142: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -138:
-						break;
-					case 143: { /* System.out.println("in empty empty"); */
-					}
-					case -139:
-						break;
-					case 144: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -140:
-						break;
-					case 146: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -141:
-						break;
-					case 147: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -142:
-						break;
-					case 148: { /* System.out.println("in empty empty"); */
-					}
-					case -143:
-						break;
-					case 149: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -144:
-						break;
-					case 151: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -145:
-						break;
-					case 152: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -146:
-						break;
-					case 153: { /* System.out.println("in empty empty"); */
-					}
-					case -147:
-						break;
-					case 154: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -148:
-						break;
-					case 156: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -149:
-						break;
-					case 157: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -150:
-						break;
-					case 158: { /* System.out.println("in empty empty"); */
-					}
-					case -151:
-						break;
-					case 159: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -152:
-						break;
-					case 160: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -153:
-						break;
-					case 161: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -154:
-						break;
-					case 162: { /* System.out.println("in empty empty"); */
-					}
-					case -155:
-						break;
-					case 163: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -156:
-						break;
-					case 164: {
-						return new Symbol(sym.REAL, Double.valueOf(yytext()));
-					}
-					case -157:
-						break;
-					case 165: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -158:
-						break;
-					case 166: { /* System.out.println("in empty empty"); */
-					}
-					case -159:
-						break;
-					case 167: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -160:
-						break;
-					case 168: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -161:
-						break;
-					case 169: { /* System.out.println("in empty empty"); */
-					}
-					case -162:
-						break;
-					case 170: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -163:
-						break;
-					case 171: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -164:
-						break;
-					case 172: { /* System.out.println("in empty empty"); */
-					}
-					case -165:
-						break;
-					case 173: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -166:
-						break;
-					case 174: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -167:
-						break;
-					case 175: { /* System.out.println("in empty empty"); */
-					}
-					case -168:
-						break;
-					case 176: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -169:
-						break;
-					case 177: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -170:
-						break;
-					case 178: { /* System.out.println("in empty empty"); */
-					}
-					case -171:
-						break;
-					case 179: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -172:
-						break;
-					case 180: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -173:
-						break;
-					case 181: { /* System.out.println("in empty empty"); */
-					}
-					case -174:
-						break;
-					case 182: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -175:
-						break;
-					case 183: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -176:
-						break;
-					case 184: { /* System.out.println("in empty empty"); */
-					}
-					case -177:
-						break;
-					case 185: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -178:
-						break;
-					case 186: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -179:
-						break;
-					case 187: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -180:
-						break;
-					case 188: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -181:
-						break;
-					case 189: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -182:
-						break;
-					case 190: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -183:
-						break;
-					case 191: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -184:
-						break;
-					case 192: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -185:
-						break;
-					case 193: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -186:
-						break;
-					case 194: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -187:
-						break;
-					case 195: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -188:
-						break;
-					case 196: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -189:
-						break;
-					case 197: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -190:
-						break;
-					case 198: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -191:
-						break;
-					case 199: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -192:
-						break;
-					case 200: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -193:
-						break;
-					case 201: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -194:
-						break;
-					case 202: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -195:
-						break;
-					case 203: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -196:
-						break;
-					case 204: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -197:
-						break;
-					case 205: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -198:
-						break;
-					case 206: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -199:
-						break;
-					case 207: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -200:
-						break;
-					case 208: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -201:
-						break;
-					case 209: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -202:
-						break;
-					case 210: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -203:
-						break;
-					case 211: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -204:
-						break;
-					case 212: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -205:
-						break;
-					case 213: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -206:
-						break;
-					case 214: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -207:
-						break;
-					case 215: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -208:
-						break;
-					case 216: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -209:
-						break;
-					case 217: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -210:
-						break;
-					case 218: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -211:
-						break;
-					case 219: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -212:
-						break;
-					case 220: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -213:
-						break;
-					case 221: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -214:
-						break;
-					case 222: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -215:
-						break;
-					case 223: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -216:
-						break;
-					case 224: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -217:
-						break;
-					case 225: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -218:
-						break;
-					case 226: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -219:
-						break;
-					case 227: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -220:
-						break;
-					case 228: { /* System.out.println("in empty empty"); */
-					}
-					case -221:
-						break;
-					case 229: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -222:
-						break;
-					case 230: { /* System.out.println("in empty empty"); */
-					}
-					case -223:
-						break;
-					case 231: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -224:
-						break;
-					case 232: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -225:
-						break;
-					case 233: { /* System.out.println("in empty empty"); */
-					}
-					case -226:
-						break;
-					case 234: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -227:
-						break;
-					case 235: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -228:
-						break;
-					case 236: { /* System.out.println("in empty empty"); */
-					}
-					case -229:
-						break;
-					case 237: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -230:
-						break;
-					case 238: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -231:
-						break;
-					case 239: { /* System.out.println("in empty empty"); */
-					}
-					case -232:
-						break;
-					case 240: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -233:
-						break;
-					case 241: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -234:
-						break;
-					case 242: { /* System.out.println("in empty empty"); */
-					}
-					case -235:
-						break;
-					case 243: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -236:
-						break;
-					case 244: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -237:
-						break;
-					case 245: { /* System.out.println("in empty empty"); */
-					}
-					case -238:
-						break;
-					case 246: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -239:
-						break;
-					case 247: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -240:
-						break;
-					case 248: { /* System.out.println("in empty empty"); */
-					}
-					case -241:
-						break;
-					case 249: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -242:
-						break;
-					case 250: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -243:
-						break;
-					case 251: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -244:
-						break;
-					case 252: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -245:
-						break;
-					case 253: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -246:
-						break;
-					case 254: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -247:
-						break;
-					case 255: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -248:
-						break;
-					case 256: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -249:
-						break;
-					case 257: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -250:
-						break;
-					case 258: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -251:
-						break;
-					case 259: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -252:
-						break;
-					case 260: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -253:
-						break;
-					case 261: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -254:
-						break;
-					case 262: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -255:
-						break;
-					case 263: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -256:
-						break;
-					case 264: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -257:
-						break;
-					case 265: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -258:
-						break;
-					case 266: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -259:
-						break;
-					case 267: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -260:
-						break;
-					case 268: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -261:
-						break;
-					case 269: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -262:
-						break;
-					case 270: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -263:
-						break;
-					case 271: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -264:
-						break;
-					case 272: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -265:
-						break;
-					case 273: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -266:
-						break;
-					case 274: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -267:
-						break;
-					case 275: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -268:
-						break;
-					case 276: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -269:
-						break;
-					case 277: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -270:
-						break;
-					case 278: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -271:
-						break;
-					case 279: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -272:
-						break;
-					case 280: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -273:
-						break;
-					case 281: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -274:
-						break;
-					case 282: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -275:
-						break;
-					case 283: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -276:
-						break;
-					case 284: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -277:
-						break;
-					case 285: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -278:
-						break;
-					case 286: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -279:
-						break;
-					case 287: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -280:
-						break;
-					case 288: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -281:
-						break;
-					case 289: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -282:
-						break;
-					case 290: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -283:
-						break;
-					case 291: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -284:
-						break;
-					case 292: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -285:
-						break;
-					case 293: { /* System.out.println("in empty empty"); */
-					}
-					case -286:
-						break;
-					case 294: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -287:
-						break;
-					case 295: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -288:
-						break;
-					case 296: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -289:
-						break;
-					case 297: { /* System.out.println("in empty empty"); */
-					}
-					case -290:
-						break;
-					case 298: {
-						return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
-					}
-					case -291:
-						break;
-					case 299: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -292:
-						break;
-					case 300: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -293:
-						break;
-					case 301: { /* System.out.println("in empty empty"); */
-					}
-					case -294:
-						break;
-					case 302: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -295:
-						break;
-					case 303: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -296:
-						break;
-					case 304: { /* System.out.println("in empty empty"); */
-					}
-					case -297:
-						break;
-					case 305: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -298:
-						break;
-					case 306: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -299:
-						break;
-					case 307: { /* System.out.println("in empty empty"); */
-					}
-					case -300:
-						break;
-					case 308: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -301:
-						break;
-					case 309: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -302:
-						break;
-					case 310: { /* System.out.println("in empty empty"); */
-					}
-					case -303:
-						break;
-					case 311: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -304:
-						break;
-					case 312: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -305:
-						break;
-					case 313: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -306:
-						break;
-					case 314: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -307:
-						break;
-					case 315: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -308:
-						break;
-					case 316: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -309:
-						break;
-					case 317: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -310:
-						break;
-					case 318: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -311:
-						break;
-					case 319: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -312:
-						break;
-					case 320: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -313:
-						break;
-					case 321: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -314:
-						break;
-					case 322: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -315:
-						break;
-					case 323: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -316:
-						break;
-					case 324: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -317:
-						break;
-					case 325: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -318:
-						break;
-					case 326: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -319:
-						break;
-					case 327: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -320:
-						break;
-					case 328: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -321:
-						break;
-					case 329: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -322:
-						break;
-					case 330: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -323:
-						break;
-					case 331: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -324:
-						break;
-					case 332: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -325:
-						break;
-					case 333: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -326:
-						break;
-					case 334: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -327:
-						break;
-					case 335: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -328:
-						break;
-					case 336: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -329:
-						break;
-					case 337: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -330:
-						break;
-					case 338: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -331:
-						break;
-					case 339: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -332:
-						break;
-					case 340: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -333:
-						break;
-					case 341: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -334:
-						break;
-					case 342: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -335:
-						break;
-					case 343: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -336:
-						break;
-					case 344: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -337:
-						break;
-					case 345: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -338:
-						break;
-					case 346: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -339:
-						break;
-					case 347: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -340:
-						break;
-					case 348: { /* System.out.println("in empty empty"); */
-					}
-					case -341:
-						break;
-					case 349: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -342:
-						break;
-					case 350: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -343:
-						break;
-					case 351: { /* System.out.println("in empty empty"); */
-					}
-					case -344:
-						break;
-					case 352: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -345:
-						break;
-					case 353: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -346:
-						break;
-					case 354: { /* System.out.println("in empty empty"); */
-					}
-					case -347:
-						break;
-					case 355: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -348:
-						break;
-					case 356: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -349:
-						break;
-					case 357: { /* System.out.println("in empty empty"); */
-					}
-					case -350:
-						break;
-					case 358: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -351:
-						break;
-					case 359: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -352:
-						break;
-					case 360: { /* System.out.println("in empty empty"); */
-					}
-					case -353:
-						break;
-					case 361: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -354:
-						break;
-					case 362: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -355:
-						break;
-					case 363: { /* System.out.println("in empty empty"); */
-					}
-					case -356:
-						break;
-					case 364: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -357:
-						break;
-					case 365: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -358:
-						break;
-					case 366: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -359:
-						break;
-					case 367: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -360:
-						break;
-					case 368: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -361:
-						break;
-					case 369: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -362:
-						break;
-					case 370: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -363:
-						break;
-					case 371: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -364:
-						break;
-					case 372: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -365:
-						break;
-					case 373: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -366:
-						break;
-					case 374: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -367:
-						break;
-					case 375: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -368:
-						break;
-					case 376: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -369:
-						break;
-					case 377: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -370:
-						break;
-					case 378: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -371:
-						break;
-					case 379: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -372:
-						break;
-					case 380: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -373:
-						break;
-					case 381: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -374:
-						break;
-					case 382: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -375:
-						break;
-					case 383: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -376:
-						break;
-					case 384: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -377:
-						break;
-					case 385: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -378:
-						break;
-					case 386: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -379:
-						break;
-					case 387: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -380:
-						break;
-					case 388: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -381:
-						break;
-					case 389: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -382:
-						break;
-					case 390: { /* System.out.println("in empty empty"); */
-					}
-					case -383:
-						break;
-					case 391: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -384:
-						break;
-					case 392: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -385:
-						break;
-					case 393: { /* System.out.println("in empty empty"); */
-					}
-					case -386:
-						break;
-					case 394: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -387:
-						break;
-					case 395: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -388:
-						break;
-					case 396: { /* System.out.println("in empty empty"); */
-					}
-					case -389:
-						break;
-					case 397: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -390:
-						break;
-					case 398: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -391:
-						break;
-					case 399: { /* System.out.println("in empty empty"); */
-					}
-					case -392:
-						break;
-					case 400: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -393:
-						break;
-					case 401: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -394:
-						break;
-					case 402: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -395:
-						break;
-					case 403: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -396:
-						break;
-					case 404: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -397:
-						break;
-					case 405: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -398:
-						break;
-					case 406: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -399:
-						break;
-					case 407: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -400:
-						break;
-					case 408: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -401:
-						break;
-					case 409: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -402:
-						break;
-					case 410: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -403:
-						break;
-					case 411: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -404:
-						break;
-					case 412: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -405:
-						break;
-					case 413: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -406:
-						break;
-					case 414: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -407:
-						break;
-					case 415: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -408:
-						break;
-					case 416: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -409:
-						break;
-					case 417: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -410:
-						break;
-					case 418: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -411:
-						break;
-					case 419: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -412:
-						break;
-					case 420: { /* System.out.println("in empty empty"); */
-					}
-					case -413:
-						break;
-					case 421: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -414:
-						break;
-					case 422: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -415:
-						break;
-					case 423: { /* System.out.println("in empty empty"); */
-					}
-					case -416:
-						break;
-					case 424: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -417:
-						break;
-					case 425: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -418:
-						break;
-					case 426: { /* System.out.println("in empty empty"); */
-					}
-					case -419:
-						break;
-					case 427: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -420:
-						break;
-					case 428: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -421:
-						break;
-					case 429: { /* System.out.println("in empty empty"); */
-					}
-					case -422:
-						break;
-					case 430: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -423:
-						break;
-					case 431: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -424:
-						break;
-					case 432: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -425:
-						break;
-					case 433: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -426:
-						break;
-					case 434: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -427:
-						break;
-					case 435: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -428:
-						break;
-					case 436: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -429:
-						break;
-					case 437: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -430:
-						break;
-					case 438: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -431:
-						break;
-					case 439: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -432:
-						break;
-					case 440: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -433:
-						break;
-					case 441: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -434:
-						break;
-					case 442: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -435:
-						break;
-					case 443: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -436:
-						break;
-					case 444: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -437:
-						break;
-					case 445: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -438:
-						break;
-					case 446: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -439:
-						break;
-					case 447: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -440:
-						break;
-					case 448: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -441:
-						break;
-					case 449: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -442:
-						break;
-					case 450: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -443:
-						break;
-					case 451: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -444:
-						break;
-					case 452: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -445:
-						break;
-					case 453: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -446:
-						break;
-					case 454: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -447:
-						break;
-					case 455: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -448:
-						break;
-					case 456: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -449:
-						break;
-					case 457: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -450:
-						break;
-					case 458: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -451:
-						break;
-					case 459: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -452:
-						break;
-					case 460: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -453:
-						break;
-					case 461: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -454:
-						break;
-					case 462: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -455:
-						break;
-					case 463: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -456:
-						break;
-					case 464: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -457:
-						break;
-					case 465: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -458:
-						break;
-					case 466: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -459:
-						break;
-					case 467: { /* System.out.println("in empty empty"); */
-					}
-					case -460:
-						break;
-					case 468: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -461:
-						break;
-					case 469: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -462:
-						break;
-					case 470: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -463:
-						break;
-					case 471: { /* System.out.println("in empty empty"); */
-					}
-					case -464:
-						break;
-					case 472: {
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -465:
-						break;
-					case 473: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -466:
-						break;
-					case 474: { /* System.out.println("in empty empty"); */
-					}
-					case -467:
-						break;
-					case 475: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -468:
-						break;
-					case 476: { /* System.out.println("KEY: "+yytext()); */
-						return new Symbol(sym.KEY, yytext());
-					}
-					case -469:
-						break;
-					default:
-						yy_error(YY_E_INTERNAL, false);
-					case -1:
+						case -110:
+							break;
+						case 112: {
+							System.out.println(yytext());
+						}
+						case -111:
+							break;
+						case 113: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -112:
+							break;
+						case 114: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -113:
+							break;
+						case 115: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -114:
+							break;
+						case 116: { /* System.out.println("in empty empty"); */
+						}
+						case -115:
+							break;
+						case 117: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -116:
+							break;
+						case 118: {
+							System.out.println("\nUnmatched input: " + yytext() + " in line " + (yyline + 1));
+							org.ErrorMsg.addErrorMessage("Unmatched input: " + yytext() + " in line " + (yyline + 1));
+						}
+						case -117:
+							break;
+						case 119: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -118:
+							break;
+						case 120: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -119:
+							break;
+						case 122: {
+							return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1));
+						}
+						case -120:
+							break;
+						case 123: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -121:
+							break;
+						case 124: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -122:
+							break;
+						case 125: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -123:
+							break;
+						case 126: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -124:
+							break;
+						case 127: { /* System.out.println("in empty empty"); */
+						}
+						case -125:
+							break;
+						case 128: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -126:
+							break;
+						case 129: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -127:
+							break;
+						case 131: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -128:
+							break;
+						case 132: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -129:
+							break;
+						case 133: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -130:
+							break;
+						case 134: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -131:
+							break;
+						case 135: { /* System.out.println("in empty empty"); */
+						}
+						case -132:
+							break;
+						case 136: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -133:
+							break;
+						case 137: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -134:
+							break;
+						case 139: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -135:
+							break;
+						case 140: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -136:
+							break;
+						case 141: {
+							System.out.println(yytext()); /* ignore comments */
+						}
+						case -137:
+							break;
+						case 142: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -138:
+							break;
+						case 143: { /* System.out.println("in empty empty"); */
+						}
+						case -139:
+							break;
+						case 144: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -140:
+							break;
+						case 146: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -141:
+							break;
+						case 147: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -142:
+							break;
+						case 148: { /* System.out.println("in empty empty"); */
+						}
+						case -143:
+							break;
+						case 149: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -144:
+							break;
+						case 151: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -145:
+							break;
+						case 152: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -146:
+							break;
+						case 153: { /* System.out.println("in empty empty"); */
+						}
+						case -147:
+							break;
+						case 154: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -148:
+							break;
+						case 156: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -149:
+							break;
+						case 157: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -150:
+							break;
+						case 158: { /* System.out.println("in empty empty"); */
+						}
+						case -151:
+							break;
+						case 159: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -152:
+							break;
+						case 160: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -153:
+							break;
+						case 161: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -154:
+							break;
+						case 162: { /* System.out.println("in empty empty"); */
+						}
+						case -155:
+							break;
+						case 163: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -156:
+							break;
+						case 164: {
+							return new Symbol(sym.REAL, Double.valueOf(yytext()));
+						}
+						case -157:
+							break;
+						case 165: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -158:
+							break;
+						case 166: { /* System.out.println("in empty empty"); */
+						}
+						case -159:
+							break;
+						case 167: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -160:
+							break;
+						case 168: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -161:
+							break;
+						case 169: { /* System.out.println("in empty empty"); */
+						}
+						case -162:
+							break;
+						case 170: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -163:
+							break;
+						case 171: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -164:
+							break;
+						case 172: { /* System.out.println("in empty empty"); */
+						}
+						case -165:
+							break;
+						case 173: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -166:
+							break;
+						case 174: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -167:
+							break;
+						case 175: { /* System.out.println("in empty empty"); */
+						}
+						case -168:
+							break;
+						case 176: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -169:
+							break;
+						case 177: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -170:
+							break;
+						case 178: { /* System.out.println("in empty empty"); */
+						}
+						case -171:
+							break;
+						case 179: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -172:
+							break;
+						case 180: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -173:
+							break;
+						case 181: { /* System.out.println("in empty empty"); */
+						}
+						case -174:
+							break;
+						case 182: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -175:
+							break;
+						case 183: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -176:
+							break;
+						case 184: { /* System.out.println("in empty empty"); */
+						}
+						case -177:
+							break;
+						case 185: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -178:
+							break;
+						case 186: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -179:
+							break;
+						case 187: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -180:
+							break;
+						case 188: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -181:
+							break;
+						case 189: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -182:
+							break;
+						case 190: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -183:
+							break;
+						case 191: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -184:
+							break;
+						case 192: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -185:
+							break;
+						case 193: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -186:
+							break;
+						case 194: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -187:
+							break;
+						case 195: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -188:
+							break;
+						case 196: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -189:
+							break;
+						case 197: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -190:
+							break;
+						case 198: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -191:
+							break;
+						case 199: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -192:
+							break;
+						case 200: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -193:
+							break;
+						case 201: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -194:
+							break;
+						case 202: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -195:
+							break;
+						case 203: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -196:
+							break;
+						case 204: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -197:
+							break;
+						case 205: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -198:
+							break;
+						case 206: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -199:
+							break;
+						case 207: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -200:
+							break;
+						case 208: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -201:
+							break;
+						case 209: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -202:
+							break;
+						case 210: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -203:
+							break;
+						case 211: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -204:
+							break;
+						case 212: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -205:
+							break;
+						case 213: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -206:
+							break;
+						case 214: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -207:
+							break;
+						case 215: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -208:
+							break;
+						case 216: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -209:
+							break;
+						case 217: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -210:
+							break;
+						case 218: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -211:
+							break;
+						case 219: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -212:
+							break;
+						case 220: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -213:
+							break;
+						case 221: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -214:
+							break;
+						case 222: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -215:
+							break;
+						case 223: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -216:
+							break;
+						case 224: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -217:
+							break;
+						case 225: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -218:
+							break;
+						case 226: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -219:
+							break;
+						case 227: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -220:
+							break;
+						case 228: { /* System.out.println("in empty empty"); */
+						}
+						case -221:
+							break;
+						case 229: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -222:
+							break;
+						case 230: { /* System.out.println("in empty empty"); */
+						}
+						case -223:
+							break;
+						case 231: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -224:
+							break;
+						case 232: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -225:
+							break;
+						case 233: { /* System.out.println("in empty empty"); */
+						}
+						case -226:
+							break;
+						case 234: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -227:
+							break;
+						case 235: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -228:
+							break;
+						case 236: { /* System.out.println("in empty empty"); */
+						}
+						case -229:
+							break;
+						case 237: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -230:
+							break;
+						case 238: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -231:
+							break;
+						case 239: { /* System.out.println("in empty empty"); */
+						}
+						case -232:
+							break;
+						case 240: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -233:
+							break;
+						case 241: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -234:
+							break;
+						case 242: { /* System.out.println("in empty empty"); */
+						}
+						case -235:
+							break;
+						case 243: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -236:
+							break;
+						case 244: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -237:
+							break;
+						case 245: { /* System.out.println("in empty empty"); */
+						}
+						case -238:
+							break;
+						case 246: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -239:
+							break;
+						case 247: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -240:
+							break;
+						case 248: { /* System.out.println("in empty empty"); */
+						}
+						case -241:
+							break;
+						case 249: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -242:
+							break;
+						case 250: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -243:
+							break;
+						case 251: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -244:
+							break;
+						case 252: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -245:
+							break;
+						case 253: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -246:
+							break;
+						case 254: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -247:
+							break;
+						case 255: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -248:
+							break;
+						case 256: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -249:
+							break;
+						case 257: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -250:
+							break;
+						case 258: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -251:
+							break;
+						case 259: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -252:
+							break;
+						case 260: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -253:
+							break;
+						case 261: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -254:
+							break;
+						case 262: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -255:
+							break;
+						case 263: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -256:
+							break;
+						case 264: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -257:
+							break;
+						case 265: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -258:
+							break;
+						case 266: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -259:
+							break;
+						case 267: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -260:
+							break;
+						case 268: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -261:
+							break;
+						case 269: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -262:
+							break;
+						case 270: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -263:
+							break;
+						case 271: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -264:
+							break;
+						case 272: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -265:
+							break;
+						case 273: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -266:
+							break;
+						case 274: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -267:
+							break;
+						case 275: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -268:
+							break;
+						case 276: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -269:
+							break;
+						case 277: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -270:
+							break;
+						case 278: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -271:
+							break;
+						case 279: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -272:
+							break;
+						case 280: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -273:
+							break;
+						case 281: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -274:
+							break;
+						case 282: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -275:
+							break;
+						case 283: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -276:
+							break;
+						case 284: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -277:
+							break;
+						case 285: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -278:
+							break;
+						case 286: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -279:
+							break;
+						case 287: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -280:
+							break;
+						case 288: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -281:
+							break;
+						case 289: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -282:
+							break;
+						case 290: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -283:
+							break;
+						case 291: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -284:
+							break;
+						case 292: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -285:
+							break;
+						case 293: { /* System.out.println("in empty empty"); */
+						}
+						case -286:
+							break;
+						case 294: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -287:
+							break;
+						case 295: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -288:
+							break;
+						case 296: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -289:
+							break;
+						case 297: { /* System.out.println("in empty empty"); */
+						}
+						case -290:
+							break;
+						case 298: {
+							return new Symbol(sym.INTEGER, Integer.valueOf(yytext()));
+						}
+						case -291:
+							break;
+						case 299: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -292:
+							break;
+						case 300: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -293:
+							break;
+						case 301: { /* System.out.println("in empty empty"); */
+						}
+						case -294:
+							break;
+						case 302: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -295:
+							break;
+						case 303: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -296:
+							break;
+						case 304: { /* System.out.println("in empty empty"); */
+						}
+						case -297:
+							break;
+						case 305: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -298:
+							break;
+						case 306: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -299:
+							break;
+						case 307: { /* System.out.println("in empty empty"); */
+						}
+						case -300:
+							break;
+						case 308: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -301:
+							break;
+						case 309: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -302:
+							break;
+						case 310: { /* System.out.println("in empty empty"); */
+						}
+						case -303:
+							break;
+						case 311: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -304:
+							break;
+						case 312: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -305:
+							break;
+						case 313: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -306:
+							break;
+						case 314: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -307:
+							break;
+						case 315: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -308:
+							break;
+						case 316: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -309:
+							break;
+						case 317: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -310:
+							break;
+						case 318: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -311:
+							break;
+						case 319: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -312:
+							break;
+						case 320: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -313:
+							break;
+						case 321: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -314:
+							break;
+						case 322: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -315:
+							break;
+						case 323: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -316:
+							break;
+						case 324: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -317:
+							break;
+						case 325: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -318:
+							break;
+						case 326: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -319:
+							break;
+						case 327: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -320:
+							break;
+						case 328: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -321:
+							break;
+						case 329: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -322:
+							break;
+						case 330: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -323:
+							break;
+						case 331: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -324:
+							break;
+						case 332: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -325:
+							break;
+						case 333: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -326:
+							break;
+						case 334: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -327:
+							break;
+						case 335: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -328:
+							break;
+						case 336: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -329:
+							break;
+						case 337: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -330:
+							break;
+						case 338: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -331:
+							break;
+						case 339: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -332:
+							break;
+						case 340: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -333:
+							break;
+						case 341: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -334:
+							break;
+						case 342: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -335:
+							break;
+						case 343: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -336:
+							break;
+						case 344: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -337:
+							break;
+						case 345: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -338:
+							break;
+						case 346: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -339:
+							break;
+						case 347: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -340:
+							break;
+						case 348: { /* System.out.println("in empty empty"); */
+						}
+						case -341:
+							break;
+						case 349: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -342:
+							break;
+						case 350: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -343:
+							break;
+						case 351: { /* System.out.println("in empty empty"); */
+						}
+						case -344:
+							break;
+						case 352: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -345:
+							break;
+						case 353: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -346:
+							break;
+						case 354: { /* System.out.println("in empty empty"); */
+						}
+						case -347:
+							break;
+						case 355: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -348:
+							break;
+						case 356: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -349:
+							break;
+						case 357: { /* System.out.println("in empty empty"); */
+						}
+						case -350:
+							break;
+						case 358: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -351:
+							break;
+						case 359: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -352:
+							break;
+						case 360: { /* System.out.println("in empty empty"); */
+						}
+						case -353:
+							break;
+						case 361: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -354:
+							break;
+						case 362: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -355:
+							break;
+						case 363: { /* System.out.println("in empty empty"); */
+						}
+						case -356:
+							break;
+						case 364: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -357:
+							break;
+						case 365: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -358:
+							break;
+						case 366: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -359:
+							break;
+						case 367: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -360:
+							break;
+						case 368: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -361:
+							break;
+						case 369: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -362:
+							break;
+						case 370: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -363:
+							break;
+						case 371: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -364:
+							break;
+						case 372: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -365:
+							break;
+						case 373: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -366:
+							break;
+						case 374: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -367:
+							break;
+						case 375: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -368:
+							break;
+						case 376: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -369:
+							break;
+						case 377: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -370:
+							break;
+						case 378: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -371:
+							break;
+						case 379: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -372:
+							break;
+						case 380: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -373:
+							break;
+						case 381: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -374:
+							break;
+						case 382: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -375:
+							break;
+						case 383: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -376:
+							break;
+						case 384: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -377:
+							break;
+						case 385: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -378:
+							break;
+						case 386: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -379:
+							break;
+						case 387: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -380:
+							break;
+						case 388: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -381:
+							break;
+						case 389: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -382:
+							break;
+						case 390: { /* System.out.println("in empty empty"); */
+						}
+						case -383:
+							break;
+						case 391: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -384:
+							break;
+						case 392: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -385:
+							break;
+						case 393: { /* System.out.println("in empty empty"); */
+						}
+						case -386:
+							break;
+						case 394: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -387:
+							break;
+						case 395: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -388:
+							break;
+						case 396: { /* System.out.println("in empty empty"); */
+						}
+						case -389:
+							break;
+						case 397: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -390:
+							break;
+						case 398: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -391:
+							break;
+						case 399: { /* System.out.println("in empty empty"); */
+						}
+						case -392:
+							break;
+						case 400: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -393:
+							break;
+						case 401: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -394:
+							break;
+						case 402: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -395:
+							break;
+						case 403: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -396:
+							break;
+						case 404: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -397:
+							break;
+						case 405: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -398:
+							break;
+						case 406: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -399:
+							break;
+						case 407: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -400:
+							break;
+						case 408: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -401:
+							break;
+						case 409: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -402:
+							break;
+						case 410: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -403:
+							break;
+						case 411: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -404:
+							break;
+						case 412: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -405:
+							break;
+						case 413: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -406:
+							break;
+						case 414: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -407:
+							break;
+						case 415: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -408:
+							break;
+						case 416: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -409:
+							break;
+						case 417: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -410:
+							break;
+						case 418: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -411:
+							break;
+						case 419: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -412:
+							break;
+						case 420: { /* System.out.println("in empty empty"); */
+						}
+						case -413:
+							break;
+						case 421: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -414:
+							break;
+						case 422: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -415:
+							break;
+						case 423: { /* System.out.println("in empty empty"); */
+						}
+						case -416:
+							break;
+						case 424: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -417:
+							break;
+						case 425: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -418:
+							break;
+						case 426: { /* System.out.println("in empty empty"); */
+						}
+						case -419:
+							break;
+						case 427: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -420:
+							break;
+						case 428: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -421:
+							break;
+						case 429: { /* System.out.println("in empty empty"); */
+						}
+						case -422:
+							break;
+						case 430: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -423:
+							break;
+						case 431: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -424:
+							break;
+						case 432: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -425:
+							break;
+						case 433: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -426:
+							break;
+						case 434: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -427:
+							break;
+						case 435: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -428:
+							break;
+						case 436: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -429:
+							break;
+						case 437: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -430:
+							break;
+						case 438: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -431:
+							break;
+						case 439: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -432:
+							break;
+						case 440: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -433:
+							break;
+						case 441: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -434:
+							break;
+						case 442: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -435:
+							break;
+						case 443: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -436:
+							break;
+						case 444: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -437:
+							break;
+						case 445: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -438:
+							break;
+						case 446: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -439:
+							break;
+						case 447: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -440:
+							break;
+						case 448: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -441:
+							break;
+						case 449: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -442:
+							break;
+						case 450: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -443:
+							break;
+						case 451: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -444:
+							break;
+						case 452: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -445:
+							break;
+						case 453: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -446:
+							break;
+						case 454: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -447:
+							break;
+						case 455: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -448:
+							break;
+						case 456: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -449:
+							break;
+						case 457: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -450:
+							break;
+						case 458: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -451:
+							break;
+						case 459: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -452:
+							break;
+						case 460: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -453:
+							break;
+						case 461: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -454:
+							break;
+						case 462: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -455:
+							break;
+						case 463: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -456:
+							break;
+						case 464: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -457:
+							break;
+						case 465: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -458:
+							break;
+						case 466: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -459:
+							break;
+						case 467: { /* System.out.println("in empty empty"); */
+						}
+						case -460:
+							break;
+						case 468: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -461:
+							break;
+						case 469: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -462:
+							break;
+						case 470: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -463:
+							break;
+						case 471: { /* System.out.println("in empty empty"); */
+						}
+						case -464:
+							break;
+						case 472: {
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -465:
+							break;
+						case 473: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -466:
+							break;
+						case 474: { /* System.out.println("in empty empty"); */
+						}
+						case -467:
+							break;
+						case 475: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -468:
+							break;
+						case 476: { /* System.out.println("KEY: "+yytext()); */
+							return new Symbol(sym.KEY, yytext());
+						}
+						case -469:
+							break;
+						default:
+							yy_error(YY_E_INTERNAL, false);
+						case -1:
 					}
 					yy_initial = true;
 					yy_state = yy_state_dtrans[yy_lexical_state];

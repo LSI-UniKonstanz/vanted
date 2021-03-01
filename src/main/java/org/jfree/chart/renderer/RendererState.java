@@ -35,20 +35,20 @@ import org.jfree.chart.plot.PlotRenderingInfo;
  * Represents the current state of a renderer.
  */
 public class RendererState {
-
+	
 	/** The plot rendering info. */
 	private PlotRenderingInfo info;
-
+	
 	/**
 	 * Creates a new state object.
 	 * 
 	 * @param info
-	 *            the plot rendering info.
+	 *           the plot rendering info.
 	 */
 	public RendererState(PlotRenderingInfo info) {
 		this.info = info;
 	}
-
+	
 	/**
 	 * Returns the plot rendering info.
 	 * 
@@ -57,5 +57,5 @@ public class RendererState {
 	public PlotRenderingInfo getInfo() {
 		return this.info;
 	}
-
+	
 }

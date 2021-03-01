@@ -61,102 +61,102 @@ import org.jfree.chart.event.LegendChangeListener;
  * @see StandardLegend
  */
 public abstract class Legend implements Serializable, Cloneable {
-
+	
 	/** Internal value used as NORTHWEST diagonal component of the anchor value. */
 	private static final int NORTHWEST = 0xA0;
-
+	
 	/** Internal value used as NORTHEAST diagonal component of the anchor value. */
 	private static final int NORTHEAST = 0xB0;
-
+	
 	/** Internal value used as SOUTHEAST diagonal component of the anchor value. */
 	private static final int SOUTHEAST = 0xC0;
-
+	
 	/** Internal value used as SOUTHWEST diagonal component of the anchor value. */
 	private static final int SOUTHWEST = 0xD0;
-
+	
 	/** Constant anchor value for legend position WEST. */
 	public static final int WEST = 0x00;
-
+	
 	/** Constant anchor value for legend position WEST_NORTHWEST. */
 	public static final int WEST_NORTHWEST = WEST + NORTHWEST;
-
+	
 	/** Constant anchor value for legend position WEST_SOUTHWEST. */
 	public static final int WEST_SOUTHWEST = WEST + SOUTHWEST;
-
+	
 	/** Constant anchor value for legend position NORTH. */
 	public static final int NORTH = 0x01;
-
+	
 	/** Constant anchor value for legend position NORTH_NORTHWEST. */
 	public static final int NORTH_NORTHWEST = NORTH + NORTHWEST;
-
+	
 	/** Constant anchor value for legend position NORTH_NORTHEAST. */
 	public static final int NORTH_NORTHEAST = NORTH + NORTHEAST;
-
+	
 	/** Constant anchor value for legend position EAST. */
 	public static final int EAST = 0x02;
-
+	
 	/** Constant anchor value for legend position EAST_NORTHEAST. */
 	public static final int EAST_NORTHEAST = EAST + NORTHEAST;
-
+	
 	/** Constant anchor value for legend position EAST_SOUTHEAST. */
 	public static final int EAST_SOUTHEAST = EAST + SOUTHEAST;
-
+	
 	/** Constant anchor value for legend position SOUTH. */
 	public static final int SOUTH = 0x03;
-
+	
 	/** Constant anchor value for legend position SOUTH_SOUTHWEST. */
 	public static final int SOUTH_SOUTHWEST = SOUTH + SOUTHWEST;
-
+	
 	/** Constant anchor value for legend position SOUTH_SOUTHEAST. */
 	public static final int SOUTH_SOUTHEAST = SOUTH + SOUTHEAST;
-
+	
 	/**
 	 * Internal value indicating the bit holding the value of interest in the anchor
 	 * value.
 	 */
 	protected static final int INVERTED = 1 << 1;
-
+	
 	/**
 	 * Internal value indicating the bit holding the value of interest in the anchor
 	 * value.
 	 */
 	protected static final int HORIZONTAL = 1 << 0;
-
+	
 	/** The current location anchor of the legend. */
 	private int anchor = SOUTH;
-
+	
 	/**
 	 * A reference to the chart that the legend belongs to (used for access to the
 	 * dataset). <!-- use registerChart() instead -->
 	 */
 	private JFreeChart chart;
-
+	
 	/** Storage for registered change listeners. */
 	private transient EventListenerList listenerList;
-
+	
 	/**
 	 * Static factory method that returns a concrete subclass of Legend.
 	 * 
 	 * @param chart
-	 *            the chart that the legend belongs to.
+	 *           the chart that the legend belongs to.
 	 * @return a StandardLegend.
 	 */
 	public static Legend createInstance(JFreeChart chart) {
 		return new StandardLegend();
 	}
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public Legend() {
 		this.listenerList = new EventListenerList();
 	}
-
+	
 	/**
 	 * Creates a new legend.
 	 * 
 	 * @param chart
-	 *            the chart that the legend belongs to.
+	 *           the chart that the legend belongs to.
 	 * @deprecated use the default constructor instead and let JFreeChart manage the
 	 *             chart reference
 	 */
@@ -164,7 +164,7 @@ public abstract class Legend implements Serializable, Cloneable {
 		this();
 		this.chart = chart;
 	}
-
+	
 	/**
 	 * Returns the chart that this legend belongs to.
 	 * 
@@ -173,71 +173,71 @@ public abstract class Legend implements Serializable, Cloneable {
 	public JFreeChart getChart() {
 		return this.chart;
 	}
-
+	
 	/**
 	 * Internal maintenance method to update the reference to the central JFreeChart
 	 * object.
 	 * 
 	 * @param chart
-	 *            the chart, may be null, if the legend gets removed from the chart.
+	 *           the chart, may be null, if the legend gets removed from the chart.
 	 */
 	protected void registerChart(JFreeChart chart) {
 		this.chart = chart;
 	}
-
+	
 	/**
 	 * Draws the legend on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param available
-	 *            the area within which the legend (and plot) should be drawn.
+	 *           the area within which the legend (and plot) should be drawn.
 	 * @param info
-	 *            a carrier for returning information about the entities in the
-	 *            legend.
+	 *           a carrier for returning information about the entities in the
+	 *           legend.
 	 * @return the area remaining after the legend has drawn itself.
 	 */
 	public abstract Rectangle2D draw(Graphics2D g2, Rectangle2D available, ChartRenderingInfo info);
-
+	
 	/**
 	 * Registers an object for notification of changes to the legend.
 	 * 
 	 * @param listener
-	 *            the object that is being registered.
+	 *           the object that is being registered.
 	 */
 	public void addChangeListener(LegendChangeListener listener) {
 		this.listenerList.add(LegendChangeListener.class, listener);
 	}
-
+	
 	/**
 	 * Deregisters an object for notification of changes to the legend.
 	 * 
 	 * @param listener
-	 *            the object that is being deregistered.
+	 *           the object that is being deregistered.
 	 */
 	public void removeChangeListener(LegendChangeListener listener) {
 		this.listenerList.remove(LegendChangeListener.class, listener);
 	}
-
+	
 	/**
 	 * Notifies all registered listeners that the chart legend has changed in some
 	 * way.
 	 * 
 	 * @param event
-	 *            information about the change to the legend.
+	 *           information about the change to the legend.
 	 */
 	protected void notifyListeners(LegendChangeEvent event) {
-
+		
 		Object[] listeners = this.listenerList.getListenerList();
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == LegendChangeListener.class) {
 				((LegendChangeListener) listeners[i + 1]).legendChanged(event);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the current anchor of this legend.
 	 * <p>
@@ -248,7 +248,7 @@ public abstract class Legend implements Serializable, Cloneable {
 	public int getAnchor() {
 		return this.anchor;
 	}
-
+	
 	/**
 	 * Sets the current anchor of this legend.
 	 * <P>
@@ -258,7 +258,7 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * change is made.
 	 * 
 	 * @param anchor
-	 *            the new anchor value.
+	 *           the new anchor value.
 	 */
 	public void setAnchor(int anchor) {
 		if (isValidAnchor(anchor)) {
@@ -266,35 +266,35 @@ public abstract class Legend implements Serializable, Cloneable {
 			notifyListeners(new LegendChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Tests if the specified anchor is a valid anchor.
 	 * 
 	 * @param anchor
-	 *            a candidate anchor.
+	 *           a candidate anchor.
 	 * @return <code>true</code> if the anchor is valid; <code>false</code>
 	 *         otherwise.
 	 */
 	private boolean isValidAnchor(int anchor) {
 		switch (anchor) {
-		case NORTH:
-		case NORTH_NORTHEAST:
-		case NORTH_NORTHWEST:
-		case SOUTH:
-		case SOUTH_SOUTHEAST:
-		case SOUTH_SOUTHWEST:
-		case WEST:
-		case WEST_NORTHWEST:
-		case WEST_SOUTHWEST:
-		case EAST:
-		case EAST_NORTHEAST:
-		case EAST_SOUTHEAST:
-			return true;
-		default:
-			return false;
+			case NORTH:
+			case NORTH_NORTHEAST:
+			case NORTH_NORTHWEST:
+			case SOUTH:
+			case SOUTH_SOUTHEAST:
+			case SOUTH_SOUTHWEST:
+			case WEST:
+			case WEST_NORTHWEST:
+			case WEST_SOUTHWEST:
+			case EAST:
+			case EAST_NORTHEAST:
+			case EAST_SOUTHEAST:
+				return true;
+			default:
+				return false;
 		}
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if and only if this legend is anchored to top.
 	 * 
@@ -302,17 +302,17 @@ public abstract class Legend implements Serializable, Cloneable {
 	 */
 	protected boolean isAnchoredToTop() {
 		switch (this.anchor) {
-		case WEST_NORTHWEST:
-		case NORTH_NORTHWEST:
-		case NORTH:
-		case NORTH_NORTHEAST:
-		case EAST_NORTHEAST:
-			return true;
-		default:
-			return false;
+			case WEST_NORTHWEST:
+			case NORTH_NORTHWEST:
+			case NORTH:
+			case NORTH_NORTHEAST:
+			case EAST_NORTHEAST:
+				return true;
+			default:
+				return false;
 		}
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if and only if this legend is anchored to middle.
 	 * 
@@ -321,7 +321,7 @@ public abstract class Legend implements Serializable, Cloneable {
 	protected boolean isAnchoredToMiddle() {
 		return this.anchor == EAST || this.anchor == WEST;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if and only if this legend is anchored to bottom.
 	 * 
@@ -329,17 +329,17 @@ public abstract class Legend implements Serializable, Cloneable {
 	 */
 	protected boolean isAnchoredToBottom() {
 		switch (this.anchor) {
-		case WEST_SOUTHWEST:
-		case SOUTH_SOUTHWEST:
-		case SOUTH:
-		case SOUTH_SOUTHEAST:
-		case EAST_SOUTHEAST:
-			return true;
-		default:
-			return false;
+			case WEST_SOUTHWEST:
+			case SOUTH_SOUTHWEST:
+			case SOUTH:
+			case SOUTH_SOUTHEAST:
+			case EAST_SOUTHEAST:
+				return true;
+			default:
+				return false;
 		}
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if and only if this legend is anchored to left.
 	 * 
@@ -347,17 +347,17 @@ public abstract class Legend implements Serializable, Cloneable {
 	 */
 	protected boolean isAnchoredToLeft() {
 		switch (this.anchor) {
-		case NORTH_NORTHWEST:
-		case WEST_NORTHWEST:
-		case WEST:
-		case WEST_SOUTHWEST:
-		case SOUTH_SOUTHWEST:
-			return true;
-		default:
-			return false;
+			case NORTH_NORTHWEST:
+			case WEST_NORTHWEST:
+			case WEST:
+			case WEST_SOUTHWEST:
+			case SOUTH_SOUTHWEST:
+				return true;
+			default:
+				return false;
 		}
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if and only if this legend is anchored to right.
 	 * 
@@ -365,17 +365,17 @@ public abstract class Legend implements Serializable, Cloneable {
 	 */
 	protected boolean isAnchoredToRight() {
 		switch (this.anchor) {
-		case NORTH_NORTHEAST:
-		case EAST_NORTHEAST:
-		case EAST:
-		case EAST_SOUTHEAST:
-		case SOUTH_SOUTHEAST:
-			return true;
-		default:
-			return false;
+			case NORTH_NORTHEAST:
+			case EAST_NORTHEAST:
+			case EAST:
+			case EAST_SOUTHEAST:
+			case SOUTH_SOUTHEAST:
+				return true;
+			default:
+				return false;
 		}
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if and only if this legend is anchored to center.
 	 * 
@@ -384,60 +384,60 @@ public abstract class Legend implements Serializable, Cloneable {
 	protected boolean isAnchoredToCenter() {
 		return this.anchor == NORTH || this.anchor == SOUTH;
 	}
-
+	
 	/**
 	 * Tests this legend for equality with another object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof Legend) {
 			Legend l = (Legend) obj;
 			return (this.anchor == l.anchor);
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.listenerList = new EventListenerList(); // todo: make sure this is populated.
 	}
-
+	
 	/**
 	 * Clones the legend, and takes care of listeners. Note: the cloned legend refer
 	 * to the same chart as the original one. JFreeChart clone() takes care of
@@ -445,12 +445,12 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the object cannot be cloned.
+	 *            if the object cannot be cloned.
 	 */
 	protected Object clone() throws CloneNotSupportedException {
 		Legend ret = (Legend) super.clone();
 		this.listenerList = new EventListenerList();
 		return ret;
 	}
-
+	
 }

@@ -17,21 +17,21 @@ package org.graffiti.plugin.parameter;
  */
 public interface LimitableParameter extends SingleParameter {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the maximum value for this <code>LimitableParameter</code>.
 	 * 
 	 * @return the maximum value for this <code>LimitableParameter</code>.
 	 */
 	public Comparable<?> getMax();
-
+	
 	/**
 	 * Returns the minimum value for this <code>LimitableParameter</code>.
 	 * 
 	 * @return the minimum value for this <code>LimitableParameter</code>.
 	 */
 	public Comparable<?> getMin();
-
+	
 	/**
 	 * Returns <code>true</code> if the value is between the minimum and the
 	 * maximum, <code>false</code> otherwise.

@@ -45,26 +45,26 @@ import org.jfree.ui.RefineryUtilities;
  * section in the chart.
  */
 public class PieChartDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public PieChartDemo2(final String title) {
-
+		
 		super(title);
 		final PieDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -75,7 +75,7 @@ public class PieChartDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -91,12 +91,12 @@ public class PieChartDemo2 extends ApplicationFrame {
 		dataset.setValue("Six", Double.valueOf(19.4));
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
@@ -109,20 +109,20 @@ public class PieChartDemo2 extends ApplicationFrame {
 		plot.setExplodePercent(1, 0.30);
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final PieChartDemo2 demo = new PieChartDemo2("Pie Chart Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -39,9 +39,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
  */
 public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 	private JPanel jpanel;
-
+	
 	private int barCount = -1;
-
+	
 	public ClusterColorAttributeEditor(Displayable disp) {
 		super(disp);
 		if (disp instanceof ClusterColorParameter)
@@ -49,13 +49,13 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 		else
 			setGUI((ClusterColorAttribute) disp, false);
 	}
-
+	
 	private void setGUI(ClusterColorAttribute cca, boolean showEmpty) {
 		jpanel = new JPanel();
-
+		
 		double[][] size = new double[2][];
 		barCount = cca.getDefinedClusterColorCount();
-
+		
 		if (barCount <= 0) {
 			jpanel.setLayout(new GridLayout(1, 1));
 			jpanel.add(new JLabel("no cluster-info"));
@@ -66,7 +66,7 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 				size[0][x] = TableLayoutConstants.FILL;
 			size[1][0] = TableLayoutConstants.PREFERRED; // TableLayoutConstants.FILL;
 			size[1][1] = TableLayoutConstants.PREFERRED; // TableLayoutConstants.FILL;
-
+			
 			jpanel.setLayout(new TableLayout(size));
 			ArrayList<Color> barCols = null;
 			ArrayList<Color> barOutlineCols = null;
@@ -92,7 +92,7 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 				addDefaultColorActionListenerAndAddBarInfo(colButton, true, i);
 				colButton.putClientProperty("isBar", Boolean.valueOf(true));
 				colButton.putClientProperty("barIndex", Integer.valueOf(i));
-
+				
 				if (barOutlineCols != null && barOutlineCols.get(i) != null && !showEmpty) {
 					colButtonOutline.setBackground(barOutlineCols.get(i));
 					colButtonOutline.setForeground(barOutlineCols.get(i));
@@ -102,16 +102,16 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 				addDefaultColorActionListenerAndAddBarInfo(colButtonOutline, false, i);
 				colButtonOutline.putClientProperty("isBar", Boolean.valueOf(false));
 				colButtonOutline.putClientProperty("barIndex", Integer.valueOf(i));
-
+				
 				jpanel.add(colButton, i + ",0");
-
+				
 				jpanel.add(colButtonOutline, i + ",1");
 			}
 		}
 		jpanel.setMaximumSize(new Dimension(2000, 40));
 		jpanel.revalidate();
 	}
-
+	
 	private static void addDefaultColorActionListenerAndAddBarInfo(final JLabel colorButton, final boolean barColor,
 			final int bar) {
 		colorButton.setOpaque(true);
@@ -133,23 +133,23 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 					src.setText("#");
 				}
 			}
-
+			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				colorButton.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
 			}
-
+			
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				colorButton.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 		});
 	}
-
+	
 	public JComponent getComponent() {
 		return jpanel;
 	}
-
+	
 	public void setEditFieldValue() {
 		ClusterColorAttribute cca;
 		if (getDisplayable() instanceof ClusterColorParameter)
@@ -171,7 +171,7 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 			}
 		}
 	}
-
+	
 	public void setValue() {
 		ClusterColorAttribute cca;
 		if (getDisplayable() instanceof ClusterColorParameter)

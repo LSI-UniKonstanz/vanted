@@ -42,42 +42,42 @@ import java.io.Serializable;
  * @author Anthony Boulestreau
  */
 public class SymbolicTickUnit extends NumberTickUnit implements Serializable {
-
+	
 	/** The list of symbolic value to display instead of the numeric values */
 	private String[] symbolicValue;
-
+	
 	/**
 	 * Creates a new symbolic tick unit.
 	 * 
 	 * @param size
-	 *            the size of the tick unit.
+	 *           the size of the tick unit.
 	 * @param sv
-	 *            the list of symbolic value to display instead of the numeric
-	 *            value.
+	 *           the list of symbolic value to display instead of the numeric
+	 *           value.
 	 */
 	public SymbolicTickUnit(double size, String[] sv) {
 		super(size, null);
 		this.symbolicValue = new String[sv.length];
 		System.arraycopy(sv, 0, this.symbolicValue, 0, sv.length);
 	}
-
+	
 	/**
 	 * Converts a value to a string, using the list of symbolic values. ex: if the
 	 * symbolic value list is ["up", "down"] then 0 is convert to "up" and 1 to
 	 * "down".
 	 * 
 	 * @param value
-	 *            value to convert.
+	 *           value to convert.
 	 * @return the symbolic value.
 	 */
 	public String valueToString(double value) {
-
+		
 		if ((value < 0) || (value >= this.symbolicValue.length)) {
 			throw new IllegalArgumentException("The value " + value + " does not have a corresponding symbolic value");
 		}
 		return this.symbolicValue[(int) value];
 	}
-
+	
 	/**
 	 * Returns the number of symbols in this unit.
 	 * 
@@ -86,5 +86,5 @@ public class SymbolicTickUnit extends NumberTickUnit implements Serializable {
 	public int getSymbolCount() {
 		return this.symbolicValue.length;
 	}
-
+	
 }

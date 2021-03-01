@@ -19,15 +19,15 @@ import org.ErrorMsg;
 import org.ReleaseInfo;
 
 public class Scenario {
-
+	
 	ArrayList<String> imports = new ArrayList<String>();
 	ArrayList<String> commands = new ArrayList<String>();
 	String scenarioName;
 	String menuGroup = "";
 	boolean readError = false;
-
+	
 	File file;
-
+	
 	/**
 	 * Create a new scenario
 	 */
@@ -38,7 +38,7 @@ public class Scenario {
 		else
 			this.menuGroup = menuTitle;
 	}
-
+	
 	public Scenario(File f) {
 		try {
 			load(new FileInputStream(f));
@@ -47,11 +47,11 @@ public class Scenario {
 		}
 		file = f;
 	}
-
+	
 	public Scenario(InputStream is) {
 		load(is);
 	}
-
+	
 	private void load(InputStream is) {
 		readError = true;
 		try {
@@ -89,7 +89,7 @@ public class Scenario {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	public synchronized void addImport(String bshScriptCommand) {
 		if (bshScriptCommand == null || bshScriptCommand.length() == 0)
 			return;
@@ -97,7 +97,7 @@ public class Scenario {
 		cmdl.add(bshScriptCommand);
 		addImports(cmdl);
 	}
-
+	
 	public synchronized void addImports(String[] bshScriptCommands) {
 		if (bshScriptCommands == null || bshScriptCommands.length == 0)
 			return;
@@ -106,7 +106,7 @@ public class Scenario {
 			cmdl.add(s);
 		addImports(cmdl);
 	}
-
+	
 	public synchronized void addImports(Collection<String> bshScriptCommands) {
 		for (String i : bshScriptCommands) {
 			boolean found = false;
@@ -120,11 +120,11 @@ public class Scenario {
 				imports.add(i);
 		}
 	}
-
+	
 	public String getName() {
 		return scenarioName;
 	}
-
+	
 	public synchronized void addCommands(String[] bshScriptCommands) {
 		if (bshScriptCommands == null || bshScriptCommands.length == 0)
 			return;
@@ -133,16 +133,16 @@ public class Scenario {
 			cmdl.add(s);
 		addCommands(cmdl);
 	}
-
+	
 	public synchronized void addCommands(Collection<String> bshScriptCommands) {
 		commands.addAll(bshScriptCommands);
 	}
-
+	
 	public synchronized void addPluginCommand(ProvidesScenarioSupportCommands plugin) {
 		addImports(plugin.getScenarioImports());
 		addCommands(plugin.getScenarioCommands());
 	}
-
+	
 	public synchronized Collection<String> getScenarioCommands() {
 		ArrayList<String> result = new ArrayList<String>();
 		result.addAll(getHeader());
@@ -154,7 +154,7 @@ public class Scenario {
 		result.addAll(commands);
 		return result;
 	}
-
+	
 	private synchronized Collection<String> getHeader() {
 		ArrayList<String> header = new ArrayList<String>();
 		String menu = menuGroup.length() > 0 ? menuGroup + ":" : "";
@@ -162,7 +162,7 @@ public class Scenario {
 		header.add("//");
 		return header;
 	}
-
+	
 	@Override
 	public synchronized String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -170,21 +170,21 @@ public class Scenario {
 			sb.append(s + "\r\n");
 		return sb.toString();
 	}
-
+	
 	public boolean isValid() {
 		if (readError)
 			return false;
-
+		
 		boolean nameOk = scenarioName != null && scenarioName.length() > 0;
 		boolean importsOk = imports != null;
 		boolean sourceOk = commands != null;
 		return nameOk && importsOk && sourceOk;
 	}
-
+	
 	public String getMenu() {
 		return menuGroup;
 	}
-
+	
 	public String getFileName() {
 		if (file != null)
 			return file.getAbsolutePath();
@@ -192,11 +192,11 @@ public class Scenario {
 		String path = ReleaseInfo.getAppFolderWithFinalSep();
 		return path + menu + scenarioName + ".bsh";
 	}
-
+	
 	public void setName(String name) {
 		this.scenarioName = name;
 	}
-
+	
 	public void setMenuGroup(String group) {
 		this.menuGroup = group;
 	}

@@ -37,26 +37,26 @@ import org.xml.sax.helpers.DefaultHandler;
  * A handler for reading key-value items.
  */
 public class ItemHandler extends DefaultHandler implements DatasetTags {
-
+	
 	/** The root handler. */
 	private RootHandler root;
-
+	
 	/** The parent handler (can be the same as root, but not always). */
 	private DefaultHandler parent;
-
+	
 	/** The key. */
 	private Comparable key;
-
+	
 	/** The value. */
 	private Number value;
-
+	
 	/**
 	 * Creates a new item handler.
 	 * 
 	 * @param root
-	 *            the root handler.
+	 *           the root handler.
 	 * @param parent
-	 *            the parent handler.
+	 *           the parent handler.
 	 */
 	public ItemHandler(final RootHandler root, final DefaultHandler parent) {
 		this.root = root;
@@ -64,7 +64,7 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 		this.key = null;
 		this.value = null;
 	}
-
+	
 	/**
 	 * Returns the key that has been read by the handler, or <code>null</code>.
 	 * 
@@ -73,17 +73,17 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 	public Comparable getKey() {
 		return this.getKey();
 	}
-
+	
 	/**
 	 * Sets the key.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 */
 	public void setKey(final Comparable key) {
 		this.key = key;
 	}
-
+	
 	/**
 	 * Returns the key that has been read by the handler, or <code>null</code>.
 	 * 
@@ -92,34 +92,34 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 	public Number getValue() {
 		return this.value;
 	}
-
+	
 	/**
 	 * Sets the value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void setValue(final Number value) {
 		this.value = value;
 	}
-
+	
 	/**
 	 * The start of an element.
 	 * 
 	 * @param namespaceURI
-	 *            the namespace.
+	 *           the namespace.
 	 * @param localName
-	 *            the element name.
+	 *           the element name.
 	 * @param qName
-	 *            the element name.
+	 *           the element name.
 	 * @param atts
-	 *            the attributes.
+	 *           the attributes.
 	 * @throws SAXException
-	 *             for errors.
+	 *            for errors.
 	 */
 	public void startElement(final String namespaceURI, final String localName, final String qName,
 			final Attributes atts) throws SAXException {
-
+		
 		if (qName.equals(ITEM_TAG)) {
 			final KeyHandler subhandler = new KeyHandler(this.root, this);
 			this.root.pushSubHandler(subhandler);
@@ -129,21 +129,21 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 		} else {
 			throw new SAXException("Expected <Item> or <Value>...found " + qName);
 		}
-
+		
 	}
-
+	
 	/**
 	 * The end of an element.
 	 * 
 	 * @param namespaceURI
-	 *            the namespace.
+	 *           the namespace.
 	 * @param localName
-	 *            the element name.
+	 *           the element name.
 	 * @param qName
-	 *            the element name.
+	 *           the element name.
 	 */
 	public void endElement(final String namespaceURI, final String localName, final String qName) {
-
+		
 		if (this.parent instanceof PieDatasetHandler) {
 			final PieDatasetHandler handler = (PieDatasetHandler) this.parent;
 			handler.addItem(this.key, this.value);
@@ -153,7 +153,7 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 			handler.addItem(this.key, this.value);
 			this.root.popSubHandler();
 		}
-
+		
 	}
-
+	
 }

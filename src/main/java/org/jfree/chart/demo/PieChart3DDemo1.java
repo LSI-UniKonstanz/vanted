@@ -47,37 +47,37 @@ import org.jfree.util.Rotation;
  * data from a {@link DefaultPieDataset}.
  */
 public class PieChart3DDemo1 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public PieChart3DDemo1(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		final PieDataset dataset = createSampleDataset();
-
+		
 		// create the chart...
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset for the demo.
 	 * 
 	 * @return A sample dataset.
 	 */
 	private PieDataset createSampleDataset() {
-
+		
 		final DefaultPieDataset result = new DefaultPieDataset();
 		result.setValue("Java", Double.valueOf(43.2));
 		result.setValue("Visual Basic", Double.valueOf(10.0));
@@ -85,9 +85,9 @@ public class PieChart3DDemo1 extends ApplicationFrame {
 		result.setValue("PHP", Double.valueOf(32.5));
 		result.setValue("Perl", Double.valueOf(1.0));
 		return result;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -98,43 +98,43 @@ public class PieChart3DDemo1 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createPieChart3D("Pie Chart 3D Demo 1", // chart title
 				dataset, // data
 				true, // include legend
 				true, false);
-
+		
 		final PiePlot3D plot = (PiePlot3D) chart.getPlot();
 		plot.setStartAngle(290);
 		plot.setDirection(Rotation.CLOCKWISE);
 		plot.setForegroundAlpha(0.5f);
 		plot.setNoDataMessage("No data to display");
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final PieChart3DDemo1 demo = new PieChart3DDemo1("Pie Chart 3D Demo 1");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

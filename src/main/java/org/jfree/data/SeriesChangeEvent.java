@@ -37,15 +37,15 @@ import java.util.EventObject;
  * An event with details of a change to a series.
  */
 public class SeriesChangeEvent extends EventObject implements Serializable {
-
+	
 	/**
 	 * Constructs a new event.
 	 * 
 	 * @param source
-	 *            the source of the change event.
+	 *           the source of the change event.
 	 */
 	public SeriesChangeEvent(final Object source) {
 		super(source);
 	}
-
+	
 }

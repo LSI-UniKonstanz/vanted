@@ -1,10 +1,8 @@
 /**
  * High DPI (4K and above) Swing Support: GUI Components scalers.
- * 
  * Such as:
  * <p/>
  * <ul>
- * 
  * <li>AbstractButton</li>
  * <li>JLabel</li>
  * <li>JOptionPane</li>
@@ -12,7 +10,6 @@
  * <li>JTabbedPane</li>
  * <li>JTextComponent</li>
  * <li>Window</li>
- * 
  * </ul>
  * and their subclasses.
  * 

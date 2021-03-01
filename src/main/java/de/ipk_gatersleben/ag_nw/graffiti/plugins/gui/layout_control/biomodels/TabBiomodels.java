@@ -29,21 +29,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_XML_Rea
 
 /**
  * @author matthiak
- *
  */
 public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallback {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4603467064417816569L;
-
+	
 	static final Logger logger = Logger.getLogger(TabBiomodels.class);
-
+	
 	static final String NAME = "BioModels";
-
+	
 	BiomodelsPanel panel;
-
+	
 	/**
 	 * 
 	 */
@@ -53,11 +52,11 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 		setLayout(new BorderLayout());
 		add(panel, BorderLayout.CENTER);
 	}
-
+	
 	@Override
 	public void resultForSimpleModelQuery(QueryType type, List<SimpleModel> simpleModel) {
 	}
-
+	
 	@Override
 	public void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("creating network from sbml model");
@@ -66,9 +65,9 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 		try {
 			final InputStream bis = new ByteArrayInputStream(modelstring.getBytes("UTF-8"));
 			is = MainFrame.getInstance().getIoManager().createInputSerializer(null, ".sbml");
-
+			
 			SwingUtilities.invokeLater(new Runnable() {
-
+				
 				@Override
 				public void run() {
 					try {
@@ -87,10 +86,10 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-
+					
 				}
 			});
-
+			
 		} catch (IllegalAccessException e1) {
 			e1.printStackTrace();
 		} catch (InstantiationException e1) {
@@ -100,39 +99,39 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-
+		
 	}
-
+	
 	@Override
 	public void resultError(Exception e) {
 		JOptionPane.showMessageDialog(MainFrame.getInstance(),
 				"Unable to communicate with Biomodels Webservice\n" + e.getMessage(), "Communication Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
-
+	
 	@Override
 	public String getTitle() {
 		return NAME;
 	}
-
+	
 	@Override
 	public String getName() {
 		return NAME;
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		return true;
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Pathways";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_TRAILING;
 	}
-
+	
 }

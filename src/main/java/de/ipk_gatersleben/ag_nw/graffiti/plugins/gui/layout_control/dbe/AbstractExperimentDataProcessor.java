@@ -19,18 +19,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  */
 public abstract class AbstractExperimentDataProcessor extends AbstractEditorAlgorithm
 		implements ExperimentDataProcessor {
-
+	
 	protected LinkedList<Runnable> postProcessors = new LinkedList<Runnable>();
-
+	
 	public AbstractExperimentDataProcessor() {
 		this(true);
 	}
-
+	
 	public AbstractExperimentDataProcessor(boolean register) {
 		if (register)
 			ExperimentDataProcessingManager.addExperimentDataProcessor(this);
 	}
-
+	
 	/**
 	 * Should not be overridden, only in case processData() uses a background
 	 * thread. In this case the postProcessors and the setExperimentData() call
@@ -43,23 +43,23 @@ public abstract class AbstractExperimentDataProcessor extends AbstractEditorAlgo
 			r.run();
 		setExperimentData(null);
 	}
-
+	
 	protected abstract void processData();
-
+	
 	public abstract void setExperimentData(ExperimentInterface mappingData);
-
+	
 	public HashMap<File, ExperimentDataAnnotation> getAnnotations(Collection<File> files) {
 		return null;
 	}
-
+	
 	public void setComponent(JComponent optSupplementaryPanel) {
 		// ignore
 	}
-
+	
 	public void addPostProcessor(List<Runnable> postProcessors) {
 		this.postProcessors.addAll(postProcessors);
 	}
-
+	
 	public boolean removePostProcessor(List<Runnable> postProcessors) {
 		return this.postProcessors.removeAll(postProcessors);
 	}

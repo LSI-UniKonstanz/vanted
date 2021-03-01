@@ -83,55 +83,55 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
  * @author Christian Klukas 21.12.2006
  */
 public class FastView extends JComponent implements Printable, GraphView {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5107065749277281358L;
-
+	
 	private Graph graph;
-
+	
 	JLabel graphName = new JLabel("no graph assigned!");
 	JLabel graphDirected = new JLabel("");
 	JLabel graphNodeEdgeCnt = new JLabel("");
 	JLabel graphNodeDegree = new JLabel("");
-
+	
 	JSpinner widthSpinner = new JSpinner(new SpinnerNumberModel(640, 50, Integer.MAX_VALUE, 1));
 	JSpinner heightSpinner = new JSpinner(new SpinnerNumberModel(480, 50, Integer.MAX_VALUE, 1));
-
+	
 	HistogramDataset histogramData = new HistogramDataset();
-
+	
 	ChartPanel cp = null;
 	JFreeChart chart = null;
-
+	
 	MarkComponent markThis;
 	ArrayList<MarkComponent> unMarkThese = new ArrayList<MarkComponent>();
-
+	
 	HashMap<GraphElement, Integer> elementsOfSeriesOne2bin = new HashMap<GraphElement, Integer>();
 	HashMap<GraphElement, Integer> elementsOfSeriesTwo2bin = new HashMap<GraphElement, Integer>();
-
+	
 	public ChartPanel getChart() {
 		return cp;
 	}
-
+	
 	public int getChartWidth() {
 		return cp.getWidth();
-
+		
 	}
-
+	
 	public int getChartHeight() {
 		return cp.getHeight();
 	}
-
+	
 	public FastView() {
 		super();
-
+		
 		int border = 5;
 		this.setLayout(TableLayout.getLayout(TableLayoutConstants.PREFERRED, new double[] {
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED
-
+		
 		}));
-
+		
 		FolderPanel fp = new FolderPanel("Graph Information", false, null, null);
 		fp.addCollapseListenerDialogSizeUpdate();
 		fp.addGuiComponentRow(new JLabel("Graph Name "), graphName, false);
@@ -139,25 +139,25 @@ public class FastView extends JComponent implements Printable, GraphView {
 		fp.addGuiComponentRow(new JLabel("Number of Nodes, Edges "), graphNodeEdgeCnt, false);
 		fp.addGuiComponentRow(new JLabel("Average Node Degree "), graphNodeDegree, false);
 		fp.layoutRows();
-
+		
 		final JSpinner binCnt = new JSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));
 		final JSpinner minVal = new JSpinner(new SpinnerNumberModel(0d, null, null, 0.5d));
 		final JSpinner maxVal = new JSpinner(new SpinnerNumberModel(0d, null, null, 0.5d));
-
+		
 		final DefaultComboBoxModel<AttributePathNameSearchType> comboModel = new DefaultComboBoxModel<>();
 		final JComboBox<AttributePathNameSearchType> attributeSelection = new JComboBox<>(comboModel);
-
+		
 		final JCheckBox considerNodesAttribute = new JCheckBox("Evaluate Node Attribute Values", true);
 		final JCheckBox considerEdgesAttribute = new JCheckBox("Evaluate Edge Attribute Values", false);
-
+		
 		final JCheckBox showAllData = new JCheckBox("Show All Data", true);
 		final JCheckBox showSelectionData = new JCheckBox("Show Data For Selection", true);
 		showAllData.setOpaque(false);
 		showSelectionData.setOpaque(false);
-
+		
 		considerNodesAttribute.setOpaque(false);
 		considerEdgesAttribute.setOpaque(false);
-
+		
 		JButton setMinMax = new JButton("Get Min/Max from Data");
 		setMinMax.setOpaque(false);
 		setMinMax.addActionListener(new ActionListener() {
@@ -197,10 +197,10 @@ public class FastView extends JComponent implements Printable, GraphView {
 						}
 					}
 				}
-
+				
 			}
 		});
-
+		
 		JButton refreshAttributeList = new JButton("Refresh");
 		refreshAttributeList.setOpaque(false);
 		refreshAttributeList.addActionListener(new ActionListener() {
@@ -223,37 +223,37 @@ public class FastView extends JComponent implements Printable, GraphView {
 				} finally {
 					sah.restoreDefintions();
 				}
-
+				
 				comboModel.removeAllElements();
 				System.out.println("Attributes: " + possibleAttributes.size());
 				for (AttributePathNameSearchType o : possibleAttributes)
 					comboModel.addElement(o);
 			}
 		});
-
+		
 		chart = ChartFactory.createHistogram(null, null, null, histogramData, PlotOrientation.VERTICAL, false, true,
 				false);
 		chart.setAntiAlias(true);
 		chart.setBackgroundPaint(Color.WHITE);
-
+		
 		cp = new ChartPanel(chart, 400, 400, 100, 50, 60000, 60000, true, false, true, true, true, true);
-
+		
 		cp.enableMouseClickProcessing();
-
+		
 		final JButton updateData = new JButton("Update View");
-
+		
 		addMouseListenerToChartPanel(updateData);
-
+		
 		setChartSize();
-
+		
 		// cp.setOpaque(true);
 		// cp.setBackground(Color.white);
-
+		
 		attributeSelection.setOpaque(false);
-
+		
 		final MyColorButton colorAll = new MyColorButton("Bar Color", Color.GRAY);
 		final MyColorButton colorSel = new MyColorButton("Bar Color", Color.RED);
-
+		
 		updateData.setOpaque(false);
 		updateData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -298,7 +298,7 @@ public class FastView extends JComponent implements Printable, GraphView {
 						}
 					}
 					final boolean switchFirst = hasSelectionData;
-
+					
 					chart = ChartFactory.createHistogram(
 							StringManipulationTools.removeTags(
 									StringManipulationTools.removeHTMLtags(sel.toString() + "$"), " - ", "$").trim(),
@@ -306,15 +306,15 @@ public class FastView extends JComponent implements Printable, GraphView {
 					chart.getXYPlot().setDrawingSupplier(new DrawingSupplier() {
 						DefaultDrawingSupplier dds = new DefaultDrawingSupplier();
 						boolean first = true;
-
+						
 						public Paint getNextOutlinePaint() {
 							return dds.getNextOutlinePaint();
 						}
-
+						
 						public Stroke getNextOutlineStroke() {
 							return dds.getNextOutlineStroke();
 						}
-
+						
 						public Paint getNextPaint() {
 							if (switchFirst)
 								first = !first;
@@ -325,16 +325,16 @@ public class FastView extends JComponent implements Printable, GraphView {
 							else
 								return colorAll.getSelectedColor();
 						}
-
+						
 						public Shape getNextShape() {
 							return dds.getNextShape();
 						}
-
+						
 						public Stroke getNextStroke() {
 							return dds.getNextStroke();
 						}
 					});
-
+					
 					chart.setAntiAlias(true);
 					chart.setBackgroundPaint(Color.WHITE);
 					((XYPlot) chart.getPlot()).getDomainAxis().setRange((Double) minVal.getValue(),
@@ -347,21 +347,21 @@ public class FastView extends JComponent implements Printable, GraphView {
 				// FolderPanel.performDialogResize(cp);
 			}
 		});
-
+		
 		MarkComponent refreshMark = new MarkComponent(refreshAttributeList, true, TableLayoutConstants.PREFERRED,
 				false);
 		MarkComponent attSelMark = new MarkComponent(attributeSelection, false, TableLayoutConstants.PREFERRED, false);
 		MarkComponent minMaxMark = new MarkComponent(setMinMax, false, TableLayoutConstants.PREFERRED, false);
 		MarkComponent updateMark = new MarkComponent(updateData, false, TableLayoutConstants.FILL, false);
-
+		
 		MarkComponent.initLinearMarkSequence(attSelMark, refreshMark, attSelMark, minMaxMark, updateMark);
-
+		
 		markThis = minMaxMark;
 		unMarkThese.clear();
 		unMarkThese.add(refreshMark);
 		unMarkThese.add(attSelMark);
 		unMarkThese.add(updateMark);
-
+		
 		FolderPanel fps = new FolderPanel("Attribute Value Histogram Settings", false, null, null);
 		fps.addCollapseListenerDialogSizeUpdate();
 		fps.addGuiComponentRow(new JLabel("Consider Nodes Attributes "), considerNodesAttribute, false);
@@ -371,7 +371,7 @@ public class FastView extends JComponent implements Printable, GraphView {
 		fps.addGuiComponentRow(new JLabel("Minimum / Maximum Value "), TableLayout.get3Split(minMaxMark, minVal, maxVal,
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, TableLayoutConstants.FILL), false);
 		fps.addGuiComponentRow(new JLabel("Number of Groups "), binCnt, false);
-
+		
 		fps.addGuiComponentRow(
 				new JLabel("Show Data for whole Graph "), TableLayout.get3Split(showAllData, null, colorAll,
 						TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED),
@@ -389,13 +389,13 @@ public class FastView extends JComponent implements Printable, GraphView {
 						TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
 				false);
 		fps.layoutRows();
-
+		
 		add(TableLayout.getSplit(FolderPanel.getBorderedComponent(fp, border, border, border, border), new JLabel(""),
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL), "0,0");
-
+		
 		add(TableLayout.getSplit(FolderPanel.getBorderedComponent(fps, border, border, border, border), new JLabel(""),
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL), "0,1");
-
+		
 		// FolderPanel fph = new FolderPanel("Histogram (Click diagram bars, to select
 		// related graph elements)", false, null, null);
 		// fph.addCollapseListenerDialogSizeUpdate();
@@ -414,7 +414,7 @@ public class FastView extends JComponent implements Printable, GraphView {
 		// setBackground(Color.white);
 		validate();
 	}
-
+	
 	private void addMouseListenerToChartPanel(final JButton updateButton) {
 		cp.setMinimumDrawHeight(50);
 		cp.setMinimumDrawWidth(50);
@@ -451,14 +451,14 @@ public class FastView extends JComponent implements Printable, GraphView {
 					updateButton.doClick();
 				}
 			}
-
+			
 			public void chartMouseMoved(ChartMouseEvent event) {
 				//
-
+				
 			}
 		});
 	}
-
+	
 	protected double[] getValues(AttributePathNameSearchType sel, Collection<GraphElement> selectedOrAllGraphElements,
 			boolean considerNodes, boolean considerEdges, ArrayList<GraphElement> processedElements) {
 		ArrayList<Double> res = new ArrayList<Double>();
@@ -475,57 +475,57 @@ public class FastView extends JComponent implements Printable, GraphView {
 						processedElements.add(ge);
 				}
 			}
-
+		
 		double[] result = new double[res.size()];
 		for (int i = 0; i < res.size(); i++)
 			result[i] = res.get(i);
-
+		
 		return result;
 	}
-
+	
 	public void setAttributeComponentManager(AttributeComponentManager acm) {
 		// Method is regularly called
 		// System.err.println("FastView: setAttributeComponentManager");
 	}
-
+	
 	public Map<?, ?> getComponentElementMap() {
 		// System.err.println("FastView: getComponentElementMap");
 		return null;
 	}
-
+	
 	public GraphElementComponent getComponentForElement(GraphElement ge) {
 		// System.err.println("FastView: getComponentForElement");
 		return null;
 	}
-
+	
 	public void setGraph(Graph graph) {
 		this.graph = graph;
 		if (graph != null)
 			completeRedraw();
 	}
-
+	
 	public JComponent getViewComponent() {
 		// Method is regularly called
-
+		
 		return this;
 	}
-
+	
 	public String getViewName() {
 		return "Statistics View";
 	}
-
+	
 	public void addMessageListener(MessageListener ml) {
 		// Method is regularly called
 		// System.err.println("FastView: addMessageListener");
 	}
-
+	
 	public void close() {
 		// Method is regularly called
 		// System.err.println("FastView: close");
 	}
-
+	
 	public void completeRedraw() {
-
+		
 		graphName.setText(graph.getName());
 		if (graph.isDirected())
 			graphDirected.setText("Yes");
@@ -540,198 +540,198 @@ public class FastView extends JComponent implements Printable, GraphView {
 			graphNodeDegree.setText(AttributeHelper.formatNumber(avgDegree, "#.##") + "");
 		} else
 			graphNodeDegree.setText("");
-
+		
 		repaint();
 	}
-
+	
 	public void removeMessageListener(MessageListener ml) {
 		// System.err.println("FastView: removeMessageListener");
 	}
-
+	
 	public void repaint(GraphElement ge) {
 		// System.err.println("FastView: repaint");
 	}
-
+	
 	public void postEdgeAdded(GraphEvent e) {
 		// System.err.println("FastView: postEdgeAdded");
 	}
-
+	
 	public void postEdgeRemoved(GraphEvent e) {
 		// System.err.println("FastView: postEdgeRemoved");
 	}
-
+	
 	public void postGraphCleared(GraphEvent e) {
 		// System.err.println("FastView: postGraphCleared");
 	}
-
+	
 	public void postNodeAdded(GraphEvent e) {
 		// System.err.println("FastView: postNodeAdded");
 	}
-
+	
 	public void postNodeRemoved(GraphEvent e) {
 		// System.err.println("FastView: postNodeRemoved");
 	}
-
+	
 	public void preEdgeAdded(GraphEvent e) {
 		// System.err.println("FastView: preEdgeAdded");
 	}
-
+	
 	public void preEdgeRemoved(GraphEvent e) {
 		// System.err.println("FastView: preEdgeRemoved");
 	}
-
+	
 	public void preGraphCleared(GraphEvent e) {
 		// System.err.println("FastView: preGraphCleared");
 	}
-
+	
 	public void preNodeAdded(GraphEvent e) {
 		// System.err.println("FastView: preNodeAdded");
 	}
-
+	
 	public void preNodeRemoved(GraphEvent e) {
 		// System.err.println("FastView: preNodeRemoved");
 	}
-
+	
 	public void postInEdgeAdded(NodeEvent e) {
 		// System.err.println("FastView: postInEdgeAdded");
 	}
-
+	
 	public void postInEdgeRemoved(NodeEvent e) {
 		// System.err.println("FastView: postInEdgeRemoved");
 	}
-
+	
 	public void postOutEdgeAdded(NodeEvent e) {
 		// System.err.println("FastView: postOutEdgeAdded");
 	}
-
+	
 	public void postOutEdgeRemoved(NodeEvent e) {
 		// System.err.println("FastView: postOutEdgeRemoved");
 	}
-
+	
 	public void postUndirectedEdgeAdded(NodeEvent e) {
 		// System.err.println("FastView: postUndirectedEdgeAdded");
 	}
-
+	
 	public void postUndirectedEdgeRemoved(NodeEvent e) {
 		// System.err.println("FastView: postUndirectedEdgeRemoved");
 	}
-
+	
 	public void preInEdgeAdded(NodeEvent e) {
 		// System.err.println("FastView: preInEdgeAdded");
 	}
-
+	
 	public void preInEdgeRemoved(NodeEvent e) {
 		// System.err.println("FastView: preInEdgeRemoved");
 	}
-
+	
 	public void preOutEdgeAdded(NodeEvent e) {
 		// System.err.println("FastView: preOutEdgeAdded");
 	}
-
+	
 	public void preOutEdgeRemoved(NodeEvent e) {
 		// System.err.println("FastView: preOutEdgeRemoved");
 	}
-
+	
 	public void preUndirectedEdgeAdded(NodeEvent e) {
 		// System.err.println("FastView: preUndirectedEdgeAdded");
 	}
-
+	
 	public void preUndirectedEdgeRemoved(NodeEvent e) {
 		// System.err.println("FastView: preUndirevtedEdgeRemoved");
 	}
-
+	
 	public void postDirectedChanged(EdgeEvent e) {
 		// System.err.println("FastView: postDirectedChanged");
 	}
-
+	
 	public void postEdgeReversed(EdgeEvent e) {
 		// System.err.println("FastView: postEdgeReverser");
 	}
-
+	
 	public void postSourceNodeChanged(EdgeEvent e) {
 		// System.err.println("FastView: postSourceNodeChanged");
 	}
-
+	
 	public void postTargetNodeChanged(EdgeEvent e) {
 		// System.err.println("FastView: postTargetNodeChanged");
 	}
-
+	
 	public void preDirectedChanged(EdgeEvent e) {
 		// System.err.println("FastView: preDirectedChanged");
 	}
-
+	
 	public void preEdgeReversed(EdgeEvent e) {
 		// System.err.println("FastView: preEdgeReversed");
 	}
-
+	
 	public void preSourceNodeChanged(EdgeEvent e) {
 		// System.err.println("FastView: preSourceNodeChanged");
 	}
-
+	
 	public void preTargetNodeChanged(EdgeEvent e) {
 		// System.err.println("FastView: preTargetNodeChanged");
 	}
-
+	
 	public void postAttributeAdded(AttributeEvent e) {
 		// System.err.println("FastView: postAttributeAdded: "+e.getPath()+" /
 		// "+e.getAttribute().getName());
 	}
-
+	
 	public void postAttributeChanged(AttributeEvent e) {
 		// System.err.println("FastView: postAttributeChanged");
 	}
-
+	
 	public void postAttributeRemoved(AttributeEvent e) {
 		// System.err.println("FastView: postAttributeRemoved");
 	}
-
+	
 	public void preAttributeAdded(AttributeEvent e) {
 		// System.err.println("FastView: preAttributeAdded");
 	}
-
+	
 	public void preAttributeChanged(AttributeEvent e) {
 		// System.err.println("FastView: preAttributeChaned");
 	}
-
+	
 	public void preAttributeRemoved(AttributeEvent e) {
 		// System.err.println("FastView: preAttributeRemoved");
 	}
-
+	
 	public Insets getAutoscrollInsets() {
 		// System.err.println("FastView: getAutoscrollInsets");
 		return null;
 	}
-
+	
 	public void autoscroll(Point cursorLocn) {
 		// System.err.println("FastView: autoscroll");
 	}
-
+	
 	public CollectionAttribute getEdgeAttribute() {
 		// System.err.println("FastView: getEdgeAttribute");
 		// Method is regularly called
 		return null;
 	}
-
+	
 	public CollectionAttribute getGraphAttribute() {
 		// System.err.println("FastView: getGraphAttribute");
 		return null;
 	}
-
+	
 	public CollectionAttribute getNodeAttribute() {
 		// Method is regularly called
 		// System.err.println("FastView: getNodeAttribute");
 		return null;
 	}
-
+	
 	public void zoomChanged(AffineTransform newZoom) {
 		// Method is regularly called
 		// System.err.println("FastView: zoomChanged");
 	}
-
+	
 	public AffineTransform getZoom() {
 		return new AffineTransform();
 	}
-
+	
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		completeRedraw();
 		if (markThis != null) {
@@ -739,13 +739,13 @@ public class FastView extends JComponent implements Printable, GraphView {
 				mc.setMark(false);
 			markThis.setMark(true);
 		}
-
+		
 	}
-
+	
 	public void transactionStarted(TransactionEvent e) {
 		// System.err.println("FastView: transactionStarted");
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -754,15 +754,15 @@ public class FastView extends JComponent implements Printable, GraphView {
 	public void clearComponents() {
 		// TODO!!! clearComponents
 	}
-
+	
 	public Graph getGraph() {
 		return graph;
 	}
-
+	
 	public boolean putInScrollPane() {
 		return true;
 	}
-
+	
 	@Override
 	public void print(Graphics g) {
 		if (cp != null)
@@ -770,7 +770,7 @@ public class FastView extends JComponent implements Printable, GraphView {
 		else
 			super.print(g);
 	}
-
+	
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 		if (cp == null) {
 			MainFrame.showMessageDialog("Please create a Histogram, before starting the print operation.", "Error");
@@ -778,42 +778,42 @@ public class FastView extends JComponent implements Printable, GraphView {
 		} else
 			return cp.print(graphics, pageFormat, pageIndex);
 	}
-
+	
 	private void setChartSize() {
 		cp.setMinimumSize(new Dimension((Integer) widthSpinner.getValue(), (Integer) heightSpinner.getValue()));
 		cp.setMaximumSize(new Dimension((Integer) widthSpinner.getValue(), (Integer) heightSpinner.getValue()));
 		cp.setPreferredSize(new Dimension((Integer) widthSpinner.getValue(), (Integer) heightSpinner.getValue()));
 		cp.setSize(new Dimension((Integer) widthSpinner.getValue(), (Integer) heightSpinner.getValue()));
 	}
-
+	
 	public Set<AttributeComponent> getAttributeComponentsForElement(GraphElement ge) {
 		return new HashSet<AttributeComponent>();
 	}
-
+	
 	public boolean isHidden(GraphElement ge) {
 		return false;
 	}
-
+	
 	public JComponent getViewToolbarComponentTop() {
 		return null;
 	}
-
+	
 	public JComponent getViewToolbarComponentBottom() {
 		return null;
 	}
-
+	
 	public JComponent getViewToolbarComponentLeft() {
 		return null;
 	}
-
+	
 	public JComponent getViewToolbarComponentRight() {
 		return null;
 	}
-
+	
 	public JComponent getViewToolbarComponentBackground() {
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -822,11 +822,11 @@ public class FastView extends JComponent implements Printable, GraphView {
 	public void closing(AWTEvent e) {
 		// empty
 	}
-
+	
 	public boolean worksWithTab(InspectorTab tab) {
 		return true;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -835,11 +835,11 @@ public class FastView extends JComponent implements Printable, GraphView {
 	public boolean redrawActive() {
 		return false;
 	}
-
+	
 	@Override
 	public void attributeChanged(Attribute attr) {
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 }

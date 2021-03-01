@@ -6,7 +6,7 @@ import org.graffiti.graph.GraphElement;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class Uconversion extends UtilitySuperClassToGraph {
-
+	
 	public static void addAttributesToNode(GraphElement elem, conversion i) {
 		// first set label to node
 		setLabels(elem, i);
@@ -23,8 +23,8 @@ public class Uconversion extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setSynonyms(elem, i.getSYNONYMS());
 		setXRef(elem, i.getXREF());
-
+		
 		setSpontaneous(elem, i.getSPONTANEOUS());
 	}
-
+	
 }

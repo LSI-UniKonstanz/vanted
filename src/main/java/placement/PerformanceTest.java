@@ -12,11 +12,11 @@ import java.util.Random;
 
 class Result {
 	int size;
-
+	
 	double k;
-
+	
 	Cost as, as_split, as_oo, as_split_oo, mosek, mosek_oo, fsa;
-
+	
 	void writeToFile() {
 		File f = new File("PerformanceResults.log");
 		Writer output = null;
@@ -29,14 +29,14 @@ class Result {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public String toString() {
 		String s = size + "," + k + "," + as + "," + as_split + "," + as_oo + "," + as_split_oo + "," + mosek + ","
 				+ mosek_oo + "," + fsa;
 		return s;
 	}
-
+	
 	public static void writeHeader() {
 		File f = new File("PerformanceResults.log");
 		Writer output = null;
@@ -54,9 +54,9 @@ class Result {
 
 class Cost {
 	long time;
-
+	
 	double displacement;
-
+	
 	@Override
 	public String toString() {
 		String s = time + "," + displacement;
@@ -65,7 +65,7 @@ class Cost {
 }
 
 public class PerformanceTest {
-
+	
 	PerformanceTest() {
 		ArrayList<Result> results = new ArrayList<Result>();
 		Result.writeHeader();
@@ -88,16 +88,16 @@ public class PerformanceTest {
 		for (Result r : results) {
 			System.out.println(r);
 		}
-
+		
 	}
-
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// PerformanceTest p = new PerformanceTest();
 	}
-
+	
 	private static Cost run(RectanglePlacement p, ArrayList<Rectangle2D> orig) {
 		System.gc();
 		Cost c = new Cost();
@@ -120,7 +120,7 @@ public class PerformanceTest {
 		c.time = System.currentTimeMillis() - t0;
 		return c;
 	}
-
+	
 	static ArrayList<Rectangle2D> generateRandom(Result result, double w, double h, double rSize) {
 		Random rand = new Random();
 		ArrayList<Rectangle2D> rectangles = new ArrayList<Rectangle2D>();
@@ -143,5 +143,5 @@ public class PerformanceTest {
 		result.k = k;
 		return rectangles;
 	}
-
+	
 }

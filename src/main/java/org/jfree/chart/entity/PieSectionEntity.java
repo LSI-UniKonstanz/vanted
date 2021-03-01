@@ -47,99 +47,99 @@ import org.jfree.data.PieDataset;
  * A chart entity that represents one section within a pie plot.
  */
 public class PieSectionEntity extends ChartEntity {
-
+	
 	/** The dataset. */
 	private PieDataset dataset;
-
+	
 	/** The pie index. */
 	private int pieIndex;
-
+	
 	/** The section index. */
 	private int sectionIndex;
-
+	
 	/** The section key. */
 	private Comparable sectionKey;
-
+	
 	/**
 	 * Creates a new pie section entity.
 	 * 
 	 * @param pieIndex
-	 *            the pie index (zero-based).
+	 *           the pie index (zero-based).
 	 * @param sectionIndex
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @param sectionKey
-	 *            the section key.
+	 *           the section key.
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 * @param toolTipText
-	 *            the tool tip text.
+	 *           the tool tip text.
 	 * @deprecated Use alternative constructor.
 	 */
 	public PieSectionEntity(int pieIndex, int sectionIndex, Comparable sectionKey, Shape area, String toolTipText) {
-
+		
 		super(area, toolTipText);
 		this.pieIndex = pieIndex;
 		this.sectionIndex = sectionIndex;
 		this.sectionKey = sectionKey;
-
+		
 	}
-
+	
 	/**
 	 * Creates a new pie section entity.
 	 * 
 	 * @param pieIndex
-	 *            the pie index (zero-based).
+	 *           the pie index (zero-based).
 	 * @param sectionIndex
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @param sectionKey
-	 *            the section key.
+	 *           the section key.
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 * @param toolTipText
-	 *            the tool tip text.
+	 *           the tool tip text.
 	 * @param urlText
-	 *            the URL text for HTML image maps.
+	 *           the URL text for HTML image maps.
 	 * @deprecated Use alternative constructor.
 	 */
 	public PieSectionEntity(int pieIndex, int sectionIndex, Comparable sectionKey, Shape area, String toolTipText,
 			String urlText) {
-
+		
 		super(area, toolTipText, urlText);
 		this.pieIndex = pieIndex;
 		this.sectionIndex = sectionIndex;
 		this.sectionKey = sectionKey;
-
+		
 	}
-
+	
 	/**
 	 * Creates a new pie section entity.
 	 * 
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 * @param dataset
-	 *            the pie dataset.
+	 *           the pie dataset.
 	 * @param pieIndex
-	 *            the pie index (zero-based).
+	 *           the pie index (zero-based).
 	 * @param sectionIndex
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @param sectionKey
-	 *            the section key.
+	 *           the section key.
 	 * @param toolTipText
-	 *            the tool tip text.
+	 *           the tool tip text.
 	 * @param urlText
-	 *            the URL text for HTML image maps.
+	 *           the URL text for HTML image maps.
 	 */
 	public PieSectionEntity(Shape area, PieDataset dataset, int pieIndex, int sectionIndex, Comparable sectionKey,
 			String toolTipText, String urlText) {
-
+		
 		super(area, toolTipText, urlText);
 		this.dataset = dataset;
 		this.pieIndex = pieIndex;
 		this.sectionIndex = sectionIndex;
 		this.sectionKey = sectionKey;
-
+		
 	}
-
+	
 	/**
 	 * Returns the datset this entity refers to.
 	 * 
@@ -148,17 +148,17 @@ public class PieSectionEntity extends ChartEntity {
 	public PieDataset getDataset() {
 		return this.dataset;
 	}
-
+	
 	/**
 	 * Sets the datset this entity refers to.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 */
 	public void setDataset(PieDataset dataset) {
 		this.dataset = dataset;
 	}
-
+	
 	/**
 	 * Returns the pie index.
 	 * <p>
@@ -171,17 +171,17 @@ public class PieSectionEntity extends ChartEntity {
 	public int getPieIndex() {
 		return this.pieIndex;
 	}
-
+	
 	/**
 	 * Sets the pie index.
 	 * 
 	 * @param index
-	 *            the new index value.
+	 *           the new index value.
 	 */
 	public void setPieIndex(int index) {
 		this.pieIndex = index;
 	}
-
+	
 	/**
 	 * Returns the section index.
 	 * 
@@ -190,17 +190,17 @@ public class PieSectionEntity extends ChartEntity {
 	public int getSectionIndex() {
 		return this.sectionIndex;
 	}
-
+	
 	/**
 	 * Sets the section index.
 	 * 
 	 * @param index
-	 *            the section index.
+	 *           the section index.
 	 */
 	public void setSectionIndex(int index) {
 		this.sectionIndex = index;
 	}
-
+	
 	/**
 	 * Returns the section key.
 	 * 
@@ -209,17 +209,17 @@ public class PieSectionEntity extends ChartEntity {
 	public Comparable getSectionKey() {
 		return this.sectionKey;
 	}
-
+	
 	/**
 	 * Sets the section key.
 	 * 
 	 * @param key
-	 *            the section key.
+	 *           the section key.
 	 */
 	public void setSectionKey(Comparable key) {
 		this.sectionKey = key;
 	}
-
+	
 	/**
 	 * Returns a string representing the entity.
 	 * 
@@ -228,5 +228,5 @@ public class PieSectionEntity extends ChartEntity {
 	public String toString() {
 		return "PieSection: " + this.pieIndex + ", " + this.sectionIndex + "(" + this.sectionKey.toString() + ")";
 	}
-
+	
 }

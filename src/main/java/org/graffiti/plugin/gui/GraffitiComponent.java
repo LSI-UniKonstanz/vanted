@@ -17,7 +17,7 @@ package org.graffiti.plugin.gui;
  */
 public interface GraffitiComponent {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the id of the component this component should be placed in.
 	 * 

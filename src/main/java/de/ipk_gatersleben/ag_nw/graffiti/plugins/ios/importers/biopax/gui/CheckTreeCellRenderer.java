@@ -13,7 +13,7 @@ public class CheckTreeCellRenderer extends JPanel implements TreeCellRenderer {
 	private CheckTreeSelectionModel selectionModel;
 	private TreeCellRenderer delegate;
 	private TristateCheckBox checkBox = new TristateCheckBox();
-
+	
 	public CheckTreeCellRenderer(TreeCellRenderer delegate, CheckTreeSelectionModel selectionModel) {
 		this.delegate = delegate;
 		this.selectionModel = selectionModel;
@@ -21,13 +21,13 @@ public class CheckTreeCellRenderer extends JPanel implements TreeCellRenderer {
 		setOpaque(false);
 		checkBox.setOpaque(false);
 	}
-
+	
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
 			boolean leaf, int row, boolean hasFocus) {
 		Component renderer = delegate.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row,
 				hasFocus);
-
+		
 		TreePath path = tree.getPathForRow(row);
 		if (path != null) {
 			if (selectionModel.isPathSelected(path, true))

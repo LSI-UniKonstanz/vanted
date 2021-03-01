@@ -15,48 +15,47 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
  * 
  * @author D. Garkov
  * @since 2.7.0
- *
  */
 public class EdgeAdapter implements EdgeListener {
-
+	
 	@Override
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 	}
-
+	
 	@Override
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 	@Override
 	public void postDirectedChanged(EdgeEvent e) {
 	}
-
+	
 	@Override
 	public void postEdgeReversed(EdgeEvent e) {
 	}
-
+	
 	@Override
 	public void postSourceNodeChanged(EdgeEvent e) {
 	}
-
+	
 	@Override
 	public void postTargetNodeChanged(EdgeEvent e) {
 	}
-
+	
 	@Override
 	public void preDirectedChanged(EdgeEvent e) {
 	}
-
+	
 	@Override
 	public void preEdgeReversed(EdgeEvent e) {
 	}
-
+	
 	@Override
 	public void preSourceNodeChanged(EdgeEvent e) {
 	}
-
+	
 	@Override
 	public void preTargetNodeChanged(EdgeEvent e) {
 	}
-
+	
 }

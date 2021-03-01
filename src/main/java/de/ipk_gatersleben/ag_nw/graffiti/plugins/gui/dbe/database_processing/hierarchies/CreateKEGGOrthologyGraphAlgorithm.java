@@ -42,40 +42,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 
 /**
  * This class replaces the CreateFuncatGraphAlgorithm,
- * 
  * The first class created KEGG hierarchies based on direct given hierarchies
  * (using alternative labels in the nodes), or
- * 
- * 
  * 
  * @author Matthias Klapperstueck
  */
 public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
-
+	
 	private final String settingCreateKO = "KEGG Orthology";
 	private final String settingCreateGO = "Gene Ontology";
-
+	
 	private final String settingOntologyIdentifiersGiven = "Create Ontology from given Ontology Identifiers";
 	private final String settingEnzymeIdGiven = "Create Ontology from given Enzyme ID";
-
+	
 	private final String settingSearchMainLabel = "Search ID in Node Label";
 	private final String settingSearchAlternativeLabel = "Search ID in Alternative Labels";
-
+	
 	/*
 	 * the following fields are represent the current settings of the parameters
 	 */
 	private String selectedOntology;
-
+	
 	private String selectedIdentifierType;
-
+	
 	private Boolean selectedSearchMainLabel;
 	private Boolean selectedSearchAlternativeLabel;
-
+	
 	int startX = 100;
 	int stepX = 200;
 	int startY = 40;
 	int stepY = 0;
-
+	
 	public CreateKEGGOrthologyGraphAlgorithm() {
 		/*
 		 * set standard values for the selectedParameter fields, in case the algorithms
@@ -85,17 +82,17 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 		selectedIdentifierType = settingOntologyIdentifiersGiven;
 		selectedSearchMainLabel = true;
 		selectedSearchAlternativeLabel = true;
-
+		
 		startX = 100;
 		stepX = 200;
 		startY = 40;
 		stepY = 0;
 	}
-
+	
 	public String getName() {
 		return "Create KEGG Orthology Tree";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>"
@@ -108,12 +105,12 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 				+ "look up and interpret the given identifers as gene names, listed in the KO database. In this case the<br>"
 				+ "gene data is also put in context to the KEGG Pathway hierarchy.<br>";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy";
 	}
-
+	
 	/**
 	 * @vanted.revision 2.7.0 - Removed 'Choose Onthology' param, as only KO is in use
 	 */
@@ -126,7 +123,7 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 		boolean hasAlternativeLabels = false;
 		for (Node node : getSelectedOrAllNodes()) {
 			if (AttributeHelper.getLabels(node).size() > 1) { // At least one alternative label additional to the main
-																// label
+				// label
 				hasAlternativeLabels = true;
 				break;
 			}
@@ -137,27 +134,27 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 //		// possibleOntologies.add(settingCreateGO);
 //		ObjectListParameter objectListParameterPossibleOntologies = new ObjectListParameter(settingCreateKO,
 //				"Choose Ontology", "Select one of the supported Ontologies", possibleOntologies);
-
+		
 		Collection<String> possibleEvaluations = new ArrayList<String>();
 		possibleEvaluations.add(settingOntologyIdentifiersGiven);
 		possibleEvaluations.add(settingEnzymeIdGiven);
 		ObjectListParameter objectListParameterPossibleEvaluations = new ObjectListParameter(settingCreateKO,
 				"Choose Id Type", "Select type of ID, which is either the direct Ontology Identifier or the Enzyme ID",
 				possibleEvaluations);
-
+		
 		BooleanParameter boolParameterSearchLabel = new BooleanParameter(true, settingSearchMainLabel,
 				"Search the node label for the ID");
-
+		
 		int numParams = 3;
-
+		
 		BooleanParameter boolParameterSearchAlternativeLabel = null;
 		if (hasAlternativeLabels) {
 			boolParameterSearchAlternativeLabel = new BooleanParameter(true, settingSearchAlternativeLabel,
 					"Search the alternative node labels for the ID");
-
+			
 			numParams++;
 		}
-
+		
 		Parameter[] parameters = new Parameter[numParams];
 		int i = 0;
 //		parameters[i++] = objectListParameterPossibleOntologies;
@@ -165,10 +162,10 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 		parameters[i++] = boolParameterSearchLabel;
 		if (hasAlternativeLabels)
 			parameters[i++] = boolParameterSearchAlternativeLabel;
-
+		
 		return parameters;
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -178,22 +175,22 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 		if (params.length == 4)
 			selectedSearchAlternativeLabel = (Boolean) ((BooleanParameter) params[i++]).getValue();
 	}
-
+	
 	@Override
 	public void execute() {
 		final Collection<Node> workNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		final HashSet<Node> newNodes = new HashSet<Node>();
 		final HashSet<Edge> newEdges = new HashSet<Edge>();
-
+		
 		final Graph fgraph = graph;
-
+		
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Create Hierarchy", "");
 		Runnable task = new Runnable() {
 			public void run() {
-
+				
 				String curLabelToCheck;
-
+				
 				fgraph.getListenerManager().transactionStarted(this);
 				try {
 					HashMap<String, Node> hierarchy_tree_itemName2node = new HashMap<String, Node>();
@@ -207,13 +204,13 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 						if (status.wantsToStop())
 							break;
 						status.setCurrentStatusValueFine((double) nn / (double) nn_max * 100d);
-
+						
 						ArrayList<String> labels = AttributeHelper.getLabels(graphNode);
-
+						
 						// skip node, if it has no label
 						if (labels == null || labels.isEmpty())
 							continue;
-
+						
 						/*
 						 * KEGG orthology selected
 						 */
@@ -221,13 +218,13 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 							HashSet<BriteEntry> briteEntries = new HashSet<>();
 							// direct KO identifiers given
 							if (selectedIdentifierType.equals(settingOntologyIdentifiersGiven)) {
-
+								
 								if (selectedSearchMainLabel) {
 									curLabelToCheck = KeggBriteService.extractKeggKOId(labels.get(0));
 									if (curLabelToCheck != null)
 										briteEntries.addAll(KeggBriteService.getInstance().getBriteHierarchy("ko00001")
 												.getEntriesMap().get(curLabelToCheck));
-
+									
 								}
 								if (selectedSearchAlternativeLabel) {
 									for (int i = 1; i < labels.size(); i++) {
@@ -236,13 +233,13 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 											briteEntries.addAll(KeggBriteService.getInstance()
 													.getBriteHierarchy("ko00001").getEntriesMap().get(curLabelToCheck));
 									}
-
+									
 								}
 							}
-
+							
 							// EC numbers given
 							if (selectedIdentifierType.equals(settingEnzymeIdGiven)) {
-
+								
 								if (selectedSearchMainLabel) {
 									curLabelToCheck = EnzymeService.extractECId(labels.get(0));
 									if (curLabelToCheck != null) {
@@ -253,7 +250,7 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 										// else
 										// System.err.println();
 									}
-
+									
 								}
 								if (selectedSearchAlternativeLabel) {
 									for (int i = 1; i < labels.size(); i++) {
@@ -268,28 +265,28 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 											// System.err.println();
 										}
 									}
-
+									
 								}
 							}
-
+							
 							// create / extend hierarchy graph for each returned brite entry
 							createBriteHierarchyGraphNodes(fgraph, graphNode, briteEntries,
 									hierarchy_tree_itemName2node, newNodes, newEdges);
-
+							
 						}
-
+						
 						/*
 						 * Gene Ontology selected
 						 */
 						if (selectedOntology.equals(settingCreateGO)) {
-
+							
 						}
-
+						
 					}
-
+					
 				} catch (IOException e) {
 					System.err.println(e);
-
+					
 				} finally {
 					if (!status.wantsToStop()) {
 						fgraph.getListenerManager().transactionFinished(this, false);
@@ -310,14 +307,14 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 								}
 							}
 							tree.setParameters(parameters2);
-
+							
 							tree.attach(fgraph, new Selection(newNodes));
 							tree.execute();
-
+							
 							// layout gene nodes using grid layout (no resize)
 							Collection<Node> geneNodes = new ArrayList<Node>(workNodes);
 							geneNodes.removeAll(newNodes);
-
+							
 							double minX = Double.MAX_VALUE;
 							double maxX = Double.MIN_VALUE;
 							double maxY = Double.MIN_VALUE;
@@ -350,20 +347,20 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 		};
 		BackgroundTaskHelper.issueSimpleTask("Create Hierarchy", "Initialize...", task, null, status);
 	}
-
+	
 	private void createBriteHierarchyGraphNodes(Graph graph, Node graphNode,
 			HashSet<BriteEntry> hierarchyInformationsForCurrentNode, HashMap<String, Node> hierarchy_tree_itemName2node,
 			HashSet<Node> newNodes, HashSet<Edge> newEdges) {
-
+		
 		Node lastNode = null;
 		lastNode = graphNode;
 		for (BriteEntry hierarchyInformation : hierarchyInformationsForCurrentNode) {
-
+			
 			// skip actual enzyme and get right to the path elements
 			hierarchyInformation = hierarchyInformation.getParent();
-
+			
 			do {
-
+				
 				String hierarchyEntityName = hierarchyInformation.getName();
 				// if(hierarchyEntityName.contains("KEGG Orthology")){
 				// System.err.println();
@@ -374,7 +371,7 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 					Node n = GraphHelper.addNodeToGraph(graph, startX + hierarchy_tree_itemName2node.size() * stepX,
 							startY + hierarchy_tree_itemName2node.size() * stepY, 1, 150, 30, Color.BLACK, Color.WHITE);
 					AttributeHelper.setLabel(n, hierarchyEntityName);
-
+					
 					if (hierarchyInformation.getPathId() != null) {
 						// this should be a map-node
 						String id = hierarchyInformation.getPathId();
@@ -386,9 +383,9 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 						AttributeHelper.setRoundedEdges(n, 15);
 					} else if (hierarchyInformation.getId() != null)
 						KeggGmlHelper.setKeggId(n, hierarchyInformation.getId().toLowerCase());
-
+					
 					hierarchy_tree_itemName2node.put(hierarchyEntityName, n);
-
+					
 					newNodes.add(n);
 				}
 				Node hierarchy_tree_node = hierarchy_tree_itemName2node.get(hierarchyEntityName);
@@ -402,9 +399,9 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 						newEdges.add(edge);
 					}
 				}
-
+				
 				lastNode = hierarchy_tree_node;
-
+				
 			} while ((hierarchyInformation = hierarchyInformation.getParent()) != null);
 			lastNode = graphNode;
 		}

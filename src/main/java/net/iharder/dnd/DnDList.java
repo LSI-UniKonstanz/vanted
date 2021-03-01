@@ -20,19 +20,19 @@ package net.iharder.dnd;
  */
 public class DnDList extends javax.swing.JList
 		implements java.awt.dnd.DropTargetListener, java.awt.dnd.DragSourceListener, java.awt.dnd.DragGestureListener {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -195565244220495497L;
-
+	
 	@SuppressWarnings("unused")
 	private java.awt.dnd.DropTarget dropTarget = null;
-
+	
 	private java.awt.dnd.DragSource dragSource = null;
-
+	
 	private int sourceIndex = -1;
-
+	
 	/**
 	 * Constructs a default {@link DnDList} using a
 	 * {@link javax.swing.DefaultListModel}.
@@ -43,58 +43,58 @@ public class DnDList extends javax.swing.JList
 		super(new javax.swing.DefaultListModel());
 		initComponents();
 	} // end constructor
-
+	
 	/**
 	 * Constructs a {@link DnDList} using the passed list model that must be
 	 * extended from {@link javax.swing.DefaultListModel}.
 	 * 
 	 * @param model
-	 *            The model to use
+	 *           The model to use
 	 * @since 1.1
 	 */
 	public DnDList(javax.swing.DefaultListModel model) {
 		super(model);
 		initComponents();
 	} // end constructor
-
+	
 	/**
 	 * Constructs a {@link DnDList} by filling in a
 	 * {@link javax.swing.DefaultListModel} with the passed array of objects.
 	 * 
 	 * @param data
-	 *            The data from which to construct a list
+	 *           The data from which to construct a list
 	 * @since 1.1
 	 */
 	public DnDList(Object[] data) {
 		this();
 		((javax.swing.DefaultListModel) getModel()).copyInto(data);
 	} // end constructor
-
+	
 	/**
 	 * Constructs a {@link DnDList} by filling in a
 	 * {@link javax.swing.DefaultListModel} with the passed {@link java.util.Vector}
 	 * of objects.
 	 * 
 	 * @param data
-	 *            The data from which to construct a list
+	 *           The data from which to construct a list
 	 * @since 1.1
 	 */
 	public DnDList(java.util.Vector data) {
 		this();
 		((javax.swing.DefaultListModel) getModel()).copyInto(data.toArray());
 	} // end constructor
-
+	
 	private void initComponents() {
 		dropTarget = new java.awt.dnd.DropTarget(this, this);
 		dragSource = new java.awt.dnd.DragSource();
 		dragSource.createDefaultDragGestureRecognizer(this, java.awt.dnd.DnDConstants.ACTION_MOVE, this);
 	} // end initComponents
-
+	
 	/* ******** D R A G G E S T U R E L I S T E N E R M E T H O D S ******** */
-
+	
 	public void dragGestureRecognized(java.awt.dnd.DragGestureEvent event) { // System.out.println(
-																				// "DragGestureListener.dragGestureRecognized"
-																				// );
+		// "DragGestureListener.dragGestureRecognized"
+		// );
 		final Object selected = getSelectedValue();
 		if (selected != null) {
 			sourceIndex = getSelectedIndex();
@@ -108,55 +108,55 @@ public class DnDList extends javax.swing.JList
 					return selected;
 				} // end getObject
 			}); // end fetcher
-
+			
 			// as the name suggests, starts the dragging
 			dragSource.startDrag(event, java.awt.dnd.DragSource.DefaultLinkDrop, transfer, this);
 		} else {
 			// System.out.println( "nothing was selected");
 		}
 	} // end dragGestureRecognized
-
+	
 	/* ******** D R A G S O U R C E L I S T E N E R M E T H O D S ******** */
-
+	
 	public void dragDropEnd(java.awt.dnd.DragSourceDropEvent evt) { // System.out.println(
-																	// "DragSourceListener.dragDropEnd" );
+		// "DragSourceListener.dragDropEnd" );
 	} // end dragDropEnd
-
+	
 	public void dragEnter(java.awt.dnd.DragSourceDragEvent evt) { // System.out.println( "DragSourceListener.dragEnter"
-																	// );
+		// );
 	} // end dragEnter
-
+	
 	public void dragExit(java.awt.dnd.DragSourceEvent evt) { // System.out.println( "DragSourceListener.dragExit" );
 	} // end dragExit
-
+	
 	public void dragOver(java.awt.dnd.DragSourceDragEvent evt) { // System.out.println( "DragSourceListener.dragOver" );
 	} // end dragOver
-
+	
 	public void dropActionChanged(java.awt.dnd.DragSourceDragEvent evt) { // System.out.println(
-																			// "DragSourceListener.dropActionChanged" );
+		// "DragSourceListener.dropActionChanged" );
 	} // end dropActionChanged
-
+	
 	/* ******** D R O P T A R G E T L I S T E N E R M E T H O D S ******** */
-
+	
 	public void dragEnter(java.awt.dnd.DropTargetDragEvent evt) { // System.out.println( "DropTargetListener.dragEnter"
-																	// );
+		// );
 		evt.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 	} // end dragEnter
-
+	
 	public void dragExit(java.awt.dnd.DropTargetEvent evt) { // System.out.println( "DropTargetListener.dragExit" );
 	} // end dragExit
-
+	
 	public void dragOver(java.awt.dnd.DropTargetDragEvent evt) { // System.out.println( "DropTargetListener.dragOver" );
 	} // end dragOver
-
+	
 	public void dropActionChanged(java.awt.dnd.DropTargetDragEvent evt) { // System.out.println(
-																			// "DropTargetListener.dropActionChanged" );
+		// "DropTargetListener.dropActionChanged" );
 		evt.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 	} // end dropActionChanged
-
+	
 	public void drop(java.awt.dnd.DropTargetDropEvent evt) { // System.out.println( "DropTargetListener.drop" );
 		java.awt.datatransfer.Transferable transferable = evt.getTransferable();
-
+		
 		// If it's our native TransferableObject, use that
 		if (transferable.isDataFlavorSupported(TransferableObject.DATA_FLAVOR)) {
 			evt.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
@@ -170,32 +170,32 @@ public class DnDList extends javax.swing.JList
 			catch (java.io.IOException e) {
 				e.printStackTrace();
 			} // end catch
-
+			
 			if (obj != null) {
 				// See where in the list we dropped the element.
 				int dropIndex = locationToIndex(evt.getLocation());
 				javax.swing.DefaultListModel model = (javax.swing.DefaultListModel) getModel();
-
+				
 				if (dropIndex < 0)
 					model.addElement(obj);
-
+				
 				// Else is it moving down the list?
 				else if (sourceIndex >= 0 && dropIndex > sourceIndex)
 					model.add(dropIndex - 1, obj);
 				else
 					model.add(dropIndex, obj);
-
+				
 			} // end if: we got the object
-
+			
 			// Else there was a problem getting the object
 			else {
 				evt.rejectDrop();
 			} // end else: can't get the object
 		} // end if: it's a native TransferableObject
-
+		
 		// Else we can't handle this
 		else
 			evt.rejectDrop();
 	} // end drop
-
+	
 } // end class DnDList

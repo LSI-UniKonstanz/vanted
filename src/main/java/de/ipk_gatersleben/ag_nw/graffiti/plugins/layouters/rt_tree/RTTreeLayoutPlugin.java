@@ -14,7 +14,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author Joerg Bartelheimer
  */
 public class RTTreeLayoutPlugin extends GenericPluginAdapter {
-
+	
 	/**
 	 * Creates a new GraphTreeLayoutPlugin object.
 	 */
@@ -24,5 +24,5 @@ public class RTTreeLayoutPlugin extends GenericPluginAdapter {
 		else
 			this.algorithms = new Algorithm[] { new RTTreeLayout() };
 	}
-
+	
 }

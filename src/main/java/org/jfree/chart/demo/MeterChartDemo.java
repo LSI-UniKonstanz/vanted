@@ -56,17 +56,17 @@ import org.jfree.ui.RefineryUtilities;
  * @author Hari
  */
 public class MeterChartDemo {
-
+	
 	/**
 	 * Displays a meter chart.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @param shape
-	 *            the dial shape.
+	 *           the dial shape.
 	 */
 	void displayMeterChart(final double value, final DialShape shape) {
-
+		
 		final DefaultValueDataset data = new DefaultValueDataset(75.0);
 		final MeterPlot plot = new MeterPlot(data);
 		plot.setUnits("Degrees");
@@ -74,19 +74,19 @@ public class MeterChartDemo {
 		plot.setNormalRange(new Range(70.0, 100.0));
 		plot.setWarningRange(new Range(100.0, 120.0));
 		plot.setCriticalRange(new Range(120.0, 140.0));
-
+		
 		plot.setDialShape(shape);
 		plot.setNeedlePaint(Color.white);
 		plot.setTickLabelFont(new Font("SansSerif", Font.BOLD, 9));
-
+		
 		plot.setInsets(new Insets(5, 5, 5, 5));
 		final JFreeChart chart = new JFreeChart("Meter Chart", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
-
+		
 		final MeterLegend legend = new MeterLegend("Sample Meter");
 		chart.setLegend(legend);
-
+		
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.blue));
-
+		
 		final JFrame chartFrame = new ChartFrame("Meter Chart", chart);
 		chartFrame.addWindowListener(new WindowAdapter() {
 			/**
@@ -101,9 +101,9 @@ public class MeterChartDemo {
 		RefineryUtilities.positionFrameRandomly(chartFrame);
 		chartFrame.setSize(250, 250);
 		chartFrame.setVisible(true);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -114,15 +114,15 @@ public class MeterChartDemo {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the meter plot demonstration application.
 	 * 
 	 * @param args
-	 *            used to specify the type and value.
+	 *           used to specify the type and value.
 	 */
 	public static void main(final String[] args) {
-
+		
 		if (args.length == 0) {
 			System.err.println("Usage: java TestMeter <type> <value>");
 			System.err.println("Type:  0 = PIE");
@@ -146,7 +146,7 @@ public class MeterChartDemo {
 			val = Double.valueOf(args[1]).doubleValue();
 		}
 		h.displayMeterChart(val, dialShape);
-
+		
 	}
-
+	
 }

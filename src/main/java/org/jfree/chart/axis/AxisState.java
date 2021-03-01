@@ -40,34 +40,34 @@ import java.util.List;
  * information).
  */
 public class AxisState {
-
+	
 	/** The cursor position. */
 	private double cursor;
-
+	
 	/** The axis ticks. */
 	private List ticks;
-
+	
 	/** The maximum width/height. */
 	private double max;
-
+	
 	/**
 	 * Creates a new axis state.
 	 */
 	public AxisState() {
 		this(0.0);
 	}
-
+	
 	/**
 	 * Creates a new axis state.
 	 * 
 	 * @param cursor
-	 *            the cursor.
+	 *           the cursor.
 	 */
 	public AxisState(double cursor) {
 		this.cursor = cursor;
 		this.ticks = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Returns the cursor position.
 	 * 
@@ -76,57 +76,57 @@ public class AxisState {
 	public double getCursor() {
 		return this.cursor;
 	}
-
+	
 	/**
 	 * Sets the cursor position.
 	 * 
 	 * @param cursor
-	 *            the cursor position.
+	 *           the cursor position.
 	 */
 	public void setCursor(double cursor) {
 		this.cursor = cursor;
 	}
-
+	
 	/**
 	 * Moves the cursor up by the specified number of Java 2D units.
 	 * 
 	 * @param units
-	 *            the units.
+	 *           the units.
 	 */
 	public void cursorUp(double units) {
 		this.cursor = this.cursor - units;
 	}
-
+	
 	/**
 	 * Moves the cursor down by the specified number of Java 2D units.
 	 * 
 	 * @param units
-	 *            the units.
+	 *           the units.
 	 */
 	public void cursorDown(double units) {
 		this.cursor = this.cursor + units;
 	}
-
+	
 	/**
 	 * Moves the cursor left by the specified number of Java 2D units.
 	 * 
 	 * @param units
-	 *            the units.
+	 *           the units.
 	 */
 	public void cursorLeft(double units) {
 		this.cursor = this.cursor - units;
 	}
-
+	
 	/**
 	 * Moves the cursor right by the specified number of Java 2D units.
 	 * 
 	 * @param units
-	 *            the units.
+	 *           the units.
 	 */
 	public void cursorRight(double units) {
 		this.cursor = this.cursor + units;
 	}
-
+	
 	/**
 	 * Returns the list of ticks.
 	 * 
@@ -135,17 +135,17 @@ public class AxisState {
 	public List getTicks() {
 		return this.ticks;
 	}
-
+	
 	/**
 	 * Sets the list of ticks.
 	 * 
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 */
 	public void setTicks(List ticks) {
 		this.ticks = ticks;
 	}
-
+	
 	/**
 	 * Returns the maximum width/height.
 	 * 
@@ -154,12 +154,12 @@ public class AxisState {
 	public double getMax() {
 		return this.max;
 	}
-
+	
 	/**
 	 * Sets the maximum width/height.
 	 * 
 	 * @param max
-	 *            the maximum width/height.
+	 *           the maximum width/height.
 	 */
 	public void setMax(double max) {
 		this.max = max;

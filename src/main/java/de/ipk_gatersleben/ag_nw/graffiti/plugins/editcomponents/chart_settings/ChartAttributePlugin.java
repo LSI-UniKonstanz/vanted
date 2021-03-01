@@ -23,49 +23,49 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 public class ChartAttributePlugin extends IPK_PluginAdapter implements EditorPlugin {
 	private Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
 	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-
+	
 	public ChartAttributePlugin() {
 		this.attributes = new Class[] { ChartAttribute.class, ChartsColumnAttribute.class };
-
+		
 		StringAttribute.putAttributeType("component", ChartAttribute.class);
-
+		
 		valueEditComponents = new HashMap<>();
-
+		
 		valueEditComponents.put(ChartAttribute.class, ChartAttributeEditor.class);
 		valueEditComponents.put(ChartsColumnAttribute.class, ChartsColumnAttributeEditor.class);
-
+		
 		attributeComponents = new HashMap<>();
-
+		
 		attributeComponents.put(ChartAttribute.class, ChartAttributeComponent.class);
-
+		
 		for (GraffitiCharts c : GraffitiCharts.values())
 			ChartComponentManager.getInstance().registerChartComponent(c);
-
+		
 		attributeDescriptions = new AttributeDescription[] { new AttributeDescription(ChartsColumnAttribute.name,
 				ChartsColumnAttribute.class, null, true, true, null), };
-
+		
 	}
-
+	
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
-
+	
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-
+	
 	public Mode[] getModes() {
 		return null;
 	}
-
+	
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-
+	
 	public Tool[] getTools() {
 		return null;
 	}
-
+	
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}

@@ -16,18 +16,18 @@ import java.awt.geom.Rectangle2D;
  */
 public interface GraphElementShape extends GraffitiShape {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Rectangle2D getRealBounds2D();
-
+	
 	public void setCoordinateSystem(CoordinateSystem coordinates);
-
+	
 	public double getXexcess();
-
+	
 	public double getYexcess();
 }
 

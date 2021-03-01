@@ -46,45 +46,45 @@ import org.graffiti.util.InstanceLoader;
  */
 public abstract class LineEdgeShape implements EdgeShape {
 	// ~ Instance fields ========================================================
-
+	
 	public boolean hollowTargetArrowShape = false;
 	public boolean hollowSourceArrowShape = false;
-
+	
 	/** The graphicsAttribute of the edge this shape represents. */
 	protected EdgeGraphicAttribute graphicsAttr;
-
+	
 	/**
 	 * The <code>Line</code> that is represented by this <code>EdgeShape</code>
 	 */
 	protected GeneralPath linePath;
-
+	
 	/**
 	 * The <code>Line2D</code> that might represent this <code>LineEdgeShape</code>
 	 * or used for intersection purposes.
 	 */
 	protected Line2D line2D;
-
+	
 	// /**
 	// * Largest distance between mouseclick and line so that line still gets
 	// * selected.
 	// */
 	// protected final double LINE_TOLERANCE = 2d;
-
+	
 	/**
 	 * The real bounding box with coordinates relative to the view of this shape.
 	 */
 	protected Rectangle2D realBounds;
-
+	
 	/** The shape of the arrow on the source side. */
 	protected Shape headArrow;
-
+	
 	private ArrowShape headShape;
-
+	
 	/** The shape of the arrow on the source side. */
 	protected Shape tailArrow;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * The constructor creates a line using default values. The shapes of the source
 	 * and target nodes are given to enable the edge to paint itself correctly
@@ -96,9 +96,9 @@ public abstract class LineEdgeShape implements EdgeShape {
 		this.realBounds = new Rectangle2D.Double(0d, 0d, 0d, 0d);
 		this.line2D = new Line2D.Double();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -108,7 +108,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 		Rectangle result = getBounds2D().getBounds();
 		return result;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -119,18 +119,18 @@ public abstract class LineEdgeShape implements EdgeShape {
 		if (getHeadArrow() != null) {
 			result.add(getHeadArrow().getBounds2D());
 			if (hollowTargetArrowShape) {
-
+				
 			}
 		}
 		if (getTailArrow() != null) {
 			result.add(getTailArrow().getBounds2D());
 			if (hollowSourceArrowShape) {
-
+				
 			}
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the arrow at the target side.
 	 * 
@@ -139,31 +139,31 @@ public abstract class LineEdgeShape implements EdgeShape {
 	public Shape getHeadArrow() {
 		return headArrow;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param t
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param d
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public PathIterator getPathIterator(AffineTransform t, double d) {
 		return linePath.getPathIterator(t, d);
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param t
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public PathIterator getPathIterator(AffineTransform t) {
 		return linePath.getPathIterator(t);
 	}
-
+	
 	/**
 	 * Returns the correct bounding box with coordinates relative to the view.
 	 * 
@@ -172,20 +172,20 @@ public abstract class LineEdgeShape implements EdgeShape {
 	public Rectangle2D getRealBounds2D() {
 		return realBounds;
 	}
-
+	
 	/**
 	 * Called when one of the nodes belonging to this edge has changed.
 	 * 
 	 * @param graphics
-	 *            the attribute that has changed
+	 *           the attribute that has changed
 	 * @param source
-	 *            the <code>NodeShape</code> of the source node
+	 *           the <code>NodeShape</code> of the source node
 	 * @param target
-	 *            the <code>NodeShape</code> of the target node
+	 *           the <code>NodeShape</code> of the target node
 	 */
 	public abstract void buildShape(EdgeGraphicAttribute graphics, NodeShape source, NodeShape target)
 			throws ShapeNotFoundException;
-
+	
 	/**
 	 * Returns the arrow at the source side.
 	 * 
@@ -194,87 +194,87 @@ public abstract class LineEdgeShape implements EdgeShape {
 	public Shape getTailArrow() {
 		return this.tailArrow;
 	}
-
+	
 	/**
 	 * Checks whether or not a rectangle lies entirely within this shape.
 	 * 
 	 * @param x
-	 *            the x-coordinate of the point to check.
+	 *           the x-coordinate of the point to check.
 	 * @param y
-	 *            the y-coordinate of the point to check.
+	 *           the y-coordinate of the point to check.
 	 * @param w
-	 *            width
+	 *           width
 	 * @param h
-	 *            height
+	 *           height
 	 * @return true if the point lies within this shape.
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public boolean contains(double x, double y, double w, double h) {
 		throw new RuntimeException();
 	}
-
+	
 	/**
 	 * Decides whether or not a point lies within this shape.
 	 * 
 	 * @param x
-	 *            the x-coordinate of the point to check.
+	 *           the x-coordinate of the point to check.
 	 * @param y
-	 *            the y-coordinate of the point to check.
+	 *           the y-coordinate of the point to check.
 	 * @return true if the point lies within this shape.
 	 */
 	public abstract boolean contains(double x, double y);
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param p
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public boolean contains(Point2D p) {
 		return this.contains(p.getX(), p.getY());
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param r
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public boolean contains(Rectangle2D r) {
 		return contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param x
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param y
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param w
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param h
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public boolean intersects(double x, double y, double w, double h) {
 		return linePath.intersects(x, y, w, h);
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param r
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public boolean intersects(Rectangle2D r) {
 		return this.linePath.intersects(r);
 	}
-
+	
 	/**
 	 * Checks whether or not a point is said to be locateds on a line. It uses the
 	 * field <code>LINE_TOLERANCE</code> as a certain tolerance, i.e. it really
@@ -288,28 +288,28 @@ public abstract class LineEdgeShape implements EdgeShape {
 	public boolean lineContains(Line2D line, double x, double y) {
 		double maxDist = CLICK_TOLERANCE;
 		double lineBreadth = getEdgeThickness() + getFrameThickness();
-
+		
 		if (lineBreadth > maxDist) {
 			maxDist = lineBreadth / 2d;
 		}
-
+		
 		double dist = line.ptSegDist(x, y);
-
+		
 		if (dist < maxDist) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the coordinates of the port the edge belongs to. It returns default
 	 * values if no port could be found.
 	 * 
 	 * @param edgeAttr
-	 *            the graphic attribute of the edge
+	 *           the graphic attribute of the edge
 	 * @param sourceShape
-	 *            the shape of the source node
+	 *           the shape of the source node
 	 * @return a <code>Point2D</code> representing the coordinates of the port the
 	 *         edge wants to dock to or those of the default port when there was no
 	 *         or wrong port information int the edge.
@@ -317,21 +317,21 @@ public abstract class LineEdgeShape implements EdgeShape {
 	protected Point2D getSourceDockingCoords(EdgeGraphicAttribute edgeAttr, NodeShape sourceShape) {
 		DockingAttribute docking = edgeAttr.getDocking();
 		String sourcePortName = docking.getSource();
-
+		
 		Edge edge = (Edge) edgeAttr.getAttributable();
 		Node sourceNode = edge.getSource();
-
+		
 		return getDockingCoords(sourcePortName, sourceShape, sourceNode, true);
 	}
-
+	
 	/**
 	 * Returns the coordinates of the port the edge belongs to. It returns default
 	 * values if no port could be found.
 	 * 
 	 * @param edgeAttr
-	 *            the graphic attribute of the edge
+	 *           the graphic attribute of the edge
 	 * @param targetShape
-	 *            the shape of the target node
+	 *           the shape of the target node
 	 * @return a <code>Point2D</code> representing the coordinates of the port the
 	 *         edge wants to dock to or those of the default port when there was no
 	 *         or wrong port information int the edge.
@@ -339,13 +339,13 @@ public abstract class LineEdgeShape implements EdgeShape {
 	protected Point2D getTargetDockingCoords(EdgeGraphicAttribute edgeAttr, NodeShape targetShape) {
 		DockingAttribute docking = edgeAttr.getDocking();
 		String targetPortName = docking.getTarget();
-
+		
 		Edge edge = (Edge) edgeAttr.getAttributable();
 		Node targetNode = edge.getTarget();
-
+		
 		return getDockingCoords(targetPortName, targetShape, targetNode, false);
 	}
-
+	
 	/**
 	 * Set and get bounds taking line width into account.
 	 * 
@@ -353,34 +353,34 @@ public abstract class LineEdgeShape implements EdgeShape {
 	 */
 	protected Rectangle2D addThickBounds(GeneralPath path, EdgeGraphicAttribute edgeAttr) {
 		double thickness = getFrameThickness() / 2;
-
+		
 		AffineTransform at = new AffineTransform();
-
+		
 		at.setToTranslation(thickness, thickness);
 		Shape shape = path.createTransformedShape(at);
 		realBounds.add(shape.getBounds2D());
-
+		
 		at.setToTranslation(-thickness, -thickness);
 		shape = path.createTransformedShape(at);
 		realBounds.add(shape.getBounds2D());
-
+		
 		return realBounds;
 	}
-
+	
 	/**
 	 * Set and get bounds taking line width into account.
 	 * 
 	 * @param line
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param edgeAttr
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return bounding rectangle including line width.
 	 */
 	protected Rectangle2D getThickBounds(Line2D line, EdgeGraphicAttribute edgeAttr) {
 		this.realBounds = line.getBounds2D();
-
+		
 		double thickness = getFrameThickness(); // /2 ???
-
+		
 		if (thickness > 0) {
 			Ellipse2D e1 = new Ellipse2D.Double(line.getX1(), line.getY1(), thickness, thickness);
 			realBounds.add(e1.getBounds2D());
@@ -390,7 +390,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 		}
 		return realBounds;
 	}
-
+	
 	/**
 	 * Creates an arrow from the classname found in the graphics attribute (if there
 	 * is one specified) and affixes it. Uses <code>getArrowTail</code> The arrow is
@@ -402,25 +402,25 @@ public abstract class LineEdgeShape implements EdgeShape {
 	 * where the edge should be attached at the node.
 	 * 
 	 * @param edgeAttr
-	 *            the graphics attribute.
+	 *           the graphics attribute.
 	 * @param target
-	 *            the point where to attach the arrow.
+	 *           the point where to attach the arrow.
 	 * @param other
-	 *            indicates the direction for the arrow.
+	 *           indicates the direction for the arrow.
 	 * @return (new) attachment point for the edge.
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	protected Point2D attachSourceArrow(EdgeGraphicAttribute edgeAttr, Point2D target, Point2D other)
 			throws ShapeNotFoundException {
 		if (target.distance(other) < 0.0000001)
 			return other;
-
+		
 		Point2D newTarget = target;
 		// tailShape = null;
-
+		
 		String shapeClass = edgeAttr.getArrowtail();
-
+		
 		if (!shapeClass.equals("")) {
 			hollowSourceArrowShape = shapeClass.contains("Thin");
 			try {
@@ -434,24 +434,24 @@ public abstract class LineEdgeShape implements EdgeShape {
 			if (tailShape instanceof SupportsHollowDrawing)
 				((SupportsHollowDrawing) tailShape).setHollow(hollowSourceArrowShape);
 			tailShape.updateSize(getEdgeThickness());
-
+			
 			// glue arrow on the line at the correct spot and rotation
 			this.tailArrow = tailShape.affix(target, other, getEdgeThickness() + edgeAttr.getFrameThickness());
 			newTarget = tailShape.getAnchor();
 		} else
 			tailArrow = null;
-
+		
 		return newTarget;
 	}
-
+	
 	protected double getEdgeThickness() {
 		return graphicsAttr.getThickness();
 	}
-
+	
 	protected double getFrameThickness() {
 		return graphicsAttr.getFrameThickness();
 	}
-
+	
 	/**
 	 * Creates an arrow from the classname found in the graphics attribute (if there
 	 * is one specified) and affixes it. Uses <code>getArrowHead</code> The arrow is
@@ -463,26 +463,26 @@ public abstract class LineEdgeShape implements EdgeShape {
 	 * where the edge should be attached at the node.
 	 * 
 	 * @param edgeAttr
-	 *            the graphics attribute.
+	 *           the graphics attribute.
 	 * @param target
-	 *            the point where to attach the arrow.
+	 *           the point where to attach the arrow.
 	 * @param other
-	 *            indicates the direction for the arrow.
+	 *           indicates the direction for the arrow.
 	 * @return (new) attachment point for the edge.
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	protected Point2D attachTargetArrow(EdgeGraphicAttribute edgeAttr, Point2D target, Point2D other)
 			throws ShapeNotFoundException {
-
+		
 		if (target.distance(other) < 0.0000001)
 			return other;
-
+		
 		Point2D newTarget = target;
 		// headShape = null;
-
+		
 		String shapeClass = edgeAttr.getArrowhead();
-
+		
 		if (!shapeClass.equals("")) {
 			hollowTargetArrowShape = shapeClass.contains("Thin");
 			try {
@@ -496,34 +496,34 @@ public abstract class LineEdgeShape implements EdgeShape {
 			if (headShape instanceof SupportsHollowDrawing)
 				((SupportsHollowDrawing) headShape).setHollow(hollowTargetArrowShape);
 			headShape.updateSize(getEdgeThickness());
-
+			
 			// glue arrow on the line at the correct spot and rotation
 			headArrow = headShape.affix(target, other, getEdgeThickness() + getFrameThickness());
 			newTarget = headShape.getAnchor();
 		} else
 			headArrow = null;
-
+		
 		return newTarget;
 	}
-
+	
 	private static HashMap<String, Point2D> defaultPorts = getDefaultPorts();
 	private ArrowShape tailShape;
-
+	
 	/**
 	 * Returns the coordinates of the port named <code>portName</code>.
 	 * 
 	 * @param portName
-	 *            the name of the port the edge wants to dock to.
+	 *           the name of the port the edge wants to dock to.
 	 * @param shape
-	 *            the shape of the node the edge wants to dock to. Needed to
-	 *            calculate the absolute coordinates of the ports.
+	 *           the shape of the node the edge wants to dock to. Needed to
+	 *           calculate the absolute coordinates of the ports.
 	 * @param node
-	 *            the node the edge wants to dock to. Needed to get to its port
-	 *            attributes.
+	 *           the node the edge wants to dock to. Needed to get to its port
+	 *           attributes.
 	 * @param out
-	 *            <code>true</code> if only common and outgoing ports should be
-	 *            searched, <code>false</code> if only common and ingoing ports
-	 *            should be searched.
+	 *           <code>true</code> if only common and outgoing ports should be
+	 *           searched, <code>false</code> if only common and ingoing ports
+	 *           should be searched.
 	 * @return a <code>Point2D</code> representing the coordinates of the port the
 	 *         edge wants to dock to or those of the default port when there was no
 	 *         or wrong port information int the edge.
@@ -533,21 +533,21 @@ public abstract class LineEdgeShape implements EdgeShape {
 			return AttributeHelper.getPosition(node);
 		Rectangle2D sRect = shape.getRealBounds2D();
 		Point2D point = new Point2D.Double();
-
+		
 		NodeGraphicAttribute nodeAttr = (NodeGraphicAttribute) node.getAttribute(GraphicAttributeConstants.GRAPHICS);
-
+		
 		if (portName == null || portName.equals("")) {
 			point = calculateDefaultDocking(nodeAttr, shape);
 		} else {
 			PortsAttribute ports = nodeAttr.getPorts();
 			PortAttribute port = ports.getPort(portName, out);
-
+			
 			if (port == null) {
 				if (defaultPorts.containsKey(portName)) {
 					point = defaultPorts.get(portName);
 					double px = point.getX();
 					double py = point.getY();
-
+					
 					point = new Point2Dfix(sRect.getCenterX() + (px * sRect.getWidth() / 2d),
 							sRect.getCenterY() + (py * sRect.getHeight() / 2d));
 				} else {
@@ -594,42 +594,42 @@ public abstract class LineEdgeShape implements EdgeShape {
 				point = new Point2Dfix(point.getX(), point.getY());
 			}
 		}
-
+		
 		return point;
 	}
-
+	
 	private static HashMap<String, Point2D> getDefaultPorts() {
 		HashMap<String, Point2D> result = new HashMap<String, Point2D>();
 		result.put("tl", new Point2Dfix(-1, -1));
 		result.put("tr", new Point2Dfix(+1, -1));
 		result.put("bl", new Point2Dfix(-1, +1));
 		result.put("br", new Point2Dfix(+1, +1));
-
+		
 		result.put("top", new Point2Dfix(0, -1));
 		result.put("bottom", new Point2Dfix(0, +1));
 		result.put("left", new Point2Dfix(-1, 0));
 		result.put("right", new Point2Dfix(+1, 0));
-
+		
 		return result;
 	}
-
+	
 	/**
 	 * Returns the coordinates of the default port of a node. (standard
 	 * implementation is the center of the node).
 	 * 
 	 * @param nodeAttr
-	 *            the graphics attribute of the node. Needed to get the (center)
-	 *            coordinates of the node.
+	 *           the graphics attribute of the node. Needed to get the (center)
+	 *           coordinates of the node.
 	 * @param shape
-	 *            the shape of the node. May be needed to to more sophisticated
-	 *            calculation of default ports.
+	 *           the shape of the node. May be needed to to more sophisticated
+	 *           calculation of default ports.
 	 * @return absolute coordinates of default port.
 	 */
 	private Point2D calculateDefaultDocking(NodeGraphicAttribute nodeAttr, NodeShape shape) {
 		Point2D point = new Point2D.Double();
 		CoordinateAttribute coord = nodeAttr.getCoordinate();
 		point.setLocation(coord.getX(), coord.getY());
-
+		
 		return point;
 	}
 }

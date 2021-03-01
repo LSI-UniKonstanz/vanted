@@ -19,13 +19,13 @@ import javax.swing.undo.UndoableEditSupport;
  */
 public interface Undoable {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the undo support object this object uses. The undo support object
 	 * handles the <code>UndoableEditListeners</code>.
 	 * 
 	 * @param us
-	 *            the undo support object this object uses.
+	 *           the undo support object this object uses.
 	 */
 	public void setUndoSupport(UndoableEditSupport us);
 }

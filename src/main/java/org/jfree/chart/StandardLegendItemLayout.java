@@ -36,69 +36,69 @@ import java.util.Iterator;
  * A class for arranging legend items.
  */
 public class StandardLegendItemLayout implements LegendItemLayout {
-
+	
 	/** Useful constant for vertical orientation. */
 	public static final int VERTICAL = 0;
-
+	
 	/** Useful constant for horizontal orientation. */
 	public static final int HORIZONTAL = 1;
-
+	
 	/** The orientation of the layout (HORIZONTAL or VERTICAL). */
 	private int orientation;
-
+	
 	/** A constraint on one of the dimesions in the layout. */
 	private double dimension;
-
+	
 	/**
 	 * Constructs a new layout class for legend items.
 	 * 
 	 * @param orientation
-	 *            the orientation of the layout (HORIZONTAL or VERTICAL).
+	 *           the orientation of the layout (HORIZONTAL or VERTICAL).
 	 * @param dimension
-	 *            the constrained dimension.
+	 *           the constrained dimension.
 	 */
 	public StandardLegendItemLayout(int orientation, double dimension) {
-
+		
 		this.orientation = orientation;
 		this.dimension = dimension;
-
+		
 	}
-
+	
 	/**
 	 * Performs a layout on the items in the collection.
 	 * 
 	 * @param collection
-	 *            the collection to be laid out.
+	 *           the collection to be laid out.
 	 */
 	public void layoutLegendItems(LegendItemCollection collection) {
-
+		
 		if (this.orientation == HORIZONTAL) {
 			doHorizontalLayout(collection);
 		} else if (this.orientation == VERTICAL) {
 			doVerticalLayout(collection);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Lays out the items horizontally, with a constraint on the width.
 	 * 
 	 * @param collection
-	 *            The collection to be laid out.
+	 *           The collection to be laid out.
 	 */
 	private void doHorizontalLayout(LegendItemCollection collection) {
-
+		
 		// run through the items in the collection and set their coordinates
 		// relative to (0, 0)
 		Iterator iterator = collection.iterator();
-
+		
 		// int rowCount = 0;
 		// double totalHeight = 0.0;
 		boolean first = true;
 		double currentRowX = 0.0;
 		double currentRowY = 0.0;
 		double currentRowHeight = 0.0;
-
+		
 		while (iterator.hasNext()) {
 			DrawableLegendItem item = (DrawableLegendItem) iterator.next();
 			if ((first) || (item.getWidth() < (this.dimension - currentRowX))) {
@@ -113,30 +113,30 @@ public class StandardLegendItemLayout implements LegendItemLayout {
 				item.setX(0.0);
 				currentRowX = item.getWidth();
 			}
-
+			
 		}
-
+		
 	}
-
+	
 	/**
 	 * Lays out the items vertically, with a constraint on the height.
 	 * 
 	 * @param collection
-	 *            The collection to be laid out.
+	 *           The collection to be laid out.
 	 */
 	private void doVerticalLayout(LegendItemCollection collection) {
-
+		
 		// run through the items in the collection and set their coordinates
 		// relative to (0, 0)
 		Iterator iterator = collection.iterator();
-
+		
 		// int columnCount = 0;
 		// double totalWidth = 0.0;
 		boolean first = true;
 		double currentColumnX = 0.0;
 		double currentColumnY = 0.0;
 		double currentColumnWidth = 0.0;
-
+		
 		while (iterator.hasNext()) {
 			DrawableLegendItem item = (DrawableLegendItem) iterator.next();
 			if ((first) || (item.getHeight() < (this.dimension - currentColumnY))) {
@@ -151,8 +151,8 @@ public class StandardLegendItemLayout implements LegendItemLayout {
 				item.setY(0.0);
 				currentColumnY = item.getHeight();
 			}
-
+			
 		}
 	}
-
+	
 }

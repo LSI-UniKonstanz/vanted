@@ -33,21 +33,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class ExperimentLoader {
-
+	
 	static Logger logger = Logger.getLogger(ExperimentLoader.class);
-
+	
 	public static final String[] supportedMagicFieldStrings = new String[] { "V1.0", "V1.0T", "V1.1", "V1.1T", "V1.2",
 			"V1.2T" }; // TODO:
-
+	
 	// some
 	// missing?
-
+	
 	public static boolean canLoadFile(File f) {
 		String fileName = f.getName();
 		if (fileName.toUpperCase().endsWith(".XLSX") || fileName.toUpperCase().endsWith(".XLS")
 				|| fileName.toUpperCase().endsWith(".DAT") || fileName.toUpperCase().endsWith(".TXT")
 				|| fileName.toUpperCase().endsWith(".BIN") || fileName.toUpperCase().endsWith(".CSV")) {
-
+			
 			if (fileName.toUpperCase().endsWith(".XLS") || fileName.toUpperCase().endsWith(".XLSX")) {
 				TableData td = ExperimentDataFileReader.getExcelTableDataPeak(f, 5);
 				if (td == null)
@@ -67,19 +67,19 @@ public class ExperimentLoader {
 					for (String field : supportedMagicFieldStrings)
 						if (field.equals(vv))
 							return true;
-
+						
 				if (oneStartsWithV)
 					return false; // another template loader, which uses the magic
 				// field, will load the file
 				else
 					return true;
 			}
-
+			
 			return true; // will read csv, txt, ...
 		}
 		return false;
 	}
-
+	
 	public static void loadFile(final Collection<File> fileList, final ExperimentDataPresenter receiver) {
 		synchronized (ExperimentLoader.class) {
 			final ArrayList<File> keggExpressionFiles = new ArrayList<File>();
@@ -95,9 +95,9 @@ public class ExperimentLoader {
 			}
 			fileList.removeAll(keggExpressionFiles);
 			fileList.removeAll(rawTextFiles);
-
+			
 			final HashMap<File, ArrayList<TextFileColumnInformation>> rawFile2relevantColumns = new HashMap<File, ArrayList<TextFileColumnInformation>>();
-
+			
 			final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 					"Process Data...", "");
 			BackgroundTaskHelper.issueSimpleTask("Dataset-Loader", "Process Data...", new Runnable() {
@@ -111,7 +111,7 @@ public class ExperimentLoader {
 			}, null, status);
 		}
 	}
-
+	
 	public synchronized static void loadExcelFileWithBackGroundService(final ExperimentDataFileReader excelReader,
 			final TableData myData, final File excelFile, final RunnableWithXMLexperimentData finishTask) {
 		MainFrame.showMessage("Load project data from Excel File...", MessageType.PERMANENT_INFO);
@@ -122,7 +122,7 @@ public class ExperimentLoader {
 						logger.error("excel file is null");
 					if (myData == null)
 						logger.error("TableData is null");
-
+					
 					ExperimentInterface md = excelReader.getXMLdata(excelFile, myData,
 							new BackgroundTaskStatusProviderSupportingExternalCallImpl("Load Data...", ""));
 					if (md == null)
@@ -146,7 +146,7 @@ public class ExperimentLoader {
 			}
 		}
 	}
-
+	
 	static void processRawTextFiles(ArrayList<File> rawTextFiles, ArrayList<KeggExpressionDataset> datasets,
 			BackgroundTaskStatusProviderSupportingExternalCall status,
 			HashMap<File, ArrayList<TextFileColumnInformation>> rawTextFile2relevantColumns,
@@ -157,7 +157,7 @@ public class ExperimentLoader {
 			status.setCurrentStatusText2("Read content of file: " + kef.getName());
 			TableData expdata = ExperimentDataFileReader.getExcelTableData(kef, -1,
 					rawTextFile2relevantColumns.get(kef), status);
-
+			
 			if (transposeContent.containsKey(kef)) {
 				if (transposeContent.get(kef))
 					expdata = expdata.getTransposedDataset();
@@ -167,7 +167,7 @@ public class ExperimentLoader {
 			// 0404-1(COL_GP_A_7)_Signal 0404-1(COL_GP_A_7)_Detection
 			// 0404-10(CRO_MX_A_34)_Signal 0404-10(CRO_MX_A_34)_Detection
 			// AFFX-BioB-5_at 175.6 P 196.4 P
-
+			
 			int colGeneId = 1;
 			for (TextFileColumnInformation ci : rawTextFile2relevantColumns.get(kef)) {
 				if (ci == null)
@@ -232,7 +232,7 @@ public class ExperimentLoader {
 		}
 		status.setCurrentStatusText2("");
 	}
-
+	
 	static void processKeggExpressionTextFiles(ArrayList<File> keggExpressionFiles,
 			ArrayList<KeggExpressionDataset> datasets, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		for (File kef : keggExpressionFiles) {
@@ -240,10 +240,10 @@ public class ExperimentLoader {
 			TableData expdata = ExperimentDataFileReader.getExcelTableData(kef, null);
 			KeggExpressionReader ker = new KeggExpressionReader(expdata);
 			String organism = ker.getOrganism();
-
+			
 			KeggExpressionDataset ked = new KeggExpressionDataset(kef.getName(), true, organism);
 			datasets.add(ked);
-
+			
 			// #ORF x y Control-sig Control-bkg Target-sig Target-bkg
 			int colORF = ker.getColumn("ORF");
 			int colX = ker.getColumn("X");
@@ -273,7 +273,7 @@ public class ExperimentLoader {
 		}
 		status.setCurrentStatusText2("");
 	}
-
+	
 	protected static void loadExcelOrBinaryFile(File excelOrBinaryFile, final ExperimentDataPresenter receiver,
 			HashMap<File, TableData> rawTextFilesReceiver) throws JDOMException {
 		if (excelOrBinaryFile != null) {
@@ -286,7 +286,7 @@ public class ExperimentLoader {
 						in = new FileInputStream(excelOrBinaryFile);
 						// org.jdom.Document binDoc = builder.build(in);
 						// Document w3Doc = JDOM2DOM.getDOMfromJDOM(binDoc);
-
+						
 						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 						DocumentBuilder builder = factory.newDocumentBuilder();
 						Document w3Doc = builder.parse(in);
@@ -311,7 +311,7 @@ public class ExperimentLoader {
 				}
 			} else {
 				ExperimentDataFileReader gefr = null;
-
+				
 				final TableData myData = ExperimentDataFileReader.getExcelTableData(excelOrBinaryFile, null);
 				boolean loadDBEform = myData.isDBEinputForm();
 				if (loadDBEform) {
@@ -328,7 +328,7 @@ public class ExperimentLoader {
 					loadExcelFileWithBackGroundService(gefr, myData, excelOrBinaryFile,
 							new RunnableWithXMLexperimentData() {
 								private ExperimentInterface md = null;
-
+								
 								/**
 								 * <code>setExperimentData</code> will be automatically called before this
 								 * method is called. This is a two step solution as the loading of the data is
@@ -337,7 +337,7 @@ public class ExperimentLoader {
 								public void run() {
 									receiver.processReceivedData(myData, experimentName, md, null);
 								}
-
+								
 								public void setExperimenData(ExperimentInterface md) {
 									this.md = md;
 								}
@@ -345,7 +345,7 @@ public class ExperimentLoader {
 			}
 		}
 	}
-
+	
 	static void processExcelTemplateFiles(final Collection<File> fileList,
 			final BackgroundTaskStatusProviderSupportingExternalCallImpl status, ExperimentDataPresenter receiver,
 			HashMap<File, TableData> rawTextFilesReceiver) {
@@ -361,7 +361,7 @@ public class ExperimentLoader {
 			}
 		}
 	}
-
+	
 	private static void processRawAndExpressionTextFiles(final ArrayList<File> keggExpressionFiles,
 			final ArrayList<File> rawTextFiles, final HashMap<File, TableData> unformatedExcelData,
 			final HashMap<File, ArrayList<TextFileColumnInformation>> rawFile2relevantColumns,
@@ -415,11 +415,11 @@ public class ExperimentLoader {
 						loadExcelFileWithBackGroundService(gefr, resultingData, null,
 								new RunnableWithXMLexperimentData() {
 									private ExperimentInterface md = null;
-
+									
 									public void run() {
 										receiver.processReceivedData(resultingData, experimentName, md, null);
 									}
-
+									
 									public void setExperimenData(ExperimentInterface md) {
 										this.md = md;
 									}
@@ -429,7 +429,7 @@ public class ExperimentLoader {
 			}
 		}
 	}
-
+	
 	static void processRawStringTableData(String tabledata, ArrayList<KeggExpressionDataset> datasets,
 			BackgroundTaskStatusProviderSupportingExternalCall status,
 			ArrayList<TextFileColumnInformation> relevantColumns) {
@@ -440,7 +440,7 @@ public class ExperimentLoader {
 		// 0404-1(COL_GP_A_7)_Signal 0404-1(COL_GP_A_7)_Detection
 		// 0404-10(CRO_MX_A_34)_Signal 0404-10(CRO_MX_A_34)_Detection
 		// AFFX-BioB-5_at 175.6 P 196.4 P
-
+		
 		int colGeneId = 1;
 		for (TextFileColumnInformation ci : relevantColumns) {
 			KeggExpressionDataset ked = new KeggExpressionDataset(ci.getName(), false, "");
@@ -467,16 +467,16 @@ public class ExperimentLoader {
 		}
 		status.setCurrentStatusText2("");
 	}
-
+	
 	public static String[] getValidInputFileExtension() {
 		return new String[] { "xlsx", "xls", "txt", "csv", "bin", "dat" };
 	}
-
+	
 	public static boolean isValidInputFileExtension(String end) {
 		for (String ext : getValidInputFileExtension())
 			if (ext.equalsIgnoreCase(end))
 				return true;
 		return false;
 	}
-
+	
 }

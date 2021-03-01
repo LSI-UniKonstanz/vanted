@@ -38,52 +38,52 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 
 /**
  * Merges nodes within the same network, while considering connecting edges and
- * data mapping information. 
+ * data mapping information.
  * 
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  * @version 2.6.5
  * @vanted.revision 2.6.5
  */
 public class MergeNodes extends AbstractAlgorithm {
-
+	
 	private boolean considerSameLabel;
 	private boolean considerCluster;
-
+	
 	public String getName() {
 		return "Merge Nodes";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Nodes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html><p>Merges nodes together, while edges and data-mapping information<br>"
 				+ "are taken into account. To merge internetwork nodes, please, use<br/>"
 				+ "Window &#10148; Combine Open Networks beforehand.</p><br/></html>";
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		Parameter[] params = new Parameter[] {
 				new BooleanParameter(true, "Only with same label", "Consider same label when merging nodes."),
 				new BooleanParameter(false, "Consider Cluster", "Consider cluster inforamtion when merging nodes.") };
-
+		
 		return params;
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		if (params == null) {
@@ -95,20 +95,20 @@ public class MergeNodes extends AbstractAlgorithm {
 			considerCluster = ((BooleanParameter) params[i++]).getBoolean();
 		}
 	}
-
+	
 	public void execute() {
 		List<Node> workNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		graph.getListenerManager().transactionStarted(this);
-
+		
 		if (considerSameLabel) {
 			GraphHelperBio.mergeNodesWithSameLabel(workNodes, false, false, considerCluster);
 		} else {
 			mergeNodesIntoSingleNode(graph, workNodes);
 		}
-
+		
 		graph.getListenerManager().transactionFinished(this);
 	}
-
+	
 	public static void mergeNodesIntoSingleNode(Graph graph, Collection<Node> workNodes) {
 		Vector2d center = NodeTools.getCenter(workNodes);
 		List<SubstanceInterface> targetMappingList = new ArrayList<SubstanceInterface>();
@@ -125,19 +125,19 @@ public class MergeNodes extends AbstractAlgorithm {
 			} else {
 				targetNodeName = AttributeHelper.getLabel(workNode, "[unnamed]");
 			}
-
+			
 			if (firstNode) {
 				firstNode = false;
 				mergedNode = mergeNode(graph, workNodes, center, true);
 			}
-
+			
 			Vector2d size = AttributeHelper.getSize(workNode);
 			targetArea += size.x * size.x + size.y * size.y;
 			sumWidth += size.x;
 			sumHeight += size.y;
-
+			
 			extractDataMappingInformation(targetMappingList, mapping2chartTitle, workNode);
-
+			
 			if (mergedNode != workNode)
 				graph.deleteNode(workNode);
 		}
@@ -145,10 +145,10 @@ public class MergeNodes extends AbstractAlgorithm {
 		tsize.x = Math.sqrt(targetArea) * sumWidth / sumHeight;
 		tsize.y = Math.sqrt(targetArea) * sumHeight / sumWidth;
 		AttributeHelper.setLabel(mergedNode, targetNodeName);
-
+		
 		applyDataMappingInformation(targetMappingList, mergedNode, mapping2chartTitle);
 	}
-
+	
 	private static void applyDataMappingInformation(List<SubstanceInterface> targetMappingList, Node node,
 			HashMap<SubstanceInterface, String> mapping2chartTitle) {
 		RemoveMappingDataAlgorithm.removeMappingDataFrom(node);
@@ -166,7 +166,7 @@ public class MergeNodes extends AbstractAlgorithm {
 						mapping2chartTitle.get(mappData));
 		}
 	}
-
+	
 	private static void extractDataMappingInformation(List<SubstanceInterface> targetMappingList,
 			HashMap<SubstanceInterface, String> mapping2chartTitle, Node node) {
 		Iterable<SubstanceInterface> mappingList = Experiment2GraphHelper.getMappedDataListFromGraphElement(node);
@@ -186,7 +186,7 @@ public class MergeNodes extends AbstractAlgorithm {
 				targetMappingList.add(m);
 		}
 	}
-
+	
 	public static Node mergeNode(Graph graph, Collection<Node> toBeMerged, Vector2d center, boolean retainClusterIDs) {
 		Node mergedNode;
 		mergedNode = graph.addNodeCopy(toBeMerged.iterator().next());
@@ -230,7 +230,7 @@ public class MergeNodes extends AbstractAlgorithm {
 					graph.addEdgeCopy(outEdge, mergedNode, outEdge.getTarget());
 				}
 			}
-
+			
 			for (Node undirNode : checkNode.getUndirectedNeighbors())
 				if (!mergedNode.getUndirectedNeighbors().contains(undirNode)) {
 					graph.addEdge(mergedNode, undirNode, false);

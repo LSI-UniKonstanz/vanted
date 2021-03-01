@@ -61,69 +61,69 @@ import org.jfree.util.PublicCloneable;
  */
 public class YIntervalRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/**
 	 * The default constructor.
 	 */
 	public YIntervalRenderer() {
 		super();
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the plot is being drawn.
+	 *           the area within which the plot is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index (ignored here).
+	 *           the pass index (ignored here).
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		// setup for collecting optional entity info...
 		Shape entityArea = null;
 		EntityCollection entities = null;
 		if (info != null) {
 			entities = info.getOwner().getEntityCollection();
 		}
-
+		
 		IntervalXYDataset intervalData = (IntervalXYDataset) dataset;
-
+		
 		Number x = intervalData.getXValue(series, item);
 		Number yLow = intervalData.getStartYValue(series, item);
 		Number yHigh = intervalData.getEndYValue(series, item);
-
+		
 		RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
 		RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
-
+		
 		double xx = domainAxis.valueToJava2D(x.doubleValue(), dataArea, xAxisLocation);
 		double yyLow = rangeAxis.valueToJava2D(yLow.doubleValue(), dataArea, yAxisLocation);
 		double yyHigh = rangeAxis.valueToJava2D(yHigh.doubleValue(), dataArea, yAxisLocation);
-
+		
 		Paint p = getItemPaint(series, item);
 		Stroke s = getItemStroke(series, item);
-
+		
 		Line2D line = null;
 		Shape shape = getItemShape(series, item);
 		Shape top = null;
@@ -141,10 +141,10 @@ public class YIntervalRenderer extends AbstractXYItemRenderer
 		g2.setPaint(p);
 		g2.setStroke(s);
 		g2.draw(line);
-
+		
 		g2.fill(top);
 		g2.fill(bottom);
-
+		
 		// add an entity for the item...
 		if (entities != null) {
 			if (entityArea == null) {
@@ -162,18 +162,18 @@ public class YIntervalRenderer extends AbstractXYItemRenderer
 			XYItemEntity entity = new XYItemEntity(entityArea, dataset, series, item, tip, url);
 			entities.addEntity(entity);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

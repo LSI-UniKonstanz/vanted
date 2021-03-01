@@ -41,60 +41,60 @@ import org.jfree.util.ObjectUtils;
  * immutable.
  */
 public class BoxAndWhiskerItem implements Serializable {
-
+	
 	/** The mean. */
 	private Number mean;
-
+	
 	/** The median. */
 	private Number median;
-
+	
 	/** The first quarter. */
 	private Number q1;
-
+	
 	/** The third quarter. */
 	private Number q3;
-
+	
 	/** The minimum regular value. */
 	private Number minRegularValue;
-
+	
 	/** The maximum regular value. */
 	private Number maxRegularValue;
-
+	
 	/** The minimum outlier. */
 	private Number minOutlier;
-
+	
 	/** The maximum outlier. */
 	private Number maxOutlier;
-
+	
 	/** The outliers. */
 	private List outliers;
-
+	
 	/**
 	 * Creates a new box-and-whisker item.
 	 * 
 	 * @param mean
-	 *            the mean (<code>null</code> permitted).
+	 *           the mean (<code>null</code> permitted).
 	 * @param median
-	 *            the median (<code>null</code> permitted).
+	 *           the median (<code>null</code> permitted).
 	 * @param q1
-	 *            the first quartile (<code>null</code> permitted).
+	 *           the first quartile (<code>null</code> permitted).
 	 * @param q3
-	 *            the third quartile (<code>null</code> permitted).
+	 *           the third quartile (<code>null</code> permitted).
 	 * @param minRegularValue
-	 *            the minimum regular value (<code>null</code> permitted).
+	 *           the minimum regular value (<code>null</code> permitted).
 	 * @param maxRegularValue
-	 *            the maximum regular value (<code>null</code> permitted).
+	 *           the maximum regular value (<code>null</code> permitted).
 	 * @param minOutlier
-	 *            the minimum outlier (<code>null</code> permitted).
+	 *           the minimum outlier (<code>null</code> permitted).
 	 * @param maxOutlier
-	 *            the maximum outlier (<code>null</code> permitted).
+	 *           the maximum outlier (<code>null</code> permitted).
 	 * @param outliers
-	 *            the outliers (<code>null</code> permitted).
+	 *           the outliers (<code>null</code> permitted).
 	 */
 	public BoxAndWhiskerItem(final Number mean, final Number median, final Number q1, final Number q3,
 			final Number minRegularValue, final Number maxRegularValue, final Number minOutlier,
 			final Number maxOutlier, final List outliers) {
-
+		
 		this.mean = mean;
 		this.median = median;
 		this.q1 = q1;
@@ -104,9 +104,9 @@ public class BoxAndWhiskerItem implements Serializable {
 		this.minOutlier = minOutlier;
 		this.maxOutlier = maxOutlier;
 		this.outliers = outliers;
-
+		
 	}
-
+	
 	/**
 	 * Returns the mean.
 	 * 
@@ -115,7 +115,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	public Number getMean() {
 		return this.mean;
 	}
-
+	
 	/**
 	 * Returns the median.
 	 * 
@@ -124,7 +124,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	public Number getMedian() {
 		return this.median;
 	}
-
+	
 	/**
 	 * Returns the first quartile.
 	 * 
@@ -133,7 +133,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	public Number getQ1() {
 		return this.q1;
 	}
-
+	
 	/**
 	 * Returns the third quartile.
 	 * 
@@ -142,7 +142,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	public Number getQ3() {
 		return this.q3;
 	}
-
+	
 	/**
 	 * Returns the minimum regular value.
 	 * 
@@ -151,7 +151,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	public Number getMinRegularValue() {
 		return this.minRegularValue;
 	}
-
+	
 	/**
 	 * Returns the maximum regular value.
 	 * 
@@ -160,7 +160,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	public Number getMaxRegularValue() {
 		return this.maxRegularValue;
 	}
-
+	
 	/**
 	 * Returns the minimum outlier.
 	 * 
@@ -169,7 +169,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	public Number getMinOutlier() {
 		return this.minOutlier;
 	}
-
+	
 	/**
 	 * Returns the maximum outlier.
 	 * 
@@ -178,7 +178,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	public Number getMaxOutlier() {
 		return this.maxOutlier;
 	}
-
+	
 	/**
 	 * Returns a list of outliers.
 	 * 
@@ -187,24 +187,24 @@ public class BoxAndWhiskerItem implements Serializable {
 	public List getOutliers() {
 		return Collections.unmodifiableList(this.outliers);
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test against (<code>null</code> permitted).
+	 *           the object to test against (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof BoxAndWhiskerItem) {
 			final BoxAndWhiskerItem item = (BoxAndWhiskerItem) obj;
 			final boolean b0 = ObjectUtils.equal(this.mean, item.mean);
@@ -218,8 +218,8 @@ public class BoxAndWhiskerItem implements Serializable {
 			final boolean b8 = ObjectUtils.equal(this.outliers, item.outliers);
 			return b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8;
 		}
-
+		
 		return false;
 	}
-
+	
 }

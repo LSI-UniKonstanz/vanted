@@ -60,7 +60,7 @@ import org.jfree.ui.VerticalAlignment;
  * @author David Berry
  */
 public class DateTitle extends TextTitle {
-
+	
 	/**
 	 * Creates a new chart title that displays the current date in the default
 	 * (LONG) format for the locale, positioned to the bottom right of the chart.
@@ -69,11 +69,11 @@ public class DateTitle extends TextTitle {
 	 * Win32 systems without Helvetica).
 	 */
 	public DateTitle() {
-
+		
 		this(DateFormat.LONG);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new chart title that displays the current date with the specified
 	 * style (for the default locale).
@@ -83,12 +83,12 @@ public class DateTitle extends TextTitle {
 	 * <code>java.util.DateFormat<code>).
 	 * 
 	 * @param style
-	 *            the date style.
+	 *           the date style.
 	 */
 	public DateTitle(int style) {
 		this(style, Locale.getDefault(), new Font("Dialog", Font.PLAIN, 12), Color.black);
 	}
-
+	
 	/**
 	 * Creates a new chart title that displays the current date.
 	 * <p>
@@ -100,20 +100,20 @@ public class DateTitle extends TextTitle {
 	 * locale.
 	 * 
 	 * @param style
-	 *            the date style.
+	 *           the date style.
 	 * @param locale
-	 *            the locale.
+	 *           the locale.
 	 * @param font
-	 *            the font.
+	 *           the font.
 	 * @param paint
-	 *            the text color.
+	 *           the text color.
 	 */
 	public DateTitle(int style, Locale locale, Font font, Paint paint) {
-
+		
 		this(style, locale, font, paint, RectangleEdge.BOTTOM, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER,
 				Title.DEFAULT_SPACER);
 	}
-
+	
 	/**
 	 * Creates a new chart title that displays the current date.
 	 * <p>
@@ -125,33 +125,33 @@ public class DateTitle extends TextTitle {
 	 * locale.
 	 * 
 	 * @param style
-	 *            the date style.
+	 *           the date style.
 	 * @param locale
-	 *            the locale.
+	 *           the locale.
 	 * @param font
-	 *            the font (not null).
+	 *           the font (not null).
 	 * @param paint
-	 *            the text color (not null).
+	 *           the text color (not null).
 	 * @param position
-	 *            the relative location of this title (use constants in Title).
+	 *           the relative location of this title (use constants in Title).
 	 * @param horizontalAlignment
-	 *            the horizontal text alignment of this title (use constants in
-	 *            Title).
+	 *           the horizontal text alignment of this title (use constants in
+	 *           Title).
 	 * @param verticalAlignment
-	 *            the vertical text alignment of this title (use constants in
-	 *            Title).
+	 *           the vertical text alignment of this title (use constants in
+	 *           Title).
 	 * @param spacer
-	 *            determines the blank space around the outside of the title (not
-	 *            null).
+	 *           determines the blank space around the outside of the title (not
+	 *           null).
 	 */
 	public DateTitle(int style, Locale locale, Font font, Paint paint, RectangleEdge position,
 			HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Spacer spacer) {
-
+		
 		super(DateFormat.getDateInstance(style, locale).format(new Date()), font, paint, position, horizontalAlignment,
 				verticalAlignment, spacer);
-
+		
 	}
-
+	
 	/**
 	 * Set the format of the date.
 	 * <P>
@@ -163,14 +163,14 @@ public class DateTitle extends TextTitle {
 	 * locale.
 	 * 
 	 * @param style
-	 *            the date style.
+	 *           the date style.
 	 * @param locale
-	 *            the locale.
+	 *           the locale.
 	 */
 	public void setDateFormat(int style, Locale locale) {
-
+		
 		setText(DateFormat.getDateInstance(style, locale).format(new Date()));
-
+		
 	}
-
+	
 }

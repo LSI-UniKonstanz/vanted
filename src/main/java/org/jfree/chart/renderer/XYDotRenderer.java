@@ -54,46 +54,46 @@ import org.jfree.util.PublicCloneable;
  */
 public class XYDotRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/**
 	 * Constructs a new renderer.
 	 */
 	public XYDotRenderer() {
 		super();
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the data is being drawn.
+	 *           the area within which the data is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain (horizontal) axis.
+	 *           the domain (horizontal) axis.
 	 * @param rangeAxis
-	 *            the range (vertical) axis.
+	 *           the range (vertical) axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		// get the data point...
 		Number xn = dataset.getXValue(series, item);
 		Number yn = dataset.getYValue(series, item);
@@ -104,7 +104,7 @@ public class XYDotRenderer extends AbstractXYItemRenderer
 			RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
 			double transX = domainAxis.valueToJava2D(x, dataArea, xAxisLocation);
 			double transY = rangeAxis.valueToJava2D(y, dataArea, yAxisLocation);
-
+			
 			g2.setPaint(this.getItemPaint(series, item));
 			PlotOrientation orientation = plot.getOrientation();
 			if (orientation == PlotOrientation.HORIZONTAL) {
@@ -112,21 +112,21 @@ public class XYDotRenderer extends AbstractXYItemRenderer
 			} else if (orientation == PlotOrientation.VERTICAL) {
 				g2.drawRect((int) transX, (int) transY, 1, 1);
 			}
-
+			
 			updateCrosshairValues(crosshairState, x, y, transX, transY, orientation);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

@@ -21,7 +21,7 @@ public class PluginPanel extends AbstractGraffitiContainer {
 	 * 
 	 */
 	private static final long serialVersionUID = 4163512739506314629L;
-
+	
 	// ~ Constructors ===========================================================
 	/**
 	 * Creates a new PluginPanel object.
@@ -30,9 +30,9 @@ public class PluginPanel extends AbstractGraffitiContainer {
 		id = "pluginPanel";
 		preferredComponent = "";
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see java.awt.Container#addImpl(Component, Object, int)
 	 */

@@ -31,20 +31,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggHel
  *         Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class IPKnodeComponent extends NodeComponent {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7083858448111248041L;
-
+	
 	@Override
 	public String getToolTipText() {
 		String t = getTooltipForNode((Node) graphElement, true);
-
+		
 		String result = altLabels(graphElement, t != null && !t.contains("<table>")) + (t == null ? "" : t);
 		return result;
 	}
-
+	
 	private static String altLabels(GraphElement graphElement, boolean br) {
 		StringBuilder sb = new StringBuilder();
 		for (String s : AttributeHelper.getLabels(graphElement, false)) {
@@ -57,17 +57,17 @@ public class IPKnodeComponent extends NodeComponent {
 		String ss = sb.toString();
 		return "<html>" + ss + (ss.length() > 0 && br ? "<br>" : "");
 	}
-
+	
 	public static String getTooltipForNode(Node n, boolean includeClickHelp) {
 		String nodeToolTip = AttributeHelper.getToolTipText(n);
-
+		
 		if (nodeToolTip != null && nodeToolTip.length() > 0)
 			return nodeToolTip;
-
+		
 		String compOrEnzInfo = getEnzymeToolTip(n, null);
 		// if (compOrEnzInfo == null)
 		// compOrEnzInfo = getCompoundToolTip(n, null);
-
+		
 		String result;
 		if (nodeToolTip != null || compOrEnzInfo != null) {
 			result = "<table>";
@@ -75,7 +75,7 @@ public class IPKnodeComponent extends NodeComponent {
 				result += "<tr><td>" + nodeToolTip + "</td></tr>";
 			if (compOrEnzInfo != null)
 				result += "<tr><td>" + compOrEnzInfo + "</td></tr>";
-
+			
 			if (n.getDegree() > 0 && n.getDegree() <= 100)
 				result += "<tr><td><small>" + getNeighbourInformation(n, includeClickHelp) + "</small></td><tr>";
 			result += "</table></html>";
@@ -93,7 +93,7 @@ public class IPKnodeComponent extends NodeComponent {
 		}
 		return result;
 	}
-
+	
 	private static String doubleClickHelp(Node n, boolean doubleClickHelp) {
 		if (n == null || ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR || !doubleClickHelp)
 			return "";
@@ -109,7 +109,7 @@ public class IPKnodeComponent extends NodeComponent {
 			return "";
 		}
 	}
-
+	
 	private static String getNeighbourInformation(Node n, boolean includeClickHelp) {
 		String result;
 		StringBuilder nl = new StringBuilder();
@@ -138,7 +138,7 @@ public class IPKnodeComponent extends NodeComponent {
 				+ (hiddenNodes > 0 ? " (" + getHiddenText(hiddenNodes, includeClickHelp) + ")" : "");
 		return result;
 	}
-
+	
 	private static String getHiddenText(int hiddenNodes, boolean includeHiddenTextInformation) {
 		if (!includeHiddenTextInformation)
 			return "";
@@ -156,19 +156,19 @@ public class IPKnodeComponent extends NodeComponent {
 			return "1 conntected node is hidden, use Shift+Double Mouse Click to make child node(s) visible";
 		return hiddenNodes + " conntected nodes are hidden, use Shift+Double Mouse Click to make child nodes visible";
 	}
-
+	
 	private static String getEnzymeToolTip(Node n, String useThisId) {
 		if (!new SettingsHelperDefaultIsFalse().isEnabled("grav_view_database_node_status"))
 			return null;
 		String resultAenzymeClassInfo;
 		String resultBenzymeEntryInfo;
-
+		
 		String substanceName;
 		if (useThisId == null)
 			substanceName = AttributeHelper.getLabel(n, null);
 		else
 			substanceName = useThisId;
-
+		
 		if (substanceName != null) {
 			// Retrieve enzyme-class information
 			EnzymeEntry eze = EnzymeService.getEnzymeInformation(substanceName, true);
@@ -209,7 +209,7 @@ public class IPKnodeComponent extends NodeComponent {
 				}
 				if (syn.length() > 0)
 					resultBenzymeEntryInfo += "<small>Synonyms: " + syn + "</small><br>";
-
+				
 				String ca = "";
 				for (Iterator<?> it = eze.getCA().iterator(); it.hasNext();) {
 					String entry = (String) it.next();
@@ -220,7 +220,7 @@ public class IPKnodeComponent extends NodeComponent {
 				}
 				if (ca.length() > 0)
 					resultBenzymeEntryInfo += "<small>Catalytic act.: " + ca + "</small><br>";
-
+				
 				String cf = "";
 				for (Iterator<?> it = eze.getCF().iterator(); it.hasNext();) {
 					String entry = (String) it.next();
@@ -231,7 +231,7 @@ public class IPKnodeComponent extends NodeComponent {
 				}
 				if (cf.length() > 0)
 					resultBenzymeEntryInfo += "<small>Cofactor(s): " + cf + "</small><br>";
-
+				
 				String cc = "";
 				for (Iterator<?> it = eze.getCC().iterator(); it.hasNext();) {
 					String entry = (String) it.next();
@@ -242,7 +242,7 @@ public class IPKnodeComponent extends NodeComponent {
 				}
 				if (cc.length() > 0)
 					resultBenzymeEntryInfo += "<small>Comments: " + cc + "</small><br>";
-
+				
 				resultBenzymeEntryInfo += "<font color=gray><small>SIB "
 						+ EnzymeService.getReleaseVersionForEnzymeInformation() + "</small></font>";
 			}
@@ -263,12 +263,12 @@ public class IPKnodeComponent extends NodeComponent {
 				tabB = resultBenzymeEntryInfo;
 			else
 				tabB = "<small><font color=gray>- Unspecific or invalid enzyme -</font></small>";
-
+			
 			return "<table>" + "<tr><td valign=\"top\">" + tabA + "</td>" + "<td valign=\"top\">" + tabB
 					+ "</td></tr></table></html>";
 		}
 	}
-
+	
 	// private static String getCompoundToolTip(Node n, String useThisId) {
 	// if (!new
 	// SettingsHelperDefaultIsFalse().isEnabled("grav_view_database_node_status"))
@@ -316,7 +316,7 @@ public class IPKnodeComponent extends NodeComponent {
 	// return "<table><tr><td valign=\"top\">"
 	// + resultCompoundInfo + "</td></tr></table></html>";
 	// }
-
+	
 	public IPKnodeComponent(GraphElement ge) {
 		super(ge);
 		// int a = getBackground().getAlpha();

@@ -77,18 +77,18 @@ public class IPKGraffitiView extends GraffitiView
 	 */
 	private static final long serialVersionUID = 1464954375246703366L;
 	private static Logger logger = Logger.getLogger(IPKGraffitiView.class);
-
+	
 	static {
 		logger.setLevel(Level.INFO);
 	}
-
+	
 	ClusterBackgroundDraw gcbd = new ClusterBackgroundDraw();
 	boolean dirty = true;
-
+	
 	private BackgroundTaskStatusProviderSupportingExternalCall optStatus;
-
+	
 	private static boolean useAntialiasing = true;
-
+	
 	/*
 	 * Static variables and they key-names that store values of the Class Preference
 	 * Parameters Will be set during bootup and update by the preferencemanager
@@ -96,23 +96,23 @@ public class IPKGraffitiView extends GraffitiView
 	public static String PARAM_MAX_NODES = "Maximum Nodes";
 	private static int PARAMDEFVAL_MAX_NODES = 300;
 	private static int MAX_NODES;
-
+	
 	public static String PARAM_MAX_EDGES = "Maximum Edges";
 	private static int PARAMDEFVAL_MAX_EDGES = 300;
 	private static int MAX_EDGES;
-
+	
 	public static String PARAM_DRAW_GRID = "Draw Grid";
 	private static boolean PARAMDEFVAL_DRAW_GRID = false;
 	private static boolean DRAW_GRID;
-
+	
 	public IPKGraffitiView() {
 		super();
 		// GravistoService.getInstance().addKnownOptionPane(IPKGraffitiView.class,
 		// this);
 		setBorder(null);
-
+		
 	}
-
+	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
@@ -122,16 +122,16 @@ public class IPKGraffitiView extends GraffitiView
 				"Maximum Edges until antialiasing is turned off"));
 		arrayList.add(new BooleanParameter(PARAMDEFVAL_DRAW_GRID, PARAM_DRAW_GRID, "Enable / Disable grid drawing"));
 		return arrayList;
-
+		
 	}
-
+	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		logger.debug("updating preferences");
 		MAX_NODES = preferences.getInt(PARAM_MAX_NODES, PARAMDEFVAL_MAX_NODES);
 		MAX_EDGES = preferences.getInt(PARAM_MAX_EDGES, PARAMDEFVAL_MAX_EDGES);
 		DRAW_GRID = preferences.getBoolean(PARAM_DRAW_GRID, PARAMDEFVAL_DRAW_GRID);
-
+		
 		/*
 		 * Show changed of preferences immediately Since the method usually is called by
 		 * the PreferenceManager, it will have another own instance created to update
@@ -141,9 +141,9 @@ public class IPKGraffitiView extends GraffitiView
 		 */
 		if (MainFrame.getInstance().getActiveSession() != null)
 			((IPKGraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).repaint();
-
+		
 	}
-
+	
 	/**
 	 * @vanted.revision 2.7.0 How it shows in Preferences
 	 */
@@ -151,7 +151,7 @@ public class IPKGraffitiView extends GraffitiView
 	public String getPreferencesAlternativeName() {
 		return "Network View";
 	}
-
+	
 	/**
 	 * This methods sets the graph and adds the background color attribute, since
 	 * this View supports background coloring
@@ -170,18 +170,18 @@ public class IPKGraffitiView extends GraffitiView
 		}
 		dirty = true;
 	}
-
+	
 	@Override
 	protected NodeComponent createNodeComponent(Map<GraphElement, GraphElementComponent> gecMap, Node node) {
-
+		
 		NodeComponent nodeComponent = (NodeComponent) getGraphElementComponent(node);
-
+		
 		if (isHidden(node)) {
 			if (nodeComponent != null)
 				processNodeRemoval(node);
 			return null;
 		}
-
+		
 		if (nodeComponent == null) {
 			nodeComponent = (NodeComponent) gecMap.get(node);
 			if (nodeComponent == null)
@@ -189,23 +189,23 @@ public class IPKGraffitiView extends GraffitiView
 			// nodeComponent = IPKnodeComponent.getNewAndMatchingNodeComponent(node,
 			// currentGraph);
 		}
-
+		
 		nodeComponent.clearDependentComponentList();
 		gecMap.put(node, nodeComponent);
-
+		
 		return nodeComponent;
 	}
-
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		// logger.debug("paintcomponent");
 		// synchronized (this) {
-
+		
 		RepaintManager repaintManager = RepaintManager.currentManager(this);
 		repaintManager.setDoubleBufferingEnabled(true);
 		// useAntialiasing = true;
 		// if (useAntialiasing) {
-
+		
 		// } else {
 		// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 		// RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -215,7 +215,7 @@ public class IPKGraffitiView extends GraffitiView
 		super.paintComponent(g);
 		// }
 	}
-
+	
 	@Override
 	public void paint(Graphics g) {
 		// Rectangle clipBounds = g.getClipBounds();
@@ -223,34 +223,34 @@ public class IPKGraffitiView extends GraffitiView
 		// long startTime=System.currentTimeMillis();
 		// logger.debug("start paint cliprect("+clipBounds.x+" : "+clipBounds.y+" |
 		// "+clipBounds.width+" : "+clipBounds.height+")");
-
+		
 		if (!printInProgress)
 			((Graphics2D) g).transform(zoom);
-
+		
 		//
 		setRenderingHints(g);
-
+		
 		if (!printInProgress && drawMode == DrawMode.NORMAL)
 			drawBackground(g);
-
+		
 		if (DRAW_GRID)
 			drawGrid(g);
-
+		
 		super.paint(g);
 		// long lastPaintTime=System.currentTimeMillis()-startTime;
 		// if (lastPaintTime>maxDrawTime) {
 		// logger.debug(" end paint ..Redraw time: "+lastPaintTime+"ms");
 		// }
 	}
-
+	
 	/**
 	 * @param g
 	 */
 	private void drawGrid(Graphics g) {
 		logger.debug("ipkgraffitiview: w:" + getWidth() + ", h: " + getHeight());
-
+		
 		Rectangle visibleRect = getVisibleRect();
-
+		
 		logger.debug("physical pixel area visible x: " + visibleRect.getX() + " y: " + visibleRect.getY() + " w: "
 				+ visibleRect.getWidth() + " h: " + visibleRect.getHeight());
 		/*
@@ -261,41 +261,41 @@ public class IPKGraffitiView extends GraffitiView
 		int starty = 0;// (int) (visibleRect.getY() % STEP);
 		int curX = startx;
 		int curY = starty;
-
+		
 		g.setColor(Color.LIGHT_GRAY);
-
+		
 		int zoomedwidth = (int) ((visibleRect.getX() + visibleRect.getWidth()) * 1 / getZoom().getScaleX());
 		int zoomedheight = (int) ((visibleRect.getY() + visibleRect.getHeight()) * 1 / getZoom().getScaleX());
 		logger.debug("zoomedwidth " + zoomedwidth + " zoomedheight " + zoomedheight);
 		while (curX < zoomedwidth) {
-
+			
 			g.drawLine(curX, 0, curX, zoomedheight);
-
+			
 			if (curX % 100 == 0) {
 				g.drawString("" + curX, curX + 5, (int) ((visibleRect.getY() + 20) / zoom.getScaleX()));
 			}
-
+			
 			curX += STEP;
 		}
 		while (curY < zoomedheight) {
-
+			
 			g.drawLine(0, curY, zoomedwidth, curY);
-
+			
 			if (curY % 100 == 0) {
 				g.drawString("" + curY, (int) ((visibleRect.getX() + 5) / zoom.getScaleX()), curY + 10);
 			}
-
+			
 			curY += STEP;
 		}
-
+		
 	}
-
+	
 	@Override
 	public void repaint() {
 		// logger.debug("issuing repaint");
 		super.repaint();
 	}
-
+	
 	/**
 	 * Depending on the given DRAWMODE, Antialiasing is enabled or disabled
 	 * 
@@ -311,12 +311,12 @@ public class IPKGraffitiView extends GraffitiView
 			// RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-
+			
 			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
 					RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
 		}
 	}
-
+	
 	private void drawBackground(Graphics g) {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR && AttributeHelper.hasAttribute(getGraph(),
 				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName)) {
@@ -338,7 +338,7 @@ public class IPKGraffitiView extends GraffitiView
 			}
 		}
 	}
-
+	
 	private void drawClusterBackground(Graphics g, Rectangle clipBounds, float mesh, boolean outClear, int out,
 			float lowAlpha, boolean spaceFill) {
 		if (lowAlpha < 0f)
@@ -357,15 +357,15 @@ public class IPKGraffitiView extends GraffitiView
 		// "+g.getClipBounds().width+
 		// " : "+g.getClipBounds().height+")",
 		// 50, 50);
-
+		
 		if (dirty) {
 			dirty = false;
 			gcbd = new ClusterBackgroundDraw();
 			gcbd.init(getGraph());
 		}
-
+		
 		ClusterBackgroundDraw cbd = gcbd;
-
+		
 		boolean image = false;
 		if (optStatus != null && image)
 			optStatus.setCurrentStatusText2("Scan node positions...");
@@ -388,10 +388,10 @@ public class IPKGraffitiView extends GraffitiView
 		float xend = clipBounds.x + clipBounds.width + mesh;
 		float yend = clipBounds.y + clipBounds.height + mesh;
 		long startTime = System.currentTimeMillis();
-
+		
 		if (optStatus != null && image)
 			optStatus.setCurrentStatusText2("Draw colorized background...");
-
+		
 		for (float x = xstart; x <= xend + mesh; x = x + mesh) {
 			if (optStatus != null && image)
 				optStatus.setCurrentStatusValueFine((x - xstart) / (xend - xstart) * 100d);
@@ -416,7 +416,7 @@ public class IPKGraffitiView extends GraffitiView
 				}
 				if (!spaceFill && minDistance > out)
 					continue;
-
+				
 				Color targetColor = null;
 				if (cbd.node2cluster.containsKey(minNode)) {
 					String cluster = cbd.node2cluster.get(minNode);
@@ -424,12 +424,12 @@ public class IPKGraffitiView extends GraffitiView
 					if (targetColor == null)
 						targetColor = getBackground();
 				}
-
+				
 				if (targetColor != null) {
 					if (lowAlpha < 1f)
 						targetColor = getTargetColor(targetColor, minDistance, out, 1f, lowAlpha);
 					g.setColor(targetColor);
-
+					
 					g.fillRect((int) (x - mesh / 2f), (int) (y - mesh / 2f), (int) mesh, (int) mesh);
 				}
 			}
@@ -448,13 +448,13 @@ public class IPKGraffitiView extends GraffitiView
 			optStatus.setCurrentStatusValueFine(100);
 			optStatus.setCurrentStatusText2("Painting network...");
 		}
-
+		
 		// g.setColor(Color.BLUE);
 		// g.drawRect((int)cbd.minX, (int)cbd.minY, (int)(cbd.maxX-cbd.minX),
 		// (int)(cbd.maxY-cbd.minY));
-
+		
 	}
-
+	
 	private static Color getTargetColor(Color c, double dist, double maxd, float src, float tgt) {
 		float alpha;
 		if (dist < maxd)
@@ -463,38 +463,38 @@ public class IPKGraffitiView extends GraffitiView
 			alpha = tgt;
 		return new Color(c.getRed(), c.getGreen(), c.getBlue(), (int) (alpha * 255));
 	}
-
+	
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
 		super.postAttributeChanged(e);
 		// dirty = true;
 	}
-
+	
 	@Override
 	public void postNodeAdded(GraphEvent e) {
 		dirty = true;
 		super.postNodeAdded(e);
 	}
-
+	
 	@Override
 	public void postNodeRemoved(GraphEvent e) {
 		dirty = true;
 		super.postNodeRemoved(e);
 	}
-
+	
 	@Override
 	public void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		dirty = true;
 		super.transactionFinished(event, status);
 	}
-
+	
 	@Override
 	public void close() {
 		super.close();
 		optStatus = null;
 		gcbd = null;
 	}
-
+	
 	private static double getPositiveMin(double dl, double dt, double dr, double db) {
 		double min = Double.MAX_VALUE;
 		dl = Math.abs(dl);
@@ -511,56 +511,56 @@ public class IPKGraffitiView extends GraffitiView
 			min = db;
 		return min;
 	}
-
+	
 	public static boolean getUseAntialiasingSetting() {
 		return useAntialiasing;
 	}
-
+	
 	public JComponent getOptionDialogComponent() {
 		JPanel options = new JPanel();
-
+		
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border } }; // Rows
-
+		
 		options.setLayout(new TableLayout(size));
-
+		
 		JCheckBox checkBoxUseAntiAliasing = new JCheckBox("Use Anti-Aliasing", useAntialiasing);
-
+		
 		options.putClientProperty("checkBoxUseAntiAliasing", checkBoxUseAntiAliasing);
-
+		
 		options.add(checkBoxUseAntiAliasing, "1,1");
 		options.revalidate();
-
+		
 		return options;
 	}
-
+	
 	public void init(JComponent options) {
 		JCheckBox checkBoxUseAntiAliasing = (JCheckBox) options.getClientProperty("checkBoxUseAntiAliasing");
 		checkBoxUseAntiAliasing.setSelected(useAntialiasing);
 	}
-
+	
 	@Override
 	public String getViewName() {
 		return getOptionName();
 	}
-
+	
 	public void save(JComponent options) {
 		JCheckBox checkBoxUseAntiAliasing = (JCheckBox) options.getClientProperty("checkBoxUseAntiAliasing");
 		useAntialiasing = checkBoxUseAntiAliasing.isSelected();
 		GravistoService.getInstance().getMainFrame().repaint();
 	}
-
+	
 	public String getCategory() {
 		return "View";
 	}
-
+	
 	public String getOptionName() {
 		return "Network View (default)";
 	}
-
+	
 	public boolean printInProgress = false;
-
+	
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 		synchronized (this) {
 			System.out.println("Printing Page " + pageIndex + ", Page Orientation: " + pageFormat.getOrientation());
@@ -591,22 +591,24 @@ public class IPKGraffitiView extends GraffitiView
 			return response;
 		}
 	}
-
+	
 	/**
-	 * @param smallestX Value 1
-	 * @param cx        Value 2
+	 * @param smallestX
+	 *           Value 1
+	 * @param cx
+	 *           Value 2
 	 * @return The smaller one of the parameters
 	 */
 	private static double min2(double smallestX, double cx) {
 		return smallestX < cx ? smallestX : cx;
 	}
-
+	
 	public void setStatusProvider(BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		this.optStatus = optStatus;
 	}
-
+	
 	public boolean statusDrawInProgress() {
 		return optStatus != null;
 	}
-
+	
 }

@@ -51,12 +51,12 @@ import org.jfree.ui.RefineryUtilities;
  * A simple demo showing a wafer map chart.
  */
 public class WaferMapChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public WaferMapChartDemo(final String title) {
 		super(title);
@@ -70,23 +70,22 @@ public class WaferMapChartDemo extends ApplicationFrame {
 		final Legend legend = chart.getLegend();
 		legend.setAnchor(Legend.EAST);
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.blue));
-
+		
 		final TextTitle copyright = new TextTitle("JFreeChart WaferMapPlot", new Font("SansSerif", Font.PLAIN, 9));
 		copyright.setPosition(RectangleEdge.BOTTOM);
 		copyright.setHorizontalAlignment(HorizontalAlignment.RIGHT);
 		chart.addSubtitle(copyright);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 400));
 		setContentPane(chartPanel);
-	}	
-
-
+	}
+	
 	/**
 	 * Starting point for the demo application.
 	 * 
 	 * @param args
-	 *            command line arguments (ignored).
+	 *           command line arguments (ignored).
 	 */
 	public static void main(final String[] args) {
 		final WaferMapChartDemo demo = new WaferMapChartDemo("Wafer Map Demo");

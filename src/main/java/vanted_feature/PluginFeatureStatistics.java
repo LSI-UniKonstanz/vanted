@@ -16,13 +16,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Christian Klukas
  */
 public class PluginFeatureStatistics extends IPK_PluginAdapter {
-
+	
 	public PluginFeatureStatistics() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			if (new SettingsHelperDefaultIsTrue().isEnabled("Statistic functions"))
 				ReleaseInfo.enableFeature(FeatureSet.STATISTIC_FUNCTIONS);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

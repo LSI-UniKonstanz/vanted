@@ -39,13 +39,13 @@ import java.util.EventListener;
  * notification of changes to a chart legend.
  */
 public interface LegendChangeListener extends EventListener {
-
+	
 	/**
 	 * Receives notification of a chart legend change event.
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void legendChanged(LegendChangeEvent event);
-
+	
 }

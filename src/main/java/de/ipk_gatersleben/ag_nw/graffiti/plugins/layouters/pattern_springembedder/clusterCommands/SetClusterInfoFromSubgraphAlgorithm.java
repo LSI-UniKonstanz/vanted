@@ -26,20 +26,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @vanted.revision 2.7.0
  */
 public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
-
+	
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
-
+		
 		return "Compute Cluster ID from Connected Sub-Graphs";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -47,7 +47,7 @@ public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 		if (graph.getNumberOfNodes() < 1)
 			throw new PreconditionException("Graph contains no graph elements!");
 	}
-
+	
 	public void execute() {
 		HashMap<GraphElement, String> ge2newClusterID = new HashMap<GraphElement, String>();
 		int subgraphIndex = 1;
@@ -80,7 +80,7 @@ public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 				subgraphIndex + " subgraphs found, " + ge2newClusterID.size() + " nodes and edges elements processed",
 				MessageType.INFO);
 	}
-
+	
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}

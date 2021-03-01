@@ -46,36 +46,36 @@ import org.xml.sax.SAXException;
  * A utility class for reading datasets from XML.
  */
 public class DatasetReader {
-
+	
 	/**
 	 * Reads a {@link PieDataset} from an XML file.
 	 * 
 	 * @param file
-	 *            the file.
+	 *           the file.
 	 * @return A dataset.
 	 * @throws IOException
-	 *             if there is a problem reading the file.
+	 *            if there is a problem reading the file.
 	 */
 	public static PieDataset readPieDatasetFromXML(final File file) throws IOException {
-
+		
 		final InputStream in = new FileInputStream(file);
 		return readPieDatasetFromXML(in);
-
+		
 	}
-
+	
 	/**
 	 * Reads a {@link PieDataset} from a stream.
 	 * 
 	 * @param in
-	 *            the input stream.
+	 *           the input stream.
 	 * @return A dataset.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	public static PieDataset readPieDatasetFromXML(final InputStream in) throws IOException {
-
+		
 		PieDataset result = null;
-
+		
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
 			final SAXParser parser = factory.newSAXParser();
@@ -87,40 +87,40 @@ public class DatasetReader {
 		} catch (ParserConfigurationException e2) {
 			System.out.println(e2.getMessage());
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Reads a {@link CategoryDataset} from a file.
 	 * 
 	 * @param file
-	 *            the file.
+	 *           the file.
 	 * @return A dataset.
 	 * @throws IOException
-	 *             if there is a problem reading the file.
+	 *            if there is a problem reading the file.
 	 */
 	public static CategoryDataset readCategoryDatasetFromXML(final File file) throws IOException {
-
+		
 		final InputStream in = new FileInputStream(file);
 		return readCategoryDatasetFromXML(in);
-
+		
 	}
-
+	
 	/**
 	 * Reads a {@link CategoryDataset} from a stream.
 	 * 
 	 * @param in
-	 *            the stream.
+	 *           the stream.
 	 * @return A dataset.
 	 * @throws IOException
-	 *             if there is a problem reading the file.
+	 *            if there is a problem reading the file.
 	 */
 	public static CategoryDataset readCategoryDatasetFromXML(final InputStream in) throws IOException {
-
+		
 		CategoryDataset result = null;
-
+		
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
 			final SAXParser parser = factory.newSAXParser();
@@ -133,7 +133,7 @@ public class DatasetReader {
 			System.out.println(e2.getMessage());
 		}
 		return result;
-
+		
 	}
-
+	
 }

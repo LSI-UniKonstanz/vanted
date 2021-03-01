@@ -43,75 +43,75 @@ import org.jfree.data.PieDataset;
  * @author Richard Atkinson
  */
 public class StandardPieURLGenerator implements PieURLGenerator, Serializable {
-
+	
 	/** The prefix. */
 	private String prefix = "index.html";
-
+	
 	/** The category parameter name. */
 	private String categoryParameterName = "category";
-
+	
 	/** The pie index parameter name. */
 	private String indexParameterName = "pieIndex";
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public StandardPieURLGenerator() {
 		super();
 	}
-
+	
 	/**
 	 * Creates a new generator.
 	 * 
 	 * @param prefix
-	 *            the prefix.
+	 *           the prefix.
 	 */
 	public StandardPieURLGenerator(String prefix) {
 		this.prefix = prefix;
 	}
-
+	
 	/**
 	 * Creates a new generator.
 	 * 
 	 * @param prefix
-	 *            the prefix.
+	 *           the prefix.
 	 * @param categoryParameterName
-	 *            the category parameter name.
+	 *           the category parameter name.
 	 */
 	public StandardPieURLGenerator(String prefix, String categoryParameterName) {
 		this.prefix = prefix;
 		this.categoryParameterName = categoryParameterName;
 	}
-
+	
 	/**
 	 * Creates a new generator.
 	 * 
 	 * @param prefix
-	 *            the prefix.
+	 *           the prefix.
 	 * @param categoryParameterName
-	 *            the category parameter name.
+	 *           the category parameter name.
 	 * @param indexParameterName
-	 *            the index parameter name (<code>null</code> permitted).
+	 *           the index parameter name (<code>null</code> permitted).
 	 */
 	public StandardPieURLGenerator(String prefix, String categoryParameterName, String indexParameterName) {
 		this.prefix = prefix;
 		this.categoryParameterName = categoryParameterName;
 		this.indexParameterName = indexParameterName;
 	}
-
+	
 	/**
 	 * Generates a URL.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param key
-	 *            the item key.
+	 *           the item key.
 	 * @param pieIndex
-	 *            the pie index (ignored).
+	 *           the pie index (ignored).
 	 * @return a string containing the generated URL.
 	 */
 	public String generateURL(PieDataset data, Comparable key, int pieIndex) {
-
+		
 		String url = this.prefix;
 		if (url.indexOf("?") > -1) {
 			url += "&" + this.categoryParameterName + "=" + key.toString();
@@ -122,32 +122,32 @@ public class StandardPieURLGenerator implements PieURLGenerator, Serializable {
 			url += "&" + this.indexParameterName + "=" + String.valueOf(pieIndex);
 		}
 		return url;
-
+		
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if ((o instanceof StandardPieURLGenerator) == false) {
 			return false;
 		}
-
+		
 		StandardPieURLGenerator generator = (StandardPieURLGenerator) o;
 		return (this.categoryParameterName.equals(generator.categoryParameterName))
 				&& (this.prefix.equals(generator.prefix));
-
+		
 	}
 }

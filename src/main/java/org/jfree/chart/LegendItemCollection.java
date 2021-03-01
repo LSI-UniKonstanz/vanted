@@ -38,48 +38,48 @@ import java.util.List;
  * A collection of legend items.
  */
 public class LegendItemCollection {
-
+	
 	/** Storage for the legend items. */
 	private List items;
-
+	
 	/**
 	 * Constructs a new legend item collection, initially empty.
 	 */
 	public LegendItemCollection() {
 		this.items = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Adds a legend item to the collection.
 	 * 
 	 * @param item
-	 *            the item to add.
+	 *           the item to add.
 	 */
 	public void add(LegendItem item) {
 		this.items.add(item);
 	}
-
+	
 	/**
 	 * Adds the legend items from another collection to this collection.
 	 * 
 	 * @param collection
-	 *            the other collection.
+	 *           the other collection.
 	 */
 	public void addAll(LegendItemCollection collection) {
 		this.items.addAll(collection.items);
 	}
-
+	
 	/**
 	 * Returns a legend item from the collection.
 	 * 
 	 * @param index
-	 *            the legend item index (zero-based).
+	 *           the legend item index (zero-based).
 	 * @return the legend item.
 	 */
 	public LegendItem get(int index) {
 		return (LegendItem) this.items.get(index);
 	}
-
+	
 	/**
 	 * Returns the number of legend items in the collection.
 	 * 
@@ -88,7 +88,7 @@ public class LegendItemCollection {
 	public int getItemCount() {
 		return this.items.size();
 	}
-
+	
 	/**
 	 * Returns an iterator that provides access to all the legend items.
 	 * 
@@ -97,5 +97,5 @@ public class LegendItemCollection {
 	public Iterator iterator() {
 		return this.items.iterator();
 	}
-
+	
 }

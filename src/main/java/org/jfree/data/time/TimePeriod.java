@@ -37,19 +37,19 @@ import java.util.Date;
  * <code>java.util.Date</code>.
  */
 public interface TimePeriod {
-
+	
 	/**
 	 * Returns the start date/time.
 	 * 
 	 * @return the start date/time.
 	 */
 	public Date getStart();
-
+	
 	/**
 	 * Returns the end date/time.
 	 * 
 	 * @return the end date/time.
 	 */
 	public Date getEnd();
-
+	
 }

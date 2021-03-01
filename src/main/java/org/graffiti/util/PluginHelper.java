@@ -40,24 +40,24 @@ import org.graffiti.plugin.algorithm.Algorithm;
  */
 public class PluginHelper implements HelperClass {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Reads and returns the plugin description of the plugin from the given URL.
 	 * 
 	 * @param pluginLocation
-	 *            the URL to the plugin.
+	 *           the URL to the plugin.
 	 * @return DOCUMENT ME!
 	 * @exception PluginManagerException
-	 *                if an error occurrs while loading the plugin description.
+	 *               if an error occurrs while loading the plugin description.
 	 */
 	public static PluginDescription readPluginDescription(URL pluginLocation) throws PluginManagerException {
 		if (pluginLocation == null) {
 			throw new PluginManagerException("exception.MalformedURL", "null");
 		}
-
+		
 		String fileName = pluginLocation.toString();
 		InputStream input;
-
+		
 		if (fileName.toLowerCase().endsWith(".xml")) {
 			try {
 				if (fileName.startsWith("jar:")) {
@@ -79,14 +79,14 @@ public class PluginHelper implements HelperClass {
 			} catch (IOException ioe) {
 				throw new PluginManagerException("exception.IO");
 			}
-
+			
 			// directly read from the jar or zip file
 		} else if (fileName.toLowerCase().endsWith(".jar") || fileName.toLowerCase().endsWith(".zip")) {
 			try (JarFile file = new JarFile(new File(new URI(pluginLocation.toString())));) {
-
+				
 				StringBundle sBundle = StringBundle.getInstance();
 				ZipEntry entry = file.getEntry(sBundle.getString("plugin.xml.filename"));
-
+				
 				if (entry != null) {
 					// create an input stream from this entry.
 					input = file.getInputStream(entry);
@@ -103,9 +103,9 @@ public class PluginHelper implements HelperClass {
 		} else {
 			throw new PluginManagerException("exception.unknownFileType", fileName);
 		}
-
+		
 		PluginDescription description = null;
-
+		
 		try {
 			PluginXMLParser parser = new PluginXMLParser();
 			description = parser.parse(input);
@@ -118,10 +118,10 @@ public class PluginHelper implements HelperClass {
 				ioe.printStackTrace();
 			}
 		}
-
+		
 		return description;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -136,7 +136,7 @@ public class PluginHelper implements HelperClass {
 		}
 		return result;
 	}
-
+	
 	public static List<? extends Algorithm> getAvailableAlgorithms() {
 		List<Algorithm> algorithms = new ArrayList<Algorithm>();
 		Collection<PluginEntry> pluginEntries = DefaultPluginManager.lastInstance.getPluginEntries();

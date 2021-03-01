@@ -59,24 +59,24 @@ import org.jfree.data.XYSeriesCollection;
  * @author Richard Atkinson
  */
 public class ImageMapDemo3 {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public ImageMapDemo3() {
 		super();
 	}
-
+	
 	/**
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 * @throws ParseException
-	 *             if there is a problem parsing dates.
+	 *            if there is a problem parsing dates.
 	 */
 	public static void main(final String[] args) throws ParseException {
-
+		
 		// Create a sample dataset
 		final SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 		final XYSeries dataSeries = new XYSeries("Curve data");
@@ -100,7 +100,7 @@ public class ImageMapDemo3 {
 		final XYSeriesCollection xyDataset = new XYSeriesCollection(dataSeries);
 		final CustomXYToolTipGenerator ttg = new CustomXYToolTipGenerator();
 		ttg.addToolTipSeries(toolTips);
-
+		
 		// Create the chart
 		final StandardXYURLGenerator urlg = new StandardXYURLGenerator("xy_details.jsp");
 		final ValueAxis timeAxis = new DateAxis("");
@@ -113,7 +113,7 @@ public class ImageMapDemo3 {
 		plot.setRenderer(sxyir);
 		final JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
 		chart.setBackgroundPaint(java.awt.Color.white);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -124,13 +124,13 @@ public class ImageMapDemo3 {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// save it to an image
 		try {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File file1 = new File("xychart100.png");
 			ChartUtilities.saveChartAsPNG(file1, chart, 600, 400, info);
-
+			
 			// write an HTML page incorporating the image with an image map
 			final File file2 = new File("xychart100.html");
 			final OutputStream out = new BufferedOutputStream(new FileOutputStream(file2));
@@ -144,7 +144,7 @@ public class ImageMapDemo3 {
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();
-
+			
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}

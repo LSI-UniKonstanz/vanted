@@ -15,7 +15,7 @@ public class SpecialTableValue {
 	public boolean isWhiteCell;
 	public boolean shiftRight;
 	private String startString;
-
+	
 	public SpecialTableValue(double doubleValue, Object otherValue, boolean isWhiteCell, boolean shiftRight,
 			String startString) {
 		this.doubleValue = doubleValue;
@@ -24,7 +24,7 @@ public class SpecialTableValue {
 		this.shiftRight = shiftRight;
 		this.startString = startString;
 	}
-
+	
 	@Override
 	public String toString() {
 		if (Double.valueOf(doubleValue).isNaN()) {
@@ -39,7 +39,7 @@ public class SpecialTableValue {
 				return startString + Double.valueOf(doubleValue).toString();
 		}
 	}
-
+	
 	/**
 	 * @return
 	 */

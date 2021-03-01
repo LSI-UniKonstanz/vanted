@@ -48,15 +48,15 @@ import org.jfree.data.SeriesChangeEvent;
  * interface.
  */
 public class TaskSeriesCollection extends AbstractSeriesDataset implements GanttCategoryDataset {
-
+	
 	/**
 	 * Storage for aggregate task keys (the task description is used as the key).
 	 */
 	private List keys;
-
+	
 	/** Storage for the series. */
 	private List data;
-
+	
 	/**
 	 * Default constructor.
 	 */
@@ -64,19 +64,19 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		this.keys = new java.util.ArrayList();
 		this.data = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The name of a series.
 	 */
 	public String getSeriesName(final int series) {
 		final TaskSeries ts = (TaskSeries) this.data.get(series);
 		return ts.getName();
 	}
-
+	
 	/**
 	 * Returns the number of series in the collection.
 	 * 
@@ -85,7 +85,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 	public int getSeriesCount() {
 		return getRowCount();
 	}
-
+	
 	/**
 	 * Returns the number of rows (series) in the collection.
 	 * 
@@ -94,7 +94,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 	public int getRowCount() {
 		return this.data.size();
 	}
-
+	
 	/**
 	 * Returns the number of column in the dataset.
 	 * 
@@ -103,7 +103,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 	public int getColumnCount() {
 		return this.keys.size();
 	}
-
+	
 	/**
 	 * Returns the row keys. In this case, each series is a key.
 	 * 
@@ -112,7 +112,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 	public List getRowKeys() {
 		return this.data;
 	}
-
+	
 	/**
 	 * Returns a list of the column keys in the dataset.
 	 * 
@@ -121,68 +121,68 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 	public List getColumnKeys() {
 		return this.keys;
 	}
-
+	
 	/**
 	 * Returns a column key.
 	 * 
 	 * @param item
-	 *            the index.
+	 *           the index.
 	 * @return The column key.
 	 */
 	public Comparable getColumnKey(final int item) {
 		return (Comparable) this.keys.get(item);
 	}
-
+	
 	/**
 	 * Returns the column index for a column key.
 	 * 
 	 * @param columnKey
-	 *            the columnKey.
+	 *           the columnKey.
 	 * @return The column index.
 	 */
 	public int getColumnIndex(final Comparable columnKey) {
 		return this.keys.indexOf(columnKey);
 	}
-
+	
 	/**
 	 * Returns the row index for the given row key.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @return The index.
 	 */
 	public int getRowIndex(final Comparable rowKey) {
 		return this.data.indexOf(rowKey);
 	}
-
+	
 	/**
 	 * Returns the key for a row.
 	 * 
 	 * @param index
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @return The key.
 	 */
 	public Comparable getRowKey(final int index) {
 		final TaskSeries series = (TaskSeries) this.data.get(index);
 		return series.getName();
 	}
-
+	
 	/**
 	 * Adds a series to the dataset.
 	 * 
 	 * @param series
-	 *            the series.
+	 *           the series.
 	 */
 	public void add(final TaskSeries series) {
-
+		
 		// check arguments...
 		if (series == null) {
 			throw new IllegalArgumentException("XYSeriesCollection.addSeries(...): cannot add null series.");
 		}
-
+		
 		this.data.add(series);
 		series.addChangeListener(this);
-
+		
 		// look for any keys that we don't already know about...
 		final Iterator iterator = series.getTasks().iterator();
 		while (iterator.hasNext()) {
@@ -193,65 +193,65 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 				this.keys.add(key);
 			}
 		}
-
+		
 		fireDatasetChanged();
-
+		
 	}
-
+	
 	/**
 	 * Removes a series from the collection.
 	 * <P>
 	 * Notifies all registered listeners that the dataset has changed.
 	 * 
 	 * @param series
-	 *            the series (zero based index).
+	 *           the series (zero based index).
 	 */
 	public void remove(final int series) {
-
+		
 		// check arguments...
 		if ((series < 0) || (series > getSeriesCount())) {
 			throw new IllegalArgumentException("TaskSeriesCollection.remove(...): index outside valid range.");
 		}
-
+		
 		// fetch the series, remove the change listener, then remove the series.
 		final TaskSeries ts = (TaskSeries) this.data.get(series);
 		ts.removeChangeListener(this);
 		this.data.remove(series);
 		fireDatasetChanged();
-
+		
 	}
-
+	
 	/**
 	 * Removes a series from the collection.
 	 * <P>
 	 * Notifies all registered listeners that the dataset has changed.
 	 * 
 	 * @param series
-	 *            the series.
+	 *           the series.
 	 */
 	public void remove(final TaskSeries series) {
-
+		
 		// check arguments...
 		if (series == null) {
 			throw new IllegalArgumentException("TaskSeriesCollection.remove(...): cannot remove null series.");
 		}
-
+		
 		// remove the series...
 		if (this.data.contains(series)) {
 			series.removeChangeListener(this);
 			this.data.remove(series);
 			fireDatasetChanged();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Removes all the series from the collection.
 	 * <P>
 	 * Notifies all registered listeners that the dataset has changed.
 	 */
 	public void removeAll() {
-
+		
 		// deregister the collection as a change listener to each series in the
 		// collection.
 		final Iterator iterator = this.data.iterator();
@@ -259,20 +259,20 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 			final TaskSeries series = (TaskSeries) iterator.next();
 			series.removeChangeListener(this);
 		}
-
+		
 		// remove all the series from the collection and notify listeners.
 		this.data.clear();
 		fireDatasetChanged();
-
+		
 	}
-
+	
 	/**
 	 * Returns the value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The item value.
 	 */
 	public Number getValue(final Comparable rowKey, final Comparable columnKey) {
@@ -280,27 +280,27 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		final int column = getColumnIndex(columnKey);
 		return getValue(row, column);
 	}
-
+	
 	/**
 	 * /** Returns the value for a task.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The start value.
 	 */
 	public Number getValue(final int row, final int column) {
 		return getStartValue(row, column);
 	}
-
+	
 	/**
 	 * Returns the start value for a task.
 	 * 
 	 * @param rowKey
-	 *            the series.
+	 *           the series.
 	 * @param columnKey
-	 *            the category.
+	 *           the category.
 	 * @return The start value.
 	 */
 	public Number getStartValue(final Comparable rowKey, final Comparable columnKey) {
@@ -308,18 +308,18 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		final int column = getColumnIndex(columnKey);
 		return getStartValue(row, column);
 	}
-
+	
 	/**
 	 * Returns the start value for a task.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The start value.
 	 */
 	public Number getStartValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final TaskSeries series = (TaskSeries) this.data.get(row);
 		final int tasks = series.getItemCount();
@@ -328,16 +328,16 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 			result = Long.valueOf(task.getDuration().getStart().getTime());
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the end value for a task.
 	 * 
 	 * @param rowKey
-	 *            the series.
+	 *           the series.
 	 * @param columnKey
-	 *            the category.
+	 *           the category.
 	 * @return The end value.
 	 */
 	public Number getEndValue(final Comparable rowKey, final Comparable columnKey) {
@@ -345,18 +345,18 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		final int column = getColumnIndex(columnKey);
 		return getEndValue(row, column);
 	}
-
+	
 	/**
 	 * Returns the end value for a task.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The end value.
 	 */
 	public Number getEndValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final TaskSeries series = (TaskSeries) this.data.get(row);
 		final int tasks = series.getItemCount();
@@ -365,16 +365,16 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 			result = Long.valueOf(task.getDuration().getEnd().getTime());
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the percent complete for a given item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The percent complete.
 	 */
 	public Number getPercentComplete(final int row, final int column) {
@@ -387,14 +387,14 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the percent complete for a given item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The percent complete.
 	 */
 	public Number getPercentComplete(final Comparable rowKey, final Comparable columnKey) {
@@ -402,18 +402,18 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		final int column = getColumnIndex(columnKey);
 		return getPercentComplete(row, column);
 	}
-
+	
 	/**
 	 * Returns the number of sub-intervals for a given item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The sub-interval count.
 	 */
 	public int getSubIntervalCount(final int row, final int column) {
-
+		
 		int result = 0;
 		final TaskSeries series = (TaskSeries) this.data.get(row);
 		final int tasks = series.getItemCount();
@@ -422,39 +422,39 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 			result = task.getSubtaskCount();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the number of sub-intervals for a given item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The sub-interval count.
 	 */
 	public int getSubIntervalCount(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		final int row = getRowIndex(rowKey);
 		final int column = getColumnIndex(columnKey);
 		return getSubIntervalCount(row, column);
-
+		
 	}
-
+	
 	/**
 	 * Returns the start value of a sub-interval for a given item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @param subinterval
-	 *            the sub-interval index (zero-based).
+	 *           the sub-interval index (zero-based).
 	 * @return The start value (possibly <code>null</code>).
 	 */
 	public Number getStartValue(final int row, final int column, final int subinterval) {
-
+		
 		Number result = null;
 		final TaskSeries series = (TaskSeries) this.data.get(row);
 		final int tasks = series.getItemCount();
@@ -464,41 +464,41 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 			result = Long.valueOf(subtask.getDuration().getStart().getTime());
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the start value of a sub-interval for a given item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @param subinterval
-	 *            the subinterval.
+	 *           the subinterval.
 	 * @return The start value (possibly <code>null</code>).
 	 */
 	public Number getStartValue(final Comparable rowKey, final Comparable columnKey, final int subinterval) {
-
+		
 		final int row = getRowIndex(rowKey);
 		final int column = getColumnIndex(columnKey);
 		return getStartValue(row, column, subinterval);
-
+		
 	}
-
+	
 	/**
 	 * Returns the end value of a sub-interval for a given item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @param subinterval
-	 *            the subinterval.
+	 *           the subinterval.
 	 * @return The end value (possibly <code>null</code>).
 	 */
 	public Number getEndValue(final int row, final int column, final int subinterval) {
-
+		
 		Number result = null;
 		final TaskSeries series = (TaskSeries) this.data.get(row);
 		final int tasks = series.getItemCount();
@@ -508,37 +508,37 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 			result = Long.valueOf(subtask.getDuration().getEnd().getTime());
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the end value of a sub-interval for a given item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @param subinterval
-	 *            the subinterval.
+	 *           the subinterval.
 	 * @return The end value (possibly <code>null</code>).
 	 */
 	public Number getEndValue(final Comparable rowKey, final Comparable columnKey, final int subinterval) {
-
+		
 		final int row = getRowIndex(rowKey);
 		final int column = getColumnIndex(columnKey);
 		return getStartValue(row, column, subinterval);
-
+		
 	}
-
+	
 	/**
 	 * Returns the percentage complete value of a sub-interval for a given item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @param subinterval
-	 *            the sub-interval.
+	 *           the sub-interval.
 	 * @return The percent complete value (possibly <code>null</code>).
 	 */
 	public Number getPercentComplete(final int row, final int column, final int subinterval) {
@@ -552,16 +552,16 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the percentage complete value of a sub-interval for a given item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @param subinterval
-	 *            the sub-interval.
+	 *           the sub-interval.
 	 * @return The precent complete value (possibly <code>null</code>).
 	 */
 	public Number getPercentComplete(final Comparable rowKey, final Comparable columnKey, final int subinterval) {
@@ -569,23 +569,23 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		final int column = getColumnIndex(columnKey);
 		return getPercentComplete(row, column, subinterval);
 	}
-
+	
 	/**
 	 * Called when a series belonging to the dataset changes.
 	 * 
 	 * @param event
-	 *            information about the change.
+	 *           information about the change.
 	 */
 	public void seriesChanged(final SeriesChangeEvent event) {
 		refreshKeys();
 		fireDatasetChanged();
 	}
-
+	
 	/**
 	 * Refreshes the keys.
 	 */
 	private void refreshKeys() {
-
+		
 		this.keys.clear();
 		for (int i = 0; i < getSeriesCount(); i++) {
 			final TaskSeries series = (TaskSeries) this.data.get(i);
@@ -600,7 +600,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 				}
 			}
 		}
-
+		
 	}
-
+	
 }

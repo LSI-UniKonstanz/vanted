@@ -37,40 +37,40 @@ import java.util.Date;
  * activity of a financial commodity for a fixed period (most often one day).
  */
 public class OHLCDataItem implements Comparable {
-
+	
 	/** The date. */
 	private Date date;
-
+	
 	/** The open value. */
 	private Number open;
-
+	
 	/** The high value. */
 	private Number high;
-
+	
 	/** The low value. */
 	private Number low;
-
+	
 	/** The close value. */
 	private Number close;
-
+	
 	/** The trading volume (number of shares, contracts or whatever). */
 	private Number volume;
-
+	
 	/**
 	 * Creates a new item.
 	 * 
 	 * @param date
-	 *            the date.
+	 *           the date.
 	 * @param open
-	 *            the open value.
+	 *           the open value.
 	 * @param high
-	 *            the high value.
+	 *           the high value.
 	 * @param low
-	 *            the low value.
+	 *           the low value.
 	 * @param close
-	 *            the close value.
+	 *           the close value.
 	 * @param volume
-	 *            the volume.
+	 *           the volume.
 	 */
 	public OHLCDataItem(final Date date, final double open, final double high, final double low, final double close,
 			final double volume) {
@@ -81,7 +81,7 @@ public class OHLCDataItem implements Comparable {
 		this.close = Double.valueOf(close);
 		this.volume = Double.valueOf(volume);
 	}
-
+	
 	/**
 	 * Returns the date.
 	 * 
@@ -90,7 +90,7 @@ public class OHLCDataItem implements Comparable {
 	public Date getDate() {
 		return this.date;
 	}
-
+	
 	/**
 	 * Returns the open value.
 	 * 
@@ -99,7 +99,7 @@ public class OHLCDataItem implements Comparable {
 	public Number getOpen() {
 		return this.open;
 	}
-
+	
 	/**
 	 * Returns the high value.
 	 * 
@@ -108,7 +108,7 @@ public class OHLCDataItem implements Comparable {
 	public Number getHigh() {
 		return this.high;
 	}
-
+	
 	/**
 	 * Returns the low value.
 	 * 
@@ -117,7 +117,7 @@ public class OHLCDataItem implements Comparable {
 	public Number getLow() {
 		return this.low;
 	}
-
+	
 	/**
 	 * Returns the close value.
 	 * 
@@ -126,7 +126,7 @@ public class OHLCDataItem implements Comparable {
 	public Number getClose() {
 		return this.close;
 	}
-
+	
 	/**
 	 * Returns the volume.
 	 * 
@@ -135,14 +135,14 @@ public class OHLCDataItem implements Comparable {
 	public Number getVolume() {
 		return this.volume;
 	}
-
+	
 	/**
 	 * Compares this object with the specified object for order. Returns a negative
 	 * integer, zero, or a positive integer as this object is less than, equal to,
 	 * or greater than the specified object.
 	 * 
 	 * @param object
-	 *            the object to compare to.
+	 *           the object to compare to.
 	 * @return a negative integer, zero, or a positive integer as this object is
 	 *         less than, equal to, or greater than the specified object.
 	 */
@@ -154,5 +154,5 @@ public class OHLCDataItem implements Comparable {
 			throw new ClassCastException("OHLCDataItem.compareTo(...).");
 		}
 	}
-
+	
 }

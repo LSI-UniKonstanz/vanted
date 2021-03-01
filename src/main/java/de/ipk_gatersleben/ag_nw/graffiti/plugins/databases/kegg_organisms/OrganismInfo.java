@@ -15,25 +15,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableDat
 
 public class OrganismInfo {
 	private static boolean init = false;
-
+	
 	private static final TableData td = ExperimentDataFileReader.getExcelTableData(getFileReader("organism_list.txt"),
 			-1, null, null);
-
+	
 	synchronized public static String getOrganismHierarchyInfo(String organismCode, String divide, String orgDesc) {
 		String result = null;
-
+		
 		if (!init) {
 			preProcessOrganismTable();
 			init = true;
 		}
-
+		
 		result = findLine(organismCode, divide, orgDesc);
 		if (result != null)
 			return result;
 		else
 			return "";
 	}
-
+	
 	private static String findLine(String organismCode, String divide, String orgDesc) {
 		for (int row = 1; row <= td.getMaximumRow(); row++) {
 			String lookUp = td.getUnicodeStringCellData(7, row);
@@ -61,7 +61,7 @@ public class OrganismInfo {
 		}
 		return null;
 	}
-
+	
 	private static void preProcessOrganismTable() {
 		// fill table from top to bottom, from left to right
 		// int maxCol = td.getMaximumCol();
@@ -72,7 +72,7 @@ public class OrganismInfo {
 				if (checkValue != null && checkValue.trim().length() > 0)
 					continue; // cell is filled, no need to fill it up with a value
 				// from the prior row (same column)
-
+				
 				boolean fillOK = false;
 				// fill only, if hierarchy info is the same for current row
 				// as for prior row
@@ -91,7 +91,7 @@ public class OrganismInfo {
 			}
 		}
 	}
-
+	
 	private static BufferedReader getFileReader(String fileName) {
 		try {
 			return new BufferedReader(new FileReader(ReleaseInfo.getAppFolderWithFinalSep() + fileName));

@@ -19,10 +19,10 @@ import org.graffiti.plugin.gui.GraffitiComponent;
  * @vanted.revision 2.7.0
  */
 public class ZoomPlugin extends EditorPluginAdapter {
-
+	
 	/** The button for the zoom tool */
 	private final GraffitiComponent zoomButton;
-
+	
 	/**
 	 * Creates a new StandardTools object.
 	 */

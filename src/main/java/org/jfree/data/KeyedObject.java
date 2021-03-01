@@ -39,26 +39,26 @@ import org.jfree.util.PublicCloneable;
  * A (key, object) pair.
  */
 public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The key. */
 	private Comparable key;
-
+	
 	/** The object. */
 	private Object object;
-
+	
 	/**
 	 * Creates a new (key, object) pair.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param object
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 */
 	public KeyedObject(final Comparable key, final Object object) {
 		this.key = key;
 		this.object = object;
 	}
-
+	
 	/**
 	 * Returns the key.
 	 * 
@@ -67,7 +67,7 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 	public Comparable getKey() {
 		return this.key;
 	}
-
+	
 	/**
 	 * Returns the object.
 	 * 
@@ -76,17 +76,17 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 	public Object getObject() {
 		return this.object;
 	}
-
+	
 	/**
 	 * Sets the object.
 	 * 
 	 * @param object
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 */
 	public void setObject(final Object object) {
 		this.object = object;
 	}
-
+	
 	/**
 	 * Returns a clone of this object. It is assumed that the key is an immutable
 	 * object, so it is not deep-cloned. The object is deep-cloned if it implements
@@ -94,7 +94,7 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if there is a problem cloning.
+	 *            if there is a problem cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final KeyedObject clone = (KeyedObject) super.clone();
@@ -104,12 +104,12 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 		}
 		return clone;
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param object
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object object) {
@@ -119,7 +119,7 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (!(object instanceof KeyedObject)) {
 			return false;
 		}
@@ -127,12 +127,12 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 		if (!ObjectUtils.equal(this.key, ko.key)) {
 			return false;
 		}
-
+		
 		if (!ObjectUtils.equal(this.object, ko.object)) {
 			return false;
 		}
-
+		
 		return true;
 	}
-
+	
 }

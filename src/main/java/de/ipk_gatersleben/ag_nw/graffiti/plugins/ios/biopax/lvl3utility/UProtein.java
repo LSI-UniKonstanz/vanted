@@ -40,10 +40,10 @@ public class UProtein extends UtilitySuperClassToGraph {
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement elem, Graph g, Model model) {
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
-
+		
 		if (!model.containsID(RDFID)) {
 			Protein interaction = model.addNew(Protein.class, RDFID);
 			UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
@@ -60,7 +60,7 @@ public class UProtein extends UtilitySuperClassToGraph {
 			UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 			UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
 		}
-
+		
 	}
-
+	
 }

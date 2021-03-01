@@ -25,37 +25,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 
 public class CopyPatternLayoutAlgorithm extends AbstractAlgorithm {
-
+	
 	public String getName() {
 		return "Apply 'Search-Subgraph' Layout to Graph";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Layout";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	/**
 	 * Vecor node array, contains <code>patternNodeStruct</code> objects, which
 	 * saves/caches the information about pattern type and number for all nodes of a
 	 * graph
 	 */
 	private ArrayList<NodeCacheEntry> nodeArray;
-
+	
 	private HashMap<Node, NodeCacheEntry> nodeSearch;
-
+	
 	/**
 	 * The pattern algorithm asumes that the nodes of a pattern are layouted
 	 * acording to the layout of the pattern. The patterns are not layouted again,
 	 * only the position of the whole pattern is modified.
 	 * 
 	 * @param nodeStructArray
-	 *            List contains entries of type <code>NodeCacheEntry</code>
+	 *           List contains entries of type <code>NodeCacheEntry</code>
 	 */
 	private void doInitalLayoutOfPattern(ArrayList<NodeCacheEntry> nodeStructArray) {
 		HashMap<NodeCacheEntry, Vector2d> nce2pos = new HashMap<NodeCacheEntry, Vector2d>();
@@ -82,10 +82,10 @@ public class CopyPatternLayoutAlgorithm extends AbstractAlgorithm {
 			if (!currentNodeInfo.patternTypeEmpty) {
 				double patternPosX;
 				double patternPosY;
-
+				
 				patternPosX = AttributeHelper.getPositionX(currentNodeInfo.patternNode);
 				patternPosY = AttributeHelper.getPositionY(currentNodeInfo.patternNode);
-
+				
 				Vector2d patternAvg = NodeTools.getCenter(currentNodeInfo.patternNode.getGraph().getNodes());
 				Vector2d midPatternStruct = nce2pos.get(currentNodeInfo);
 				if (patternAvg != null && midPatternStruct != null) {
@@ -97,17 +97,17 @@ public class CopyPatternLayoutAlgorithm extends AbstractAlgorithm {
 		} // for all nodes
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
 	} // doInitialLayout
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null) {
 			errors.add("The graph instance may not be null.");
 		}
-
+		
 		ArrayList<Graph> listOfPatterns = GravistoService.getInstance().getPatternGraphs();
-
+		
 		if (listOfPatterns == null || listOfPatterns.size() == 0) {
 			errors.add("<html>The list of patterns is empty.<br>Use the \"Analysis\"&rarr;\"Network\" tab to add or load patterns.");
 		} else {
@@ -118,28 +118,28 @@ public class CopyPatternLayoutAlgorithm extends AbstractAlgorithm {
 				}
 			}
 		}
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
 	}
-
+	
 	public void execute() {
 		nodeArray = new ArrayList<NodeCacheEntry>();
 		nodeSearch = new HashMap<Node, NodeCacheEntry>();
 		MyTools.initNodeCache(nodeArray, nodeSearch, graph, null, GravistoService.getInstance().getPatternGraphs());
 		doInitalLayoutOfPattern(nodeArray);
 	}
-
+	
 	@Override
 	public String toString() {
 		return "";
 	}
-
+	
 	public Graph getGraph() {
 		return graph;
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;

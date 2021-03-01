@@ -22,14 +22,14 @@ public class Java_1_5_compatibility_impl {
 		jDesktopPane.setComponentZOrder(jInternalFrame, 0);
 		// throw new NoSuchMethodError("ERR");
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public static StackTraceElement[] getStackFrame() {
 		return Thread.currentThread().getStackTrace();
 	}
-
+	
 	/**
 	 * @param url
 	 * @return
@@ -42,7 +42,7 @@ public class Java_1_5_compatibility_impl {
 			throw new NoSuchMethodError("ERR");
 		}
 	}
-
+	
 	public static String myStringReplace(String workString, String search, String replace) {
 		return workString.replace(search, replace);
 		// return null;

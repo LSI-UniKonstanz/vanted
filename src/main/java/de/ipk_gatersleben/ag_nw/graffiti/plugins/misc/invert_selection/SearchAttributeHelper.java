@@ -4,14 +4,14 @@ import org.AttributeHelper;
 import org.HelperClass;
 
 public class SearchAttributeHelper implements HelperClass {
-
+	
 	String oldW = AttributeHelper.getNiceIdFromAttributeId("width");
 	String oldH = AttributeHelper.getNiceIdFromAttributeId("height");
 	String oldX = AttributeHelper.getNiceIdFromAttributeId("x");
 	String oldY = AttributeHelper.getNiceIdFromAttributeId("y");
 	String oldSh = AttributeHelper.getNiceIdFromAttributeId("empty_border_width");
 	String oldSv = AttributeHelper.getNiceIdFromAttributeId("empty_border_width_vert");
-
+	
 	public void prepareSearch() {
 		AttributeHelper.setNiceId("width", "Size (Width)");
 		AttributeHelper.setNiceId("height", "Size (Height)");
@@ -20,7 +20,7 @@ public class SearchAttributeHelper implements HelperClass {
 		AttributeHelper.setNiceId("empty_border_width", "Charting : Space (horizontal)");
 		AttributeHelper.setNiceId("empty_border_width_vert", "Charting : Space (vertical)");
 	}
-
+	
 	public void restoreDefintions() {
 		AttributeHelper.setNiceId("width", oldW);
 		AttributeHelper.setNiceId("height", oldH);
@@ -29,5 +29,5 @@ public class SearchAttributeHelper implements HelperClass {
 		AttributeHelper.setNiceId("empty_border_width", oldSh);
 		AttributeHelper.setNiceId("empty_border_width_vert", oldSv);
 	}
-
+	
 }

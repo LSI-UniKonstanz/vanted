@@ -30,52 +30,52 @@ import org.graffiti.util.InstanceLoader;
  */
 public class AttributeComponentManager implements PluginManagerListener {
 	// ~ Instance fields ========================================================
-
+	
 	/** Maps attribute classes to attributeComponent classes. */
 	private Map attributeComponents;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs an AttributeComponentManager.
 	 */
 	public AttributeComponentManager() {
 		this.attributeComponents = new HashMap<Object, Object>();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	public boolean hasAttributeComponent(Class<?> aType) {
 		return attributeComponents.containsKey(aType);
 	}
-
+	
 	/**
 	 * Returns an instance of the AttributeComponent that is capable of drawing the
 	 * attribute with type <code>aType</code>.
 	 * 
 	 * @param aType
-	 *            the class of the attribute to retrieve a component for.
+	 *           the class of the attribute to retrieve a component for.
 	 * @return an instance of an AttributeComponent.
 	 * @throws AttributeComponentNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public AttributeComponent getAttributeComponent(Class<?> aType) throws AttributeComponentNotFoundException {
 		if (!(attributeComponents.containsKey(aType))) {
 			throw new AttributeComponentNotFoundException(
 					"No registered GraffitiViewComponent for AttributeType " + aType);
 		}
-
+		
 		Class<?> ac = (Class<?>) attributeComponents.get(aType);
-
+		
 		try {
 			AttributeComponent component = (AttributeComponent) InstanceLoader.createInstance(ac);
-
+			
 			return component;
 		} catch (InstanceCreationException ice) {
 			throw new AttributeComponentNotFoundException(ice.getMessage());
 		}
 	}
-
+	
 	/**
 	 * Returns the map of attribute components.
 	 * 
@@ -84,14 +84,14 @@ public class AttributeComponentManager implements PluginManagerListener {
 	public Map<?, ?> getAttributeComponents() {
 		return attributeComponents;
 	}
-
+	
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
 	 * 
 	 * @param plugin
-	 *            the added plugin.
+	 *           the added plugin.
 	 * @param desc
-	 *            the description of the new plugin.
+	 *           the description of the new plugin.
 	 */
 	@SuppressWarnings("unchecked")
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {

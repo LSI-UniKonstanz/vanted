@@ -38,7 +38,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType
 public class KeggRelationTypeAttributeEditor extends AbstractValueEditComponent implements ActionListener {
 	protected JLabel keggRelationTypeSelection = new JLabel();
 	protected JButton selectOfThisType = new JButton("Select");
-
+	
 	public KeggRelationTypeAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggRelationTypeAttribute) getDisplayable()).getString();
@@ -48,13 +48,13 @@ public class KeggRelationTypeAttributeEditor extends AbstractValueEditComponent 
 		keggRelationTypeSelection.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 		selectOfThisType.addActionListener(this);
 	}
-
+	
 	@Override
 	public JComponent getComponent() {
 		return TableLayout.getSplit(keggRelationTypeSelection, selectOfThisType, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED);
 	}
-
+	
 	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
@@ -66,13 +66,13 @@ public class KeggRelationTypeAttributeEditor extends AbstractValueEditComponent 
 			keggRelationTypeSelection.setText(curVal);
 		}
 	}
-
+	
 	@Override
 	public void setValue() {
 		if (!keggRelationTypeSelection.getText().equals(EMPTY_STRING))
 			((KeggRelationTypeAttribute) displayable).setString(keggRelationTypeSelection.getText());
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		String currentRelationTypeString = keggRelationTypeSelection.getText();

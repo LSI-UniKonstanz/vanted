@@ -98,43 +98,43 @@ import org.jfree.util.PublicCloneable;
  */
 public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		implements CategoryItemRenderer, Cloneable, Serializable {
-
+	
 	/** The plot that the renderer is assigned to. */
 	private CategoryPlot plot;
-
+	
 	/** The label generator for ALL series. */
 	private CategoryLabelGenerator labelGenerator;
-
+	
 	/** A list of item label generators (one per series). */
 	private ObjectList labelGeneratorList;
-
+	
 	/** The base item label generator. */
 	private CategoryLabelGenerator baseLabelGenerator;
-
+	
 	/** The tool tip generator for ALL series. */
 	private CategoryToolTipGenerator toolTipGenerator;
-
+	
 	/** A list of tool tip generators (one per series). */
 	private ObjectList toolTipGeneratorList;
-
+	
 	/** The base tool tip generator. */
 	private CategoryToolTipGenerator baseToolTipGenerator;
-
+	
 	/** The URL generator. */
 	private CategoryURLGenerator itemURLGenerator;
-
+	
 	/** A list of item label generators (one per series). */
 	private ObjectList itemURLGeneratorList;
-
+	
 	/** The base item label generator. */
 	private CategoryURLGenerator baseItemURLGenerator;
-
+	
 	/** The number of rows in the dataset (temporary record). */
 	private transient int rowCount;
-
+	
 	/** The number of columns in the dataset (temporary record). */
 	private transient int columnCount;
-
+	
 	/**
 	 * Creates a new renderer with no tool tip generator and no URL generator.
 	 * <P>
@@ -150,7 +150,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		this.itemURLGenerator = null;
 		this.itemURLGeneratorList = new ObjectList();
 	}
-
+	
 	/**
 	 * Returns the plot that the renderer has been assigned to (where
 	 * <code>null</code> indicates that the renderer is not currently assigned to a
@@ -161,14 +161,14 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	public CategoryPlot getPlot() {
 		return this.plot;
 	}
-
+	
 	/**
 	 * Sets the plot that the renderer has been assigned to. This method is usually
 	 * called by the {@link CategoryPlot}, in normal usage you shouldn't need to
 	 * call this method directly.
 	 * 
 	 * @param plot
-	 *            the plot (<code>null</code> not permitted).
+	 *           the plot (<code>null</code> not permitted).
 	 */
 	public void setPlot(CategoryPlot plot) {
 		if (plot == null) {
@@ -176,9 +176,9 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		}
 		this.plot = plot;
 	}
-
+	
 	// LABEL GENERATOR
-
+	
 	/**
 	 * Returns the label generator for a data item. This implementation simply
 	 * passes control to the {@link #getSeriesLabelGenerator(int)} method. If, for
@@ -186,64 +186,64 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 * override this method.
 	 * 
 	 * @param row
-	 *            the row index (zero based).
+	 *           the row index (zero based).
 	 * @param column
-	 *            the column index (zero based).
+	 *           the column index (zero based).
 	 * @return the generator (possibly <code>null</code>).
 	 */
 	public CategoryLabelGenerator getLabelGenerator(int row, int column) {
 		return getSeriesLabelGenerator(row);
 	}
-
+	
 	/**
 	 * Returns the label generator for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero based).
+	 *           the series index (zero based).
 	 * @return the generator (possibly <code>null</code>).
 	 */
 	public CategoryLabelGenerator getSeriesLabelGenerator(int series) {
-
+		
 		// return the generator for ALL series, if there is one...
 		if (this.labelGenerator != null) {
 			return this.labelGenerator;
 		}
-
+		
 		// otherwise look up the generator table
 		CategoryLabelGenerator generator = (CategoryLabelGenerator) this.labelGeneratorList.get(series);
 		if (generator == null) {
 			generator = this.baseLabelGenerator;
 		}
 		return generator;
-
+		
 	}
-
+	
 	/**
 	 * Sets the label generator for ALL series and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setLabelGenerator(CategoryLabelGenerator generator) {
 		this.labelGenerator = generator;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Sets the label generator for a series and sends a {@link RendererChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero based).
+	 *           the series index (zero based).
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setSeriesLabelGenerator(int series, CategoryLabelGenerator generator) {
 		this.labelGeneratorList.set(series, generator);
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the base label generator.
 	 * 
@@ -252,21 +252,21 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	public CategoryLabelGenerator getBaseLabelGenerator() {
 		return this.baseLabelGenerator;
 	}
-
+	
 	/**
 	 * Sets the base label generator and sends a {@link RendererChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setBaseLabelGenerator(CategoryLabelGenerator generator) {
 		this.baseLabelGenerator = generator;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	// TOOL TIP GENERATOR
-
+	
 	/**
 	 * Returns the tool tip generator that should be used for the specified item.
 	 * This method looks up the generator using the "three-layer" approach outlined
@@ -274,13 +274,13 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 * you want to return a different generator per item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The generator (possibly <code>null</code>).
 	 */
 	public CategoryToolTipGenerator getToolTipGenerator(int row, int column) {
-
+		
 		CategoryToolTipGenerator result = null;
 		if (this.toolTipGenerator != null) {
 			result = this.toolTipGenerator;
@@ -292,7 +292,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the tool tip generator that will be used for ALL items in the dataset
 	 * (the "layer 0" generator).
@@ -302,47 +302,47 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	public CategoryToolTipGenerator getToolTipGenerator() {
 		return this.toolTipGenerator;
 	}
-
+	
 	/**
 	 * Sets the tool tip generator for ALL series and sends a
 	 * {@link org.jfree.chart.event.RendererChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setToolTipGenerator(CategoryToolTipGenerator generator) {
 		this.toolTipGenerator = generator;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the tool tip generator for the specified series (a "layer 1"
 	 * generator).
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return The tool tip generator (possibly <code>null</code>).
 	 */
 	public CategoryToolTipGenerator getSeriesToolTipGenerator(int series) {
 		return (CategoryToolTipGenerator) this.toolTipGeneratorList.get(series);
 	}
-
+	
 	/**
 	 * Sets the tool tip generator for a series and sends a
 	 * {@link org.jfree.chart.event.RendererChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setSeriesToolTipGenerator(int series, CategoryToolTipGenerator generator) {
 		this.toolTipGeneratorList.set(series, generator);
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the base tool tip generator (the "layer 2" generator).
 	 * 
@@ -351,82 +351,82 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	public CategoryToolTipGenerator getBaseToolTipGenerator() {
 		return this.baseToolTipGenerator;
 	}
-
+	
 	/**
 	 * Sets the base tool tip generator and sends a
 	 * {@link org.jfree.chart.event.RendererChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setBaseToolTipGenerator(CategoryToolTipGenerator generator) {
 		this.baseToolTipGenerator = generator;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	// URL GENERATOR
-
+	
 	/**
 	 * Returns the URL generator for a data item. This method just calls the
 	 * getSeriesItemURLGenerator method, but you can override this behaviour if you
 	 * want to.
 	 * 
 	 * @param row
-	 *            the row index (zero based).
+	 *           the row index (zero based).
 	 * @param column
-	 *            the column index (zero based).
+	 *           the column index (zero based).
 	 * @return The URL generator.
 	 */
 	public CategoryURLGenerator getItemURLGenerator(int row, int column) {
 		return getSeriesItemURLGenerator(row);
 	}
-
+	
 	/**
 	 * Returns the URL generator for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero based).
+	 *           the series index (zero based).
 	 * @return The URL generator for the series.
 	 */
 	public CategoryURLGenerator getSeriesItemURLGenerator(int series) {
-
+		
 		// return the generator for ALL series, if there is one...
 		if (this.itemURLGenerator != null) {
 			return this.itemURLGenerator;
 		}
-
+		
 		// otherwise look up the generator table
 		CategoryURLGenerator generator = (CategoryURLGenerator) this.itemURLGeneratorList.get(series);
 		if (generator == null) {
 			generator = this.baseItemURLGenerator;
 		}
 		return generator;
-
+		
 	}
-
+	
 	/**
 	 * Sets the item URL generator for ALL series.
 	 * 
 	 * @param generator
-	 *            the generator.
+	 *           the generator.
 	 */
 	public void setItemURLGenerator(CategoryURLGenerator generator) {
 		this.itemURLGenerator = generator;
 	}
-
+	
 	/**
 	 * Sets the URL generator for a series.
 	 * 
 	 * @param series
-	 *            the series index (zero based).
+	 *           the series index (zero based).
 	 * @param generator
-	 *            the generator.
+	 *           the generator.
 	 */
 	public void setSeriesItemURLGenerator(int series, CategoryURLGenerator generator) {
 		this.itemURLGeneratorList.set(series, generator);
 	}
-
+	
 	/**
 	 * Returns the base item URL generator.
 	 * 
@@ -435,17 +435,17 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	public CategoryURLGenerator getBaseItemURLGenerator() {
 		return this.baseItemURLGenerator;
 	}
-
+	
 	/**
 	 * Sets the base item URL generator.
 	 * 
 	 * @param generator
-	 *            the item URL generator.
+	 *           the item URL generator.
 	 */
 	public void setBaseItemURLGenerator(CategoryURLGenerator generator) {
 		this.baseItemURLGenerator = generator;
 	}
-
+	
 	/**
 	 * Returns the number of rows in the dataset. This value is updated in the
 	 * {@link AbstractCategoryItemRenderer#initialise} method.
@@ -455,7 +455,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	public int getRowCount() {
 		return this.rowCount;
 	}
-
+	
 	/**
 	 * Returns the number of columns in the dataset. This value is updated in the
 	 * {@link AbstractCategoryItemRenderer#initialise} method.
@@ -465,7 +465,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	public int getColumnCount() {
 		return this.columnCount;
 	}
-
+	
 	/**
 	 * Initialises the renderer and returns a state object that will be used for the
 	 * remainder of the drawing process for a single chart. The state object allows
@@ -478,21 +478,21 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 * categoriesPaint array is not null.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param rendererIndex
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param info
-	 *            an object for returning information about the structure of the
-	 *            plot (<code>null</code> permitted).
+	 *           an object for returning information about the structure of the
+	 *           plot (<code>null</code> permitted).
 	 * @return the renderer state.
 	 */
 	public CategoryItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, CategoryPlot plot,
 			int rendererIndex, PlotRenderingInfo info) {
-
+		
 		setPlot(plot);
 		CategoryDataset data = plot.getDataset(rendererIndex);
 		if (data != null) {
@@ -503,57 +503,57 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			this.columnCount = 0;
 		}
 		return new CategoryItemRendererState(info);
-
+		
 	}
-
+	
 	/**
 	 * Returns the range of values the renderer requires to display all the items
 	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
 	 *         or empty).
 	 */
 	public Range getRangeExtent(CategoryDataset dataset) {
 		return DatasetUtilities.getRangeExtent(dataset);
 	}
-
+	
 	/**
 	 * Draws a background for the data area. The default implementation just gets
 	 * the plot to draw the outline, but some renderers will override this
 	 * behaviour.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 */
 	public void drawBackground(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea) {
-
+		
 		plot.drawBackground(g2, dataArea);
-
+		
 	}
-
+	
 	/**
 	 * Draws an outline for the data area. The default implementation just gets the
 	 * plot to draw the outline, but some renderers will override this behaviour.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 */
 	public void drawOutline(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea) {
-
+		
 		plot.drawOutline(g2, dataArea);
-
+		
 	}
-
+	
 	/**
 	 * Draws a grid line against the domain axis.
 	 * <P>
@@ -561,31 +561,31 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 * domain axis. If this is not the case, you will need to override this method.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the area for plotting data (not yet adjusted for any 3D effect).
+	 *           the area for plotting data (not yet adjusted for any 3D effect).
 	 * @param value
-	 *            the Java2D value at which the grid line should be drawn.
+	 *           the Java2D value at which the grid line should be drawn.
 	 */
 	public void drawDomainGridline(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea, double value) {
-
+		
 		Line2D line = null;
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			line = new Line2D.Double(dataArea.getMinX(), value, dataArea.getMaxX(), value);
 		} else if (orientation == PlotOrientation.VERTICAL) {
 			line = new Line2D.Double(value, dataArea.getMinY(), value, dataArea.getMaxY());
 		}
-
+		
 		Paint paint = plot.getDomainGridlinePaint();
 		if (paint == null) {
 			paint = CategoryPlot.DEFAULT_GRIDLINE_PAINT;
 		}
 		g2.setPaint(paint);
-
+		
 		Stroke stroke = plot.getDomainGridlineStroke();
 		if (stroke == null) {
 			stroke = CategoryPlot.DEFAULT_GRIDLINE_STROKE;
@@ -596,31 +596,31 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		} catch (Exception err) {
 			// ignore
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws a grid line against the range axis.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param axis
-	 *            the value axis.
+	 *           the value axis.
 	 * @param dataArea
-	 *            the area for plotting data (not yet adjusted for any 3D effect).
+	 *           the area for plotting data (not yet adjusted for any 3D effect).
 	 * @param value
-	 *            the value at which the grid line should be drawn.
+	 *           the value at which the grid line should be drawn.
 	 */
 	public void drawRangeGridline(Graphics2D g2, CategoryPlot plot, ValueAxis axis, Rectangle2D dataArea,
 			double value) {
-
+		
 		Range range = axis.getRange();
 		if (!range.contains(value)) {
 			return;
 		}
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		double v = axis.valueToJava2D(value, dataArea, plot.getRangeAxisEdge());
 		Line2D line = null;
@@ -629,48 +629,48 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		} else if (orientation == PlotOrientation.VERTICAL) {
 			line = new Line2D.Double(dataArea.getMinX(), v, dataArea.getMaxX(), v);
 		}
-
+		
 		Paint paint = plot.getRangeGridlinePaint();
 		if (paint == null) {
 			paint = CategoryPlot.DEFAULT_GRIDLINE_PAINT;
 		}
 		g2.setPaint(paint);
-
+		
 		Stroke stroke = plot.getRangeGridlineStroke();
 		if (stroke == null) {
 			stroke = CategoryPlot.DEFAULT_GRIDLINE_STROKE;
 		}
 		g2.setStroke(stroke);
-
+		
 		g2.draw(line);
-
+		
 	}
-
+	
 	/**
 	 * Draws a marker for the range axis.
 	 * 
 	 * @param g2
-	 *            the graphics device (not <code>null</code>).
+	 *           the graphics device (not <code>null</code>).
 	 * @param plot
-	 *            the plot (not <code>null</code>).
+	 *           the plot (not <code>null</code>).
 	 * @param axis
-	 *            the range axis (not <code>null</code>).
+	 *           the range axis (not <code>null</code>).
 	 * @param marker
-	 *            the marker to be drawn (not <code>null</code>).
+	 *           the marker to be drawn (not <code>null</code>).
 	 * @param dataArea
-	 *            the area inside the axes (not <code>null</code>).
+	 *           the area inside the axes (not <code>null</code>).
 	 */
 	public void drawRangeMarker(Graphics2D g2, CategoryPlot plot, ValueAxis axis, Marker marker, Rectangle2D dataArea) {
-
+		
 		if (marker instanceof ValueMarker) {
 			ValueMarker vm = (ValueMarker) marker;
 			double value = vm.getValue();
 			Range range = axis.getRange();
-
+			
 			if (!range.contains(value)) {
 				return;
 			}
-
+			
 			PlotOrientation orientation = plot.getOrientation();
 			double v = axis.valueToJava2D(value, dataArea, plot.getRangeAxisEdge());
 			Line2D line = null;
@@ -679,7 +679,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			} else if (orientation == PlotOrientation.VERTICAL) {
 				line = new Line2D.Double(dataArea.getMinX(), v, dataArea.getMaxX(), v);
 			}
-
+			
 			g2.setPaint(marker.getOutlinePaint());
 			g2.setStroke(marker.getOutlineStroke());
 			try {
@@ -700,7 +700,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 						TextAnchor.CENTER);
 			}
 		} else if (marker instanceof IntervalMarker) {
-
+			
 			IntervalMarker im = (IntervalMarker) marker;
 			double start = im.getStartValue();
 			double end = im.getEndValue();
@@ -708,14 +708,14 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			if (!(range.intersects(start, end))) {
 				return;
 			}
-
+			
 			// don't draw beyond the axis range...
 			start = range.constrain(start);
 			end = range.constrain(end);
-
+			
 			double v0 = axis.valueToJava2D(start, dataArea, plot.getRangeAxisEdge());
 			double v1 = axis.valueToJava2D(end, dataArea, plot.getRangeAxisEdge());
-
+			
 			PlotOrientation orientation = plot.getOrientation();
 			Rectangle2D rect = null;
 			if (orientation == PlotOrientation.HORIZONTAL) {
@@ -724,10 +724,10 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				rect = new Rectangle2D.Double(dataArea.getMinX(), Math.min(v0, v1), dataArea.getWidth(),
 						Math.abs(v1 - v0));
 			}
-
+			
 			g2.setPaint(marker.getPaint());
 			g2.fill(rect);
-
+			
 			String label = marker.getLabel();
 			RectangleAnchor anchor = marker.getLabelAnchor();
 			if (label != null) {
@@ -739,31 +739,31 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				RefineryUtilities.drawAlignedString(label, g2, (float) coordinates[0], (float) coordinates[1],
 						marker.getLabelTextAnchor());
 			}
-
+			
 		}
-
+		
 	}
-
+	
 	/**
 	 * Calculates the (x, y) coordinates for drawing a marker label.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param orientation
-	 *            the plot orientation.
+	 *           the plot orientation.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param markerArea
-	 *            the rectangle surrounding the marker.
+	 *           the rectangle surrounding the marker.
 	 * @param markerOffset
-	 *            the marker offset.
+	 *           the marker offset.
 	 * @param anchor
-	 *            the label anchor.
+	 *           the label anchor.
 	 * @return the coordinates for drawing the marker label.
 	 */
 	private double[] calculateRangeMarkerTextAnchorPoint(Graphics2D g2, PlotOrientation orientation,
 			Rectangle2D dataArea, Rectangle2D markerArea, RectangleInsets markerOffset, RectangleAnchor anchor) {
-
+		
 		double[] result = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			Rectangle2D anchorRect = markerOffset.createOutsetRectangle(markerArea, true, false);
@@ -773,25 +773,25 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			result = RectangleAnchor.coordinates(anchorRect, anchor);
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a legend item for a series.
 	 * 
 	 * @param datasetIndex
-	 *            the dataset index (zero-based).
+	 *           the dataset index (zero-based).
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @return the legend item.
 	 */
 	public LegendItem getLegendItem(int datasetIndex, int series) {
-
+		
 		CategoryPlot cp = getPlot();
 		if (cp == null) {
 			return null;
 		}
-
+		
 		CategoryDataset dataset;
 		dataset = cp.getDataset(datasetIndex);
 		String label = dataset.getRowKey(series).toString();
@@ -800,25 +800,25 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		Paint paint = getSeriesPaint(series);
 		Paint outlinePaint = getSeriesOutlinePaint(series);
 		Stroke stroke = getSeriesStroke(series);
-
+		
 		return new LegendItem(label, description, shape, true, paint, stroke, outlinePaint, stroke);
-
+		
 	}
-
+	
 	/**
 	 * Tests this renderer for equality with another object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		boolean result = super.equals(obj);
-
+		
 		if (obj instanceof AbstractCategoryItemRenderer) {
 			AbstractCategoryItemRenderer r = (AbstractCategoryItemRenderer) obj;
-
+			
 			boolean b0 = ObjectUtils.equal(this.labelGenerator, r.labelGenerator);
 			boolean b1 = ObjectUtils.equal(this.labelGeneratorList, r.labelGeneratorList);
 			boolean b2 = ObjectUtils.equal(this.baseLabelGenerator, r.baseLabelGenerator);
@@ -828,14 +828,14 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			boolean b6 = ObjectUtils.equal(this.itemURLGenerator, r.itemURLGenerator);
 			boolean b7 = ObjectUtils.equal(this.itemURLGeneratorList, r.itemURLGeneratorList);
 			boolean b8 = ObjectUtils.equal(this.baseItemURLGenerator, r.baseItemURLGenerator);
-
+			
 			result = b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8;
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code for the renderer.
 	 * 
@@ -845,7 +845,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		int result = super.hashCode();
 		return result;
 	}
-
+	
 	/**
 	 * Returns the drawing supplier from the plot.
 	 * 
@@ -859,31 +859,31 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Draws an item label.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param orientation
-	 *            the orientation.
+	 *           the orientation.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row.
+	 *           the row.
 	 * @param column
-	 *            the column.
+	 *           the column.
 	 * @param x
-	 *            the x coordinate (in Java2D space).
+	 *           the x coordinate (in Java2D space).
 	 * @param y
-	 *            the y coordinate (in Java2D space).
+	 *           the y coordinate (in Java2D space).
 	 * @param negative
-	 *            indicates a negative value (which affects the item label
-	 *            position).
+	 *           indicates a negative value (which affects the item label
+	 *           position).
 	 */
 	protected void drawItemLabel(Graphics2D g2, PlotOrientation orientation, CategoryDataset dataset, int row,
 			int column, double x, double y, boolean negative) {
-
+		
 		CategoryLabelGenerator generator = getLabelGenerator(row, column);
 		if (generator != null) {
 			Font labelFont = getItemLabelFont(row, column);
@@ -891,7 +891,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			g2.setFont(labelFont);
 			g2.setPaint(paint);
 			String label = generator.generateLabel(dataset, row, column);
-
+			
 			// get the label anchor..
 			ItemLabelPosition position = null;
 			if (!negative) {
@@ -899,15 +899,15 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			} else {
 				position = getNegativeItemLabelPosition(row, column);
 			}
-
+			
 			// work out the label anchor point...
 			Point2D anchorPoint = calculateLabelAnchorPoint(position.getItemLabelAnchor(), x, y, orientation);
 			RefineryUtilities.drawRotatedString(label, g2, (float) anchorPoint.getX(), (float) anchorPoint.getY(),
 					position.getTextAnchor(), position.getRotationAnchor(), position.getAngle());
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns an independent copy of the renderer.
 	 * <p>
@@ -915,13 +915,13 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             can be thrown if one of the objects belonging to the renderer
-	 *             does not support cloning (for example, an item label generator).
+	 *            can be thrown if one of the objects belonging to the renderer
+	 *            does not support cloning (for example, an item label generator).
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		AbstractCategoryItemRenderer clone = (AbstractCategoryItemRenderer) super.clone();
-
+		
 		if (this.labelGenerator != null) {
 			if (this.labelGenerator instanceof PublicCloneable) {
 				PublicCloneable pc = (PublicCloneable) this.labelGenerator;
@@ -930,11 +930,11 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				throw new CloneNotSupportedException("ItemLabelGenerator not cloneable.");
 			}
 		}
-
+		
 		if (this.labelGeneratorList != null) {
 			clone.labelGeneratorList = (ObjectList) this.labelGeneratorList.clone();
 		}
-
+		
 		if (this.baseLabelGenerator != null) {
 			if (this.baseLabelGenerator instanceof PublicCloneable) {
 				PublicCloneable pc = (PublicCloneable) this.baseLabelGenerator;
@@ -943,7 +943,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				throw new CloneNotSupportedException("ItemLabelGenerator not cloneable.");
 			}
 		}
-
+		
 		if (this.toolTipGenerator != null) {
 			if (this.toolTipGenerator instanceof PublicCloneable) {
 				PublicCloneable pc = (PublicCloneable) this.toolTipGenerator;
@@ -952,11 +952,11 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				throw new CloneNotSupportedException("Tool tip generator not cloneable.");
 			}
 		}
-
+		
 		if (this.toolTipGeneratorList != null) {
 			clone.toolTipGeneratorList = (ObjectList) this.toolTipGeneratorList.clone();
 		}
-
+		
 		if (this.baseToolTipGenerator != null) {
 			if (this.baseToolTipGenerator instanceof PublicCloneable) {
 				PublicCloneable pc = (PublicCloneable) this.baseToolTipGenerator;
@@ -965,29 +965,29 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				throw new CloneNotSupportedException("Base tool tip generator not cloneable.");
 			}
 		}
-
+		
 		if (this.itemURLGenerator != null) {
 			clone.itemURLGenerator = (CategoryURLGenerator) this.itemURLGenerator.clone();
 		}
-
+		
 		if (this.itemURLGeneratorList != null) {
 			clone.itemURLGeneratorList = (ObjectList) this.itemURLGeneratorList.clone();
 		}
-
+		
 		if (this.baseItemURLGenerator != null) {
 			clone.baseItemURLGenerator = (CategoryURLGenerator) this.baseItemURLGenerator.clone();
 		}
-
+		
 		return clone;
 	}
-
+	
 	/**
 	 * Returns a domain axis for a plot.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @return A domain axis.
 	 */
 	protected CategoryAxis getDomainAxis(CategoryPlot plot, int index) {
@@ -997,14 +997,14 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns a range axis for a plot.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param index
-	 *            the axis index (<code>null</code> for the primary axis).
+	 *           the axis index (<code>null</code> for the primary axis).
 	 * @return A range axis.
 	 */
 	protected ValueAxis getRangeAxis(CategoryPlot plot, int index) {
@@ -1014,5 +1014,5 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		}
 		return result;
 	}
-
+	
 }

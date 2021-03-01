@@ -18,24 +18,24 @@ import org.graffiti.selection.Selection;
  */
 public class SelectionParameter extends AbstractSingleParameter {
 	// ~ Instance fields ========================================================
-
+	
 	/** The value of this parameter. */
 	private Selection value = null;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new selection parameter.
 	 * 
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public SelectionParameter(String name, String description) {
 		super(name, description);
 	}
-
+	
 	/**
 	 * Constructs a new selection parameter.
 	 * 
@@ -47,7 +47,7 @@ public class SelectionParameter extends AbstractSingleParameter {
 		super(name, description);
 		setSelection(sel);
 	}
-
+	
 	/**
 	 * Constructs a new selection parameter.
 	 * 
@@ -59,19 +59,19 @@ public class SelectionParameter extends AbstractSingleParameter {
 		super(name, description);
 		setSelection(sel);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the selection.
 	 * 
 	 * @param selection
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void setSelection(Selection selection) {
 		this.value = selection;
 	}
-
+	
 	/**
 	 * Returns the selection encapsulated in this parameter.
 	 * 
@@ -80,18 +80,18 @@ public class SelectionParameter extends AbstractSingleParameter {
 	public Selection getSelection() {
 		return this.value;
 	}
-
+	
 	/**
 	 * Sets the value of the <code>AttributeParameter</code>.
 	 * 
 	 * @param value
-	 *            the new value of the <code>AttributeParameter</code>.
+	 *           the new value of the <code>AttributeParameter</code>.
 	 */
 	@Override
 	public void setValue(Object value) {
 		this.value = (Selection) value;
 	}
-
+	
 	/**
 	 * Returns the value of this parameter.
 	 * 

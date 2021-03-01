@@ -29,28 +29,28 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawC
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorithm {
-
+	
 	public String getName() {
 		return "Add Average-Values Diagram";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.STATISTICS,
 				Category.CHART, Category.VISUAL));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command enumerates all <br>" + "leaf nodes with mapping data of a<br>"
 				+ "given GO-Term-Hierarchy-Node.";
 	}
-
+	
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -71,13 +71,13 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	private static void processNode(NodeHelper nh, TreeSet<String> knownSeriesAndTimeIDs) {
 		Collection<Node> childNodes = nh.getAllOutChildNodes();
 		TreeMap<String, ArrayList<Double>> seriesAndTime2mappedValues = new TreeMap<String, ArrayList<Double>>();
 		for (String ci : knownSeriesAndTimeIDs)
 			seriesAndTime2mappedValues.put(ci, new ArrayList<Double>());
-
+		
 		HashMap<String, Integer> seriesAndTime2replicateid = new HashMap<String, Integer>();
 		int currentReplicateID = 1;
 		for (Node n : childNodes) {
@@ -127,7 +127,7 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 				"Average of sample means", "");
 		nh.setChartType(GraffitiCharts.BAR_FLAT);
 	}
-
+	
 	private static TreeSet<String> getChildNodeSeriesNamesAndTimes(HashSet<Node> processedNodes, NodeHelper nh,
 			Collection<String> knownSeriesIDs) {
 		TreeSet<String> result = new TreeSet<String>();

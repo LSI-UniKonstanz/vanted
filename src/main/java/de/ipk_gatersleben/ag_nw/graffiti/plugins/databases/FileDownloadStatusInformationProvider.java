@@ -7,8 +7,8 @@ import javax.swing.JComponent;
 
 public interface FileDownloadStatusInformationProvider {
 	JComponent getStatusPane(boolean showEmpty);
-
+	
 	String getDescription();
-
+	
 	public void finishedNewDownload();
 }

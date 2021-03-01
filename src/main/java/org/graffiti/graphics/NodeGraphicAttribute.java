@@ -30,13 +30,13 @@ import org.graffiti.attributes.StringAttribute;
  */
 public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor that sets the id to the given value, and initializes the other
 	 * attributes with default values.
 	 * 
 	 * @param id
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public NodeGraphicAttribute(String id) {
 		super(id);
@@ -45,7 +45,7 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 		add(new PortsAttribute(PORTS), false);
 		add(new NodeShapeAttribute(SHAPE, "org.graffiti.plugins.views.defaults.RectangleNodeShape"), false);
 	}
-
+	
 	@Override
 	public void add(Attribute a, boolean inform) throws AttributeExistsException, FieldAlreadySetException {
 		if (attributes.containsKey(a.getId())) {
@@ -53,7 +53,7 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 		} else
 			super.add(a, inform);
 	}
-
+	
 	@Override
 	public void add(Attribute a) throws AttributeExistsException, FieldAlreadySetException {
 		if (attributes.containsKey(a.getId())) {
@@ -61,16 +61,16 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 		} else
 			super.add(a);
 	}
-
+	
 	/**
 	 * Constructor for NodeGraphicAttribute.
 	 * 
 	 * @param c
-	 *            the coordinate-value of the attriubte.
+	 *           the coordinate-value of the attriubte.
 	 * @param d
-	 *            the dimension-value of the attribute.
+	 *           the dimension-value of the attribute.
 	 * @param p
-	 *            the ports-value of the attribute.
+	 *           the ports-value of the attribute.
 	 * @throws IllegalIdException
 	 */
 	public NodeGraphicAttribute(CoordinateAttribute c, DimensionAttribute d, PortsAttribute p)
@@ -81,16 +81,16 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 		add(new PortsAttribute(PORTS, p.getIngoing(), p.getOutgoing(), p.getCommon()), false);
 		add(new NodeShapeAttribute(SHAPE, "org.graffiti.plugins.views.defaults.RectangleNodeShape"), false);
 	}
-
+	
 	/**
 	 * Constructor for NodeGraphicAttribute.
 	 * 
 	 * @param c
-	 *            the coordinate-value of the attriubte.
+	 *           the coordinate-value of the attriubte.
 	 * @param d
-	 *            the dimension-value of the attribute.
+	 *           the dimension-value of the attribute.
 	 * @param p
-	 *            the ports-value of the attribute.
+	 *           the ports-value of the attribute.
 	 * @throws IllegalIdException
 	 */
 	public NodeGraphicAttribute(Point2D c, Dimension d, PortsAttribute p) throws IllegalIdException {
@@ -100,24 +100,24 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 		add(new PortsAttribute(PORTS, p.getIngoing(), p.getOutgoing(), p.getCommon()), false);
 		add(new NodeShapeAttribute(SHAPE, "org.graffiti.plugins.views.defaults.RectangleNodeShape"), false);
 	}
-
+	
 	public NodeGraphicAttribute(Point2D position, Dimension size) throws IllegalIdException {
 		this(position, size, new PortsAttribute(PORTS));
 	}
-
+	
 	/**
 	 * Constructor for NodeGraphicAttribute.
 	 * 
 	 * @param x
-	 *            the x-coordinate-value of the attriubte.
+	 *           the x-coordinate-value of the attriubte.
 	 * @param y
-	 *            the y-coordinate-value of the attriubte.
+	 *           the y-coordinate-value of the attriubte.
 	 * @param h
-	 *            the height-value of the attribute.
+	 *           the height-value of the attribute.
 	 * @param w
-	 *            the width-value of the attribute.
+	 *           the width-value of the attribute.
 	 * @param p
-	 *            the ports-value of the attribute.
+	 *           the ports-value of the attribute.
 	 * @throws IllegalIdException
 	 */
 	public NodeGraphicAttribute(double x, double y, double h, double w, PortsAttribute p) throws IllegalIdException {
@@ -127,7 +127,7 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 		add(new NodeShapeAttribute(SHAPE, "org.graffiti.plugins.views.defaults.RectangleNodeShape"), false);
 		add(new PortsAttribute(PORTS, p.getIngoing(), p.getOutgoing(), p.getCommon()), false);
 	}
-
+	
 	/**
 	 * Constructor for NodeGraphicAttribute.
 	 * 
@@ -140,9 +140,9 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 		add(new PortsAttribute(PORTS), false);
 		add(new NodeShapeAttribute(SHAPE, "org.graffiti.plugins.views.defaults.RectangleNodeShape"), false);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the collection of attributes contained within this
 	 * <tt>CollectionAttribute</tt>. The known graphic attributes are set,
@@ -150,9 +150,9 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 	 * subattribute with the same id, an exception will be thrown).
 	 * 
 	 * @param attrs
-	 *            the map that contains all attributes.
+	 *           the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
@@ -162,7 +162,7 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 				&& attrs.keySet().contains(FRAMETHICKNESS) && attrs.keySet().contains(LINEMODE)) {
 			for (Iterator<String> it = attrs.keySet().iterator(); it.hasNext();) {
 				String attrId = (String) it.next();
-
+				
 				if (attrId.equals(COORDINATE)) {
 					setCoordinate((CoordinateAttribute) attrs.get(COORDINATE));
 				} else if (attrId.equals(DIMENSION)) {
@@ -189,18 +189,18 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-
+	
 	/**
 	 * Sets the 'coordinate'-value.
 	 * 
 	 * @param c
-	 *            the 'coordinate'-value to be set.
+	 *           the 'coordinate'-value to be set.
 	 */
 	public void setCoordinate(CoordinateAttribute c) {
 		remove(COORDINATE);
 		add(c, false);
 	}
-
+	
 	/**
 	 * Returns the 'coordinate'-value of the encapsulated node.
 	 * 
@@ -209,18 +209,18 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 	public CoordinateAttribute getCoordinate() {
 		return (CoordinateAttribute) attributes.get(COORDINATE);
 	}
-
+	
 	/**
 	 * Sets the 'dimension'-value.
 	 * 
 	 * @param d
-	 *            the 'dimension'-value to be set.
+	 *           the 'dimension'-value to be set.
 	 */
 	public void setDimension(DimensionAttribute d) {
 		remove(DIMENSION);
 		add(d);
 	}
-
+	
 	/**
 	 * Returns the 'dimension'-value of the encapsulated node.
 	 * 
@@ -229,18 +229,18 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 	public DimensionAttribute getDimension() {
 		return (DimensionAttribute) attributes.get(DIMENSION);
 	}
-
+	
 	/**
 	 * Sets the 'ports'-value.
 	 * 
 	 * @param p
-	 *            the 'ports'-value to be set.
+	 *           the 'ports'-value to be set.
 	 */
 	public void setPorts(PortsAttribute p) {
 		remove(PORTS);
 		add(p);
 	}
-
+	
 	/**
 	 * Returns the 'ports'-value of the encapsulated node.
 	 * 
@@ -271,7 +271,7 @@ public class NodeGraphicAttribute extends GraphElementGraphicAttribute {
 	// }
 	// return copiedAttribute;
 	// }
-
+	
 }
 
 // ------------------------------------------------------------------------------

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ListOfDataRowsExcelExport extends ArrayList<DataRowExcelExport> {
-
+	
 	private static final long serialVersionUID = -6089215718924489926L;
-
+	
 	@Override
 	public boolean contains(Object o) {
 		if (o instanceof DataRowExcelExport) {
@@ -21,7 +21,7 @@ public class ListOfDataRowsExcelExport extends ArrayList<DataRowExcelExport> {
 		}
 		return false;
 	}
-
+	
 	/***
 	 * Iterate over TreeSet - if the Object with the specified key (cond, time,
 	 * repl) returns. If the Object is not found, returns null

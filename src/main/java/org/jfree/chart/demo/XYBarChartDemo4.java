@@ -49,22 +49,22 @@ import org.jfree.ui.RefineryUtilities;
  * A demonstration of the {@link XYBarDataset} wrapper class.
  */
 public class XYBarChartDemo4 extends ApplicationFrame {
-
+	
 	/**
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYBarChartDemo4(final String title) {
-
+		
 		super(title);
-
+		
 		final IntervalXYDataset dataset = createDataset();
-
+		
 		final JFreeChart chart = ChartFactory.createXYBarChart(title, "X", false, "Y", dataset,
 				PlotOrientation.VERTICAL, true, false, false);
-
+		
 		// then customise it a little...
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 1000, 0, Color.blue));
 		final XYPlot plot = (XYPlot) chart.getPlot();
@@ -74,9 +74,9 @@ public class XYBarChartDemo4 extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 300));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -91,7 +91,7 @@ public class XYBarChartDemo4 extends ApplicationFrame {
 		collection.addSeries(series);
 		return new XYBarDataset(collection, 0.9);
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -102,20 +102,20 @@ public class XYBarChartDemo4 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYBarChartDemo4 demo = new XYBarChartDemo4("XY Bar Chart Demo 4");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

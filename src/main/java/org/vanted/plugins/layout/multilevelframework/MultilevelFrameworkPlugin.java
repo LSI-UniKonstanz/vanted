@@ -7,20 +7,19 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import javax.swing.*;
 
 /**
- * 
  * Since 2.8.0 the Multilevel Framework add-on is integrated into the core of
  * Vanted as Vanted plug-in.
  * 
  * @since 2.8.0
  */
 public class MultilevelFrameworkPlugin extends GenericPluginAdapter {
-
+	
 	// not final to allow test to change it
 	static String ICON_NAME = "mlf-logo";
-
+	
 	public MultilevelFrameworkPlugin() {
 		super();
-
+		
 		this.algorithms = new Algorithm[] {
 				// The MLF plugin uses core methods to iterate over all available
 				// plugins and determine which can be used in the MLF procedure.
@@ -31,7 +30,7 @@ public class MultilevelFrameworkPlugin extends GenericPluginAdapter {
 				// and LayoutAlgorithmWrapper#layoutAlgWhitelist
 				new MultilevelFrameworkLayout() };
 	}
-
+	
 	@Override
 	public ImageIcon getIcon() {
 		try {
@@ -40,5 +39,5 @@ public class MultilevelFrameworkPlugin extends GenericPluginAdapter {
 			return super.getIcon();
 		}
 	}
-
+	
 }

@@ -36,68 +36,68 @@ import java.util.List;
  * associated with the row and column indices.
  */
 public interface KeyedValues2D extends Values2D {
-
+	
 	/**
 	 * Returns a row key.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getRowKey(int row);
-
+	
 	/**
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *            the row key.
+	 *           the row key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(Comparable key);
-
+	
 	/**
 	 * Returns the row keys.
 	 * 
 	 * @return the keys.
 	 */
 	public List getRowKeys();
-
+	
 	/**
 	 * Returns a column key.
 	 * 
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the column key.
 	 */
 	public Comparable getColumnKey(int column);
-
+	
 	/**
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *            the column key.
+	 *           the column key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(Comparable key);
-
+	
 	/**
 	 * Returns the column keys.
 	 * 
 	 * @return the keys.
 	 */
 	public List getColumnKeys();
-
+	
 	/**
 	 * Returns the value for a pair of keys.
 	 * <P>
 	 * This method should return null if either of the keys is not found.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return the value.
 	 */
 	public Number getValue(Comparable rowKey, Comparable columnKey);
-
+	
 }

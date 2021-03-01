@@ -42,53 +42,53 @@ import java.io.Serializable;
  * @author Bryan Scott
  */
 public class WindNeedle extends ArrowNeedle implements Serializable {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public WindNeedle() {
 		super(false); // isArrowAtTop
 	}
-
+	
 	/**
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param rotate
-	 *            the rotation point.
+	 *           the rotation point.
 	 * @param angle
-	 *            the angle.
+	 *           the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
-
+		
 		super.drawNeedle(g2, plotArea, rotate, angle);
 		if ((rotate != null) && (plotArea != null)) {
-
+			
 			int spacing = getSize() * 3;
 			Rectangle2D newArea = new Rectangle2D.Double();
-
+			
 			Point2D newRotate = rotate;
 			// Point2D newRotate = new Point2D.Double(rotate.getX()-spacing, rotate.getY());
 			newArea.setRect(plotArea.getMinX() - spacing, plotArea.getMinY(), plotArea.getWidth(),
 					plotArea.getHeight());
 			super.drawNeedle(g2, newArea, newRotate, angle);
-
+			
 			// newRotate.setLocation(rotate.getX()+spacing, rotate.getY());
 			newArea.setRect(plotArea.getMinX() + spacing, plotArea.getMinY(), plotArea.getWidth(),
 					plotArea.getHeight());
 			super.drawNeedle(g2, newArea, newRotate, angle);
-
+			
 		}
 	}
-
+	
 	/**
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -103,5 +103,5 @@ public class WindNeedle extends ArrowNeedle implements Serializable {
 		}
 		return false;
 	}
-
+	
 }

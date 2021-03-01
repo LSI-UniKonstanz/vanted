@@ -15,7 +15,7 @@ import org.vanted.indexednodes.IndexedNodeSet;
  * General test cases for BasicGraphOperations
  */
 public class TestBasicGraphOperations {
-
+	
 	@Test
 	public void testDistances() {
 		//Test distances in line graph
@@ -30,7 +30,7 @@ public class TestBasicGraphOperations {
 		for (int i = 0; i <= 10; i++) {
 			assert (test.getEntry(i) == i);
 		}
-
+		
 		//Test distances in graph with all nodes connected to the first
 		g = new AdjListGraph();
 		n = g.addNode();
@@ -42,7 +42,7 @@ public class TestBasicGraphOperations {
 		for (int i = 1; i <= 10; i++) {
 			assert (test2.getEntry(i) == 1);
 		}
-
+		
 		//Test distances in unconnected graph
 		g = new AdjListGraph();
 		n = g.addNode();
@@ -55,34 +55,34 @@ public class TestBasicGraphOperations {
 			assert (test3.getEntry(i) == Double.POSITIVE_INFINITY);
 		}
 	}
-
+	
 	@Test
 	public void testGetComponents() {
-
+		
 		//Get number of components from 10 unconnected nodes
 		Graph g = new AdjListGraph();
 		for (int i = 0; i < 10; i++) {
 			g.addNode();
 		}
 		List<IndexedComponent> list = IndexedGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
-
+		
 		//We should have 10 components
 		assert (list.size() == 10);
 		for (int i = 0; i < list.size(); i++) {
 			//Each component should be a single Node
 			assert (list.get(i).size() == 1);
 		}
-
+		
 		//Connect 2 Nodes. Now there should be 9 components
 		g.addEdge(g.getNodes().get(2), g.getNodes().get(3), false);
 		list = IndexedGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
 		assert (list.size() == 9);
-
+		
 		//Test for empty graph
 		g = new AdjListGraph();
 		list = IndexedGraphOperations.getComponents(IndexedNodeSet.setOfAllIn(g.getNodes()));
 		assert (list.size() == 0);
-
+		
 	}
-
+	
 }

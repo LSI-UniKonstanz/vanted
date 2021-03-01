@@ -20,12 +20,12 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  */
 public class LongEditComponent extends NumberEditComponent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new LongEditComponent object.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public LongEditComponent(Displayable disp) {
 		super(disp);

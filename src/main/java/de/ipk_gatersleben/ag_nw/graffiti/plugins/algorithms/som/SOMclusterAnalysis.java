@@ -34,10 +34,10 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 	double betaParam = 0.1;
 	double gammaParam = 2;
 	boolean returnNaN;
-
+	
 	boolean useSampleAverages = true;
 	boolean addCentroidNodes = false;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -46,12 +46,12 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 	public String getName() {
 		return "Step 1: Train the SOM network";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANALYSIS, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public void reset() {
 		super.reset();
@@ -64,25 +64,25 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 		// betaParam=0.1;
 		// gammaParam=2;
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		IntegerParameter numberOfNeurons = new IntegerParameter(Integer.valueOf(numberOfNeuronsParm), Integer.valueOf(1),
 				Integer.valueOf(Integer.MAX_VALUE), "Neurons", "Number of target clusters (neurons)");
-
+		
 		/**
 		 * Width of the SOM, 0 means quadratic (9 nodes, width=0 ==> width=3)
 		 */
 		IntegerParameter widthOfSOM = new IntegerParameter(Integer.valueOf(widthOfSOMparm), Integer.valueOf(0),
 				Integer.valueOf(Integer.MAX_VALUE), "Number of horizontal neurons",
 				"SOM neurons are initially layouted on a grid\nThis number sets the number of horizontal neurons\nIf 0, a quadratic grid is created");
-
+		
 		/**
 		 * Maximum of considered neighbourhood. "<0" means without limit (whole map)
 		 */
 		DoubleParameter maxNeighbourHood = new DoubleParameter(maxNeighbourHoodParm, "Max.neighborhood",
 				"Max. considered neighbourhood, -1=without limit");
-
+		
 		/**
 		 * Reduce neighbourhood consideration (-1) after X iterations. "0" means do not
 		 * reduce neighbourhood, stay at maxNeighbourHood level
@@ -90,36 +90,36 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 		IntegerParameter decreaseNeighbourHoodAfterXiterations = new IntegerParameter(
 				Integer.valueOf(decreaseNeighbourhoodAfterXiterationsParam), Integer.valueOf(0), Integer.valueOf(Integer.MAX_VALUE),
 				"Reduce neighborhood", "Reduce neighborhood considerations after X iterations. 0=off");
-
+		
 		/**
 		 * Number of iterations (of the sample dataset) of the learning process.
 		 */
 		IntegerParameter repeatLearnCount = new IntegerParameter(Integer.valueOf(numberLearnIterationsParam),
 				Integer.valueOf(1), Integer.valueOf(Integer.MAX_VALUE), "Learn-Iterations",
 				"Number of iterations of the learning process");
-
+		
 		// Typ der Nachbarschaftsfunktion (1=Zylinder, 2=Kegel, 3=Gauss, 4=Mexican
 		// Hat, 5=Cosinus)?
 		IntegerParameter typeOfNeighbourHoodFunction = new IntegerParameter(
 				Integer.valueOf(typeOfNeighbourhoodFunctionParam), Integer.valueOf(1), Integer.valueOf(5), "Neighborhood-Function",
 				"1=Zylinder, 2=Kegel, 3=Gauss, 4=Mexican Hat, 5=Cosinus");
 		// int nachbarF = Integer.valueOf(nachbarFS).intValue();
-
+		
 		/**
 		 * Beta, default=0.1
 		 */
 		// DoubleParameter beta = new DoubleParameter(betaParam, "Beta", "beta");
 		// double betaInit = Double.valueOf(betaS).doubleValue();
-
+		
 		/**
 		 * Gamma, default=2
 		 */
 		// DoubleParameter gamma = new DoubleParameter(gammaParam, "Gamma", "gamma");
-
+		
 		BooleanParameter disableInterpolation = new BooleanParameter(returnNaN,
 				"Interpolate missing time series values",
 				"If selected, measurement values from missing time points are not interpolated with the measurement value, from the preceding time point.");
-
+		
 		return new Parameter[] { numberOfNeurons, widthOfSOM, maxNeighbourHood, decreaseNeighbourHoodAfterXiterations,
 				repeatLearnCount, typeOfNeighbourHoodFunction,
 				// beta,
@@ -131,7 +131,7 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 				// centroid-dataset are created.")
 		};
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -151,7 +151,7 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 		// addCentroidNodes = ((BooleanParameter)
 		// params[i++]).getBoolean().booleanValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -161,14 +161,14 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Analysis";
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 		if (graph == null || graph.getNodes().size() <= 0)
 			throw new PreconditionException("No graph available or graph empty!");
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -179,9 +179,9 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 				decreaseNeighbourhoodAfterXiterationsParam, typeOfNeighbourhoodFunctionParam,
 				numberLearnIterationsParam, betaParam, gammaParam, getSelectedOrAllGraphElements(), returnNaN,
 				useSampleAverages, addCentroidNodes, graph);
-
+		
 		SOMplugin.setLastUseAverageSetting(useSampleAverages);
-
+		
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(mcs, mcs, "SOM Cluster Analysis", "SOM Cluster Analysis",
 				true, false);
 		bth.startWork(this);

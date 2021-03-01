@@ -8,12 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 
  * @vanted.revision 2.6.5
  */
 public class GraphParser {
 	Graph g = new Graph();
-
+	
 	GraphParser(String fileName) {
 		Pattern nodePattern = Pattern.compile("^\\s*(\\w+)\\s*\\[(.*)]");
 		Pattern labelPattern = Pattern.compile("label\\s*=\\s*\"?(\\w+)");
@@ -53,11 +52,11 @@ public class GraphParser {
 			ioe.printStackTrace();
 		}
 	}
-
+	
 	private static String match(Pattern p, String s) {
 		return match(p, s, 1);
 	}
-
+	
 	private static String match(Pattern p, String s, int group) {
 		Matcher m = p.matcher(s);
 		String val = null;
@@ -66,7 +65,7 @@ public class GraphParser {
 		}
 		return val;
 	}
-
+	
 	public Graph getGraph() {
 		return g;
 	}

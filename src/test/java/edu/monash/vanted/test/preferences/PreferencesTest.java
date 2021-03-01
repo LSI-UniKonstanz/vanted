@@ -6,25 +6,25 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PreferencesTest {
-
+	
 	@Before
 	public void setUp() throws Exception {
 	}
-
+	
 	@Test
 	public void testPreferenceFieldLoading() {
 		PreferenceManager preferenceManager = PreferenceManager.getInstance();
-
+		
 		GenericPlugin plugin = new TestPlugin();
-
+		
 		preferenceManager.pluginAdded(plugin, null);
-
+		
 		new TestAlgorithm().execute();
-
+		
 		System.out.println();
-
+		
 	}
-
+	
 	/**
 	 * @param args
 	 */

@@ -14,11 +14,11 @@ import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.util.Queue;
 
 public class PruneTreeAlgorithm extends AbstractAlgorithm {
-
+	
 	public void execute() {
 		prune(graph, selection.getNodes());
 	}
-
+	
 	private static void prune(Graph graph, Collection<Node> nodes) {
 		graph.getListenerManager().transactionStarted(PruneTreeAlgorithm.class);
 		for (GraphElement ge : graph.getGraphElements())
@@ -27,7 +27,7 @@ public class PruneTreeAlgorithm extends AbstractAlgorithm {
 			HashSet<Node> protectedNodes = new HashSet<Node>();
 			protectedNodes.addAll(nodes);
 			scanUpwards(protectedNodes);
-
+			
 			for (Node n : graph.getNodes()) {
 				if (!protectedNodes.contains(n))
 					AttributeHelper.setHidden(true, n, true, true, true);
@@ -35,7 +35,7 @@ public class PruneTreeAlgorithm extends AbstractAlgorithm {
 		}
 		graph.getListenerManager().transactionFinished(PruneTreeAlgorithm.class);
 	}
-
+	
 	private static void scanUpwards(HashSet<Node> protectedNodes) {
 		Queue todo = new Queue();
 		for (Node n : protectedNodes)
@@ -53,21 +53,21 @@ public class PruneTreeAlgorithm extends AbstractAlgorithm {
 			processed.add(n);
 		}
 	}
-
+	
 	public String getName() {
 		return "Prune Hierarchy";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.HIDDEN, Category.HIERARCHY));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Hides lower parts of a hierarchy.<br>"
@@ -77,12 +77,12 @@ public class PruneTreeAlgorithm extends AbstractAlgorithm {
 				+ "If the current node selection is empty, all hidden elements<br>"
 				+ "will be made visible again.<br><br>";
 	}
-
+	
 	public static void pruneFromTheseNodes(HashSet<Node> significantNodes) {
 		if (significantNodes == null || significantNodes.size() <= 0)
 			return;
 		Graph g = significantNodes.iterator().next().getGraph();
 		prune(g, significantNodes);
 	}
-
+	
 }

@@ -12,25 +12,25 @@ import org.HelperClass;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class ProgressStatusService implements HelperClass {
-
+	
 	private long lastUpdate = System.currentTimeMillis();
 	private long firstUpdate = System.currentTimeMillis();
 	private double firstStatusValueFine = 0;
-
+	
 	private double lastProgress = 0;
-
+	
 	private final double[] lastSpeeds = new double[150];
-
+	
 	int fillStatus = 0;
-
+	
 	int initialFillStatus = 0;
-
+	
 	int biggerThanBeforeCount = 0;
-
+	
 	double lastSpeed = 0;
-
+	
 	String lastRes = "";
-
+	
 	/**
 	 * @param intermediate
 	 * @param currentStatusValueFine
@@ -61,18 +61,18 @@ public class ProgressStatusService implements HelperClass {
 		for (int i = 0; i < initialFillStatus; i++)
 			averageSpeed += lastSpeeds[i] / initialFillStatus;
 		averageSpeed = averageSpeed * 1000; // percent per second
-
+		
 		if (true)
 			averageSpeed = currentSpeedUntilNow;
-
+		
 		String result;
-
+		
 		double remainPercent = 100 - currentStatusValueFine;
 		double remainTimeSeconds = remainPercent / averageSpeed;
-
+		
 		if (remainTimeSeconds < 0)
 			return "";
-
+		
 		double remainTimeMinutes = remainTimeSeconds / 60 % 60;
 		double remainTimeHours = remainTimeSeconds / 60 / 60 % 24;
 		double remainTimeDays = remainTimeSeconds / 24 / 60 / 60 % 7;
@@ -111,12 +111,12 @@ public class ProgressStatusService implements HelperClass {
 			res[numberResults++] = (int) remainTimeMinutes + "&nbsp;min";
 		if (numberResults < nn)
 			res[numberResults++] = (int) remainTimeSeconds % 60 + "&nbsp;sec";
-
+		
 		if (numberResults == 2)
 			result = res[0] + " " + res[1];
 		else
 			result = "~&nbsp;" + res[0];
-
+		
 		// increase expectation only if the value increased 10 times without
 		// lowering again
 		if (averageSpeed > lastSpeed) {
@@ -134,5 +134,5 @@ public class ProgressStatusService implements HelperClass {
 		}
 		return result;
 	}
-
+	
 }

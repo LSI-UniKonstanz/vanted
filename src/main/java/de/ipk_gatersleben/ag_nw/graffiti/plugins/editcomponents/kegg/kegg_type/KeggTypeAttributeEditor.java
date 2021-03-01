@@ -38,7 +38,7 @@ public class KeggTypeAttributeEditor extends AbstractValueEditComponent implemen
 	protected JButton selectOfThisType = new JButton("Select");
 	protected JLabel keggTypeLabel = new JLabel();
 	protected boolean showButton = false;
-
+	
 	public KeggTypeAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggTypeAttribute) getDisplayable()).getString();
@@ -52,7 +52,7 @@ public class KeggTypeAttributeEditor extends AbstractValueEditComponent implemen
 		selectOfThisType.setOpaque(false);
 		// keggTypeSelection.setOpaque(false);
 	}
-
+	
 	@Override
 	public JComponent getComponent() {
 		if (showButton)
@@ -67,7 +67,7 @@ public class KeggTypeAttributeEditor extends AbstractValueEditComponent implemen
 		 * TableLayout.FILL, 0);
 		 */
 	}
-
+	
 	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
@@ -83,13 +83,13 @@ public class KeggTypeAttributeEditor extends AbstractValueEditComponent implemen
 			keggTypeLabel.setText(curVal);
 		}
 	}
-
+	
 	@Override
 	public void setValue() {
 		// if (!keggTypeSelection.getSelectedItem().equals(EMPTY_STRING))
 		// ((KeggTypeAttribute)displayable).setString(keggTypeSelection.getSelectedItem().toString());
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// String currentEntryTypeString = (String) keggTypeSelection.getSelectedItem();

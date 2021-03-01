@@ -55,15 +55,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.M
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SOMguiHelper implements HelperClass {
-
+	
 	public static void showSOMcentroidsAndClusterAssignmentSettings(Map som, String[] columns, Graph optSrcGraph) {
-
+		
 		// int[] groupCount = new int[result.length];
 		// for (int i=0; i<result.length; i++)
 		// groupCount[i] = result[i].size();
-
+		
 		som.getWeights();
-
+		
 		JComponent somPanel = getSOMpanel(som, columns, optSrcGraph);
 		JFrame newFrame = new JFrame("SOM Map");
 		newFrame.setSize(500, 500);
@@ -77,7 +77,7 @@ public class SOMguiHelper implements HelperClass {
 		newFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		newFrame.setVisible(true);
 	}
-
+	
 	private static JComponent getSOMpanel(Map som, final String[] columns, Graph srcGraph) {
 		MyScatterBlock scatterBlock = new MyScatterBlock(false, new JLabel().getFont().getSize());
 		int y = 0;
@@ -87,7 +87,7 @@ public class SOMguiHelper implements HelperClass {
 			for (int x = 0; x < som.getSomWidth() && nodeIndex < som.getNeuronNodeCount(); x++) {
 				ObjectRef timePoints = new ObjectRef();
 				CategoryDataset dataset = getDataset(som, nodeIndex, columns, timePoints);
-
+				
 				JFreeChart chart = createChart(dataset,
 						"Centroid " + (nodeIndex + 1) + "-> Cluster ID " + (nodeIndex + 1), PlotOrientation.VERTICAL,
 						false, null, null, true, (Integer) timePoints.getObject() > 1, 3,
@@ -109,19 +109,19 @@ public class SOMguiHelper implements HelperClass {
 						colDesc = "<html>The X-Axis is is sorted as follows:<br>" + colDesc;
 						MainFrame.showMessageDialogWithScrollBars(colDesc, "X-Axis");
 					}
-
+					
 					public void mousePressed(MouseEvent e) {
 					}
-
+					
 					public void mouseReleased(MouseEvent e) {
 					}
-
+					
 					public void mouseEntered(MouseEvent e) {
 						// ChartPanel src = (ChartPanel) e.getSource();
 						// if (src.getBackground()!=selectedColor)
 						// src.setBackground(hoverColor);
 					}
-
+					
 					public void mouseExited(MouseEvent e) {
 						// ChartPanel src = (ChartPanel) e.getSource();
 						// if (src.getBackground()!=selectedColor)
@@ -138,7 +138,7 @@ public class SOMguiHelper implements HelperClass {
 		}
 		return scatterBlock.getChartPanel();
 	}
-
+	
 	private static JComponent getChartPanelWithCommandButton(final ChartPanel chartPanel, final int nodeIndex,
 			int maxIndex, final Map som) {
 		JPanel resultPanel = new JPanel();
@@ -166,7 +166,7 @@ public class SOMguiHelper implements HelperClass {
 		resultPanel.add(selectClusterID, "1,2");
 		return resultPanel;
 	}
-
+	
 	private static String[] getSelections(int nodeIndex, int maxIndex) {
 		String[] result = new String[maxIndex + 1];
 		for (int i = 0; i < maxIndex; i++)
@@ -174,7 +174,7 @@ public class SOMguiHelper implements HelperClass {
 		result[maxIndex] = "-- do not consider";
 		return result;
 	}
-
+	
 	private static JFreeChart createChart(CategoryDataset dataset, String title, PlotOrientation orientation,
 			boolean showLegend, String domainAxis, String rangeAxis, boolean showRangeAxis, boolean showCategoryAxis,
 			float outlineBorderWidth, int timePoints, Graph srcGraph) {
@@ -212,10 +212,10 @@ public class SOMguiHelper implements HelperClass {
 		chart.setBackgroundPaint(null);
 		return chart;
 	}
-
+	
 	public static Graph createCentroidNodesGraph(Map som, String[] columns) {
 		Graph g = new AdjListGraph(new ListenerManager());
-
+		
 		double offX = 130;
 		double offY = 130;
 		double sx = 120;
@@ -235,7 +235,7 @@ public class SOMguiHelper implements HelperClass {
 				AttributeHelper.setSize(n, sx, sy);
 				NodeHelper nh = new NodeHelper(n);
 				ArrayList<DataSetRow> datasetRows = getDatasetRows(som, nodeIndex, columns, timePoints);
-
+				
 				nh.setLabel("Centroid " + (nodeIndex + 1));
 				nh.setLabelAlignment(-1, AlignmentSetting.INSIDETOP);
 				nh.setAttributeValue("som", "x", x);
@@ -248,7 +248,7 @@ public class SOMguiHelper implements HelperClass {
 		}
 		return g;
 	}
-
+	
 	private static CategoryDataset getDataset(Map som, int nodeIndex, String[] columns, ObjectRef timeCount) {
 		BioStatisticalCategoryDataset dataset = new BioStatisticalCategoryDataset(10);
 		// scan columns and create dataset
@@ -263,7 +263,7 @@ public class SOMguiHelper implements HelperClass {
 			// column: series
 			String series = sat.substring(0, sat.indexOf("§"));
 			String time = sat.substring(sat.indexOf("§") + 1);
-
+			
 			ArrayList<Integer> columnsForThatSeriesAndTime = new ArrayList<Integer>();
 			for (int column = 0; column < som.getInputVectorSize(); column++) {
 				String desc = columns[column].substring(0, columns[column].lastIndexOf("§"));
@@ -298,7 +298,7 @@ public class SOMguiHelper implements HelperClass {
 		timeCount.setObject(timeValues.size());
 		return dataset;
 	}
-
+	
 	private static ArrayList<DataSetRow> getDatasetRows(Map som, int nodeIndex, String[] columns, ObjectRef timeCount) {
 		System.out.println(DataSetRow.getHeading());
 		ArrayList<DataSetRow> dataset = new ArrayList<DataSetRow>();
@@ -315,7 +315,7 @@ public class SOMguiHelper implements HelperClass {
 			// column: series
 			String series = sat.substring(0, sat.indexOf("§"));
 			String time = sat.substring(sat.indexOf("§") + 1);
-
+			
 			ArrayList<Integer> columnsForThatSeriesAndTime = new ArrayList<Integer>();
 			for (int column = 0; column < som.getInputVectorSize(); column++) {
 				String desc = columns[column].substring(0, columns[column].lastIndexOf("§"));

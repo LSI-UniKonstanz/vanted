@@ -38,15 +38,15 @@ import org.graffiti.selection.Selection;
  * labels.
  */
 public class FindReplaceDialog extends AbstractAlgorithm {
-
+	
 	private static ArrayList<String> discardedSearchIDs = getDiscardedSearchIDs();
-
+	
 	/**
 	 * Constructs a new instance.
 	 */
 	public FindReplaceDialog() {
 	}
-
+	
 	private static ArrayList<String> getDiscardedSearchIDs() {
 		ArrayList<String> result = new ArrayList<String>();
 		result.add("red");
@@ -55,7 +55,7 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 		result.add("transparency");
 		return result;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -63,12 +63,12 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		return null;
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke('F', SystemInfo.getAccelModifier());
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#
 	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
@@ -76,16 +76,16 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
-
+		
 		ArrayList<AttributePathNameSearchType> possibleAttributes = new ArrayList<AttributePathNameSearchType>();
-
+		
 		enumerateAllAttributes(possibleAttributes, graph);
-
+		
 		final SearchDialog sd = new SearchDialog(MainFrame.getInstance(), possibleAttributes, true);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -95,7 +95,7 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 		});
 		return;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private void enumerateAllAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes, Graph graph) {
 		for (Node n : graph.getNodes()) {
@@ -117,7 +117,7 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 		for (AttributePathNameSearchType a : sortedPossibleAttributes)
 			possibleAttributes.add(a);
 	}
-
+	
 	private void enumerateAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes, Attributable attr) {
 		CollectionAttribute ca = attr.getAttributes();
 		Stack<CollectionAttribute> catts = new Stack<CollectionAttribute>();
@@ -132,7 +132,7 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 					SearchType st = null;
 					if (a instanceof StringAttribute)
 						st = SearchType.searchString;
-
+					
 					if (st != null && a.getId() != null) {
 						if (!DefaultEditPanel.getDiscardedRowIDs().contains(a.getId())
 								&& !discardedSearchIDs.contains(a.getId())) {
@@ -154,7 +154,7 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 			}
 		}
 	}
-
+	
 	private static boolean listContains(ArrayList<AttributePathNameSearchType> possibleAttributes, String desc,
 			boolean inNode, boolean inEdge) {
 		boolean result = false;
@@ -170,7 +170,7 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -179,32 +179,32 @@ public class FindReplaceDialog extends AbstractAlgorithm {
 		graph = null;
 		selection = null;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Find / Replace";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SEARCH, Category.SELECTION));
 	}
-
+	
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *            the selection
+	 *           the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
-
+	
 }

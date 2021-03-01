@@ -16,33 +16,33 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2utility.UtilityClassSelectorToGraph;
 
 public class BPmodulation extends BPinteraction {
-
+	
 	public BPmodulation(Graph Graph, Hashtable<String, Node> Nodes) {
 		super(Graph, Nodes);
 	}
-
+	
 	public void read(Level2Element i) {
 		modulation modul = (modulation) i;
-
+		
 		Set<physicalEntityParticipant> controller = modul.getCONTROLLER();
 		Set<process> controlled = modul.getCONTROLLED();
-
+		
 		for (physicalEntityParticipant c : controller) {
 			for (process p : controlled) {
 				// modulierendes Entity
 				Node controllerNode = findORcreateNode(c);
-
+				
 				// zeigt auf modulierende Entities
 				catalysis catalysis = (catalysis) p;
 				Set<process> setOfControlled = catalysis.getCONTROLLED();
 				for (process controlledByCatalysis : setOfControlled) {
 					Node catalysisNode = findORcreateNode(controlledByCatalysis);
-
+					
 					Edge edge = addEdge(controllerNode, catalysisNode);
 					setAttributeSecure(edge, Messages.getString("UtilitySuperClassToGraph.115"), catalysis.getRDFId()); //$NON-NLS-1$
 					setAttributeSecure(edge, Messages.getString("UtilitySuperClassToGraph.116"), //$NON-NLS-1$
 							Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$
-
+					
 					UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(edge, modul);
 				}
 			}

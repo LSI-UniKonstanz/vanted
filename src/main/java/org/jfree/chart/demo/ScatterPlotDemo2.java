@@ -44,15 +44,15 @@ import org.jfree.ui.RefineryUtilities;
  * A demo scatter plot.
  */
 public class ScatterPlotDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing a scatter plot.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ScatterPlotDemo2(final String title) {
-
+		
 		super(title);
 		final XYDataset dataset = new SampleXYDataset2();
 		final JFreeChart chart = createChart(dataset);
@@ -63,9 +63,9 @@ public class ScatterPlotDemo2 extends ApplicationFrame {
 		chartPanel.setVerticalZoom(true);
 		chartPanel.setHorizontalZoom(true);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -76,12 +76,12 @@ public class ScatterPlotDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
@@ -96,20 +96,20 @@ public class ScatterPlotDemo2 extends ApplicationFrame {
 		domainAxis.setAutoRangeIncludesZero(false);
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ScatterPlotDemo2 demo = new ScatterPlotDemo2("Scatter Plot Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

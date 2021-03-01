@@ -64,10 +64,10 @@ import java.sql.Types;
  *         online forum (BS);
  */
 public class JDBCCategoryDataset extends DefaultCategoryDataset {
-
+	
 	/** The database connection. */
 	private Connection connection;
-
+	
 	// /** The statement. */
 	// private Statement statement;
 	//
@@ -76,41 +76,41 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	//
 	// /** The result set meta data. */
 	// private ResultSetMetaData metaData;
-
+	
 	/**
 	 * A flag the controls whether or not the table is transposed. The default is
 	 * 'true' because this provides the behaviour described in the documentation.
 	 */
 	private boolean transpose = true;
-
+	
 	/**
 	 * Creates a new dataset with a database connection.
 	 * 
 	 * @param url
-	 *            the URL of the database connection.
+	 *           the URL of the database connection.
 	 * @param driverName
-	 *            the database driver class name.
+	 *           the database driver class name.
 	 * @param user
-	 *            the database user.
+	 *           the database user.
 	 * @param passwd
-	 *            the database user's password.
+	 *           the database user's password.
 	 * @throws ClassNotFoundException
-	 *             if the driver cannot be found.
+	 *            if the driver cannot be found.
 	 * @throws SQLException
-	 *             if there is an error obtaining a connection to the database.
+	 *            if there is an error obtaining a connection to the database.
 	 */
 	public JDBCCategoryDataset(final String url, final String driverName, final String user, final String passwd)
 			throws ClassNotFoundException, SQLException {
-
+		
 		Class.forName(driverName);
 		this.connection = DriverManager.getConnection(url, user, passwd);
 	}
-
+	
 	/**
 	 * Create a new dataset with the given database connection.
 	 * 
 	 * @param connection
-	 *            the database connection.
+	 *           the database connection.
 	 */
 	public JDBCCategoryDataset(final Connection connection) {
 		if (connection == null) {
@@ -118,23 +118,23 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 		}
 		this.connection = connection;
 	}
-
+	
 	/**
 	 * Creates a new dataset with the given database connection, and executes the
 	 * supplied query to populate the dataset.
 	 * 
 	 * @param connection
-	 *            the connection.
+	 *           the connection.
 	 * @param query
-	 *            the query.
+	 *           the query.
 	 * @throws SQLException
-	 *             if there is a problem executing the query.
+	 *            if there is a problem executing the query.
 	 */
 	public JDBCCategoryDataset(final Connection connection, final String query) throws SQLException {
 		this(connection);
 		executeQuery(query);
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not the table values are transposed
 	 * when added to the dataset.
@@ -144,18 +144,18 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	public boolean getTranspose() {
 		return this.transpose;
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether or not the table values are transposed when
 	 * added to the dataset.
 	 * 
 	 * @param transpose
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setTranspose(final boolean transpose) {
 		this.transpose = transpose;
 	}
-
+	
 	/**
 	 * Populates the dataset by executing the supplied query against the existing
 	 * database connection. If no connection exists then no action is taken.
@@ -164,14 +164,14 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	 * upper limit on how many rows can be retrieved successfully.
 	 * 
 	 * @param query
-	 *            the query.
+	 *           the query.
 	 * @throws SQLException
-	 *             if there is a problem executing the query.
+	 *            if there is a problem executing the query.
 	 */
 	public void executeQuery(final String query) throws SQLException {
 		executeQuery(this.connection, query);
 	}
-
+	
 	/**
 	 * Populates the dataset by executing the supplied query against the existing
 	 * database connection. If no connection exists then no action is taken.
@@ -180,95 +180,95 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	 * upper limit on how many rows can be retrieved successfully.
 	 * 
 	 * @param con
-	 *            the connection.
+	 *           the connection.
 	 * @param query
-	 *            the query.
+	 *           the query.
 	 * @throws SQLException
-	 *             if there is a problem executing the query.
+	 *            if there is a problem executing the query.
 	 */
 	public void executeQuery(final Connection con, final String query) throws SQLException {
-
+		
 		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
 			statement = con.createStatement();
 			resultSet = statement.executeQuery(query);
 			final ResultSetMetaData metaData = resultSet.getMetaData();
-
+			
 			final int columnCount = metaData.getColumnCount();
-
+			
 			if (columnCount < 2) {
 				throw new SQLException("JDBCCategoryDataset.executeQuery(...) : insufficient columns "
 						+ "returned from the database.");
 			}
-
+			
 			// Remove any previous old data
 			int i = getRowCount();
 			for (; i > 0; --i) {
 				removeRow(i);
 			}
-
+			
 			while (resultSet.next()) {
 				// first column contains the row key...
 				final Comparable rowKey = resultSet.getString(1);
 				for (int column = 2; column <= columnCount; column++) {
-
+					
 					final Comparable columnKey = metaData.getColumnName(column);
 					final int columnType = metaData.getColumnType(column);
-
+					
 					switch (columnType) {
-					case Types.TINYINT:
-					case Types.SMALLINT:
-					case Types.INTEGER:
-					case Types.BIGINT:
-					case Types.FLOAT:
-					case Types.DOUBLE:
-					case Types.DECIMAL:
-					case Types.NUMERIC:
-					case Types.REAL: {
-						final Number value = (Number) resultSet.getObject(column);
-						if (this.transpose) {
-							setValue(value, columnKey, rowKey);
-						} else {
-							setValue(value, rowKey, columnKey);
-						}
-						break;
-					}
-					case Types.DATE:
-					case Types.TIME:
-					case Types.TIMESTAMP: {
-						final Date date = (Date) resultSet.getObject(column);
-						final Number value = Long.valueOf(date.getTime());
-						if (this.transpose) {
-							setValue(value, columnKey, rowKey);
-						} else {
-							setValue(value, rowKey, columnKey);
-						}
-						break;
-					}
-					case Types.CHAR:
-					case Types.VARCHAR:
-					case Types.LONGVARCHAR: {
-						final String string = (String) resultSet.getObject(column);
-						try {
-							final Number value = Double.valueOf(string);
+						case Types.TINYINT:
+						case Types.SMALLINT:
+						case Types.INTEGER:
+						case Types.BIGINT:
+						case Types.FLOAT:
+						case Types.DOUBLE:
+						case Types.DECIMAL:
+						case Types.NUMERIC:
+						case Types.REAL: {
+							final Number value = (Number) resultSet.getObject(column);
 							if (this.transpose) {
 								setValue(value, columnKey, rowKey);
 							} else {
 								setValue(value, rowKey, columnKey);
 							}
-						} catch (NumberFormatException e) {
-							// suppress (value defaults to null)
+							break;
 						}
-						break;
-					}
-					default:
-						// not a value, can't use it (defaults to null)
-						break;
+						case Types.DATE:
+						case Types.TIME:
+						case Types.TIMESTAMP: {
+							final Date date = (Date) resultSet.getObject(column);
+							final Number value = Long.valueOf(date.getTime());
+							if (this.transpose) {
+								setValue(value, columnKey, rowKey);
+							} else {
+								setValue(value, rowKey, columnKey);
+							}
+							break;
+						}
+						case Types.CHAR:
+						case Types.VARCHAR:
+						case Types.LONGVARCHAR: {
+							final String string = (String) resultSet.getObject(column);
+							try {
+								final Number value = Double.valueOf(string);
+								if (this.transpose) {
+									setValue(value, columnKey, rowKey);
+								} else {
+									setValue(value, rowKey, columnKey);
+								}
+							} catch (NumberFormatException e) {
+								// suppress (value defaults to null)
+							}
+							break;
+						}
+						default:
+							// not a value, can't use it (defaults to null)
+							break;
 					}
 				}
 			}
-
+			
 			fireDatasetChanged();
 		} finally {
 			if (resultSet != null) {
@@ -287,5 +287,5 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 			}
 		}
 	}
-
+	
 }

@@ -41,18 +41,18 @@ import org.graffiti.plugin.parameter.StringParameter;
  */
 public class GraffitiValueEditComponents extends EditorPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	// /**
 	// * The number of edit components this plugin provides.
 	// */
 	// private static final int NUMBER_OF_VECS = 20;
-
+	
 	/**
 	 * Constructs a new <code>GraffitiValueEditComponent</code>.
 	 */
 	public GraffitiValueEditComponents() {
 		super();
-
+		
 		// register the ui compoents for the displayable types
 		valueEditComponents.put(ColorAttribute.class, ColorChooserEditComponent.class);
 		// valueEditComponents.put(LineModeAttribute.class,
@@ -66,11 +66,11 @@ public class GraffitiValueEditComponents extends EditorPluginAdapter {
 		valueEditComponents.put(BooleanAttribute.class, BooleanEditComponent.class);
 		valueEditComponents.put(NodeShapeAttribute.class, NodeShapeEditComponent.class);
 		valueEditComponents.put(EdgeShapeAttribute.class, EdgeShapeEditComponent.class);
-
+		
 		valueEditComponents.put(ArrowShapeAttribute.class, EdgeArrowShapeEditComponent.class);
-
+		
 		valueEditComponents.put(StringAttribute.class, StringEditComponent.class);
-
+		
 		// register the ui compoents for the parameter types
 		valueEditComponents.put(IntegerParameter.class, IntegerEditComponent.class);
 		valueEditComponents.put(DoubleParameter.class, DoubleEditComponent.class);

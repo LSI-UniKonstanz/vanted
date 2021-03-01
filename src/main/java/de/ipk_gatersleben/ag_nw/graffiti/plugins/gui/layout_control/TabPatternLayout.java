@@ -73,75 +73,75 @@ public class TabPatternLayout extends InspectorTab {
 	private javax.swing.JButton jButtonRemovePattern;
 	private javax.swing.JButton jButtonSave;
 	private javax.swing.JPanel jPanelButtons;
-
+	
 	private javax.swing.JButton jButtonPatternSearch;
 	private javax.swing.JPanel jPanelPattern;
-
+	
 	static javax.swing.JTabbedPane jTabbedPane1;
-
+	
 	private JButton jButtonSearch;
 	private JCheckBox jDirectedSearch;
 	private JCheckBox jAllowOverlap;
 	private JCheckBox jClearPrevSelection;
 	private JButton jButtonCopyLayout;;
-
+	
 	private MainFrame mainframe;
-
+	
 	/** DOCUMENT ME! */
 	private IOManager ioManager;
-
+	
 	/** DOCUMENT ME! */
 	private StringBundle sBundle;
-
+	
 	private void initComponents() {
-
+		
 		jPanelButtons = new javax.swing.JPanel();
-
+		
 		jButtonAddPattern = new JMButton();
 		jButtonEdit = new JMButton();
 		jButtonLoad = new JMButton();
 		jButtonRemovePattern = new JMButton();
 		jButtonSave = new JMButton();
 		jButtonPatternSearch = new JMButton();
-
+		
 		jButtonAddPattern.setOpaque(false);
 		jButtonEdit.setOpaque(false);
 		jButtonLoad.setOpaque(false);
 		jButtonRemovePattern.setOpaque(false);
 		jButtonSave.setOpaque(false);
 		jButtonPatternSearch.setOpaque(false);
-
+		
 		jButtonSearch = new JMButton("<html><b>Perform Search");
-
+		
 		jDirectedSearch = new JCheckBox("directed");
 		jDirectedSearch.setOpaque(false);
 		jDirectedSearch.setSelected(true);
-
+		
 		jAllowOverlap = new JCheckBox("allow overlap");
 		jAllowOverlap.setOpaque(false);
 		jAllowOverlap.setSelected(false);
-
+		
 		jClearPrevSelection = new JCheckBox("clear previous selection");
 		jClearPrevSelection.setOpaque(false);
 		jClearPrevSelection.setSelected(false);
-
+		
 		jButtonCopyLayout = new JMButton("Apply Layout");
-
+		
 		jPanelPattern = new javax.swing.JPanel();
 		jPanelPattern.setBackground(null);
 		jPanelPattern.setOpaque(false);
-
+		
 		jTabbedPane1 = new javax.swing.JTabbedPane();
-
+		
 		jTabbedPane1.addChangeListener(new ChangeListener() {
-
+			
 			public void stateChanged(ChangeEvent arg0) {
 				System.out.println("Tab changed state");
-
+				
 				List<?> sessions = GravistoService.getInstance().getPatternSessionList();
-
+				
 				GravistoService.getInstance().framesDeselect();
-
+				
 				MainFrame mf = GravistoService.getInstance().getMainFrame();
 				if (jTabbedPane1.getSelectedIndex() >= 0) {
 					mf.fireSessionChanged((Session) sessions.get(jTabbedPane1.getSelectedIndex()));
@@ -150,18 +150,18 @@ public class TabPatternLayout extends InspectorTab {
 				}
 			}
 		});
-
+		
 		jPanelButtons.setLayout(new java.awt.GridLayout(6, 2));
-
+		
 		jButtonAddPattern.setText("Add Network");
 		jButtonAddPattern.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButtonAddPatternActionPerformed(evt);
 			}
 		});
-
+		
 		jPanelButtons.add(jButtonAddPattern);
-
+		
 		// DefaultPluginEntry te =
 		// GraffitiSingleton.getInstance().getPluginInstanceFromPluginDescription("Default
 		// Editing Tools");
@@ -171,14 +171,14 @@ public class TabPatternLayout extends InspectorTab {
 		if (!ipkEditToolsLoaded) {
 			jButtonEdit.setText("Edit Network");
 			jButtonEdit.addActionListener(new ActionListener() {
-
+				
 				public void actionPerformed(ActionEvent e) {
 					if (GravistoService.getInstance().isEditorFrameSelected()) {
 						MainFrame.showMessage("You may now edit the Network", MessageType.INFO);
 						List<?> sessions = GravistoService.getInstance().getPatternSessionList();
-
+						
 						GravistoService.getInstance().framesDeselect();
-
+						
 						MainFrame mf = GravistoService.getInstance().getMainFrame();
 						if (jTabbedPane1.getSelectedIndex() >= 0) {
 							mf.fireSessionChanged((Session) sessions.get(jTabbedPane1.getSelectedIndex()));
@@ -188,20 +188,20 @@ public class TabPatternLayout extends InspectorTab {
 					}
 				}
 			});
-
+			
 			jPanelButtons.add(jButtonEdit);
 		}
 		jPanelButtons.add(jButtonRemovePattern);
-
+		
 		jButtonSave.setText("Save Network");
 		jButtonSave.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButtonSaveActionPerformed(evt);
 			}
 		});
-
+		
 		jPanelButtons.add(jButtonSave);
-
+		
 		jButtonLoad.setText("Load Network");
 		jButtonLoad.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -209,14 +209,14 @@ public class TabPatternLayout extends InspectorTab {
 			}
 		});
 		jPanelButtons.add(jButtonLoad);
-
+		
 		jButtonRemovePattern.setText("Remove Network");
 		jButtonRemovePattern.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButtonRemovePatternActionPerformed(evt);
 			}
 		});
-
+		
 		jButtonCopyLayout = new JMButton("Apply Layout (right to left)");
 		jButtonCopyLayout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -231,14 +231,14 @@ public class TabPatternLayout extends InspectorTab {
 			}
 		});
 		jPanelButtons.add(jButtonCopyLayout);
-
+		
 		/*
 		 * apply layout should only be possible with non-overlapping subnetworks,
 		 * because else there would be conflicts and the algorithm wouldn't work
 		 * properly. So we disable this button, if overlap is enabled
 		 */
 		jAllowOverlap.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (jAllowOverlap.isSelected())
@@ -247,7 +247,7 @@ public class TabPatternLayout extends InspectorTab {
 					jButtonCopyLayout.setEnabled(true);
 			}
 		});
-
+		
 		jButtonSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Graph graph = null;
@@ -257,11 +257,11 @@ public class TabPatternLayout extends InspectorTab {
 					MainFrame.showMessageDialog("No active graph editor window found!", "Error");
 					return;
 				}
-
+				
 				if (jClearPrevSelection.isSelected()) {
 					MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection().clear();
 				}
-
+				
 				if (graph != null && graph.getGraphElements().size() > 0) {
 					for (GraphElement ge : graph.getGraphElements()) {
 						AttributeHelper.deleteAttribute(ge, PatternAttributeUtils.PATTERN_PATH,
@@ -281,10 +281,10 @@ public class TabPatternLayout extends InspectorTab {
 		jPanelButtons.add(jButtonSearch);
 		// jPanelButtons.add(TableLayout.getSplit(jButtonSearch, jDirectedSearch,
 		// TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL));
-
+		
 		jButtonPatternSearch.setText("Select Search-Result Nodes");
 		jButtonPatternSearch.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent e) {
 				SearchOption[] so = new SearchOption[] { new SearchOption(LogicConnection.OR, NodeOrEdge.Nodes,
 						".AGNW.PATTERN.PATTERN_1", "PATTERN_NAME", "", 0, 0.0, false, SearchType.searchString,
@@ -293,31 +293,31 @@ public class TabPatternLayout extends InspectorTab {
 			}
 		});
 		jPanelButtons.add(jButtonPatternSearch);
-
+		
 		jPanelButtons.add(jDirectedSearch);
 		jPanelButtons.add(jAllowOverlap);
 		jPanelButtons.add(jClearPrevSelection);
-
+		
 		jPanelPattern.setLayout(new java.awt.GridLayout(1, 1));
 		jPanelPattern.add(jTabbedPane1);
-
+		
 		double border = 5;
 		double size[][] = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border } }; // Rows
-
+		
 		this.setBounds(10, 10, 100, 100);
-
+		
 		this.setLayout(new TableLayout(size));
-
+		
 		this.add(jPanelButtons, "1,1");
 		this.add(jPanelPattern, "1,2");
-
+		
 		this.setBackground(null);
 		this.setOpaque(false);
-
+		
 		validate();
 	}
-
+	
 	void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {
 		// GravistoService gs = GravistoService.getInstance();
 		// FileOpenAction oa =
@@ -328,43 +328,43 @@ public class TabPatternLayout extends InspectorTab {
 		// if (sp == null)
 		// return;
 		JFileChooser fc = ioManager.createOpenFileChooser();
-
+		
 		OpenFileDialogService.setActiveDirectoryFor(fc);
-
+		
 		int returnVal = fc.showDialog(MainFrame.getInstance(), sBundle.getString("menu.file.open"));
-
+		
 		OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
-
+		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			String fileName = file.getName();
-
+			
 			if (fileName.indexOf(".") == -1) {
 				fileName = file.getName() + ((GenericFileFilter) fc.getFileFilter()).getExtension();
 			}
-
+			
 			String ext = fileName.substring(fileName.lastIndexOf("."));
-
+			
 			try {
-
+				
 				try {
 					MyInputStreamCreator ic = new MyInputStreamCreator(file);
 					InputSerializer is = ioManager.createInputSerializer(ic.getNewInputStream(), ext);
-
+					
 					Graph g = null;
 					g = is.read(ic.getNewInputStream());
-
+					
 					EditorSession es = new EditorSession(g);
 					es.setFileName(file.getAbsolutePath());
 					String[] fileTypeDescriptions = is.getFileTypeDescriptions();
 					if (fileTypeDescriptions != null && fileTypeDescriptions.length > 0)
 						es.setFileTypeDescription(fileTypeDescriptions[0]);
 					JScrollPane sp = mainframe.showViewChooserDialog(es, true, evt);
-
+					
 					GravistoService.getInstance().addPatternSession(es);
-
+					
 					jTabbedPane1.add("Network " + Integer.valueOf(jTabbedPane1.getComponentCount() + 1).toString(), sp);
-
+					
 				} catch (ParserException pe) {
 					showError(pe.getLocalizedMessage());
 				} catch (IOException ioe) {
@@ -378,11 +378,11 @@ public class TabPatternLayout extends InspectorTab {
 				showError(ie.getLocalizedMessage());
 			}
 		}
-
+		
 		// GraffitiView gf =
 		// (GraffitiView) ((JViewport) sp.getComponent(0)).getComponent(0);
 		//
-
+		
 		// // Search session which belongs to the view gf
 		// Iterator<?> searchSessions =
 		// gs.getMainFrame()
@@ -402,11 +402,11 @@ public class TabPatternLayout extends InspectorTab {
 		 * ((JViewport) sp.getComponent(0)).getComponent(0).setBackground( new
 		 * Color(230, 240, 230));
 		 */
-
+		
 	}
-
+	
 	void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {
-
+		
 		List<Session> sessionList = GravistoService.getInstance().getPatternSessionList();
 		Session s = MainFrame.getInstance().getActiveSession();
 		if (s == null) {
@@ -425,12 +425,12 @@ public class TabPatternLayout extends InspectorTab {
 				gs.getMainFrame().getIoManager(), gs.getMainFrame().getSessionManager(), StringBundle.getInstance());
 		sa.actionPerformed(evt);
 	}
-
+	
 	void jButtonRemovePatternActionPerformed(java.awt.event.ActionEvent evt) {
 		// removePattern
-
+		
 		List<?> sessions = GravistoService.getInstance().getPatternSessionList();
-
+		
 		if (sessions == null || sessions.isEmpty())
 			return;
 		if (jTabbedPane1.getComponentCount() > 0) {
@@ -444,7 +444,7 @@ public class TabPatternLayout extends InspectorTab {
 			}
 		}
 	}
-
+	
 	/**
 	 * Removes all pattern graph - sessions from the global pattern graph session
 	 * list. Warning: All user loaded visible pattern sessions are removed as well.
@@ -452,29 +452,29 @@ public class TabPatternLayout extends InspectorTab {
 	public static void removeHiddenPatterns() {
 		// removePattern
 		List<?> sessions = GravistoService.getInstance().getPatternSessionList();
-
+		
 		while (sessions.size() > 0) {
 			sessions.remove(0);
 		}
-
+		
 	}
-
+	
 	void jButtonAddPatternActionPerformed(java.awt.event.ActionEvent evt) {
 		// Add your handling code here:
 		// add Pattern
-
+		
 		final MainFrame mf = GravistoService.getInstance().getMainFrame();
-
+		
 		EditorSession newSession = new EditorSession();
 		GravistoService.getInstance().addPatternSession(newSession);
-
+		
 		JScrollPane sp = mf.showViewChooserDialog(newSession, true, null);
-
+		
 		jTabbedPane1.add("Network " + Integer.valueOf(jTabbedPane1.getComponentCount() + 1).toString(), sp);
 		jTabbedPane1.setSelectedIndex(jTabbedPane1.getComponentCount() - 1);
 		GravistoService.getInstance().framesDeselect();
 	}
-
+	
 	// public static void addActionListenerForPatternSearch(ActionListener l) {
 	// if (jButtonPatternSearch!=null)
 	// jButtonPatternSearch.addActionListener(l);
@@ -482,21 +482,21 @@ public class TabPatternLayout extends InspectorTab {
 	// System.out.println("Info: Running non-GUI mode, pattern search command not
 	// available.");
 	// }
-
+	
 	public static void showPattern(Graph g) {
 		final MainFrame mf = GravistoService.getInstance().getMainFrame();
-
+		
 		// ToDo: Chris: check plugin name
 		GravistoService.getInstance().runPlugin(new CenterLayouterAlgorithm().getName(), g, null);
-
+		
 		EditorSession newSession = new EditorSession(g);
 		GravistoService.getInstance().addPatternSession(newSession);
-
+		
 		JScrollPane sp = mf.showViewChooserDialog(newSession, true, null);
-
+		
 		jTabbedPane1.add("Network " + Integer.valueOf(jTabbedPane1.getComponentCount() + 1).toString(), sp);
 	}
-
+	
 	/**
 	 * * Constructs a <code>PatternTab</code> and sets the title.
 	 */
@@ -506,34 +506,34 @@ public class TabPatternLayout extends InspectorTab {
 		this.mainframe = MainFrame.getInstance();
 		this.ioManager = mainframe.getIoManager();
 		this.sBundle = StringBundle.getInstance();
-
+		
 		initComponents();
 	}
-
+	
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void transactionFinished(TransactionEvent e) {
 	}
-
+	
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 	/**
 	 * For getting the current Pattern Graph.
 	 * 
@@ -547,13 +547,13 @@ public class TabPatternLayout extends InspectorTab {
 			return GravistoService.getInstance().getPatternGraphs().get(jTabbedPane1.getSelectedIndex());
 		}
 	}
-
+	
 	public void sessionChanged(Session s) {
 	}
 	
 	public void sessionDataChanged(Session s) {
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		List<Session> sessionList = GravistoService.getInstance().getPatternSessionList();
@@ -562,17 +562,17 @@ public class TabPatternLayout extends InspectorTab {
 		else
 			return v != null && (v instanceof GraphView);
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Analysis.Network";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_TRAILING;
 	}
-
+	
 	protected void showError(String msg) {
 		JOptionPane.showMessageDialog(mainframe, msg, StringBundle.getInstance().getString("message.dialog.title"),
 				JOptionPane.ERROR_MESSAGE);

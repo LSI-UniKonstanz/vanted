@@ -26,7 +26,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawC
  */
 @SuppressWarnings("deprecation")
 public class MyXML_XYDataset extends AbstractXYDataset {
-
+	
 	/**
 	 * 
 	 */
@@ -35,16 +35,16 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 	private boolean calcMerge = false;
 	private int calcOffset = Integer.MAX_VALUE;
 	private HashMap<String, MyDouble> ranksX, ranksY;
-
+	
 	/**
 	 * Contains ArrayLists, which contain the data for a particular series.
 	 */
 	@SuppressWarnings("unchecked")
 	private final Map<String, ArrayList<MyComparableDataPoint>> seriesData1 = new SequencedHashMap();
-
+	
 	@SuppressWarnings("unchecked")
 	private final Map<String, ArrayList<MyComparableDataPoint>> seriesData2 = new SequencedHashMap();
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -57,7 +57,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 		else
 			return seriesData2.size();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -76,7 +76,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 		}
 		return s1;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -94,12 +94,12 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 		else
 			return c1; // return smallest value
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Dataset: " + getSeriesCount() + " series";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -115,7 +115,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			return null;
 		}
 	}
-
+	
 	public MyComparableDataPoint getXsrcValue(int series, int item) {
 		String seriesName = getSeriesName(series);
 		ArrayList<MyComparableDataPoint> serData = seriesData1.get(seriesName);
@@ -126,7 +126,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			return null;
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -137,13 +137,13 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 				.get(item);
 		return Double.valueOf(mcdp.mean);
 	}
-
+	
 	public MyComparableDataPoint getYsrcValue(int series, int item) {
 		MyComparableDataPoint mcdp = (MyComparableDataPoint) ((ArrayList<?>) seriesData2.get(getSeriesName(series)))
 				.get(item);
 		return mcdp;
 	}
-
+	
 	/**
 	 * Adds the corresponding data points from the specified mapping data. Pairwise
 	 * replicate and series names need to correspond
@@ -199,7 +199,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			serDataList2.add(mcdp2);
 		}
 	}
-
+	
 	public void addXmlDataSeriesXY(SubstanceInterface xmlSeries1, SubstanceInterface xmlSeries2, String newSeriesName,
 			boolean useSampleAverageValues) {
 		ranksCalculated = false;
@@ -247,11 +247,11 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			serDataList2.add(mcdp2);
 		}
 	}
-
+	
 	private static String getSeriesDesc(MyComparableDataPoint mcdp, String seriesDescription) {
 		return mcdp.serie + " - " + seriesDescription;
 	}
-
+	
 	public double getX(int series, int item, boolean rankOrder, boolean mergeDataset, int dataset2offset) {
 		if (!rankOrder)
 			return getX(series, item);
@@ -265,7 +265,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			return ranksX.get(series + "$" + item).doubleValue();
 		}
 	}
-
+	
 	public double getY(int series, int item, boolean rankOrder, boolean mergeDataset, int dataset2offset) {
 		if (!rankOrder)
 			return getY(series, item);
@@ -279,7 +279,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			return ranksY.get(series + "$" + item).doubleValue();
 		}
 	}
-
+	
 	private void calcRanks(boolean mergeDataset, int dataset2offset) {
 		calcMerge = mergeDataset;
 		calcOffset = dataset2offset;
@@ -314,13 +314,13 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			process(workListX, workListY, ranksX, ranksY);
 		ranksCalculated = true;
 	}
-
+	
 	static final double epsilon = 0.000000000001;
-
+	
 	@SuppressWarnings("unchecked")
 	private void process(ArrayList<MyDouble> workListXzero, ArrayList<MyDouble> workListYzero,
 			HashMap<String, MyDouble> rX, HashMap<String, MyDouble> rY) {
-
+		
 		ArrayList<MyDouble> workListX = new ArrayList<MyDouble>();
 		for (MyDouble d : workListXzero)
 			workListX.add(new MyDouble(d.doubleValue(), d.getSeries(), d.getIdx()));
@@ -329,7 +329,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			workListY.add(new MyDouble(d.doubleValue(), d.getSeries(), d.getIdx()));
 		ArrayList<MyDouble> workListCopyX = new ArrayList<MyDouble>(workListX);
 		ArrayList<MyDouble> workListCopyY = new ArrayList<MyDouble>(workListY);
-
+		
 		Collections.sort(workListX, new Comparator() {
 			public int compare(Object o1, Object o2) {
 				MyDouble a = (MyDouble) o1;
@@ -373,7 +373,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 			ErrorMsg.addErrorMessage(iob);
 		}
 	}
-
+	
 	private double lookForSameValues(int i, ArrayList<MyDouble> workList) {
 		MyDouble a = workList.get(i - 1);
 		int minimumIndexOfSameNumber = i;

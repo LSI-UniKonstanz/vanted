@@ -30,9 +30,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
-
+	
 	private GoProcessing gp = null;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -41,25 +41,25 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Create Complete Gene Ontology Network";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy.Extra";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(
 				Arrays.asList(Category.GRAPH, Category.HIDDEN, Category.HIERARCHY, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active network window");
 		super.check();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -86,9 +86,9 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 		BackgroundTaskHelper.issueSimpleTask("Create GO Tree", "Create GO Tree...", new Runnable() {
 			public void run() {
 				int startNodeCnt = workGraph.getNumberOfNodes();
-
+				
 				PositionGridGenerator pgg = new PositionGridGenerator(250, 30, 250);
-
+				
 				HashMap<String, Node> goTerm2goNode = new HashMap<String, Node>();
 				Collection<String> goTerms = gp.getAllGoTerms();
 				int i = 0;
@@ -108,7 +108,7 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 				sp.setCurrentStatusValue(100);
 			}
 		}, new Runnable() {
-
+			
 			public void run() {
 				workGraph.getListenerManager().transactionFinished(workGraph);
 			}

@@ -42,19 +42,19 @@ import org.jfree.util.PublicCloneable;
  * A record that contains the space required at each edge of a plot.
  */
 public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The top space. */
 	private double top;
-
+	
 	/** The bottom space. */
 	private double bottom;
-
+	
 	/** The left space. */
 	private double left;
-
+	
 	/** The right space. */
 	private double right;
-
+	
 	/**
 	 * Creates a new axis space record.
 	 */
@@ -64,7 +64,7 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 		this.left = 0.0;
 		this.right = 0.0;
 	}
-
+	
 	/**
 	 * Returns the top space.
 	 * 
@@ -73,17 +73,17 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	public double getTop() {
 		return this.top;
 	}
-
+	
 	/**
 	 * Sets the top space.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 */
 	public void setTop(double space) {
 		this.top = space;
 	}
-
+	
 	/**
 	 * Returns the bottom space.
 	 * 
@@ -92,17 +92,17 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	public double getBottom() {
 		return this.bottom;
 	}
-
+	
 	/**
 	 * Sets the bottom space.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 */
 	public void setBottom(double space) {
 		this.bottom = space;
 	}
-
+	
 	/**
 	 * Returns the left space.
 	 * 
@@ -111,17 +111,17 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	public double getLeft() {
 		return this.left;
 	}
-
+	
 	/**
 	 * Sets the left space.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 */
 	public void setLeft(double space) {
 		this.left = space;
 	}
-
+	
 	/**
 	 * Returns the right space.
 	 * 
@@ -130,24 +130,24 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	public double getRight() {
 		return this.right;
 	}
-
+	
 	/**
 	 * Sets the right space.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 */
 	public void setRight(double space) {
 		this.right = space;
 	}
-
+	
 	/**
 	 * Adds some space to the edge corresponding to the specified axis location.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 * @param edge
-	 *            the location.
+	 *           the location.
 	 */
 	public void add(double space, RectangleEdge edge) {
 		if (edge == RectangleEdge.TOP) {
@@ -162,12 +162,12 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 			throw new IllegalStateException("AxisSpace.add(...): unrecognised RectangleEdge.");
 		}
 	}
-
+	
 	/**
 	 * Ensures that this object reserves at least as much space as another.
 	 * 
 	 * @param space
-	 *            the other space.
+	 *           the other space.
 	 */
 	public void ensureAtLeast(AxisSpace space) {
 		this.top = Math.max(this.top, space.top);
@@ -175,15 +175,15 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 		this.left = Math.max(this.left, space.left);
 		this.right = Math.max(this.right, space.right);
 	}
-
+	
 	/**
 	 * Ensures there is a minimum amount of space at the edge corresponding to the
 	 * specified axis location.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 * @param edge
-	 *            the location.
+	 *           the location.
 	 */
 	public void ensureAtLeast(double space, RectangleEdge edge) {
 		if (edge == RectangleEdge.TOP) {
@@ -206,14 +206,14 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 			throw new IllegalStateException("AxisSpace.ensureAtLeast(...): unrecognised AxisLocation.");
 		}
 	}
-
+	
 	/**
 	 * Shrinks an area by the space attributes.
 	 * 
 	 * @param area
-	 *            the area to shrink.
+	 *           the area to shrink.
 	 * @param result
-	 *            an optional carrier for the result.
+	 *           an optional carrier for the result.
 	 * @return The result.
 	 */
 	public Rectangle2D shrink(Rectangle2D area, Rectangle2D result) {
@@ -224,15 +224,15 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 				area.getHeight() - this.top - this.bottom);
 		return result;
 	}
-
+	
 	/**
 	 * Shrinks an area's left and right edges by the amount of this objects left and
 	 * right settings.
 	 * 
 	 * @param area
-	 *            the area to shrink.
+	 *           the area to shrink.
 	 * @param result
-	 *            an optional carrier for the result.
+	 *           an optional carrier for the result.
 	 * @return the result.
 	 * @deprecated This method is no longer required.
 	 */
@@ -244,15 +244,15 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 				area.getHeight());
 		return result;
 	}
-
+	
 	/**
 	 * Shrinks an area's top and bottom edges by the amount of this objects top and
 	 * bottom settings.
 	 * 
 	 * @param area
-	 *            the area to shrink.
+	 *           the area to shrink.
 	 * @param result
-	 *            an optional carrier for the result.
+	 *           an optional carrier for the result.
 	 * @return the result.
 	 * @deprecated This method is no longer required.
 	 */
@@ -263,14 +263,14 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 		result.setRect(area.getX(), area.getY() + this.top, area.getWidth(), area.getHeight() - this.top - this.bottom);
 		return result;
 	}
-
+	
 	/**
 	 * Expands an area by the amount of space represented by this object.
 	 * 
 	 * @param area
-	 *            the area to expand.
+	 *           the area to expand.
 	 * @param result
-	 *            an optional carrier for the result.
+	 *           an optional carrier for the result.
 	 * @return The result.
 	 */
 	public Rectangle2D expand(Rectangle2D area, Rectangle2D result) {
@@ -281,14 +281,14 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 				area.getHeight() + this.top + this.bottom);
 		return result;
 	}
-
+	
 	/**
 	 * Calculates the reserved area.
 	 * 
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 * @param edge
-	 *            the edge.
+	 *           the edge.
 	 * @return The reserved area.
 	 */
 	public Rectangle2D reserved(Rectangle2D area, RectangleEdge edge) {
@@ -304,36 +304,36 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns a clone of the object.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             This class won't throw this exception, but subclasses (if any)
-	 *             might.
+	 *            This class won't throw this exception, but subclasses (if any)
+	 *            might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 	/**
 	 * Tests this object for equality with another object.
 	 * 
 	 * @param object
-	 *            the object to compare against.
+	 *           the object to compare against.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object object) {
-
+		
 		if (object == null) {
 			return false;
 		}
-
+		
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (object instanceof AxisSpace) {
 			AxisSpace s = (AxisSpace) object;
 			boolean b0 = (this.top == s.top);
@@ -342,11 +342,11 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 			boolean b3 = (this.right == s.right);
 			return b0 && b1 && b2 && b3;
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Returns a string representing the object (for debugging purposes).
 	 * 
@@ -356,5 +356,5 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 		return super.toString() + "[left=" + this.left + ",right=" + this.right + ",top=" + this.top + ",bottom="
 				+ this.bottom + "]";
 	}
-
+	
 }

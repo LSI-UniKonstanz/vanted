@@ -20,7 +20,7 @@ public class UnsatisfiedConstraintException extends Exception {
 	 * 
 	 */
 	private static final long serialVersionUID = -3955734766797671546L;
-
+	
 	// ~ Constructors ===========================================================
 	/**
 	 * Constructs a new <code>UnsatisfiedConstraintException</code> with
@@ -29,13 +29,13 @@ public class UnsatisfiedConstraintException extends Exception {
 	public UnsatisfiedConstraintException() {
 		super();
 	}
-
+	
 	/**
 	 * Constructs a new <code>UnsatisfiedConstraintException</code> with the
 	 * specifiecd detail message.
 	 * 
 	 * @param msg
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public UnsatisfiedConstraintException(String msg) {
 		super(msg);

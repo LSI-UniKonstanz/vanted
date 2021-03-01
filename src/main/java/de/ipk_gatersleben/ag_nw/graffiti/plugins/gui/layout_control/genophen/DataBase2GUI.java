@@ -13,7 +13,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.genophen;
  *         Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class DataBase2GUI {
-
+	
 	// public static void processDBEnodeData(final String experimentName, final List
 	// nodes,
 	// final ActionEvent arg0) {
@@ -84,7 +84,7 @@ public class DataBase2GUI {
 	// MainFrame.showMessage("DBE Data - Processing complete",
 	// MessageType.INFO);
 	// }
-
+	
 	// private static void processPlantDataForAllMeasurements(Node currentNode,
 	// String compoundID, int minPlantID, int maxPlantID) {
 	// try {
@@ -188,5 +188,5 @@ public class DataBase2GUI {
 	// System.err.println(e.getLocalizedMessage());
 	// }
 	// }
-
+	
 }

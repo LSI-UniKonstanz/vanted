@@ -12,10 +12,10 @@ package org;
  * @author klukas
  */
 public interface ProvidesStringInitMethod {
-
+	
 	/**
 	 * @param objstring
 	 */
 	void fromString(String objstring);
-
+	
 }

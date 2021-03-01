@@ -38,36 +38,36 @@ public class Entry {
 	private Collection<IdRef> components;
 	private Graphics graphics;
 	private String sourcePathwayKeggId = null;
-
+	
 	private boolean partOfGroup = false;
-
+	
 	/**
 	 * This value is only set and available in case this entry has been created from
 	 * a Graph node and not from a KGML file.
 	 */
 	private Node sourceGraphNode;
-
+	
 	public Entry(Id id, KeggId name, EntryType type, Url link, IdRef map, Collection<KeggId> reactions,
 			Collection<IdRef> components, Graphics graphics) {
 		assert id != null;
 		assert name != null;
 		assert type != null;
-
+		
 		if (type == null)
 			return;
-
+		
 		// System.out.println("ID "+id+" NAME "+name.getId());
-
+		
 		this.id = id;
 		this.name = name;
 		this.type = type;
-
+		
 		this.link = link;
 		this.map = map;
 		this.reactions = reactions;
 		this.components = components;
 		this.graphics = graphics;
-
+		
 		/*
 		 * assert name.isPathwayMap() || name.isKoOrthologGroup() || name.isEcEnzyme()
 		 * || name.isCpdChemicalCompound() || name.isGlGlycan() ||
@@ -76,68 +76,68 @@ public class Entry {
 		 * reaction.isReaction(); } }
 		 */
 	}
-
+	
 	public void setSourcePathwayKeggId(String id) {
 		this.sourcePathwayKeggId = id;
 	}
-
+	
 	public String getSourcePathwayKeggId() {
 		return sourcePathwayKeggId;
 	}
-
+	
 	public boolean hasGlycanName() {
 		return name.isGlGlycan();
 	}
-
+	
 	public boolean hasCompoundName() {
 		return name.isCpdChemicalCompound();
 	}
-
+	
 	public EntryType getType() {
 		return type;
 	}
-
+	
 	public KeggId getName() {
 		return name;
 	}
-
+	
 	public Id getId() {
 		return id;
 	}
-
+	
 	public IdRef getMapRef() {
 		return map;
 	}
-
+	
 	public void setMapRef(IdRef map) {
 		this.map = map;
 	}
-
+	
 	public Graphics getGraphics() {
 		return graphics;
 	}
-
+	
 	public void setGraphics(Graphics graphics) {
 		this.graphics = graphics;
 	}
-
+	
 	public static Entry getEntryFromKgmlEntryElement(Collection<IdRef> mapLinksWhichNeedToBeUpdated,
 			Collection<IdRef> componentsWhichNeedToBeUpdated, Element entryElement, String sourcePathwayId) {
 		String idValue = KGMLhelper.getAttributeValue(entryElement, "id", null);
 		Id id = Id.getId(idValue);
-
+		
 		String nameValue = KGMLhelper.getAttributeValue(entryElement, "name", null);
 		KeggId name = new KeggId(nameValue);
-
+		
 		String typeValue = KGMLhelper.getAttributeValue(entryElement, "type", null);
 		EntryType type = EntryType.getEntryType(typeValue);
 		if (type == null) {
 			System.err.println("Invalid type value: " + typeValue + " (Entry " + idValue + ")");
 		}
-
+		
 		String urlValue = KGMLhelper.getAttributeValue(entryElement, "link", null);
 		Url link = Url.getUrl(urlValue);
-
+		
 		// reaction element reference to be set later while reading the reaction
 		// elements
 		String reactionValues = KGMLhelper.getAttributeValue(entryElement, "reaction", null);
@@ -155,13 +155,13 @@ public class Entry {
 			map = IdRef.getId(mapValue);
 			mapLinksWhichNeedToBeUpdated.add(map);
 		}
-
+		
 		Collection<IdRef> components = Component
 				.getComponentElementsFromKgmlElement(entryElement.getChildren("component"));
 		componentsWhichNeedToBeUpdated.addAll(components);
 		Element graphicsElement = entryElement.getChild("graphics");
 		Graphics graphics = Graphics.getGraphicsFromKgmlElement(graphicsElement);
-
+		
 		// entryElement.addContent(new Comment(getSourcePathwayKeggId()));
 		List<?> cl = entryElement.getContent();
 		for (Object o : cl) {
@@ -170,37 +170,37 @@ public class Entry {
 				sourcePathwayId = c.getText();
 			}
 		}
-
+		
 		Entry e = new Entry(id, name, type, link, map, reactions, components, graphics);
 		e.setSourcePathwayKeggId(sourcePathwayId);
 		name.setReference(e);
 		return e;
 	}
-
+	
 	public Collection<KeggId> getReactions() {
 		return reactions;
 	}
-
+	
 	public void addReaction(KeggId reaction) {
 		if (reactions == null)
 			reactions = new ArrayList<KeggId>();
 		reactions.add(reaction);
 	}
-
+	
 	public Collection<IdRef> getComponents() {
 		return components;
 	}
-
+	
 	public void addComponent(IdRef component) {
 		if (components == null)
 			components = new ArrayList<IdRef>();
 		components.add(component);
 	}
-
+	
 	public Url getLink() {
 		return link;
 	}
-
+	
 	public Element getKgmlEntryElement(boolean addSourcePathwayInformation) {
 		if (type == EntryType.hiddenCompound)
 			return null;
@@ -238,7 +238,7 @@ public class Entry {
 			entryElement.addContent(new Comment(getSourcePathwayKeggId()));
 		return entryElement;
 	}
-
+	
 	public Node addGraphNode(Graph graph) {
 		double x = 10; // will be set later
 		double y = 10; // will be set later
@@ -268,13 +268,13 @@ public class Entry {
 				i++;
 			}
 		}
-
+		
 		// if (name.getId().startsWith("path:")) {
 		// URLAttribute ua = new URLAttribute("kegg_map_link", name.getId());
 		// n.addAttribute(ua, "kegg");
 		// }
 		boolean hasComponents = (components != null && components.size() > 0);
-
+		
 		if (graphics != null) {
 			graphics.processNodeDesign(n, hasComponents);
 		} else {
@@ -284,25 +284,25 @@ public class Entry {
 		// String mapID = map.getRef().getName().getId();
 		// KeggGmlHelper.setKeggMapLink(n, mapID);
 		// }
-
+		
 		KeggGmlHelper.setIsPartOfGroup(n, partOfGroup);
-
+		
 		return n;
 		// private KeggId reaction;
 	}
-
+	
 	@Override
 	public String toString() {
 		return getGraphicsTitle("(no title)") + ": " + getType() + " " + getName().getId(); // +"
-																							// ("+getId().getValue()+")/";
+		// ("+getId().getValue()+")/";
 	}
-
+	
 	private String getGraphicsTitle(String ifNotAvailable) {
 		if (graphics == null || graphics.getName() == null || graphics.getName().length() <= 0)
 			return ifNotAvailable;
 		return graphics.getName().replaceAll("<br>", "");
 	}
-
+	
 	public static Collection<Entry> getEntryElementsFromGraphNodes(KgmlIdGenerator idGenerator, List<Node> nodes,
 			Collection<Gml2PathwayWarningInformation> warnings, Collection<Gml2PathwayErrorInformation> errors,
 			HashMap<Entry, Node> entry2graphNode) {
@@ -368,7 +368,7 @@ public class Entry {
 		}
 		return result;
 	}
-
+	
 	private static Collection<Entry> getEntryElementsFromGraphNode(KgmlIdGenerator idGenerator, Node graphNode,
 			Collection<Gml2PathwayWarningInformation> warnings, Collection<Gml2PathwayErrorInformation> errors) {
 		// normally one entry is created for each graph node
@@ -377,7 +377,7 @@ public class Entry {
 		// form of attributes
 		// thus map link nodes represent a number of entry elements
 		ArrayList<Entry> result = new ArrayList<Entry>();
-
+		
 		Id id = new Id(idGenerator.getNextID() + "");
 		String keggIdValue = KeggGmlHelper.getKeggId(graphNode);
 		if (keggIdValue == null) {
@@ -400,10 +400,10 @@ public class Entry {
 		if (linkValue != null && linkValue.length() > 0) {
 			link = Url.getUrl(linkValue);
 		}
-
+		
 		IdRef map = null; // the map value is only processed for entries, which need to be created
 		// out of the attribute values of a kegg graph node
-
+		
 		Collection<KeggId> reactions = new ArrayList<KeggId>();
 		ArrayList<IndexAndString> reactionNames = KeggGmlHelper.getKeggReactions(graphNode);
 		for (int i = 0; i < reactionNames.size(); i++) {
@@ -415,7 +415,7 @@ public class Entry {
 		}
 		Collection<IdRef> components = new ArrayList<IdRef>();
 		Graphics graphics = Graphics.getGraphicsFromGraphNode(graphNode, warnings, errors);
-
+		
 		Entry mainEntry = new Entry(id, name, type, link, map, reactions, components, graphics);
 		String clusterId = NodeTools.getClusterID(graphNode, "");
 		if (clusterId.length() <= 0)
@@ -423,11 +423,11 @@ public class Entry {
 		mainEntry.setSourcePathwayKeggId(clusterId);
 		mainEntry.setSourceGraphNode(graphNode);
 		result.add(mainEntry);
-
+		
 		if (KeggGmlHelper.getIsPartOfGroup(graphNode)) {
 			mainEntry.setIsPartOfGroup(true);
 		}
-
+		
 		if (KeggGmlHelper.getKeggType(graphNode) != null && KeggGmlHelper.getKeggType(graphNode).equals("map")) {
 			// create entries with no graphics information
 			IdRef mapRef = new IdRef(mainEntry, mainEntry.getId().getValue());
@@ -435,7 +435,7 @@ public class Entry {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Use this method to set a reference to the source graph node, which was used
 	 * as the basis for the creation of this entry.
@@ -445,7 +445,7 @@ public class Entry {
 	private void setSourceGraphNode(Node graphNode) {
 		this.sourceGraphNode = graphNode;
 	}
-
+	
 	/**
 	 * In case this entry has been created from a Graph node, the souce graph node
 	 * may be retrieved with this function. More than one Entry may be created from
@@ -456,7 +456,7 @@ public class Entry {
 	public Node getSourceGraphNode() {
 		return sourceGraphNode;
 	}
-
+	
 	private static ArrayList<Entry> createEntryElementsFromMapNodeAttributes(KgmlIdGenerator idGenerator,
 			Node graphNode, Collection<Gml2PathwayErrorInformation> errors, IdRef mapRef, String clusterId) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
@@ -491,15 +491,15 @@ public class Entry {
 		}
 		return result;
 	}
-
+	
 	public void setIsPartOfGroup(boolean partOfGroup) {
 		this.partOfGroup = partOfGroup;
 	}
-
+	
 	public boolean isPartOfGroup() {
 		return partOfGroup;
 	}
-
+	
 	public String getVisibleName() {
 		String res = getGraphicsTitle(null);
 		if (res == null)
@@ -507,15 +507,15 @@ public class Entry {
 		res = StringManipulationTools.stringReplace(res, "<br>", "");
 		return res;
 	}
-
+	
 	public void setLink(String url) {
 		this.link = new Url(url);
 	}
-
+	
 	public void setType(EntryType et) {
 		this.type = et;
 	}
-
+	
 	public void removeReaction(Reaction r) {
 		if (reactions != null) {
 			ArrayList<KeggId> del = new ArrayList<KeggId>();

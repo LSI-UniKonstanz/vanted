@@ -64,49 +64,49 @@ import org.jfree.util.ObjectUtils;
  * line etc).
  */
 public class ChartEntity implements Cloneable, Serializable {
-
+	
 	/** The area occupied by the entity (in Java 2D space). */
 	private transient Shape area;
-
+	
 	/** The tool tip text for the entity. */
 	private String toolTipText;
-
+	
 	/** The URL text for the entity. */
 	private String urlText;
-
+	
 	/**
 	 * Creates a new chart entity.
 	 * 
 	 * @param area
-	 *            the area (<code>null</code> not permitted).
+	 *           the area (<code>null</code> not permitted).
 	 */
 	public ChartEntity(Shape area) {
 		// defer argument checks...
 		this(area, null);
 	}
-
+	
 	/**
 	 * Creates a new chart entity.
 	 * 
 	 * @param area
-	 *            the area (<code>null</code> not permitted).
+	 *           the area (<code>null</code> not permitted).
 	 * @param toolTipText
-	 *            the tool tip text (<code>null</code> permitted).
+	 *           the tool tip text (<code>null</code> permitted).
 	 */
 	public ChartEntity(Shape area, String toolTipText) {
 		// defer argument checks...
 		this(area, toolTipText, null);
 	}
-
+	
 	/**
 	 * Creates a new entity.
 	 * 
 	 * @param area
-	 *            the area (<code>null</code> not permitted).
+	 *           the area (<code>null</code> not permitted).
 	 * @param toolTipText
-	 *            the tool tip text (<code>null</code> permitted).
+	 *           the tool tip text (<code>null</code> permitted).
 	 * @param urlText
-	 *            the URL text for HTML image maps (<code>null</code> permitted).
+	 *           the URL text for HTML image maps (<code>null</code> permitted).
 	 */
 	public ChartEntity(Shape area, String toolTipText, String urlText) {
 		if (area == null) {
@@ -116,7 +116,7 @@ public class ChartEntity implements Cloneable, Serializable {
 		this.toolTipText = toolTipText;
 		this.urlText = urlText;
 	}
-
+	
 	/**
 	 * Returns the area occupied by the entity (in Java 2D space).
 	 * 
@@ -125,7 +125,7 @@ public class ChartEntity implements Cloneable, Serializable {
 	public Shape getArea() {
 		return this.area;
 	}
-
+	
 	/**
 	 * Sets the area for the entity.
 	 * <P>
@@ -133,7 +133,7 @@ public class ChartEntity implements Cloneable, Serializable {
 	 * this area doesn't change the entity (which has already been drawn).
 	 * 
 	 * @param area
-	 *            the area (<code>null</code> not permitted).
+	 *           the area (<code>null</code> not permitted).
 	 */
 	public void setArea(Shape area) {
 		if (area == null) {
@@ -141,7 +141,7 @@ public class ChartEntity implements Cloneable, Serializable {
 		}
 		this.area = area;
 	}
-
+	
 	/**
 	 * Returns the tool tip text for the entity.
 	 * 
@@ -150,17 +150,17 @@ public class ChartEntity implements Cloneable, Serializable {
 	public String getToolTipText() {
 		return this.toolTipText;
 	}
-
+	
 	/**
 	 * Sets the tool tip text.
 	 * 
 	 * @param text
-	 *            the text (<code>null</code> permitted).
+	 *           the text (<code>null</code> permitted).
 	 */
 	public void setToolTipText(String text) {
 		this.toolTipText = text;
 	}
-
+	
 	/**
 	 * Returns the URL text for the entity.
 	 * 
@@ -169,17 +169,17 @@ public class ChartEntity implements Cloneable, Serializable {
 	public String getURLText() {
 		return this.urlText;
 	}
-
+	
 	/**
 	 * Sets the URL text.
 	 * 
 	 * @param text
-	 *            the text (<code>null</code> permitted).
+	 *           the text (<code>null</code> permitted).
 	 */
 	public void setURLText(String text) {
 		this.urlText = text;
 	}
-
+	
 	/**
 	 * Returns a string describing the entity area. This string is intended for use
 	 * in an AREA tag when generating an image map.
@@ -193,7 +193,7 @@ public class ChartEntity implements Cloneable, Serializable {
 			return "POLY";
 		}
 	}
-
+	
 	/**
 	 * Returns the shape coordinates as a string.
 	 * 
@@ -206,13 +206,13 @@ public class ChartEntity implements Cloneable, Serializable {
 			return getPolyCoords(this.area);
 		}
 	}
-
+	
 	/**
 	 * Returns a string containing the coordinates (x1, y1, x2, y2) for a given
 	 * rectangle. This string is intended for use in an image map.
 	 * 
 	 * @param rectangle
-	 *            the rectangle (<code>null</code> not permitted).
+	 *           the rectangle (<code>null</code> not permitted).
 	 * @return Upper left and lower right corner of a rectangle.
 	 */
 	private String getRectCoords(Rectangle2D rectangle) {
@@ -231,16 +231,16 @@ public class ChartEntity implements Cloneable, Serializable {
 			y2++;
 		}
 		// end fix by rfuller
-
+		
 		return x1 + "," + y1 + "," + x2 + "," + y2;
 	}
-
+	
 	/**
 	 * Returns a string containing the coordinates for a given shape. This string is
 	 * intended for use in an image map.
 	 * 
 	 * @param shape
-	 *            the shape (<code>null</code> not permitted).
+	 *           the shape (<code>null</code> not permitted).
 	 * @return The coordinates for a given shape as string.
 	 */
 	private String getPolyCoords(Shape shape) {
@@ -263,19 +263,19 @@ public class ChartEntity implements Cloneable, Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns an HTML image map tag tag for this entity.
 	 * 
 	 * @param toolTipTagFragmentGenerator
-	 *            the generator for tooltip fragment.
+	 *           the generator for tooltip fragment.
 	 * @param urlTagFragmentGenerator
-	 *            the generator for the URL fragment.
+	 *           the generator for the URL fragment.
 	 * @return The HTML tag.
 	 */
 	public String getImageMapAreaTag(ToolTipTagFragmentGenerator toolTipTagFragmentGenerator,
 			URLTagFragmentGenerator urlTagFragmentGenerator) {
-
+		
 		StringBuffer tag = new StringBuffer();
 		boolean hasURL = (this.urlText == null ? false : !this.urlText.equals(""));
 		boolean hasToolTip = (this.toolTipText == null ? false : !this.toolTipText.equals(""));
@@ -291,12 +291,12 @@ public class ChartEntity implements Cloneable, Serializable {
 		}
 		return tag.toString();
 	}
-
+	
 	/**
 	 * Tests the entity for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test against (<code>null</code> permitted).
+	 *           the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -318,44 +318,44 @@ public class ChartEntity implements Cloneable, Serializable {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone of the entity.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if there is a problem cloning the entity.
+	 *            if there is a problem cloning the entity.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 		SerialUtilities.writeShape(this.area, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.area = SerialUtilities.readShape(stream);
 	}
-
+	
 }

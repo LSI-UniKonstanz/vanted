@@ -16,18 +16,18 @@ import org.sbml.jsbml.UnitDefinition;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_UnitDefinition_Writer extends SBML_SBase_Writer {
-
+	
 	/**
 	 * Adds an unit definition and its variables to the model
 	 * 
 	 * @param model
-	 *            the unit definition will be added to this model
+	 *           the unit definition will be added to this model
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param intern
-	 *            representation of headline
+	 *           representation of headline
 	 */
 	public void addUnitDefinition(Model model, Graph g, String niceID) {
 		UnitDefinition unitDefinition = model.createUnitDefinition();
@@ -49,7 +49,7 @@ public class SBML_UnitDefinition_Writer extends SBML_SBase_Writer {
 				unitDefinition.setName(name);
 			}
 		}
-
+		
 		String subUnit = "";
 		int unitCount = 1;
 		Unit unit = null;

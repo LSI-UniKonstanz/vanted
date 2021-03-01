@@ -38,21 +38,21 @@ public class CutAction extends SelectionAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 4714132737262703703L;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new cut action.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public CutAction(MainFrame mainFrame) {
 		super("edit.cut", mainFrame);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the help context for the action.
 	 * 
@@ -62,16 +62,16 @@ public class CutAction extends SelectionAction {
 	public HelpContext getHelpContext() {
 		return null; // TODO
 	}
-
+	
 	/**
 	 * Executes this action.
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		Graph sourceGraph = getGraph();
-
+		
 		Selection selection = getSelection();
 		if (selection.isEmpty())
 			return;
@@ -83,14 +83,14 @@ public class CutAction extends SelectionAction {
 			OutputSerializer os = ioManager.createOutputSerializer("." + ext);
 			new StringBuffer();
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
+			
 			if (selection.getElements().size() > 0 /* selection.getNodes().size() > 0 */) {
-
+				
 				// remove all other nodes from copied graph
 				ArrayList<Long> validNodeIds = new ArrayList<Long>();
 				for (org.graffiti.graph.Node n : selection.getNodes())
 					validNodeIds.add(Long.valueOf(n.getID()));
-
+				
 				ArrayList<org.graffiti.graph.Node> toBeDeleted = new ArrayList<org.graffiti.graph.Node>();
 				for (org.graffiti.graph.Node n : copyGraph.getNodes()) {
 					if (!validNodeIds.contains(Long.valueOf(n.getID()))) {
@@ -100,12 +100,12 @@ public class CutAction extends SelectionAction {
 				for (org.graffiti.graph.Node n : toBeDeleted) {
 					copyGraph.deleteNode(n);
 				}
-
+				
 				// remove all other edges from copied graph
 				ArrayList<Long> validEdgeIds = new ArrayList<Long>();
 				for (Edge curEdge : copyGraph.getEdges())
 					validEdgeIds.add(Long.valueOf(curEdge.getID()));
-
+				
 				ArrayList<Edge> toBeDeletedEdges = new ArrayList<Edge>();
 				for (Edge curEdge : copyGraph.getEdges()) {
 					if (!validEdgeIds.contains(Long.valueOf(curEdge.getID()))) {
@@ -120,7 +120,7 @@ public class CutAction extends SelectionAction {
 			/*
 			 * else selection.addAll(getGraph().getGraphElements());
 			 */
-
+			
 			os.write(baos, copyGraph);
 			ClipboardService.writeToClipboardAsText(baos.toString());
 			/*
@@ -135,7 +135,7 @@ public class CutAction extends SelectionAction {
 			 * ).repaint(null);
 			 */
 			GraffitiAction.performAction("edit.delete");
-
+			
 		} catch (IOException ioe) {
 			ErrorMsg.addErrorMessage(ioe.getLocalizedMessage());
 		} catch (IllegalAccessException iae) {
@@ -143,21 +143,21 @@ public class CutAction extends SelectionAction {
 		} catch (InstantiationException ie) {
 			ErrorMsg.addErrorMessage(ie.getLocalizedMessage());
 		}
-
+		
 	}
-
+	
 	/**
 	 * Sets the internal <code>enable</code> flag, which depends on the given list
 	 * of selected items.
 	 * 
 	 * @param items
-	 *            the items, which determine the internal state of the
-	 *            <code>enable</code> flag.
+	 *           the items, which determine the internal state of the
+	 *           <code>enable</code> flag.
 	 */
 	@Override
 	protected void enable(List<?> items) {
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -26,46 +26,46 @@ import org.graffiti.attributes.HashMapAttribute;
  */
 public class DimensionAttribute extends HashMapAttribute implements GraphicAttributeConstants {
 	// ~ Instance fields ========================================================
-
+	
 	/** Contains height of minimal surrounding rectangle for a node */
 	private DoubleAttribute height;
-
+	
 	/** Contains width of minimal surrounding rectangle for a node */
 	private DoubleAttribute width;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for Dimension.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 */
 	public DimensionAttribute(String id) {
 		this(id, 0, 0);
 	}
-
+	
 	/**
 	 * Constructor for Dimension.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param d
-	 *            the dimension-value of the attribute.
+	 *           the dimension-value of the attribute.
 	 */
 	public DimensionAttribute(String id, java.awt.Dimension d) {
 		this(id, d.getWidth(), d.getHeight());
 	}
-
+	
 	/**
 	 * Constructor for Dimension.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param h
-	 *            the height-value of the attribute.
+	 *           the height-value of the attribute.
 	 * @param w
-	 *            the width-value of the attribute.
+	 *           the width-value of the attribute.
 	 */
 	public DimensionAttribute(String id, double h, double w) {
 		super(id);
@@ -74,23 +74,23 @@ public class DimensionAttribute extends HashMapAttribute implements GraphicAttri
 		add(this.height, false);
 		add(this.width, false);
 	}
-
+	
 	/**
 	 * Constructor for Dimension.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param h
-	 *            the height-value of the attribute.
+	 *           the height-value of the attribute.
 	 * @param w
-	 *            the width-value of the attribute.
+	 *           the width-value of the attribute.
 	 */
 	public DimensionAttribute(String id, DoubleAttribute h, DoubleAttribute w) {
 		this(id, h.getDouble(), w.getDouble());
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the collection of attributes contained within this
 	 * <tt>CollectionAttribute</tt>. The dimension values are set, additional values
@@ -98,9 +98,9 @@ public class DimensionAttribute extends HashMapAttribute implements GraphicAttri
 	 * the same id, an exception will be thrown).
 	 * 
 	 * @param attrs
-	 *            the map that contains all attributes.
+	 *           the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
@@ -108,7 +108,7 @@ public class DimensionAttribute extends HashMapAttribute implements GraphicAttri
 		// {
 		for (Iterator<String> it = attrs.keySet().iterator(); it.hasNext();) {
 			String attrId = (String) it.next();
-
+			
 			if (attrId.equals(WIDTH)) {
 				setWidth(((DoubleAttribute) attrs.get(WIDTH)).getDouble());
 			} else if (attrId.equals(HEIGHT)) {
@@ -123,31 +123,31 @@ public class DimensionAttribute extends HashMapAttribute implements GraphicAttri
 		// throw new IllegalArgumentException("Invalid value type.");
 		// }
 	}
-
+	
 	/**
 	 * Sets the <code>Dimension</code> of the attribute.
 	 * 
 	 * @param d
-	 *            the dimension-value of the attribute.
+	 *           the dimension-value of the attribute.
 	 */
 	public void setDimension(Dimension d) {
 		this.height.setDouble(d.getHeight());
 		this.width.setDouble(d.getWidth());
 	}
-
+	
 	/**
 	 * Sets the <code>Dimension</code> of the attribute.
 	 * 
 	 * @param w
-	 *            the dimension-value of the attribute.
+	 *           the dimension-value of the attribute.
 	 * @param h
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void setDimension(double w, double h) {
 		this.height.setDouble(h);
 		this.width.setDouble(w);
 	}
-
+	
 	/**
 	 * Returns the <code>Dimension</code> of the attribute.
 	 * 
@@ -156,17 +156,17 @@ public class DimensionAttribute extends HashMapAttribute implements GraphicAttri
 	public Dimension getDimension() {
 		return new Dimension((int) this.width.getDouble(), (int) this.height.getDouble());
 	}
-
+	
 	/**
 	 * Sets the 'height'-value.
 	 * 
 	 * @param h
-	 *            the 'height'-value to be set.
+	 *           the 'height'-value to be set.
 	 */
 	public void setHeight(double h) {
 		this.height.setDouble(h);
 	}
-
+	
 	/**
 	 * Returns the 'height'-value of the encapsulated dimension.
 	 * 
@@ -175,17 +175,17 @@ public class DimensionAttribute extends HashMapAttribute implements GraphicAttri
 	public double getHeight() {
 		return this.height.getDouble();
 	}
-
+	
 	/**
 	 * Sets the 'width'-value.
 	 * 
 	 * @param w
-	 *            the 'width'-value to be set.
+	 *           the 'width'-value to be set.
 	 */
 	public void setWidth(double w) {
 		this.width.setDouble(w);
 	}
-
+	
 	/**
 	 * Returns the 'width'-value of the encapsulated dimension.
 	 * 
@@ -194,7 +194,7 @@ public class DimensionAttribute extends HashMapAttribute implements GraphicAttri
 	public double getWidth() {
 		return this.width.getDouble();
 	}
-
+	
 	/**
 	 * Returns a deep copy of this object.
 	 * 
@@ -205,7 +205,7 @@ public class DimensionAttribute extends HashMapAttribute implements GraphicAttri
 		DimensionAttribute copied = new DimensionAttribute(getId(), getHeight(), getWidth());
 		return copied;
 	}
-
+	
 	// /**
 	// * Sets the value of this <code>Attribute</code> to the given value without
 	// * informing the <code>ListenerManager</code>.

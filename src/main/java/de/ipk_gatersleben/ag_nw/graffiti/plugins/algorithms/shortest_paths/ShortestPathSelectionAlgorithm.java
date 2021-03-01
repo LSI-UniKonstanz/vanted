@@ -33,17 +33,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @vanted.revision 2.8.0 Remove duplicate parameter, add discription
  */
 public class ShortestPathSelectionAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean settingDirected = true;
 	private boolean settingIncludeEdges = true;
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 		if (selection == null || selection.getNumberOfNodes() < 2)
 			throw new PreconditionException("At least one start and one end node have to be selected.");
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -51,14 +51,14 @@ public class ShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 				new BooleanParameter(settingIncludeEdges, "Select Edges",
 						"If enabled, edges along the shortest path(s) are selected") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		settingDirected = ((BooleanParameter) params[i++]).getBoolean();
 		settingIncludeEdges = ((BooleanParameter) params[i++]).getBoolean();
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void execute() {
 		ArrayList<GraphElement> currentSelElements = new ArrayList<GraphElement>();
@@ -90,40 +90,40 @@ public class ShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 		if (selection != null)
 			GraphHelper.selectElements((Collection) selection.getElements());
 	}
-
+	
 	public String getName() {
 		return "Find Shortest Paths (F3)";
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0);
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Analysis";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION, Category.ANALYSIS));
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return null; // we don't want to appear in the menu
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return false;
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>The algorithm finds shortest path(s) between selected nodes.<br><br>"
 				+ "Is edge direction above set accordingly? During execution, edge weights are not considered. "
 				+ "Using the F3 shortcut requires the algorithm view to be open.";
-	}	
+	}
 }

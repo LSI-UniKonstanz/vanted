@@ -52,32 +52,32 @@ import org.jfree.ui.RefineryUtilities;
  * percentage calculation.
  */
 public class ItemLabelDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * A custom label generator.
 	 */
 	static class LabelGenerator implements CategoryLabelGenerator {
-
+		
 		/**
 		 * The index of the category on which to base the percentage (null = use series
 		 * total).
 		 */
 		private Integer category;
-
+		
 		/** A percent formatter. */
 		private NumberFormat formatter = NumberFormat.getPercentInstance();
-
+		
 		/**
 		 * Creates a new label generator that displays the item value and a percentage
 		 * relative to the value in the same series for the specified category.
 		 * 
 		 * @param category
-		 *            the category index (zero-based).
+		 *           the category index (zero-based).
 		 */
 		public LabelGenerator(final int category) {
 			this(Integer.valueOf(category));
 		}
-
+		
 		/**
 		 * Creates a new label generator that displays the item value and a percentage
 		 * relative to the value in the same series for the specified category. If the
@@ -85,26 +85,26 @@ public class ItemLabelDemo2 extends ApplicationFrame {
 		 * used.
 		 * 
 		 * @param category
-		 *            the category index (<code>null</code> permitted).
+		 *           the category index (<code>null</code> permitted).
 		 */
 		public LabelGenerator(final Integer category) {
 			this.category = category;
 		}
-
+		
 		/**
 		 * Generates a label for the specified item. The label is typically a formatted
 		 * version of the data value, but any text can be used.
 		 * 
 		 * @param dataset
-		 *            the dataset (<code>null</code> not permitted).
+		 *           the dataset (<code>null</code> not permitted).
 		 * @param series
-		 *            the series index (zero-based).
+		 *           the series index (zero-based).
 		 * @param category
-		 *            the category index (zero-based).
+		 *           the category index (zero-based).
 		 * @return the label (possibly <code>null</code>).
 		 */
 		public String generateLabel(final CategoryDataset dataset, final int series, final int category) {
-
+			
 			String result = null;
 			double base = 0.0;
 			if (this.category != null) {
@@ -120,16 +120,16 @@ public class ItemLabelDemo2 extends ApplicationFrame {
 				result = value.toString() + " (" + this.formatter.format(v / base) + ")";
 			}
 			return result;
-
+			
 		}
-
+		
 		/**
 		 * Calculates a series total.
 		 * 
 		 * @param dataset
-		 *            the dataset.
+		 *           the dataset.
 		 * @param series
-		 *            the series index.
+		 *           the series index.
 		 * @return The total.
 		 */
 		private double calculateSeriesTotal(final CategoryDataset dataset, final int series) {
@@ -142,33 +142,33 @@ public class ItemLabelDemo2 extends ApplicationFrame {
 			}
 			return result;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ItemLabelDemo2(final String title) {
-
+		
 		super(title);
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Returns a sample dataset.
 	 * 
 	 * @return the dataset.
 	 */
 	private CategoryDataset createDataset() {
-
+		
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(100.0, "S1", "C1");
 		dataset.addValue(44.3, "S1", "C2");
@@ -177,18 +177,18 @@ public class ItemLabelDemo2 extends ApplicationFrame {
 		dataset.addValue(75.1, "S2", "C2");
 		dataset.addValue(15.1, "S2", "C3");
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return the chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart("Item Label Demo 2", // chart title
 				"Category", // domain axis label
@@ -199,43 +199,43 @@ public class ItemLabelDemo2 extends ApplicationFrame {
 				true, // tooltips?
 				false // URLs?
 		);
-
+		
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
-
+		
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setUpperMargin(0.25);
-
+		
 		final CategoryItemRenderer renderer = plot.getRenderer();
 		renderer.setItemLabelsVisible(true);
-
+		
 		// use one or the other of the following lines to see the different modes for
 		// the label generator...
 		renderer.setLabelGenerator(new LabelGenerator(null));
 		// renderer.setLabelGenerator(new LabelGenerator(0));
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ItemLabelDemo2 demo = new ItemLabelDemo2("Item Label Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

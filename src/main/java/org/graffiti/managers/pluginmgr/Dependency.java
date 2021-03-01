@@ -16,19 +16,19 @@ package org.graffiti.managers.pluginmgr;
  */
 public interface Dependency {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the main.
 	 * 
 	 * @return String
 	 */
 	public String getMain();
-
+	
 	// /**
 	// * Returns <code>true</code>, if the dependency is satisfied.
 	// */
 	// public abstract boolean isSatisfied();
-
+	
 	/**
 	 * Returns the name.
 	 * 

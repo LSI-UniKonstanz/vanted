@@ -43,14 +43,14 @@ public class UModulation extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement edge, Graph g, Model model) {
 		Edge elem = (Edge) edge;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		Modulation interaction = model.addNew(Modulation.class, RDFID);
-
+		
 		UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 		UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 		UtilitySuperClassFromGraph.getControlType(elem, interaction);
@@ -61,32 +61,32 @@ public class UModulation extends UtilitySuperClassToGraph {
 		UtilitySuperClassFromGraph.getName(elem, interaction);
 		UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
-
+		
 		// iteriere �ber alle Kanten und finde alle mit der gleichen RDFId
 		// f�ge bei gleicher RDFId die Controller und die Processes in eine
 		// Menge
 		// suche die entsprechenden CatalysenIds
 		for (Edge e : elem.getGraph().getEdges()) {
-
+			
 			if (AttributeHelper.hasAttribute(e, Messages.getString("UtilitySuperClassToGraph.82"))) {
 				String currentEdgeRDFId = getAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.82"));
-
+				
 				if (currentEdgeRDFId.matches(RDFID)) {
 					Node controlNode = e.getSource();
-
+					
 					String controlNodeRDFId = getAttributeSecure(controlNode,
 							Messages.getString("UtilitySuperClassToGraph.82"));
 					String processNodeRDFId = getAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.115"));
-
+					
 					Controller control = (Controller) model.getByID(controlNodeRDFId);
 					Process process = (Process) model.getByID(processNodeRDFId);
-
+					
 					interaction.addController(control);
 					interaction.addControlled(process);
-
+					
 				}
 			}
-
+			
 		}
 	}
 }

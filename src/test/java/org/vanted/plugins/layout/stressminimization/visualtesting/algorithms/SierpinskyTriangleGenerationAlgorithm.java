@@ -24,73 +24,73 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * Generates sierpinsky triangles with a certain recusion depth
  */
 public class SierpinskyTriangleGenerationAlgorithm extends AbstractAlgorithm {
-
-    private int recursionDepth = 5;
-
-    @Override
-    public String getCategory() {
-        return "File.New.Generate";
-    }
-
-    @Override
-    public Set<Category> getSetCategory() {
-        return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
-    }
-
-    @Override
-    public Parameter[] getParameters() {
-        return new Parameter[]{new IntegerParameter(recursionDepth, "Recursion depth", "Recursion depth")};
-    }
-
-    @Override
-    public void setParameters(Parameter[] params) {
-        recursionDepth = ((IntegerParameter) params[0]).getInteger();
-    }
-
-    @Override
-    public void check() throws PreconditionException {
-        if (recursionDepth < 1) {
-            throw new PreconditionException("Recusion depth needs to be at least 1");
-        }
-    }
-
-    @Override
-    public String getName() {
-        return "Generate sierpinsky triangles";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Generate a sierpinsky triangle with a certain recusion depth";
-    }
-
-    @Override
-    public boolean isAlwaysExecutable() {
-        return true;
-    }
-
-    @Override
-    public void execute() {
-
-        BackgroundTaskHelper.issueSimpleTask("Generating sierpinsky triangle", "Generating sierpinsky triangle", new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    GraphGeneration gen = new GraphGeneration();
-                    Graph graph = gen.generateSierpinskyTriangle(recursionDepth);
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            MainFrame.getInstance().showGraph(graph, new ActionEvent(this, 1, getName()));
-                            GraphHelper.issueCompleteRedrawForActiveView();
-                        }
-                    });
-                } catch (Exception e) {
-                    ErrorMsg.addErrorMessage(e);
-                }
-            }
-        }, null);
-    }
-
+	
+	private int recursionDepth = 5;
+	
+	@Override
+	public String getCategory() {
+		return "File.New.Generate";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
+	}
+	
+	@Override
+	public Parameter[] getParameters() {
+		return new Parameter[] { new IntegerParameter(recursionDepth, "Recursion depth", "Recursion depth") };
+	}
+	
+	@Override
+	public void setParameters(Parameter[] params) {
+		recursionDepth = ((IntegerParameter) params[0]).getInteger();
+	}
+	
+	@Override
+	public void check() throws PreconditionException {
+		if (recursionDepth < 1) {
+			throw new PreconditionException("Recusion depth needs to be at least 1");
+		}
+	}
+	
+	@Override
+	public String getName() {
+		return "Generate sierpinsky triangles";
+	}
+	
+	@Override
+	public String getDescription() {
+		return "Generate a sierpinsky triangle with a certain recusion depth";
+	}
+	
+	@Override
+	public boolean isAlwaysExecutable() {
+		return true;
+	}
+	
+	@Override
+	public void execute() {
+		
+		BackgroundTaskHelper.issueSimpleTask("Generating sierpinsky triangle", "Generating sierpinsky triangle", new Runnable() {
+			@Override
+			public void run() {
+				try {
+					GraphGeneration gen = new GraphGeneration();
+					Graph graph = gen.generateSierpinskyTriangle(recursionDepth);
+					
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							MainFrame.getInstance().showGraph(graph, new ActionEvent(this, 1, getName()));
+							GraphHelper.issueCompleteRedrawForActiveView();
+						}
+					});
+				} catch (Exception e) {
+					ErrorMsg.addErrorMessage(e);
+				}
+			}
+		}, null);
+	}
+	
 }

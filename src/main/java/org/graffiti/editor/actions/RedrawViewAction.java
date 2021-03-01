@@ -26,24 +26,24 @@ import org.graffiti.session.EditorSession;
  */
 public class RedrawViewAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6939141137836275872L;
-
+	
 	/**
 	 * Creates a new RedrawViewAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public RedrawViewAction(MainFrame mainFrame) {
 		super("edit.redraw", mainFrame, "editmenu_redraw");
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -55,7 +55,7 @@ public class RedrawViewAction extends GraffitiAction {
 		List<?> views = dv.getViews();
 		return !views.isEmpty();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -63,22 +63,22 @@ public class RedrawViewAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		EditorSession dv = mainFrame.getActiveEditorSession();
-
+		
 		// hack till i find out how to do the enabling correctly
 		if (dv == null)
 			return;
-
+		
 		List<?> views = dv.getViews();
-
+		
 		for (Iterator<?> it = views.iterator(); it.hasNext();) {
 			View view = (View) it.next();
 			// view.postGraphCleared(new GraphEvent(getGraph()));
@@ -86,7 +86,7 @@ public class RedrawViewAction extends GraffitiAction {
 			view.completeRedraw();
 			mainFrame.fireSessionChanged(dv);
 		}
-
+		
 		mainFrame.updateActions();
 	}
 }

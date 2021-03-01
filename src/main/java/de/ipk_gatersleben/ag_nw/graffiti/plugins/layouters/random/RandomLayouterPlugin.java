@@ -12,7 +12,7 @@ import org.graffiti.plugin.GenericPluginAdapter;
  * @author Dirk Koschützki
  */
 public class RandomLayouterPlugin extends GenericPluginAdapter {
-
+	
 	/**
 	 * Creates a new RandomLayouterPlugin object.
 	 */

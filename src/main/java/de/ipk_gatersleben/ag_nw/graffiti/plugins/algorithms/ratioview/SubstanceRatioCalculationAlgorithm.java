@@ -44,25 +44,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  * @author Christian Klukas 10.7.2006
  */
 public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implements AlgorithmWithComponentDescription {
-
+	
 	public static int ratioCalculationCount = 0;
-
+	
 	private boolean useAverageValues = true;
-
+	
 	public String getName() {
 		return "Substance-Ratio Matrix View";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.DATA, Category.COMPUTATION));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>Calculates the ratio between any two substances.<br>" + "<br>"
@@ -70,7 +70,7 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 				+ "resulting new graph view contains a n*n matrix which shows<br>"
 				+ "the ratio for the example time series data.<br><br>" + "<br>";
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -88,16 +88,16 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 		if (!foundData)
 			throw new PreconditionException("Graph nodes have no data assigned");
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	public void execute() {
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Create Substance-Ratio View", "Please wait...");
-
+		
 		final List<NodeHelper> workNodes;
 		if (MainFrame.getInstance().getActiveEditorSession().getGraph() == graph)
 			workNodes = GraphHelper.getSelectedOrAllHelperNodes(MainFrame.getInstance().getActiveEditorSession());
@@ -109,25 +109,25 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 			}
 		}, null, status);
 	}
-
+	
 	public Graph executeAndReturnGraph(BackgroundTaskStatusProviderSupportingExternalCall status) {
 		List<NodeHelper> workNodes = GraphHelper.getHelperNodes(graph);
 		return createRatioView(status, workNodes, graph, useAverageValues, getActionEvent(), true);
 	}
-
+	
 	private static Graph createRatioView(BackgroundTaskStatusProviderSupportingExternalCall status,
 			List<NodeHelper> workNodes, Graph graph, boolean useAverageValues, final ActionEvent ae,
 			boolean returnResultDontShow) {
-
+		
 		Integer overrideReplicateId = null;
 		if (useAverageValues)
 			overrideReplicateId = 0; // all replicates will have the same id, and thus this
 		// algorithm will merge all values of the replicates
 		// otherwise, only values with the same replicate id of one sample
 		// would be merged (but normally the replicate ids are unique)
-
+		
 		SubstanceRatioCalculationAlgorithm.ratioCalculationCount++;
-
+		
 		final AdjListGraph ratioGraph = new AdjListGraph(new ListenerManager());
 		ratioGraph.getListenerManager().transactionStarted(ratioGraph);
 		if (status != null) {
@@ -141,12 +141,12 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 		double columnStep = nWidth + nSpace;
 		double columnPositionInit = 200d - columnStep;
 		double columnPosition = columnPositionInit;
-
+		
 		double rowStep = nHeight + nSpace;
 		double rowPosition = 200d - rowStep;
-
+		
 		double workLoad = workNodes.size();
-
+		
 		for (NodeHelper nh1 : workNodes) {
 			if (!nh1.hasDataMapping())
 				continue;
@@ -158,7 +158,7 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 			}
 			rowPosition += rowStep;
 			columnPosition = columnPositionInit;
-
+			
 			for (NodeHelper nh2 : workNodes) {
 				if (!nh2.hasDataMapping())
 					continue;
@@ -170,13 +170,13 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 				Node ratioNode = ratioGraph
 						.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(columnPosition, rowPosition));
 				NodeHelper ratioNodeHelper = new NodeHelper(ratioNode, false);
-
+				
 				TreeSet<DataMappingId> allIds = new TreeSet<DataMappingId>();
 				allIds.addAll(id2value_n1.keySet());
 				allIds.addAll(id2value_n2.keySet());
-
+				
 				int added = 0;
-
+				
 				for (DataMappingId id : allIds) {
 					Stack<Double> vl1 = id2value_n1.get(id);
 					Stack<Double> vl2 = id2value_n2.get(id);
@@ -197,7 +197,7 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 								id.getTimePoint());
 					}
 				}
-
+				
 				if (added > 0)
 					ratioNodeHelper.memAddDataMapping("<html>" + nh1.getLabel() + "<hr>" + nh2.getLabel(), "ratio",
 							AttributeHelper.getDateString(new Date()), "Ration View", "auto generated", "", "");
@@ -210,7 +210,7 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 			status.setCurrentStatusText2("Aborting further processing");
 			return null;
 		}
-
+		
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showRangeAxis", Boolean.valueOf(true));
 		// AttributeHelper.setAttribute(ratioGraph, "", "node_outlineBorderWidth", new
 		// Double(1d));
@@ -224,9 +224,9 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridRange", Boolean.valueOf(true));
 		// AttributeHelper.setAttribute(ratioGraph, "", "node_showGridCategory", new
 		// Boolean(true));
-
+		
 		ratioGraph.setName("Ratio Calculation " + SubstanceRatioCalculationAlgorithm.ratioCalculationCount);
-
+		
 		for (Node n1 : ratioGraph.getNodes()) {
 			NodeHelper nh = new NodeHelper(n1);
 			// nh.setAttributeValue("charting", "showRangeAxis", Boolean.valueOf(true));
@@ -251,7 +251,7 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 			return ratioGraph;
 		}
 	}
-
+	
 	private static void processNodeDesign(Graph ratioGraph, NodeHelper nh1, NodeHelper nh2, NodeHelper ratioNodeHelper,
 			double nodeHeight, double nodeWidth) {
 		ratioNodeHelper.setClusterID(nh1.getClusterID("") + "/" + nh2.getClusterID(""));
@@ -273,20 +273,20 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 		// ratioNodeHelper.setAttributeValue("charting", "empty_border_width", new
 		// Double(3d));
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(useAverageValues, " Use Average Values for Ratio-Calculation",
 				"<html>" + "If selected, the average value for each sample will be used for the calculation<br>"
 						+ "of the ratio, instead of calculating the replicate rations (and displaying the average of them).") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		useAverageValues = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
-
+	
 	public JComponent getDescriptionComponent() {
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');

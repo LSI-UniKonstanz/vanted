@@ -75,23 +75,23 @@ import org.jfree.util.PublicCloneable;
  */
 public class SignalRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The mark offset. */
 	private double markOffset = 5;
-
+	
 	/** The shape width. */
 	private double shapeWidth = 15;
-
+	
 	/** The shape height. */
 	private double shapeHeight = 25;
-
+	
 	/**
 	 * Creates a new renderer.
 	 */
 	public SignalRenderer() {
 		super();
 	}
-
+	
 	/**
 	 * Returns the mark offset.
 	 * 
@@ -100,17 +100,17 @@ public class SignalRenderer extends AbstractXYItemRenderer
 	public double getMarkOffset() {
 		return this.markOffset;
 	}
-
+	
 	/**
 	 * Sets the mark offset.
 	 * 
 	 * @param offset
-	 *            the mark offset.
+	 *           the mark offset.
 	 */
 	public void setMarkOffset(double offset) {
 		this.markOffset = offset;
 	}
-
+	
 	/**
 	 * Returns the shape width.
 	 * 
@@ -119,17 +119,17 @@ public class SignalRenderer extends AbstractXYItemRenderer
 	public double getShapeWidth() {
 		return this.shapeWidth;
 	}
-
+	
 	/**
 	 * Sets the shape width.
 	 * 
 	 * @param width
-	 *            the shape width.
+	 *           the shape width.
 	 */
 	public void setShapeWidth(double width) {
 		this.shapeWidth = width;
 	}
-
+	
 	/**
 	 * Returns the shape height.
 	 * 
@@ -138,70 +138,70 @@ public class SignalRenderer extends AbstractXYItemRenderer
 	public double getShapeHeight() {
 		return this.shapeHeight;
 	}
-
+	
 	/**
 	 * Sets the shape height.
 	 * 
 	 * @param height
-	 *            the shape height.
+	 *           the shape height.
 	 */
 	public void setShapeHeight(double height) {
 		this.shapeHeight = height;
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the plot is being drawn.
+	 *           the area within which the plot is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param horizontalAxis
-	 *            the horizontal axis.
+	 *           the horizontal axis.
 	 * @param verticalAxis
-	 *            the vertical axis.
+	 *           the vertical axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis horizontalAxis, ValueAxis verticalAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		// setup for collecting optional entity info...
 		EntityCollection entities = null;
 		if (info != null) {
 			entities = info.getOwner().getEntityCollection();
 		}
-
+		
 		SignalsDataset signalData = (SignalsDataset) dataset;
-
+		
 		Number x = signalData.getXValue(series, item);
 		Number y = signalData.getYValue(series, item);
 		int type = signalData.getType(series, item);
 		// double level = signalData.getLevel(series, item);
-
+		
 		double xx = horizontalAxis.valueToJava2D(x.doubleValue(), dataArea, plot.getDomainAxisEdge());
 		double yy = verticalAxis.valueToJava2D(y.doubleValue(), dataArea, plot.getRangeAxisEdge());
-
+		
 		Paint p = getItemPaint(series, item);
 		Stroke s = getItemStroke(series, item);
 		g2.setPaint(p);
 		g2.setStroke(s);
-
+		
 		int direction = 1;
 		if ((type == SignalsDataset.ENTER_LONG) || (type == SignalsDataset.EXIT_SHORT)) {
 			yy = yy + this.markOffset;
@@ -209,7 +209,7 @@ public class SignalRenderer extends AbstractXYItemRenderer
 		} else {
 			yy = yy - this.markOffset;
 		}
-
+		
 		GeneralPath path = new GeneralPath();
 		if ((type == SignalsDataset.ENTER_LONG) || (type == SignalsDataset.ENTER_SHORT)) {
 			path.moveTo((float) xx, (float) yy);
@@ -228,11 +228,11 @@ public class SignalRenderer extends AbstractXYItemRenderer
 					this.shapeWidth);
 			path.append(ellipse, false);
 		}
-
+		
 		g2.fill(path);
 		g2.setPaint(Color.black);
 		g2.draw(path);
-
+		
 		// add an entity for the item...
 		if (entities != null) {
 			String tip = null;
@@ -247,18 +247,18 @@ public class SignalRenderer extends AbstractXYItemRenderer
 			XYItemEntity entity = new XYItemEntity(path, dataset, series, item, tip, url);
 			entities.addEntity(entity);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

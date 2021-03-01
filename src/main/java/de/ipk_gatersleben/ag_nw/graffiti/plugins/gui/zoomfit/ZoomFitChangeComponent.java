@@ -56,58 +56,58 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.PaintStatu
  */
 public class ZoomFitChangeComponent extends JToolBar
 		implements GraffitiComponent, ActionListener, ViewListener, SessionListener, SelectionListener, ZoomListener {
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6148796088041066490L;
-
+	
 	static Logger logger = Logger.getLogger(ZoomFitChangeComponent.class);
-
+	
 	static {
 		logger.setLevel(Level.ERROR);
 	}
-
+	
 	/** The zoom buttons */
 	private JButton jbZoomOut, jbZoomIn, jbZoom1to1, jbZoomRegion;
-
+	
 	private JTextField zoomTextField;
-
+	
 	private JSlider zoomSlider;
-
+	
 	/** active session */
 	private static Session activeSession;
-
+	
 	private String prefComp;
-
+	
 	private static ZoomFitChangeComponent instance = null;
-
+	
 	private static boolean useSmooth = false;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	public ZoomFitChangeComponent(String prefComp) {
 		super("Zoom");
 		this.prefComp = prefComp;
 		ZoomFitChangeComponent.instance = this;
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
-
+		
 		ImageIcon icon1 = new ImageIcon(cl.getResource(path + "/images/lupeMinus.gif"));
 		ImageIcon icon2 = new ImageIcon(cl.getResource(path + "/images/lupePlus.gif"));
 		ImageIcon icon3 = new ImageIcon(cl.getResource(path + "/images/lupe1zu1.gif"));
 		ImageIcon icon4 = new ImageIcon(cl.getResource(path + "/images/lupeRegion.gif"));
-
+		
 		int s = 2;
-
+		
 		jbZoomOut = new JButton(icon1);
 		jbZoomOut.setMargin(new Insets(s, s, s, s));
 		jbZoomOut.addActionListener(this);
 		jbZoomOut.setToolTipText("Zoom: Out");
 		add(jbZoomOut);
-
+		
 		zoomSlider = new JSlider(0, 100, 50);
 		zoomSlider.addChangeListener(getSliderChangeListener());
 		zoomSlider.setToolTipText("Zoom");
@@ -115,21 +115,21 @@ public class ZoomFitChangeComponent extends JToolBar
 		dim.width = 130;
 		zoomSlider.setPreferredSize(dim);
 		// add(zoomSlider);
-
+		
 		jbZoomIn = new JButton(icon2);
 		jbZoomIn.setMargin(new Insets(s, s, s, s));
 		jbZoomIn.addActionListener(this);
 		jbZoomIn.setToolTipText("Zoom: In");
 		add(jbZoomIn);
-
+		
 		jbZoom1to1 = new JButton(icon3);
 		jbZoom1to1.setMargin(new Insets(s, s, s, s));
 		jbZoom1to1.addActionListener(this);
 		jbZoom1to1.setToolTipText("Zoom: 100%");
 		add(jbZoom1to1);
-
+		
 		final ZoomFitChangeComponent zzz = this;
-
+		
 		jbZoomRegion = new JButton(icon4);
 		jbZoomRegion.setMargin(new Insets(s, s, s, s));
 		jbZoomRegion.addActionListener(new ActionListener() {
@@ -144,10 +144,10 @@ public class ZoomFitChangeComponent extends JToolBar
 				});
 			}
 		});
-
+		
 		jbZoomRegion.setToolTipText("Zoom: Selected Region / Complete Graph (no selection)");
 		add(jbZoomRegion);
-
+		
 		// setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		/*
 		 * this textfield is/was for debugging purposes
@@ -165,9 +165,9 @@ public class ZoomFitChangeComponent extends JToolBar
 		 * @Override public void keyPressed(KeyEvent e) { } }); add(zoomTextField);
 		 */
 		validate();
-
+		
 	}
-
+	
 	private ChangeListener getSliderChangeListener() {
 		return new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -176,52 +176,52 @@ public class ZoomFitChangeComponent extends JToolBar
 			}
 		};
 	}
-
+	
 	// ~ Methods ================================================================
 	public static void zoomIn() {
 		ActionEvent e = new ActionEvent(instance.jbZoomIn, 0, "");
 		instance.actionPerformed(e);
 	}
-
+	
 	public static void zoomOut() {
 		ActionEvent e = new ActionEvent(instance.jbZoomOut, 0, "");
 		instance.actionPerformed(e);
 	}
-
+	
 	public static void zoomRegion(boolean smooth) {
 		useSmooth = smooth;
 		ActionEvent e = new ActionEvent(instance.jbZoomRegion, 0, "");
 		instance.actionPerformed(e);
 		useSmooth = false;
 	}
-
+	
 	public static void zoomRegion(boolean smooth, Zoomable view) {
 		zoomRegion(smooth, view, null, 30);
 	}
-
+	
 	public static void zoomRegion(boolean smooth, Zoomable view, Collection<GraphElement> elements) {
 		zoomRegion(smooth, view, elements, 30);
 	}
-
+	
 	public static void zoomRegion(boolean smooth, Zoomable view, Collection<GraphElement> elements, int zoomIntoValue) {
 		useSmooth = smooth;
 		ActionEvent e = new ActionEvent(instance.jbZoomRegion, 0, "");
 		instance.zoomView(e, view, elements, zoomIntoValue);
 		useSmooth = false;
 	}
-
+	
 	public void actionPerformed(final ActionEvent e) {
 		if (activeSession != null) {
 			Zoomable myView = activeSession.getActiveView();
-
+			
 			zoomView(e, myView, null, 30);
 		}
 	}
-
+	
 	private void zoomView(final ActionEvent e, Zoomable myView, Collection<GraphElement> elements, int zoomIntoValue) {
-
+		
 		final double plusMinusZoom = e.getSource().equals(jbZoomOut) ? 0.05 : 0.05;
-
+		
 		if (myView instanceof PaintStatusSupport) {
 			PaintStatusSupport pss = (PaintStatusSupport) myView;
 			if (pss.statusDrawInProgress()) {
@@ -230,7 +230,7 @@ public class ZoomFitChangeComponent extends JToolBar
 				return;
 			}
 		}
-
+		
 		AffineTransform currentZoom = myView.getZoom();
 		final ZoomListener zoomView = (ZoomListener) myView;
 		View view = (View) myView;
@@ -248,7 +248,7 @@ public class ZoomFitChangeComponent extends JToolBar
 			return;
 		}
 		final Dimension scrollPaneSize = sps;
-
+		
 		if (e.getSource().equals(jbZoom1to1)) {
 			final AffineTransform at = new AffineTransform();
 			at.setToScale(1, 1);
@@ -258,11 +258,11 @@ public class ZoomFitChangeComponent extends JToolBar
 			final AffineTransform at = new AffineTransform();
 			at.setToScale(Double.parseDouble(zoomTextField.getText()) / 100,
 					Double.parseDouble(zoomTextField.getText()) / 100);
-
+			
 			Rectangle viewRect = scrollPane.getViewport().getViewRect();
 			logger.debug("before zoomChanged viewportviewX: " + viewRect.getX() + " viewportviewY: " + viewRect.getY()
 					+ " viewportviewWidth: " + viewRect.getWidth() + " viewportviewHeight: " + viewRect.getHeight());
-
+			
 			zoomView.zoomChanged(at);
 			scrollPane.paintImmediately(scrollPane.getVisibleRect());
 			logger.debug("after zoomChanged viewportviewX: " + viewRect.getX() + " viewportviewY: " + viewRect.getY()
@@ -270,7 +270,7 @@ public class ZoomFitChangeComponent extends JToolBar
 			MainFrame.showMessage("Active Zoom: " + (int) (100d * at.getScaleX()) + "%", MessageType.INFO);
 		} else if (e.getSource().equals(jbZoomRegion) || e.getSource().equals(jbZoomOut)
 				|| e.getSource().equals(jbZoomIn)) {
-
+			
 			Rectangle currentViewRect = scrollPane.getViewport().getViewRect();
 			Point a = currentViewRect.getLocation();
 			Point b = new Point(a.x + currentViewRect.width, a.y + currentViewRect.height);
@@ -281,21 +281,21 @@ public class ZoomFitChangeComponent extends JToolBar
 			} catch (NoninvertibleTransformException e1) {
 				System.err.println(e1);
 			}
-
+			
 			Rectangle targetViewRect = scrollPane.getViewport().getViewRect();
 			if (e.getSource().equals(jbZoomRegion)) {
 				Rectangle selectionViewRect = getViewRectFromSelection(view, elements);
-
+				
 				if (selectionViewRect == null)
 					return;
 				// myZoomToView(view, scrollPane);
-
+				
 				// if(true)
 				// return;
-
+				
 				targetViewRect = selectionViewRect;
 				// boolean changed = false;
-
+				
 				// if (targetViewRect.width < currentViewRect.width && targetViewRect.height <
 				// currentViewRect.height &&
 				// Math.abs(targetViewRect.getCenterX() - currentViewRect.getCenterX()) >
@@ -316,7 +316,7 @@ public class ZoomFitChangeComponent extends JToolBar
 				// changed = true;
 				// }
 				// }
-
+				
 				// if (!changed)
 				// targetViewRect.grow((int) (targetViewRect.width / (zoomIntoValue / 3d)),
 				// (int) (targetViewRect.height / (zoomIntoValue / 3d)));
@@ -340,17 +340,17 @@ public class ZoomFitChangeComponent extends JToolBar
 					ErrorMsg.addErrorMessage(e1);
 				}
 			}
-
+			
 			final double srcSmallestX = currentViewRect.getX();
 			final double srcSmallestY = currentViewRect.getY();
 			final double srcGreatestX = currentViewRect.getX() + currentViewRect.getWidth();
 			final double srcGreatestY = currentViewRect.getY() + currentViewRect.getHeight();
-
+			
 			final double smallestX = targetViewRect.getX();
 			final double smallestY = targetViewRect.getY();
 			final double greatestX = targetViewRect.getX() + targetViewRect.getWidth();
 			final double greatestY = targetViewRect.getY() + targetViewRect.getHeight();
-
+			
 			boolean smooth = !e.getSource().equals(jbZoomIn) && !e.getSource().equals(jbZoomOut); // (!e.getSource().equals(jbZoomRegion))
 			if (!useSmooth)
 				smooth = false;
@@ -383,7 +383,7 @@ public class ZoomFitChangeComponent extends JToolBar
 						ErrorMsg.addErrorMessage(err);
 					}
 				}
-
+				
 				setZoom(zoomView, scrollPane, scrollPaneSize, smallestX, smallestY, greatestX, greatestY);
 				scrollPane.paintImmediately(scrollPane.getVisibleRect());
 			}
@@ -391,7 +391,6 @@ public class ZoomFitChangeComponent extends JToolBar
 	}
 	
 	/**
-	 * 
 	 * @param view
 	 * @param scrollPane
 	 * @deprecated
@@ -401,14 +400,14 @@ public class ZoomFitChangeComponent extends JToolBar
 		Rectangle selectionViewRect = getViewRectFromSelection(view, null);
 		if (selectionViewRect == null)
 			return;
-
+		
 		AffineTransform zoom = view.getZoom();
-
+		
 		Point selectionLocation = new Point(selectionViewRect.x, selectionViewRect.y);
 		Point selectionDimension = new Point(selectionViewRect.width, selectionViewRect.height);
 		// zoom.transform(zoomedSelectionLocation, zoomedSelectionLocation);
 		// zoom.transform(zoomedSelectionDimension, zoomedSelectionDimension);
-
+		
 		Rectangle curZoomedViewRect = scrollPane.getViewport().getViewRect();
 		Point curZoomedViewRectLocation = curZoomedViewRect.getLocation();
 		Point normalViewRectLocation = new Point();
@@ -418,19 +417,19 @@ public class ZoomFitChangeComponent extends JToolBar
 			e.printStackTrace();
 			return;
 		}
-
+		
 		double newZoomFactor = curZoomedViewRect.getWidth() / selectionDimension.getX();
-
+		
 		AffineTransform newViewZoom = new AffineTransform();
 		newViewZoom.setToScale(newZoomFactor, newZoomFactor);
 		view.zoomChanged(newViewZoom);
 		Point newViewZoomLocation = new Point();
-
+		
 		newViewZoom.transform(selectionLocation, newViewZoomLocation);
 		scrollPane.getViewport().setViewPosition(newViewZoomLocation);
-
+		
 	}
-
+	
 	public static void zoomToPoint(Zoomable myView, Point coords, double zoomFactor) {
 		double plusMinusZoom = zoomFactor;
 		if (myView instanceof PaintStatusSupport) {
@@ -441,7 +440,7 @@ public class ZoomFitChangeComponent extends JToolBar
 				return;
 			}
 		}
-
+		
 		AffineTransform currentZoom = myView.getZoom();
 		/*
 		 * check for exceeding zoom level scaleX and scaleY are supposed to be equal
@@ -450,7 +449,7 @@ public class ZoomFitChangeComponent extends JToolBar
 			return;
 		if (zoomFactor < 0 && myView.getZoom().getScaleX() - myView.getZoom().getScaleX() * Math.abs(zoomFactor) < 0.02)
 			return;
-
+		
 		final ZoomListener zoomView = (ZoomListener) myView;
 		View view = (View) myView;
 		if (!(view instanceof GraffitiView)) {
@@ -466,7 +465,7 @@ public class ZoomFitChangeComponent extends JToolBar
 			sps = ((JComponent) myView).getPreferredSize();
 			return;
 		}
-
+		
 		Point mouseCoord = new Point(coords.x, coords.y);
 		try {
 			currentZoom.inverseTransform(mouseCoord, mouseCoord);
@@ -475,15 +474,15 @@ public class ZoomFitChangeComponent extends JToolBar
 			e.printStackTrace();
 		}
 		//
-
+		
 		Rectangle currentViewRect = scrollPane.getViewport().getViewRect();
 		Point a = currentViewRect.getLocation();
 		Point b = new Point(a.x + currentViewRect.width, a.y + currentViewRect.height);
-
+		
 		// System.out.println("sps: "+sps.toString());
 		// System.out.println("currentViewRect: (before
 		// transform)"+currentViewRect.toString());
-
+		
 		/*
 		 * transform current view to the actual visible area
 		 */
@@ -494,29 +493,29 @@ public class ZoomFitChangeComponent extends JToolBar
 		} catch (NoninvertibleTransformException e1) {
 			System.err.println(e1);
 		}
-
+		
 		/*
 		 * get the relational point of the mouse in the view (between 0..1)
 		 */
 		Point2d mouseCoordRel = new Point2d((double) (mouseCoord.x - currentViewRect.x) / currentViewRect.width,
 				(double) (mouseCoord.y - currentViewRect.y) / currentViewRect.height);
-
+		
 		// System.out.println("currentViewRect: ( after
 		// transform)"+currentViewRect.toString());
 		// System.out.println("mousepos rel to viewport: "+mouseCoordRel.toString());
-
+		
 		Rectangle targetViewRect = currentViewRect;
-
+		
 		// System.out.println("point at "+mouseCoordRel.x+"%: "+ (targetViewRect.x +
 		// mouseCoordRel.x * (double)targetViewRect.width));
 		// System.out.println("point at "+mouseCoordRel.y+"%: "+ (targetViewRect.y +
 		// mouseCoordRel.y * (double)targetViewRect.height));
-
+		
 		targetViewRect.grow(-(int) (targetViewRect.width * plusMinusZoom / 2),
 				-(int) (targetViewRect.height * plusMinusZoom / 2));
-
+		
 		// System.out.println("targetViewRect: "+targetViewRect.toString());
-
+		
 		/*
 		 * move the current view in a way, that the viewport coordinates under the mouse
 		 * cursor stay the same after the zoom. in other words, the two rectangles
@@ -524,22 +523,22 @@ public class ZoomFitChangeComponent extends JToolBar
 		 */
 		targetViewRect.x = (int) Math.round((double) mouseCoord.x - mouseCoordRel.x * (double) targetViewRect.width);
 		targetViewRect.y = (int) Math.round((double) mouseCoord.y - mouseCoordRel.y * (double) targetViewRect.height);
-
+		
 		// System.out.println("targetViewRect2: "+targetViewRect.toString());
-
+		
 		// System.out.println("point at_"+mouseCoordRel.x+"%: "+ (targetViewRect.x +
 		// mouseCoordRel.x * (double)targetViewRect.width));
 		// System.out.println("point at_"+mouseCoordRel.y+"%: "+ (targetViewRect.y +
 		// mouseCoordRel.y * (double)targetViewRect.height));
-
+		
 		final double smallestX = targetViewRect.getX();
 		final double smallestY = targetViewRect.getY();
 		final double greatestX = targetViewRect.getX() + targetViewRect.getWidth();
 		final double greatestY = targetViewRect.getY() + targetViewRect.getHeight();
-
+		
 		instance.setZoom(zoomView, scrollPane, sps, smallestX, smallestY, greatestX, greatestY);
 	}
-
+	
 	private double getScale(double x, double a, double b) {
 		double f2 = 1.2d / (1 + Math.exp(-(x - 0.5) * 5d)) - 0.1;
 		if (f2 < 0)
@@ -548,7 +547,7 @@ public class ZoomFitChangeComponent extends JToolBar
 			f2 = 1;
 		return a + (b - a) * f2;
 	}
-
+	
 	private Rectangle getViewRectFromSelection(View view, Collection<GraphElement> elements) {
 		Rectangle viewRect = null;
 		if (elements == null)
@@ -556,7 +555,7 @@ public class ZoomFitChangeComponent extends JToolBar
 		for (GraphElement ge : elements) {
 			if (view instanceof GraphView && ((GraphView) view).isHidden(ge))
 				continue;
-
+			
 			GraphElementComponent gvc = view.getComponentForElement(ge);
 			Rectangle r = null;
 			boolean ra = view.redrawActive();
@@ -583,37 +582,37 @@ public class ZoomFitChangeComponent extends JToolBar
 						}
 					}
 				} catch (ConcurrentModificationException cc) {
-
+					
 				}
 		}
 		return viewRect;
 	}
-
+	
 	private void setZoom(final ZoomListener zoomView, JScrollPane scrollPane, Dimension scrollPaneSize,
 			double smallestX, double smallestY, double greatestX, double greatestY) {
 		double zomedSizeX, zomedSizeY;
 		zomedSizeX = scrollPaneSize.getWidth() / (greatestX - smallestX);
 		zomedSizeY = scrollPaneSize.getHeight() / (greatestY - smallestY);
 		final boolean xIsLimit = zomedSizeX < zomedSizeY;
-
+		
 		logger.debug(" smallestX: " + smallestX + " smallestY: " + smallestY + " greatestX: " + greatestX
 				+ " greatestY: " + greatestY);
 		Rectangle viewRect = scrollPane.getViewport().getViewRect();
 		logger.debug("zoomed viewportviewX: " + viewRect.getX() + " viewportviewY: " + viewRect.getY()
 				+ " viewportviewWidth: " + viewRect.getWidth() + " viewportviewHeight: " + viewRect.getHeight());
-
+		
 		double borderPercent = 0; // 0.1;
-
+		
 		double zoomFaktorWanted = min2(zomedSizeX, zomedSizeY) * (1 - borderPercent);
 		final double zoomFaktor = min2(zoomFaktorWanted, 5); // maximum 500% zoom!
-
+		
 		logger.debug("zoomFaktor: " + zoomFaktor);
-
+		
 		final AffineTransform at = new AffineTransform();
 		at.setToScale(zoomFaktor, zoomFaktor);
-
+		
 		MainFrame.showMessage("Active Zoom: " + (int) (100d * at.getScaleX()) + "%", MessageType.INFO);
-
+		
 		final double middleX = (greatestX + smallestX) / 2;
 		final double middleY = (greatestY + smallestY) / 2;
 		final double gtX = greatestX;
@@ -621,22 +620,22 @@ public class ZoomFitChangeComponent extends JToolBar
 		final double smX = smallestX;
 		final double smY = smallestY;
 		final double bdP = borderPercent;
-
+		
 		final JScrollPane spf = scrollPane;
 		final Dimension spsf = scrollPaneSize;
-
+		
 		logger.debug("before zoom: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue()
 				+ " scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum());
-
+		
 		zoomView.zoomChanged(at);
-
+		
 		logger.debug("after zoom before setscrollbarVal: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue()
 				+ " scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum());
-
+		
 		logger.debug("after zoom: scrollpanesizeWidth: " + scrollPaneSize.getWidth() + " scrollpanesizeHeight: "
 				+ scrollPaneSize.getHeight() + " smallestX: " + smallestX + " smallestY: " + smallestY + " greatestX: "
 				+ greatestX + " greatestY: " + greatestY);
-
+		
 		if (xIsLimit) {
 			double offX = (gtX - smX) * bdP / 2;
 			int targetX = (int) ((smX - offX) * at.getScaleX());
@@ -651,7 +650,7 @@ public class ZoomFitChangeComponent extends JToolBar
 			if (targetY < 0)
 				targetY = 0;
 			spf.getViewport().setViewPosition(new Point(targetX, (int) targetY));
-
+			
 		} else {
 			double offY = (gtY - smY) * bdP / 2;
 			int targetY = (int) ((smY - offY) * at.getScaleY());
@@ -669,39 +668,39 @@ public class ZoomFitChangeComponent extends JToolBar
 		}
 		logger.debug("-after setVal: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue()
 				+ " scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum());
-
+		
 	}
-
+	
 	/**
 	 * @param smallestX
-	 *            Value 1
+	 *           Value 1
 	 * @param cx
-	 *            Value 2
+	 *           Value 2
 	 * @return The smaller one of the parameters
 	 */
 	private double min2(double smallestX, double cx) {
 		return smallestX < cx ? smallestX : cx;
 	}
-
+	
 	public void sessionChanged(Session s) {
 		activeSession = s;
-
+		
 		jbZoomOut.setVisible(s != null);
 		jbZoomIn.setVisible(s != null);
 		jbZoom1to1.setVisible(s != null);
 		jbZoomRegion.setVisible(s != null);
-
+		
 		if (s != null) {
 			viewChanged(s.getActiveView());
 		}
-
+		
 	}
-
+	
 	public void sessionDataChanged(Session s) {
 		activeSession = s;
 		viewChanged(s.getActiveView());
 	}
-
+	
 	public void viewChanged(View newView) {
 		View view = newView;
 		if (view == null || !(view instanceof GraffitiView)) {
@@ -716,19 +715,19 @@ public class ZoomFitChangeComponent extends JToolBar
 			jbZoomRegion.setVisible(true);
 		}
 	}
-
+	
 	public void selectionChanged(SelectionEvent e) {
 		e.getSelection();
 	}
-
+	
 	public void selectionListChanged(SelectionEvent e) {
 		e.getSelection();
 	}
-
+	
 	public String getPreferredComponent() {
 		return prefComp;
 	}
-
+	
 	public void zoomChanged(AffineTransform newZoom) {
 		zoomSlider.setValue((int) (newZoom.getScaleX() * 100d));
 	}

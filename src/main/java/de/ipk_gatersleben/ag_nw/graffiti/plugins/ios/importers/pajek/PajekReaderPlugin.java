@@ -25,9 +25,9 @@ public class PajekReaderPlugin extends IPK_PluginAdapter {
 	public PajekReaderPlugin() {
 		super();
 		this.inputSerializers = new InputSerializer[] { new PajekReader() };
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.EXTENDED_FILE_FORMAT)) {
-
+			
 			if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG
 					|| ReleaseInfo.getRunningReleaseStatus() == Release.RELEASE_IPK)
 				this.outputSerializers = new OutputSerializer[] { new PovrayWriter(), new PajekWriter() };

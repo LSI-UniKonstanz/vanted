@@ -20,7 +20,7 @@ package org.graffiti.plugin.algorithm;
  */
 public interface CalculatingAlgorithm extends Algorithm {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the <code>AlgorithmResult</code> that was computed by the
 	 * <code>Algorithm</code> during the last execution. If there was no previous
@@ -30,13 +30,13 @@ public interface CalculatingAlgorithm extends Algorithm {
 	 *         of the <code>Algorithm</code>.
 	 */
 	public AlgorithmResult getResult();
-
+	
 	/**
 	 * @link aggregation
 	 * @clientCardinality 1
 	 * @clientCardinality 1
 	 */
-
+	
 	/* #AlgorithmResult lnkAlgorithmResult; */
 }
 

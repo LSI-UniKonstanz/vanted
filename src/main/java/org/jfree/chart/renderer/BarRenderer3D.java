@@ -114,42 +114,42 @@ import org.jfree.util.PublicCloneable;
  * @author Serge V. Grachov
  */
 public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The default x-offset for the 3D effect. */
 	public static final double DEFAULT_X_OFFSET = 12.0;
-
+	
 	/** The default y-offset for the 3D effect. */
 	public static final double DEFAULT_Y_OFFSET = 8.0;
-
+	
 	/** The default wall paint. */
 	public static final Paint DEFAULT_WALL_PAINT = new Color(0xDD, 0xDD, 0xDD);
-
+	
 	/** The size of x-offset for the 3D effect. */
 	private double xOffset;
-
+	
 	/** The size of y-offset for the 3D effect. */
 	private double yOffset;
-
+	
 	/** The paint used to shade the left and lower 3D wall. */
 	private transient Paint wallPaint;
-
+	
 	/**
 	 * Default constructor, creates a renderer with a ten pixel '3D effect'.
 	 */
 	public BarRenderer3D() {
 		this(DEFAULT_X_OFFSET, DEFAULT_Y_OFFSET);
 	}
-
+	
 	/**
 	 * Constructs a new renderer with the specified '3D effect'.
 	 * 
 	 * @param xOffset
-	 *            the x-offset for the 3D effect.
+	 *           the x-offset for the 3D effect.
 	 * @param yOffset
-	 *            the y-offset for the 3D effect.
+	 *           the y-offset for the 3D effect.
 	 */
 	public BarRenderer3D(double xOffset, double yOffset) {
-
+		
 		super();
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
@@ -159,9 +159,9 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		setPositiveItemLabelPosition(p1);
 		ItemLabelPosition p2 = new ItemLabelPosition(ItemLabelAnchor.INSIDE12, TextAnchor.TOP_CENTER);
 		setNegativeItemLabelPosition(p2);
-
+		
 	}
-
+	
 	/**
 	 * Returns the x-offset for the 3D effect.
 	 * 
@@ -170,7 +170,7 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 	public double getXOffset() {
 		return this.xOffset;
 	}
-
+	
 	/**
 	 * Returns the y-offset for the 3D effect.
 	 * 
@@ -179,7 +179,7 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 	public double getYOffset() {
 		return this.yOffset;
 	}
-
+	
 	/**
 	 * Returns the paint used to highlight the left and bottom wall in the plot
 	 * background.
@@ -189,40 +189,40 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 	public Paint getWallPaint() {
 		return this.wallPaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to hightlight the left and bottom walls in the plot
 	 * background.
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setWallPaint(Paint paint) {
 		this.wallPaint = paint;
 	}
-
+	
 	/**
 	 * Draws the background for the plot.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the area inside the axes.
+	 *           the area inside the axes.
 	 */
 	public void drawBackground(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea) {
-
+		
 		float x0 = (float) dataArea.getX();
 		float x1 = x0 + (float) Math.abs(this.xOffset);
 		float x3 = (float) dataArea.getMaxX();
 		float x2 = x3 - (float) Math.abs(this.xOffset);
-
+		
 		float y0 = (float) dataArea.getMaxY();
 		float y1 = y0 - (float) Math.abs(this.yOffset);
 		float y3 = (float) dataArea.getMinY();
 		float y2 = y3 + (float) Math.abs(this.yOffset);
-
+		
 		GeneralPath clip = new GeneralPath();
 		clip.moveTo(x0, y0);
 		clip.lineTo(x0, y2);
@@ -231,14 +231,14 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		clip.lineTo(x3, y1);
 		clip.lineTo(x2, y0);
 		clip.closePath();
-
+		
 		// fill background...
 		Paint backgroundPaint = plot.getBackgroundPaint();
 		if (backgroundPaint != null) {
 			g2.setPaint(backgroundPaint);
 			g2.fill(clip);
 		}
-
+		
 		GeneralPath leftWall = new GeneralPath();
 		leftWall.moveTo(x0, y0);
 		leftWall.lineTo(x0, y2);
@@ -247,7 +247,7 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		leftWall.closePath();
 		g2.setPaint(getWallPaint());
 		g2.fill(leftWall);
-
+		
 		GeneralPath bottomWall = new GeneralPath();
 		bottomWall.moveTo(x0, y0);
 		bottomWall.lineTo(x1, y1);
@@ -256,7 +256,7 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		bottomWall.closePath();
 		g2.setPaint(getWallPaint());
 		g2.fill(bottomWall);
-
+		
 		// higlight the background corners...
 		g2.setPaint(Color.lightGray);
 		Line2D corner = new Line2D.Double(x0, y0, x1, y1);
@@ -265,7 +265,7 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		g2.draw(corner);
 		corner.setLine(x1, y1, x3, y1);
 		g2.draw(corner);
-
+		
 		// draw background image, if there is one...
 		Image backgroundImage = plot.getBackgroundImage();
 		if (backgroundImage != null) {
@@ -274,31 +274,31 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 			g2.drawImage(backgroundImage, (int) x1, (int) y3, (int) (x3 - x1 + 1), (int) (y1 - y3 + 1), null);
 			g2.setComposite(originalComposite);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the outline for the plot.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the area inside the axes.
+	 *           the area inside the axes.
 	 */
 	public void drawOutline(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea) {
-
+		
 		float x0 = (float) dataArea.getX();
 		float x1 = x0 + (float) Math.abs(this.xOffset);
 		float x3 = (float) dataArea.getMaxX();
 		float x2 = x3 - (float) Math.abs(this.xOffset);
-
+		
 		float y0 = (float) dataArea.getMaxY();
 		float y1 = y0 - (float) Math.abs(this.yOffset);
 		float y3 = (float) dataArea.getMinY();
 		float y2 = y3 + (float) Math.abs(this.yOffset);
-
+		
 		GeneralPath clip = new GeneralPath();
 		clip.moveTo(x0, y0);
 		clip.lineTo(x0, y2);
@@ -307,7 +307,7 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		clip.lineTo(x3, y1);
 		clip.lineTo(x2, y0);
 		clip.closePath();
-
+		
 		// put an outline around the data area...
 		Stroke outlineStroke = plot.getOutlineStroke();
 		Paint outlinePaint = plot.getOutlinePaint();
@@ -316,23 +316,23 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 			g2.setPaint(outlinePaint);
 			g2.draw(clip);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws a grid line against the domain axis.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the area for plotting data (not yet adjusted for any 3D effect).
+	 *           the area for plotting data (not yet adjusted for any 3D effect).
 	 * @param value
-	 *            the Java2D value at which the grid line should be drawn.
+	 *           the Java2D value at which the grid line should be drawn.
 	 */
 	public void drawDomainGridline(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea, double value) {
-
+		
 		Line2D line1 = null;
 		Line2D line2 = null;
 		PlotOrientation orientation = plot.getOrientation();
@@ -359,35 +359,35 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		g2.setStroke(stroke != null ? stroke : Plot.DEFAULT_OUTLINE_STROKE);
 		g2.draw(line1);
 		g2.draw(line2);
-
+		
 	}
-
+	
 	/**
 	 * Draws a grid line against the range axis.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param axis
-	 *            the value axis.
+	 *           the value axis.
 	 * @param dataArea
-	 *            the area for plotting data (not yet adjusted for any 3D effect).
+	 *           the area for plotting data (not yet adjusted for any 3D effect).
 	 * @param value
-	 *            the value at which the grid line should be drawn.
+	 *           the value at which the grid line should be drawn.
 	 */
 	public void drawRangeGridline(Graphics2D g2, CategoryPlot plot, ValueAxis axis, Rectangle2D dataArea,
 			double value) {
-
+		
 		Range range = axis.getRange();
-
+		
 		if (!range.contains(value)) {
 			return;
 		}
-
+		
 		Rectangle2D adjusted = new Rectangle2D.Double(dataArea.getX(), dataArea.getY() + getYOffset(),
 				dataArea.getWidth() - getXOffset(), dataArea.getHeight() - getYOffset());
-
+		
 		Line2D line1 = null;
 		Line2D line2 = null;
 		PlotOrientation orientation = plot.getOrientation();
@@ -414,25 +414,25 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		g2.setStroke(stroke != null ? stroke : Plot.DEFAULT_OUTLINE_STROKE);
 		g2.draw(line1);
 		g2.draw(line2);
-
+		
 	}
-
+	
 	/**
 	 * Draws a range marker.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param axis
-	 *            the value axis.
+	 *           the value axis.
 	 * @param marker
-	 *            the marker.
+	 *           the marker.
 	 * @param dataArea
-	 *            the area for plotting data (not including 3D effect).
+	 *           the area for plotting data (not including 3D effect).
 	 */
 	public void drawRangeMarker(Graphics2D g2, CategoryPlot plot, ValueAxis axis, Marker marker, Rectangle2D dataArea) {
-
+		
 		if (marker instanceof ValueMarker) {
 			ValueMarker vm = (ValueMarker) marker;
 			double value = vm.getValue();
@@ -440,10 +440,10 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 			if (!range.contains(value)) {
 				return;
 			}
-
+			
 			Rectangle2D adjusted = new Rectangle2D.Double(dataArea.getX(), dataArea.getY() + getYOffset(),
 					dataArea.getWidth() - getXOffset(), dataArea.getHeight() - getYOffset());
-
+			
 			GeneralPath path = null;
 			PlotOrientation orientation = plot.getOrientation();
 			if (orientation == PlotOrientation.HORIZONTAL) {
@@ -471,57 +471,57 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 			g2.draw(path);
 		}
 	}
-
+	
 	/**
 	 * Draws a 3D bar to represent one data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area for plotting the data.
+	 *           the area for plotting the data.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
-
+		
 		// check the value we are plotting...
 		Number dataValue = dataset.getValue(row, column);
 		if (dataValue == null) {
 			return;
 		}
-
+		
 		double value = dataValue.doubleValue();
-
+		
 		Rectangle2D adjusted = new Rectangle2D.Double(dataArea.getX(), dataArea.getY() + getYOffset(),
 				dataArea.getWidth() - getXOffset(), dataArea.getHeight() - getYOffset());
-
+		
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		double barW0 = calculateBarW0(plot, orientation, adjusted, domainAxis, state, row, column);
 		double[] barL0L1 = calculateBarL0L1(value);
 		if (barL0L1 == null) {
 			return; // the bar is not visible
 		}
-
+		
 		RectangleEdge edge = plot.getRangeAxisEdge();
 		double transL0 = rangeAxis.valueToJava2D(barL0L1[0], adjusted, edge);
 		double transL1 = rangeAxis.valueToJava2D(barL0L1[1], adjusted, edge);
 		double barL0 = Math.min(transL0, transL1);
 		double barLength = Math.abs(transL1 - transL0);
-
+		
 		// draw the bar...
 		Rectangle2D bar = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
@@ -532,17 +532,17 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 		Paint itemPaint = getItemPaint(row, column);
 		g2.setPaint(itemPaint);
 		g2.fill(bar);
-
+		
 		double x0 = bar.getMinX();
 		double x1 = x0 + getXOffset();
 		double x2 = bar.getMaxX();
 		double x3 = x2 + getXOffset();
-
+		
 		double y0 = bar.getMinY() - getYOffset();
 		double y1 = bar.getMinY();
 		double y2 = bar.getMaxY() - getYOffset();
 		double y3 = bar.getMaxY();
-
+		
 		GeneralPath bar3dRight = null;
 		GeneralPath bar3dTop = null;
 		if (barLength > 0.0) {
@@ -552,20 +552,20 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 			bar3dRight.lineTo((float) x3, (float) y0);
 			bar3dRight.lineTo((float) x3, (float) y2);
 			bar3dRight.closePath();
-
+			
 			if (itemPaint instanceof Color) {
 				g2.setPaint(((Color) itemPaint).darker());
 			}
 			g2.fill(bar3dRight);
 		}
-
+		
 		bar3dTop = new GeneralPath();
 		bar3dTop.moveTo((float) x0, (float) y1);
 		bar3dTop.lineTo((float) x1, (float) y0);
 		bar3dTop.lineTo((float) x3, (float) y0);
 		bar3dTop.lineTo((float) x2, (float) y1);
 		bar3dTop.closePath();
-
+		
 		// check ttest info
 		Paint oldPaint = g2.getPaint();
 		if (dataset instanceof BioStatisticalCategoryDataset) {
@@ -577,7 +577,7 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 			} else {
 				GeneralPath ttestMark = new GeneralPath();
 				g2.setPaint(getItemOutlinePaint(row, column));
-
+				
 				float x_ = (float) bar.getCenterX();
 				float y_ = (float) bar.getCenterY();
 				if (isRef) {
@@ -588,13 +588,13 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 						float markSize = bds.getTtestMarkCircleSize();
 						float sxx = markSize;
 						float sxy = markSize;
-
+						
 						if (orientation == PlotOrientation.HORIZONTAL) {
 							g2.fill(StatisticalBarRenderer.getTTestShape(x_ - sxx, y_ - sxy, sxx * 2, sxy * 2));
 						} else {
 							g2.fill(StatisticalBarRenderer.getTTestShape(x_ - sxx, y_ - sxy, sxx * 2, sxy * 2));
 						}
-
+						
 						//
 						// ttestMark.moveTo(x_-sxx, y_);
 						// ttestMark.lineTo(x_, y_+sxy);
@@ -607,28 +607,28 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 			}
 		}
 		g2.setPaint(oldPaint);
-
+		
 		g2.fill(bar3dTop);
-
+		
 		if (isDrawBarOutline() && state.getBarWidth() > BAR_OUTLINE_WIDTH_THRESHOLD) {
 			g2.setStroke(getItemOutlineStroke(row, column));
 			g2.setPaint(getItemOutlinePaint(row, column));
 			g2.draw(bar);
-
+			
 			if (bar3dRight != null) {
 				g2.draw(bar3dRight);
 			}
-
+			
 			if (bar3dTop != null) {
 				g2.draw(bar3dTop);
 			}
 		}
-
+		
 		CategoryLabelGenerator generator = getLabelGenerator(row, column);
 		if (generator != null && isItemLabelVisible(row, column)) {
 			drawItemLabel(g2, dataset, row, column, plot, generator, bar, (transL0 < transL1));
 		}
-
+		
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -641,7 +641,7 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 				barOutline.lineTo((float) x3, (float) y2);
 				barOutline.lineTo((float) x2, (float) y3);
 				barOutline.closePath();
-
+				
 				String tip = null;
 				CategoryToolTipGenerator tipster = getToolTipGenerator(row, column);
 				if (tipster != null) {
@@ -656,35 +656,35 @@ public class BarRenderer3D extends BarRenderer implements Effect3D, Cloneable, P
 				entities.addEntity(entity);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 		SerialUtilities.writePaint(this.wallPaint, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.wallPaint = SerialUtilities.readPaint(stream);
 	}
-
+	
 }

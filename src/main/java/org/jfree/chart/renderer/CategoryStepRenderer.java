@@ -50,36 +50,36 @@ import org.jfree.util.PublicCloneable;
  */
 public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 		implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The stagger width. */
 	public static final int STAGGER_WIDTH = 5; // could make this configurable...
-
+	
 	/**
 	 * A flag that controls whether or not the steps for multiple series are
 	 * staggered.
 	 */
 	private boolean stagger = false;
-
+	
 	/** A working line - need to remove this. */
 	private transient Line2D line = new Line2D.Double(0.0, 0.0, 0.0, 0.0);
-
+	
 	/**
 	 * Creates a new renderer (stagger defaults to false).
 	 */
 	public CategoryStepRenderer() {
 		this(false);
 	}
-
+	
 	/**
 	 * Creates a new renderer.
 	 * 
 	 * @param stagger
-	 *            should the horizontal part of the step be staggered by series?
+	 *           should the horizontal part of the step be staggered by series?
 	 */
 	public CategoryStepRenderer(boolean stagger) {
 		this.stagger = stagger;
 	}
-
+	
 	/**
 	 * Returns the flag that controls whether the series steps are staggered.
 	 * 
@@ -88,35 +88,35 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 	public boolean getStagger() {
 		return stagger;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether or not the series steps are staggered.
 	 * 
 	 * @param shouldStagger
-	 *            a boolean.
+	 *           a boolean.
 	 */
 	public void setStagger(boolean shouldStagger) {
 		stagger = shouldStagger;
 	}
-
+	
 	/**
 	 * Draws the line.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param orientation
-	 *            the plot orientation.
+	 *           the plot orientation.
 	 * @param x0
-	 *            the x-coordinate for the start of the line.
+	 *           the x-coordinate for the start of the line.
 	 * @param y0
-	 *            the y-coordinate for the start of the line.
+	 *           the y-coordinate for the start of the line.
 	 * @param x1
-	 *            the x-coordinate for the end of the line.
+	 *           the x-coordinate for the end of the line.
 	 * @param y1
-	 *            the y-coordinate for the end of the line.
+	 *           the y-coordinate for the end of the line.
 	 */
 	protected void drawLine(Graphics2D g2, PlotOrientation orientation, double x0, double y0, double x1, double y1) {
-
+		
 		if (orientation == PlotOrientation.VERTICAL) {
 			line.setLine(x0, y0, x1, y1);
 			g2.draw(line);
@@ -126,38 +126,38 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 		}
 		// else unknown orientation (complain?)
 	}
-
+	
 	/**
 	 * Draw a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area in which the data is drawn.
+	 *           the area in which the data is drawn.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
-
+		
 		Number value = dataset.getValue(row, column);
 		if (value == null) {
 			return;
 		}
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		// current data point...
 		double x1s = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 		double x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
@@ -165,7 +165,7 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 		double y1 = rangeAxis.valueToJava2D(value.doubleValue(), dataArea, plot.getRangeAxisEdge());
 		g2.setPaint(getItemPaint(row, column));
 		g2.setStroke(getItemStroke(row, column));
-
+		
 		if (column != 0) {
 			Number previousValue = dataset.getValue(row, column - 1);
 			if (previousValue != null) {
@@ -185,12 +185,12 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 					x1s = x0e + xStagger;
 				}
 				drawLine(g2, orientation, x0e, y0, x1s, y0); // extend x0's flat bar
-
+				
 				drawLine(g2, orientation, x1s, y0, x1s, y1); // upright bar
 			}
 		}
 		drawLine(g2, orientation, x1s, y1, x1e, y1); // x1's flat bar
-
+		
 		// draw the item labels if there are any...
 		if (isItemLabelVisible(row, column)) {
 			drawItemLabel(g2, orientation, dataset, row, column, x1, y1, (value.doubleValue() < 0.0));
@@ -208,7 +208,7 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 		 * CategoryItemEntity entity = new CategoryItemEntity( shape, tip, url, dataset,
 		 * row, dataset.getColumnKey(column), column); entities.addEntity(entity); } }
 		 */
-
+		
 	}
-
+	
 }

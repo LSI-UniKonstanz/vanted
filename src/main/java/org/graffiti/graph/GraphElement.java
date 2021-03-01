@@ -21,20 +21,20 @@ import org.graffiti.attributes.Attributable;
  */
 public interface GraphElement extends Attributable, Comparable<GraphElement> {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the Graph the GraphElement belongs to.
 	 * 
 	 * @return the Graph the GraphElement belongs to.
 	 */
 	public Graph getGraph();
-
+	
 	public void setID(long id);
-
+	
 	public long getID();
-
+	
 	public int getViewID();
-
+	
 	public void setViewID(int id);
 }
 

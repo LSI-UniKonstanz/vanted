@@ -34,7 +34,7 @@ package org.jfree.data;
  * A dataset containing (key, value) data items.
  */
 public interface KeyedValuesDataset extends PieDataset {
-
+	
 	// no new methods required
-
+	
 }

@@ -24,43 +24,43 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 public class ChartAttributePlugin extends IPK_PluginAdapter implements EditorPlugin {
 	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
 	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-
+	
 	public ChartAttributePlugin() {
 		this.attributes = new Class[1];
 		this.attributes[0] = ChartColorAttribute.class;
-
+		
 		StringAttribute.putAttributeType(ChartColorAttribute.attributeName, ChartColorAttribute.class);
-
+		
 		valueEditComponents = new HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>>();
-
+		
 		valueEditComponents.put(ChartColorAttribute.class, ChartColorAttributeEditor.class);
 		valueEditComponents.put(LineModeAttribute.class, LineModeAttributeEditor.class);
 	}
-
+	
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
-
+	
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-
+	
 	public Mode[] getModes() {
 		return null;
 	}
-
+	
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-
+	
 	public Tool[] getTools() {
 		return null;
 	}
-
+	
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
-
+	
 	@Override
 	public InspectorTab[] getInspectorTabs() {
 		return null;

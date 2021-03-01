@@ -37,20 +37,20 @@ import java.io.Serializable;
  * An entity that represents an item within a legend.
  */
 public class LegendItemEntity extends ChartEntity implements Cloneable, Serializable {
-
+	
 	/** The series index. */
 	private int seriesIndex;
-
+	
 	/**
 	 * Creates a legend item entity.
 	 * 
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 */
 	public LegendItemEntity(Shape area) {
 		super(area);
 	}
-
+	
 	/**
 	 * Returns the series index.
 	 * 
@@ -59,22 +59,22 @@ public class LegendItemEntity extends ChartEntity implements Cloneable, Serializ
 	public int getSeriesIndex() {
 		return this.seriesIndex;
 	}
-
+	
 	/**
 	 * Sets the series index.
 	 * 
 	 * @param index
-	 *            the series index.
+	 *           the series index.
 	 */
 	public void setSeriesIndex(int index) {
 		this.seriesIndex = index;
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -90,16 +90,16 @@ public class LegendItemEntity extends ChartEntity implements Cloneable, Serializ
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone of the entity.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if there is a problem cloning the object.
+	 *            if there is a problem cloning the object.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

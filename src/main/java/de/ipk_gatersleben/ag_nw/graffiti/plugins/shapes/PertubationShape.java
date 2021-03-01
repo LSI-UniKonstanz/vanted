@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.Vector2d;
 
 public class PertubationShape extends RelativePolyShape {
-
+	
 	@Override
 	protected Collection<Vector2d> getRelativePointPositions() {
 		Collection<Vector2d> points = new ArrayList<Vector2d>();
@@ -20,5 +20,5 @@ public class PertubationShape extends RelativePolyShape {
 		points.add(new Vector2d(offA, 0.5));
 		return points;
 	}
-
+	
 }

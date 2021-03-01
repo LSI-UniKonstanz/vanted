@@ -21,7 +21,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
  */
 public class PatternGraffitiHelper implements HelperClass {
 	public final static String PATTERN_GRAFFITI_VERSION = "PatternGravisto V1.0";
-
+	
 	public static String getPluginStatusText() {
 		boolean patternTabsLoaded = GravistoService.getInstance()
 				.getPluginInstanceFromPluginDescription("IPK Pattern Tabs") != null;
@@ -32,7 +32,7 @@ public class PatternGraffitiHelper implements HelperClass {
 		boolean ipkEditToolsLoaded = te != null && te.getDescription().getAuthor().toUpperCase().indexOf("IPK") >= 0;
 		boolean ipkGraffitiViewLoaded = GravistoService.getInstance()
 				.getPluginInstanceFromPluginDescription("IPK Default View") != null;
-
+		
 		return "Plugin Status:\n" + "Pattern Control/Layouter: " + patternTabsLoaded + "\n"
 				+ "Enhanced SpringEmbedder: " + springEmbedderLoaded + "\n" + "Enhanced IPK Editing Tools: "
 				+ ipkEditToolsLoaded + "\n" + "Enhanced IPK Graffiti View: " + ipkGraffitiViewLoaded;

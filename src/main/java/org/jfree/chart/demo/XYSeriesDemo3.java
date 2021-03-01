@@ -52,12 +52,12 @@ import org.jfree.ui.TextAnchor;
  * {@link XYSeriesCollection} dataset.
  */
 public class XYSeriesDemo3 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYSeriesDemo3(final String title) {
 		super(title);
@@ -67,7 +67,7 @@ public class XYSeriesDemo3 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -87,12 +87,12 @@ public class XYSeriesDemo3 extends ApplicationFrame {
 		final XYSeriesCollection dataset = new XYSeriesCollection(series);
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(IntervalXYDataset dataset) {
@@ -108,7 +108,7 @@ public class XYSeriesDemo3 extends ApplicationFrame {
 		plot.addRangeMarker(target, Layer.BACKGROUND);
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -119,20 +119,20 @@ public class XYSeriesDemo3 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYSeriesDemo3 demo = new XYSeriesDemo3("XY Series Demo 3");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

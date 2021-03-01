@@ -28,18 +28,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLReactionHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_Reaction_Writer extends SBML_SBase_Writer {
-
+	
 	Logger logger = Logger.getLogger(SBML_Reaction_Writer.class);
-
+	
 	int localParameterCount = 1;
-
+	
 	/**
 	 * This method adds the reactions to a model
 	 * 
 	 * @param g
-	 *            contains the required data
+	 *           contains the required data
 	 * @param model
-	 *            the data will be added to this model
+	 *           the data will be added to this model
 	 */
 	public void addReactions(Graph g, Model model) {
 		Iterator<Node> itNodes = g.getNodesIterator();
@@ -48,9 +48,9 @@ public class SBML_Reaction_Writer extends SBML_SBase_Writer {
 			Node node = (Node) itNodes.next();
 			if (AttributeHelper.getSBMLrole(node).equals("reaction")) {
 				Reaction reaction = model.createReaction();
-
+				
 				addSBaseAttributes(reaction, node);
-
+				
 				if (reactionHelper.isSetID(node)) {
 					String id = reactionHelper.getID(node);
 					if (Reaction.isValidId(id, reaction.getLevel(), reaction.getVersion())) {
@@ -70,12 +70,12 @@ public class SBML_Reaction_Writer extends SBML_SBase_Writer {
 				if (reactionHelper.isSetCompartment(node)) {
 					reaction.setCompartment(reactionHelper.getCompartment(node));
 				}
-
+				
 				Iterator<Edge> itEdges = node.getEdgesIterator();
 				while (itEdges.hasNext()) {
 					Edge edge = itEdges.next();
 					if (AttributeHelper.getSBMLrole(edge).equals("reactant")) {
-
+						
 						SpeciesReference reactant = new SpeciesReference(model.getLevel(), model.getVersion());
 						if (reactionHelper.isSetConstant(edge)) {
 							reactant.setConstant(reactionHelper.getConstant(edge));
@@ -92,13 +92,13 @@ public class SBML_Reaction_Writer extends SBML_SBase_Writer {
 						if (reactionHelper.isSetSpecies(edge)) {
 							reactant.setSpecies(reactionHelper.getSpecies(edge));
 						}
-
+						
 						reaction.addReactant(reactant);
 						addSBaseAttributes(reactant, edge, SBML_Constants.SBML);
 					}
-
+					
 					if (AttributeHelper.getSBMLrole(edge).equals("product")) {
-
+						
 						SpeciesReference product = new SpeciesReference(model.getLevel(), model.getVersion());
 						if (reactionHelper.isSetConstant(edge)) {
 							product.setConstant(reactionHelper.getConstant(edge));
@@ -116,17 +116,17 @@ public class SBML_Reaction_Writer extends SBML_SBase_Writer {
 							String[] list = reactionHelper.getSpecies(edge).split(Pattern.quote("/"));
 							product.setSpecies(list[0].trim());
 						}
-
+						
 						reaction.addProduct(product);
-
+						
 						addSBaseAttributes(product, edge, SBML_Constants.SBML);
 						// productCount++;
 					}
-
+					
 					if (AttributeHelper.getSBMLrole(edge).equals("modifier")) {
 						ModifierSpeciesReference modifier = new ModifierSpeciesReference(model.getLevel(),
 								model.getVersion());
-
+						
 						if (reactionHelper.isSetID(edge)) {
 							modifier.setId(reactionHelper.getID(edge));
 						}
@@ -137,20 +137,20 @@ public class SBML_Reaction_Writer extends SBML_SBase_Writer {
 							String[] list = reactionHelper.getSpecies(edge).split(Pattern.quote("/"));
 							modifier.setSpecies(list[0].trim());
 						}
-
+						
 						reaction.addModifier(modifier);
-
+						
 						addSBaseAttributes(modifier, edge, SBML_Constants.SBML);
 					}
 				}
-
+				
 				ArrayList<String> kineticLawList = headlineHelper(node, SBML_Constants.SBML_KINETIC_LAW);
 				// kineticLawList has size 1 or 0
 				if (kineticLawList.size() > 0) {
 					KineticLaw kineticLaw = reaction.createKineticLaw();
 					KineticLawHelper kineticLawHelper = new KineticLawHelper(g, reactionHelper.getReactionClones());
 					addSBaseAttributes(kineticLaw, node);
-
+					
 					if (kineticLawHelper.isSetFunction(node)) {
 						try {
 							kineticLaw.setMath(ASTNode.parseFormula(kineticLawHelper.getFunction(node)));
@@ -158,11 +158,11 @@ public class SBML_Reaction_Writer extends SBML_SBase_Writer {
 							e.printStackTrace();
 						}
 					}
-
+					
 					while (AttributeHelper.hasAttribute(node, SBML_Constants.SBML_KINETIC_LAW,
 							new StringBuffer(SBML_Constants.LOCAL_PARAMETER).append(localParameterCount)
 									.append(SBML_Constants.LOCAL_PARAMETER_ID).toString())) {
-
+						
 						LocalParameter localParameter = null;
 						SBMLLocalParameter localParameterHelper = kineticLawHelper.addLocalParameter(g,
 								localParameterCount);
@@ -172,7 +172,7 @@ public class SBML_Reaction_Writer extends SBML_SBase_Writer {
 						} else {
 							localParameter = new LocalParameter();
 						}
-
+						
 						if (localParameterHelper.isSetName(node)) {
 							localParameter.setName(localParameterHelper.getName(node));
 						}
@@ -184,7 +184,7 @@ public class SBML_Reaction_Writer extends SBML_SBase_Writer {
 						}
 						kineticLaw.addLocalParameter(localParameter);
 						addSBaseAttributes(localParameter, node);
-
+						
 						localParameterCount++;
 					}
 					localParameterCount = 1;

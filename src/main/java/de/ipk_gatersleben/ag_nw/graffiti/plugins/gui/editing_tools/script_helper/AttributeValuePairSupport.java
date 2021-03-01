@@ -13,7 +13,7 @@ import java.util.Map;
  * @author klukas
  */
 public interface AttributeValuePairSupport {
-
+	
 	public void fillAttributeMap(Map<String, Object> attributeValueMap);
-
+	
 }

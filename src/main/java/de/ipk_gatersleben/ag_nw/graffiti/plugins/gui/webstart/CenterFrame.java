@@ -10,19 +10,19 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
 class CenterFrame extends Frame {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4980101102842597496L;
-
+	
 	/**
 	 * @param applicationName
 	 */
 	public CenterFrame(String applicationName) {
 		super(applicationName);
 	}
-
+	
 	public void centerFrame() {
 		/* Center the frame */
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -36,7 +36,7 @@ class CenterFrame extends Frame {
 		virtualBounds = virtualBounds.union(gc[0].getBounds());
 		// }
 		// }
-
+		
 		// Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 		Rectangle frameDim = getBounds();
 		setLocation((virtualBounds.width - frameDim.width) / 2, (virtualBounds.height - frameDim.height) / 2);

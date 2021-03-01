@@ -16,10 +16,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
  * writes on one edge a Stochiometry and reads it again
  * 
  * @author ricardo
- * 
  */
 public class StoichiometryWriter extends HelperClass {
-
+	
 	public void writeParticipantStoichiometry(Node physicalEntityNode, Node reactionNode, Edge e,
 			Set<Stoichiometry> Stoichiometry) {
 		String nodeRDFId = reactionNode.getAttribute(Messages.getString("UtilitySuperClassToGraph.82")).getValue()
@@ -36,14 +35,14 @@ public class StoichiometryWriter extends HelperClass {
 			}
 		}
 	}
-
+	
 	public void readParticipantStoichiometry(PhysicalEntity phys, Conversion interaction, Edge edge, Model model) {
 		String PhysicalEntityRDFId = getAttributeSecure(edge, Messages.getString("UtilitySuperClassToGraph.144"));
 		if (!getAttributeSecure(edge, Messages.getString("UtilitySuperClassToGraph.145")).matches("")) {
 			float coefficient = Float
 					.valueOf(getAttributeSecure(edge, Messages.getString("UtilitySuperClassToGraph.145")));
 			String RDFId = getAttributeSecure(edge, Messages.getString("UtilitySuperClassToGraph.146"));
-
+			
 			if (PhysicalEntityRDFId.matches(phys.getRDFId())) {
 				Stoichiometry stoich;
 				if (!model.containsID(RDFId)) {
@@ -55,7 +54,7 @@ public class StoichiometryWriter extends HelperClass {
 				}
 				interaction.addParticipantStoichiometry(stoich);
 			}
-
+			
 		}
 	}
 }

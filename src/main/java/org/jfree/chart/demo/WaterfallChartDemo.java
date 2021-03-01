@@ -53,26 +53,26 @@ import org.jfree.ui.Spacer;
  * A sample waterfall chart.
  */
 public class WaterfallChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new WaterFall Chart demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public WaterfallChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel.setEnforceFileExtensions(false);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset for the demo.
 	 * 
@@ -87,7 +87,7 @@ public class WaterfallChartDemo extends ApplicationFrame {
 		dataset.addValue(32.64, "Product 1", "Total Expense");
 		return dataset;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -98,28 +98,28 @@ public class WaterfallChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Returns the chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createWaterfallChart("Product Cost Breakdown", "Expense Category",
 				"Cost Per Unit", dataset, PlotOrientation.VERTICAL, true, true, false);
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setRangeGridlinesVisible(true);
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-
+		
 		final ValueAxis rangeAxis = plot.getRangeAxis();
-
+		
 		// create a custom tick unit collection...
 		final DecimalFormat formatter = new DecimalFormat("##,###");
 		formatter.setNegativePrefix("(");
@@ -136,24 +136,24 @@ public class WaterfallChartDemo extends ApplicationFrame {
 		standardUnits.add(new NumberTickUnit(2000, formatter));
 		standardUnits.add(new NumberTickUnit(5000, formatter));
 		rangeAxis.setStandardTickUnits(standardUnits);
-
+		
 		final BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
-
+		
 		final DecimalFormat labelFormatter = new DecimalFormat("$##,###.00");
 		labelFormatter.setNegativePrefix("(");
 		labelFormatter.setNegativeSuffix(")");
 		renderer.setLabelGenerator(new StandardCategoryLabelGenerator("{2}", labelFormatter));
 		renderer.setItemLabelsVisible(true);
-
+		
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final WaterfallChartDemo demo = new WaterfallChartDemo("Waterfall Chart Demo");
@@ -161,5 +161,5 @@ public class WaterfallChartDemo extends ApplicationFrame {
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 	}
-
+	
 }

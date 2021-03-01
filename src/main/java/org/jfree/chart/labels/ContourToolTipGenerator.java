@@ -38,16 +38,16 @@ import org.jfree.data.ContourDataset;
  * @author David M. O'Donnell
  */
 public interface ContourToolTipGenerator {
-
+	
 	/**
 	 * Generates a tooltip text item for a particular item within a series.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The tooltip text.
 	 */
 	public String generateToolTip(ContourDataset data, int item);
-
+	
 }

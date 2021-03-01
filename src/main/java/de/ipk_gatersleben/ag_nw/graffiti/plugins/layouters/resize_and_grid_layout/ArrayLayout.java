@@ -36,42 +36,42 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 public class ArrayLayout extends AbstractAlgorithm {
 	private double xDistance = 130;
 	private double yDistance = 130;
-
+	
 	private double targetSizeX = 120;
 	private double targetSizeY = 120;
-
+	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			return "Array XY";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Nodes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>Places nodes according to the X/Y position info, contained in KEGG Expression dataset files.";
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null)
 			errors.add("The graph instance may not be null.");
-
+		
 		if (!errors.isEmpty())
 			throw errors;
-
+		
 		if (graph.getNumberOfNodes() <= 0)
 			errors.add("The graph is empty. Cannot run layouter.");
 		else {
@@ -96,11 +96,11 @@ public class ArrayLayout extends AbstractAlgorithm {
 						+ "where each node is placed  at the position, specified for the particular<br>"
 						+ "datapoint in the data file.");
 		}
-
+		
 		if (!errors.isEmpty())
 			throw errors;
 	}
-
+	
 	/**
 	 * Computes node coordinates and sets these coordinates
 	 */
@@ -133,7 +133,7 @@ public class ArrayLayout extends AbstractAlgorithm {
 				}
 			}
 		}
-
+		
 		Vector2d min = NodeTools.getMinimumXY(validNodes, 1, 0, 0, false);
 		double xStart = min.x;
 		double yStart = min.y;
@@ -142,11 +142,11 @@ public class ArrayLayout extends AbstractAlgorithm {
 		for (Node n : validNodes) {
 			double xi = node2gridPos.get(n).x;
 			double yi = node2gridPos.get(n).y;
-
+			
 			/* Compute the new node coordinates */
 			double newX = xStart + xDistance * xi;
 			double newY = yStart + yDistance * yi;
-
+			
 			/* Set the new node coordinates */
 			nodes2newPositions.put(n, new Vector2d(newX, newY));
 			nodes2newSize.put(n, new Vector2d(targetSizeX, targetSizeY));
@@ -156,7 +156,7 @@ public class ArrayLayout extends AbstractAlgorithm {
 		MainFrame.showMessage("Info annotation found and processed from " + validNodes.size()
 				+ " nodes (out of working set of " + nodes.size() + " nodes)", MessageType.INFO);
 	}
-
+	
 	/**
 	 * Parameters
 	 * 
@@ -166,23 +166,23 @@ public class ArrayLayout extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		DoubleParameter xDistanceParam = new DoubleParameter("Horizonzal space",
 				"The distance between nodes in horizontal direction.");
-
+		
 		DoubleParameter yDistanceParam = new DoubleParameter("Vertical space",
 				"The distance between nodes in vertical direction.");
-
+		
 		DoubleParameter widthParam = new DoubleParameter("Node width", "The new width of the selected (or all) nodes.");
-
+		
 		DoubleParameter heightParam = new DoubleParameter("Node height", "The new height.");
-
+		
 		xDistanceParam.setDouble(xDistance - targetSizeX);
 		yDistanceParam.setDouble(yDistance - targetSizeY);
-
+		
 		widthParam.setDouble(targetSizeX);
 		heightParam.setDouble(targetSizeY);
-
+		
 		return new Parameter[] { xDistanceParam, yDistanceParam, widthParam, heightParam };
 	}
-
+	
 	/**
 	 * Sets parameters
 	 * 
@@ -199,7 +199,7 @@ public class ArrayLayout extends AbstractAlgorithm {
 		xDistance = p_xDistance + targetSizeX;
 		yDistance = p_yDistance + targetSizeY;
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;

@@ -42,39 +42,39 @@ import java.awt.Shape;
  * @author Jeremy Bowman
  */
 public interface ShapeFactory {
-
+	
 	/**
 	 * Returns a Shape that can be used in plotting data. Used in XYPlots.
 	 * 
 	 * @param series
-	 *            the index of the series.
+	 *           the index of the series.
 	 * @param item
-	 *            the index of the item.
+	 *           the index of the item.
 	 * @param x
-	 *            x-coordinate of the item.
+	 *           x-coordinate of the item.
 	 * @param y
-	 *            y-coordinate of the item.
+	 *           y-coordinate of the item.
 	 * @param scale
-	 *            the size.
+	 *           the size.
 	 * @return a Shape that can be used in plotting data.
 	 */
 	public Shape getShape(int series, int item, double x, double y, double scale);
-
+	
 	/**
 	 * Returns a Shape that can be used in plotting data. Used in CategoryPlots.
 	 * 
 	 * @param series
-	 *            the index of the series.
+	 *           the index of the series.
 	 * @param category
-	 *            the category.
+	 *           the category.
 	 * @param x
-	 *            x-coordinate of the category.
+	 *           x-coordinate of the category.
 	 * @param y
-	 *            y-coordinate of the category.
+	 *           y-coordinate of the category.
 	 * @param scale
-	 *            the size.
+	 *           the size.
 	 * @return a Shape that can be used in plotting data.
 	 */
 	public Shape getShape(int series, Object category, double x, double y, double scale);
-
+	
 }

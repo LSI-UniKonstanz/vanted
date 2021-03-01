@@ -16,14 +16,14 @@ package org.graffiti.attributes;
  */
 public class EdgeShapeAttribute extends StringAttribute {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new EdgeShapeAttribute object.
 	 * 
 	 * @param id
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param value
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public EdgeShapeAttribute(String id, String value) {
 		super(id, value);

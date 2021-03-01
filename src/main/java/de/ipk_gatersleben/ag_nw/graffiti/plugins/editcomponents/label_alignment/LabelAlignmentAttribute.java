@@ -7,26 +7,26 @@ import org.graffiti.attributes.StringAttribute;
 
 public class LabelAlignmentAttribute extends StringAttribute {
 	// private String myValue;
-
+	
 	public LabelAlignmentAttribute() {
 		super();
 	}
-
+	
 	public LabelAlignmentAttribute(String id) {
 		super(id);
 		setDescription("Label-alignment relative to a graph-node or edge"); // tooltip
 	}
-
+	
 	public LabelAlignmentAttribute(String id, String value) {
 		super(id);
 		setString(value);
 	}
-
+	
 	@Override
 	public void setDefaultValue() {
 		value = null;
 	}
-
+	
 	// @Override
 	// public void setString(String value) {
 	// assert value != null;
@@ -37,36 +37,36 @@ public class LabelAlignmentAttribute extends StringAttribute {
 	// myValue = value;
 	// callPostAttributeChanged(ae);
 	// }
-
+	
 	// @Override
 	// public String getString() {
 	// return myValue;
 	// }
-
+	
 	@Override
 	public Object getValue() {
 		return getString();
 	}
-
+	
 	@Override
 	public Object copy() {
 		return new LabelAlignmentAttribute(this.getId(), this.getString());
 	}
-
+	
 	@Override
 	public String toString(int n) {
 		return getSpaces(n) + getId() + " = \"" + getString() + "\"";
 	}
-
+	
 	@Override
 	public String toXMLString() {
 		return getStandardXML(getString());
 	}
-
+	
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
 		assert o != null;
-
+		
 		try {
 			setString((String) o);
 		} catch (ClassCastException cce) {

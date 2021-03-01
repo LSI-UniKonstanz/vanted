@@ -21,21 +21,21 @@ import org.graffiti.graphics.NodeLabelAttribute;
  * @see org.graffiti.util.GeneralUtils
  */
 public class GeneralEditorUtils {
-
+	
 	/**
 	 * Searches if the given Attributable already contains a LabelAttribute. If yes,
 	 * its value is set to the given String. If not, a new label attribute is
 	 * instantiated and its value set to the given value.
 	 * 
 	 * @param ge
-	 *            graphelement
+	 *           graphelement
 	 * @param val
-	 *            new label string
+	 *           new label string
 	 */
 	public static void setLabel(GraphElement ge, String val) {
 		LabelAttribute labelAttr = (LabelAttribute) GeneralUtils.searchForAttribute(ge.getAttribute(""),
 				LabelAttribute.class);
-
+		
 		if (labelAttr != null) {
 			labelAttr.setLabel(val);
 		} else { // no label found
@@ -50,16 +50,16 @@ public class GeneralEditorUtils {
 			ge.addAttribute(labelAttr, "");
 		}
 	}
-
+	
 	/**
 	 * Draws a rectangle on the given graphics context.
 	 * 
 	 * @param comp
-	 *            context to draw upon
+	 *           context to draw upon
 	 * @param p1
-	 *            first corner of the rectangle
+	 *           first corner of the rectangle
 	 * @param p2
-	 *            second corner of the rectangle
+	 *           second corner of the rectangle
 	 */
 	public static void paintSelectionRectangle(JComponent comp, Point2D p1, Point2D p2) {
 		int tlx;
@@ -70,13 +70,13 @@ public class GeneralEditorUtils {
 		tly = (int) Math.min(p1.getY(), p2.getY());
 		w = (int) Math.abs(p1.getX() - p2.getX());
 		h = (int) Math.abs(p1.getY() - p2.getY());
-
+		
 		Graphics g = comp.getGraphics();
 		comp.paintImmediately(comp.getVisibleRect());
-
+		
 		g.drawRect(tlx, tly, w, h);
-
+		
 		comp.revalidate();
 	}
-
+	
 }

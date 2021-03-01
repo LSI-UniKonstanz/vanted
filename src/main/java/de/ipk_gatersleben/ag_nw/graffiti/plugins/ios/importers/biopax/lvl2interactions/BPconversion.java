@@ -14,17 +14,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2utility.UtilityClassSelectorToGraph;
 
 public class BPconversion extends BPinteraction {
-
+	
 	public BPconversion(Graph Graph, Hashtable<String, Node> Nodes) {
 		super(Graph, Nodes);
 	}
-
+	
 	public void read(Level2Element i) {
 		conversion convers = (conversion) i;
-
+		
 		Set<physicalEntityParticipant> left = convers.getLEFT();
 		Set<physicalEntityParticipant> right = convers.getRIGHT();
-
+		
 		// set center node of the reaction
 		Node center = graph.addNode(centerAttribute);
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, convers);
@@ -35,10 +35,10 @@ public class BPconversion extends BPinteraction {
 			Edge e = addEdge(node, center);
 			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"),
 					Messages.getString("UtilitySuperClassToGraph.117"));
-
+			
 			sW.writeParticipantStoichiometry(node, center, e, convers.getLEFT());
 		}
-
+		
 		for (physicalEntityParticipant r : right) {
 			Node node = findORcreateNode(r);
 			Edge e = addEdge(center, node);

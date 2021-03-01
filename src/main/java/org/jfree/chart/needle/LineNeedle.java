@@ -44,43 +44,43 @@ import java.io.Serializable;
  * @author Bryan Scott
  */
 public class LineNeedle extends MeterNeedle implements Serializable {
-
+	
 	/**
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param rotate
-	 *            the rotation point.
+	 *           the rotation point.
 	 * @param angle
-	 *            the angle.
+	 *           the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
-
+		
 		Line2D shape = new Line2D.Double();
-
+		
 		double x = plotArea.getMinX() + (plotArea.getWidth() / 2);
 		shape.setLine(x, plotArea.getMinY(), x, plotArea.getMaxY());
-
+		
 		Shape s = shape;
-
+		
 		if ((rotate != null) && (angle != 0)) {
 			// / we have rotation
 			getTransform().setToRotation(angle, rotate.getX(), rotate.getY());
 			s = getTransform().createTransformedShape(s);
 		}
-
+		
 		defaultDisplay(g2, s);
-
+		
 	}
-
+	
 	/**
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -95,5 +95,5 @@ public class LineNeedle extends MeterNeedle implements Serializable {
 		}
 		return false;
 	}
-
+	
 }

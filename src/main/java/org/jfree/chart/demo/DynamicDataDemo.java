@@ -53,44 +53,44 @@ import org.jfree.ui.RefineryUtilities;
  * dynamically add (random) data by clicking on a button.
  */
 public class DynamicDataDemo extends ApplicationFrame implements ActionListener {
-
+	
 	/** The time series data. */
 	private TimeSeries series;
-
+	
 	/** The most recent value added. */
 	private double lastValue = 100.0;
-
+	
 	/**
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public DynamicDataDemo(final String title) {
-
+		
 		super(title);
 		this.series = new TimeSeries("Random Data", Millisecond.class);
 		final TimeSeriesCollection dataset = new TimeSeriesCollection(this.series);
 		final JFreeChart chart = createChart(dataset);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		final JButton button = new JButton("Add New Data Item");
 		button.setActionCommand("ADD_DATA");
 		button.addActionListener(this);
-
+		
 		final JPanel content = new JPanel(new BorderLayout());
 		content.add(chartPanel);
 		content.add(button, BorderLayout.SOUTH);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(content);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
@@ -104,7 +104,7 @@ public class DynamicDataDemo extends ApplicationFrame implements ActionListener 
 		axis.setRange(0.0, 200.0);
 		return result;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -115,12 +115,12 @@ public class DynamicDataDemo extends ApplicationFrame implements ActionListener 
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Handles a click on the button by adding new (random) data.
 	 * 
 	 * @param e
-	 *            the action event.
+	 *           the action event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals("ADD_DATA")) {
@@ -131,20 +131,20 @@ public class DynamicDataDemo extends ApplicationFrame implements ActionListener 
 			this.series.add(new Millisecond(), this.lastValue);
 		}
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final DynamicDataDemo demo = new DynamicDataDemo("Dynamic Data Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

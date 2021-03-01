@@ -27,16 +27,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 @Deprecated
 public class PluginInfoMenu extends DBE_EditorPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new GuiComponentsPlugin object.
 	 */
 	public PluginInfoMenu() {
-
+		
 		GravistoService.getInstance().getMainFrame().setTitle(DBEgravistoHelper.CLUSTER_ANALYSIS_VERSION);
-
+		
 		this.guiComponents = new GraffitiComponent[1];
-
+		
 		// menu example
 		this.guiComponents[0] = new MenuItemInfoDialog();
 	}

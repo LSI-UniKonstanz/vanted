@@ -49,89 +49,89 @@ import java.util.List;
  */
 public class CombinedDataset extends AbstractIntervalXYDataset
 		implements XYDataset, HighLowDataset, IntervalXYDataset, CombinationDataset {
-
+	
 	/** Storage for the datasets we combine. */
 	private List datasetInfo = new java.util.ArrayList();
-
+	
 	/**
 	 * Default constructor for an empty combination.
 	 */
 	public CombinedDataset() {
 		super();
 	}
-
+	
 	/**
 	 * Creates a CombinedDataset initialized with an array of SeriesDatasets.
 	 * 
 	 * @param data
-	 *            array of SeriesDataset that contains the SeriesDatasets to
-	 *            combine.
+	 *           array of SeriesDataset that contains the SeriesDatasets to
+	 *           combine.
 	 */
 	public CombinedDataset(final SeriesDataset[] data) {
 		add(data);
 	}
-
+	
 	/**
 	 * Adds one SeriesDataset to the combination. Listeners are notified of the
 	 * change.
 	 * 
 	 * @param data
-	 *            the SeriesDataset to add.
+	 *           the SeriesDataset to add.
 	 */
 	public void add(final SeriesDataset data) {
-
+		
 		fastAdd(data);
 		final DatasetChangeEvent event = new DatasetChangeEvent(this, this);
 		notifyListeners(event);
-
+		
 	}
-
+	
 	/**
 	 * Adds an array of SeriesDataset's to the combination. Listeners are notified
 	 * of the change.
 	 * 
 	 * @param data
-	 *            array of SeriesDataset to add
+	 *           array of SeriesDataset to add
 	 */
 	public void add(final SeriesDataset[] data) {
-
+		
 		for (int i = 0; i < data.length; i++) {
 			fastAdd(data[i]);
 		}
 		final DatasetChangeEvent event = new DatasetChangeEvent(this, this);
 		notifyListeners(event);
-
+		
 	}
-
+	
 	/**
 	 * Adds one series from a SeriesDataset to the combination. Listeners are
 	 * notified of the change.
 	 * 
 	 * @param data
-	 *            the SeriesDataset where series is contained
+	 *           the SeriesDataset where series is contained
 	 * @param series
-	 *            series to add
+	 *           series to add
 	 */
 	public void add(final SeriesDataset data, final int series) {
 		add(new SubSeriesDataset(data, series));
 	}
-
+	
 	/**
 	 * Fast add of a SeriesDataset. Does not notify listeners of the change.
 	 * 
 	 * @param data
-	 *            SeriesDataset to add
+	 *           SeriesDataset to add
 	 */
 	private void fastAdd(final SeriesDataset data) {
 		for (int i = 0; i < data.getSeriesCount(); i++) {
 			this.datasetInfo.add(new DatasetInfo(data, i));
 		}
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// From SeriesDataset
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
@@ -140,23 +140,23 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	public int getSeriesCount() {
 		return this.datasetInfo.size();
 	}
-
+	
 	/**
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the name of a series.
 	 */
 	public String getSeriesName(final int series) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return di.data.getSeriesName(di.series);
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// From XYDataset
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the X-value for the specified series and item.
 	 * <P>
@@ -164,16 +164,16 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * {@link XYDataset}.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the X-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return ((XYDataset) di.data).getXValue(di.series, item);
 	}
-
+	
 	/**
 	 * Returns the Y-value for the specified series and item.
 	 * <P>
@@ -181,16 +181,16 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * {@link XYDataset}.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the Y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int item) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return ((XYDataset) di.data).getYValue(di.series, item);
 	}
-
+	
 	/**
 	 * Returns the number of items in a series.
 	 * <P>
@@ -198,18 +198,18 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * {@link XYDataset}.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @return the number of items in a series.
 	 */
 	public int getItemCount(final int series) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return ((XYDataset) di.data).getItemCount(di.series);
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// From HighLowDataset
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the high-value for the specified series and item.
 	 * <P>
@@ -217,23 +217,23 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the high-value for the specified series and item.
 	 */
 	public Number getHighValue(final int series, final int item) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return ((HighLowDataset) di.data).getHighValue(di.series, item);
 	}
-
+	
 	/**
 	 * Returns the high-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The high-value.
 	 */
 	public double getHigh(int series, int item) {
@@ -244,7 +244,7 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the low-value for the specified series and item.
 	 * <P>
@@ -252,23 +252,23 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the low-value for the specified series and item.
 	 */
 	public Number getLowValue(final int series, final int item) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return ((HighLowDataset) di.data).getLowValue(di.series, item);
 	}
-
+	
 	/**
 	 * Returns the low-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The low-value.
 	 */
 	public double getLow(int series, int item) {
@@ -279,7 +279,7 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the open-value for the specified series and item.
 	 * <P>
@@ -287,23 +287,23 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the open-value for the specified series and item.
 	 */
 	public Number getOpenValue(final int series, final int item) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return ((HighLowDataset) di.data).getOpenValue(di.series, item);
 	}
-
+	
 	/**
 	 * Returns the open-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The open-value.
 	 */
 	public double getOpen(int series, int item) {
@@ -314,7 +314,7 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the close-value for the specified series and item.
 	 * <P>
@@ -322,23 +322,23 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the close-value for the specified series and item.
 	 */
 	public Number getCloseValue(final int series, final int item) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return ((HighLowDataset) di.data).getCloseValue(di.series, item);
 	}
-
+	
 	/**
 	 * Returns the close-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The close-value.
 	 */
 	public double getClose(int series, int item) {
@@ -349,7 +349,7 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the volume value for the specified series and item.
 	 * <P>
@@ -357,23 +357,23 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the volume value for the specified series and item.
 	 */
 	public Number getVolumeValue(final int series, final int item) {
 		final DatasetInfo di = getDatasetInfo(series);
 		return ((HighLowDataset) di.data).getVolumeValue(di.series, item);
 	}
-
+	
 	/**
 	 * Returns the volume-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The volume-value.
 	 */
 	public double getVolume(int series, int item) {
@@ -384,18 +384,18 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 		}
 		return result;
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// From IntervalXYDataset
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the starting X value for the specified series and item.
 	 */
 	public Number getStartXValue(final int series, final int item) {
@@ -406,14 +406,14 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 			return getXValue(series, item);
 		}
 	}
-
+	
 	/**
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the ending X value for the specified series and item.
 	 */
 	public Number getEndXValue(final int series, final int item) {
@@ -424,14 +424,14 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 			return getXValue(series, item);
 		}
 	}
-
+	
 	/**
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the starting Y value for the specified series and item.
 	 */
 	public Number getStartYValue(final int series, final int item) {
@@ -442,14 +442,14 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 			return getYValue(series, item);
 		}
 	}
-
+	
 	/**
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the index of the series of interest (zero-based).
+	 *           the index of the series of interest (zero-based).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the ending Y value for the specified series and item.
 	 */
 	public Number getEndYValue(final int series, final int item) {
@@ -460,11 +460,11 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 			return getYValue(series, item);
 		}
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// New methods from CombinationDataset
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the parent Dataset of this combination. If there is more than one
 	 * parent, or a child is found that is not a CombinationDataset, then returns
@@ -473,7 +473,7 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * @return the parent Dataset of this combination or <code>null</code>.
 	 */
 	public SeriesDataset getParent() {
-
+		
 		SeriesDataset parent = null;
 		for (int i = 0; i < this.datasetInfo.size(); i++) {
 			final SeriesDataset child = getDatasetInfo(i).data;
@@ -489,9 +489,9 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 			}
 		}
 		return parent;
-
+		
 	}
-
+	
 	/**
 	 * Returns a map or indirect indexing form our series into parent's series.
 	 * Prior to calling this method, the client should check getParent() to make
@@ -502,7 +502,7 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 	 * @see #getParent()
 	 */
 	public int[] getMap() {
-
+		
 		int[] map = null;
 		for (int i = 0; i < this.datasetInfo.size(); i++) {
 			final SeriesDataset child = getDatasetInfo(i).data;
@@ -518,20 +518,20 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 		}
 		return map;
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// New Methods
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the child position.
 	 * 
 	 * @param child
-	 *            the child dataset.
+	 *           the child dataset.
 	 * @return the position.
 	 */
 	public int getChildPosition(final Dataset child) {
-
+		
 		int n = 0;
 		for (int i = 0; i < this.datasetInfo.size(); i++) {
 			final SeriesDataset childDataset = getDatasetInfo(i).data;
@@ -550,29 +550,29 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 		}
 		return -1;
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// Private
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the DatasetInfo object associated with the series.
 	 * 
 	 * @param series
-	 *            the index of the series.
+	 *           the index of the series.
 	 * @return the DatasetInfo object associated with the series.
 	 */
 	private DatasetInfo getDatasetInfo(final int series) {
 		return (DatasetInfo) this.datasetInfo.get(series);
 	}
-
+	
 	/**
 	 * Joins two map arrays (int[]) together.
 	 * 
 	 * @param a
-	 *            the first array.
+	 *           the first array.
 	 * @param b
-	 *            the second array.
+	 *           the second array.
 	 * @return a copy of { a[], b[] }.
 	 */
 	private int[] joinMap(final int[] a, final int[] b) {
@@ -587,31 +587,31 @@ public class CombinedDataset extends AbstractIntervalXYDataset
 		System.arraycopy(b, 0, result, a.length, b.length);
 		return result;
 	}
-
+	
 	/**
 	 * Private class to store as pairs (SeriesDataset, series) for all combined
 	 * series.
 	 */
 	private class DatasetInfo {
-
+		
 		/** The dataset. */
 		private SeriesDataset data;
-
+		
 		/** The series. */
 		private int series;
-
+		
 		/**
 		 * Creates a new dataset info record.
 		 * 
 		 * @param data
-		 *            the dataset.
+		 *           the dataset.
 		 * @param series
-		 *            the series.
+		 *           the series.
 		 */
 		DatasetInfo(final SeriesDataset data, final int series) {
 			this.data = data;
 			this.series = series;
 		}
 	}
-
+	
 }

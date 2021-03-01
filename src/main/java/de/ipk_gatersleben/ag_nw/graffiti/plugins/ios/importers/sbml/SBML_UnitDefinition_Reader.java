@@ -22,15 +22,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_UnitDefinition_Reader {
-
+	
 	/**
 	 * Method reads in unit definitions and is called from class
 	 * SBML_XML_Reader.java
 	 * 
 	 * @param unitDefinitionList
-	 *            contains the unit definitions for the import
+	 *           contains the unit definitions for the import
 	 * @param g
-	 *            the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 */
 	public void addUnitDefinitions(ListOf<UnitDefinition> unitDefinitionList, Graph g) {
 		Iterator<UnitDefinition> itUnitDefinition = unitDefinitionList.iterator();
@@ -43,7 +43,7 @@ public class SBML_UnitDefinition_Reader {
 			String presentedHeadline = new StringBuffer("SBML Unit Definition ").append(unitCount).toString();
 			SBMLUnitDefinition unitDefinitionHelper = unitDefinitionHelperObject.addUnitDefinition(g, internHeadline,
 					presentedHeadline);
-
+			
 			String unitDefinitionID = unitDefinition.getId();
 			String unitDefinitionName = unitDefinition.getName();
 			String unitDefinitionSBOTerm = "";
@@ -54,7 +54,7 @@ public class SBML_UnitDefinition_Reader {
 			if (unitDefinition.isSetMetaId()) {
 				unitDefinitionMetaID = unitDefinition.getMetaId();
 			}
-
+			
 			if (unitDefinition.isSetNotes()) {
 				String notesString;
 				try {
@@ -111,7 +111,7 @@ public class SBML_UnitDefinition_Reader {
 					}
 					String kind = unit.getKind().getName();
 					String composedSubUnit = "(" + multiplier + " * 10^" + scale + " * " + kind + ")^" + exponent;
-
+					
 					unitHelper.setComposedSubUnit(composedSubUnit);
 					if (unit.isSetMetaId()) {
 						unitHelper.setMetaID(unit.getMetaId());
@@ -139,7 +139,7 @@ public class SBML_UnitDefinition_Reader {
 						}
 					}
 					ListOfSubUnits.add(composedSubUnit);
-
+					
 					subUnitCount++;
 				}
 				String composedUnit = "";
@@ -156,9 +156,9 @@ public class SBML_UnitDefinition_Reader {
 				}
 				unitHelper.setComposedUnit(composedUnit);
 			}
-
+			
 			unitCount++;
 		}
-
+		
 	}
 }

@@ -16,22 +16,22 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.io.AbstractOutputSerializer;
 
 public class PajekWriter extends AbstractOutputSerializer {
-
+	
 	@Override
 	public boolean validFor(Graph g) {
 		return true;
 	}
-
+	
 	public void write(OutputStream out, Graph g) throws IOException {
 		PrintStream stream = new PrintStream(out);
 		printGraph(stream, g);
 		stream.close();
 	}
-
+	
 	private void printGraph(PrintStream stream, Graph g) {
 		String WINDOWS_LINE_SEP = "\r\n"; // Pajek is a Windows Program ...
 		stream.print("*Vertices " + g.getNumberOfNodes() + WINDOWS_LINE_SEP);
-
+		
 		HashMap<Node, Long> node2pajekId = new HashMap<Node, Long>();
 		long pajekID = 1;
 		for (Node n : g.getNodes()) {
@@ -64,10 +64,10 @@ public class PajekWriter extends AbstractOutputSerializer {
 			stream.print(node2pajekId.get(n) + " \"" + AttributeHelper.getLabel(n, "") + "\" " + x + " " + y + "" + z
 					+ WINDOWS_LINE_SEP);
 		}
-
+		
 		boolean printArcs = true;
 		boolean printEdges = true;
-
+		
 		for (Edge e : g.getEdges()) {
 			if (e.isDirected()) {
 				if (printArcs) {
@@ -78,7 +78,7 @@ public class PajekWriter extends AbstractOutputSerializer {
 						+ WINDOWS_LINE_SEP);
 			}
 		}
-
+		
 		for (Edge e : g.getEdges()) {
 			if (!e.isDirected()) {
 				if (printEdges) {
@@ -90,7 +90,7 @@ public class PajekWriter extends AbstractOutputSerializer {
 			}
 		}
 	}
-
+	
 	private String getEdgeWeight(Edge e) {
 		Double weight = (Double) AttributeHelper.getAttributeValue(e, "pajek", "weight", null, 0d, false);
 		if (weight != null && !Double.isNaN(weight))
@@ -98,13 +98,13 @@ public class PajekWriter extends AbstractOutputSerializer {
 		else
 			return "";
 	}
-
+	
 	public String[] getExtensions() {
 		return new String[] { ".net" };
 	}
-
+	
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "Pajek .NET" };
 	}
-
+	
 }

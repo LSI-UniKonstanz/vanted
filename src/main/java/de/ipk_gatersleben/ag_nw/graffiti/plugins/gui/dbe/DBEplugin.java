@@ -48,10 +48,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.add_attributes.CalculateAt
 
 public class DBEplugin extends DBE_PluginAdapter implements EditorPlugin {
 	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents = new HashMap<>();
-
+	
 	public DBEplugin() {
 		valueEditComponents.put(JComponentParameter.class, JComponentParameterEditor.class);
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
 			/*
 			 * extensions = new Extension[] { new DBEextension() };
@@ -80,7 +80,7 @@ public class DBEplugin extends DBE_PluginAdapter implements EditorPlugin {
 					new CreateKeggReactionNetworkAlgorithm() };
 		}
 	}
-
+	
 	@Override
 	public ImageIcon getIcon() {
 		try {
@@ -93,33 +93,33 @@ public class DBEplugin extends DBE_PluginAdapter implements EditorPlugin {
 			return super.getIcon();
 		}
 	}
-
+	
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return null;
 	}
-
+	
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-
+	
 	public Mode[] getModes() {
 		return null;
 	}
-
+	
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-
+	
 	public Tool[] getTools() {
 		return null;
 	}
-
+	
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
-
+	
 	public InspectorTab[] getInspectorTabs() {
 		return null;
 	}
-
+	
 }

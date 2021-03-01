@@ -19,7 +19,7 @@ import org.graffiti.selection.SelectionEvent;
  * @version $Revision: 1.9 $
  */
 public class NodeTab extends AbstractTab {
-
+	
 	/**
 	 * 
 	 */
@@ -27,7 +27,7 @@ public class NodeTab extends AbstractTab {
 	private static NodeTab instance = null;
 	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a <code>NodeTab</code> and sets the title.
 	 */
@@ -36,38 +36,38 @@ public class NodeTab extends AbstractTab {
 		this.title = "Node";
 		NodeTab.instance = this;
 	}
-
+	
 	@Override
 	public String getEmptyDescription() {
 		return "Properties of active node selections are editable at this place.";
 	}
-
+	
 	public static NodeTab getInstance() {
 		return instance;
 	}
-
+	
 	public void selectionChanged(SelectionEvent e) {
 		attributables = e.getSelection().getNodes();
-
+		
 		if (isShowing() && !e.getSelection().isEmpty() && attributables.isEmpty()) {
 			EdgeTab.getInstance().selectionChanged(e);
 			MainFrame.getInstance().showAndHighlightSidePanelTab("Edge", false);
 			return;
 		}
-
+		
 		super.selectionChanged(e);
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Attributes";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

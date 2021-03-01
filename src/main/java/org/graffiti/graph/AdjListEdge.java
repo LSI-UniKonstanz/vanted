@@ -23,37 +23,37 @@ import org.graffiti.attributes.CollectionAttribute;
  */
 public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 	// ~ Static fields/initializers =============================================
-
+	
 	/** The logger for the current class. */
 	private static final Logger logger = Logger.getLogger(AdjListEdge.class.getName());
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/** The source <code>Node</code> of this <code>Edge</code>. */
 	private Node source;
-
+	
 	/** The target <code>Node</code> of this <code>Edge</code>. */
 	private Node target;
-
+	
 	/** Indicates whether the <code>Edge</code> is directed or not. */
 	private boolean directed;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new GraphEdge instance going from <code>Node</code> source to
 	 * <code>Node</code> target being directed or not.
 	 * 
 	 * @param graph
-	 *            the <code>Graph</code> the <code>Edge</code> belongs to.
+	 *           the <code>Graph</code> the <code>Edge</code> belongs to.
 	 * @param source
-	 *            the source of the <code>Edge</code>.
+	 *           the source of the <code>Edge</code>.
 	 * @param target
-	 *            the target of the <code>Edge</code>.
+	 *           the target of the <code>Edge</code>.
 	 * @param directed
-	 *            indicating if the <code>Edge</code> is directed or not.
+	 *           indicating if the <code>Edge</code> is directed or not.
 	 * @exception GraphElementNotFoundException
-	 *                of source or target cannot be found in the <code>Graph</code>.
+	 *               of source or target cannot be found in the <code>Graph</code>.
 	 */
 	protected AdjListEdge(Graph graph, Node source, Node target, boolean directed)
 			throws GraphElementNotFoundException {
@@ -62,24 +62,24 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 		this.target = target;
 		this.directed = directed;
 	}
-
+	
 	/**
 	 * Creates a new GraphEdge instance going from <code>Node</code> source to
 	 * <code>Node</code> target being directed or not.
 	 * 
 	 * @param graph
-	 *            the <code>Graph</code> the <code>Edge</code> belongs to.
+	 *           the <code>Graph</code> the <code>Edge</code> belongs to.
 	 * @param source
-	 *            the source of the <code>Edge</code>.
+	 *           the source of the <code>Edge</code>.
 	 * @param target
-	 *            the target of the <code>Edge</code>.
+	 *           the target of the <code>Edge</code>.
 	 * @param directed
-	 *            indicating if the <code>Edge</code> is directed or not.
+	 *           indicating if the <code>Edge</code> is directed or not.
 	 * @param coll
-	 *            the <code>CollectionAttribute</code> of the newly created
-	 *            <code>AdjListNode</code>.
+	 *           the <code>CollectionAttribute</code> of the newly created
+	 *           <code>AdjListNode</code>.
 	 * @exception GraphElementNotFoundException
-	 *                of source or target cannot be found in the <code>Graph</code>.
+	 *               of source or target cannot be found in the <code>Graph</code>.
 	 */
 	protected AdjListEdge(Graph graph, Node source, Node target, boolean directed, CollectionAttribute coll)
 			throws GraphElementNotFoundException {
@@ -88,9 +88,9 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 		this.target = target;
 		this.directed = directed;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns <code>true</code>, if the <code>Edge</code> is directed,
 	 * <code>false</code> otherwise.
@@ -101,7 +101,7 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 	public boolean isDirected() {
 		return directed;
 	}
-
+	
 	/**
 	 * Returns the source of the <code>Edge</code>.
 	 * 
@@ -110,7 +110,7 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 	public Node getSource() {
 		return source;
 	}
-
+	
 	/**
 	 * Returns the target of the <code>Edge</code>.
 	 * 
@@ -119,31 +119,31 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 	public Node getTarget() {
 		return target;
 	}
-
+	
 	/**
 	 * Sets the target of the current <code>Edge</code> to target. Target must be
 	 * contained in the same <code>Graph</code> as the <code>Edge</code>. Informs
 	 * the ListenerManager about the change.
 	 * 
 	 * @param target
-	 *            the target to be set.
+	 *           the target to be set.
 	 * @exception GraphElementNotFoundException
-	 *                if the target cannot be found in the <code>Graph</code>.
+	 *               if the target cannot be found in the <code>Graph</code>.
 	 * @exception IllegalArgumentException
-	 *                if target is not of type <code>AdjListNode</code>.
+	 *               if target is not of type <code>AdjListNode</code>.
 	 */
 	@Override
 	public void doSetTarget(Node target) throws GraphElementNotFoundException, IllegalArgumentException {
 		assert target != null;
-
+		
 		if (target instanceof AdjListNode) {
 			if (this.getGraph() == target.getGraph()) {
 				// removing the edge from the old target node
 				((AdjListNode) this.getTarget()).removeInEdge(this);
-
+				
 				// setting the new target
 				this.target = target;
-
+				
 				// adding the edge to the new target node
 				((AdjListNode) target).addInEdge(this);
 			} else {
@@ -153,7 +153,7 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 			throw new IllegalArgumentException("The node is not of type 'AdjListNode' which the edge " + "requires");
 		}
 	}
-
+	
 	/**
 	 * Swaps source and target of the edge.
 	 */
@@ -165,13 +165,13 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 		logger.finest("setting the new target");
 		this.setTarget(oldSource);
 	}
-
+	
 	/**
 	 * Determines if an <code>Edge</code> is directed (<code>true</code>) or not.
 	 * 
 	 * @param directed
-	 *            <code>true</code>, if the <code>Edge</code> is destined to be
-	 *            directed, <code>false</code> otherwise.
+	 *           <code>true</code>, if the <code>Edge</code> is destined to be
+	 *           directed, <code>false</code> otherwise.
 	 */
 	@Override
 	protected void doSetDirected(boolean directed) {
@@ -186,31 +186,31 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 			target.addInEdge(this);
 		}
 	}
-
+	
 	/**
 	 * Sets the source of the current <code>Edge</code> to <code>source</code>.
 	 * <code>source</code> must be contained in the same <code>Graph</code> as the
 	 * current <code>Edge</code>.
 	 * 
 	 * @param source
-	 *            the source to be set.
+	 *           the source to be set.
 	 * @exception GraphElementNotFoundException
-	 *                if source cannot be found in the <code>Graph</code>.
+	 *               if source cannot be found in the <code>Graph</code>.
 	 * @exception IllegalArgumentException
-	 *                if source is not of type <code>AdjListNode</code>
+	 *               if source is not of type <code>AdjListNode</code>
 	 */
 	@Override
 	protected void doSetSource(Node source) throws GraphElementNotFoundException, IllegalArgumentException {
 		assert source != null;
-
+		
 		if (source instanceof AdjListNode) {
 			if (this.getGraph() == source.getGraph()) {
 				// removing the edge in the old source node
 				((AdjListNode) this.getSource()).removeOutEdge(this);
-
+				
 				// setting the new source
 				this.source = source;
-
+				
 				// adding the edge to the new source node
 				((AdjListNode) source).addOutEdge(this);
 			} else {
@@ -220,11 +220,11 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 			throw new IllegalArgumentException("The node is not of type 'AdjListNode' which the edge " + "requires");
 		}
 	}
-
+	
 	public void setGraphToNull() {
 		graph = null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -233,12 +233,12 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 	public void setGraph(Graph graph) {
 		this.graph = graph;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Edge ID=" + getID();
 	}
-
+	
 	public int compareTo(GraphElement arg0) {
 		return Integer.valueOf(getViewID()).compareTo(arg0.getViewID());
 	}

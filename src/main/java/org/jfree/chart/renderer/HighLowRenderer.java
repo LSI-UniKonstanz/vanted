@@ -77,13 +77,13 @@ import org.jfree.util.PublicCloneable;
  */
 public class HighLowRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** A flag that controls whether the open ticks are drawn. */
 	private boolean drawOpenTicks;
-
+	
 	/** A flag that controls whether the close ticks are drawn. */
 	private boolean drawCloseTicks;
-
+	
 	/**
 	 * The default constructor.
 	 */
@@ -92,7 +92,7 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 		this.drawOpenTicks = true;
 		this.drawCloseTicks = true;
 	}
-
+	
 	/**
 	 * Returns the flag that controls whether open ticks are drawn.
 	 * 
@@ -101,19 +101,19 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 	public boolean getDrawOpenTicks() {
 		return this.drawOpenTicks;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether open ticks are drawn, and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param draw
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setDrawOpenTicks(boolean draw) {
 		this.drawOpenTicks = draw;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the flag that controls whether close ticks are drawn.
 	 * 
@@ -122,51 +122,51 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 	public boolean getDrawCloseTicks() {
 		return this.drawCloseTicks;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether close ticks are drawn, and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param draw
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setDrawCloseTicks(boolean draw) {
 		this.drawCloseTicks = draw;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the plot is being drawn.
+	 *           the area within which the plot is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		// first make sure we have a valid x value...
 		Number x = dataset.getXValue(series, item);
 		if (x == null) {
@@ -177,25 +177,25 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 			return; // the x value is not within the axis range
 		}
 		double xx = domainAxis.valueToJava2D(xdouble, dataArea, plot.getDomainAxisEdge());
-
+		
 		// setup for collecting optional entity info...
 		Shape entityArea = null;
 		EntityCollection entities = null;
 		if (info != null) {
 			entities = info.getOwner().getEntityCollection();
 		}
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		RectangleEdge location = plot.getRangeAxisEdge();
-
+		
 		Paint p = getItemPaint(series, item);
 		Stroke s = getItemStroke(series, item);
 		g2.setPaint(p);
 		g2.setStroke(s);
-
+		
 		if (dataset instanceof HighLowDataset) {
 			HighLowDataset hld = (HighLowDataset) dataset;
-
+			
 			Number yHigh = hld.getHighValue(series, item);
 			Number yLow = hld.getLowValue(series, item);
 			if (yHigh != null && yLow != null) {
@@ -211,7 +211,7 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 							Math.abs(yyHigh - yyLow));
 				}
 			}
-
+			
 			double delta = 2.0;
 			if (domainAxis.isInverted()) {
 				delta = -delta;
@@ -227,7 +227,7 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 					}
 				}
 			}
-
+			
 			if (getDrawCloseTicks()) {
 				Number yClose = hld.getCloseValue(series, item);
 				if (yClose != null) {
@@ -239,7 +239,7 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 					}
 				}
 			}
-
+			
 		} else {
 			// not a HighLowDataset, so just draw a line connecting this point with the
 			// previous
@@ -261,7 +261,7 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 				}
 			}
 		}
-
+		
 		// add an entity for the item...
 		if (entities != null) {
 			String tip = null;
@@ -276,18 +276,18 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 			XYItemEntity entity = new XYItemEntity(entityArea, dataset, series, item, tip, url);
 			entities.addEntity(entity);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

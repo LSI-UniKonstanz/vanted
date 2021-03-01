@@ -24,7 +24,7 @@ import org.xml.sax.InputSource;
  */
 
 public class XGMMLDTDResolver implements EntityResolver {
-
+	
 	/**
 	 * Resolves the entity.
 	 * 
@@ -37,7 +37,7 @@ public class XGMMLDTDResolver implements EntityResolver {
 			return new InputSource(
 					new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("xgmml.dtd"))));
 		}
-
+		
 		return null;
 	}
 }

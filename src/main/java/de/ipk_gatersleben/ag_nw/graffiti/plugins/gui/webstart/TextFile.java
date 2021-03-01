@@ -29,12 +29,12 @@ import java.util.Arrays;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.database.dbe.ProgressManager;
 
 public class TextFile extends ArrayList<String> {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5218439216820211025L;
-
+	
 	/**
 	 * Tools to read and write files as single strings:
 	 * 
@@ -53,7 +53,7 @@ public class TextFile extends ArrayList<String> {
 		in.close();
 		return sb.toString();
 	}
-
+	
 	public static String read(InputStream stream, int maxLines) throws IOException {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
@@ -69,7 +69,7 @@ public class TextFile extends ArrayList<String> {
 		in.close();
 		return sb.toString();
 	}
-
+	
 	public static String read(Reader reader) throws IOException {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader in = new BufferedReader(reader);
@@ -81,7 +81,7 @@ public class TextFile extends ArrayList<String> {
 		in.close();
 		return sb.toString();
 	}
-
+	
 	public static String read(String fileName) throws IOException {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
@@ -93,7 +93,7 @@ public class TextFile extends ArrayList<String> {
 		in.close();
 		return sb.toString();
 	}
-
+	
 	public static String read(File f) throws IOException {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
@@ -105,27 +105,27 @@ public class TextFile extends ArrayList<String> {
 		in.close();
 		return sb.toString();
 	}
-
+	
 	public TextFile() {
-
+		
 	}
-
+	
 	public TextFile(URL fileURL) throws IOException {
 		super(Arrays.asList(read(fileURL).split("\n")));
 	}
-
+	
 	public TextFile(Reader reader) throws IOException {
 		super(Arrays.asList(read(reader).split("\n")));
 	}
-
+	
 	public TextFile(InputStream reader, int maxLines) throws IOException {
 		super(Arrays.asList(read(reader, maxLines).split("\n")));
 	}
-
+	
 	public TextFile(String fileName) throws IOException {
 		super(Arrays.asList(read(fileName).split("\n")));
 	}
-
+	
 	public TextFile(URL fileURL, boolean printFile) throws IOException {
 		this(fileURL);
 		if (printFile) {
@@ -134,47 +134,47 @@ public class TextFile extends ArrayList<String> {
 			}
 		}
 	}
-
+	
 	public void write(String fileName) throws IOException {
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 		for (int i = 0; i < size(); i++)
 			out.println(get(i));
 		out.close();
 	}
-
+	
 	public void write(File file) throws IOException {
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 		for (int i = 0; i < size(); i++)
 			out.println(get(i));
 		out.close();
 	}
-
+	
 	public static void write(String fileName, String text) throws IOException {
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 		out.print(text);
 		out.close();
 	}
-
+	
 	public static void writeE(String fileName, String text, String encoding) throws IOException {
 		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), encoding));
 		out.write(text);
 		out.close();
 	}
-
+	
 	public void writeE(String fileName, String encoding) throws IOException {
 		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), encoding));
 		for (int i = 0; i < size(); i++)
 			out.write(get(i) + System.getProperty("line.separator"));
 		out.close();
 	}
-
+	
 	public void writeE(File file, String encoding) throws IOException {
 		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding));
 		for (int i = 0; i < size(); i++)
 			out.write(get(i) + System.getProperty("line.separator"));
 		out.close();
 	}
-
+	
 	public static void write(String fileName, String text, ProgressManager pm) throws IOException {
 		pm.setStatus(83, "Create Cache (Writer)");
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));

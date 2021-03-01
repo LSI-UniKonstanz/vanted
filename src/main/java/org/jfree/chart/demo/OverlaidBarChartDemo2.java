@@ -52,12 +52,12 @@ import org.jfree.ui.RefineryUtilities;
  * Another demo of an overlaid bar chart.
  */
 public class OverlaidBarChartDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public OverlaidBarChartDemo2(final String title) {
 		super(title);
@@ -66,14 +66,14 @@ public class OverlaidBarChartDemo2 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart() {
-
+		
 		// create the first dataset...
 		DefaultCategoryDataset dataset1 = new DefaultCategoryDataset();
 		dataset1.addValue(1.0, "S1", "Category 1");
@@ -86,21 +86,21 @@ public class OverlaidBarChartDemo2 extends ApplicationFrame {
 		dataset1.addValue(6.0, "S2", "Category 3");
 		dataset1.addValue(8.0, "S2", "Category 4");
 		dataset1.addValue(4.0, "S2", "Category 5");
-
+		
 		// create the first plot...
 		final CategoryItemRenderer renderer = new BarRenderer();
 		renderer.setToolTipGenerator(new StandardCategoryToolTipGenerator());
 		final CategoryPlot plot = new CategoryPlot();
 		plot.setDataset(dataset1);
 		plot.setRenderer(renderer);
-
+		
 		plot.setDomainAxis(new CategoryAxis("Category"));
 		plot.setRangeAxis(new NumberAxis("Value"));
-
+		
 		plot.setOrientation(PlotOrientation.VERTICAL);
 		plot.setRangeGridlinesVisible(true);
 		plot.setDomainGridlinesVisible(true);
-
+		
 		DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
 		dataset2.addValue(6.0, "Prior 1", "Category 1");
 		dataset2.addValue(7.0, "Prior 1", "Category 2");
@@ -112,24 +112,24 @@ public class OverlaidBarChartDemo2 extends ApplicationFrame {
 		dataset2.addValue(1.0, "Prior 2", "Category 3");
 		dataset2.addValue(3.0, "Prior 2", "Category 4");
 		dataset2.addValue(2.0, "Prior 2", "Category 5");
-
+		
 		final CategoryItemRenderer renderer2 = new LevelRenderer();
 		renderer2.setSeriesStroke(0, new BasicStroke(2.0f));
 		renderer2.setSeriesStroke(1, new BasicStroke(2.0f));
 		plot.setDataset(1, dataset2);
 		plot.setRenderer(1, renderer2);
 		plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
-
+		
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		final JFreeChart chart = new JFreeChart(plot);
 		chart.setTitle("Overlaid Bar Chart");
 		chart.setLegend(new StandardLegend());
 		chart.setBackgroundPaint(Color.white);
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -140,20 +140,20 @@ public class OverlaidBarChartDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final OverlaidBarChartDemo2 demo = new OverlaidBarChartDemo2("Overlaid Bar Chart Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

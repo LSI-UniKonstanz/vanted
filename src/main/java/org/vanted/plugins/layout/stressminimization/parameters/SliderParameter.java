@@ -6,11 +6,10 @@ import javax.swing.JLabel;
 
 import org.graffiti.plugin.parameter.AbstractSingleParameter;
 
-public class SliderParameter extends AbstractSingleParameter{
-
+public class SliderParameter extends AbstractSingleParameter {
+	
 	private SliderOptions pars;
 	
-
 	//===========================
 	// Constructors
 	//===========================
@@ -33,7 +32,6 @@ public class SliderParameter extends AbstractSingleParameter{
 		setValue(def);
 	}
 	
-
 	//===========================
 	// Getters and Setters
 	//===========================
@@ -41,7 +39,7 @@ public class SliderParameter extends AbstractSingleParameter{
 	public SliderOptions getSliderOptions() {
 		return pars;
 	}
-
+	
 	@Override
 	public void setValue(Object val) {
 		Double doubleValue;

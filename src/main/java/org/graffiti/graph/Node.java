@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public interface Node extends GraphElement {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Union of <code>getDirectedInEdges()</code> and
 	 * <code>getUndirectedEdges() </code>.
@@ -35,7 +35,7 @@ public interface Node extends GraphElement {
 	 * @return Collection
 	 */
 	public Collection<Edge> getAllInEdges();
-
+	
 	/**
 	 * Union of <code>getInNeighbors()</code> and
 	 * <code>getUndirectedNeighbors() </code>.
@@ -43,7 +43,7 @@ public interface Node extends GraphElement {
 	 * @return Collection
 	 */
 	public Collection<Node> getAllInNeighbors();
-
+	
 	/**
 	 * Union of <code>getDirectedOutEdges()</code> and
 	 * <code>getUndirectedEdges() </code>.
@@ -51,7 +51,7 @@ public interface Node extends GraphElement {
 	 * @return Collection
 	 */
 	public Collection<Edge> getAllOutEdges();
-
+	
 	/**
 	 * Union of <code>getOutNeighbors()</code> and
 	 * <code>getUndirectedNeighbors()</code>.
@@ -59,7 +59,7 @@ public interface Node extends GraphElement {
 	 * @return Collection
 	 */
 	public Collection<Node> getAllOutNeighbors();
-
+	
 	/**
 	 * Returns a collection containing the directed ingoing edges of the
 	 * <code>Node</code>.
@@ -68,7 +68,7 @@ public interface Node extends GraphElement {
 	 *         <code>Node</code>.
 	 */
 	public Collection<Edge> getDirectedInEdges();
-
+	
 	/**
 	 * Returns an iterator containing the directed ingoing edges of the
 	 * <code>Node</code>.
@@ -77,7 +77,7 @@ public interface Node extends GraphElement {
 	 *         <code>Node</code>.
 	 */
 	public Iterator<Edge> getDirectedInEdgesIterator();
-
+	
 	/**
 	 * Returns a collection containing the outgoing directed edges of the
 	 * <code>Node</code>.
@@ -86,7 +86,7 @@ public interface Node extends GraphElement {
 	 *         <code>Node</code>.
 	 */
 	public Collection<Edge> getDirectedOutEdges();
-
+	
 	/**
 	 * Returns an iterator containing the outgoing directed edges of the
 	 * <code>Node</code>.
@@ -95,7 +95,7 @@ public interface Node extends GraphElement {
 	 *         <code>Node</code>.
 	 */
 	public Iterator<Edge> getDirectedOutEdgesIterator();
-
+	
 	/**
 	 * Returns a collection containing all the ingoing and outgoing directed and
 	 * undirected edges of the current <code>Node</code>. Ingoing and outgoing edges
@@ -105,7 +105,7 @@ public interface Node extends GraphElement {
 	 *         undirected edges of the current <code>Node</code>.
 	 */
 	public Collection<Edge> getEdges();
-
+	
 	/**
 	 * Returns an iterator containing all the ingoing and outgoing directed and
 	 * undirected edges of the current <code>Node</code>. Ingoing and outgoing edges
@@ -115,7 +115,7 @@ public interface Node extends GraphElement {
 	 *         undirected edges of the current <code>Node</code>.
 	 */
 	public Iterator<Edge> getEdgesIterator();
-
+	
 	/**
 	 * Returns the in-degree of the current <code>Node</code>. The in-degree is
 	 * defined as the number of ingoing, directed edges plus the number of
@@ -124,7 +124,7 @@ public interface Node extends GraphElement {
 	 * @return the in-degree of the current <code>Node</code>.
 	 */
 	public int getInDegree();
-
+	
 	/**
 	 * Returns a collection containing the neighbor nodes belonging to incoming
 	 * edges. Note that the number of Elements returned by this function might be
@@ -136,14 +136,14 @@ public interface Node extends GraphElement {
 	 *         edges.
 	 */
 	public Set<Node> getInNeighbors();
-
+	
 	/**
 	 * Returns an iterator over the neighbor nodes belonging to incoming edges.
 	 * 
 	 * @return a Iterator over the neighbor nodes belonging to incoming edges.
 	 */
 	public Iterator<Node> getInNeighborsIterator();
-
+	
 	/**
 	 * Returns a collection containing all the neighbor nodes of the current
 	 * <code>Node</code>. A neighbor <code>Node</code> is either the source or the
@@ -154,7 +154,7 @@ public interface Node extends GraphElement {
 	 *         <code>Node</code>.
 	 */
 	public Set<Node> getNeighbors();
-
+	
 	/**
 	 * Returns an interator over the neighbor nodes of the current
 	 * <code>Node</code>. A neighbor <code>Node</code> is either the source or the
@@ -163,7 +163,7 @@ public interface Node extends GraphElement {
 	 * @return an iterator over the neighbor nodes of the current <code>Node</code>.
 	 */
 	public Iterator<Node> getNeighborsIterator();
-
+	
 	/**
 	 * Returns the out-degree of the current <code>Node</code>. The out-degree is
 	 * defined as the number of outgoing, directed edges plus the number of
@@ -172,7 +172,7 @@ public interface Node extends GraphElement {
 	 * @return the out-degree of the current <code>Node</code>.
 	 */
 	public int getOutDegree();
-
+	
 	/**
 	 * Returns a collection containing all the neighbors of the current
 	 * <code>Node</code> which are connected by an outgoing <code>Edge</code>. Note
@@ -185,7 +185,7 @@ public interface Node extends GraphElement {
 	 *         <code>Node</code> connected by an outgoing <code>Edge</code>.
 	 */
 	public Set<Node> getOutNeighbors();
-
+	
 	/**
 	 * Returns an iterator containing all the neighbors of the current
 	 * <code>Node</code> which are connected by an outgoing <code>Edge</code>.
@@ -194,7 +194,7 @@ public interface Node extends GraphElement {
 	 *         current <code>Node</code> connected by an outgoing <code>Edge</code>.
 	 */
 	public Iterator<Node> getOutNeighborsIterator();
-
+	
 	/**
 	 * Returns a collection containing the undirected ingoing and outgoing edges of
 	 * the <code>Node</code>.
@@ -203,14 +203,14 @@ public interface Node extends GraphElement {
 	 *         the <code>Node</code>.
 	 */
 	public Collection<Edge> getUndirectedEdges();
-
+	
 	/**
 	 * Returns an iterator containing all undirected edges of the <code>Node</code>.
 	 * 
 	 * @return an iterator containing all undirected edges of the <code>Node</code>.
 	 */
 	public Iterator<Edge> getUndirectedEdgesIterator();
-
+	
 	/**
 	 * Returns a collection containing all the neighbors which are connected to the
 	 * current <code>Node</code> by an undirected <code>Edge</code>.
@@ -219,14 +219,14 @@ public interface Node extends GraphElement {
 	 *         current <code>Node</code> by an undirected <code>Edge</code>.
 	 */
 	public Collection<Node> getUndirectedNeighbors();
-
+	
 	public Iterator<Node> getUndirectedNeighborsIterator();
-
+	
 	/**
 	 * @param graph
 	 */
 	public void setGraph(Graph graph);
-
+	
 	/**
 	 * Returns the degree of a node
 	 * 

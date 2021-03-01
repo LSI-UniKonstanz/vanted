@@ -83,80 +83,80 @@ import org.jfree.util.ObjectUtils;
  * @author David Berry
  */
 public class TextTitle extends Title implements Serializable, Cloneable {
-
+	
 	/** The default font. */
 	public static final Font DEFAULT_FONT = new Font("SansSerif", Font.BOLD, 12);
-
+	
 	/** The default text color. */
 	public static final Paint DEFAULT_TEXT_PAINT = Color.black;
-
+	
 	/** The title text. */
 	private String text;
-
+	
 	/** The font used to display the title. */
 	private Font font;
-
+	
 	/** The paint used to display the title text. */
 	private transient Paint paint;
-
+	
 	/** The background paint. */
 	private transient Paint backgroundPaint;
-
+	
 	/** Access to logging facilities. */
 	protected static final LogContext logger = Log.createContext(TextTitle.class);
-
+	
 	/**
 	 * Creates a new title, using default attributes where necessary.
 	 */
 	public TextTitle() {
 		this("");
 	}
-
+	
 	/**
 	 * Creates a new title, using default attributes where necessary.
 	 * 
 	 * @param text
-	 *            the title text.
+	 *           the title text.
 	 */
 	public TextTitle(String text) {
-
+		
 		this(text, TextTitle.DEFAULT_FONT, TextTitle.DEFAULT_TEXT_PAINT, Title.DEFAULT_POSITION,
 				Title.DEFAULT_HORIZONTAL_ALIGNMENT, Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new title, using default attributes where necessary.
 	 * 
 	 * @param text
-	 *            the title text.
+	 *           the title text.
 	 * @param font
-	 *            the title font.
+	 *           the title font.
 	 */
 	public TextTitle(String text, Font font) {
-
+		
 		this(text, font, TextTitle.DEFAULT_TEXT_PAINT, Title.DEFAULT_POSITION, Title.DEFAULT_HORIZONTAL_ALIGNMENT,
 				Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new title, using default attributes where necessary.
 	 * 
 	 * @param text
-	 *            the title text.
+	 *           the title text.
 	 * @param font
-	 *            the title font.
+	 *           the title font.
 	 * @param paint
-	 *            the title color.
+	 *           the title color.
 	 */
 	public TextTitle(String text, Font font, Paint paint) {
-
+		
 		this(text, font, paint, Title.DEFAULT_POSITION, Title.DEFAULT_HORIZONTAL_ALIGNMENT,
 				Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new title, using default attributes where necessary.
 	 * <P>
@@ -164,19 +164,19 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * defined in the Title class.
 	 * 
 	 * @param text
-	 *            the title text.
+	 *           the title text.
 	 * @param font
-	 *            the title font.
+	 *           the title font.
 	 * @param horizontalAlignment
-	 *            the horizontal alignment.
+	 *           the horizontal alignment.
 	 */
 	public TextTitle(String text, Font font, HorizontalAlignment horizontalAlignment) {
-
+		
 		this(text, font, TextTitle.DEFAULT_TEXT_PAINT, Title.DEFAULT_POSITION, horizontalAlignment,
 				Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new title.
 	 * <p>
@@ -184,25 +184,25 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * constants defined in the Title class.
 	 * 
 	 * @param text
-	 *            the text for the title (<code>null</code> not permitted).
+	 *           the text for the title (<code>null</code> not permitted).
 	 * @param font
-	 *            the font (<code>null</code> not permitted).
+	 *           the font (<code>null</code> not permitted).
 	 * @param paint
-	 *            the color (<code>null</code> not permitted).
+	 *           the color (<code>null</code> not permitted).
 	 * @param position
-	 *            the title position (<code>null</code> not permitted).
+	 *           the title position (<code>null</code> not permitted).
 	 * @param horizontalAlignment
-	 *            the horizontal alignment (<code>null</code> not permitted).
+	 *           the horizontal alignment (<code>null</code> not permitted).
 	 * @param verticalAlignment
-	 *            the vertical alignment (<code>null</code> not permitted).
+	 *           the vertical alignment (<code>null</code> not permitted).
 	 * @param spacer
-	 *            the space to leave around the outside of the title.
+	 *           the space to leave around the outside of the title.
 	 */
 	public TextTitle(String text, Font font, Paint paint, RectangleEdge position,
 			HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Spacer spacer) {
-
+		
 		super(position, horizontalAlignment, verticalAlignment, spacer);
-
+		
 		if (text == null) {
 			throw new NullPointerException("TextTitle(..): Text is null");
 		}
@@ -216,9 +216,9 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		this.font = font;
 		this.paint = paint;
 		this.backgroundPaint = null;
-
+		
 	}
-
+	
 	/**
 	 * Returns the title text.
 	 * 
@@ -227,16 +227,16 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	public String getText() {
 		return this.text;
 	}
-
+	
 	/**
 	 * Sets the title to the specified text and sends a {@link TitleChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param text
-	 *            the text (<code>null</code> not permitted).
+	 *           the text (<code>null</code> not permitted).
 	 */
 	public void setText(String text) {
-
+		
 		if (text == null) {
 			throw new NullPointerException("TextTitle.setText(..): Text is null");
 		}
@@ -244,9 +244,9 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 			this.text = text;
 			notifyListeners(new TitleChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the font used to display the title string.
 	 * 
@@ -255,29 +255,29 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	public Font getFont() {
 		return this.font;
 	}
-
+	
 	/**
 	 * Sets the font used to display the title string. Registered listeners are
 	 * notified that the title has been modified.
 	 * 
 	 * @param font
-	 *            the new font (<code>null</code> not permitted).
+	 *           the new font (<code>null</code> not permitted).
 	 */
 	public void setFont(Font font) {
-
+		
 		// check argument...
 		if (font == null) {
 			throw new IllegalArgumentException("TextTitle.setFont(...): null font not permitted.");
 		}
-
+		
 		// make the change...
 		if (!this.font.equals(font)) {
 			this.font = font;
 			notifyListeners(new TitleChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the paint used to display the title string.
 	 * 
@@ -286,29 +286,29 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	public Paint getPaint() {
 		return this.paint;
 	}
-
+	
 	/**
 	 * Sets the paint used to display the title string. Registered listeners are
 	 * notified that the title has been modified.
 	 * 
 	 * @param paint
-	 *            the new paint (<code>null</code> not permitted).
+	 *           the new paint (<code>null</code> not permitted).
 	 */
 	public void setPaint(Paint paint) {
-
+		
 		// check argument...
 		if (paint == null) {
 			throw new IllegalArgumentException("TextTitle.setPaint(...): null paint not permitted.");
 		}
-
+		
 		// make the change...
 		if (!this.paint.equals(paint)) {
 			this.paint = paint;
 			notifyListeners(new TitleChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the background paint.
 	 * 
@@ -317,28 +317,28 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	public Paint getBackgroundPaint() {
 		return this.backgroundPaint;
 	}
-
+	
 	/**
 	 * Sets the background paint and sends a {@link TitleChangeEvent} to all
 	 * registered listeners. If you set this attribute to <code>null</code>, no
 	 * background is painted (which makes the title background transparent).
 	 * 
 	 * @param paint
-	 *            the background paint (<code>null</code> permitted).
+	 *           the background paint (<code>null</code> permitted).
 	 */
 	public void setBackgroundPaint(Paint paint) {
 		this.backgroundPaint = paint;
 		notifyListeners(new TitleChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the preferred width of the title. This will only be called when the
 	 * title is being drawn at the left or right of a chart.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param height
-	 *            the height.
+	 *           the height.
 	 * @return the preferred width of the title.
 	 */
 	public float getPreferredWidth(Graphics2D g2, float height) {
@@ -357,14 +357,14 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the preferred height of the title.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param width
-	 *            the width.
+	 *           the width.
 	 * @return the preferred height of the title.
 	 */
 	public float getPreferredHeight(Graphics2D g2, float width) {
@@ -382,15 +382,15 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Draws the title on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area allocated for the title.
+	 *           the area allocated for the title.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D area) {
 		if (logger.isDebugEnabled()) {
@@ -410,15 +410,15 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 			drawVertical(g2, area);
 		}
 	}
-
+	
 	/**
 	 * Draws a the title horizontally within the specified area. This method will be
 	 * called from the {@link #draw(Graphics2D, Rectangle2D) draw} method.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area for the title.
+	 *           the area for the title.
 	 */
 	protected void drawHorizontal(Graphics2D g2, Rectangle2D area) {
 		Rectangle2D titleArea = (Rectangle2D) area.clone();
@@ -456,15 +456,15 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		}
 		title.draw(g2, x, y, anchor);
 	}
-
+	
 	/**
 	 * Draws a the title vertically within the specified area. This method will be
 	 * called from the {@link #draw(Graphics2D, Rectangle2D) draw} method.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area for the title.
+	 *           the area for the title.
 	 */
 	protected void drawVertical(Graphics2D g2, Rectangle2D area) {
 		Rectangle2D titleArea = (Rectangle2D) area.clone();
@@ -502,26 +502,26 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		}
 		title.draw(g2, x, y, anchor, x, y, -Math.PI / 2.0);
 	}
-
+	
 	/**
 	 * Tests this title for equality with another object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof TextTitle) {
-
+			
 			TextTitle t = (TextTitle) obj;
 			if (super.equals(obj)) {
 				if (!ObjectUtils.equal(this.text, t.text)) {
@@ -539,11 +539,11 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 				return true;
 			}
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -557,46 +557,46 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		result = 29 * result + (this.backgroundPaint != null ? this.backgroundPaint.hashCode() : 0);
 		return result;
 	}
-
+	
 	/**
 	 * Returns a clone of this object.
 	 * 
 	 * @return a clone of this object.
 	 * @throws CloneNotSupportedException
-	 *             never.
+	 *            never.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 		SerialUtilities.writePaint(this.paint, stream);
 		SerialUtilities.writePaint(this.backgroundPaint, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.paint = SerialUtilities.readPaint(stream);
 		this.backgroundPaint = SerialUtilities.readPaint(stream);
 	}
-
+	
 }

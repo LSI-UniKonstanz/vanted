@@ -107,97 +107,97 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * @vanted.revision 2.8 Update Apache Commons Math3 references.
  */
 public class TabStatistics extends InspectorTab implements ActionListener, ContainsTabbedPane {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5293962618880791441L;
-
+	
 	private Component lastScatterPlot = null;
-
+	
 	private JComponent placeForScatter;
-
+	
 	private JSlider gammaSlider1vis;
 	private JSlider gammaSlider2scatter;
 	private JSlider gammaSlider3edgeCorr;
-
+	
 	private boolean plotAverage = false;
 	private boolean mergeDataset = true;
 	private boolean rankOrder = false;
 	private boolean showStatusResult = true;
-
+	
 	/**
 	 * If set to false, the t-test/U-test will be performed 3 times with 3 different
 	 * alpha levels (5,1,01%), if set to true, one specified alpha level
 	 * (<code>alpha</code>) will be used.
 	 */
 	private boolean alphaSpecified = true;
-
+	
 	private final ArrayList<Edge> correlationEdges = new ArrayList<Edge>();
-
+	
 	private double prob = 0.95;
 	private double minimumR = 0;
-
+	
 	private int sampleCalcType_2doublet_3welch_4wilcoxon_5ratio = 2;
-
+	
 	private double alpha = 0.05;
 	private double ratioL = 0.8;
 	private double ratioU = 1.2;
 	private boolean colorCodeEdgesWithCorrelationValue = true;
-
+	
 	private Color colR_1 = Color.BLUE;
 	private Color colR0 = Color.WHITE;
 	private Color colR1 = Color.RED;
-
+	
 	JCheckBox checkBoxPlotAverage1;
 	JCheckBox checkBoxPlotAverage2;
 	JCheckBox checkBoxPlotAverage3;
-
+	
 	JCheckBox addStatusText1 = new JCheckBox("<html>Add calculation details to node status");
 	JCheckBox addStatusText2 = new JCheckBox("<html>Add calculation details to edge status");
 	JCheckBox addStatusText3 = new JCheckBox("<html>Add calculation details to node status");
 	JCheckBox onlyUpdateExistingEdges = new JCheckBox("<html>Update existing edges, disable edge-creation");
-
+	
 	private JTextField jTextFieldAlpha;
-
+	
 	private JTextField jTextFieldProb1findCorr;
 	private JTextField jTextFieldProb2visCorr;
 	private JTextField jTextFieldProb3scatter;
 	private JTextField jTextFieldMinR1;
 	private JTextField jTextFieldMinR2;
 	private JTextField jTextFieldMinR3;
-
+	
 	JButton doTest;
 	JButton resetColorAndBorder;
 	JButton removeCorrelationEdges;
 	JButton selectCorrelationEdges;
-
+	
 	JButton findCorrButton;
-
+	
 	JButton visCorrButton;
-
+	
 	JButton doScatterPlotButton;
-
+	
 	JTabbedPane stat = null;
-
+	
 	String referenceSelection;
 	HashSet<String> validConditions;
-
+	
 	ArrayList<JButton> col1buttons = new ArrayList<JButton>();
 	ArrayList<JButton> col2buttons = new ArrayList<JButton>();
 	ArrayList<JButton> col3buttons = new ArrayList<JButton>();
-
+	
 	private int currGammaValue = 1;
-
+	
 	private boolean considerTimeShifts = false;
-
+	
 	private boolean dontAddNewEdgesUpdateOld = false;
-
+	
 	private boolean showRangeAxis = false;
 	private boolean tickMarksVisible = false;
 	private boolean showLegend = false;
 	private float outlineBorderWidth = 10f;
-
+	
 	/**
 	 * Initialize GUI
 	 */
@@ -213,7 +213,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// VTextIcon.ROTATE_RIGHT), getInteractiveAnalysisPanel());
 		// stat.addTab(null, new VTextIcon(stat, "Correlate n:n",
 		// VTextIcon.ROTATE_RIGHT), getAnalysisPanel());
-
+		
 		stat.addTab("<html><small>Compare Samples", new JScrollPane(getStudentPanel(),
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 		// stat.addTab("<html><small>Scatter Matrix", getPlotPanel());
@@ -225,7 +225,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// stat.addTab("<html><small>Correlate n:n", getAnalysisPanel());
 		stat.addTab("<html><small>Correlate n:n", new JScrollPane(getAnalysisPanel(),
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
-
+		
 		stat.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				refreshEditComponents();
@@ -238,11 +238,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		this.add(stat, "1,1");
 		this.validate();
 	}
-
+	
 	public JTabbedPane getTabbedPane() {
 		return stat;
 	}
-
+	
 	private JComponent getAnalysisPanel() {
 		JPanel result = new JPanel();
 		result.setOpaque(false);
@@ -252,28 +252,28 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		findCorrButton = new JMButton("<html>Find Significant Correlations");
 		findCorrButton.setOpaque(false);
 		findCorrButton.addActionListener(this);
-
+		
 		removeCorrelationEdges = new JMButton("<html><small>Remove Edges");
 		removeCorrelationEdges.addActionListener(this);
 		removeCorrelationEdges.setOpaque(false);
-
+		
 		selectCorrelationEdges = new JMButton("<html><small>Select Edges");
 		selectCorrelationEdges.addActionListener(this);
 		selectCorrelationEdges.setOpaque(false);
-
+		
 		result.add(
 				TableLayout.getSplit(findCorrButton,
 						TableLayout.getSplitVertical(removeCorrelationEdges, selectCorrelationEdges,
 								TableLayout.PREFERRED, TableLayout.PREFERRED),
 						TableLayout.FILL, TableLayout.PREFERRED),
 				"1,1");
-
+		
 		FolderPanel fp = new FolderPanel("Calculation Settings", false, true, false,
 				JLabelJavaHelpLink.getHelpActionListener("stat_corr"));
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp.setEmptyBorderWidth(0);
-
+		
 		checkBoxPlotAverage1 = new JCheckBox(
 				"<html>Use average values<br><small>(recommended for time series data with few replicates per time point)",
 				plotAverage);
@@ -286,7 +286,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		checkBoxPlotAverage1.setSelected(plotAverage);
 		JComponent mergeOptionEditor = getMergeOptionEditor(1);
-
+		
 		final JCheckBox checkBoxFindTimeShifts = new JCheckBox("Find time-shifted (index -3..3) correlations",
 				considerTimeShifts);
 		checkBoxFindTimeShifts.setOpaque(false);
@@ -297,19 +297,19 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				considerTimeShifts = src.isSelected();
 			}
 		});
-
+		
 		jTextFieldProb1findCorr = new JTextField(Double.valueOf(prob).toString());
 		jTextFieldMinR1 = new JTextField(Double.valueOf(minimumR).toString());
-
+		
 		JComponent corrType = getCorrelationTypeEditor(1);
-
+		
 		JComponent panelProb = getProbabilitySettingPanel(jTextFieldProb1findCorr, jTextFieldMinR1, corrType);
-
+		
 		final JComponent colPanel = getNewColorPanel();
 		JCheckBox colorCodeEdgesCorrelation = new JCheckBox("Change edge color dependent on correlation:");
-
+		
 		colorCodeEdgesCorrelation.setOpaque(false);
-
+		
 		colorCodeEdgesCorrelation.setSelected(colorCodeEdgesWithCorrelationValue);
 		checkColPanel(colPanel, colorCodeEdgesWithCorrelationValue);
 		colorCodeEdgesCorrelation.addActionListener(new ActionListener() {
@@ -320,17 +320,17 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		JLabel descGammaLabel = new JLabel();
 		gammaSlider3edgeCorr = getNewGammaSlider(descGammaLabel);
-
+		
 		fp.addComp(checkBoxPlotAverage1);
 		fp.addComp(checkBoxFindTimeShifts);
 		fp.addComp(mergeOptionEditor);
 		fp.addComp(panelProb);
-
+		
 		FolderPanel fp2 = new FolderPanel("Visualization Settings", false, true, false, null);
 		fp2.setBackground(null);
 		fp2.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp2.setEmptyBorderWidth(0);
-
+		
 		addStatusText2.setOpaque(false);
 		addStatusText2.setSelected(showStatusResult);
 		addStatusText2.addActionListener(new ActionListener() {
@@ -340,7 +340,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				addStatusText3.setSelected(showStatusResult);
 			}
 		});
-
+		
 		JButton clearStatus = new JMButton("<html><small>Clear Edge-<br>Status Text");
 		clearStatus.setOpaque(false);
 		clearStatus.addActionListener(new ActionListener() {
@@ -362,7 +362,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		fp2.addComp(TableLayout.get3Split(addStatusText2, new JLabel(""), clearStatus, TableLayout.FILL, 5,
 				TableLayout.PREFERRED));
-
+		
 		onlyUpdateExistingEdges.setOpaque(false);
 		onlyUpdateExistingEdges.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -377,28 +377,28 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				}
 			}
 		});
-
+		
 		fp2.addComp(onlyUpdateExistingEdges);
-
+		
 		fp2.addComp(colorCodeEdgesCorrelation);
 		fp2.addComp(colPanel);
 		fp2.addComp(
 				TableLayout.getSplit(descGammaLabel, gammaSlider3edgeCorr, TableLayout.PREFERRED, TableLayout.FILL));
-
+		
 		fp.layoutRows();
 		fp2.layoutRows();
-
+		
 		result.add(fp.getBorderedComponent(5, 0, 0, 0));
 		result.add(fp2.getBorderedComponent(5, 0, 0, 0));
-
+		
 		result.validate();
 		return result;
 	}
-
+	
 	HashMap<Integer, ButtonGroup> datasetButtonGroups = new HashMap<Integer, ButtonGroup>();
-
+	
 	private JComponent getMergeOptionEditor(Integer i) {
-
+		
 		JRadioButton completeButton = new JRadioButton("All substance values in one step");
 		JRadioButton individualButton = new JRadioButton("Each plant/genotype individually");
 		completeButton.setSelected(mergeDataset == true);
@@ -408,9 +408,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(completeButton);
 		bg.add(individualButton);
-
+		
 		datasetButtonGroups.put(i, bg);
-
+		
 		completeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mergeDataset = true;
@@ -430,19 +430,19 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				}
 			}
 		});
-
+		
 		JComponent resultPanel = TableLayout.getSplitVertical(completeButton, individualButton, TableLayout.PREFERRED,
 				TableLayout.PREFERRED);
-
+		
 		resultPanel.setOpaque(false);
 		resultPanel.setBorder(BorderFactory.createTitledBorder("Correlate"));
 		return resultPanel;
 	}
-
+	
 	HashMap<Integer, ButtonGroup> correlationTypeButtonGroups = new HashMap<Integer, ButtonGroup>();
-
+	
 	private JComponent getCorrelationTypeEditor(Integer i) {
-
+		
 		JRadioButton pearsonButton = new JRadioButton("Pearson's product-moment correlation");
 		JRadioButton spearmanButton = new JRadioButton("Spearman's rank correlation");
 		JRadioButton quadrantButton = new JRadioButton("Quadrant correlation");
@@ -453,15 +453,15 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		spearmanButton.setOpaque(false);
 		quadrantButton.setOpaque(false);
 		kendallButton.setOpaque(false);
-
+		
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(pearsonButton);
 		bg.add(spearmanButton);
 		bg.add(quadrantButton);
 		bg.add(kendallButton);
-
+		
 		correlationTypeButtonGroups.put(i, bg);
-
+		
 		pearsonButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rankOrder = false;
@@ -481,7 +481,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				}
 			}
 		});
-
+		
 		quadrantButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainFrame.showMessageDialog("Not yet implemented!", "Error");
@@ -492,19 +492,19 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				MainFrame.showMessageDialog("Not yet implemented!", "Error");
 			}
 		});
-
+		
 		JComponent resultPanel = TableLayout.getSplitVertical(TableLayout.getSplitVertical(pearsonButton,
 				spearmanButton, TableLayout.PREFERRED, TableLayout.PREFERRED),
 				/*
 				 * TableLayout.getSplitVertical( quadrantButton, kendallButton,
 				 * TableLayout.PREFERRED, TableLayout.PREFERRED)
 				 */null, TableLayout.PREFERRED, TableLayout.PREFERRED);
-
+		
 		resultPanel.setOpaque(false);
 		resultPanel.setBorder(BorderFactory.createTitledBorder("Calculate"));
 		return resultPanel;
 	}
-
+	
 	private void checkColPanel(Component colPanel, boolean enabled) {
 		JPanel jp = (JPanel) colPanel;
 		for (int i = 0; i < jp.getComponentCount(); i++) {
@@ -515,24 +515,24 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		}
 	}
-
+	
 	private JComponent getProbabilitySettingPanel(JTextField textFieldProb, JTextField textFieldMinR, JComponent rank) {
 		JLabel l2 = new JLabel("Significance >=");
 		JLabel l3 = new JLabel("and |r| >=");
-
+		
 		l2.setHorizontalAlignment(JLabel.CENTER);
 		l3.setHorizontalAlignment(JLabel.CENTER);
-
+		
 		JComponent c2 = TableLayout.getSplitVertical(l2, textFieldProb, TableLayout.FILL, TableLayout.FILL);
 		c2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-
+		
 		return TableLayout.getSplitVertical(rank,
 				TableLayout.getSplit(c2,
 						TableLayout.getSplitVertical(l3, textFieldMinR, TableLayout.FILL, TableLayout.FILL),
 						TableLayout.FILL, TableLayout.FILL),
 				TableLayout.PREFERRED, TableLayout.PREFERRED);
 	}
-
+	
 	private JComponent getAnalysisPanelOneToN() {
 		JPanel result = new JPanel();
 		result.setOpaque(false);
@@ -540,24 +540,24 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, border } }; // Rows
 		result.setLayout(new TableLayout(size));
-
+		
 		visCorrButton = new JMButton("<html>Calculate and visualize correlations");
 		visCorrButton.addActionListener(this);
 		visCorrButton.setOpaque(false);
-
+		
 		resetColorAndBorder = new JMButton("<html>Reset Node/Edge-<br>Color/Border");
 		resetColorAndBorder.addActionListener(this);
 		resetColorAndBorder.setOpaque(false);
-
+		
 		result.add(TableLayout.getSplit(visCorrButton, resetColorAndBorder, TableLayout.FILL, TableLayout.PREFERRED),
 				"1,1");
-
+		
 		FolderPanel fp = new FolderPanel("Calculation Settings", false, true, false,
 				JLabelJavaHelpLink.getHelpActionListener("stat_vis"));
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp.setEmptyBorderWidth(0);
-
+		
 		checkBoxPlotAverage2 = new JCheckBox("<html>Use average values<br>"
 				+ "<small>(recommended for time series data with few replicates per time point)", plotAverage);
 		checkBoxPlotAverage2.setOpaque(false);
@@ -568,9 +568,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				plotAverage = src.isSelected();
 			}
 		});
-
+		
 		JComponent mergeEditor = getMergeOptionEditor(2);
-
+		
 		fp.addComp(TableLayout.getSplitVertical(checkBoxPlotAverage2, mergeEditor, TableLayout.PREFERRED,
 				TableLayout.PREFERRED));
 		jTextFieldProb2visCorr = new JTextField(Double.valueOf(prob).toString());
@@ -578,12 +578,12 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		JComponent corrType = getCorrelationTypeEditor(2);
 		JComponent panelProb = getProbabilitySettingPanel(jTextFieldProb2visCorr, jTextFieldMinR2, corrType);
 		fp.addComp(panelProb);
-
+		
 		FolderPanel fp2 = new FolderPanel("Visualization Settings", false, true, false, null);
 		fp2.setBackground(null);
 		fp2.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp2.setEmptyBorderWidth(0);
-
+		
 		addStatusText3.setOpaque(false);
 		addStatusText3.setSelected(showStatusResult);
 		addStatusText3.addActionListener(new ActionListener() {
@@ -593,7 +593,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				addStatusText2.setSelected(showStatusResult);
 			}
 		});
-
+		
 		JButton clearStatus = new JMButton("<html><small>Clear<br>Status Text");
 		clearStatus.setOpaque(false);
 		clearStatus.addActionListener(new ActionListener() {
@@ -609,23 +609,23 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		fp2.addComp(TableLayout.get3Split(addStatusText3, new JLabel(""), clearStatus, TableLayout.FILL, 5,
 				TableLayout.PREFERRED));
-
+		
 		fp2.addComp(getNewColorPanel());
 		JLabel descGammaLabel = new JLabel();
 		gammaSlider1vis = getNewGammaSlider(descGammaLabel);
-
+		
 		fp2.addComp(TableLayout.getSplit(descGammaLabel, gammaSlider1vis, TableLayout.PREFERRED, TableLayout.FILL));
-
+		
 		fp.layoutRows();
 		fp2.layoutRows();
-
+		
 		result.add(fp.getBorderedComponent(5, 0, 0, 0), "1,2");
 		result.add(fp2.getBorderedComponent(5, 0, 0, 0), "1,3");
-
+		
 		result.validate();
 		return result;
 	}
-
+	
 	private JSlider getNewGammaSlider(final JLabel jLabelDesc) {
 		JSlider gammaSlider = new JSlider(1, 100);
 		if (SystemInfo.isMac())
@@ -647,33 +647,33 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		return gammaSlider;
 	}
-
+	
 	private JComponent getNewColorPanel() {
 		double border2 = 0;
 		double[][] size2 = {
 				{ border2, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, TableLayoutConstants.FILL,
 						TableLayoutConstants.FILL, border2 }, // Columns
 				{ border2, TableLayout.PREFERRED, border2 } }; // Rows
-
+		
 		JPanel colorPanel = new JPanel();
 		colorPanel.setOpaque(false);
 		colorPanel.setLayout(new TableLayout(size2));
-
+		
 		JLabel descColPanel = new JLabel("Color-Code for r=");
 		descColPanel.setOpaque(false);
 		colorPanel.add(descColPanel, "1,1");
 		JButton jBcol_1 = new JButton("-1");
 		JButton jBcol0 = new JButton("0");
 		JButton jBcol1 = new JButton("1");
-
+		
 		col1buttons.add(jBcol_1);
 		col2buttons.add(jBcol0);
 		col3buttons.add(jBcol1);
-
+		
 		colorPanel.add(jBcol_1, "2,1");
 		colorPanel.add(jBcol0, "3,1");
 		colorPanel.add(jBcol1, "4,1");
-
+		
 		jBcol_1.setBorder(BorderFactory.createLineBorder(colR_1, 3));
 		jBcol0.setBorder(BorderFactory.createLineBorder(colR0, 3));
 		jBcol1.setBorder(BorderFactory.createLineBorder(colR1, 3));
@@ -706,13 +706,13 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		return colorPanel;
 	}
-
+	
 	public static Color getChoosenColor(Color refCol) {
 		MainFrame mf = GravistoService.getInstance().getMainFrame();
 		Color c = JColorChooser.showDialog(mf, "Select Color", refCol);
 		return c;
 	}
-
+	
 	private JComponent getPlotPanel() {
 		JPanel result = new JPanel();
 		result.setOpaque(false);
@@ -721,25 +721,25 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				{ border, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
 						TableLayoutConstants.FILL, border } }; // Rows
 		result.setLayout(new TableLayout(size));
-
+		
 		doScatterPlotButton = new JMButton("(Re)Create Scatter-Plot Matrix");
 		doScatterPlotButton.setOpaque(false);
 		doScatterPlotButton.addActionListener(this);
 		result.add(doScatterPlotButton, "1,1");
 		lastScatterPlot = new JLabel("");
 		result.add(lastScatterPlot, "1,4");
-
+		
 		FolderPanel fp = new FolderPanel("Calculation Settings", false, true, false,
 				JLabelJavaHelpLink.getHelpActionListener("stat_scatter"));
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp.setEmptyBorderWidth(0);
-
+		
 		FolderPanel fp2 = new FolderPanel("Visualization Settings", false, true, false, null);
 		fp2.setBackground(null);
 		fp2.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp2.setEmptyBorderWidth(0);
-
+		
 		checkBoxPlotAverage3 = new JCheckBox("<html>Plot average values<br>"
 				+ "<small>(recommended for time series data with few replicates per time point)", plotAverage);
 		checkBoxPlotAverage3.setOpaque(false);
@@ -750,26 +750,26 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				plotAverage = src.isSelected();
 			}
 		});
-
+		
 		JComponent mergeEditor = getMergeOptionEditor(3);
-
+		
 		fp.addComp(checkBoxPlotAverage3);
 		fp.addComp(mergeEditor);
-
+		
 		jTextFieldProb3scatter = new JTextField(Double.valueOf(prob).toString());
 		jTextFieldMinR3 = new JTextField(Double.valueOf(minimumR).toString());
 		JComponent corrType = getCorrelationTypeEditor(3);
 		Component panelProb = getProbabilitySettingPanel(jTextFieldProb3scatter, jTextFieldMinR3, corrType);
-
+		
 		fp.addComp((JComponent) panelProb);
-
+		
 		fp2.addComp(getNewColorPanel());
-
+		
 		JLabel descGammaLabel = new JLabel("");
 		gammaSlider2scatter = getNewGammaSlider(descGammaLabel);
-
+		
 		fp2.addComp(TableLayout.getSplit(descGammaLabel, gammaSlider2scatter, TableLayout.PREFERRED, TableLayout.FILL));
-
+		
 		final SpinnerModel sm = new SpinnerNumberModel(outlineBorderWidth, 0, 100, 0.5);
 		sm.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -777,12 +777,12 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 		JSpinner dataSizeSpinner = new JSpinner(sm);
-
+		
 		JLabel dpsdesc = new JLabel("Datapoint Size");
 		dpsdesc.setOpaque(false);
-
+		
 		fp2.addComp(TableLayout.getSplit(dpsdesc, dataSizeSpinner, TableLayout.PREFERRED, TableLayout.FILL));
-
+		
 		final JCheckBox checkLegend = new JCheckBox("Show Legend", showLegend);
 		checkLegend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -790,9 +790,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 		checkLegend.setOpaque(false);
-
+		
 		fp2.addComp(checkLegend);
-
+		
 		final JCheckBox checkShowRangeAxis = new JCheckBox("Show X-Axis", showRangeAxis);
 		checkShowRangeAxis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -800,9 +800,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 		checkShowRangeAxis.setOpaque(false);
-
+		
 		fp2.addComp(checkShowRangeAxis);
-
+		
 		final JCheckBox checkShowTicks = new JCheckBox("Show Y-Axis", tickMarksVisible);
 		checkShowTicks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -810,32 +810,32 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 		checkShowTicks.setOpaque(false);
-
+		
 		fp2.addComp(checkShowTicks);
-
+		
 		fp.layoutRows();
 		fp2.layoutRows();
-
+		
 		result.add(fp.getBorderedComponent(5, 0, 0, 0), "1,2");
 		result.add(fp2.getBorderedComponent(5, 0, 0, 0), "1,3");
-
+		
 		result.validate();
 		placeForScatter = result;
 		return result;
 	}
-
+	
 	private JComponent getStudentPanel() {
 		JPanel result = new JPanel();
-
+		
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayout.PREFERRED, TableLayout.PREFERRED, 5, TableLayout.PREFERRED, TableLayout.PREFERRED,
 						TableLayoutConstants.FILL, border } }; // Rows
 		result.setLayout(new TableLayout(size));
 		result.setOpaque(false);
-
+		
 		jTextFieldAlpha = new JTextField();
-
+		
 		if (alphaSpecified) {
 			jTextFieldAlpha.setText(alpha + "");
 			jTextFieldAlpha.setEnabled(true);
@@ -843,14 +843,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			jTextFieldAlpha.setText("(using automatic setting, 0.05 / 0.01 / 0.001)");
 			jTextFieldAlpha.setEnabled(false);
 		}
-
+		
 		// add action button
 		doTest = new JMButton("<html>Compare Conditions");
 		doTest.setOpaque(false);
 		doTest.addActionListener(this);
-
+		
 		result.add(doTest, "1,2");
-
+		
 		final JRadioButton ttestSel = new JRadioButton(
 				"<html>Unpaired T-Test<br>" + "<small>StdDev is unknown but expected to be equal (homoscedastic), <br>"
 						+ "assuming a normal distribution of independent samples");
@@ -859,10 +859,10 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						+ "assuming a normal distribution of independent samples");
 		final JRadioButton wilcoxonSel = new JRadioButton(
 				"<html>Wilcoxon, Mann-Whitney U-Test<br>" + "<small>Rank sum test for two independent samples");
-
+		
 		final JRadioButton ratioSel = new JRadioButton("<html>Ratio Difference<br>"
 				+ "<small>Check if the ratio of the mean values is above or below the specified threshold");
-
+		
 		ttestSel.setSelected(sampleCalcType_2doublet_3welch_4wilcoxon_5ratio == 2);
 		ttestSel.setOpaque(false);
 		welchSel.setSelected(sampleCalcType_2doublet_3welch_4wilcoxon_5ratio == 3);
@@ -894,14 +894,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					sampleCalcType_2doublet_3welch_4wilcoxon_5ratio = 4;
 			}
 		});
-
+		
 		ratioSel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (ratioSel.isSelected())
 					sampleCalcType_2doublet_3welch_4wilcoxon_5ratio = 5;
 			}
 		});
-
+		
 		SpinnerModel sm1 = new SpinnerNumberModel(ratioL, 0, 1, 0.05d);
 		final JSpinner minRatio = new JSpinner(sm1);
 		minRatio.addChangeListener(new ChangeListener() {
@@ -916,22 +916,22 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				ratioU = (Double) maxRatio.getValue();
 			}
 		});
-
+		
 		JComponent calcTypePanel = TableLayout.get4SplitVertical(ttestSel, welchSel, wilcoxonSel, ratioSel,
 				TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
 				TableLayout.PREFERRED, TableLayout.PREFERRED);
-
+		
 		calcTypePanel.setOpaque(false);
 		calcTypePanel.setBorder(BorderFactory.createTitledBorder("Type of test"));
-
+		
 		FolderPanel fp = new FolderPanel("Calculation Settings", false, true, false,
 				JLabelJavaHelpLink.getHelpActionListener("stat_ttest"));
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp.setEmptyBorderWidth(0);
-
+		
 		fp.addComp(calcTypePanel);
-
+		
 		// add significance value selection
 		JCheckBox specifyAlpha = new JCheckBox("<html>Specify &#945; value:", alphaSpecified);
 		specifyAlpha.setBackground(null);
@@ -956,36 +956,36 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		JComponent panelProb = TableLayout.getSplit(specifyAlpha, jTextFieldAlpha, TableLayout.PREFERRED,
 				TableLayout.FILL);
 		fp.addComp(panelProb);
-
+		
 		fp.addComp(TableLayout.get3Split(new JLabel("<html>Ratio (Lower / Upper limit): "), minRatio, maxRatio,
 				TableLayout.FILL, 50, 50));
-
+		
 		fp.layoutRows();
-
+		
 		result.add(fp, "1,4");
-
+		
 		FolderPanel fp2 = new FolderPanel("Visualization Settings", false, true, false, null);
 		fp2.setBackground(null);
 		fp2.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp2.setEmptyBorderWidth(0);
-
+		
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		ImageIcon icon = new ImageIcon(cl.getResource(path + "/ttestCircleSize.png"));
 		JLabel ttestCircleSize = new JLabel("T-Test-Marker Size", icon, JLabel.RIGHT);
 		ttestCircleSize.setBackground(Color.WHITE);
 		ttestCircleSize.setOpaque(true);
-
+		
 		double curVal = 10d;
 		Graph graph = null;
-
+		
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 		if (session != null) {
 			graph = session.getGraph();
 			curVal = ((Double) AttributeHelper.getAttributeValue(graph, "", AttributeHelper.id_ttestCircleSize,
 					Double.valueOf(10.0d), Double.valueOf(10.0d))).doubleValue();
 		}
-
+		
 		final SpinnerNumberModel numberModel = new SpinnerNumberModel(curVal, 0d, Integer.MAX_VALUE, 0.5d);
 		numberModel.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -998,21 +998,21 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						Double.valueOf(numberModel.getNumber().doubleValue()));
 			}
 		});
-
+		
 		fp2.addComp(TableLayout.get3Split(ttestCircleSize, new JLabel(""), new JSpinner(numberModel),
 				TableLayout.PREFERRED, 3, TableLayout.FILL));
-
+		
 		addStatusText1.setOpaque(false);
 		addStatusText1.setSelected(showStatusResult);
 		addStatusText1.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent e) {
 				showStatusResult = addStatusText1.isSelected();
 				addStatusText2.setSelected(showStatusResult);
 				addStatusText3.setSelected(showStatusResult);
 			}
 		});
-
+		
 		JButton clearStatus = new JMButton("<html><small>Clear<br>Status Text");
 		clearStatus.setOpaque(false);
 		clearStatus.addActionListener(new ActionListener() {
@@ -1028,14 +1028,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		fp2.addComp(TableLayout.get3Split(addStatusText1, new JLabel(""), clearStatus, TableLayout.FILL, 5,
 				TableLayout.PREFERRED));
-
+		
 		fp2.layoutRows();
 		result.add(fp2.getBorderedComponent(5, 0, 0, 0), "1,5");
-
+		
 		result.validate();
 		return result;
 	}
-
+	
 	/**
 	 * Constructs a <code>PatternTab</code> and sets the title.
 	 */
@@ -1044,31 +1044,31 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		this.title = "Statistics";
 		initComponents();
 	}
-
+	
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void transactionFinished(TransactionEvent e) {
 	}
-
+	
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == findCorrButton) {
 			checkProbabilityInput(jTextFieldProb1findCorr);
@@ -1082,7 +1082,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			checkProbabilityInput(jTextFieldProb3scatter);
 			checkRinput(jTextFieldMinR3);
 		}
-
+		
 		try {
 			double temp = Double.parseDouble(jTextFieldAlpha.getText());
 			alpha = temp;
@@ -1091,17 +1091,17 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		if (e.getSource() == doTest && alphaSpecified)
 			jTextFieldAlpha.setText(Double.valueOf(alpha).toString());
-
+		
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
-
+		
 		Selection selection = null;
 		if (session != null)
 			selection = session.getSelectionModel().getActiveSelection();
-
+		
 		Graph graph = null;
 		if (session != null)
 			graph = session.getGraph();
-
+		
 		if (e.getSource() == findCorrButton) {
 			Collection<Node> nodes = null;
 			if (selection != null)
@@ -1164,35 +1164,35 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					sampleCalcType_2doublet_3welch_4wilcoxon_5ratio, graph, showStatusResult);
 		}
 	}
-
+	
 	public JComponent getScatterPlot(Graph graph) {
 		Collection<GraphElement> graphElements = graph.getNodes().stream().map(n -> (GraphElement) n)
 				.collect(Collectors.toSet());
-
+		
 		boolean plotAverage = false;
 		boolean mergeDataset = true;
 		boolean rankOrder = false;
-
+		
 		double prob = 0.95;
-
+		
 		Color colR_1 = Color.RED;
 		Color colR0 = Color.WHITE;
 		Color colR1 = Color.BLUE;
-
+		
 		boolean showRangeAxis = false;
 		boolean tickMarksVisible = false;
 		boolean showLegend = false;
 		float outlineBorderWidth = 10f;
-
+		
 		int currGammaValue = 1;
-
+		
 		double minimumR = 0;
-
+		
 		return createScatterPlotBlock(plotAverage, tickMarksVisible, showRangeAxis, showLegend, minimumR,
 				outlineBorderWidth, mergeDataset, prob, rankOrder, currGammaValue, colR_1, colR0, colR1, graphElements,
 				graph, true, null, null);
 	}
-
+	
 	// private double findR(int n, double alpha, double a, double b) {
 	// double r = (a+b)/2;
 	// double t = r/Math.sqrt((1-r*r)/(n-2));
@@ -1207,7 +1207,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	// return findR(n, alpha, (a+b)/2, b);
 	// }
 	//
-
+	
 	private void checkProbabilityInput(JTextField textFieldProb) {
 		try {
 			double temp = Double.parseDouble(textFieldProb.getText());
@@ -1217,7 +1217,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		textFieldProb.setText(Double.valueOf(prob).toString());
 	}
-
+	
 	private void checkRinput(JTextField textFieldR) {
 		try {
 			double temp = Double.parseDouble(textFieldR.getText());
@@ -1227,7 +1227,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		textFieldR.setText(Double.valueOf(minimumR).toString());
 	}
-
+	
 	private void removeCorrelationEdges(Graph graph) {
 		ArrayList<Edge> toBeDeleted = new ArrayList<Edge>();
 		for (Edge e : graph.getEdges()) {
@@ -1242,7 +1242,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		graph.getListenerManager().transactionFinished(this);
 	}
-
+	
 	private void selectCorrelationEdges(Graph graph, EditorSession session) {
 		Selection s = session.getSelectionModel().getActiveSelection();
 		if (s == null)
@@ -1256,7 +1256,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		session.getSelectionModel().selectionChanged();
 		graph.getListenerManager().transactionFinished(this);
 	}
-
+	
 	/**
 	 * Sets the border and color to the old values, that where active at the time
 	 * the tab "Statistics" got visible.
@@ -1277,7 +1277,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		graph.getListenerManager().transactionFinished(this);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private void refreshReferenceInfo(List<Node> nodes) {
 		referenceSelection = null;
@@ -1294,27 +1294,27 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					}
 				}
 		}
-
+		
 		ArrayList<Object> params = new ArrayList<>();
-
+		
 		params.add("Reference Dataset:");
 		final JComboBox<String> jc = new JComboBox(conditions.toArray());
 		params.add(jc);
 		params.add("<html><br>Compare to:");
 		params.add(new JLabel());
-
+		
 		final ArrayList<JCheckBox> bpl = new ArrayList<JCheckBox>();
-
+		
 		for (String c : conditions) {
 			params.add("");
 			JCheckBox bp = new JCheckBox(c, true);
 			bp.setToolTipText(
 					"If selected, the reference dataset samples will be compared with samples from this condition.");
 			params.add(bp);
-
+			
 			bpl.add(bp);
 		}
-
+		
 		ActionListener all = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String sel = (String) jc.getSelectedItem();
@@ -1327,13 +1327,13 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		};
 		all.actionPerformed(null);
-
+		
 		jc.addActionListener(all);
-
+		
 		Object[] res = MyInputHelper.getInput(
 				"<html>" + "Please select the reference dataset and the conditions.<br><br>",
 				"Select Reference Dataset", params.toArray());
-
+		
 		if (res == null) {
 			referenceSelection = null;
 			validConditions = null;
@@ -1348,7 +1348,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		}
 	}
-
+	
 	private void doTtest(Collection<GraphElement> graphElements, int type_2doublet_3welch_4wilcoxon, Graph g,
 			boolean addStatusMessage) {
 		String referenceMeasurement = referenceSelection;
@@ -1412,7 +1412,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 								statusLineText += "<td>" + line
 										+ (compareTime.length() > 0 ? " [" + compareTime + "]" : "") + "<br><small>";
 								StringBuilder statusResult = new StringBuilder();
-
+								
 								if (type_2doublet_3welch_4wilcoxon == 2) {
 									if (calcuteTtest(refSampleNode.getDataList(), sampleNode.getDataList(), alpha,
 											statusResult, sampleIdx))
@@ -1452,7 +1452,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			GraphHelper.issueCompleteRedrawForGraph(g);
 		}
 	}
-
+	
 	private boolean calcuteTtest(Double[] X, Double[] Y, double alpha, StringBuilder statusResult, int sampleIdx) { // boolean
 		// useApache,
 		// DescriptiveStatistics stat = DescriptiveStatistics.newInstance();
@@ -1480,16 +1480,16 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		 */
 		int n1 = X.length;
 		int n2 = Y.length;
-
+		
 		double x_ = getAVG(X);
 		double y_ = getAVG(Y);
 		double s2_1 = getStd(X, x_);
 		double s2_2 = getStd(Y, y_);
-
+		
 		Math.sqrt(((n1 - 1) * s2_1 + (n2 - 1) * s2_2) /
 		// -----------------------------
 				(n1 + n2 - 2));
-
+		
 		double d_ = Math.abs(x_ - y_);
 		statusResult.append(
 				"n A= " + n1 + ", " + "n B= " + n2 + ", " + "avg SAMPLE A= " + AttributeHelper.formatNumber(x_, "#.###")
@@ -1512,11 +1512,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		 * else return res2;
 		 */
 	}
-
+	
 	private boolean calcuteTestVonWelch(Double[] X, Double[] Y, double alpha, boolean useApache,
 			StringBuilder statusResult, int sampleIdx) {
 		Boolean res1, res2;
-
+		
 //		DescriptiveStatistics ds = new DescriptiveStatistics();
 		TTest ttest = new TTest();
 		double[] xd = new double[X.length];
@@ -1535,23 +1535,23 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					"<b>Sample " + sampleIdx + " : Calculation Error: " + me.getLocalizedMessage() + "</b><br>");
 			res1 = null;
 		}
-
+		
 		int n1 = X.length;
 		int n2 = Y.length;
-
+		
 		double x_ = getAVG(X);
 		double y_ = getAVG(Y);
 		double s2_1 = getStd(X, x_);
 		double s2_2 = getStd(Y, y_);
-
+		
 		double u = (s2_1 / n1) /
 		// -------------------------
 				(s2_1 / n1 + s2_2 / n2);
-
+		
 		double v = 1 / (u * u / (n1 - 1) + (1 - u) * (1 - u) / (n2 - 1));
 		double d_ = Math.abs(x_ - y_);
 		double t_ = ttab(v, 1 - alpha / 2) * Math.sqrt(s2_1 / n1 + s2_2 / n2);
-
+		
 		res2 = d_ > t_;
 		if (res1 == null || res2 == null || res2.booleanValue() != res1.booleanValue()) {
 			// MainFrame.showMessageDialog("Statistic calculation difference!",
@@ -1577,15 +1577,15 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		else
 			return res2;
 	}
-
+	
 	private static NormalDistribution normalDistribution = new NormalDistribution();
-
+	
 	private boolean calcuteWilcoxonTest(Double[] X, Double[] Y, double alpha, StringBuilder statusResult,
 			int sampleIdx) {
 		double R1, R2;
 		R1 = 0;
 		R2 = 0;
-
+		
 		DoubleAndSourceList[] ranks = getRankValues(X, Y);
 		ArrayList<Double> Xranks = new ArrayList<Double>();
 		ArrayList<Double> Yranks = new ArrayList<Double>();
@@ -1595,7 +1595,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			else
 				Yranks.add(d.getRangValue());
 		}
-
+		
 		for (Double d : Xranks)
 			R1 += d;
 		for (Double d : Yranks)
@@ -1613,13 +1613,13 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		double U1, U2;
 		U1 = m * n + (m * (m + 1) / 2d) - R1;
 		U2 = m * n + (n * (n + 1) / 2d) - R2;
-
+		
 		double PG; // Prüfgröße = U1, if U1<U2, else U2
 		if (U1 < U2)
 			PG = U1;
 		else
 			PG = U2;
-
+		
 		double U = PG;
 		statusResult.append("PG=" + U + ", U1=" + U1 + ", U2=" + U2 + ", m=" + m + ", n=" + n + ", R1=" + R1 + ", R2="
 				+ R2 + "<br>");
@@ -1630,12 +1630,12 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			statusResult.append(
 					"Sample " + sampleIdx + " : Internal Error, Wilcoxon Test might be calculated incorrectly!");
 		}
-
+		
 		ArrayList<Tie> bindungen = ermittleBindungen(ranks);
-
+		
 		double special_sum = 0d;
 		double S = m + n;
-
+		
 		// für jede Bindung (Anzahl Bindungen = r)
 		// t_i = Vielfachheit der Bindung i
 		// siehe "Lothar Sachs, Angewandte Statistik, S. 235
@@ -1650,7 +1650,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// if (Math.abs(special_sum)>epsilon)
 		// ErrorMsg.addErrorMessage("Some Ties: "+special_sum);
 		special_sum = special_sum / 12d;
-
+		
 		double z_ = Math.abs(U - m * n / 2d)
 				/ Math.sqrt((m * n / (S * (S - 1))) * ((S * S * S - S) / 12d - special_sum));
 		statusResult.append(
@@ -1667,7 +1667,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			return false;
 		}
 	}
-
+	
 	private boolean calcuteRatioTest(Double[] X, Double[] Y, double belowThisRatio, double overThisRatio,
 			StringBuilder statusResult, int sampleIdx) {
 		double avgA, avgB;
@@ -1675,31 +1675,31 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		for (double xv : X)
 			sum += xv;
 		avgA = sum / X.length;
-
+		
 		sum = 0;
 		for (double yv : Y)
 			sum += yv;
 		avgB = sum / Y.length;
-
+		
 		double ratio = avgB / avgA;
-
+		
 		boolean result = false;
-
+		
 		if (ratio <= belowThisRatio || ratio >= overThisRatio)
 			result = true;
-
+		
 		statusResult.append("Ratio = " + ratio + " (avg Y/avg X: " + avgB + "/" + avgA + ") : Sample " + sampleIdx
 				+ " : " + (ratio < 0 ? "-" : "+") + "<br>");
-
+		
 		return result;
 	}
-
+	
 	public static double epsilon = 0.0000001;
-
+	
 	public static DoubleAndSourceList[] getRankValues(Collection<Double> x) {
 		return getRankValues(x.toArray(new Double[] {}), new Double[] {});
 	}
-
+	
 	public static DoubleAndSourceList[] getRankValues(Double[] x, Double[] y) {
 		ArrayList<DoubleAndSourceList> values = new ArrayList<DoubleAndSourceList>();
 		// System.out.println("n1="+x.length+", n2="+y.length+"\nSample A");
@@ -1718,7 +1718,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				return o1.getDoubleValue().compareTo(o2.getDoubleValue());
 			}
 		});
-
+		
 		Stack<DoubleAndSourceList> todo = new Stack<DoubleAndSourceList>();
 		int nextRank = 0; // rangs will be still set to 1...n
 		for (DoubleAndSourceList testDasl : valueArray) {
@@ -1748,7 +1748,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// System.out.println("ERRORS: "+errorCnt+" / "+values.size());
 		return valueArray;
 	}
-
+	
 	private ArrayList<Tie> ermittleBindungen(DoubleAndSourceList[] rangs) {
 		ArrayList<Tie> result = new ArrayList<Tie>();
 		double epsilon = 0.0000001;
@@ -1774,7 +1774,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns all nodes which contain samples which are not normaly distributed.
 	 * 
@@ -1798,12 +1798,12 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			if (xa != null)
 				for (SubstanceInterface xmldata : xa.getMappedData()) {
 					List<MyComparableDataPoint> allvalues = NodeTools.getSortedDataSetValues(xmldata);
-
+					
 					HashSet<String> knownSeries = new HashSet<String>();
 					for (MyComparableDataPoint value : allvalues) {
 						knownSeries.add(value.serie);
 					}
-
+					
 					for (String serie : knownSeries) {
 						List<MyComparableDataPoint> valuesForSeries = new ArrayList<MyComparableDataPoint>();
 						HashSet<String> knownTimePoints = new HashSet<String>();
@@ -1819,12 +1819,12 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 								if (mcdp.timeUnitAndTime.equals(timePoint))
 									values.add(mcdp);
 							}
-
+							
 							// PG = R/s
 							// R = Spannweite
 							// s = Standardabweichung
 							// PG = Prüfgröße
-
+							
 							// calculate s (StdDev)
 							double sum = 0d;
 							double min = Double.MAX_VALUE;
@@ -1860,12 +1860,12 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						}
 					}
 				}
-
+			
 			if (allInRange)
 				resultForNode = "Data is normally distributed " + resultForNode;
 			else
 				resultForNode = "Not normally distributed {pg=r/s, r=max-min}: " + resultForNode;
-
+			
 			AttributeHelper.setToolTipText(node, resultForNode);
 			if (!allInRange)
 				result.add(node);
@@ -1876,7 +1876,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		return result;
 	}
-
+	
 	public static boolean inDavidRange(double pg, int n, int columnIdx123_5_1_01percent) {
 		if (columnIdx123_5_1_01percent < 0 || columnIdx123_5_1_01percent > 2) {
 			ErrorMsg.addErrorMessage(
@@ -1894,30 +1894,30 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				{ 5, 2.15, 2.02, 1.83, 2.83, 2.80, 2.80 }, { 6, 2.28, 2.15, 1.83, 3.16, 3.16, 3.10 },
 				{ 7, 2.40, 2.26, 1.87, 3.46, 3.46, 3.34 }, { 8, 2.50, 2.35, 1.87, 3.74, 3.74, 3.54 },
 				{ 9, 2.59, 2.44, 1.90, 4.00, 4.00, 3.72 }, { 10, 2.67, 2.51, 1.90, 4.24, 4.24, 3.88 },
-
+				
 				{ 11, 2.74, 2.58, 1.92, 4.47, 4.01, 3.80 }, { 12, 2.80, 2.64, 1.92, 4.69, 4.13, 3.91 },
 				{ 13, 2.85, 2.70, 1.93, 4.90, 4.24, 4.00 }, { 14, 2.92, 2.75, 1.93, 5.10, 4.34, 4.09 },
 				{ 15, 2.97, 2.80, 1.94, 5.29, 4.44, 4.17 },
-
+				
 				{ 16, 3.01, 2.84, 1.94, 5.48, 4.52, 4.24 }, { 17, 3.05, 2.88, 1.94, 5.65, 4.60, 4.31 },
 				{ 18, 3.10, 2.92, 1.94, 5.83, 4.67, 4.37 }, { 19, 3.14, 2.96, 1.95, 6.00, 4.74, 4.43 },
 				{ 20, 3.18, 2.99, 1.95, 6.16, 4.80, 4.49 },
-
+				
 				{ 25, 3.34, 3.15, 1.96, 6.93, 5.06, 4.71 }, { 30, 3.47, 3.27, 1.97, 7.62, 5.26, 4.89 },
 				{ 35, 3.58, 3.38, 1.97, 8.25, 5.42, 5.04 }, { 40, 3.67, 3.47, 1.98, 8.83, 5.56, 5.16 },
 				{ 45, 3.75, 3.55, 1.98, 9.38, 5.67, 5.26 },
-
+				
 				{ 50, 3.83, 3.62, 1.98, 9.90, 5.77, 5.35 }, { 55, 3.90, 3.69, 1.98, 10.39, 5.86, 5.43 },
 				{ 60, 3.96, 3.75, 1.98, 10.86, 5.94, 5.51 }, { 65, 4.01, 3.80, 1.98, 11.31, 6.01, 5.57 },
 				{ 70, 4.06, 3.85, 1.99, 11.75, 6.07, 5.63 },
-
+				
 				{ 75, 4.11, 3.90, 1.99, 12.17, 6.13, 5.68 }, { 80, 4.16, 3.94, 1.99, 12.57, 6.18, 5.73 },
 				{ 85, 4.20, 3.99, 1.99, 12.96, 6.23, 5.78 }, { 90, 4.24, 4.02, 1.99, 13.34, 6.27, 5.82 },
 				{ 95, 4.27, 4.06, 1.99, 13.71, 6.32, 5.86 },
-
+				
 				{ 100, 4.31, 4.10, 1.99, 14.07, 6.36, 5.90 }, { 150, 4.59, 4.38, 1.99, 17.26, 6.64, 6.18 },
 				{ 200, 4.78, 4.59, 2.00, 19.95, 6.84, 6.39 }, { 500, 5.37, 5.13, 2.00, 31.59, 7.42, 6.94 }
-
+		
 		};
 		int row = 0;
 		for (int i = 0; i < davidTable.length && n > davidTable[i][0]; i++) {
@@ -1927,17 +1927,17 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// +n+" ["+davidTable[row][columnIdx123_5_1_01percent]
 		// +" / "
 		// +davidTable[row][columnIdx123_5_1_01percent+3]+"]");
-
+		
 		if (pg > davidTable[row][columnIdx123_5_1_01percent] && pg < davidTable[row][columnIdx123_5_1_01percent + 3])
 			return true;
 		else
 			return false;
 	}
-
+	
 	private static double ttab(double v, double p) {
 		return StatisticTable.backwardT(p, (int) v);
 	}
-
+	
 	private static double getStd(Double[] X, double x_) {
 		double sumQuadDiff = 0;
 		int n = X.length;
@@ -1945,7 +1945,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			sumQuadDiff += (X[i].doubleValue() - x_) * (X[i].doubleValue() - x_);
 		return 1 / ((double) n - 1) * sumQuadDiff;
 	}
-
+	
 	private static double getAVG(Double[] X) {
 		double sum = 0;
 		int n = X.length;
@@ -1953,7 +1953,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			sum += X[i].doubleValue();
 		return sum / n;
 	}
-
+	
 	private void findCorrelations(final Collection<Node> nodes, final Graph graph, final EditorSession session) {
 		MyCorrlationFinder cf = new MyCorrlationFinder(nodes, graph, session, considerTimeShifts, mergeDataset,
 				colorCodeEdgesWithCorrelationValue, minimumR, currGammaValue, colR_1, colR0, colR1, correlationEdges,
@@ -1962,7 +1962,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				false);
 		bth.startWork(this);
 	}
-
+	
 	public static CorrelationResult calculateCorrelation(MyXML_XYDataset dataset, String dataset1, String dataset2,
 			boolean mergeDataset, int dataset2offset, double prob, boolean rankOrder) {
 		CorrelationResult corrRes = new CorrelationResult(dataset1, dataset2);
@@ -2056,12 +2056,12 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// System.out.println("N="+n+" (off="+dataset2offset+")");
 		return corrRes;
 	}
-
+	
 	private static TDistribution tDistribution = new TDistribution(null, 100);
-
+	
 	// private static NormalDistribution nDistribution =
 	// factory.createNormalDistribution();
-
+	
 	private static void calcAndAddResult(int dataset2offset, double prob, CorrelationResult corrRes,
 			StringBuilder calculationHistory, double sum_x, double sum_y, double sum_x_x, double sum_y_y,
 			double sum_x_y, String mergedSeries, int n, int maxROW, int rowDescription, boolean spearMan) {
@@ -2117,7 +2117,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					.append("<tr><td colspan=\"5\">CALCULATION ERROR: " + e.getLocalizedMessage() + "</td></tr>\n");
 			ErrorMsg.addErrorMessage(e);
 		}
-
+		
 		if (rowDescription > maxROW) {
 			calculationHistory
 					.append("<tr><td colspan=\"5\">(" + (rowDescription - maxROW) + " more rows omitted)</td></tr>\n");
@@ -2147,7 +2147,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				+ "</table>");
 		corrRes.addR(r, prob, dataset2offset, calculationHistory.toString(), mergedSeries, 1 - myp);
 	}
-
+	
 	// private static double transform(double d, double tdf) {
 	// return Math.sqrt(1/(tdf/d/d+1));
 	// }
@@ -2155,14 +2155,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	// private static double transformspear(double z, double tn) {
 	// return z/Math.sqrt(tn-1);
 	// }
-
+	
 	private void visualiseCorrelation(GraphElement referenceGraphElement, Graph graph) {
 		Collection<GraphElement> allGraphElements = graph.getGraphElements();
 		GraphElement ge1 = referenceGraphElement;
 		String node1desc = AttributeHelper.getLabel(ge1, "-unnamed-");
 		ExperimentInterface mappedDataList1 = Experiment2GraphHelper.getMappedDataListFromGraphElement(ge1);
 		graph.getListenerManager().transactionStarted(this);
-
+		
 		for (GraphElement ge2 : allGraphElements) {
 			String node2desc = AttributeHelper.getLabel(ge2, "-unnamed-");
 			ExperimentInterface mappedDataList2 = Experiment2GraphHelper.getMappedDataListFromGraphElement(ge2);
@@ -2184,12 +2184,12 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						AttributeHelper.setToolTipText(ge2, cr.getRlist());
 					float r = cr.getMaxR();
 					AttributeHelper.setAttribute(ge2, "statistics", "correlation_r", r);
-
+					
 					if (cr.getMaxTrueCorrProb() > Double.NEGATIVE_INFINITY) {
 						double prob = 1d - cr.getMaxTrueCorrProb();
 						AttributeHelper.setAttribute(ge2, "statistics", "correlation_prob", prob);
 					}
-
+					
 					AttributeHelper.setFillColor(ge2, getRcolor(r, currGammaValue, colR_1, colR0, colR1));
 					if (cr.isAnyOneSignificant(minimumR)) {
 						AttributeHelper.setBorderWidth(ge2, 5);
@@ -2206,24 +2206,24 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		graph.getListenerManager().transactionFinished(this);
 		// GraphHelper.issueCompleteRedrawForGraph(graph);
 	}
-
+	
 	public JComponent createScatterPlotBlock(boolean plotAverage, boolean tickMarksVisible, boolean showRangeAxis,
 			boolean showLegend, double minimumR, float outlineBorderWidth, boolean mergeDataset, double prob,
 			boolean rankOrder, double currGammaValue, Color colR_1, Color colR0, Color colR1,
 			Collection<GraphElement> gEe, Graph graph, boolean returnResult, Component lastScatterPlot,
 			JComponent placeForScatter) {
 		int x = 0;
-
+		
 		ArrayList<GraphElement> graphElements = new ArrayList<GraphElement>();
 		for (GraphElement g : gEe) {
 			GraphElementHelper geh = new GraphElementHelper(g);
 			if (geh.getDataMappings() != null && geh.getDataMappings().size() > 0)
 				graphElements.add(g);
 		}
-
+		
 		int axisFontSize = ((Integer) AttributeHelper.getAttributeValue(graph, "", "node_plotAxisFontSize",
 				Integer.valueOf(10), Integer.valueOf(10))).intValue();
-
+		
 		MyScatterBlock scatterBlock = new MyScatterBlock(true, axisFontSize);
 		for (Iterator<GraphElement> it1 = graphElements.iterator(); it1.hasNext();) {
 			x++;
@@ -2273,16 +2273,16 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						chart = createScatterChart(dataset, null, node2desc, node1desc, graph, tickMarksVisible,
 								showRangeAxis, showLegend, outlineBorderWidth);
 					}
-
+					
 					Font af = new Font(Axis.DEFAULT_AXIS_LABEL_FONT.getFontName(),
 							Axis.DEFAULT_AXIS_LABEL_FONT.getStyle(), axisFontSize);
 					chart.getXYPlot().getRangeAxis().setTickLabelFont(af);
 					chart.getXYPlot().getDomainAxis().setTickLabelFont(af);
 					chart.getXYPlot().getDomainAxis().setLabelFont(af);
 					chart.getXYPlot().getRangeAxis().setLabelFont(af);
-
+					
 					final ChartPanel chartPanel = new ChartPanel(chart, true, true, true, true, true);
-
+					
 					if (ge1 != ge2) {
 						final CorrelationResult cr = calculateCorrelation(dataset, node2desc, node1desc, mergeDataset,
 								0, prob, rankOrder);
@@ -2297,19 +2297,19 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 								if (e.getButton() == MouseEvent.BUTTON3)
 									chartPanel.getPopupMenu().show(chartPanel, e.getX(), e.getY());
 							}
-
+							
 							public void mousePressed(MouseEvent e) {
 								chartPanel.mousePressed(e);
 							}
-
+							
 							public void mouseReleased(MouseEvent e) {
 								chartPanel.mouseReleased(e);
 							}
-
+							
 							public void mouseEntered(MouseEvent e) {
 								chartPanel.mouseEntered(e);
 							}
-
+							
 							public void mouseExited(MouseEvent e) {
 								chartPanel.mouseExited(e);
 							}
@@ -2317,7 +2317,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						if (cr.isAnyOneSignificant(minimumR))
 							chartPanel.setBorder(BorderFactory.createLineBorder(
 									getRcolor(cr.getMaxR(), currGammaValue, colR_1, colR0, colR1), 3));
-
+						
 						else
 							chartPanel.setBorder(BorderFactory.createLineBorder(
 									getRcolor(cr.getMaxR(), currGammaValue, colR_1, colR0, colR1), 1));
@@ -2328,7 +2328,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		if (returnResult)
 			return scatterBlock.getChartPanel();
-
+		
 		if (lastScatterPlot != null) {
 			if (lastScatterPlot instanceof JPanel) {
 				JPanel lsp = (JPanel) lastScatterPlot;
@@ -2336,29 +2336,33 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 			placeForScatter.remove(lastScatterPlot);
 		}
-
+		
 		this.lastScatterPlot = scatterBlock.getChartPanel();
 		this.lastScatterPlot.setPreferredSize(new Dimension(this.getSize().width, this.getSize().width));
 		placeForScatter.add(this.lastScatterPlot, "1,4");
 		placeForScatter.validate();
 		this.validate();
-
+		
 		return null;
 	}
-
+	
 	public static Color getRcolor(float maxOrMinR) {
 		return getRcolor(maxOrMinR, 1, Color.red, Color.WHITE, Color.blue);
 	}
-
+	
 	/**
 	 * Returns col1 if maxOrMinR is -1, returns col2 if maxOrMinR is 1, returns a
 	 * color between these colors if marOrMin is between -1 and 1.
 	 * 
-	 * @param maxOrMinR a value between -1 and 1
-	 * @param gamma     Instead of r, r^gamma is used for determining the color.
-	 *                  This makes it possible to stay longer near col_0.
-	 * @param col1      The returned color in case maxOrMinR is -1
-	 * @param col2      The returned color in case maxOrMinR is 1
+	 * @param maxOrMinR
+	 *           a value between -1 and 1
+	 * @param gamma
+	 *           Instead of r, r^gamma is used for determining the color.
+	 *           This makes it possible to stay longer near col_0.
+	 * @param col1
+	 *           The returned color in case maxOrMinR is -1
+	 * @param col2
+	 *           The returned color in case maxOrMinR is 1
 	 * @return A average color depending on maxOrMinR
 	 */
 	public static Color getRcolor(float maxOrMinR, double gamma, Color col__1, Color col_0, Color col_1) {
@@ -2379,7 +2383,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		float alpha = (col2.getAlpha() - col1.getAlpha()) * maxOrMinR + col1.getAlpha();
 		return new Color(red / 255f, green / 255f, blue / 255f, alpha / 255f);
 	}
-
+	
 	// private Color getRalphaColor(double maxOrMinR, Color color) {
 	// int val = (int) (255d * maxOrMinR);
 	// if (val > 0)
@@ -2388,11 +2392,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	// else
 	// return new Color(color.getRed(), color.getGreen(), color.getBlue(), 0);
 	// }
-
+	
 	private static JFreeChart createScatterChart(MyXML_XYDataset dataset, String title, String labelX, String labelY,
 			Graph graph, boolean tickMarksVisible, boolean showRangeAxis, boolean showLegend,
 			float outlineBorderWidth) {
-
+		
 		// ChartColorAttribute cca = (ChartColorAttribute) AttributeHelper
 		// .getAttributeValue(graph, ChartColorAttribute.attributeFolder,
 		// ChartColorAttribute.attributeName, new ChartColorAttribute(),
@@ -2424,7 +2428,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					graph); // seriesColors, seriesOutlineColors
 		return chart;
 	}
-
+	
 	protected void refreshEditComponents() {
 		if (alphaSpecified)
 			jTextFieldAlpha.setText(Double.valueOf(alpha).toString());
@@ -2449,20 +2453,20 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		for (JButton col3 : col3buttons)
 			col3.setBorder(BorderFactory.createLineBorder(colR1, 3));
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		return v != null && v instanceof GraphView;
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Analysis.Data";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
 	}
-
+	
 }

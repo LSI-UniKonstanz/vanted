@@ -22,26 +22,26 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLEventHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_Event_Reader extends SBML_SBase_Reader {
-
+	
 	/**
 	 * Adds an events to the graph tab
 	 * 
 	 * @param eventList
-	 *            contains the events of the model
+	 *           contains the events of the model
 	 * @param g
-	 *            is the data structure for reading in the information
+	 *           is the data structure for reading in the information
 	 */
 	public void addEvents(List<Event> eventList, Graph g) {
 		Iterator<Event> itEvent = eventList.iterator();
 		int eventCount = 1;
 		while (itEvent.hasNext()) {
 			Event event = itEvent.next();
-
+			
 			String internHeadline = new StringBuffer(SBML_Constants.SBML_EVENT).append(eventCount).toString();
 			String presentedHeadline = new StringBuffer("SBML Event ").append(eventCount).toString();
-
+			
 			SBMLEventHelper eventHelper = new SBMLEventHelper(g, internHeadline, presentedHeadline);
-
+			
 			String eventID = event.getId();
 			String eventName = event.getName();
 			Boolean useValuesFromTriggerTime = false;
@@ -59,7 +59,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 			} catch (SBMLException e) {
 				e.printStackTrace();
 			}
-
+			
 			Boolean triggerInitialValue = false;
 			Boolean triggerPersistent = false;
 			try {
@@ -70,10 +70,10 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-
+			
 			// Boolean triggerInitialValue = trigger.getInitialValue();
 			// Boolean triggerPersistent = trigger.getPersistent();
-
+			
 			String prioritySBOTerm = "";
 			String priorityMetaID = "";
 			String priorityFormula = "";
@@ -93,7 +93,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 						eventHelper.setPriorityNonRDFAnnotation(priority.getAnnotation().getNonRDFannotation());
 					}
 				}
-
+				
 				if (priority.isSetNotes()) {
 					String notesString;
 					try {
@@ -118,7 +118,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 					e.printStackTrace();
 				}
 			}
-
+			
 			String delayMetaID = "";
 			String delaySBOTerm = "";
 			String delayFormula = "";
@@ -130,7 +130,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 				if (delay.isSetSBOTerm()) {
 					delaySBOTerm = delay.getSBOTermID();
 				}
-
+				
 				if (delay.isSetAnnotation()) {
 					if (delay.getAnnotation().isSetRDFannotation()) {
 						eventHelper.setdelayAnnotation(delay.getAnnotation());
@@ -139,11 +139,11 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 						eventHelper.setdelayNonRDFAnnotation(delay.getAnnotation().getNonRDFannotation());
 					}
 				}
-
+				
 				// addNotes(delay.getNotes(), delay.getNotesString(),g,
 				// internHeadline, new StringBuffer(internHeadline).
 				// append(SBML_Constants.DELAY_NOTES).toString());
-
+				
 				if (delay.isSetNotes()) {
 					String notesString;
 					try {
@@ -226,7 +226,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 			if (!delaySBOTerm.equals("")) {
 				eventHelper.setDelaySBOTerm(delaySBOTerm);
 			}
-
+			
 			List<EventAssignment> listEventAssignment = event.getListOfEventAssignments();
 			Iterator<EventAssignment> itEventAssignment = listEventAssignment.iterator();
 			int eventAssignmentCount = 1;
@@ -234,7 +234,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 				EventAssignment eventAssignment = itEventAssignment.next();
 				SBMLEventAssignmentHelper eaHelper = eventHelper.addEventAssignment(g, internHeadline,
 						presentedHeadline, eventAssignmentCount);
-
+				
 				// initEventAssignmentNideIDs(presentedHeadline, internHeadline,
 				// eventAssignmentCount);
 				/*
@@ -249,7 +249,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Event Assignment " +
 				 * eventAssignmentCount + " Formula");
 				 */
-
+				
 				String variable = eventAssignment.getVariable();
 				String eventAssignmentFormula = "";
 				try {
@@ -261,7 +261,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 				} catch (SBMLException e) {
 					e.printStackTrace();
 				}
-
+				
 				if (eventAssignment.isSetVariable()) {
 					eaHelper.setVariable(variable);
 				}
@@ -274,7 +274,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 				if (eventAssignment.isSetSBOTerm()) {
 					eaHelper.setSBOTerm(eventAssignment.getSBOTermID());
 				}
-
+				
 				if (eventAssignment.isSetAnnotation()) {
 					if (eventAssignment.getAnnotation().isSetRDFannotation()) {
 						eaHelper.setAnnotation(eventAssignment.getAnnotation());
@@ -294,12 +294,12 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 					}
 					eaHelper.setNotes(notesString, eventAssignment.getNotes());
 				}
-
+				
 				eventAssignmentCount++;
 			}
-
+			
 			eventCount++;
 		}
 	}
-
+	
 }

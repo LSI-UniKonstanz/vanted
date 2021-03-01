@@ -40,14 +40,14 @@ public class UTemplateReaction extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		TemplateReaction interaction = model.addNew(TemplateReaction.class, RDFID);
-
+		
 		UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 		UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 		UtilitySuperClassFromGraph.getComment(elem, interaction);
@@ -57,9 +57,9 @@ public class UTemplateReaction extends UtilitySuperClassToGraph {
 		UtilitySuperClassFromGraph.getName(elem, interaction);
 		UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
-
+		
 		for (Edge outgoing : elem.getAllOutEdges()) {
-
+			
 			Node out = outgoing.getTarget();
 			String RDFId = getAttributeSecure(out, Messages.getString("UtilitySuperClassToGraph.82"));
 			try {
@@ -68,21 +68,21 @@ public class UTemplateReaction extends UtilitySuperClassToGraph {
 			} catch (ClassCastException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-
+			
 		}
 		for (Edge ingoing : elem.getAllInEdges()) {
-
+			
 			Node in = ingoing.getSource();
-
+			
 			String RDFId = getAttributeSecure(in, Messages.getString("UtilitySuperClassToGraph.82"));
 			try {
 				NucleicAcid NA = (NucleicAcid) model.getByID(RDFId);
 				interaction.setTemplate(NA);
-
+				
 			} catch (ClassCastException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-
+			
 		}
 	}
 }

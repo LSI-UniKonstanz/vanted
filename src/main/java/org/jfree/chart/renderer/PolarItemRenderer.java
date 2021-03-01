@@ -44,74 +44,74 @@ import org.jfree.data.XYDataset;
  * The interface for a renderer that can be used by the {@link PolarPlot} class.
  */
 public interface PolarItemRenderer {
-
+	
 	/**
 	 * Plots the data for a given series.
 	 * 
 	 * @param g2
-	 *            the drawing surface.
+	 *           the drawing surface.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param info
-	 *            collects plot rendering info.
+	 *           collects plot rendering info.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param seriesIndex
-	 *            the series index.
+	 *           the series index.
 	 */
 	public void drawSeries(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, PolarPlot plot,
 			XYDataset dataset, int seriesIndex);
-
+	
 	/**
 	 * Draw the angular gridlines - the spokes.
 	 * 
 	 * @param g2
-	 *            the drawing surface.
+	 *           the drawing surface.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 */
 	public void drawAngularGridLines(Graphics2D g2, PolarPlot plot, List ticks, Rectangle2D dataArea);
-
+	
 	/**
 	 * Draw the radial gridlines - the rings.
 	 * 
 	 * @param g2
-	 *            the drawing surface.
+	 *           the drawing surface.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param radialAxis
-	 *            the radial axis.
+	 *           the radial axis.
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 */
 	public void drawRadialGridLines(Graphics2D g2, PolarPlot plot,
 			// RadialAxis radialAxis,
 			ValueAxis radialAxis, List ticks, Rectangle2D dataArea);
-
+	
 	/**
 	 * Return the legend for the given series.
 	 * 
 	 * @param series
-	 *            the series index.
+	 *           the series index.
 	 * @return The legend item.
 	 */
 	public LegendItem getLegendItem(int series);
-
+	
 	/**
 	 * Returns the plot that this renderer has been assigned to.
 	 * 
 	 * @return the plot.
 	 */
 	public PolarPlot getPlot();
-
+	
 	/**
 	 * Sets the plot that this renderer is assigned to.
 	 * <P>
@@ -119,24 +119,24 @@ public interface PolarItemRenderer {
 	 * yourself.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 */
 	public void setPlot(PolarPlot plot);
-
+	
 	/**
 	 * Adds a change listener.
 	 * 
 	 * @param listener
-	 *            the listener.
+	 *           the listener.
 	 */
 	public void addChangeListener(RendererChangeListener listener);
-
+	
 	/**
 	 * Removes a change listener.
 	 * 
 	 * @param listener
-	 *            the listener.
+	 *           the listener.
 	 */
 	public void removeChangeListener(RendererChangeListener listener);
-
+	
 }

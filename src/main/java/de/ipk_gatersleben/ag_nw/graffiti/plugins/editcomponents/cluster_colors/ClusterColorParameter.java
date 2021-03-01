@@ -12,9 +12,9 @@ import org.graffiti.plugin.parameter.AbstractSingleParameter;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class ClusterColorParameter extends AbstractSingleParameter {
-
+	
 	public ClusterColorParameter(Object val, String name, String description) {
 		super(val, name, description);
 	}
-
+	
 }

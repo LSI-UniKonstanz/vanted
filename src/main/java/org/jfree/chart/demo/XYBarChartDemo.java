@@ -55,41 +55,41 @@ import org.jfree.ui.RefineryUtilities;
  * chart.
  */
 public class XYBarChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYBarChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final TimeSeriesCollection data = DemoDatasetFactory.createTimeSeriesCollection1();
 		data.setDomainIsPointsInTime(false);
 		final JFreeChart chart = ChartFactory.createXYBarChart(title, "X", true, "Y", data, PlotOrientation.VERTICAL,
 				true, false, false);
-
+		
 		// then customise it a little...
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 1000, 0, Color.blue));
-
+		
 		final XYItemRenderer renderer = chart.getXYPlot().getRenderer();
 		final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator("{1} = {2}",
 				new SimpleDateFormat("yyyy"), new DecimalFormat("0.00"));
 		renderer.setToolTipGenerator(generator);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		final DateAxis axis = (DateAxis) plot.getDomainAxis();
 		axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 300));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -100,20 +100,20 @@ public class XYBarChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYBarChartDemo demo = new XYBarChartDemo("XY Bar Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

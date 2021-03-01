@@ -37,12 +37,12 @@ import org.jfree.data.Range;
  * @author David M. O'Donnell
  */
 public interface ContourValuePlot {
-
+	
 	/**
 	 * Returns the range of data values to be plotted.
 	 * 
 	 * @return the range.
 	 */
 	public Range getContourDataRange();
-
+	
 }

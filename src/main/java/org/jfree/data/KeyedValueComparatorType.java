@@ -34,28 +34,28 @@ package org.jfree.data;
  * value'.
  */
 public final class KeyedValueComparatorType {
-
+	
 	/** An object representing 'by key' sorting. */
 	public static final KeyedValueComparatorType BY_KEY = new KeyedValueComparatorType(
 			"KeyedValueComparatorType.BY_KEY");
-
+	
 	/** An object representing 'by value' sorting. */
 	public static final KeyedValueComparatorType BY_VALUE = new KeyedValueComparatorType(
 			"KeyedValueComparatorType.BY_VALUE");
-
+	
 	/** The name. */
 	private String name;
-
+	
 	/**
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *            the name.
+	 *           the name.
 	 */
 	private KeyedValueComparatorType(final String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * Returns a string representing the object.
 	 * 
@@ -64,13 +64,13 @@ public final class KeyedValueComparatorType {
 	public String toString() {
 		return this.name;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if this object is equal to the specified object,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -80,15 +80,15 @@ public final class KeyedValueComparatorType {
 		if (!(o instanceof KeyedValueComparatorType)) {
 			return false;
 		}
-
+		
 		final KeyedValueComparatorType type = (KeyedValueComparatorType) o;
 		if (!this.name.equals(type.name)) {
 			return false;
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 

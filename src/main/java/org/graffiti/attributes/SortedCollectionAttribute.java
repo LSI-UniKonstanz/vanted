@@ -15,8 +15,7 @@ package org.graffiti.attributes;
  * 
  * @version $Revision: 1.3 $
  */
-public interface SortedCollectionAttribute extends CollectionAttribute {
-}
+public interface SortedCollectionAttribute extends CollectionAttribute {}
 
 // ------------------------------------------------------------------------------
 // end of file

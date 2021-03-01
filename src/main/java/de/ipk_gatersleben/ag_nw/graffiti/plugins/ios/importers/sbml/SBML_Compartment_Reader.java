@@ -19,14 +19,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Compartment_Reader {
-
+	
 	/**
 	 * Method reads in compartments and is called from class SBML_XML_Reader.java
 	 * 
 	 * @param compartmentList
-	 *            contains the compartments for the import
+	 *           contains the compartments for the import
 	 * @param g
-	 *            the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 */
 	public void addCompartment(ListOf<Compartment> compartmentList, Graph g) {
 		Iterator<Compartment> itComp = compartmentList.iterator();
@@ -80,7 +80,7 @@ public class SBML_Compartment_Reader {
 			}
 			SBMLCompartment compartmentHelper = compartmentHelperObject.addCompartment(g, internHeadline,
 					presentedHeadline);
-
+			
 			if (compartment.isSetId() && Compartment.isValidId(id, compartment.getLevel(), compartment.getVersion())) {
 				compartmentHelper.setID(id);
 			}
@@ -119,7 +119,7 @@ public class SBML_Compartment_Reader {
 					compartmentHelper.setNonRDFAnnotation(compartment.getAnnotation().getNonRDFannotation());
 				}
 			}
-
+			
 			compartmentCount++;
 		}
 	}

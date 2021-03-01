@@ -55,26 +55,26 @@ import org.jfree.ui.Spacer;
  * An example of....
  */
 public class TimeSeriesDemo11 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to...
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo11(final String title) {
-
+		
 		super(title);
 		final JPanel panel = new JPanel(new GridLayout(2, 2));
 		panel.setPreferredSize(new java.awt.Dimension(800, 600));
-
+		
 		final Day today = new Day();
 		final XYDataset dataset = createDataset("Series 1", 100.0, today, 365);
-
+		
 		final JFreeChart chart1 = createChart("Chart 1 : 1 Year", dataset);
 		final ChartPanel chartPanel1 = new ChartPanel(chart1);
 		panel.add(chartPanel1);
-
+		
 		final JFreeChart chart2 = createChart("Chart 2 : 6 Months", dataset);
 		final SerialDate t = today.getSerialDate();
 		final SerialDate t6m = SerialDate.addMonths(-6, t);
@@ -83,7 +83,7 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 		axis2.setRange(sixMonthsAgo.getStart(), today.getEnd());
 		final ChartPanel chartPanel2 = new ChartPanel(chart2);
 		panel.add(chartPanel2);
-
+		
 		final JFreeChart chart3 = createChart("Chart 3 : 3 Months", dataset);
 		final SerialDate t3m = SerialDate.addMonths(-3, t);
 		final Day threeMonthsAgo = new Day(t3m);
@@ -91,7 +91,7 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 		axis3.setRange(threeMonthsAgo.getStart(), today.getEnd());
 		final ChartPanel chartPanel3 = new ChartPanel(chart3);
 		panel.add(chartPanel3);
-
+		
 		final JFreeChart chart4 = createChart("Chart 4 : 1 Month", dataset);
 		final SerialDate t1m = SerialDate.addMonths(-1, t);
 		final Day oneMonthsAgo = new Day(t1m);
@@ -99,11 +99,11 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 		axis4.setRange(oneMonthsAgo.getStart(), today.getEnd());
 		final ChartPanel chartPanel4 = new ChartPanel(chart4);
 		panel.add(chartPanel4);
-
+		
 		setContentPane(panel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -114,20 +114,20 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates the demo chart.
 	 * 
 	 * @param title
-	 *            the title.
+	 *           the title.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final String title, final XYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart(title, "Date", "Price", dataset, true, true, false);
-
+		
 		chart.setBackgroundPaint(Color.white);
 		final XYPlot plot = chart.getXYPlot();
 		plot.setOrientation(PlotOrientation.VERTICAL);
@@ -135,30 +135,30 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-
+		
 		final StandardXYItemRenderer renderer = (StandardXYItemRenderer) plot.getRenderer();
 		renderer.setPaint(Color.blue);
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @param name
-	 *            the dataset name.
+	 *           the dataset name.
 	 * @param base
-	 *            the starting value.
+	 *           the starting value.
 	 * @param start
-	 *            the starting period.
+	 *           the starting period.
 	 * @param count
-	 *            the number of values to generate.
+	 *           the number of values to generate.
 	 * @return The dataset.
 	 */
 	private XYDataset createDataset(final String name, final double base, final RegularTimePeriod start,
 			final int count) {
-
+		
 		final TimeSeries series = new TimeSeries(name, start.getClass());
 		RegularTimePeriod period = start;
 		double value = base;
@@ -167,27 +167,27 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 			period = period.previous();
 			value = value * (1 + (Math.random() - 0.495) / 10.0);
 		}
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(series);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimeSeriesDemo11 demo = new TimeSeriesDemo11("Time Series Demo 11");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

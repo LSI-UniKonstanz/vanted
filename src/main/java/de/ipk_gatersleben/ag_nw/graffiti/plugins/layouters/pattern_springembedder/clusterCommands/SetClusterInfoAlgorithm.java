@@ -21,26 +21,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 
 /**
- * 
  * @vanted.revision 2.7.0 Added Undo/Redo
  */
 public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
-
+	
 	private String currentValue = "";
-
+	
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
-
+		
 		return "Enter Cluster ID";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Assign/Modify cluster ID for<br>" + "selected or all nodes, given none are selected.";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		try {
@@ -60,18 +59,18 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 		}
 		return new Parameter[] { new StringParameter(currentValue, "Cluster ID", null) };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		currentValue = ((StringParameter) params[i++]).getString();
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -79,7 +78,7 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 		if (graph.getNumberOfNodes() <= 0)
 			throw new PreconditionException("Graph contains no graph elements!");
 	}
-
+	
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
 		try {
@@ -90,7 +89,7 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

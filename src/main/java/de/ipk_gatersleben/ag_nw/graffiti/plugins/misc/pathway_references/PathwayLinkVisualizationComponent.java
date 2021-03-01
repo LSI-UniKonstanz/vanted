@@ -28,30 +28,30 @@ import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.ShapeNotFoundException;
 
 public class PathwayLinkVisualizationComponent extends AbstractAttributeComponent implements MouseMotionListener {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6436703663171867672L;
 	NodePathwayLinkVisualizationAttribute va = null;
 	ArrayList<DrawingGroup> items = null;
-
+	
 	double circleRadius = 0d;
-
+	
 	private boolean highlight = false;
-
+	
 	private int modeOfOperation = 1;
-
+	
 	private static long creationcount = 0;
 	private long creationid = -1;
-
+	
 	private boolean isRectangle = false;
-
+	
 	public PathwayLinkVisualizationComponent() {
 		creationcount++;
 		creationid = creationcount;
 	}
-
+	
 	@Override
 	public void setShift(Point shift) {
 		super.setShift(shift);
@@ -59,7 +59,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 		// setBounds(shift.x-getWidth()/2, shift.y-getHeight()/2, getWidth(),
 		// getHeight());
 	}
-
+	
 	@Override
 	public void attributeChanged(Attribute attr) throws ShapeNotFoundException {
 		if (attr == null || attr.getId() == null)
@@ -68,15 +68,15 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 			String id = attr.getId();
 			if (id.equals("x") || id.equals("y") || id.equals("width") || id.equals("height"))
 				adjustComponentSize();
-
+			
 		}
 	}
-
+	
 	@Override
 	public void createNewShape(CoordinateSystem coordSys) throws ShapeNotFoundException {
 		super.createNewShape(coordSys);
 	}
-
+	
 	@Override
 	public void recreate() throws ShapeNotFoundException {
 		setOpaque(false);
@@ -99,13 +99,13 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 			}
 		}
 	}
-
+	
 	private ArrayList<DrawingGroup> getItemsToBeDrawnFromLinkInfo(TreeSet<String> allLinks,
 			TreeSet<String> pathwayLinks) {
 		ArrayList<DrawingGroup> result = new ArrayList<DrawingGroup>();
-
+		
 		allLinks.addAll(pathwayLinks);
-
+		
 		TreeSet<String> level1 = new TreeSet<String>();
 		TreeSet<String> level2 = new TreeSet<String>();
 		for (String s : allLinks) {
@@ -122,7 +122,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 			level1.add(s);
 			level2.add(s2);
 		}
-
+		
 		HashSet<String> pathwayLinksUntilLevel2 = new HashSet<String>();
 		for (String s : pathwayLinks) {
 			s = StringManipulationTools.stringReplace(s, "%46", ".");
@@ -137,7 +137,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 			}
 			pathwayLinksUntilLevel2.add(s2);
 		}
-
+		
 		HashMap<String, ArrayList<Boolean>> level1id2BL = new HashMap<String, ArrayList<Boolean>>();
 		for (String l1 : level1) {
 			ArrayList<Boolean> al = new ArrayList<Boolean>();
@@ -150,7 +150,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 		}
 		return result;
 	}
-
+	
 	@Override
 	public void paint(Graphics g) {
 		if (!checkVisibility(10))
@@ -178,7 +178,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 			// g.drawString(lastMouseEvent.getX()+"/"+lastMouseEvent.getY(), 0, 15);
 		}
 	}
-
+	
 	/**
 	 * @param items2
 	 * @return
@@ -189,15 +189,15 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 			groups.add(dg.group);
 		return NamedColorSet.getColors(groups, false);
 	}
-
+	
 	private int getMode() {
 		return modeOfOperation;
 	}
-
+	
 	private void drawColorfulPieSegments(double w, double h, double centerX, double centerY, Graphics2D g2,
 			ArrayList<Color> colors, int maxNubmerOfLinks) {
 		double degreeStep = 360 / maxNubmerOfLinks;
-
+		
 		w = w * 0.7d;
 		h = h * 0.7d;
 		double degree = 135;
@@ -215,7 +215,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 					atLeastOneLink = true;
 					break;
 				}
-
+				
 				countEmptyOnes++;
 			}
 			if (!atLeastOneLink)
@@ -224,55 +224,55 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 				// degree+=degreeStep;
 				if (!atLeastOneLink)
 					continue;
-
+				
 				// double sinbeta = 0; //Math.sin(0);
 				// double cosbeta = 1; // Math.cos(0);
 				//
 				// double sinalpha = Math.sin(degree);
 				// double cosalpha = Math.cos(degree);
-
+				
 				// double xx = centerX + (w/2d * cosalpha * cosbeta - h/2d * sinalpha *
 				// sinbeta);
 				// double yy = centerY + (w/2d * cosalpha * sinbeta + h/2d * sinalpha *
 				// cosbeta);
-
+				
 				// g2.fill(new Ellipse2D.Double(xx-circleRadius/2, yy-circleRadius/2,
 				// circleRadius, circleRadius));
-
+				
 				double d = degree;
 				double ds = degreeStep;
-
+				
 				double ww = 1.4 * w;
 				double hh = 1.4 * h;
-
+				
 				Area area;
 				double ff1;
 				if (linked || isRectangle)
 					ff1 = 0.0d;
 				else
 					ff1 = 0.12d;
-
+				
 				if (isRectangle && getMode() == 1) {
 					ff1 = 0.0;
 				}
-
+				
 				if (highlight) {
 					ff1 = ff1 * 1.5;
 				}
-
+				
 				area = new Area(new Arc2D.Double(
 						new Rectangle2D.Double(ww * ff1, hh * ff1, ww * (1 - 2 * ff1), hh * (1 - 2 * ff1)), d, ds,
 						Arc2D.PIE));
 				double ff2 = 0.25d;
-
+				
 				if (highlight) {
 					ff2 = ff2 * 1.5;
 				}
-
+				
 				if (isRectangle && getMode() == 1) {
 					ff2 = ff2 * 1;
 				}
-
+				
 				if (isRectangle && getMode() == 1) {
 					if (highlight) {
 						ff2 = ff2 * 0.7;
@@ -285,7 +285,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 					Area rect1 = new Area(
 							new Rectangle2D.Double(ww * ff2, hh * ff2, ww * (1 - 2 * ff2), hh * (1 - 2 * ff2)));
 					area.intersect(rect1);
-
+					
 					ff2 = fff2 * 1.4;
 					Area rect2 = new Area(
 							new Rectangle2D.Double(ww * ff2, hh * ff2, ww * (1 - 2 * ff2), hh * (1 - 2 * ff2)));
@@ -307,14 +307,14 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 				}
 				degree -= degreeStep;
 			}
-
+			
 		}
 	}
-
+	
 	private void drawColorfulCircles(double w, double h, double centerX, double centerY, Graphics2D g2,
 			ArrayList<Color> colors, int maxNubmerOfLinks) {
 		double degreeStep = 2 * Math.PI / maxNubmerOfLinks;
-
+		
 		// GeneralPath gp = new GeneralPath();
 		// gp.moveTo(20, 20);
 		// gp.lineTo(30, 30);
@@ -325,7 +325,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 		//
 		// if (gp.contains(mp.x, mp.y))
 		// highlight(xyz);
-
+		
 		w = w * 0.7d;
 		h = h * 0.7d;
 		double degree = -degreeStep;
@@ -341,21 +341,21 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 				if (!linked)
 					continue;
 				g2.setPaint(new Color(re, gr, bl, 140));
-
+				
 				double sinbeta = 0; // Math.sin(0);
 				double cosbeta = 1; // Math.cos(0);
-
+				
 				double sinalpha = Math.sin(degree);
 				double cosalpha = Math.cos(degree);
-
+				
 				double xx = centerX + (w / 2d * cosalpha * cosbeta - h / 2d * sinalpha * sinbeta);
 				double yy = centerY + (w / 2d * cosalpha * sinbeta + h / 2d * sinalpha * cosbeta);
-
+				
 				g2.fill(new Ellipse2D.Double(xx - circleRadius / 2, yy - circleRadius / 2, circleRadius, circleRadius));
 			}
 		}
 	}
-
+	
 	@Override
 	public void adjustComponentSize() {
 		int w = getWidth();
@@ -363,7 +363,7 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 		if (attr == null)
 			return;
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
-
+		
 		if (ge instanceof Node) {
 			Node n = (Node) ge;
 			String shape = AttributeHelper.getShape(n);
@@ -377,27 +377,27 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 				w = (int) (size.x);
 				h = (int) (size.y);
 			}
-
+			
 			if (highlight) {
 				w = w * 4;
 				h = h * 4;
 			}
-
+			
 			if (isRectangle && getMode() == 1) {
 				w = (int) (w * 1.2d);
 				h = (int) (h * 1.2d);
 			}
-
+			
 			circleRadius = size.x < size.y ? size.x * 0.3d : size.y * 0.3d;
-
+			
 			if (highlight)
 				circleRadius = circleRadius * 2;
-
+			
 			if (w < 0)
 				w = 0;
 			if (h < 0)
 				h = 0;
-
+			
 			setSize(w, h);
 			Vector2d pos = AttributeHelper.getPositionVec2d(n);
 			setLocation((int) (pos.x - w / 2d), (int) (pos.y - h / 2d));
@@ -405,26 +405,26 @@ public class PathwayLinkVisualizationComponent extends AbstractAttributeComponen
 			// attribute is not supported to be added to edges
 		}
 	}
-
+	
 	@Override
 	public void highlight(boolean value, MouseEvent e) {
 		highlight = value;
 		adjustComponentSize();
 		repaint();
 	}
-
+	
 	@Override
 	public String toString() {
 		return creationid + "";
 	}
-
+	
 	// mouse motion
-
+	
 	public void mouseDragged(MouseEvent e) {
 		//
-
+		
 	}
-
+	
 	public void mouseMoved(MouseEvent e) {
 	}
 }

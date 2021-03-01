@@ -7,13 +7,13 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.hamming_distance;
 
 public class Testttt {
-
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		//
-
+		
 	}
-
+	
 }

@@ -21,23 +21,23 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @author matthiak
  */
 public class TestAdjGraphMatrix extends TestCase {
-
+	
 	Graph g;
 	Node[] nodes;
-
+	
 	@Override
 	protected void setUp() throws Exception {
 		g = createRandomGraph(5, 0.5f, true, true, false);
 		nodes = g.getNodes().toArray(new Node[g.getNodes().size()]);
 	}
-
+	
 	@Test
 	public void testOne() {
 		byte[][] createAdjacencyMatrix = GraphHelper.createAdjacencyMatrix(g, true);
 		printAdjacencyMatrix(nodes, createAdjacencyMatrix);
-
+		
 	}
-
+	
 	public static void printAdjacencyMatrix(Node[] nodes, byte[][] createAdjacencyMatrix) {
 		System.out.print("patNode\\targetNode\t");
 		for (Node n : nodes)
@@ -50,19 +50,19 @@ public class TestAdjGraphMatrix extends TestCase {
 			}
 			System.out.println();
 		}
-
+		
 	}
-
+	
 	private Graph createRandomGraph(int numberOfNodes, float p, boolean label, boolean directed, boolean selfLoops) {
 		Graph rdg = new AdjListGraph();
-
+		
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		PositionGridGenerator pgg = new PositionGridGenerator(50, 50, 800);
 		for (int i = 0; i < numberOfNodes; i++) {
 			Node n = rdg.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pgg.getNextPositionVec2d()));
 			AttributeHelper.setShapeEllipse(n);
 			nodes.add(n);
-
+			
 			if (label)
 				AttributeHelper.setLabel(n, "" + (i + 1));
 		}

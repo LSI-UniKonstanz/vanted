@@ -21,22 +21,22 @@ public class GlobalHotkeyManager extends EventQueue {
 		// responsibility
 		Toolkit.getDefaultToolkit().getSystemEventQueue().push(instance);
 	}
-
+	
 	private GlobalHotkeyManager() {
 	} // One is enough - singleton
-
+	
 	public static GlobalHotkeyManager getInstance() {
 		return instance;
 	}
-
+	
 	public InputMap getInputMap() {
 		return keyStrokes;
 	}
-
+	
 	public ActionMap getActionMap() {
 		return actions;
 	}
-
+	
 	@Override
 	protected void dispatchEvent(AWTEvent event) {
 		if (event instanceof KeyEvent) {

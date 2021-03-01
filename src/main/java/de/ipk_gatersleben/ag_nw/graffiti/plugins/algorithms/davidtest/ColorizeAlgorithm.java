@@ -41,7 +41,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.TabStatistics;
 
 public class ColorizeAlgorithm extends AbstractAlgorithm {
-
+	
 	private double userMinValue = Double.NaN;
 	private double userMaxValue = Double.NaN;
 	private boolean useUserMinMax = false;
@@ -49,22 +49,22 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 	private Color minColor = Color.WHITE;
 	private Color maxColor = Color.RED;
 	private double gamma = 1d;
-
+	
 	public String getName() {
 		return "Average Substance-Level > Background Color";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Nodes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(
 				Arrays.asList(Category.NODE, Category.VISUAL, Category.COMPUTATION, Category.DATA));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "With this algorithm the selected nodes will be colorized accordingly<br>"
@@ -77,7 +77,7 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 				+ "The diagrams, shown inside each node will be hidden after performing<br>" + "this command.<br>"
 				+ "Use the node-sidepanel, to re-enable the diagram view, if needed!";
 	}
-
+	
 	public void execute() {
 		JDialog dialog;
 		final FinalBoolean set = new FinalBoolean(false);
@@ -103,7 +103,7 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 		dialog.setVisible(true);
 		if (!set.isSet())
 			return;
-
+		
 		graph.getListenerManager().transactionStarted(this);
 		try {
 			double min = Double.NaN;
@@ -118,7 +118,7 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -135,7 +135,7 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 								+ "of the average sample value)",
 						"If selected, the average ratio from sample to sample instead of the average sample value will be used"), };
 	}
-
+	
 	public static void colorizeNodes(List<Node> nodes, Color minC, Color maxC, double gamma, double min, double max,
 			boolean useRatioCalculation) {
 		double minimum = Double.MAX_VALUE;
@@ -196,8 +196,7 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 				try {
 					CollectionAttribute ca = (CollectionAttribute) node.getAttribute(Experiment2GraphHelper.mapFolder);
 					XMLAttribute xa = (XMLAttribute) ca.getAttribute(Experiment2GraphHelper.mapVarName);
-					List<MyComparableDataPoint> allvalues = new ArrayList<MyComparableDataPoint>();
-					;
+					List<MyComparableDataPoint> allvalues = new ArrayList<MyComparableDataPoint>();;
 					for (SubstanceInterface xmldata : xa.getMappedData()) {
 						List<MyComparableDataPoint> mapvalues = NodeTools.getSortedAverageDataSetValues(xmldata);
 						allvalues.addAll(mapvalues);
@@ -247,12 +246,12 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 			// GraphHelper.issueCompleteRedrawForGraph(nodes.iterator().next().getGraph());
 		}
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -267,7 +266,7 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 		gamma = dpgamma.getDouble().doubleValue();
 		useRatio = ur.getBoolean().booleanValue();
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -276,10 +275,10 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 		if (graph == null || graph.getNodes().size() <= 1)
 			throw new PreconditionException("More than one node with mapped measurement data needs to be selected!");
 	}
-
+	
 	@Override
 	public void reset() {
 		super.reset();
 	}
-
+	
 }

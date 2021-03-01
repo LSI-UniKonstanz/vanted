@@ -22,42 +22,42 @@ import uk.ac.ebi.biomodels.ws.SimpleModel;
  * @author matthiak
  */
 public class TestPath2Models extends TestCase {
-
+	
 	static Logger logger = Logger.getLogger(TestPath2Models.class);
-
+	
 	private BioModelsWSClient client;
-
+	
 	protected void setUp() throws Exception {
 		client = new BioModelsWSClient();
-
+		
 		Logger.getRootLogger().setLevel(Level.INFO);
 	}
-
+	
 	@Test
 	public void testPath2ModelsConnector() {
-
+		
 		try {
 			System.out.println(client.helloBioModels());
 		} catch (BioModelsWSException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Test
 	public void testLoadSimpleModels() {
-
+		
 		try {
-
+			
 			Map<String, List<SimpleModel>> mapModels = client.getSimpleModelsByChEBIIds(new String[] { "CHEBI:15355" });
-
+			
 			for (String key : mapModels.keySet()) {
 				List<SimpleModel> curList = mapModels.get(key);
 				System.out.println("key: " + key);
 				for (SimpleModel curModel : curList) {
-
+					
 					System.out.println("  model name: " + curModel.getName());
 					System.out.println("  model id: " + curModel.getId());
-
+					
 					String modelSBMLById = client.getModelSBMLById(curModel.getId());
 					FileWriter writer = new FileWriter("/tmp/sbml-testwrite-" + curModel.getId() + ".sbml");
 					writer.write(modelSBMLById);
@@ -70,10 +70,10 @@ public class TestPath2Models extends TestCase {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Test
 	public void testLoadModelByNameSearch() {
-
+		
 		try {
 			String modelSBMLById = client.getModelSBMLById("BMID000000107284");
 			if (modelSBMLById != null)
@@ -82,7 +82,7 @@ public class TestPath2Models extends TestCase {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Test
 	public void testGetResultListByNameSearch() {
 		try {

@@ -15,19 +15,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public abstract class TemplateLoader implements ExperimentDataDragAndDropHandler { // ,DataDragAndDropHandler
-
+	
 	public TemplateLoader() {
 		super();
 	}
-
+	
 	public void registerLoader() {
 		GravistoMainHelper.addDragAndDropHandler(this);
 	}
-
+	
 	public boolean hasPriority() {
 		return false;
 	}
-
+	
 	public boolean canProcess(File f) {
 		String name = f.getAbsolutePath();
 		for (String ext : getValidExtensions())
@@ -35,14 +35,14 @@ public abstract class TemplateLoader implements ExperimentDataDragAndDropHandler
 				return true;
 		return false;
 	}
-
+	
 	@Override
 	public abstract String toString();
-
+	
 	protected abstract String[] getValidExtensions();
-
+	
 	protected ExperimentDataPresenter receiver;
-
+	
 	public boolean process(final List<File> files) {
 		if (receiver != null) {
 			final BackgroundTaskStatusProviderSupportingExternalCall status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
@@ -61,10 +61,10 @@ public abstract class TemplateLoader implements ExperimentDataDragAndDropHandler
 		} else
 			return false;
 	}
-
+	
 	protected abstract List<ExperimentInterface> process(List<File> files, ExperimentDataPresenter receiver,
 			BackgroundTaskStatusProviderSupportingExternalCall status);
-
+	
 	public void setExperimentDataReceiver(ExperimentDataPresenter receiver) {
 		this.receiver = receiver;
 	}

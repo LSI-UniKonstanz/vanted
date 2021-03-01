@@ -41,9 +41,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
  * @author klukas
  */
 public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
-
+	
 	// Selection selection;
-
+	
 	private boolean settingDirected = true;
 	private boolean considerEdgeWeight = true;
 	private boolean considerNodeWeight = true;
@@ -51,20 +51,20 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 	private boolean setLabel = false;
 	private boolean putWeightOnEdges = false;
 	private AttributePathNameSearchType weightattribute = null;
-
+	
 	/**
 	 * Constructs a new instance.
 	 */
 	public WeightedShortestPathSelectionAlgorithm() {
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		// super.check();
 		if (selection == null || selection.getNumberOfNodes() < 2)
 			throw new PreconditionException("at least one start and one end node has to be selected");
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -90,7 +90,7 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 				new BooleanParameter(setLabel, "Replace Label with Distance",
 						"If enabled, edge and node labels will show calculated distance information."), };
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#
 	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
@@ -106,7 +106,7 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 		setAttribute = ((BooleanParameter) params[i++]).getBoolean();
 		setLabel = ((BooleanParameter) params[i++]).getBoolean();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
@@ -133,34 +133,34 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 		sel.addAll(currentSelElements);
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public static Collection<GraphElement> getShortestPathElements(Collection<GraphElement> validGraphElements,
 			GraphElement startGraphElement, ListOrderedSet targetGraphElements, boolean directed,
 			boolean considerNodeWeight, boolean considerEdgeWeight, double maxDistance,
 			AttributePathNameSearchType weightattribute, boolean putWeightOnEdges, boolean setAttribute,
 			boolean setLabel) {
-
+		
 		Queue<GraphElement> findTheseGraphElements = new LinkedList<GraphElement>();
 		findTheseGraphElements.addAll(targetGraphElements);
-
+		
 		HashSet<GraphElement> elementsOfShortestPaths = new HashSet<GraphElement>();
-
+		
 		Queue<WeightedDistanceInfo> toDo = new LinkedList<WeightedDistanceInfo>();
-
+		
 		HashMap<GraphElement, WeightedDistanceInfo> node2distanceinfo = new HashMap<GraphElement, WeightedDistanceInfo>();
-
+		
 		WeightedDistanceInfo di = new WeightedDistanceInfo(0, startGraphElement, startGraphElement, considerNodeWeight,
 				considerEdgeWeight, weightattribute, putWeightOnEdges, setAttribute);
 		toDo.add(di);
 		node2distanceinfo.put(startGraphElement, di);
-
+		
 		do {
 			WeightedDistanceInfo currentProcessingUnit = toDo.remove();
 			GraphElement currentGraphElement = currentProcessingUnit.getGraphElement();
-
+			
 			Collection<GraphElement> connectedGraphElements = currentProcessingUnit.getConnectedGraphElements(directed);
-
+			
 			for (GraphElement neighbour : connectedGraphElements) {
 				if (!validGraphElements.contains(neighbour))
 					continue;
@@ -183,7 +183,7 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 				}
 			}
 		} while ((!toDo.isEmpty() && !findTheseGraphElements.isEmpty()));
-
+		
 		if (setLabel)
 			for (GraphElement ge : node2distanceinfo.keySet()) {
 				WeightedDistanceInfo pdi = node2distanceinfo.get(ge);
@@ -194,7 +194,7 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 				WeightedDistanceInfo pdi = node2distanceinfo.get(ge);
 				AttributeHelper.setAttribute(ge, "properties", "shortestdistance", pdi.getMinDistance());
 			}
-
+		
 		for (Object o : targetGraphElements) {
 			GraphElement targetNode = (GraphElement) o;
 			elementsOfShortestPaths.add(targetNode);
@@ -206,7 +206,7 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 		}
 		return elementsOfShortestPaths;
 	}
-
+	
 	private static void processDistanceInfoFromTargetToSource(
 			HashMap<GraphElement, WeightedDistanceInfo> node2distanceinfo, HashSet<GraphElement> elementsOfShortestPath,
 			WeightedDistanceInfo distInfo, boolean directed, AttributePathNameSearchType weightAttribute) {
@@ -220,14 +220,14 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 			if (sourceElement != distInfo.getGraphElement())
 				if (node2distanceinfo.containsKey(sourceElement)) {
 					WeightedDistanceInfo distanceInfoForSourceElement = node2distanceinfo.get(sourceElement); // process
-																												// distance
+					// distance
 					// recursively visit source elements from target to source
 					processDistanceInfoFromTargetToSource(node2distanceinfo, elementsOfShortestPath,
 							distanceInfoForSourceElement, directed, weightAttribute);
 				}
 		}
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -236,7 +236,7 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 		graph = null;
 		selection = null;
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Use this command to find the shortest path(s) between any<br>"
@@ -250,7 +250,7 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 				+ "Hint: Use the simpler shortest path selection command to select nodes or edges,<br>"
 				+ "for situations where graph element attribute values should not be considered.";
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
@@ -260,31 +260,31 @@ public class WeightedShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 		else
 			return null;
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Analysis";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANALYSIS, Category.SELECTION));
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return null; // we don't want to appear in the menu
 	}
-
+	
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return false;

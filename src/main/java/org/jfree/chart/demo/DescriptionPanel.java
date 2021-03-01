@@ -41,25 +41,25 @@ import javax.swing.JTextArea;
  * A panel containing a chart description.
  */
 public class DescriptionPanel extends JPanel {
-
+	
 	/** The preferred size for the panel. */
 	public static final Dimension PREFERRED_SIZE = new Dimension(150, 50);
-
+	
 	/**
 	 * Creates a new panel.
 	 * 
 	 * @param text
-	 *            the component containing the text.
+	 *           the component containing the text.
 	 */
 	public DescriptionPanel(final JTextArea text) {
-
+		
 		setLayout(new BorderLayout());
 		text.setLineWrap(true);
 		text.setWrapStyleWord(true);
 		add(new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-
+		
 	}
-
+	
 	/**
 	 * Returns the preferred size.
 	 * 
@@ -68,5 +68,5 @@ public class DescriptionPanel extends JPanel {
 	public Dimension getPreferredSize() {
 		return PREFERRED_SIZE;
 	}
-
+	
 }

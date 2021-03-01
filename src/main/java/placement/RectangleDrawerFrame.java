@@ -28,25 +28,25 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class RectangleDrawerFrame extends JFrame {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7950260434808420213L;
-
+	
 	enum Algorithm {
 		ACTIVESET, MOSEK, FSA, ACTIVESET_SPLIT
 	}
-
+	
 	RectangleDrawerFrame(String title) {
 		super(title);
 	}
-
+	
 	Algorithm algorithm = Algorithm.ACTIVESET_SPLIT;
 	boolean completeConstraints = false;
 	boolean orthogonalOrderingConstraints = false;
 	boolean animate = false;
-
+	
 	public static void main(String args[]) {
 		final RectangleDrawerFrame f = new RectangleDrawerFrame("Rectangle Drawer");
 		Box hBox1 = Box.createHorizontalBox();
@@ -71,38 +71,38 @@ public class RectangleDrawerFrame extends JFrame {
 		JCheckBox animateCB = new JCheckBox("Animate");
 		final JRadioButton activeSetRB = new JRadioButton("AS");
 		activeSetRB.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				f.algorithm = Algorithm.ACTIVESET;
 			}
-
+			
 		});
-
+		
 		final JRadioButton activeSetSplitRB = new JRadioButton("AS'");
 		activeSetSplitRB.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				f.algorithm = Algorithm.ACTIVESET_SPLIT;
 			}
-
+			
 		});
-
+		
 		final JRadioButton mosekRB = new JRadioButton("QP");
 		mosekRB.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				f.algorithm = Algorithm.MOSEK;
 			}
-
+			
 		});
 		mosekRB.setEnabled(false);
 		final JRadioButton fsaRB = new JRadioButton("FSA");
 		fsaRB.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				f.algorithm = Algorithm.FSA;
 			}
-
+			
 		});
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(activeSetRB);
@@ -110,18 +110,18 @@ public class RectangleDrawerFrame extends JFrame {
 		bg.add(mosekRB);
 		bg.add(fsaRB);
 		switch (f.algorithm) {
-		case ACTIVESET:
-			activeSetRB.setSelected(true);
-			break;
-		case ACTIVESET_SPLIT:
-			activeSetSplitRB.setSelected(true);
-			break;
-		case MOSEK:
-			mosekRB.setSelected(true);
-			break;
-		case FSA:
-			fsaRB.setSelected(true);
-			break;
+			case ACTIVESET:
+				activeSetRB.setSelected(true);
+				break;
+			case ACTIVESET_SPLIT:
+				activeSetSplitRB.setSelected(true);
+				break;
+			case MOSEK:
+				mosekRB.setSelected(true);
+				break;
+			case FSA:
+				fsaRB.setSelected(true);
+				break;
 		}
 		completeConstraintsCB.setSelected(f.completeConstraints);
 		orthogonalConstraintsCB.setSelected(f.orthogonalOrderingConstraints);
@@ -150,7 +150,7 @@ public class RectangleDrawerFrame extends JFrame {
 		f.setSize(700, 700);
 		f.setVisible(true);
 		cleanupButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				d.backup();
 				int xGap = Integer.parseInt(xGapField.getText());
@@ -171,26 +171,26 @@ public class RectangleDrawerFrame extends JFrame {
 				d.fitToScreen();
 				d.repaint();
 			}
-
+			
 		});
 		clearButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				d.backup();
 				d.clear();
 			}
-
+			
 		});
 		undoButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				d.undo();
 				d.repaint();
 			}
-
+			
 		});
 		loadButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				BlocksFileFilter ff = d.getFileFilter();
 				JFileChooser chooser = new JFileChooser(".");
@@ -207,13 +207,13 @@ public class RectangleDrawerFrame extends JFrame {
 			}
 		});
 		randomButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				d.generateRandom();
 			}
 		});
 		printButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				PrinterJob printJob = PrinterJob.getPrinterJob();
 				printJob.setPrintable(d);
@@ -228,7 +228,7 @@ public class RectangleDrawerFrame extends JFrame {
 			}
 		});
 		saveButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				BlocksFileFilter ff = d.getFileFilter();
 				JFileChooser chooser = new JFileChooser(".");
@@ -267,25 +267,25 @@ public class RectangleDrawerFrame extends JFrame {
 			}
 		});
 		completeConstraintsCB.addChangeListener(new ChangeListener() {
-
+			
 			public void stateChanged(ChangeEvent arg0) {
 				f.completeConstraints = f.completeConstraints ? false : true;
 			}
-
+			
 		});
 		orthogonalConstraintsCB.addChangeListener(new ChangeListener() {
-
+			
 			public void stateChanged(ChangeEvent arg0) {
 				f.orthogonalOrderingConstraints = f.orthogonalOrderingConstraints ? false : true;
 			}
-
+			
 		});
 		animateCB.addChangeListener(new ChangeListener() {
-
+			
 			public void stateChanged(ChangeEvent arg0) {
 				f.animate = f.animate ? false : true;
 			}
-
+			
 		});
 		if (args.length > 0) {
 			System.out.println("Arg " + args[0]);
@@ -293,5 +293,5 @@ public class RectangleDrawerFrame extends JFrame {
 			cleanupButton.getActionListeners()[0].actionPerformed(null);
 		}
 	}
-
+	
 }

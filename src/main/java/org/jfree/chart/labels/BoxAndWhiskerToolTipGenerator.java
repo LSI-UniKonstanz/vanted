@@ -80,39 +80,39 @@ import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
  */
 public class BoxAndWhiskerToolTipGenerator extends StandardCategoryToolTipGenerator
 		implements CategoryToolTipGenerator, Cloneable, Serializable {
-
+	
 	/** The default tooltip format string. */
 	public static final String DEFAULT_TOOL_TIP_FORMAT = "X: {1} Mean: {2} Median: {3} Min: {4} Max: {5} Q1: {6} Q3: {7} ";
-
+	
 	/**
 	 * Creates a default tool tip generator.
 	 */
 	public BoxAndWhiskerToolTipGenerator() {
 		super(DEFAULT_TOOL_TIP_FORMAT, NumberFormat.getInstance());
 	}
-
+	
 	/**
 	 * Creates a tool tip formatter.
 	 * 
 	 * @param format
-	 *            the tool tip format string.
+	 *           the tool tip format string.
 	 * @param formatter
-	 *            the formatter.
+	 *           the formatter.
 	 */
 	public BoxAndWhiskerToolTipGenerator(String format, NumberFormat formatter) {
 		super(format, formatter);
 	}
-
+	
 	/**
 	 * Creates the array of items that can be passed to the {@link MessageFormat}
 	 * class for creating labels.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the items (never <code>null</code>).
 	 */
 	protected Object[] createItemArray(CategoryDataset dataset, int series, int item) {
@@ -132,29 +132,29 @@ public class BoxAndWhiskerToolTipGenerator extends StandardCategoryToolTipGenera
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if (o instanceof BoxAndWhiskerToolTipGenerator) {
 			return super.equals(o);
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 }

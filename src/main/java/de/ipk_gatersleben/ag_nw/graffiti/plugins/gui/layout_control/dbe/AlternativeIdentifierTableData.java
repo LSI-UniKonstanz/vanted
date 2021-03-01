@@ -16,14 +16,14 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.ExperimentInterface;
 
 public class AlternativeIdentifierTableData extends TableData {
-
+	
 	public static int processAdditionaldentifiers(boolean processAllExistingIDs, TableData myData,
 			ExperimentInterface md, BackgroundTaskStatusProviderSupportingExternalCall optStatus,
 			double optStartProgress, double optEndProgress, StringBuilder statusMessage, boolean skipFirstRow) {
 		return myData.processAdditionaldentifiers(processAllExistingIDs, false, md, optStatus, optStartProgress,
 				optEndProgress, statusMessage, skipFirstRow, null);
 	}
-
+	
 	public static int processAdditionaldentifiers(boolean processAllExistingIDs, boolean processAllNewIDs,
 			TableData myData, ExperimentInterface md, BackgroundTaskStatusProviderSupportingExternalCall optStatus,
 			double optStartProgress, double optEndProgress, StringBuilder statusMessage, boolean skipFirstRow,
@@ -31,7 +31,7 @@ public class AlternativeIdentifierTableData extends TableData {
 		return myData.processAdditionaldentifiers(processAllExistingIDs, processAllNewIDs, md, optStatus,
 				optStartProgress, optEndProgress, statusMessage, skipFirstRow, ignoreColumns);
 	}
-
+	
 	public static TableData getAlternativeTableData(ArrayList<String[][]> alternativeIDs) {
 		HashMap<String, TreeSet<String>> mainId2alternativeIds = new HashMap<String, TreeSet<String>>();
 		for (String[][] altIds : alternativeIDs)
@@ -53,7 +53,7 @@ public class AlternativeIdentifierTableData extends TableData {
 		// result.showDataDialog();
 		return result;
 	}
-
+	
 	private static void processAlternativeIds(HashMap<String, TreeSet<String>> mainId2alternativeIds,
 			String[][] alternativeIDs) {
 		if (alternativeIDs == null)

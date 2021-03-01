@@ -27,69 +27,69 @@ import org.graffiti.attributes.IntegerAttribute;
  */
 public class ColorAttribute extends HashMapAttribute implements GraphicAttributeConstants, ColorSetAndGetSupport {
 	// ~ Instance fields ========================================================
-
+	
 	/** Contains value for blue color. */
 	private IntegerAttribute blue;
-
+	
 	/** Contains value for green color. */
 	private IntegerAttribute green;
-
+	
 	/** Contains value for opacity. */
 	private IntegerAttribute opacity;
-
+	
 	/** Contains value for red color. */
 	private IntegerAttribute red;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>ColorAttribute</code>.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param c
-	 *            the color-value of the attribute.
+	 *           the color-value of the attribute.
 	 */
 	public ColorAttribute(String id, Color c) {
 		this(id, c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
 	}
-
+	
 	/**
 	 * Constructs a new <code>ColorAttribute</code>.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param c
-	 *            the color-value of the attribute.
+	 *           the color-value of the attribute.
 	 */
 	public ColorAttribute(String id, ColorAttribute c) {
 		this(id, c.getRed(), c.getGreen(), c.getBlue(), c.getOpacity());
 	}
-
+	
 	/**
 	 * Constructs a new <code>ColorAttribute</code>.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 */
 	public ColorAttribute(String id) {
 		this(id, 255, 255, 255, 255);
 	}
-
+	
 	/**
 	 * Constructs a new <code>ColorAttribute</code> and initialises with the given
 	 * values.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param r
-	 *            the red-value of the attribute.
+	 *           the red-value of the attribute.
 	 * @param g
-	 *            the green-value of the attribute.
+	 *           the green-value of the attribute.
 	 * @param b
-	 *            the blue-value of the attribute.
+	 *           the blue-value of the attribute.
 	 * @param t
-	 *            the opacity-value of the attribute.
+	 *           the opacity-value of the attribute.
 	 */
 	public ColorAttribute(String id, int r, int g, int b, int t) {
 		super(id);
@@ -102,19 +102,19 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 		add(this.blue, false);
 		add(this.opacity, false);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the 'blue'-value.
 	 * 
 	 * @param b
-	 *            the 'blue'-value to be set.
+	 *           the 'blue'-value to be set.
 	 */
 	public void setBlue(int b) {
 		this.blue.setInteger(b);
 	}
-
+	
 	/**
 	 * Returns the 'blue'-value of the encapsulated color.
 	 * 
@@ -123,7 +123,7 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 	public int getBlue() {
 		return this.blue.getInteger();
 	}
-
+	
 	/**
 	 * Sets the collection of attributes contained within this
 	 * <tt>CollectionAttribute</tt>. The color values are set, additional values are
@@ -131,9 +131,9 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 	 * same id, an exception will be thrown).
 	 * 
 	 * @param attrs
-	 *            the map that contains all attributes.
+	 *           the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
@@ -150,12 +150,12 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 			}
 		}
 	}
-
+	
 	/**
 	 * Comfort function to set a java.awt.Color.
 	 * 
 	 * @param c
-	 *            the java.awt.Color value.
+	 *           the java.awt.Color value.
 	 */
 	public void setColor(java.awt.Color c) {
 		this.red.setInteger(c.getRed());
@@ -163,7 +163,7 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 		this.blue.setInteger(c.getBlue());
 		this.opacity.setInteger(c.getAlpha());
 	}
-
+	
 	/**
 	 * Comfort function to get a java.awt.Color.
 	 * 
@@ -172,17 +172,17 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 	public Color getColor() {
 		return new Color(this.getRed(), this.getGreen(), this.getBlue(), this.getOpacity());
 	}
-
+	
 	/**
 	 * Sets the 'green'-value.
 	 * 
 	 * @param g
-	 *            the 'green'-value to be set.
+	 *           the 'green'-value to be set.
 	 */
 	public void setGreen(int g) {
 		this.green.setInteger(g);
 	}
-
+	
 	/**
 	 * Returns the 'green'-value of the encapsulated color.
 	 * 
@@ -191,17 +191,17 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 	public int getGreen() {
 		return this.green.getInteger();
 	}
-
+	
 	/**
 	 * Sets the 'opacity'-value.
 	 * 
 	 * @param t
-	 *            the 'opacity'-value to be set.
+	 *           the 'opacity'-value to be set.
 	 */
 	public void setOpacity(int t) {
 		this.opacity.setInteger(t);
 	}
-
+	
 	/**
 	 * Returns the 'opacity'-value of the encapsulated color.
 	 * 
@@ -210,17 +210,17 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 	public int getOpacity() {
 		return this.opacity.getInteger();
 	}
-
+	
 	/**
 	 * Sets the 'red'-value.
 	 * 
 	 * @param r
-	 *            the 'red'-value to be set.
+	 *           the 'red'-value to be set.
 	 */
 	public void setRed(int r) {
 		this.red.setInteger(r);
 	}
-
+	
 	/**
 	 * Returns the 'red'-value of the encapsulated color.
 	 * 
@@ -229,7 +229,7 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 	public int getRed() {
 		return this.red.getInteger();
 	}
-
+	
 	// /**
 	// * Returns a java.awt.Color object with the same values.
 	// *
@@ -240,7 +240,7 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 	// return new Color(red.getInteger(), green.getInteger(),
 	// blue.getInteger(), opacity.getInteger());
 	// }
-
+	
 	/**
 	 * Returns a deep copy of this object.
 	 * 
@@ -251,7 +251,7 @@ public class ColorAttribute extends HashMapAttribute implements GraphicAttribute
 		ColorAttribute copied = new ColorAttribute(this.getId(), getRed(), getGreen(), getBlue(), getOpacity());
 		return copied;
 	}
-
+	
 	// /**
 	// * Sets the value of this <code>Attribute</code> to the given value without
 	// * informing the <code>ListenerManager</code>.

@@ -61,37 +61,37 @@ import org.jfree.util.PublicCloneable;
  */
 public class XYBubbleRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** A useful constant. */
 	public static final int SCALE_ON_BOTH_AXES = 0;
-
+	
 	/** A useful constant. */
 	public static final int SCALE_ON_DOMAIN_AXIS = 1;
-
+	
 	/** A useful constant. */
 	public static final int SCALE_ON_RANGE_AXIS = 2;
-
+	
 	/** Controls how the width and height of the bubble are scaled. */
 	private int scaleType;
-
+	
 	/**
 	 * Constructs a new renderer.
 	 */
 	public XYBubbleRenderer() {
 		this(SCALE_ON_BOTH_AXES);
 	}
-
+	
 	/**
 	 * Constructs a new renderer.
 	 * 
 	 * @param scaleType
-	 *            the type of scaling.
+	 *           the type of scaling.
 	 */
 	public XYBubbleRenderer(int scaleType) {
 		super();
 		this.scaleType = scaleType;
 	}
-
+	
 	/**
 	 * Returns the scale type.
 	 * 
@@ -100,41 +100,41 @@ public class XYBubbleRenderer extends AbstractXYItemRenderer
 	public int getScaleType() {
 		return this.scaleType;
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the data is being drawn.
+	 *           the area within which the data is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain (horizontal) axis.
+	 *           the domain (horizontal) axis.
 	 * @param rangeAxis
-	 *            the range (vertical) axis.
+	 *           the range (vertical) axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		// get the data point...
 		Number xn = dataset.getXValue(series, item);
 		Number yn = dataset.getYValue(series, item);
@@ -147,32 +147,32 @@ public class XYBubbleRenderer extends AbstractXYItemRenderer
 			double x = xn.doubleValue();
 			double y = yn.doubleValue();
 			double z = zn.doubleValue();
-
+			
 			RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
 			RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
 			double transX = domainAxis.valueToJava2D(x, dataArea, domainAxisLocation);
 			double transY = rangeAxis.valueToJava2D(y, dataArea, rangeAxisLocation);
-
+			
 			double transDomain = 0.0;
 			double transRange = 0.0;
 			double zero;
-
+			
 			switch (getScaleType()) {
-			case SCALE_ON_DOMAIN_AXIS:
-				zero = domainAxis.valueToJava2D(0.0, dataArea, domainAxisLocation);
-				transDomain = domainAxis.valueToJava2D(z, dataArea, rangeAxisLocation) - zero;
-				transRange = transDomain;
-				break;
-			case SCALE_ON_RANGE_AXIS:
-				zero = rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
-				transRange = zero - rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation);
-				transDomain = transRange;
-				break;
-			default:
-				double zero1 = domainAxis.valueToJava2D(0.0, dataArea, domainAxisLocation);
-				double zero2 = rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
-				transDomain = domainAxis.valueToJava2D(z, dataArea, domainAxisLocation) - zero1;
-				transRange = zero2 - rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation);
+				case SCALE_ON_DOMAIN_AXIS:
+					zero = domainAxis.valueToJava2D(0.0, dataArea, domainAxisLocation);
+					transDomain = domainAxis.valueToJava2D(z, dataArea, rangeAxisLocation) - zero;
+					transRange = transDomain;
+					break;
+				case SCALE_ON_RANGE_AXIS:
+					zero = rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
+					transRange = zero - rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation);
+					transDomain = transRange;
+					break;
+				default:
+					double zero1 = domainAxis.valueToJava2D(0.0, dataArea, domainAxisLocation);
+					double zero2 = rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
+					transDomain = domainAxis.valueToJava2D(z, dataArea, domainAxisLocation) - zero1;
+					transRange = zero2 - rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation);
 			}
 			double transZ = -rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation)
 					+ rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
@@ -190,13 +190,13 @@ public class XYBubbleRenderer extends AbstractXYItemRenderer
 			g2.setStroke(new BasicStroke(1.0f));
 			g2.setPaint(Color.lightGray);
 			g2.draw(circle);
-
+			
 			// setup for collecting optional entity info...
 			EntityCollection entities = null;
 			if (info != null) {
 				entities = info.getOwner().getEntityCollection();
 			}
-
+			
 			// add an entity for the item...
 			if (entities != null) {
 				String tip = null;
@@ -211,21 +211,21 @@ public class XYBubbleRenderer extends AbstractXYItemRenderer
 				XYItemEntity entity = new XYItemEntity(circle, dataset, series, item, tip, url);
 				entities.addEntity(entity);
 			}
-
+			
 			updateCrosshairValues(crosshairState, x, y, transX, transY, orientation);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

@@ -48,19 +48,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Reaction_Reader {
-
+	
 	/**
 	 * Method reads in function definitions and is called from class
 	 * SBML_XML_Reader.java. Add reaction nodes and edges to the graph
 	 * 
 	 * @param g
-	 *            the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 * @param reactionList
-	 *            contains the reactions for the import
+	 *           contains the reactions for the import
 	 * @param modelID
-	 *            is the id of the current model
+	 *           is the id of the current model
 	 * @param pgg
-	 *            is needed for drawing the graph
+	 *           is needed for drawing the graph
 	 */
 	public void addReactions(Graph g, ListOf<Reaction> reactionList, String modelID, PositionGridGenerator pgg,
 			SBMLReactionHelper reactionhelper) {
@@ -103,7 +103,7 @@ public class SBML_Reaction_Reader {
 			compartment = reaction.getCompartment();
 			sboTerm = reaction.getSBOTermID();
 			metaID = reaction.getMetaId();
-
+			
 			// Determines the label of the reaction node
 			/*
 			 * String ex = null; if(!(reactionName == "")){ ex = reactionName; } else{ ex =
@@ -112,7 +112,7 @@ public class SBML_Reaction_Reader {
 			reactionNode = g.addNode();
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 					SBML_Constants.ROLE_REACTION);
-
+			
 			// CAUTION working with level 3 or higher CAUTION
 			reactionHelper.setLabel(reactionNode, reactionName, reactionID, pgg);
 			// setAttributes(reactionNode, Color.white, ex,
@@ -145,7 +145,7 @@ public class SBML_Reaction_Reader {
 					e.printStackTrace();
 				}
 			}
-
+			
 			if (reaction.isSetAnnotation()) {
 				if (reaction.getAnnotation().isSetRDFannotation()) {
 					reactionHelper.setAnnotation(reactionNode, reaction.getAnnotation());
@@ -154,19 +154,19 @@ public class SBML_Reaction_Reader {
 					reactionHelper.setNonRDFAnnotation(reactionNode, reaction.getAnnotation().getNonRDFannotation());
 				}
 			}
-
+			
 			// Adds the edges between reactant node and reaction node
 			reactants = reaction.getListOfReactants();
 			addReactants(g, reactants, reactionID, modelID, reactionNode, reaction.getReversible(), reactionHelper);
-
+			
 			// Adds the edges between product node and reaction node
 			products = reaction.getListOfProducts();
 			addProducts(g, products, reactionID, modelID, reactionNode, reaction.getReversible(), reactionHelper);
-
+			
 			// Adds the edges between modifier node and reaction node
 			modifiers = reaction.getListOfModifiers();
 			addModifier(g, modifiers, reactionNode, reactionHelper, reactionID);
-
+			
 			if (reaction.isSetKineticLaw()) {
 				kineticLaw = reaction.getKineticLaw();
 				kineticLawHelper = new KineticLawHelper(g, reactionHelper.getReactionClones());
@@ -182,7 +182,7 @@ public class SBML_Reaction_Reader {
 				} catch (SBMLException e) {
 					e.printStackTrace();
 				}
-
+				
 				if (kineticLaw.isSetMath()) {
 					kineticLawHelper.setFunction(reactionNode, kineticFormula);
 				}
@@ -209,7 +209,7 @@ public class SBML_Reaction_Reader {
 								kineticLaw.getAnnotation().getNonRDFannotation());
 					}
 				}
-
+				
 				// Two ways to read in a Local Parameter. One way is deprecated.
 				if (kineticLaw.isSetListOfLocalParameters() || kineticLaw.isSetListOfParameters()) {
 					listLocalParameter = null;
@@ -237,10 +237,10 @@ public class SBML_Reaction_Reader {
 									.append(countLocalParameter).toString();
 							presentedAttributeName = new StringBuffer(SBML_Constants.LOCALPARAMETER_HEADLINE)
 									.append(countLocalParameter).toString();
-
+							
 							localParameterHelper = kineticLawHelper.addLocalParemeter(g, presentedAttributeName,
 									internAttributeName);
-
+							
 							id = localParameter.getId();
 							name = localParameter.getName();
 							value = localParameter.getValue();
@@ -249,7 +249,7 @@ public class SBML_Reaction_Reader {
 										+ presentedAttributeName + " is not a valid double value.");
 							}
 							unit = localParameter.getUnits();
-
+							
 							if (localParameter.isSetId()) {
 								localParameterHelper.setID(reactionNode, id);
 							}
@@ -286,24 +286,24 @@ public class SBML_Reaction_Reader {
 											localParameter.getAnnotation().getNonRDFannotation());
 								}
 							}
-
+							
 							countLocalParameter++;
 						}
 					}
-
+					
 				}
 			}
-
+			
 			AttributeHelper.setLabel(AttributeHelper.getLabels(reactionNode).size(), reactionNode, reactionID, null,
 					AlignmentSetting.HIDDEN.toGMLstring());
-
+			
 			if (SBML_Constants.isLayoutActive) {
 				processLayoutInformation(reaction, reactionNode);
 			}
-
+			
 		}
 	}
-
+	
 	// old code, has been replaced by new code below on 09/09/2015
 	//
 	// private void processLayoutInformation(Graph g, Reaction reaction,
@@ -379,18 +379,18 @@ public class SBML_Reaction_Reader {
 	// }
 	// }
 	// }
-
+	
 	private static void processLayoutInformation(Reaction reaction, Node reactionNode) {
-
+		
 		LayoutModelPlugin layoutModel = (LayoutModelPlugin) reaction.getModel()
 				.getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
 		if (layoutModel != null) {
 			Layout layout = layoutModel.getListOfLayouts().iterator().next();
 			Iterator<ReactionGlyph> reactionGlyphListIt = layout.getListOfReactionGlyphs().iterator();
 			String reactionID = reaction.getId();
-
+			
 			ArrayList<ReactionGlyph> reactionGlyphsToBeAdded = new ArrayList<>();
-
+			
 			while (reactionGlyphListIt.hasNext()) {
 				ReactionGlyph reactionGlyph = reactionGlyphListIt.next();
 				if (reactionGlyph.getReaction().equals(reactionID)) {
@@ -418,22 +418,22 @@ public class SBML_Reaction_Reader {
 							AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML,
 									SBML_Constants.SBML_LAYOUT_ID);
 					}
-
+					
 					if (SBML_XML_Reader.isFixPath2Models())
 						reactionGlyphsToBeAdded = fixPath2ModelsSBMLLayout(reaction, reactionNode, reactionGlyph);
-
+					
 				}
 			}
-
+			
 			if (reactionGlyphsToBeAdded.size() > 0)
 				layout.getListOfReactionGlyphs().addAll(reactionGlyphsToBeAdded);
-
+			
 		}
 	}
-
+	
 	private static ArrayList<ReactionGlyph> fixPath2ModelsSBMLLayout(Reaction reaction, Node reactionNode,
 			ReactionGlyph reactionGlyph) {
-
+		
 		// we have a problem with the Path2Models sbml files
 		// reactions which should have two reaction glyphs are not stored correctly in
 		// the layout section of the sbml files
@@ -441,10 +441,10 @@ public class SBML_Reaction_Reader {
 		// in its definition
 		// TODO: currently only one clone of the reaction node and reaction glyph is
 		// created
-
+		
 		ArrayList<ReactionGlyph> reactionGlyphsToBeAdded = new ArrayList<>();
 		ListOf<SpeciesReferenceGlyph> speciesReferenceGlyphs = reactionGlyph.getListOfSpeciesReferenceGlyphs();
-
+		
 		// for each species store it's number of and a list of according species glyphs
 		// in the definition of the reaction glyph
 		HashMap<String, Integer> hmSpecies = new HashMap<>();
@@ -466,7 +466,7 @@ public class SBML_Reaction_Reader {
 			_speciesReferenceGlyphs.add(speciesReferenceGlyph);
 			hmSpeciesReferenceGlyphs.put(speciesRole + "_" + speciesID, _speciesReferenceGlyphs);
 		}
-
+		
 		// reaction node and reaction glyph have to be cloned if all species have two or
 		// more according species glyphs
 		// and the number of species glyphs is the same for all species
@@ -488,7 +488,7 @@ public class SBML_Reaction_Reader {
 					}
 		} else
 			toBeCloned = false;
-
+		
 		// clone the reaction node and the reaction glyph
 		if (toBeCloned) {
 			// clone the reaction node and reassign edges
@@ -506,7 +506,7 @@ public class SBML_Reaction_Reader {
 					graph.addEdgeCopy(edge, clonedReactionNode, edge.getTarget());
 				else
 					graph.addEdgeCopy(edge, edge.getSource(), clonedReactionNode);
-
+				
 			// clone the reaction glyph and reassign species glyphs
 			// TODO: maybe distance is not the right measure for the decision to reassign a
 			// species glyph
@@ -519,7 +519,7 @@ public class SBML_Reaction_Reader {
 			clonedReactionGlyph.setNamedSBase(reactionGlyph.getNamedSBaseInstance());
 			clonedReactionGlyph.setLevel(reactionGlyph.getLevel());
 			clonedReactionGlyph.setVersion(reactionGlyph.getVersion());
-
+			
 			Point reactionGlyphPos = null;
 			if (reactionGlyph.getBoundingBox() != null)
 				reactionGlyphPos = reactionGlyph.getBoundingBox().getPosition();
@@ -536,7 +536,7 @@ public class SBML_Reaction_Reader {
 					}
 				}
 			}
-
+			
 			// use the stored positions for k-means clustering
 			Point oldCentre1 = new Point(0, 0, 0);
 			Point newCentre1 = new Point(0, 0, 0);
@@ -544,16 +544,16 @@ public class SBML_Reaction_Reader {
 				oldCentre1 = reactionGlyphPos;
 				newCentre1 = reactionGlyphPos;
 			}
-
+			
 			Point oldCentre2 = new Point(0, 0, 0);
 			Point newCentre2 = new Point(0, 0, 0);
-
+			
 			SortedMap<Double, Point> sortedPositions = new TreeMap<>();
 			if (reactionGlyphPos != null)
 				for (Point position : positions)
 					sortedPositions.put(Double.valueOf(Math.hypot(position.getX() - reactionGlyphPos.getX(),
 							position.getY() - reactionGlyphPos.getY())), position);
-
+				
 			if (positions.size() >= 2) {
 				Random random = new Random();
 				int idxRandom1 = -1;
@@ -567,7 +567,7 @@ public class SBML_Reaction_Reader {
 				} else
 					newCentre2 = sortedPositions.get(sortedPositions.lastKey());
 			}
-
+			
 			while (((Math.abs(newCentre1.getX() - oldCentre1.getX()) > 0.001
 					&& Math.abs(newCentre1.getY() - oldCentre1.getY()) > 0.001) || reactionGlyphPos != null)
 					&& (Math.abs(newCentre2.getX() - oldCentre2.getX()) > 0.001
@@ -580,23 +580,23 @@ public class SBML_Reaction_Reader {
 						positions1.add(point);
 					else
 						positions2.add(point);
-
+					
 				if (reactionGlyphPos == null) {
 					oldCentre1 = newCentre1;
 					newCentre1 = calculateCentre(positions1);
 				}
-
+				
 				oldCentre2 = newCentre2;
 				newCentre2 = calculateCentre(positions2);
 			}
-
+			
 			Point clonedReactionGlyphPos = null;
 			if (newCentre2.getX() > 0.001 && newCentre2.getY() > 0.001) {
 				clonedReactionGlyphPos = newCentre2;
 				AttributeHelper.setPosition(clonedReactionNode, clonedReactionGlyphPos.getX(),
 						clonedReactionGlyphPos.getY());
 			}
-
+			
 			// reassign species glyphs based on their distance to the reaction glyph
 			if (clonedReactionGlyphPos != null && reactionGlyphPos != null)
 				for (ArrayList<SpeciesReferenceGlyph> _speciesReferenceGlyphs : hmSpeciesReferenceGlyphs.values())
@@ -614,16 +614,16 @@ public class SBML_Reaction_Reader {
 							}
 						}
 					}
-
+				
 			reactionGlyphsToBeAdded.add(clonedReactionGlyph);
 		}
-
+		
 		return reactionGlyphsToBeAdded;
-
+		
 	}
-
+	
 	private static Point calculateCentre(ArrayList<Point> positions) {
-
+		
 		Point centre = new Point(0, 0, 0);
 		double x = 0;
 		double y = 0;
@@ -634,21 +634,21 @@ public class SBML_Reaction_Reader {
 		centre.setX(x / positions.size());
 		centre.setY(y / positions.size());
 		return centre;
-
+		
 	}
-
+	
 	/**
 	 * The method reads in reactants, products and modifiers. It is called from the
 	 * method addReactions
 	 * 
 	 * @param simpleRef
-	 *            the reactant, product or modifier object for the import
+	 *           the reactant, product or modifier object for the import
 	 * @param Edge
-	 *            is the reaction node in the graph
+	 *           is the reaction node in the graph
 	 * @param presentedHeadline
-	 *            is visible for the user
+	 *           is visible for the user
 	 * @param internHeadline
-	 *            intern representation of the headline
+	 *           intern representation of the headline
 	 */
 	private void setSimpleSpeciesReferences(SimpleSpeciesReference simpleRef, Edge edge, String headline,
 			SBMLReactionHelper reactionHelper) {
@@ -663,7 +663,7 @@ public class SBML_Reaction_Reader {
 		 * SBML_Constants.addToNiceIdList(presentedHeadline, "SBOTerm"); String
 		 * keyToolTip = SBML_Constants.addToNiceIdList(presentedHeadline, "ToolTip");
 		 */
-
+		
 		if (simpleRef instanceof org.sbml.jsbml.SpeciesReference) {
 			/*
 			 * String keyStoichiometry = SBML_Constants.addToNiceIdList(presentedHeadline,
@@ -768,22 +768,22 @@ public class SBML_Reaction_Reader {
 			}
 		}
 	}
-
+	
 	/**
 	 * Adds an edge between an reaction node and a reactant
 	 * 
 	 * @param g
-	 *            is the data structure for reading in the information.
+	 *           is the data structure for reading in the information.
 	 * @param molecules
-	 *            contains the reactants of the reaction
+	 *           contains the reactants of the reaction
 	 * @param reactionID
-	 *            contains the reaction ID
+	 *           contains the reaction ID
 	 * @param modelID
-	 *            contains the model ID
+	 *           contains the model ID
 	 * @param reactionNode
-	 *            is the reaction node in the graph
+	 *           is the reaction node in the graph
 	 * @param reversible
-	 *            indicates if the reaction is reversible
+	 *           indicates if the reaction is reversible
 	 */
 	private void addReactants(Graph g, ListOf<SpeciesReference> molecules, String reactionID, String modelID,
 			Node reactionNode, boolean reversible, SBMLReactionHelper reactionHelper) {
@@ -819,22 +819,22 @@ public class SBML_Reaction_Reader {
 			setSimpleSpeciesReferences(ref, newReactionEdge, SBML_Constants.SBML, reactionHelper);
 		}
 	}
-
+	
 	/**
 	 * Adds an edge between an reaction node and a product
 	 * 
 	 * @param g
-	 *            is the data structure for reading in the information
+	 *           is the data structure for reading in the information
 	 * @param molecules
-	 *            contains the products of the reaction
+	 *           contains the products of the reaction
 	 * @param reactionID
-	 *            contains the reaction ID
+	 *           contains the reaction ID
 	 * @param modelID
-	 *            contains the model ID
+	 *           contains the model ID
 	 * @param reactionNode
-	 *            is the reaction node in the graph
+	 *           is the reaction node in the graph
 	 * @param reversible
-	 *            indicates if the reaction is reversible
+	 *           indicates if the reaction is reversible
 	 */
 	private void addProducts(Graph g, ListOf<SpeciesReference> molecules, String reactionID, String modelID,
 			Node reactionNode, boolean reversible, SBMLReactionHelper reactionHelper) {
@@ -850,11 +850,11 @@ public class SBML_Reaction_Reader {
 			newReactionEdge = g.addEdge(reactionNode, productNode, true,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 			reactionHelper.addProductCloneToList(reactionID, ref.getSpecies(), newReactionEdge);
-
+			
 			if (reversible) {
 				AttributeHelper.setArrowtail(newReactionEdge, true);
 			}
-
+			
 			if (Double.isNaN(ref.getStoichiometry())) {
 				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction " + reactionID + " species "
 						+ ref.getSpecies() + " is not a valid double value.");
@@ -870,16 +870,16 @@ public class SBML_Reaction_Reader {
 			setSimpleSpeciesReferences(ref, newReactionEdge, SBML_Constants.SBML, reactionHelper);
 		}
 	}
-
+	
 	/**
 	 * Adds an edge between an reaction node and a modifier
 	 * 
 	 * @param g
-	 *            is the data structure for reading in the information.
+	 *           is the data structure for reading in the information.
 	 * @param molecules
-	 *            contains the modifiers of the reaction.
+	 *           contains the modifiers of the reaction.
 	 * @param reactionNode
-	 *            is the node that will be connected with the modifier
+	 *           is the node that will be connected with the modifier
 	 */
 	private void addModifier(Graph g, ListOf<ModifierSpeciesReference> molecules, Node reactionNode,
 			SBMLReactionHelper reactionHelper, String reactionID) {
@@ -892,7 +892,7 @@ public class SBML_Reaction_Reader {
 			modifierNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			reactionEdge = g.addEdge(modifierNode, reactionNode, false,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.GRAY, Color.GRAY, true));
-
+			
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 					SBML_Constants.ROLE_MODIFIER);
 			reactionHelper.addModifierCloneToList(reactionID, ref.getSpecies(), reactionEdge);

@@ -16,7 +16,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Christian Klukas
  */
 public class PluginFeatureMetaCropAccess extends IPK_PluginAdapter {
-
+	
 	public PluginFeatureMetaCropAccess() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
 			// this string needs to be the same as in the FeatureMetaCrop.xml file
@@ -26,7 +26,7 @@ public class PluginFeatureMetaCropAccess extends IPK_PluginAdapter {
 			}
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

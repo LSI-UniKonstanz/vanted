@@ -46,26 +46,26 @@ import org.jfree.data.ValueDataset;
  * In this demo, a meter chart is saved to a scaled image file.
  */
 public class MeterChartDemo2 {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public MeterChartDemo2() {
 		super();
 	}
-
+	
 	/**
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ValueDataset dataset = new DefaultValueDataset(75.0);
 		final MeterPlot plot = new MeterPlot(dataset);
 		final JFreeChart chart = new JFreeChart("Scaled Image Test", plot);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -76,7 +76,7 @@ public class MeterChartDemo2 {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// save it to an image
 		try {
 			final File file1 = new File("meterchart100.png");
@@ -86,7 +86,7 @@ public class MeterChartDemo2 {
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
-
+		
 	}
-
+	
 }

@@ -20,24 +20,24 @@ import org.graffiti.plugin.actions.GraffitiAction;
  */
 public class ExitAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6294696024311937132L;
-
+	
 	/**
 	 * Creates a new ExitAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ExitAction(MainFrame mainFrame) {
 		super("file.exit", mainFrame, "filemenu_exit");
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -45,7 +45,7 @@ public class ExitAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return true;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -53,12 +53,12 @@ public class ExitAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		mainFrame.closeGravisto();

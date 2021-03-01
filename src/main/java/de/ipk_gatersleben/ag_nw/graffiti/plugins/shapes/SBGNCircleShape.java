@@ -24,20 +24,20 @@ import org.graffiti.plugins.views.defaults.CircleNodeShape;
  * @author Tobias Czauderna
  */
 public class SBGNCircleShape extends CircleNodeShape implements ProvidesAdditonalDrawingShapes {
-
+	
 	@Override
 	public void buildShape(NodeGraphicAttribute nodeGraphicAttribute) {
-
+		
 		this.nodeAttr = nodeGraphicAttribute;
-
+		
 		DimensionAttribute dimensionAttribute = nodeGraphicAttribute.getDimension();
 		// width and height include the sticks left - right / top - bottom
 		double width = dimensionAttribute.getWidth();
 		double height = dimensionAttribute.getHeight();
-
+		
 		double frameThickness = Math.floor(nodeGraphicAttribute.getFrameThickness());
 		double offset = frameThickness / 2d;
-
+		
 		double offsetX = offset;
 		double offsetY = offset;
 		// set size of the circle according to min(width, height)
@@ -47,7 +47,7 @@ public class SBGNCircleShape extends CircleNodeShape implements ProvidesAdditona
 			this.ell2D.setFrame(offsetX + this.offX, (height - width) / 2d + offsetY + this.offY, width, width);
 		else
 			this.ell2D.setFrame(offsetX + this.offX, offsetY + this.offY, width, height); // sticks not visible
-
+			
 		double correctedWidth = width + frameThickness;
 		double correctedHeight = height + frameThickness;
 		if (Double.compare(Math.floor(offset), offset) == 0) {
@@ -56,12 +56,12 @@ public class SBGNCircleShape extends CircleNodeShape implements ProvidesAdditona
 		}
 		// set shape size including sticks
 		((RectangularShape) this.thickShape).setFrame(0, 0, correctedWidth + this.addSx, correctedHeight + this.addSy);
-
+		
 	}
-
+	
 	@Override
 	public Point2D getIntersection(Line2D line) {
-
+		
 		Rectangle2D rectangle = getRealBounds2D();
 		double x = rectangle.getX();
 		double y = rectangle.getY();
@@ -75,23 +75,23 @@ public class SBGNCircleShape extends CircleNodeShape implements ProvidesAdditona
 		else
 			ellipse = new Ellipse2D.Double(x, (height - width) / 2d + y, width, width);
 		return getIntersectionWithCircle(ellipse, line);
-
+		
 	}
-
+	
 	@Override
 	public Collection<Shape> getPreBorderShapes() {
-
+		
 		return null;
-
+		
 	}
-
+	
 	@Override
 	public Collection<Shape> getPostBorderShapes() {
-
+		
 		Rectangle2D bounds2D = getBounds2D();
 		double width = bounds2D.getWidth();
 		double height = bounds2D.getHeight();
-
+		
 		ArrayList<Shape> stickShapes = new ArrayList<>();
 		if (width > height) { // horizontal sticks
 			double length = (width - height) / 2d;
@@ -108,7 +108,7 @@ public class SBGNCircleShape extends CircleNodeShape implements ProvidesAdditona
 		} else
 			return null; // sticks not visible
 		return stickShapes;
-
+		
 	}
-
+	
 }

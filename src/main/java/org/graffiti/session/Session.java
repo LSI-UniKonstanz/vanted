@@ -39,36 +39,36 @@ import org.graffiti.plugin.view.View;
  */
 public class Session implements ConstraintCheckerListener {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * The list of <code>org.graffiti.plugin.algorithm.Algorithm</code>s the
 	 * <code>Session</code> manages.
 	 */
 	protected AlgorithmManager algorithmManager;
-
+	
 	/** The graph object of this session. */
 	protected Graph graph;
-
+	
 	// /** The constraint checker of the graph. */
 	// protected GraphConstraintChecker constraintChecker;
-
+	
 	/** The list of views (class names of the views) of this session. */
 	protected List<View> views;
-
+	
 	/** The active mode of this session. */
 	protected Mode activeMode;
-
+	
 	/**
 	 * The list of <code>org.graffiti.plugin.mode.Mode</code>s the
 	 * <code>Session</code> manages.
 	 */
 	protected ModeManager modeManager;
-
+	
 	/** The active view in this session. */
 	protected View activeView;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new session instance with an empty graph and the corresponding
 	 * constraint checker.
@@ -76,24 +76,24 @@ public class Session implements ConstraintCheckerListener {
 	public Session() {
 		this(new AdjListGraph());
 	}
-
+	
 	/**
 	 * Constructs a new session instance with the given graph.
 	 * 
 	 * @param graph
-	 *            the graph to be used for this session.
+	 *           the graph to be used for this session.
 	 */
 	public Session(Graph graph) {
 		this.graph = graph;
 		modeManager = new DefaultModeManager();
 		algorithmManager = new DefaultAlgorithmManager();
-
+		
 		this.views = new LinkedList<View>();
 		// this.constraintChecker = new GraphConstraintChecker(graph, this);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the mode that is active in this session.
 	 * 
@@ -102,17 +102,17 @@ public class Session implements ConstraintCheckerListener {
 	public Mode getActiveMode() {
 		return this.activeMode;
 	}
-
+	
 	/**
 	 * Sets the activeView.
 	 * 
 	 * @param activeView
-	 *            The activeView to set
+	 *           The activeView to set
 	 */
 	public void setActiveView(View activeView) {
 		this.activeView = activeView;
 	}
-
+	
 	/**
 	 * Returns the activeView.
 	 * 
@@ -121,22 +121,22 @@ public class Session implements ConstraintCheckerListener {
 	public View getActiveView() {
 		return activeView;
 	}
-
+	
 	/**
 	 * Returns the class name of the specified algorithm. Using the
 	 * <code>InstanceLoader</code> an instance of this <code>Algorithm</code> can be
 	 * created.
 	 * 
 	 * @param algorithm
-	 *            the <code>Algorithm</code> of which to get the class name.
+	 *           the <code>Algorithm</code> of which to get the class name.
 	 * @return the class name of the specified algorithm.
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public String getClassName(Algorithm algorithm) {
 		throw new RuntimeException("Implement me");
 	}
-
+	
 	/**
 	 * Returns the graph of this session.
 	 * 
@@ -145,7 +145,7 @@ public class Session implements ConstraintCheckerListener {
 	public Graph getGraph() {
 		return this.graph;
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if the graph in this session has been modified.
 	 * 
@@ -154,7 +154,7 @@ public class Session implements ConstraintCheckerListener {
 	public boolean isModified() {
 		return graph.isModified();
 	}
-
+	
 	/**
 	 * Returns the list of views in the manager.
 	 * 
@@ -163,36 +163,36 @@ public class Session implements ConstraintCheckerListener {
 	public List<View> getViews() {
 		return views;
 	}
-
+	
 	/**
 	 * Adds a new View to the inner list of views.
 	 * 
 	 * @param view
-	 *            a view to be added.
+	 *           a view to be added.
 	 */
 	public void addView(View view) {
 		views.add(view);
 	}
-
+	
 	/**
 	 * Changes the active mode of this session.
 	 * 
 	 * @param activeMode
-	 *            the new active mode.
+	 *           the new active mode.
 	 */
 	public void changeActiveMode(Mode activeMode) {
 		this.activeMode = activeMode;
 	}
-
+	
 	/**
 	 * Handles the failed constraint check.
 	 * 
 	 * @param msg
-	 *            tells details about the unsatisfied constraints.
+	 *           tells details about the unsatisfied constraints.
 	 */
 	public void checkFailed(String msg) {
 	}
-
+	
 	/**
 	 * Closes this session. Closes all the views of this session.
 	 */
@@ -201,34 +201,34 @@ public class Session implements ConstraintCheckerListener {
 			v.close();
 		}
 	}
-
+	
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
 	 * 
 	 * @param plugin
-	 *            the added plugin.
+	 *           the added plugin.
 	 * @param desc
-	 *            the description of the new plugin.
+	 *           the description of the new plugin.
 	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		Algorithm[] algs = plugin.getAlgorithms();
-
+		
 		for (int i = 0; i < algs.length; i++) {
 			algorithmManager.addAlgorithm(algs[i]);
 		}
-
+		
 		try {
 			Mode[] ms = ((EditorPlugin) plugin).getModes();
-
+			
 			for (int i = 0; i < ms.length; i++) {
 				modeManager.addMode(ms[i]);
 			}
 		} catch (ClassCastException cce) {
 			// only EditorPlugins provide modes
 		}
-
+		
 		String[] vs = plugin.getViews();
-
+		
 		for (int i = 0; i < vs.length; i++) {
 			View v;
 			try {
@@ -246,23 +246,23 @@ public class Session implements ConstraintCheckerListener {
 			}
 		}
 	}
-
+	
 	/**
 	 * Removes the given view from this session.
 	 * 
 	 * @param view
-	 *            the view to be removed from this session.
+	 *           the view to be removed from this session.
 	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void removeView(View view) {
 		if (view == null) {
 			throw new IllegalArgumentException("trying to remove a view, which is null.");
 		}
-
+		
 		views.remove(view);
 	}
-
+	
 	// /**
 	// * Checks whether the graph satisfies all the constraints.
 	// *
@@ -273,7 +273,7 @@ public class Session implements ConstraintCheckerListener {
 	// {
 	// constraintChecker.checkConstraints();
 	// }
-
+	
 	@Override
 	public String toString() {
 		if (getGraph() != null)

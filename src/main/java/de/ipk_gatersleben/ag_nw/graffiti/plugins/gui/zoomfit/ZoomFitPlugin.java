@@ -15,7 +15,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
 public class ZoomFitPlugin extends IPK_EditorPluginAdapter {
 	public ZoomFitPlugin() {
 		guiComponents = new GraffitiComponent[] { new ZoomFitChangeComponent("defaultToolbar"), // defaultToolbar //
-																								// toolbarPanel
+				// toolbarPanel
 				new AlignNodesComponent("defaultToolbar") };
 	}
 }

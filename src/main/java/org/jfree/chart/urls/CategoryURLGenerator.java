@@ -41,27 +41,27 @@ import org.jfree.data.CategoryDataset;
  * @author Richard Atkinson
  */
 public interface CategoryURLGenerator {
-
+	
 	/**
 	 * Returns a URL for one item in a dataset.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param category
-	 *            the category.
+	 *           the category.
 	 * @return a string containing the URL.
 	 */
 	public String generateURL(CategoryDataset data, int series, int category);
-
+	
 	/**
 	 * Returns an independent copy of the URL generator.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the generator does not support cloning.
+	 *            if the generator does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException;
-
+	
 }

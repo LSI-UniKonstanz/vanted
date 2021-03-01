@@ -25,29 +25,29 @@ import org.graffiti.plugin.algorithm.Category;
  *         Analysis
  */
 public class RestoreLabelAlgorithm extends AbstractAlgorithm {
-
+	
 	@Override
 	public String getName() {
 		return "Restore labels...";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Some commands offer an option to save the current label before it has<br>"
 				+ "been changed. If such has already been executed, this command will<br>"
 				+ "restore it (via its 'oldlabel' attribute).<br>";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION));
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return "edit.Change Label";
 	}
-
+	
 	@Override
 	public void execute() {
 		int idCnt = 0;
@@ -62,7 +62,7 @@ public class RestoreLabelAlgorithm extends AbstractAlgorithm {
 		}
 		MainFrame.showMessageDialog(idCnt + " labels have been restored", "Information");
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

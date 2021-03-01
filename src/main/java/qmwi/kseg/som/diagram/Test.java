@@ -16,15 +16,15 @@ public class Test {
 	public Test() {
 		super();
 	}
-
+	
 	/**
 	 * Insert the method's description here. Creation date: (10.01.2002 15:56:39)
 	 * 
 	 * @param args
-	 *            java.lang.String[]
+	 *           java.lang.String[]
 	 */
 	public static void main(String[] args) {
-
+		
 		/*
 		 * java.util.Vector[] sAll = new java.util.Vector[2]; java.util.Vector
 		 * oneSomClass = new java.util.Vector(); int attributsCount = 2;
@@ -43,6 +43,6 @@ public class Test {
 		 * Aus.ac("----------------------------------------------");
 		 * Aus.ac("cAll.getHomogenitaet()", cAll.getHomogenitaet());
 		 */
-
+		
 	}
 }

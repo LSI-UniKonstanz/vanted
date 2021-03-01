@@ -23,7 +23,7 @@ import org.graffiti.plugin.io.OutputSerializer;
  */
 public class DOTSerializerPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new DOTSerializerPlugin object.
 	 */

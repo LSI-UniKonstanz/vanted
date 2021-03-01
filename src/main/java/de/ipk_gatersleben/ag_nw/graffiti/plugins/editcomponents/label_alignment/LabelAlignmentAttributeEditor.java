@@ -31,33 +31,33 @@ import org.graffiti.plugins.editcomponents.defaults.DoubleEditComponent;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
-
+	
 	JComponent alignmentSelection;
-
+	
 	JComponent alignmentEditorComponent;
-
+	
 	PositionButton left, right, above, below, insideTop, insideTopLeft, insideTopRight, insideCenter, insideBottom,
 			insideBottomLeft, insideBottomRight, insideLeft, insideRight;
-
+	
 	PositionButton leftBorderT, leftBorderC, leftBorderB, topBorderL, topBorderC, topBorderR, rightBorderT,
 			rightBorderC, rightBorderB, bottomBorderL, bottomBorderC, bottomBorderR;
-
+	
 	PositionButton aboveLeft, aboveRight, belowLeft, belowRight;
-
+	
 	private static final String NOT_SET = "[not set]";
-
+	
 	private boolean isNodeEditor = true;
-
+	
 	String currentSelection = NOT_SET;
-
+	
 	int www = 11;
 	int hhh = 11;
-
+	
 	/*
 	 * Implementation addition to support relative offsets
 	 */
 	private CoordinateAttribute labeloffsetAttribute;
-
+	
 	/*
 	 * Variables, that hold the relative offset for the label This is the new
 	 * method, compared to the fixed positions using the AlignmentSettings positions
@@ -65,12 +65,12 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 	 */
 	DoubleAttribute offsetXAttribute;
 	DoubleAttribute offsetYAttribute;
-
+	
 	DoubleEditComponent offsetXEditComponent;
 	DoubleEditComponent offsetYEditComponent;
-
+	
 	private JPanel panelOffsetAttrEditor;
-
+	
 	public LabelAlignmentAttributeEditor(final Displayable disp) {
 		super(disp);
 		isNodeEditor = ((Attribute) disp).getAttributable() instanceof Node;
@@ -87,7 +87,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		insideBottomRight = new PositionButton(this, AlignmentSetting.INSIDEBOTTOMRIGHT, "Inside, bottom-right", false);
 		insideLeft = new PositionButton(this, AlignmentSetting.INSIDELEFT, "Inside, left", false);
 		insideRight = new PositionButton(this, AlignmentSetting.INSIDERIGHT, "Inside, right", false);
-
+		
 		leftBorderT = new PositionButton(this, AlignmentSetting.BORDER_LEFT_TOP, "Left border, top", true);
 		leftBorderC = new PositionButton(this, AlignmentSetting.BORDER_LEFT_CENTER, "Left border, center", true);
 		leftBorderB = new PositionButton(this, AlignmentSetting.BORDER_LEFT_BOTTOM, "Left border, bottom", true);
@@ -100,20 +100,20 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		bottomBorderL = new PositionButton(this, AlignmentSetting.BORDER_BOTTOM_LEFT, "Bottom border, left", true);
 		bottomBorderC = new PositionButton(this, AlignmentSetting.BORDER_BOTTOM_CENTER, "Bottom border, center", true);
 		bottomBorderR = new PositionButton(this, AlignmentSetting.BORDER_BOTTOM_RIGHT, "Bottom border, right", true);
-
+		
 		aboveLeft = new PositionButton(this, AlignmentSetting.ABOVELEFT, "Above, left", false);
 		aboveRight = new PositionButton(this, AlignmentSetting.ABOVERIGHT, "Above, right", false);
 		belowLeft = new PositionButton(this, AlignmentSetting.BELOWLEFT, "Below, left", false);
 		belowRight = new PositionButton(this, AlignmentSetting.BELOWRIGHT, "Below, right", false);
-
+		
 		offsetXAttribute = new DoubleAttribute("x-offset", 0.0);
 		offsetYAttribute = new DoubleAttribute("y-offset", 0.0);
-
+		
 		offsetXEditComponent = new DoubleEditComponent(offsetXAttribute);
 		offsetYEditComponent = new DoubleEditComponent(offsetYAttribute);
-
+		
 		int h = left.getPreferredSize().height;
-
+		
 		ArrayList<JComponent> buttonsLeft = new ArrayList<JComponent>();
 		buttonsLeft.add(check(aboveLeft, h));
 		buttonsLeft.add(getFillerN(h));
@@ -123,7 +123,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		buttonsLeft.add(getFillerN(h));
 		buttonsLeft.add(check(belowLeft, h));
 		JComponent colLeft = TableLayout.getMultiSplitVertical(buttonsLeft);
-
+		
 		ArrayList<JComponent> buttonsBorderLeft = new ArrayList<JComponent>();
 		if (isNodeEditor)
 			buttonsBorderLeft.add(getFillerN(h));
@@ -135,7 +135,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		if (isNodeEditor)
 			buttonsBorderLeft.add(getFillerN(h));
 		JComponent colBorderLeft = TableLayout.getMultiSplitVertical(buttonsBorderLeft);
-
+		
 		ArrayList<JComponent> buttonsCenterCol = new ArrayList<JComponent>();
 		if (isNodeEditor)
 			buttonsCenterCol.add(TableLayout.get3Split(getFillerN(h), check(above, h), getFillerN(h),
@@ -156,7 +156,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 			buttonsCenterCol.add(TableLayout.get3Split(getFillerN(h), check(below, h), getFillerN(h),
 					TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		JComponent colMiddle = TableLayout.getMultiSplitVertical(buttonsCenterCol);
-
+		
 		ArrayList<JComponent> buttonsBorderRight = new ArrayList<JComponent>();
 		if (isNodeEditor)
 			buttonsBorderRight.add(getFillerN(h));
@@ -168,7 +168,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		if (isNodeEditor)
 			buttonsBorderRight.add(getFillerN(h));
 		JComponent colBorderRight = TableLayout.getMultiSplitVertical(buttonsBorderRight);
-
+		
 		ArrayList<JComponent> buttonsRight = new ArrayList<JComponent>();
 		if (isNodeEditor)
 			buttonsRight.add(check(aboveRight, h));
@@ -180,7 +180,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		if (isNodeEditor)
 			buttonsRight.add(check(belowRight, h));
 		JComponent colRight = TableLayout.getMultiSplitVertical(buttonsRight);
-
+		
 		ArrayList<JComponent> columns = new ArrayList<JComponent>();
 		if (isNodeEditor)
 			columns.add(colLeft);
@@ -189,14 +189,14 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		columns.add(colBorderRight);
 		if (isNodeEditor)
 			columns.add(colRight);
-
+		
 		alignmentSelection = TableLayout.get3Split(new JLabel(),
 				TableLayout.getMultiSplit(columns, TableLayoutConstants.PREFERRED, 0, 0, 0, 0), new JLabel(), 2,
 				TableLayoutConstants.PREFERRED, 2);
 		alignmentSelection.setBackground(Color.WHITE);
 		alignmentSelection.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		currentSelection = ((LabelAlignmentAttribute) getDisplayable()).getString();
-
+		
 		panelOffsetAttrEditor = TableLayout.getSplitVertical(
 				TableLayout.get3Split(new JLabel(offsetXAttribute.getName()), null, offsetXEditComponent.getComponent(),
 						TableLayoutConstants.PREFERRED, 5, TableLayoutConstants.PREFERRED),
@@ -204,20 +204,20 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 						TableLayoutConstants.PREFERRED, 5, TableLayoutConstants.PREFERRED),
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
 		panelOffsetAttrEditor.setVisible(false);
-
+		
 		alignmentEditorComponent = TableLayout.get3Split(alignmentSelection, null, panelOffsetAttrEditor,
 				TableLayoutConstants.PREFERRED, 10, TableLayoutConstants.PREFERRED);
-
+		
 		updateButtonState();
 	}
-
+	
 	private JComponent check(PositionButton nodeEditor, int h) {
 		if (isNodeEditor)
 			return nodeEditor;
 		else
 			return getFillerB(h);
 	}
-
+	
 	private JComponent getFillerN(int height) {
 		return new PositionButton(this, AlignmentSetting.HIDDEN, "Hidden", false);
 		// JComponent l = new JLabel();
@@ -227,7 +227,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		// l.setToolTipText("");
 		// return l;
 	}
-
+	
 	private JComponent getFillerB(int height) {
 		return new PositionButton(this, AlignmentSetting.HIDDEN, "Hidden", false);
 		// JComponent l = new JLabel();
@@ -239,7 +239,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		// l.setToolTipText("");
 		// return l;
 	}
-
+	
 	/*
 	 * @see
 	 * org.graffiti.plugin.editcomponent.ValueEditComponent#setShowEmpty(boolean)
@@ -248,7 +248,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 	public void setShowEmpty(boolean showEmpty) {
 		super.setShowEmpty(showEmpty);
 	}
-
+	
 	void updateButtonState() {
 		for (PositionButton button : new PositionButton[] { left, right, above, below, insideTop, insideCenter,
 				insideBottom, insideTopLeft, insideTopRight, insideLeft, insideRight, insideBottomLeft,
@@ -260,7 +260,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 					button.setSelected(true);
 				} else {
 					button.setSelected(false);
-
+					
 				}
 			} else
 				button.setSelected(false);
@@ -275,7 +275,7 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 			}
 		} else
 			insideCenter.setText("<html><small>~");
-
+		
 		/*
 		 * the offset parameters should only be visible if the center location is
 		 * selected
@@ -284,40 +284,40 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 			panelOffsetAttrEditor.setVisible(true);
 		else
 			panelOffsetAttrEditor.setVisible(false);
-
+		
 	}
-
+	
 	public JComponent getComponent() {
 		return alignmentEditorComponent;
 	}
-
+	
 	public void setEditFieldValue() {
 		currentSelection = ((LabelAlignmentAttribute) getDisplayable()).getString();
-
+		
 		/*
 		 * set offset positions from offset attribute
 		 */
-
+		
 		labeloffsetAttribute = (CoordinateAttribute) ((Attribute) getDisplayable()).getParent()
 				.getAttribute(GraphicAttributeConstants.LABELOFFSET);
 		offsetXAttribute.setDouble(labeloffsetAttribute.getX());
 		offsetYAttribute.setDouble(labeloffsetAttribute.getY());
 		offsetXEditComponent.setEditFieldValue();
 		offsetYEditComponent.setEditFieldValue();
-
+		
 		updateButtonState();
 	}
-
+	
 	public void setValue() {
 		String bs = currentSelection;
 		if (!showEmpty)
 			((LabelAlignmentAttribute) displayable).setString(bs);
 		offsetXEditComponent.setValue();
 		offsetYEditComponent.setValue();
-
+		
 		labeloffsetAttribute = (CoordinateAttribute) ((Attribute) getDisplayable()).getParent()
 				.getAttribute(GraphicAttributeConstants.LABELOFFSET);
-
+		
 		labeloffsetAttribute.setX(offsetXAttribute.getDouble());
 		labeloffsetAttribute.setY(offsetYAttribute.getDouble());
 	}

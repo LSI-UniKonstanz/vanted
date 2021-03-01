@@ -43,13 +43,13 @@ import java.util.EventListener;
  * charts are redrawn whenever changes are made to any chart component.
  */
 public interface AxisChangeListener extends EventListener {
-
+	
 	/**
 	 * Receives notification of an axis change event.
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void axisChanged(AxisChangeEvent event);
-
+	
 }

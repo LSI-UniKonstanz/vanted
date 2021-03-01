@@ -32,14 +32,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3interactions.Pat
  * takes an OWL model and fills the graph with edges, nodes and attributes
  * 
  * @author ricardo
- * 
  */
 public class LVL2ModelConverter {
-
+	
 	private Graph graph;
 	private Hashtable<String, Node> nodes;
 	private boolean debug = false;
-
+	
 	public void convertLVL2Model(Model model, Graph g, boolean all)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		graph = g;
@@ -47,28 +46,27 @@ public class LVL2ModelConverter {
 		if (all)
 			readInteractionsFromModel(model);
 	}
-
+	
 	public Graph getGraph() {
 		return this.graph;
 	}
-
+	
 	/**
 	 * reads all interactions defined by biopax level 2 documentation
-	 * 
 	 * Attention: Controls will be read when every other physical entity and every
 	 * other interaction is read so pointing to them is possible
 	 * 
 	 * @param model
-	 *            comes from the input stream
+	 *           comes from the input stream
 	 * @param g
-	 *            is filled by this method
+	 *           is filled by this method
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void readInteractionsFromModel(Model model)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Set<Class> Interactions = new HashSet<Class>();
 		// look for top-level interactions
-
+		
 		// Interactions.add(Interaction.class);
 		Interactions.add(interaction.class);
 		Interactions.add(physicalInteraction.class);
@@ -86,22 +84,22 @@ public class LVL2ModelConverter {
 		// and their subclasses
 		Interactions.add(catalysis.class);
 		Interactions.add(modulation.class);
-
+		
 		// second: add to a set every Entity you are looking for
 		Set<Level2Element> inters = new HashSet<Level2Element>();
 		for (Class c : Interactions) {
 			inters.addAll(model.getObjects(c));
-
+			
 		}
 		if (debug) {
 			System.out.println("LVL2 Objekte gelesen: " + inters.size());
 		}
 		writeInteractionsToGraph(inters);
-
+		
 		PathWayHandler PathWH = new PathWayHandler(model, graph);
 		PathWH.writePathWaysToGraph();
 	}
-
+	
 	/**
 	 * made for reading all interactions in a biopax level 3 model and writing it to
 	 * the graph
@@ -118,9 +116,9 @@ public class LVL2ModelConverter {
 		for (MyPathWay path : arrayList) {
 			if (path.isSuperPathWay()) {
 				getSubProcesses(path.getSubPathWays(), inters);
-
+				
 				for (pathwayComponent proc : path.getPathwayComponents()) {
-
+					
 					inters.add(proc);
 				}
 			} else {
@@ -128,16 +126,16 @@ public class LVL2ModelConverter {
 					inters.add(proc);
 				}
 			}
-
+			
 		}
-
+		
 		mayLoadAdditionalControls(inters, originalModel);
 		writeInteractionsToGraph(inters);
-
+		
 		PathWayHandler PathWH = new PathWayHandler(originalModel, graph);
 		PathWH.writePathWaysToGraph();
 	}
-
+	
 	/**
 	 * some times subset pathways aren't constructed write and contain only the main
 	 * interactions. if so on can simply iterate over all control statements and
@@ -187,7 +185,7 @@ public class LVL2ModelConverter {
 			}
 		}
 	}
-
+	
 	/**
 	 * if it is a main pathway that is loaded this function looks for all subpathway
 	 * compenents and loads them as well
@@ -199,7 +197,7 @@ public class LVL2ModelConverter {
 		for (MyPathWay mypath : subPathWays) {
 			if (mypath.isSuperPathWay()) {
 				getSubProcesses(mypath.getSubPathWays(), inters);
-
+				
 				for (pathwayComponent proc : mypath.getPathwayComponents()) {
 					inters.add(proc);
 				}
@@ -210,7 +208,7 @@ public class LVL2ModelConverter {
 			}
 		}
 	}
-
+	
 	/**
 	 * function to read all interactions and writing them to the graph independent
 	 * of the model
@@ -222,7 +220,7 @@ public class LVL2ModelConverter {
 	 */
 	private void writeInteractionsToGraph(Set<Level2Element> inters)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-
+		
 		Set<process> newinters = new HashSet<process>();
 		for (Level2Element i : inters) {
 			if (i instanceof pathwayStep) {
@@ -232,11 +230,11 @@ public class LVL2ModelConverter {
 			} else {
 				newinters.add((process) i);
 			}
-
+			
 		}
 		// read all non-control interactions
 		for (process i : newinters) {
-
+			
 			// CONVERSIONS
 			if (i instanceof biochemicalReaction & !(i instanceof transportWithBiochemicalReaction)) {
 				BPbiochemicalReaction BP = new BPbiochemicalReaction(graph, nodes);
@@ -275,7 +273,7 @@ public class LVL2ModelConverter {
 					System.out.println("Gelesen: " + i.toString() + " " + i.getClass());
 				}
 			}
-
+			
 		}
 		// now read the controls that point to the interactions already read
 		for (Level2Element i : inters) {
@@ -300,6 +298,6 @@ public class LVL2ModelConverter {
 				}
 			}
 		}
-
+		
 	}
 }

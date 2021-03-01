@@ -38,95 +38,95 @@ import java.io.Serializable;
  * item in a {@link org.jfree.chart.plot.CategoryPlot}.
  */
 public final class ItemLabelAnchor implements Serializable {
-
+	
 	/** Center. */
 	public static final ItemLabelAnchor CENTER = new ItemLabelAnchor("ItemLabelAnchor.CENTER");
-
+	
 	/** INSIDE1. */
 	public static final ItemLabelAnchor INSIDE1 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE1");
-
+	
 	/** INSIDE2. */
 	public static final ItemLabelAnchor INSIDE2 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE2");
-
+	
 	/** INSIDE3. */
 	public static final ItemLabelAnchor INSIDE3 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE3");
-
+	
 	/** INSIDE4. */
 	public static final ItemLabelAnchor INSIDE4 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE4");
-
+	
 	/** INSIDE5. */
 	public static final ItemLabelAnchor INSIDE5 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE5");
-
+	
 	/** INSIDE6. */
 	public static final ItemLabelAnchor INSIDE6 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE6");
-
+	
 	/** INSIDE7. */
 	public static final ItemLabelAnchor INSIDE7 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE7");
-
+	
 	/** INSIDE8. */
 	public static final ItemLabelAnchor INSIDE8 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE8");
-
+	
 	/** INSIDE9. */
 	public static final ItemLabelAnchor INSIDE9 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE9");
-
+	
 	/** INSIDE10. */
 	public static final ItemLabelAnchor INSIDE10 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE10");
-
+	
 	/** INSIDE11. */
 	public static final ItemLabelAnchor INSIDE11 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE11");
-
+	
 	/** INSIDE12. */
 	public static final ItemLabelAnchor INSIDE12 = new ItemLabelAnchor("ItemLabelAnchor.INSIDE12");
-
+	
 	/** OUTSIDE1. */
 	public static final ItemLabelAnchor OUTSIDE1 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE1");
-
+	
 	/** OUTSIDE2. */
 	public static final ItemLabelAnchor OUTSIDE2 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE2");
-
+	
 	/** OUTSIDE3. */
 	public static final ItemLabelAnchor OUTSIDE3 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE3");
-
+	
 	/** OUTSIDE4. */
 	public static final ItemLabelAnchor OUTSIDE4 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE4");
-
+	
 	/** OUTSIDE5. */
 	public static final ItemLabelAnchor OUTSIDE5 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE5");
-
+	
 	/** OUTSIDE6. */
 	public static final ItemLabelAnchor OUTSIDE6 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE6");
-
+	
 	/** OUTSIDE7. */
 	public static final ItemLabelAnchor OUTSIDE7 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE7");
-
+	
 	/** OUTSIDE8. */
 	public static final ItemLabelAnchor OUTSIDE8 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE8");
-
+	
 	/** OUTSIDE9. */
 	public static final ItemLabelAnchor OUTSIDE9 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE9");
-
+	
 	/** OUTSIDE10. */
 	public static final ItemLabelAnchor OUTSIDE10 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE10");
-
+	
 	/** OUTSIDE11. */
 	public static final ItemLabelAnchor OUTSIDE11 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE11");
-
+	
 	/** OUTSIDE12. */
 	public static final ItemLabelAnchor OUTSIDE12 = new ItemLabelAnchor("ItemLabelAnchor.OUTSIDE12");
-
+	
 	/** The name. */
 	private String name;
-
+	
 	/**
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *            the name.
+	 *           the name.
 	 */
 	private ItemLabelAnchor(String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * Returns a string representing the object.
 	 * 
@@ -135,39 +135,39 @@ public final class ItemLabelAnchor implements Serializable {
 	public String toString() {
 		return this.name;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if this object is equal to the specified object,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (this == o) {
 			return true;
 		}
 		if (!(o instanceof ItemLabelAnchor)) {
 			return false;
 		}
-
+		
 		final ItemLabelAnchor order = (ItemLabelAnchor) o;
 		if (!this.name.equals(order.toString())) {
 			return false;
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Ensures that serialization returns the unique instances.
 	 * 
 	 * @return the object.
 	 * @throws ObjectStreamException
-	 *             if there is a problem.
+	 *            if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		ItemLabelAnchor result = null;
@@ -224,21 +224,21 @@ public final class ItemLabelAnchor implements Serializable {
 		}
 		return result;
 	}
-
+	
 	// // DEPRECATED METHODS
 	// ///////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the anchor point that is horizontally opposite the given anchor
 	 * point.
 	 * 
 	 * @param anchor
-	 *            an anchor point.
+	 *           an anchor point.
 	 * @return The opposite anchor point.
 	 * @deprecated Renderer now has positive and negative item label anchors.
 	 */
 	public static ItemLabelAnchor getHorizontalOpposite(ItemLabelAnchor anchor) {
-
+		
 		if (anchor == ItemLabelAnchor.CENTER) {
 			return ItemLabelAnchor.CENTER;
 		} else if (anchor == ItemLabelAnchor.INSIDE1) {
@@ -292,17 +292,17 @@ public final class ItemLabelAnchor implements Serializable {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Returns the anchor point that is vertically opposite the given anchor point.
 	 * 
 	 * @param anchor
-	 *            an anchor point.
+	 *           an anchor point.
 	 * @return The opposite anchor point.
 	 * @deprecated Renderer now has positive and negative item label positions.
 	 */
 	public static ItemLabelAnchor getVerticalOpposite(ItemLabelAnchor anchor) {
-
+		
 		if (anchor == ItemLabelAnchor.CENTER) {
 			return ItemLabelAnchor.CENTER;
 		} else if (anchor == ItemLabelAnchor.INSIDE1) {
@@ -356,5 +356,5 @@ public final class ItemLabelAnchor implements Serializable {
 		}
 		return null;
 	}
-
+	
 }

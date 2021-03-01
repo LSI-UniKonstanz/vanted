@@ -27,7 +27,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.url_attribute.UR
 public class URLattributeContextMenuCommandPlugin extends IPK_PluginAdapter
 		implements ProvidesDirectMouseClickContextMenu {
 	private ImageBundle iBundle = ImageBundle.getInstance();
-
+	
 	private ArrayList<JMenuItem> getContextCommandForURLattributes(MouseEvent lastMouseE, Component lastMouseSrc,
 			Graph g, boolean modifyCommand) {
 		ArrayList<JMenuItem> result = new ArrayList<JMenuItem>();
@@ -67,7 +67,7 @@ public class URLattributeContextMenuCommandPlugin extends IPK_PluginAdapter
 							String title = getMenuItemTitle(a, modifyCommand, urlAttribute, desc);
 							JMenuItem mi = new JMenuItem(title);
 							mi.addActionListener(URLAttributeEditor.getActionListener(urlAttribute, modifyCommand));
-
+							
 							if (desc.indexOf("Reference") > 0 || desc.indexOf("URL") > 0)
 								mi.setIcon(iBundle.getImageIcon("tool.infobulb"));
 							else {
@@ -76,7 +76,7 @@ public class URLattributeContextMenuCommandPlugin extends IPK_PluginAdapter
 								else
 									mi.setIcon(iBundle.getImageIcon("tool.addNodeSmall"));
 							}
-
+							
 							result.add(mi);
 						}
 					}
@@ -85,7 +85,7 @@ public class URLattributeContextMenuCommandPlugin extends IPK_PluginAdapter
 		}
 		return result;
 	}
-
+	
 	private static String getMenuItemTitle(Attribute a, boolean modifyCommand, URLAttribute ua, String desc) {
 		String title = URLAttributeEditor.getDescription(ua, true, modifyCommand).trim() + " " + desc;
 		title = StringManipulationTools.removeHTMLtags(title);
@@ -110,7 +110,7 @@ public class URLattributeContextMenuCommandPlugin extends IPK_PluginAdapter
 		}
 		return title;
 	}
-
+	
 	public JMenuItem[] getContextCommand(MouseEvent lastMouseE, Component lastMouseSrc, Graph graph) {
 		JMenu a = new JMenu("Navigate");
 		JMenu b = new JMenu("Add Link");
@@ -135,5 +135,5 @@ public class URLattributeContextMenuCommandPlugin extends IPK_PluginAdapter
 			result.add(b);
 		return result.toArray(new JMenuItem[] {});
 	}
-
+	
 }

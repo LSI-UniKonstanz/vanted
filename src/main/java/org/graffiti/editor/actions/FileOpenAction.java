@@ -36,34 +36,34 @@ import org.vanted.VantedPreferences;
  */
 public class FileOpenAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6753238738278066254L;
-
+	
 	/** DOCUMENT ME! */
 	private static IOManager ioManager;
-
+	
 	/** DOCUMENT ME! */
 	private static StringBundle sBundle;
-
+	
 	/** DOCUMENT ME! */
 	private ViewManager viewManager;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new FileOpenAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param ioManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param viewManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param sBundle
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public FileOpenAction(MainFrame mainFrame, IOManager ioManager, ViewManager viewManager, StringBundle sBundle) {
 		super("file.open", mainFrame, "filemenu_open");
@@ -71,9 +71,9 @@ public class FileOpenAction extends GraffitiAction {
 		this.viewManager = viewManager;
 		FileOpenAction.sBundle = sBundle;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * This action is enabled, if the editor's io manager contains an input
 	 * serializer.
@@ -85,7 +85,7 @@ public class FileOpenAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return ioManager.hasInputSerializer() && viewManager.hasViews();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -93,12 +93,12 @@ public class FileOpenAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc = ioManager.createOpenFileChooser();
 		OpenFileDialogService.setActiveDirectoryFor(fc);
 		fc.setMultiSelectionEnabled(true);
-
+		
 		/*
 		 * set preferred file extension for opening dialog
 		 */
@@ -114,9 +114,9 @@ public class FileOpenAction extends GraffitiAction {
 		}
 		// fc.resetChoosableFileFilters();
 		int returnVal = fc.showDialog(mainFrame, sBundle.getString("menu.file.open"));
-
+		
 		OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
-
+		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selfiles = fc.getSelectedFiles();
 			try {
@@ -135,7 +135,7 @@ public class FileOpenAction extends GraffitiAction {
 		}
 		fc.setMultiSelectionEnabled(false);
 	}
-
+	
 	public static Collection<File> getGraphFilesFromUser() {
 		ArrayList<File> result = new ArrayList<File>();
 		JFileChooser fc = ioManager.createOpenFileChooser();
@@ -143,9 +143,9 @@ public class FileOpenAction extends GraffitiAction {
 		fc.setMultiSelectionEnabled(true);
 		// fc.resetChoosableFileFilters();
 		int returnVal = fc.showDialog(MainFrame.getInstance(), sBundle.getString("menu.file.open"));
-
+		
 		OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
-
+		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selfiles = fc.getSelectedFiles();
 			for (File f : selfiles)
@@ -157,7 +157,7 @@ public class FileOpenAction extends GraffitiAction {
 		}
 		return result;
 	}
-
+	
 	// private void openFile(File sf, JFileChooser fc, boolean loadInBackground) {
 	// File selfile = sf;
 	// File file = sf;

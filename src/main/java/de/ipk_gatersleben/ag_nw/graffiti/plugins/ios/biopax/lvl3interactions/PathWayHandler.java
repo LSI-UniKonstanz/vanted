@@ -13,11 +13,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.HelperClass;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class PathWayHandler extends HelperClass {
-
+	
 	private ArrayList<MyPathWay> pathways;
 	private Graph graph;
 	private Model model;
-
+	
 	/**
 	 * constructor for import
 	 * 
@@ -27,36 +27,36 @@ public class PathWayHandler extends HelperClass {
 		this.model = model;
 		this.graph = graph;
 	}
-
+	
 	/**
 	 * use to write PathWays in an own data structure
 	 */
 	public void getPathWaysfromModel() {
 		this.pathways = new ArrayList<MyPathWay>();
-
+		
 		Set<Pathway> pathWays = this.model.getObjects(Pathway.class);
 		for (Pathway p : pathWays) {
 			MyPathWay temp = new MyPathWay(p);
 			pathways.add(temp);
 		}
 		System.gc();
-
+		
 	}
-
+	
 	/**
 	 * returns all PathWays found by getPathWaysfromModel
 	 */
 	public ArrayList<MyPathWay> getPathWays() {
 		return pathways;
-
+		
 	}
-
+	
 	/**
 	 * use while import to write PathWays as attributes on the graph
 	 */
 	public void writePathWaysToGraph() {
 		getPathWaysfromModel();
-
+		
 		int i = 1;
 		for (MyPathWay p : pathways) {
 			setAttributeWithOneInnerReplacement(graph, Messages.getString("UtilitySuperClassToGraph.123"), i,
@@ -73,9 +73,9 @@ public class PathWayHandler extends HelperClass {
 			}
 			i++;
 		}
-
+		
 	}
-
+	
 	/**
 	 * use while export to write PathWays into the model
 	 */
@@ -87,14 +87,14 @@ public class PathWayHandler extends HelperClass {
 			String RDFId = RDFIdAttr.getValue().toString();
 			Attribute DisplayNameAttr = getAttributeWithOneSpecificInnerReplacement(
 					Messages.getString("UtilitySuperClassToGraph.124"), graph, i);
-
+			
 			Pathway p;
 			if (!model.containsID(RDFId)) {
 				p = model.addNew(Pathway.class, RDFId);
-
+				
 				if (DisplayNameAttr != null)
 					p.setDisplayName(DisplayNameAttr.getValue().toString());
-
+				
 				/*
 				 * find all names belonging to that provenance
 				 */
@@ -103,11 +103,11 @@ public class PathWayHandler extends HelperClass {
 				for (Attribute A : secondset) {
 					p.addPathwayComponent((Process) model.getByID(A.getValue().toString()));
 				}
-
+				
 			} else {
 				p = (Pathway) model.getByID(RDFId);
 			}
-
+			
 		}
 	}
 }

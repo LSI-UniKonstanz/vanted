@@ -19,23 +19,23 @@ import javax.swing.table.TableCellRenderer;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class MySpecialValueCellRenderer extends JLabel implements TableCellRenderer {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 719962751629717542L;
 	private static Font normFont = null;
 	private static Font propFont = null;
-
+	
 	private static int numberTab = 4;
-
+	
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
-
+		
 		SpecialTableValue sv = (SpecialTableValue) value;
-
+		
 		setOpaque(true);
-
+		
 		if (isSelected) {
 			setBackground(table.getSelectionBackground());
 			setForeground(table.getSelectionForeground());
@@ -48,18 +48,18 @@ public class MySpecialValueCellRenderer extends JLabel implements TableCellRende
 				setForeground(table.getForeground());
 			}
 		}
-
+		
 		if (normFont == null) {
 			normFont = getFont();
 			propFont = new Font("Monospaced", Font.PLAIN, normFont.getSize());
 		}
-
+		
 		if (sv.shiftRight) {
 			setHorizontalAlignment(SwingConstants.RIGHT);
 		} else {
 			setHorizontalAlignment(SwingConstants.LEFT);
 		}
-
+		
 		if (!sv.getIsDouble()) {
 			setFont(normFont);
 			setText(value.toString());
@@ -67,16 +67,16 @@ public class MySpecialValueCellRenderer extends JLabel implements TableCellRende
 			setFont(propFont);
 			setText(getSpacedNumberText(value.toString()));
 		}
-
+		
 		if (hasFocus) {
 			// setBorder(BorderFactory.c(Color.white, Color.black));
 		} else {
 			// setBorder(null);
 		}
-
+		
 		return this;
 	}
-
+	
 	private static String getSpacedNumberText(String text) {
 		int pointPosition = text.indexOf(".");
 		if (pointPosition >= 0) {

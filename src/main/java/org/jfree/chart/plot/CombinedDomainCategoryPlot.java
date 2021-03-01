@@ -59,43 +59,43 @@ import org.jfree.util.PublicCloneable;
  */
 public class CombinedDomainCategoryPlot extends CategoryPlot
 		implements Cloneable, PublicCloneable, Serializable, PlotChangeListener {
-
+	
 	/** Storage for the subplot references. */
 	private List subplots;
-
+	
 	/** Total weight of all charts. */
 	private int totalWeight;
-
+	
 	/** The gap between subplots. */
 	private double gap;
-
+	
 	/** Temporary storage for the subplot areas. */
 	private transient Rectangle2D[] subplotAreas;
-
+	
 	// TODO: move the above to the plot state
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public CombinedDomainCategoryPlot() {
 		this(null);
 	}
-
+	
 	/**
 	 * Creates a new plot.
 	 * 
 	 * @param domainAxis
-	 *            the shared domain axis.
+	 *           the shared domain axis.
 	 */
 	public CombinedDomainCategoryPlot(CategoryAxis domainAxis) {
-
+		
 		super(null, domainAxis, null, null);
 		this.subplots = new java.util.ArrayList();
 		this.totalWeight = 0;
 		this.gap = 5.0;
-
+		
 	}
-
+	
 	/**
 	 * Returns the space between subplots.
 	 * 
@@ -104,26 +104,26 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 	public double getGap() {
 		return this.gap;
 	}
-
+	
 	/**
 	 * Sets the amount of space between subplots and sends a {@link PlotChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param gap
-	 *            the gap between subplots (in Java2D units).
+	 *           the gap between subplots (in Java2D units).
 	 */
 	public void setGap(double gap) {
 		this.gap = gap;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Adds a subplot to the combined chart.
 	 * 
 	 * @param subplot
-	 *            the subplot.
+	 *           the subplot.
 	 * @param weight
-	 *            the weight.
+	 *           the weight.
 	 */
 	public void add(CategoryPlot subplot, int weight) {
 		subplot.setParent(this);
@@ -137,7 +137,7 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 		getDomainAxis().configure();
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Removes a subplot from the combined chart. Potentially, this removes some
 	 * unique categories from the overall union of the datasets...so the domain axis
@@ -145,24 +145,24 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 	 * listeners.
 	 * 
 	 * @param subplot
-	 *            the subplot.
+	 *           the subplot.
 	 */
 	public void remove(CategoryPlot subplot) {
-
+		
 		this.subplots.remove(subplot);
 		subplot.setParent(null);
 		subplot.removeChangeListener(this);
 		this.totalWeight -= subplot.getWeight();
-
+		
 		CategoryAxis domain = getDomainAxis();
 		if (domain != null) {
 			domain.configure();
 		}
-
+		
 		notifyListeners(new PlotChangeEvent(this));
-
+		
 	}
-
+	
 	/**
 	 * Returns the list of subplots.
 	 * 
@@ -171,21 +171,21 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 	public List getSubplots() {
 		return Collections.unmodifiableList(this.subplots);
 	}
-
+	
 	/**
 	 * Calculates the space required for the axes.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @return The space required for the axes.
 	 */
 	protected AxisSpace calculateAxisSpace(Graphics2D g2, Rectangle2D plotArea) {
-
+		
 		AxisSpace space = new AxisSpace();
 		PlotOrientation orientation = getOrientation();
-
+		
 		// work out the space required by the domain axis...
 		AxisSpace fixed = getFixedDomainAxisSpace();
 		if (fixed != null) {
@@ -208,9 +208,9 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 				}
 			}
 		}
-
+		
 		Rectangle2D adjustedPlotArea = space.shrink(plotArea, null);
-
+		
 		// work out the maximum height or width of the non-shared axes...
 		int n = this.subplots.size();
 		this.subplotAreas = new Rectangle2D[n];
@@ -222,10 +222,10 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 		} else if (orientation == PlotOrientation.VERTICAL) {
 			usableSize = adjustedPlotArea.getHeight() - this.gap * (n - 1);
 		}
-
+		
 		for (int i = 0; i < n; i++) {
 			CategoryPlot plot = (CategoryPlot) this.subplots.get(i);
-
+			
 			// calculate sub-plot area
 			if (orientation == PlotOrientation.HORIZONTAL) {
 				double w = usableSize * plot.getWeight() / this.totalWeight;
@@ -236,39 +236,39 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 				this.subplotAreas[i] = new Rectangle2D.Double(x, y, adjustedPlotArea.getWidth(), h);
 				y = y + h + this.gap;
 			}
-
+			
 			AxisSpace subSpace = plot.calculateRangeAxisSpace(g2, this.subplotAreas[i], null,
 					plot.getDomainAxis().isVisible());
 			space.ensureAtLeast(subSpace);
-
+			
 		}
-
+		
 		return space;
 	}
-
+	
 	/**
 	 * Draws the plot on a Java 2D graphics device (such as the screen or a
 	 * printer). Will perform all the placement calculations for each sub-plots and
 	 * then tell these to draw themselves.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the area within which the plot (including axis labels) should be
-	 *            drawn.
+	 *           the area within which the plot (including axis labels) should be
+	 *           drawn.
 	 * @param parentState
-	 *            the state from the parent plot, if there is one.
+	 *           the state from the parent plot, if there is one.
 	 * @param info
-	 *            collects information about the drawing (<code>null</code>
-	 *            permitted).
+	 *           collects information about the drawing (<code>null</code>
+	 *           permitted).
 	 */
 	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState, PlotRenderingInfo info) {
-
+		
 		// set up info collection...
 		if (info != null) {
 			info.setPlotArea(plotArea);
 		}
-
+		
 		// adjust the drawing area for plot insets (if any)...
 		Insets insets = getInsets();
 		if (insets != null) {
@@ -276,14 +276,14 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 					plotArea.getWidth() - insets.left - insets.right,
 					plotArea.getHeight() - insets.top - insets.bottom);
 		}
-
+		
 		// calculate the data area...
 		AxisSpace space = calculateAxisSpace(g2, plotArea);
 		Rectangle2D dataArea = space.shrink(plotArea, null);
-
+		
 		// set the width and height of non-shared axis of all sub-plots
 		setFixedRangeAxisSpaceForSubplots(space);
-
+		
 		// draw the shared axis
 		CategoryAxis axis = getDomainAxis();
 		RectangleEdge domainEdge = getDomainAxisEdge();
@@ -293,7 +293,7 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 			parentState = new PlotState();
 		}
 		parentState.getSharedAxisStates().put(axis, axisState);
-
+		
 		// draw all the subplots
 		for (int i = 0; i < this.subplots.size(); i++) {
 			CategoryPlot plot = (CategoryPlot) this.subplots.get(i);
@@ -304,57 +304,57 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 			}
 			plot.draw(g2, this.subplotAreas[i], parentState, subplotInfo);
 		}
-
+		
 		if (info != null) {
 			info.setDataArea(dataArea);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Sets the size (width or height, depending on the orientation of the plot) for
 	 * the range axis of each subplot.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 */
 	protected void setFixedRangeAxisSpaceForSubplots(AxisSpace space) {
-
+		
 		Iterator iterator = this.subplots.iterator();
 		while (iterator.hasNext()) {
 			CategoryPlot plot = (CategoryPlot) iterator.next();
 			plot.setFixedRangeAxisSpace(space);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Sets the orientation of the plot (and all subplots).
 	 * 
 	 * @param orientation
-	 *            the orientation.
+	 *           the orientation.
 	 */
 	public void setOrientation(PlotOrientation orientation) {
-
+		
 		super.setOrientation(orientation);
-
+		
 		Iterator iterator = this.subplots.iterator();
 		while (iterator.hasNext()) {
 			CategoryPlot plot = (CategoryPlot) iterator.next();
 			plot.setOrientation(orientation);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a collection of legend items for the plot.
 	 * 
 	 * @return the legend items.
 	 */
 	public LegendItemCollection getLegendItems() {
-
+		
 		LegendItemCollection result = new LegendItemCollection();
-
+		
 		if (this.subplots != null) {
 			Iterator iterator = this.subplots.iterator();
 			while (iterator.hasNext()) {
@@ -363,20 +363,20 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 				result.addAll(more);
 			}
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns an unmodifiable list of the categories contained in all the subplots.
 	 * 
 	 * @return The list.
 	 */
 	public List getCategories() {
-
+		
 		List result = new java.util.ArrayList();
-
+		
 		if (this.subplots != null) {
 			Iterator iterator = this.subplots.iterator();
 			while (iterator.hasNext()) {
@@ -391,22 +391,22 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 				}
 			}
 		}
-
+		
 		return Collections.unmodifiableList(result);
 	}
-
+	
 	/**
 	 * Handles a 'click' on the plot.
 	 * 
 	 * @param x
-	 *            x-coordinate of the click.
+	 *           x-coordinate of the click.
 	 * @param y
-	 *            y-coordinate of the click.
+	 *           y-coordinate of the click.
 	 * @param info
-	 *            information about the plot's dimensions.
+	 *           information about the plot's dimensions.
 	 */
 	public void handleClick(int x, int y, PlotRenderingInfo info) {
-
+		
 		Rectangle2D dataArea = info.getDataArea();
 		if (dataArea.contains(x, y)) {
 			for (int i = 0; i < this.subplots.size(); i++) {
@@ -415,62 +415,62 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 				subplot.handleClick(x, y, subplotInfo);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Receives a {@link PlotChangeEvent} and responds by notifying all listeners.
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void plotChanged(PlotChangeEvent event) {
 		notifyListeners(event);
 	}
-
+	
 	/**
 	 * Tests the plot for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *            the object to test against.
+	 *           the object to test against.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object object) {
-
+		
 		if (object == null) {
 			return false;
 		}
-
+		
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (object instanceof CombinedDomainCategoryPlot) {
 			CombinedDomainCategoryPlot plot = (CombinedDomainCategoryPlot) object;
 			if (super.equals(object)) {
 				boolean b0 = ObjectUtils.equal(this.subplots, plot.subplots);
 				boolean b1 = (this.totalWeight == plot.totalWeight);
 				boolean b2 = (this.gap == plot.gap);
-
+				
 				return b0 && b1 && b2;
-
+				
 			}
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the plot.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             this class will not throw this exception, but subclasses (if any)
-	 *             might.
+	 *            this class will not throw this exception, but subclasses (if any)
+	 *            might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		CombinedDomainCategoryPlot result = (CombinedDomainCategoryPlot) super.clone();
 		result.subplots = ObjectUtils.clone(this.subplots);
 		for (Iterator it = result.subplots.iterator(); it.hasNext();) {
@@ -478,7 +478,7 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
 			child.setParent(result);
 		}
 		return result;
-
+		
 	}
-
+	
 }

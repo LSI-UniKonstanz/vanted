@@ -41,52 +41,52 @@ import java.io.Serializable;
  * Represents an interval to be highlighted in some way.
  */
 public class IntervalMarker extends Marker implements Cloneable, Serializable {
-
+	
 	/** The start value. */
 	private double startValue;
-
+	
 	/** The end value. */
 	private double endValue;
-
+	
 	/**
 	 * Constructs an interval marker.
 	 * 
 	 * @param start
-	 *            the start of the interval.
+	 *           the start of the interval.
 	 * @param end
-	 *            the end of the interval.
+	 *           the end of the interval.
 	 */
 	public IntervalMarker(double start, double end) {
 		this(start, end, Color.gray, new BasicStroke(0.5f), Color.blue, new BasicStroke(0.5f), 0.8f);
 	}
-
+	
 	/**
 	 * Constructs an interval marker.
 	 * 
 	 * @param start
-	 *            the start of the interval.
+	 *           the start of the interval.
 	 * @param end
-	 *            the end of the interval.
+	 *           the end of the interval.
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 * @param stroke
-	 *            the stroke.
+	 *           the stroke.
 	 * @param outlinePaint
-	 *            the outline paint.
+	 *           the outline paint.
 	 * @param outlineStroke
-	 *            the outline stroke.
+	 *           the outline stroke.
 	 * @param alpha
-	 *            the alpha transparency.
+	 *           the alpha transparency.
 	 */
 	public IntervalMarker(double start, double end, Paint paint, Stroke stroke, Paint outlinePaint,
 			Stroke outlineStroke, float alpha) {
-
+		
 		super(paint, stroke, outlinePaint, outlineStroke, alpha);
 		this.startValue = start;
 		this.endValue = end;
-
+		
 	}
-
+	
 	/**
 	 * Returns the start value for the interval.
 	 * 
@@ -95,7 +95,7 @@ public class IntervalMarker extends Marker implements Cloneable, Serializable {
 	public double getStartValue() {
 		return this.startValue;
 	}
-
+	
 	/**
 	 * Returns the end value for the interval.
 	 * 
@@ -104,17 +104,17 @@ public class IntervalMarker extends Marker implements Cloneable, Serializable {
 	public double getEndValue() {
 		return this.endValue;
 	}
-
+	
 	/**
 	 * Returns a clone of the marker.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             Not thrown by this class, but the exception is declared for the
-	 *             use of subclasses.
+	 *            Not thrown by this class, but the exception is declared for the
+	 *            use of subclasses.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

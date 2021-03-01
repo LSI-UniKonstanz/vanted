@@ -7,13 +7,13 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics;
 
 public class FloatAndDesc {
-
+	
 	float f;
 	String desc;
-
+	
 	public FloatAndDesc(float f, String desc) {
 		this.f = f;
 		this.desc = desc;
 	}
-
+	
 }

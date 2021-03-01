@@ -44,19 +44,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 public class TranspathService
 		implements BackgroundTaskStatusProvider, FileDownloadStatusInformationProvider, HelperClass {
 	private static boolean read_transpath_DB_txt = false;
-
+	
 	private static String transpathDBrelease = "unknown";
-
+	
 	private static Map<String, TranspathGene> tpGenes = new HashMap<String, TranspathGene>();
 	private static Map<String, TranspathReference> tpReferences = new HashMap<String, TranspathReference>();
 	private static Map<String, TranspathMolecule> tpMolecules = new HashMap<String, TranspathMolecule>();
 	private static Map<String, TranspathReaction> tpReactions = new HashMap<String, TranspathReaction>();
 	private static Map<String, TranspathPathway> tpPathways = new HashMap<String, TranspathPathway>();
-
+	
 	private static String status1;
 	private static String status2;
 	private static int statusVal = -1;
-
+	
 	public synchronized void finishedNewDownload() {
 		read_transpath_DB_txt = false;
 		transpathDBrelease = "unknown";
@@ -69,7 +69,7 @@ public class TranspathService
 		status2 = null;
 		statusVal = -1;
 	}
-
+	
 	private static synchronized void initService(boolean initInBackground) {
 		if (initInBackground) {
 			if (!read_transpath_DB_txt) {
@@ -94,7 +94,7 @@ public class TranspathService
 			}
 		}
 	}
-
+	
 	/**
 	 * Open and read ligand.txt and look for the release info.
 	 */
@@ -112,22 +112,22 @@ public class TranspathService
 		} else
 			transpathDBrelease = "unknown version (file not found)";
 	}
-
+	
 	/**
 	 * Reads the file ko. All methods depending on info from that file should call
 	 * <code>initService</code>, first. To ensure that this service is available.
 	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static void readTranspathDB() {
 		tpGenes.clear();
 		tpMolecules.clear();
 		tpPathways.clear();
 		tpReactions.clear();
 		tpReferences.clear();
-
+		
 		if (!ReleaseInfo.getIsAllowedFeature(FeatureSet.TRANSPATH_ACCESS))
 			return;
-
+		
 		double stepSize = 100 / 5;
 		int i = 0;
 		analyze("gene.xml", "Gene", TranspathGene.class, (Map) tpGenes, i * stepSize, (++i) * stepSize);
@@ -137,7 +137,7 @@ public class TranspathService
 		analyze("reaction.xml", "Reaction", TranspathReaction.class, (Map) tpReactions, i * stepSize, (++i) * stepSize);
 		analyze("pathway.xml", "Pathway", TranspathPathway.class, (Map) tpPathways, i * stepSize, (++i) * stepSize);
 	}
-
+	
 	private static void analyze(String fileName, String info, Class<?> entityType,
 			Map<String, TranspathEntityType> entries, double startProgress, double endProgress) {
 		status1 = "Analyse " + info + " information...";
@@ -153,7 +153,7 @@ public class TranspathService
 				factory.setValidating(false);
 				factory.setNamespaceAware(false);
 				factory.setXIncludeAware(false);
-
+				
 				// Create a handler to handle the SAX events generated during parsing
 				DefaultHandler handler = new TranspathXMLparser(entries, entityType, info);
 				// Create the builder and parse the file
@@ -184,7 +184,7 @@ public class TranspathService
 		}
 		statusVal = (int) endProgress;
 	}
-
+	
 	public static BufferedReader getFileReader(String fileName) {
 		try {
 			return new BufferedReader(new FileReader(ReleaseInfo.getAppFolderWithFinalSep() + fileName));
@@ -199,7 +199,7 @@ public class TranspathService
 			}
 		}
 	}
-
+	
 	public static InputSource getFileInputSource(String fileName) {
 		try {
 			InputSource is = new InputSource(
@@ -211,16 +211,16 @@ public class TranspathService
 			return null;
 		}
 	}
-
+	
 	private static File getFile(String fileName) {
 		return new File(ReleaseInfo.getAppFolderWithFinalSep() + fileName);
 	}
-
+	
 	public static Collection<TranspathPathway> getPathways() {
 		initService(false);
 		return tpPathways.values();
 	}
-
+	
 	/**
 	 * @return The release information of the compound file. Read out of ligant.txt.
 	 */
@@ -228,7 +228,7 @@ public class TranspathService
 		initService(false);
 		return transpathDBrelease;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -239,7 +239,7 @@ public class TranspathService
 	public int getCurrentStatusValue() {
 		return statusVal;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -250,7 +250,7 @@ public class TranspathService
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -261,7 +261,7 @@ public class TranspathService
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -272,7 +272,7 @@ public class TranspathService
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -283,7 +283,7 @@ public class TranspathService
 	public void pleaseStop() {
 		// pleaseStop = true;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -294,7 +294,7 @@ public class TranspathService
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -305,56 +305,56 @@ public class TranspathService
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		statusVal = value;
 	}
-
+	
 	public String getDescription() {
 		return "";
 	}
-
+	
 	public JComponent getStatusPane(boolean showEmpty) {
-
+		
 		initService(false);
-
+		
 		FolderPanel res = new FolderPanel("<html>" + "TRANSPATH &reg; Database<br><small>" + "("
 				+ "contains information about signal transduction molecules and reactions)");
 		res.setFrameColor(Color.LIGHT_GRAY, null, 1, 5);
-
+		
 		int b = 5; // normal border
 		int bB = 1; // border around action buttons
-
+		
 		boolean externalAvailable = read_transpath_DB_txt && tpPathways != null && tpPathways.size() > 0;
 		String status2 = "";
-
+		
 		if (externalAvailable)
 			status2 = "<html><b>Database is online</b>";
 		else
 			status2 = "<html>Database file not available";
-
+		
 		if (externalAvailable) {
 			status2 += "<br>&nbsp;&nbsp;" + transpathDBrelease;
 			status2 += "<br>&nbsp;&nbsp;Pathways: " + tpPathways.size();
 		}
-
+		
 		res.addGuiComponentRow(new JLabel("<html>" + "Downloaded Files:&nbsp;"),
 				FolderPanel.getBorderedComponent(new JLabel(status2), b, b, b, b), false);
-
+		
 		ArrayList<JComponent> actionButtons = new ArrayList<JComponent>();
 		actionButtons.add(getWebsiteButton());
 		actionButtons.add(getLicenseButton());
 		actionButtons.add(getDownloadButton());
-
+		
 		pretifyButtons(actionButtons);
-
+		
 		res.addGuiComponentRow(new JLabel("<html>" + "Visit Website(s)"),
 				TableLayout.getMultiSplit(actionButtons, TableLayoutConstants.PREFERRED, bB, bB, bB, bB), false);
-
+		
 		res.layoutRows();
 		return res;
 	}
-
+	
 	private static JComponent getDownloadButton() {
 		return GUIhelper.getWebsiteButton("Download", "http://www.biobase-international.com",
 				ReleaseInfo.getAppFolder(),
@@ -370,29 +370,29 @@ public class TranspathService
 						+ "will be available to the system.",
 				"Download Instructions");
 	}
-
+	
 	private static JComponent getLicenseButton() {
 		return GUIhelper.getWebsiteButton("License", "http://www.biobase-international.com", null, null, null);
 	}
-
+	
 	private static JComponent getWebsiteButton() {
 		return GUIhelper.getWebsiteButton("Website", "http://www.biobase-international.com", null, null, null);
 	}
-
+	
 	private static void pretifyButtons(ArrayList<JComponent> actionButtons) {
 		for (JComponent jc : actionButtons) {
 			((JButton) jc).setBackground(Color.white);
 		}
 	}
-
+	
 	public static TranspathReaction getReaction(String reactionID) {
 		return tpReactions.get(reactionID);
 	}
-
+	
 	public static TranspathPathway getPathway(String pathwayID) {
 		return tpPathways.get(pathwayID);
 	}
-
+	
 	public static TranspathMolecule getMolecule(String moleculeID) {
 		return tpMolecules.get(moleculeID);
 	}
