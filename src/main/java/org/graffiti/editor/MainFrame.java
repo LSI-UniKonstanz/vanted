@@ -9,9 +9,6 @@
 
 package org.graffiti.editor;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
-
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -105,8 +102,6 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoableEditSupport;
-
-import net.iharder.dnd.FileDrop;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -204,8 +199,11 @@ import org.graffiti.util.DesktopMenuManager;
 import org.graffiti.util.InstanceCreationException;
 import org.vanted.VantedPreferences;
 
-import scenario.ScenarioService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.navigation.NavigationComponentView;
+import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstants;
+import net.iharder.dnd.FileDrop;
+import scenario.ScenarioService;
 
 /**
  * Constructs a new graffiti frame, which contains the main gui components.
@@ -1016,6 +1014,7 @@ public class MainFrame extends JFrame
 	 * 
 	 * @param s
 	 *           the new session to add.
+	 * @vanted.revision 2.8.0 Resolve legacy issue
 	 */
 	public void addSession(Session s) {
 		sessions.add(s);
@@ -1029,6 +1028,17 @@ public class MainFrame extends JFrame
 			}
 			
 			selModel.add(new Selection(sBundle.getString("activeSelection")));
+			{
+				// @since 2.8.0
+				
+				// First set active session and only then the active selection
+				// Otherwise legacy code breaks, e.g. CentiLib on data mapping
+				// However, this conflicts with any logic which may rely on the first
+				// selection event to have a null session / be null
+				if (activeEditorSession == null) {
+					activeEditorSession = (EditorSession) s;
+				}
+			}
 			selModel.setActiveSelection(sBundle.getString("activeSelection"));
 		}
 	}

@@ -342,7 +342,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			final boolean considerEnzymeDb, final boolean considerMappingToKEGGmapNodes, Graph workGraph) {
 		EditorSession es;
 		if (workGraph == null && showResult() != ShowMappingResults.MAP_WITHOUT_VIEW) {
-			es = GravistoService.getInstance().getMainFrame().createNewSession();
+			es = MainFrame.getInstance().createNewSession();
 			workGraph = es.getGraph();
 		} else
 			es = null;
@@ -352,7 +352,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		if (workGraph == null) {
 			es = MainFrame.getInstance().getActiveEditorSession();
 			if (es == null)
-				es = GravistoService.getInstance().getMainFrame().createNewSession();
+				es = MainFrame.getInstance().createNewSession();
 			workGraph = es.getGraph();
 		}
 		final EditorSession newlyCreatedWorkSession = es;
