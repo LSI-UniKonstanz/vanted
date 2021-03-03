@@ -68,5 +68,6 @@
 	<classpathentry exported="true" kind="lib" path="/vanted-libraries/jsbml-1.5-with-dependencies.jar"/>
 	<classpathentry exported="true" kind="lib" path="/vanted-libraries/rome-utils-1.12.2.jar"/>
 	<classpathentry kind="lib" path="/vanted-libraries/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="/vanted-libraries/json-20201115.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
