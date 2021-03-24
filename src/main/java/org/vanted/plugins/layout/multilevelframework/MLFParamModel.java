@@ -1,7 +1,20 @@
 package org.vanted.plugins.layout.multilevelframework;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
-import info.clearthought.layout.SingleFiledLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
 import org.JMButton;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.dialog.ParameterEditPanel;
@@ -9,10 +22,8 @@ import org.graffiti.managers.EditComponentManager;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.*;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
+import info.clearthought.layout.SingleFiledLayout;
 
 public class MLFParamModel {
 	public LayoutAlgGroup layoutAlgGroup = new LayoutAlgGroup();
@@ -26,9 +37,8 @@ public class MLFParamModel {
 		*/
 		private static final long serialVersionUID = -6846113290305737922L;
 		private final String defaultAlg = (new PatternSpringembedder()).getName();
-		private final Map<String, LayoutAlgorithmWrapper> layoutAlgorithms = LayoutAlgorithmWrapper.getLayoutAlgorithms();
-		private final JComboBox<String> algorithmList = new JComboBox<>(
-				this.layoutAlgorithms.keySet().stream().sorted().toArray(String[]::new));
+		private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
+		private JComboBox<String> algorithmList;
 		JPanel algOptionsContainer = new JPanel();
 		JLabel optionsLabel;
 		JCheckBox randomTop;
@@ -39,6 +49,8 @@ public class MLFParamModel {
 			
 			// set "force directed" to be the default alg.
 			// care has to be taken that this is done before algOptionsContainer is initialised
+			layoutAlgorithms = LayoutAlgorithmWrapper.getLayoutAlgorithms();
+			algorithmList = new JComboBox<>(this.layoutAlgorithms.keySet().stream().sorted().toArray(String[]::new));
 			algorithmList.setSelectedItem(defaultAlg);
 			algorithmList.addActionListener((e) -> updateAlgUI());
 			this.updateAlgUI();
