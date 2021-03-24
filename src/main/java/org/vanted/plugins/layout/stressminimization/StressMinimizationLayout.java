@@ -1,10 +1,16 @@
 package org.vanted.plugins.layout.stressminimization;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
-import info.clearthought.layout.SingleFiledLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.FolderPanel;
 import org.Vector2d;
 import org.graffiti.editor.GravistoService;
@@ -20,9 +26,11 @@ import org.vanted.indexednodes.IndexedNodeSet;
 import org.vanted.plugins.layout.stressminimization.parameters.LandmarkParameter;
 import org.vanted.plugins.layout.stressminimization.parameters.SliderParameter;
 
-import javax.swing.*;
-import java.util.*;
-import java.util.List;
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
+import info.clearthought.layout.SingleFiledLayout;
 
 /**
  * Layout algorithm performing a stress minimization layout process.
@@ -118,6 +126,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		final FolderPanel methodFolder = new FolderPanel("Method", false, true, false, null);
 		methodFolder.addComp(paramUIElems.methodRadioGroup);
 		methodFolder.addComp(paramUIElems.methodAlphaGroup);
+		methodFolder.addComp(paramUIElems.methodEdgeScaleGroup);
 		methodFolder.layoutRows();
 		mainPanel.add(methodFolder);
 		
@@ -292,7 +301,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 					params.terminationStressChangeGroup.getValue(),
 					0,
 					nodeMovementThreshold,
-					iterThreshold);
+					iterThreshold,
+					params.methodEdgeScaleGroup.getEdgeScale());
 			
 			impl.calculateLayout();
 			

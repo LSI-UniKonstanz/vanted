@@ -1,18 +1,34 @@
 package org.vanted.plugins.layout.stressminimization;
 
-import info.clearthought.layout.SingleFiledLayout;
-import org.graffiti.editor.MainFrame;
-import org.graffiti.editor.MessageType;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.text.ParseException;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import org.graffiti.editor.MainFrame;
+import org.graffiti.editor.MessageType;
+
+import info.clearthought.layout.SingleFiledLayout;
 
 /**
  * This class represents the GUI and at the same time the "model" of the algorithm
@@ -24,6 +40,7 @@ public class StressMinParamModel {
 	public InitialLayoutRadioGroup initialLayoutRadioGroup = new InitialLayoutRadioGroup();
 	public MethodRadioGroup methodRadioGroup = new MethodRadioGroup();
 	MethodAlphaGroup methodAlphaGroup = new MethodAlphaGroup();
+	MethodEdgeScaleGroup methodEdgeScaleGroup = new MethodEdgeScaleGroup();
 	TerminationStressChangeGroup terminationStressChangeGroup = new TerminationStressChangeGroup();
 	TerminationCheckboxGroup terminationCheckboxGroup = new TerminationCheckboxGroup();
 	
@@ -265,6 +282,76 @@ public class StressMinParamModel {
 				MainFrame.showMessage("Error parsing alpha value", MessageType.ERROR);
 			}
 			return (int) spinner.getValue() * (-1);
+		}
+	}
+	
+	public class MethodEdgeScaleGroup extends JPanel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -7950079331776263920L;
+		
+		JSpinner spinner;
+		
+		MethodEdgeScaleGroup() {
+			
+			this.setBackground(null);
+			
+			GridBagLayout gridBagLayout = new GridBagLayout();
+			gridBagLayout.columnWidths = new int[] { 0, 5, 40, 32 };
+			gridBagLayout.rowHeights = new int[] { 20, 0, 0 };
+			gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0 };
+			gridBagLayout.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+			setLayout(gridBagLayout);
+			
+			Component verticalStrut = Box.createVerticalStrut(5);
+			GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
+			gbc_verticalStrut.insets = new Insets(0, 0, 5, 5);
+			gbc_verticalStrut.gridx = 0;
+			gbc_verticalStrut.gridy = 0;
+			add(verticalStrut, gbc_verticalStrut);
+			
+			JLabel lblNewLabel = new JLabel("Edge scaling factor:");
+			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+			gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
+			gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
+			gbc_lblNewLabel.gridx = 0;
+			gbc_lblNewLabel.gridy = 1;
+			add(lblNewLabel, gbc_lblNewLabel);
+			
+			Component horizontalGlue_1 = Box.createHorizontalGlue();
+			GridBagConstraints gbc_horizontalGlue_1 = new GridBagConstraints();
+			gbc_horizontalGlue_1.insets = new Insets(0, 0, 0, 5);
+			gbc_horizontalGlue_1.gridx = 1;
+			gbc_horizontalGlue_1.gridy = 1;
+			add(horizontalGlue_1, gbc_horizontalGlue_1);
+			
+			spinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
+			spinner.setValue(1);
+			GridBagConstraints gbc_spinner = new GridBagConstraints();
+			gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
+			gbc_spinner.insets = new Insets(0, 0, 0, 5);
+			gbc_spinner.gridx = 2;
+			gbc_spinner.gridy = 1;
+			add(spinner, gbc_spinner);
+			
+			Component horizontalGlue = Box.createHorizontalGlue();
+			GridBagConstraints gbc_horizontalGlue = new GridBagConstraints();
+			gbc_horizontalGlue.fill = GridBagConstraints.HORIZONTAL;
+			gbc_horizontalGlue.gridx = 3;
+			gbc_horizontalGlue.gridy = 1;
+			add(horizontalGlue, gbc_horizontalGlue);
+			
+			setBackground(null);
+		}
+		
+		public int getEdgeScale() {
+			try {
+				spinner.commitEdit();
+			} catch (ParseException e) {
+				MainFrame.showMessage("Error parsing scale value", MessageType.ERROR);
+			}
+			return (int) spinner.getValue();
 		}
 	}
 	

@@ -1,5 +1,12 @@
 package org.vanted.plugins.layout.stressminimization;
 
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.Supplier;
+
 import org.AttributeHelper;
 import org.Vector2d;
 import org.apache.commons.math3.linear.BlockRealMatrix;
@@ -8,13 +15,6 @@ import org.apache.commons.math3.linear.RealVector;
 import org.graffiti.graph.Node;
 import org.vanted.indexednodes.IndexedGraphOperations;
 import org.vanted.indexednodes.IndexedNodeSet;
-
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.DoubleUnaryOperator;
-import java.util.function.Supplier;
 
 class StressMinimizationImplementation {
 	
@@ -31,6 +31,7 @@ class StressMinimizationImplementation {
 	private final double minimumNodeMovementThreshold;
 	private final double iterationsThreshold;
 	private final boolean useLandmarks;
+	private final int edgeScalingFactor;
 	
 	/**
 	 * Creates a new StressMinimizationImplementation working on the given list of nodes and using
@@ -64,7 +65,8 @@ class StressMinimizationImplementation {
 			double stressChangeEpsilon,
 			double initialStressPercentage,
 			double minimumNodeMovementThreshold,
-			double iterationsThreshold) {
+			double iterationsThreshold,
+			int edgeScalingFactor) {
 		super();
 		
 		this.callingLayout = callingLayout;
@@ -79,6 +81,7 @@ class StressMinimizationImplementation {
 		this.initialStressPercentage = initialStressPercentage;
 		this.minimumNodeMovementThreshold = minimumNodeMovementThreshold;
 		this.iterationsThreshold = iterationsThreshold;
+		this.edgeScalingFactor = edgeScalingFactor;
 	}
 	
 	/**
@@ -150,6 +153,8 @@ class StressMinimizationImplementation {
 	}
 	
 	private void calcLayoutForSelectedNodes(IndexedNodeSet selectedNodes, RealMatrix selectedToSelectedDistances, RealMatrix selectedToAllDistances) {
+		selectedToSelectedDistances = selectedToSelectedDistances.scalarMultiply((double) this.edgeScalingFactor);
+		selectedToAllDistances = selectedToAllDistances.scalarMultiply((double) this.edgeScalingFactor);
 		
 		if (callingLayout.waitIfPausedAndCheckStop()) {
 			return;
