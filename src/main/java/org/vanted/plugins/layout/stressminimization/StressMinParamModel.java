@@ -204,16 +204,11 @@ public class StressMinParamModel {
 		*/
 		private static final long serialVersionUID = 1222253448210707114L;
 		
-		JSlider slider = new JSlider();
-		
 		JSpinner spinner;
 		
 		MethodAlphaGroup() {
-			
-			this.setBackground(null);
-			
 			GridBagLayout gridBagLayout = new GridBagLayout();
-			gridBagLayout.columnWidths = new int[] { 0, 5, 58, 32 };
+			gridBagLayout.columnWidths = new int[] { 0, 102, 95, 32 };
 			gridBagLayout.rowHeights = new int[] { 20, 0, 0 };
 			gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0 };
 			gridBagLayout.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
@@ -228,8 +223,7 @@ public class StressMinParamModel {
 			
 			JLabel lblNewLabel = new JLabel("Weight exponent:");
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-			gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
+			gbc_lblNewLabel.fill = GridBagConstraints.WEST;
 			gbc_lblNewLabel.gridx = 0;
 			gbc_lblNewLabel.gridy = 1;
 			add(lblNewLabel, gbc_lblNewLabel);
@@ -250,29 +244,7 @@ public class StressMinParamModel {
 			gbc_spinner.gridy = 1;
 			add(spinner, gbc_spinner);
 			
-			Component horizontalGlue = Box.createHorizontalGlue();
-			GridBagConstraints gbc_horizontalGlue = new GridBagConstraints();
-			gbc_horizontalGlue.fill = GridBagConstraints.HORIZONTAL;
-			gbc_horizontalGlue.gridx = 3;
-			gbc_horizontalGlue.gridy = 1;
-			add(horizontalGlue, gbc_horizontalGlue);
-			
 			setBackground(null);
-			slider.setBackground(null);
-			slider.setMinimum(0);
-			slider.setMaximum(2);
-			slider.setValue(1);
-			Dictionary<Integer, JLabel> sliderLabels = new Hashtable<>();
-			sliderLabels.put(0, new JLabel("0"));
-			sliderLabels.put(1, new JLabel("-1"));
-			sliderLabels.put(2, new JLabel("-2"));
-			slider.setLabelTable(sliderLabels);
-			slider.setPaintLabels(true);
-			slider.setPaintTicks(false);
-		}
-		
-		public int getSliderValue() {
-			return slider.getValue();
 		}
 		
 		public int getAlpha() {
@@ -294,27 +266,17 @@ public class StressMinParamModel {
 		JSpinner spinner;
 		
 		MethodEdgeScaleGroup() {
-			
-			this.setBackground(null);
-			
 			GridBagLayout gridBagLayout = new GridBagLayout();
-			gridBagLayout.columnWidths = new int[] { 0, 5, 40, 32 };
-			gridBagLayout.rowHeights = new int[] { 20, 0, 0 };
+			gridBagLayout.columnWidths = new int[] { 0, 93, 95, 32 };
+			gridBagLayout.rowHeights = new int[] { 5, 0, 0 };
 			gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0 };
 			gridBagLayout.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 			setLayout(gridBagLayout);
 			
-			Component verticalStrut = Box.createVerticalStrut(5);
-			GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
-			gbc_verticalStrut.insets = new Insets(0, 0, 5, 5);
-			gbc_verticalStrut.gridx = 0;
-			gbc_verticalStrut.gridy = 0;
-			add(verticalStrut, gbc_verticalStrut);
-			
 			JLabel lblNewLabel = new JLabel("Edge scaling factor:");
+			
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-			gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
+			gbc_lblNewLabel.fill = GridBagConstraints.WEST;
 			gbc_lblNewLabel.gridx = 0;
 			gbc_lblNewLabel.gridy = 1;
 			add(lblNewLabel, gbc_lblNewLabel);
@@ -334,13 +296,6 @@ public class StressMinParamModel {
 			gbc_spinner.gridx = 2;
 			gbc_spinner.gridy = 1;
 			add(spinner, gbc_spinner);
-			
-			Component horizontalGlue = Box.createHorizontalGlue();
-			GridBagConstraints gbc_horizontalGlue = new GridBagConstraints();
-			gbc_horizontalGlue.fill = GridBagConstraints.HORIZONTAL;
-			gbc_horizontalGlue.gridx = 3;
-			gbc_horizontalGlue.gridy = 1;
-			add(horizontalGlue, gbc_horizontalGlue);
 			
 			setBackground(null);
 		}
