@@ -402,13 +402,13 @@ public class Experiment implements ExperimentInterface {
 	}
 	
 	/**
-	 * <experimentdata> <experiment experimentid="-1">
-	 * <experimentname>Gluthation</experimentname> <remark>SXD plants</remark>
-	 * <coordinator>Mohammad Hajirezaei</coordinator> <excelfileid/>
-	 * <importusername/> <importdate>Tue Mar 10 11:39:36 CET 2009</importdate>
-	 * <startdate>Sun Jan 18 00:00:00 CET 2004</startdate>
-	 * <measurements>92</measurements> <imagefiles>0</imagefiles> <sizekb>0</sizekb>
-	 * </experiment> <measurements> <substance id="column 6" name="Cys"> ...
+	 * &lt;experimentdata&gt; &lt;experiment experimentid="-1"&gt;
+	 * &lt;experimentname&gt;Gluthation&lt;/experimentname&gt; &lt;remark&gt;SXD plants&lt;/remark&gt;
+	 * &lt;coordinator&gt;Mohammad Hajirezaei&lt;/coordinator&gt; &lt;excelfileid/&gt;
+	 * &lt;importusername/&gt; &lt;importdate&gt;Tue Mar 10 11:39:36 CET 2009&lt;/importdate&gt;
+	 * &lt;startdate&gt;Sun Jan 18 00:00:00 CET 2004&lt;/startdate&gt;
+	 * &lt;measurements&gt;92&lt;/measurements&gt; &lt;imagefiles&gt;0&lt;/imagefiles&gt; &lt;sizekb&gt;0&lt;/sizekb&gt;
+	 * &lt;/experiment&gt; &lt;measurements&gt; &lt;substance id="column 6" name="Cys"&gt; ...
 	 * 
 	 * @param mappingDataList
 	 * @param status

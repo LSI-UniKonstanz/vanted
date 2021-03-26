@@ -47,20 +47,20 @@ public class Substance implements SubstanceInterface, Cloneable {
 	}
 	
 	/**
-	 * Whole XML dataset: <experimentdata> <experiment experimentid="-1">
-	 * <experimentname>Gerstenentwicklung-Frühjahr 2003</experimentname> <remark/>
-	 * <coordinator>Hardy Rolletschek</coordinator> <excelfileid/> <importusername/>
-	 * <importdate>Fri Apr 08 12:32:35 CEST 2005</importdate> <startdate>Tue Apr 01
-	 * 00:00:00 CEST 2003</startdate> <measurements>1057</measurements>
-	 * <imagefiles>0</imagefiles> <sizekb>0</sizekb> </experiment> <measurements>
-	 * <substance id="column 19" name="Arg">
-	 * <line genotype="wild type" growthconditions="" id="1" name="Hordeum vulgare"
-	 * treatment="Tagproben" variety="">
-	 * <sample id="1" measurementtool="HPLC" time="4" unit="day">
-	 * <average max="0.1720235400633771" min="0.07136485280999108" replicates="2"
-	 * stddev="0.07117644034220516" unit="µmol / g FW">0.1216941964366841</average>
-	 * <data replicates="3" unit="µmol / g FW">0.1720235400633771</data>
-	 * <data replicates="3" unit="µmol / g FW">0.07136485280999108</data> </sample>
+	 * Whole XML dataset: &lt;experimentdata&gt; &lt;experiment experimentid="-1"&gt;
+	 * &lt;experimentname&gt;Gerstenentwicklung-Frühjahr 2003&lt;/experimentname&gt; &lt;remark/&gt;
+	 * &lt;coordinator&gt;Hardy Rolletschek&lt;/coordinator&gt; &lt;excelfileid/&gt; &lt;importusername/&gt;
+	 * &lt;importdate&gt;Fri Apr 08 12:32:35 CEST 2005&lt;/importdate&gt; &lt;startdate&gt;Tue Apr 01
+	 * 00:00:00 CEST 2003&lt;/startdate&gt; &lt;measurements&gt;1057&lt;/measurements&gt;
+	 * &lt;imagefiles&gt;0&lt;/imagefiles&gt; &lt;sizekb&gt;0&lt;/sizekb&gt; &lt;/experiment&gt; &lt;measurements&gt;
+	 * &lt;substance id="column 19" name="Arg"&gt;
+	 * &lt;line genotype="wild type" growthconditions="" id="1" name="Hordeum vulgare"
+	 * treatment="Tagproben" variety=""&gt;
+	 * &lt;sample id="1" measurementtool="HPLC" time="4" unit="day"&gt;
+	 * &lt;average max="0.1720235400633771" min="0.07136485280999108" replicates="2"
+	 * stddev="0.07117644034220516" unit="µmol / g FW"&gt;0.1216941964366841&lt;/average&gt;
+	 * &lt;data replicates="3" unit="µmol / g FW"&gt;0.1720235400633771&lt;/data&gt;
+	 * &lt;data replicates="3" unit="µmol / g FW"&gt;0.07136485280999108&lt;/data&gt; &lt;/sample&gt;
 	 * ...
 	 */
 	static Experiment getData(Element e) {
@@ -103,13 +103,13 @@ public class Substance implements SubstanceInterface, Cloneable {
 	}
 	
 	/**
-	 * Dataset, transformed for data mapping: <substance id="" name="">
-	 * <line experimentname="" genotype="WT" growthconditions="" id="1" name=
-	 * "Unknown 1" treatment="" variety="">
-	 * <sample id="" measurementtool="" time="26" unit="day">
-	 * <average max="" min="" replicates="1" stddev="0.0" unit=
-	 * "units">48.5313748658488</average>
-	 * <data replicates="" unit="">48.5313748658488</data> </sample> ...
+	 * Dataset, transformed for data mapping: &lt;substance id="" name=""&gt;
+	 * &lt;line experimentname="" genotype="WT" growthconditions="" id="1" name=
+	 * "Unknown 1" treatment="" variety=""&gt;
+	 * &lt;sample id="" measurementtool="" time="26" unit="day"&gt;
+	 * &lt;average max="" min="" replicates="1" stddev="0.0" unit=
+	 * "units"&gt;48.5313748658488&lt;/average&gt;
+	 * &lt;data replicates="" unit=""&gt;48.5313748658488&lt;/data&gt; &lt;/sample&gt; ...
 	 */
 	public boolean setMappedData(Element e, Element experimentChildElement) {
 		// setMappedData
@@ -726,13 +726,6 @@ public class Substance implements SubstanceInterface, Cloneable {
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
-	 * .MappingDataEntity#fillAttributeMap(java.util.Map)
-	 */
 	public void fillAttributeMap(Map<String, Object> attributeValueMap) {
 		if (synonyms == null || synonyms.size() == 0) {
 			// empty

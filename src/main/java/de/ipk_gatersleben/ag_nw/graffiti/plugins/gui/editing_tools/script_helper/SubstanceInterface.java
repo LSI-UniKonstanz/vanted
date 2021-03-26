@@ -9,21 +9,21 @@ import org.HelperClass;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 
-import unit_test_support.TestValueRequired;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent.MyComparableDataPoint;
+import unit_test_support.TestValueRequired;
 
 @TestValueRequired("name")
 public interface SubstanceInterface
 		extends MappingDataEntity, Comparable<SubstanceInterface>, Collection<ConditionInterface>, HelperClass {
 	
 	/**
-	 * Dataset, transformed for data mapping: <substance id="" name="">
-	 * <line experimentname="" genotype="WT" growthconditions="" id="1" name=
-	 * "Unknown 1" treatment="" variety="">
-	 * <sample id="" measurementtool="" time="26" unit="day">
-	 * <average max="" min="" replicates="1" stddev="0.0" unit=
-	 * "units">48.5313748658488</average>
-	 * <data replicates="" unit="">48.5313748658488</data> </sample> ...
+	 * Dataset, transformed for data mapping: &lt;substance id="" name=""&gt;
+	 * &lt;line experimentname="" genotype="WT" growthconditions="" id="1" name=
+	 * "Unknown 1" treatment="" variety=""&gt;
+	 * &lt;sample id="" measurementtool="" time="26" unit="day"&gt;
+	 * &lt;average max="" min="" replicates="1" stddev="0.0" unit=
+	 * "units"&gt;48.5313748658488&lt;/average&gt;
+	 * &lt;data replicates="" unit=""&gt;48.5313748658488&lt;/data&gt; &lt;/sample&gt; ...
 	 */
 	public abstract boolean setMappedData(Element e, Element experimentChildElement);
 	
@@ -162,13 +162,6 @@ public interface SubstanceInterface
 	
 	public abstract <T> T[] toArray(T[] a);
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
-	 * .MappingDataEntity#fillAttributeMap(java.util.Map)
-	 */
 	public abstract void fillAttributeMap(Map<String, Object> attributeValueMap);
 	
 	public abstract void setSynonyme(HashMap<Integer, String> hashMap);
