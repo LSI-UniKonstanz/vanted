@@ -643,8 +643,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 	
 	public synchronized void updateGUIforUpdatedExperimentData(String experimentName, final ExperimentInterface mdNew,
 			JComponent gui) {
-		if (mdNew != null)
-			md = mdNew;
+		md = mdNew != null ? mdNew : md;
 		if (experimentName != null) {
 			try {
 				int idx = parentPane.indexOfComponent(this);

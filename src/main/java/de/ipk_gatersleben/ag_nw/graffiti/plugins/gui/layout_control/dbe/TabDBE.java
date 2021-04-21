@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import net.iharder.dnd.FileDrop;
@@ -355,7 +356,13 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			if (
 			// expPane.getDocument()==pe.getDocument() ||
 			expPane.getExperimentName().equals(pe.getExperimentName())) {
-				expPane.updateGUIforUpdatedExperimentData(pe.getExperimentName(), pe.getDocumentData(), pe.getGUI());
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						expPane.updateGUIforUpdatedExperimentData(
+								pe.getExperimentName(), pe.getDocumentData(), pe.getGUI());
+					}
+				});
 				return;
 			}
 		}
