@@ -10,9 +10,9 @@ VANTED is a Java based extendable network visualisation and analysis tool with f
 
 It allows users to create and edit networks, as well as mapping experimental data onto networks. Experimental datasets can be visualized on network elements as graphical charts to show time series data or data of different treatments, as well as environmental conditions in the context of the underlying biological processes. Built-in statistical algorithms allow an easy and fast evaluation of mapped data (e.g. t-Test or correlation analysis).
 
-The functionality of VANTED can be extended by installing one or more of the provided Addons using the built-in Addon Manager. For an overview see: [here](http://vanted.org/add-ons).
+The functionality of VANTED can be extended by installing one or more of the provided Addons using the built-in Addon Manager. For an overview see: [here](https://www.cls.uni-konstanz.de/software/vanted/add-ons).
 
-New Addons can be developed from scratch, using built-in [API](https://kim25.wwwdns.kim.uni-konstanz.de/vanted/javadoc/)s for manipulation of networks and data. A simple step-by-step guide for developing custom Addons can be found [here](https://github.com/LSI-UniKonstanz/vanted/wiki).
+New Addons can be developed from scratch, using built-in [API](https://kim25.wwwdns.kim.uni-konstanz.de/vanted/javadoc/) for manipulation of networks and data. A simple step-by-step guide for developing custom Addons can be found [here](https://github.com/LSI-UniKonstanz/vanted/wiki).
 
 The development of VANTED is an ongoing process and we try to fix bugs and implement new features as soon as possible. Updates will be delivered on a regular basis.
 
@@ -23,8 +23,21 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### VANTED v2.8.0 release (19/04/2021) ###
+    New layout: Stress Minimisation
+    New layout: Multilevel Framework
+    Use commons-math3 3.6.1
+    Resolve attribute issue
+    Deactivate Biomodels DB (current version)
+    New algorithm: Remove parallel edges
+    Bugfixes and internal updates, e.g. new JSON library
+
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.0).
+
 ### VANTED v2.7.2 release (20/07/2020) ###
     Resolve OS and compatibility issue
+    
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.7.2).
 
 ### VANTED v2.7.1 release (13/07/2020) ###
     Resolve constant updating
