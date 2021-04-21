@@ -18,11 +18,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Remove Bends";
 	}
@@ -64,11 +59,6 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 			throw new PreconditionException("Graph contains no edges!");
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		ArrayList<Edge> workEdges = new ArrayList<Edge>();
 		if (selection == null || selection.getEdges().size() == 0)

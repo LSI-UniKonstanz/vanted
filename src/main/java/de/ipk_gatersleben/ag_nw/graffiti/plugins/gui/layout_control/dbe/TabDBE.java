@@ -351,6 +351,10 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		return loadedProjects;
 	}
 	
+	/**
+	 * 
+	 * @vanted.revision 2.8.1 run update completely async on AWT
+	 */
 	public synchronized static void addOrUpdateExperimentPane(ProjectEntity pe) {
 		for (ExperimentDataInfoPane expPane : instance.shownExpPanes) {
 			if (

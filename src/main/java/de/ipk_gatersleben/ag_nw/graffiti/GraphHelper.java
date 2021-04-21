@@ -366,19 +366,30 @@ public class GraphHelper implements HelperClass {
 		
 	}
 	
+	/**
+	 * Does the given collection contain edges with bends?
+	 * 
+	 * @param edges a collection of edges
+	 * @return true, if the collection of edges contains edges with bends
+	 * @since 2.8.1
+	 */
+	public static boolean hasBends(final Collection<Edge> edges) {
+		if (edges == null || edges.size() <= 0)
+			return false;
+		
+		for (Edge e : edges) {
+			if (AttributeHelper.getEdgeBends(e).size() > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static void removeBends(final Graph graph, final Collection<Edge> edges, boolean enableUndo) {
 		if (graph == null || edges == null || edges.size() <= 0)
 			return;
 		
-		boolean hasBends = false;
-		for (Edge e : edges) {
-			Collection<Vector2d> positions = AttributeHelper.getEdgeBends(e);
-			if (positions.size() > 0) {
-				hasBends = true;
-				break;
-			}
-		}
-		if (!hasBends)
+		if (!hasBends(edges))
 			return;
 		
 		if (!enableUndo) {
