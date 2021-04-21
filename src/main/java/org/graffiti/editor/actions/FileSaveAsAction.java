@@ -33,6 +33,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Graph;
 import org.graffiti.help.HelpContext;
+import org.graffiti.managers.DefaultIOManager;
 import org.graffiti.managers.IOManager;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.actions.GraffitiAction;
@@ -150,10 +151,8 @@ public class FileSaveAsAction extends GraffitiAction {
 						// if new graph has no extension and we can't find one
 						// use the standard one from the preferences
 						if (!foundFileFilter) {
-							FileFilter defaultFileFilterFound = fileChooser.getChoosableFileFilters()[0];
 							String prefExtension = PreferenceManager.getPreferenceForClass(VantedPreferences.class).get(
-									VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT,
-									((GenericFileFilter) defaultFileFilterFound).getExtension());
+									VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT, DefaultIOManager.STANDARD_SAVE_FORMAT);
 							for (FileFilter filterFilter : fileChooser.getChoosableFileFilters()) {
 								if (prefExtension.endsWith(((GenericFileFilter) filterFilter).getExtension())) {
 									fileChooser.setFileFilter(filterFilter);

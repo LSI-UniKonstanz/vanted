@@ -98,7 +98,7 @@ public class DefaultIOManager implements IOManager {
 	/** The list of listeners. */
 	private final List<IOManagerListener> listeners;
 	
-	protected static final String STANDARD_SAVE_FORMAT = ".gml";
+	public static final String STANDARD_SAVE_FORMAT = ".gml";
 	
 	// ~ Constructors ===========================================================
 	
@@ -285,7 +285,7 @@ public class DefaultIOManager implements IOManager {
 	@Override
 	public JFileChooser createSaveFileChooser(Graph g) {
 		fc = getFileChooser();
-		String defaultExt = ".gml";
+		String defaultExt = STANDARD_SAVE_FORMAT;
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			defaultExt = ".xml";
 		GravistoFileFilter defaultFileFilter = null;
