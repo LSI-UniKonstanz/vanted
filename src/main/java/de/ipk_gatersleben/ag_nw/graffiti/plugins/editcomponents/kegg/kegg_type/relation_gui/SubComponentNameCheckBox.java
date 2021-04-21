@@ -17,16 +17,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.SubtypeName;
 
 public class SubComponentNameCheckBox extends JCheckBox {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4365997824460122788L;
+	
 	private Relation currentRelation;
-
+	
 	private SubtypeName subTypeName;
-
+	
 	private MyRelationList list;
-
+	
 	private JLabel subComponentTypesHelp;
-
+	
 	public SubComponentNameCheckBox(Relation initialRelation, final SubtypeName subTypeName,
 			JLabel subComponentTypesHelp) {
 		setOpaque(false);
@@ -45,7 +49,7 @@ public class SubComponentNameCheckBox extends JCheckBox {
 			}
 		});
 	}
-
+	
 	public void updateRelationSelection(Relation r) {
 		this.currentRelation = r;
 		setText(isSupportedText() + subTypeName.toString());
@@ -59,7 +63,7 @@ public class SubComponentNameCheckBox extends JCheckBox {
 		validate();
 		repaint();
 	}
-
+	
 	private String isSupportedText() {
 		boolean supported = false;
 		if (currentRelation == null)
@@ -130,9 +134,9 @@ public class SubComponentNameCheckBox extends JCheckBox {
 		else
 			return "<html><font color='gray'>";
 	}
-
+	
 	public void setCallBack(MyRelationList list) {
 		this.list = list;
 	}
-
+	
 }

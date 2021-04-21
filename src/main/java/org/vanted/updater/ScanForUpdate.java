@@ -56,18 +56,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  */
 public class ScanForUpdate implements PreferencesInterface// , Runnable
 {
-
+	
 	private static final String UPDATE_URL_KEY = "Update URL";
-
+	
 	private static final Logger logger = Logger.getLogger(ScanForUpdate.class);
-
+	
 	/**
 	 * 
 	 */
 	protected static final int TIME_REMINDER_DAYS = 7;
-
+	
 	private static final String[] arrDialogOptions = { "Download now", "Remind me in " + TIME_REMINDER_DAYS + " days" };
-
+	
 	/**
 	 * 
 	 */
@@ -81,26 +81,26 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 	private static final String MESSAGE = "message";
 	private static final String MESSAGE_START = "{{";
 	private static final String MESSAGE_END = "}}";
-
+	
 	private static String URL_UPDATE_BASESTRING = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/updates/";
 	private static String URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
 	private static String URL_UPDATEMD5_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-files-md5";
 	private static String URL_CHANGELOG_FILESTRING = URL_UPDATE_BASESTRING + "/" + "CHANGELOG";
-
+	
 	private static final String DESTPATHUPDATEDIR = ReleaseInfo.getAppFolderWithFinalSep() + "update/";
 	private static final String DESTUPDATEFILE = DESTPATHUPDATEDIR + "do-vanted-update";
 	private static final String VANTEDUPDATEOKFILE = DESTPATHUPDATEDIR + "vanted-update-ok";
 	private static final String CHANGELOGFILE = DESTPATHUPDATEDIR + "CHANGELOG";
-
+	
 	BackgroundTaskStatusProviderSupportingExternalCall backgroundTaskStatusProvider;
-
+	
 	/**
 	 * 
 	 */
 	public ScanForUpdate() {
 		backgroundTaskStatusProvider = new BackgroundTaskStatusProviderSupportingExternalCallImpl("", "");
 	}
-
+	
 	// public void run() {
 	//
 	// try {
@@ -119,13 +119,13 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 	 * process
 	 */
 	public static void issueScanAfterStartup() {
-
+		
 	}
-
+	
 	public static void issueScan(final boolean ignoreDate) {
-
+		
 		new Thread(new Runnable() {
-
+			
 			@Override
 			public void run() {
 				logger.debug("waiting for update scan until app has started");
@@ -144,7 +144,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-
+				
 				// only scan for new updates, if the date is right
 				if (!ignoreDate) {
 					Date currentDate = new Date();
@@ -153,10 +153,10 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 					if (!CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
 						return;
 				}
-
+				
 				final ScanForAddonUpdates scanForAddonUpdates = new ScanForAddonUpdates();
 				BackgroundTaskHelper.issueSimpleTask("Downloading Updates", "...", new Runnable() {
-
+					
 					@Override
 					public void run() {
 						try {
@@ -173,19 +173,19 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			}
 		}).start();
 	}
-
+	
 	protected void doScan(boolean ignoreDate) throws IOException {
-
+		
 		if (ReleaseInfo.isRunningAsWebstart()) {
 			logger.debug("Running as applet..no update check");
 			return;
 		}
-
+		
 		logger.debug("doing update scan at: " + URL_UPDATE_FILESTRING);
-
+		
 		Date currentDate = new Date();
 		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
-
+		
 		if (!ignoreDate) {
 			// if there is preference entry for reminder time.. check
 			if (!CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
@@ -193,19 +193,19 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 		}
 		String version = null;
 		boolean prepareUpdate = false;
-
+		
 		Set<String> listAddCoreJarRelativePath = new HashSet<String>();
 		Set<String> listRemoveCoreJarRelativePath = new HashSet<String>();
 		Set<String> listAddLibsJarRelativePaths = new HashSet<String>();
 		Set<String> listRemoveLibsJarRelativePaths = new HashSet<String>();
-
+		
 		// get a list of all paths to the jars in the classpath and their md5
 		List<Pair<String, String>> jarMd5Pairs = CalcClassPathJarsMd5.getJarMd5Pairs();
 		if (jarMd5Pairs == null) {
 			System.out.println("Update check omitted in developement");
 			return;
 		}
-
+		
 		Map<String, String> mapMd5FromUpdateLocation = getMd5FromUpdateLocation(URL_UPDATEMD5_FILESTRING);
 		// now sort them into core and lib jars
 		Map<String, String> mapJarMd5PairsInstalledCore = new HashMap<String, String>();
@@ -219,12 +219,12 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 				mapJarMd5PairsInstalledLibs.put(curPair.getFst().substring(curPair.getFst().lastIndexOf("/") + 1),
 						curPair.getSnd());
 			}
-
+			
 		}
-
+		
 		StringBuffer msgbuffer = new StringBuffer();
 		InputStream inputstreamURL = null;
-
+		
 		try {
 			HttpHttpsURL updateURL = new HttpHttpsURL(URL_UPDATE_FILESTRING);
 			inputstreamURL = updateURL.openStream();
@@ -234,9 +234,9 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			ErrorMsg.addErrorMessage("Update file not found at location: " + io.getMessage());
 			return;
 		}
-
+		
 		StringBuffer updFileBuffer = new StringBuffer();
-
+		
 		boolean readingMessageAttribute = false;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputstreamURL));
 		String line;
@@ -280,7 +280,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 				updFileBuffer.append("\n");
 				continue;
 			}
-
+			
 			if (line.toLowerCase().startsWith(VERSIONSTRING)) {
 				version = line.substring(VERSIONSTRING.length() + 1).trim();
 				updFileBuffer.append(line);
@@ -304,7 +304,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 				}
 				if (parseline.toLowerCase().startsWith(LIBSTRING)) {
 					parseline = parseline.substring(LIBSTRING.length() + 1).trim();
-
+					
 					String md5local = mapJarMd5PairsInstalledLibs.get(parseline);
 					String md5remote = mapMd5FromUpdateLocation.get(parseline);
 					if (md5local == null // new remote jar
@@ -324,11 +324,11 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 				updFileBuffer.append(line);
 				updFileBuffer.append("\n");
 			}
-
+			
 		}
-
+		
 		inputstreamURL.close();
-
+		
 		/*
 		 * add changed jars as well, that do not appear in the update file
 		 */
@@ -337,7 +337,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			String md5local = mapJarMd5PairsInstalledCore.get(curJar);
 			if (mapMd5FromUpdateLocation.get(curJar) != null && !md5remote.equals(md5local)) {
 				listAddCoreJarRelativePath.add(curJar);
-
+				
 			}
 		}
 		for (String curJar : mapJarMd5PairsInstalledLibs.keySet()) {
@@ -347,7 +347,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 				listAddLibsJarRelativePaths.add(curJar);
 			}
 		}
-
+		
 		/*
 		 * write the set of jars to add to the update file
 		 */
@@ -355,12 +355,12 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			updFileBuffer.append("+core:" + curCorJar);
 			updFileBuffer.append("\n");
 		}
-
+		
 		for (String curLibJar : listAddLibsJarRelativePaths) {
 			updFileBuffer.append("+lib:" + curLibJar);
 			updFileBuffer.append("\n");
 		}
-
+		
 		if (updateIsNewer(version) || !listAddCoreJarRelativePath.isEmpty() || !listAddLibsJarRelativePaths.isEmpty())
 			prepareUpdate = true;
 		if (Logger.getRootLogger().getLevel() == Level.DEBUG) {
@@ -383,7 +383,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			} else
 				logger.debug("We found update file, but version is not newer");
 		}
-
+		
 		// the update we found is not newer
 		if (!prepareUpdate) {
 			logger.debug("no update found");
@@ -391,7 +391,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			// we have written the file but it wasn't necessary.. delete it
 			return;
 		}
-
+		
 		String updateMessage = msgbuffer.toString();
 		if (updateMessage.toLowerCase().contains("<html>"))
 			updateMessage = updateMessage.substring(updateMessage.indexOf("<html>") + 6);
@@ -405,18 +405,18 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			msgUpdateType = "New VANTED version " + version;
 		else
 			msgUpdateType = "VANTED library updates";
-
+		
 		String msg = "<html>A new update for VANTED is available<br/><br/>" + "<strong>&rarr;</strong>&nbsp;&nbsp;"
 				+ msgUpdateType + "<br/><br/>You can download it now or be reminded later.<br/><br/>"
 				+ "<strong>The update will be installed during the next startup</strong>.";
 		int dialogAskUpdate = JOptionPane.showOptionDialog(MainFrame.getInstance(), msg, "Update available",
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, arrDialogOptions,
 				arrDialogOptions[0]);
-
+		
 		if (dialogAskUpdate == JOptionPane.CANCEL_OPTION || dialogAskUpdate == JOptionPane.DEFAULT_OPTION) {
 			return;
 		}
-
+		
 		// later - create entry in preferences for reminder date
 		if (dialogAskUpdate == 1) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -425,11 +425,11 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			PreferenceManager.storePreferences();
 			return;
 		}
-
+		
 		// download the changelog file from the server
 		// this will be presented in an update dialog after the startup next time
 		FileHelper.downloadFile(new URL(URL_CHANGELOG_FILESTRING), DESTPATHUPDATEDIR, "CHANGELOG");
-
+		
 		for (String corePath : listAddCoreJarRelativePath) {
 			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(corePath));
 			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + corePath), DESTPATHUPDATEDIR,
@@ -440,7 +440,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/libs/" + libPath), DESTPATHUPDATEDIR,
 					extractFileName(libPath));
 		}
-
+		
 		/*
 		 * create a copy file for the bootstrap program that will put the files to the
 		 * right place .. the next thing is for the bootstrap
@@ -449,15 +449,15 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 		BufferedWriter writer = new BufferedWriter(new FileWriter(updateFile));
 		writer.write(updFileBuffer.toString());
 		writer.close();
-
+		
 		// bootstrap will look for that file and does his work
 	}
-
+	
 	private static String extractFileName(String path) {
 		int idx = path.lastIndexOf("/");
 		return path.substring(idx + 1);
 	}
-
+	
 	/**
 	 * This will check, if the bootstrap was successfully updating vanted by
 	 * checking an OK file and then delete the update folder And by deleting the
@@ -467,16 +467,16 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 	private static void finishPreviousUpdate() throws IOException {
 		File checkfile = new File(VANTEDUPDATEOKFILE);
 		if (checkfile.exists()) {
-
+			
 			String header = "<html>" + "<h3>Application has been updated to " + DBEgravistoHelper.DBE_GRAVISTO_VERSION
 					+ "!</h3>";
 			String details = new String();
 			File updateFile = new File(DESTUPDATEFILE);
 			if (updateFile.exists()) {
-
+				
 				boolean readingMessageAttribute = false;
 				StringBuffer msgbuffer = new StringBuffer();
-
+				
 				BufferedReader breader = new BufferedReader(new FileReader(updateFile));
 				String line;
 				while ((line = breader.readLine()) != null) {
@@ -509,14 +509,14 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 					}
 				}
 				breader.close();
-
+				
 				if (msgbuffer.length() > 0) {
 					details += "Details:<br>";
 					details += msgbuffer.toString();
 				}
-
+				
 			}
-
+			
 			File changelogfile = new File(CHANGELOGFILE);
 			StringBuffer buf = new StringBuffer();
 			if (changelogfile.exists()) {
@@ -534,47 +534,47 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 				if (!changelog.startsWith("<html>")) {
 					changelog = "<html>" + changelog;
 				}
-
+				
 			}
 			String footer = "";
-
+			
 			UpdateMessageDialog.showUpdateMessageDialog(header, details, changelog, footer);
-
+			
 			FileHelper.deleteDirRecursively(new File(DESTPATHUPDATEDIR));
-
+			
 		}
 	}
-
+	
 	private static boolean updateIsNewer(String remoteVersion) {
-
+		
 		String[] strSplitMainversion = DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE.split("\\.");
-
+		
 		long[] longArrMainVersion = new long[strSplitMainversion.length];
-
+		
 		for (int i = 0; i < strSplitMainversion.length; i++) {
 			longArrMainVersion[i] = Long.parseLong(strSplitMainversion[i]);
 		}
 		String concatVersionWithPadding = String.format("%d%03d%03d", longArrMainVersion[0], longArrMainVersion[1],
 				longArrMainVersion[2]);
 		long longVersionWithPadding = Long.parseLong(concatVersionWithPadding);
-
+		
 		String[] strSplitRemoteVersion = remoteVersion.split("\\.");
 		long[] longRemoteVersion = new long[strSplitRemoteVersion.length];
-
+		
 		for (int i = 0; i < strSplitRemoteVersion.length; i++) {
 			longRemoteVersion[i] = Long.parseLong(strSplitRemoteVersion[i]);
 		}
 		String concatRemoteVersionWithPadding = String.format("%d%03d%03d", longRemoteVersion[0], longRemoteVersion[1],
 				longRemoteVersion[2]);
 		long longRemoteVersionWithPadding = Long.parseLong(concatRemoteVersionWithPadding);
-
+		
 		if (longVersionWithPadding < longRemoteVersionWithPadding)
 			return true;
 		else
 			return false;
-
+		
 	}
-
+	
 	/**
 	 * reads a file located at the given URL. This file contains lines with
 	 * filename-md5 pairs. Each line is the output of 'md5sum' tool: e.g.
@@ -586,7 +586,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 	 */
 	private static Map<String, String> getMd5FromUpdateLocation(String md5fileurl) throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
-
+		
 		HttpHttpsURL md5URL = new HttpHttpsURL(md5fileurl);
 		InputStream inputStream = md5URL.openStream();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -594,37 +594,37 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 		while ((line = reader.readLine()) != null) {
 			if (line.indexOf("*") > 0) {
 				String[] split = line.trim().split("\\*");
-
+				
 				map.put(split[1].substring(split[1].lastIndexOf("/") + 1), split[0].trim());
 			}
 		}
 		return map;
 	}
-
+	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
 		params.add(
 				new StringParameter(URL_UPDATE_BASESTRING, UPDATE_URL_KEY, "Location of the URL to look for updates"));
-
+		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		params.add(new StringParameter(simpleDateFormat.format(new Date()), REMINDER_DATE,
 				"Date for the next reminder (DD-MM-YYYY)"));
 		return params;
 	}
-
+	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		URL_UPDATE_BASESTRING = preferences.get(UPDATE_URL_KEY, URL_UPDATE_BASESTRING);
-
+		
 		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
 		URL_UPDATEMD5_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-files-md5";
 		URL_CHANGELOG_FILESTRING = URL_UPDATE_BASESTRING + "/" + "CHANGELOG";
 	}
-
+	
 	@Override
 	public String getPreferencesAlternativeName() {
 		return "Update";
 	}
-
+	
 }

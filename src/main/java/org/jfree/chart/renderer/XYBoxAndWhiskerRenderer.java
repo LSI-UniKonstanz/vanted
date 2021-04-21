@@ -95,29 +95,29 @@ import org.jfree.util.PublicCloneable;
  */
 public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The box width. */
 	private double boxWidth;
-
+	
 	/** The paint used to fill the box. */
 	private transient Paint paint;
-
+	
 	/** A flag that controls whether or not the box is filled. */
 	private boolean fillBox;
-
+	
 	/**
 	 * The paint used to draw various artifacts such as outliers, farout symbol,
 	 * average ellipse and median line.
 	 */
 	private transient Paint artifactPaint = Color.black;
-
+	
 	/**
 	 * Creates a new renderer for box and whisker charts.
 	 */
 	public XYBoxAndWhiskerRenderer() {
 		this(-1.0);
 	}
-
+	
 	/**
 	 * Creates a new renderer for box and whisker charts.
 	 * <P>
@@ -125,7 +125,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 	 * automatically.
 	 * 
 	 * @param boxWidth
-	 *            the box width.
+	 *           the box width.
 	 */
 	public XYBoxAndWhiskerRenderer(double boxWidth) {
 		super();
@@ -134,7 +134,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 		this.fillBox = true;
 		setToolTipGenerator(new BoxAndWhiskerXYToolTipGenerator());
 	}
-
+	
 	/**
 	 * Returns the width of each box.
 	 * 
@@ -143,7 +143,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 	public double getBoxWidth() {
 		return this.boxWidth;
 	}
-
+	
 	/**
 	 * Sets the box width.
 	 * <P>
@@ -151,7 +151,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 	 * width automatically based on the space available on the chart.
 	 * 
 	 * @param width
-	 *            The width.
+	 *           The width.
 	 */
 	public void setBoxWidth(double width) {
 		if (width != this.boxWidth) {
@@ -159,7 +159,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			notifyListeners(new RendererChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the paint used to fill boxes.
 	 * 
@@ -168,7 +168,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 	public Paint getPaint() {
 		return this.paint;
 	}
-
+	
 	/**
 	 * Sets the paint used to fill boxes.
 	 * <P>
@@ -176,13 +176,13 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 	 * "BoxAndWhiskerRenderer.paint" property has changed.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setPaint(Paint paint) {
 		this.paint = paint;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the flag that controls whether or not the box is filled.
 	 * 
@@ -191,19 +191,19 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 	public boolean getFillBox() {
 		return this.fillBox;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether or not the box is filled and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param flag
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setFillBox(boolean flag) {
 		this.fillBox = flag;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint used to paint the various artifacts such as outliers,
 	 * farout symbol, median line and the averages ellipse.
@@ -213,53 +213,53 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 	public Paint getArtifactPaint() {
 		return this.artifactPaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to paint the various artifacts such as outliers, farout
 	 * symbol, median line and the averages ellipse.
 	 * 
 	 * @param artifactPaint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setArtifactPaint(Paint artifactPaint) {
 		this.artifactPaint = artifactPaint;
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the plot is being drawn.
+	 *           the area within which the plot is being drawn.
 	 * @param info
-	 *            collects info about the drawing.
+	 *           collects info about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		setPaint(getItemPaint(series, item));
-
+		
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			drawHorizontalItem(g2, dataArea, info, plot, domainAxis, rangeAxis, dataset, series, item, crosshairState,
 					pass);
@@ -267,62 +267,62 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			drawVerticalItem(g2, dataArea, info, plot, domainAxis, rangeAxis, dataset, series, item, crosshairState,
 					pass);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area within which the plot is being drawn.
+	 *           the area within which the plot is being drawn.
 	 * @param info
-	 *            collects info about the drawing.
+	 *           collects info about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawHorizontalItem(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, XYPlot plot,
 			ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		// setup for collecting optional entity info...
 		EntityCollection entities = null;
 		if (info != null) {
 			entities = info.getOwner().getEntityCollection();
 		}
-
+		
 		BoxAndWhiskerXYDataset boxAndWhiskerData = (BoxAndWhiskerXYDataset) dataset;
-
+		
 		Number x = boxAndWhiskerData.getXValue(series, item);
 		Number yMax = boxAndWhiskerData.getMaxRegularValue(series, item);
 		Number yMin = boxAndWhiskerData.getMinRegularValue(series, item);
 		Number yQ1Median = boxAndWhiskerData.getQ1Value(series, item);
 		Number yQ3Median = boxAndWhiskerData.getQ3Value(series, item);
-
+		
 		double xx = domainAxis.valueToJava2D(x.doubleValue(), dataArea, plot.getDomainAxisEdge());
-
+		
 		RectangleEdge location = plot.getRangeAxisEdge();
 		double yyMax = rangeAxis.valueToJava2D(yMax.doubleValue(), dataArea, location);
 		double yyMin = rangeAxis.valueToJava2D(yMin.doubleValue(), dataArea, location);
-
+		
 		double yyQ1Median = rangeAxis.valueToJava2D(yQ1Median.doubleValue(), dataArea, location);
 		double yyQ3Median = rangeAxis.valueToJava2D(yQ3Median.doubleValue(), dataArea, location);
-
+		
 		double exactCandleWidth = getBoxWidth();
 		double thisCandleWidth = exactCandleWidth;
 		if (exactCandleWidth <= 0.0) {
@@ -336,21 +336,21 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 				thisCandleWidth = 3;
 			}
 		}
-
+		
 		Stroke s = getItemStroke(series, item);
-
+		
 		g2.setStroke(s);
-
+		
 		// draw the upper shadow
 		if ((yyMax > yyQ1Median) && (yyMax > yyQ3Median)) {
 			g2.draw(new Line2D.Double(yyMax, xx, Math.max(yyQ1Median, yyQ3Median), xx));
 		}
-
+		
 		// draw the lower shadow
 		if ((yyMin < yyQ1Median) && (yyMin < yyQ3Median)) {
 			g2.draw(new Line2D.Double(yyMin, xx, Math.min(yyQ1Median, yyQ3Median), xx));
 		}
-
+		
 		// draw the body
 		Shape box = null;
 		if (yyQ1Median < yyQ3Median) {
@@ -367,7 +367,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			}
 			g2.draw(box);
 		}
-
+		
 		// add an entity for the item...
 		if (entities != null) {
 			String tip = null;
@@ -382,47 +382,47 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			XYItemEntity entity = new XYItemEntity(box, dataset, series, item, tip, url);
 			entities.addEntity(entity);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area within which the plot is being drawn.
+	 *           the area within which the plot is being drawn.
 	 * @param info
-	 *            collects info about the drawing.
+	 *           collects info about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawVerticalItem(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, XYPlot plot,
 			ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		// setup for collecting optional entity info...
 		EntityCollection entities = null;
 		if (info != null) {
 			entities = info.getOwner().getEntityCollection();
 		}
-
+		
 		BoxAndWhiskerXYDataset boxAndWhiskerData = (BoxAndWhiskerXYDataset) dataset;
-
+		
 		Number x = boxAndWhiskerData.getXValue(series, item);
 		Number yMax = boxAndWhiskerData.getMaxRegularValue(series, item);
 		Number yMin = boxAndWhiskerData.getMinRegularValue(series, item);
@@ -431,9 +431,9 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 		Number yQ1Median = boxAndWhiskerData.getQ1Value(series, item);
 		Number yQ3Median = boxAndWhiskerData.getQ3Value(series, item);
 		List yOutliers = boxAndWhiskerData.getOutliers(series, item);
-
+		
 		double xx = domainAxis.valueToJava2D(x.doubleValue(), dataArea, plot.getDomainAxisEdge());
-
+		
 		RectangleEdge location = plot.getRangeAxisEdge();
 		double yyMax = rangeAxis.valueToJava2D(yMax.doubleValue(), dataArea, location);
 		double yyMin = rangeAxis.valueToJava2D(yMin.doubleValue(), dataArea, location);
@@ -445,7 +445,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 		double yyQ1Median = rangeAxis.valueToJava2D(yQ1Median.doubleValue(), dataArea, location);
 		double yyQ3Median = rangeAxis.valueToJava2D(yQ3Median.doubleValue(), dataArea, location);
 		double yyOutlier;
-
+		
 		double exactBoxWidth = getBoxWidth();
 		double width = exactBoxWidth;
 		double dataAreaX = dataArea.getMaxX() - dataArea.getMinX();
@@ -462,23 +462,23 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 				width = exactBoxWidth;
 			}
 		}
-
+		
 		Paint p = this.getPaint();
 		if (p != null) {
 			g2.setPaint(p);
 		}
 		Stroke s = getItemStroke(series, item);
-
+		
 		g2.setStroke(s);
-
+		
 		// draw the upper shadow
 		g2.draw(new Line2D.Double(xx, yyMax, xx, yyQ3Median));
 		g2.draw(new Line2D.Double(xx - width / 2, yyMax, xx + width / 2, yyMax));
-
+		
 		// draw the lower shadow
 		g2.draw(new Line2D.Double(xx, yyMin, xx, yyQ1Median));
 		g2.draw(new Line2D.Double(xx - width / 2, yyMin, xx + width / 2, yyMin));
-
+		
 		// draw the body
 		Shape box = null;
 		if (yyQ1Median > yyQ3Median) {
@@ -490,14 +490,14 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			g2.fill(box);
 		}
 		g2.draw(box);
-
+		
 		// draw median
 		g2.setPaint(getArtifactPaint());
 		g2.draw(new Line2D.Double(xx - width / 2, yyMedian, xx + width / 2, yyMedian));
-
+		
 		double aRadius = 0; // average radius
 		double oRadius = width / 3; // outlier radius
-
+		
 		// draw average - SPECIAL AIMS REQUIREMENT
 		if (yAverage != null) {
 			aRadius = width / 4;
@@ -506,15 +506,15 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			g2.fill(avgEllipse);
 			g2.draw(avgEllipse);
 		}
-
+		
 		List outliers = new ArrayList();
 		OutlierListCollection outlierListCollection = new OutlierListCollection();
-
+		
 		/*
 		 * From outlier array sort out which are outliers and put these into an
 		 * arraylist If there are any farouts, set the flag on the OutlierListCollection
 		 */
-
+		
 		for (int i = 0; i < yOutliers.size(); i++) {
 			double outlier = ((Number) yOutliers.get(i)).doubleValue();
 			if (outlier > boxAndWhiskerData.getMaxOutlier(series, item).doubleValue()) {
@@ -530,7 +530,7 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			}
 			Collections.sort(outliers);
 		}
-
+		
 		// Process outliers. Each outlier is either added to the appropriate outlier
 		// list
 		// or a new outlier list is made
@@ -538,35 +538,35 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			Outlier outlier = (Outlier) iterator.next();
 			outlierListCollection.add(outlier);
 		}
-
+		
 		// draw yOutliers
 		double maxAxisValue = rangeAxis.valueToJava2D(rangeAxis.getUpperBound(), dataArea, location) + aRadius;
 		double minAxisValue = rangeAxis.valueToJava2D(rangeAxis.getLowerBound(), dataArea, location) - aRadius;
-
+		
 		// g2.setPaint(p);
-
+		
 		// draw outliers
 		for (Iterator iterator = outlierListCollection.iterator(); iterator.hasNext();) {
 			OutlierList list = (OutlierList) iterator.next();
 			Outlier outlier = list.getAveragedOutlier();
 			Point2D point = outlier.getPoint();
-
+			
 			if (list.isMultiple()) {
 				drawMultipleEllipse(point, width, oRadius, g2);
 			} else {
 				drawEllipse(point, oRadius, g2);
 			}
 		}
-
+		
 		// draw farout
 		if (outlierListCollection.isHighFarOut()) {
 			drawHighFarOut(aRadius, g2, xx, maxAxisValue);
 		}
-
+		
 		if (outlierListCollection.isLowFarOut()) {
 			drawLowFarOut(aRadius, g2, xx, minAxisValue);
 		}
-
+		
 		// add an entity for the item...
 		if (entities != null) {
 			String tip = null;
@@ -581,57 +581,57 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			XYItemEntity entity = new XYItemEntity(box, dataset, series, item, tip, url);
 			entities.addEntity(entity);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws an ellipse to represent an outlier.
 	 * 
 	 * @param point
-	 *            the location.
+	 *           the location.
 	 * @param oRadius
-	 *            the radius.
+	 *           the radius.
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 */
 	protected void drawEllipse(Point2D point, double oRadius, Graphics2D g2) {
 		Ellipse2D.Double dot = new Ellipse2D.Double(point.getX() + oRadius / 2, point.getY(), oRadius, oRadius);
 		g2.draw(dot);
 	}
-
+	
 	/**
 	 * Draws two ellipses to represent overlapping outliers.
 	 * 
 	 * @param point
-	 *            the location.
+	 *           the location.
 	 * @param boxWidth
-	 *            the box width.
+	 *           the box width.
 	 * @param oRadius
-	 *            the radius.
+	 *           the radius.
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 */
 	protected void drawMultipleEllipse(Point2D point, double boxWidth, double oRadius, Graphics2D g2) {
-
+		
 		Ellipse2D.Double dot1 = new Ellipse2D.Double(point.getX() - (boxWidth / 2) + oRadius, point.getY(), oRadius,
 				oRadius);
 		Ellipse2D.Double dot2 = new Ellipse2D.Double(point.getX() + (boxWidth / 2), point.getY(), oRadius, oRadius);
 		g2.draw(dot1);
 		g2.draw(dot2);
-
+		
 	}
-
+	
 	/**
 	 * Draws a triangle to indicate the presence of far out values.
 	 * 
 	 * @param aRadius
-	 *            the radius.
+	 *           the radius.
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param xx
-	 *            the x value.
+	 *           the x value.
 	 * @param m
-	 *            the max y value.
+	 *           the max y value.
 	 */
 	protected void drawHighFarOut(double aRadius, Graphics2D g2, double xx, double m) {
 		double side = aRadius * 2;
@@ -639,18 +639,18 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 		g2.draw(new Line2D.Double(xx - side, m + side, xx, m));
 		g2.draw(new Line2D.Double(xx + side, m + side, xx, m));
 	}
-
+	
 	/**
 	 * Draws a triangle to indicate the presence of far out values.
 	 * 
 	 * @param aRadius
-	 *            the radius.
+	 *           the radius.
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param xx
-	 *            the x value.
+	 *           the x value.
 	 * @param m
-	 *            the min y value.
+	 *           the min y value.
 	 */
 	protected void drawLowFarOut(double aRadius, Graphics2D g2, double xx, double m) {
 		double side = aRadius * 2;
@@ -658,24 +658,24 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 		g2.draw(new Line2D.Double(xx - side, m - side, xx, m));
 		g2.draw(new Line2D.Double(xx + side, m - side, xx, m));
 	}
-
+	
 	/**
 	 * Tests this renderer for equality with another object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof XYBoxAndWhiskerRenderer) {
 			XYBoxAndWhiskerRenderer renderer = (XYBoxAndWhiskerRenderer) obj;
 			boolean result = super.equals(obj);
@@ -685,54 +685,54 @@ public class XYBoxAndWhiskerRenderer extends AbstractXYItemRenderer
 			result = result && (this.fillBox == renderer.fillBox);
 			return result;
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
-
+		
 		stream.defaultWriteObject();
 		SerialUtilities.writePaint(this.paint, stream);
 		SerialUtilities.writePaint(this.artifactPaint, stream);
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-
+		
 		stream.defaultReadObject();
 		this.paint = SerialUtilities.readPaint(stream);
 		this.artifactPaint = SerialUtilities.readPaint(stream);
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

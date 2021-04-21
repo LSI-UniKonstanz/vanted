@@ -25,27 +25,27 @@ import org.graffiti.plugin.Displayable;
  */
 public abstract class AbstractDialogableEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-
+	
 	/** The button for opening the dialog. */
 	protected JButton button;
-
+	
 	/** The dialog for specifying the value. */
 	protected JDialog dialog;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>AbstractDialogableEditComponent</code>.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	protected AbstractDialogableEditComponent(Displayable disp) {
 		super(disp);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the button of the <code>AbstractDialogableEditComponent</code>.
 	 * 
@@ -54,7 +54,7 @@ public abstract class AbstractDialogableEditComponent extends AbstractValueEditC
 	public JButton getButton() {
 		return this.button;
 	}
-
+	
 	/**
 	 * Returns the dialog of this <code>AbstractDialogableEditComponent</code>.
 	 * 

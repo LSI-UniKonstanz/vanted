@@ -18,7 +18,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
  * @author ricardo
  */
 public class UtilityClassSelectorFromGraph extends HelperClass {
-
+	
 	public static void chooseClassToPutAttributesToModell(GraphElement elem, Graph g, Model model) {
 		// if try fails it was a normal edge
 		if (AttributeHelper.hasAttribute(elem, Messages.getString("UtilitySuperClassToGraph.126"))) //$NON-NLS-1$
@@ -97,7 +97,7 @@ public class UtilityClassSelectorFromGraph extends HelperClass {
 				} else {
 					System.out.println("Object wasn't found while reading graph. It was a: " + NodeType); //$NON-NLS-1$
 				}
-
+				
 			} catch (IllegalArgumentException e) {
 				ErrorMsg.addErrorMessage(e);
 			} catch (IllegalAccessException e) {
@@ -106,7 +106,7 @@ public class UtilityClassSelectorFromGraph extends HelperClass {
 				ErrorMsg.addErrorMessage(e);
 			}
 		}
-
+		
 	}
-
+	
 }

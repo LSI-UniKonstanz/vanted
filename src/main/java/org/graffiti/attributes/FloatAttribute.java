@@ -18,64 +18,64 @@ import org.graffiti.event.AttributeEvent;
  */
 public class FloatAttribute extends AbstractAttribute {
 	// ~ Instance fields ========================================================
-
+	
 	/** The value of this attribute */
 	private float value;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new instance of a <code>FloatAttribute</code>.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 */
 	public FloatAttribute(String id) {
 		super(id);
 	}
-
+	
 	/**
 	 * Constructs a new instance of a <code>FloatAttribute</code> with the given
 	 * value.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param value
-	 *            the value of the attribute.
+	 *           the value of the attribute.
 	 */
 	public FloatAttribute(String id, float value) {
 		super(id);
 		this.value = value;
 	}
-
+	
 	/**
 	 * Constructs a new instance of a <code>FloatAttribute</code> with the given
 	 * value.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param value
-	 *            the value of the attribute.
+	 *           the value of the attribute.
 	 */
 	public FloatAttribute(String id, Float value) {
 		super(id);
 		this.value = value.floatValue();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see org.graffiti.attributes.Attribute#setDefaultValue()
 	 */
 	public void setDefaultValue() {
 		value = 0f;
 	}
-
+	
 	/**
 	 * Set the value of this Object.
 	 * 
 	 * @param value
-	 *            the new value for this object.
+	 *           the new value for this object.
 	 */
 	public void setFloat(float value) {
 		AttributeEvent ae = new AttributeEvent(this);
@@ -83,7 +83,7 @@ public class FloatAttribute extends AbstractAttribute {
 		this.value = value;
 		callPostAttributeChanged(ae);
 	}
-
+	
 	/**
 	 * Returns the value of this object.
 	 * 
@@ -92,7 +92,7 @@ public class FloatAttribute extends AbstractAttribute {
 	public float getFloat() {
 		return value;
 	}
-
+	
 	/**
 	 * Returns the value of the attribute wrapped in an <code>Float</code> object.
 	 * 
@@ -101,7 +101,7 @@ public class FloatAttribute extends AbstractAttribute {
 	public Object getValue() {
 		return Float.valueOf(value);
 	}
-
+	
 	/**
 	 * Returns a deep copy of this instance.
 	 * 
@@ -110,21 +110,21 @@ public class FloatAttribute extends AbstractAttribute {
 	public Object copy() {
 		return new FloatAttribute(this.getId(), this.value);
 	}
-
+	
 	/**
 	 * Sets the value of the attribute. The <code>ListenerManager</code> is informed
 	 * by the method <code>setValue()</code>.
 	 * 
 	 * @param o
-	 *            the new value of the attribute.
+	 *           the new value of the attribute.
 	 * @exception IllegalArgumentException
-	 *                if the parameter has not the appropriate class for this
-	 *                attribute.
+	 *               if the parameter has not the appropriate class for this
+	 *               attribute.
 	 */
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
 		assert o != null;
-
+		
 		try {
 			if (o instanceof Double)
 				value = ((Double) o).floatValue();
@@ -134,7 +134,7 @@ public class FloatAttribute extends AbstractAttribute {
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.Displayable#toXMLString()
 	 */

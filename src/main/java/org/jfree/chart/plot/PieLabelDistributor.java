@@ -38,44 +38,44 @@ import java.util.List;
  * they do not overlap.
  */
 public class PieLabelDistributor {
-
+	
 	/** The label records. */
 	private List labels;
-
+	
 	/** The minimum gap. */
 	private double minGap = 4.0;
-
+	
 	/**
 	 * Creates a new distributor.
 	 * 
 	 * @param labelCount
-	 *            the number of labels.
+	 *           the number of labels.
 	 */
 	public PieLabelDistributor(int labelCount) {
 		this.labels = new ArrayList(labelCount);
 	}
-
+	
 	/**
 	 * Returns a label record from the list.
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @return the label record.
 	 */
 	public PieLabelRecord getPieLabelRecord(int index) {
 		return (PieLabelRecord) this.labels.get(index);
 	}
-
+	
 	/**
 	 * Adds a label record.
 	 * 
 	 * @param record
-	 *            the label record.
+	 *           the label record.
 	 */
 	public void addPieLabelRecord(PieLabelRecord record) {
 		this.labels.add(record);
 	}
-
+	
 	/**
 	 * Returns the number of items in the list.
 	 * 
@@ -84,36 +84,36 @@ public class PieLabelDistributor {
 	public int getItemCount() {
 		return this.labels.size();
 	}
-
+	
 	/**
 	 * Distributes the labels.
 	 * 
 	 * @param minY
-	 *            the minimum y-coordinate in Java2D-space.
+	 *           the minimum y-coordinate in Java2D-space.
 	 * @param height
-	 *            the height.
+	 *           the height.
 	 */
 	public void distributeLabels(double minY, double height) {
 		sort();
 		if (isOverlap()) {
 			adjustInwards();
 		}
-
+		
 		// if still overlapping, do something else...
 		if (isOverlap()) {
 			adjustDownwards(minY, height);
 		}
-
+		
 		if (isOverlap()) {
 			adjustUpwards(minY, height);
 		}
-
+		
 		if (isOverlap()) {
 			spreadEvenly(minY, height);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if there are overlapping labels in the list, and
 	 * <code>false</code> otherwise.
@@ -131,7 +131,7 @@ public class PieLabelDistributor {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Adjusts the y-coordinate for the labels in towards the center in an attempt
 	 * to fix overlapping.
@@ -158,15 +158,15 @@ public class PieLabelDistributor {
 			upper--;
 		}
 	}
-
+	
 	/**
 	 * Any labels that are overlapping are moved down in an attempt to eliminate the
 	 * overlaps.
 	 * 
 	 * @param minY
-	 *            the minimum y value (in Java2D coordinate space).
+	 *           the minimum y value (in Java2D coordinate space).
 	 * @param height
-	 *            the height available for all labels.
+	 *           the height available for all labels.
 	 */
 	protected void adjustDownwards(double minY, double height) {
 		for (int i = 0; i < this.labels.size() - 1; i++) {
@@ -178,15 +178,15 @@ public class PieLabelDistributor {
 			}
 		}
 	}
-
+	
 	/**
 	 * Any labels that are overlapping are moved up in an attempt to eliminate the
 	 * overlaps.
 	 * 
 	 * @param minY
-	 *            the minimum y value (in Java2D coordinate space).
+	 *           the minimum y value (in Java2D coordinate space).
 	 * @param height
-	 *            the height available for all labels.
+	 *           the height available for all labels.
 	 */
 	protected void adjustUpwards(double minY, double height) {
 		for (int i = this.labels.size() - 1; i > 0; i--) {
@@ -198,15 +198,15 @@ public class PieLabelDistributor {
 			}
 		}
 	}
-
+	
 	/**
 	 * Labels are spaced evenly in the available space in an attempt to eliminate
 	 * the overlaps.
 	 * 
 	 * @param minY
-	 *            the minimum y value (in Java2D coordinate space).
+	 *           the minimum y value (in Java2D coordinate space).
 	 * @param height
-	 *            the height available for all labels.
+	 *           the height available for all labels.
 	 */
 	protected void spreadEvenly(double minY, double height) {
 		double y = minY;
@@ -225,14 +225,14 @@ public class PieLabelDistributor {
 			y = y + record.getLabelHeight() / 2.0 + gap;
 		}
 	}
-
+	
 	/**
 	 * Sorts the label records into ascending order by y-value.
 	 */
 	public void sort() {
 		Collections.sort(this.labels);
 	}
-
+	
 	/**
 	 * Returns a string containing a description of the object for debugging
 	 * purposes.
@@ -246,5 +246,5 @@ public class PieLabelDistributor {
 		}
 		return result;
 	}
-
+	
 }

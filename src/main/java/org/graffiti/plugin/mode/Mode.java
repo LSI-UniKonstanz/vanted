@@ -19,7 +19,7 @@ import org.graffiti.plugin.tool.Tool;
  */
 public interface Mode {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns an array containing the <code>GraphConstraint</code>s of the current
 	 * <code>Mode</code>.
@@ -28,7 +28,7 @@ public interface Mode {
 	 *         <code>Mode</code>.
 	 */
 	public GraphConstraint[] getConstraints();
-
+	
 	/**
 	 * Returns the name of this mode. Tools can be added to a mode by adding their
 	 * ToolButtons to the toolbar with the same name as this mode.
@@ -36,23 +36,23 @@ public interface Mode {
 	 * @return the name of this mode.
 	 */
 	public String getId();
-
+	
 	/**
 	 * Returns an array containing all the tools belonging <code>Mode</code>.
 	 * 
 	 * @return an array containing all the tools belonging <code>Mode</code>.
 	 */
 	public List<Tool> getTools();
-
+	
 	// do they really make sense in our definition of mode?
 	// public void addTool(Tool t);
 	// public void removeTool();
-
+	
 	/**
 	 * Adds the given tool to the mode.
 	 * 
 	 * @param t
-	 *            the tool to add.
+	 *           the tool to add.
 	 */
 	public void addTool(Tool t);
 }

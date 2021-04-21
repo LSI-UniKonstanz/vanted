@@ -35,7 +35,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  */
 public class GeneExpressionFileReader extends ExperimentDataFileReader {
 	Element measurementCountElement;
-
+	
 	@Override
 	public ExperimentInterface getXMLDataFromExcelTable(File excelFile, TableData myData,
 			BackgroundTaskStatusProviderSupportingExternalCall statusProvider) {
@@ -56,22 +56,22 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 		checkHeaderInfo(anno, myData, "score", "score");
 		checkHeaderInfo(anno, myData, "funcat", "*funcat*");
 		checkHeaderInfo(anno, myData, "secure", "*secure*");
-
+		
 		int data_start_col = getFirstDataColumn(myData);
-
+		
 		status1 = "Process File-Content...";
 		status2 = "Add Experiment-Header";
 		ExperimentHeader header = getExperimentHeaderElement(excelFile, myData, /* experimentData */null);
 		status1 = "Process File-Content...";
 		status2 = "";
-
+		
 		ExperimentInterface e = getExperimentMeasurementsElement(excelFile, myData, new ExperimentData(), ec_number,
 				data_start_col, anno);
-
+		
 		e.setHeader(header);
-
+		
 		return e;
-
+		
 		/*
 		 * Element root = new Element("experimentdata"); Document doc = new
 		 * Document(root); ExperimentData experimentData = new ExperimentData();
@@ -83,7 +83,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 		 * MappingData.getMappingsFromXMLdocument(doc);
 		 */
 	}
-
+	
 	/**
 	 * Add a Annotation object to the anno - list, if the excelColumnHeader can be
 	 * found in the data. If the column can not be found in the excel data, the
@@ -103,22 +103,22 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 			// \""+excelColumnHeader+"\".");
 		}
 	}
-
+	
 	protected ExperimentInterface getExperimentMeasurementsElement(File excelFile, TableData myData,
 			ExperimentData experimentData, int ec_number_col, int data_start_col, ArrayList<Annotation> anno) {
-
+		
 		if (checkStopp())
 			return null;
-
+		
 		ExperimentInterface e = new Experiment();
-
+		
 		int sampleIDcount = 0;
 		int dataCount = 0;
 		int skipCount = 0;
-
+		
 		// INIT LIST OF ALL "LINES" (emb, per, ...)
 		experimentData.searchIndividualPlantOrLineNames(myData, data_start_col, 1);
-
+		
 		// ********** EACH ROW BECOMES ONE SUBSTANCE ***********
 		status1 = "Check substance definition column (" + ec_number_col + ")...";
 		status2 = "";
@@ -151,24 +151,24 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 				}
 			});
 		} else {
-
+			
 			for (int row = 2; row <= myData.getMaximumRow(); row++) {
 				status1 = "Processing row " + (row - 1) + "/" + (myData.getMaximumRow() - 1) + ", " + skipCount
 						+ " invalid rows skipped";
 				status2 = "(" + dataCount + " measurement values)";
 				if (checkStopp())
 					return null;
-
+				
 				if (myData.getUnicodeStringCellData(ec_number_col, row) == null) {
 					skipCount++;
 					ErrorMsg.addErrorMessage("Data row with missing or invalid identifier (row " + row + ", column "
 							+ ec_number_col + ")");
 					continue;
 				}
-
+				
 				SubstanceInterface substanceEntry = Experiment.getTypeManager().getNewSubstance();
 				e.add(substanceEntry);
-
+				
 				substanceEntry.setRowId(row + "");
 				// ********** ADD SUBSTANCE ATTRIBUTES **************
 				// substance name set to EC number
@@ -182,7 +182,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 					substanceEntry.setAttribute(
 							new Attribute(ann.getTitle(), myData.getCellData(ann.getColumn(), row, "").toString()));
 				}
-
+				
 				// ************** ADD LINE ELEMENTS **************
 				int lineID = 0;
 				for (Iterator<String> plantIt = experimentData.getPlantOrLineIterator(myData, 1, row); plantIt
@@ -191,7 +191,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 					lineID++;
 					ConditionInterface lineEntry = Experiment.getTypeManager().getNewCondition(substanceEntry);
 					substanceEntry.add(lineEntry);
-
+					
 					// ********** ADD LINE ATTRIBUTES ***********
 					// ID
 					lineEntry.setRowId(Integer.valueOf(lineID));
@@ -200,13 +200,13 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 					// genotype, treatment
 					lineEntry.setGenotype("");
 					lineEntry.setTreatment("");
-
+					
 					// ********* ADD SAMPLES (TIME VALUES FOR ONE LINE like emb, per,
 					// ...) **************
 					for (Iterator<TimeAndPlantName> sampleIt = experimentData.getSampleTimeIterator(myData, plantOrLine,
 							data_start_col, 1, row); sampleIt.hasNext();) {
 						TimeAndPlantName timeAndPlantName = sampleIt.next();
-
+						
 						// ADD SAMPLE ENTRY
 						SampleInterface sampleEntry = Experiment.getTypeManager().getNewSample(lineEntry);
 						lineEntry.add(sampleEntry);
@@ -217,7 +217,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 							sampleEntry.setTimeUnit(optTimeUnit);
 						else
 							sampleEntry.setTimeUnit("day");
-
+						
 						ArrayList<DataColumnHeader> replicates = experimentData.getReplicateColumns(myData,
 								timeAndPlantName, data_start_col, 1, row);
 						ArrayList<ReplicateDouble> measurements = experimentData.getMeasurementValues(myData,
@@ -236,7 +236,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 						averageEntry.setStddev(Double.valueOf(ExperimentData.getStddev(measurements)));
 						averageEntry.setValue(Double.valueOf(ExperimentData.getAverage(measurements)));
 						sampleEntry.setSampleAverage(averageEntry);
-
+						
 						for (ReplicateDouble rd : measurements) {
 							Double value = rd.doubleValue();
 							// ADD DATA ENTRY
@@ -265,7 +265,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 		progressDouble = Double.valueOf(100d);
 		return e;
 	}
-
+	
 	/*
 	 * <experimentdata> <cachetime>Tue Nov 02 11:15:48 CET 2004</cachetime>
 	 * <experiment experimentid="246">
@@ -284,12 +284,12 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 	 * unit="&#00181;mol/g">125.640731640212</data> <data
 	 * unit="&#00181;mol/g">125.598092379386</data> ...
 	 */
-
+	
 	private ExperimentHeader getExperimentHeaderElement(File excelFile, TableData myData,
 			ExperimentData experimentData) {
-
+		
 		ExperimentHeader res = new ExperimentHeader();
-
+		
 		if (optExperimentName != null && optExperimentName.length() > 0)
 			res.setExperimentname(optExperimentName);
 		else
@@ -307,5 +307,5 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 		res.setSizekb(0);
 		return res;
 	}
-
+	
 }

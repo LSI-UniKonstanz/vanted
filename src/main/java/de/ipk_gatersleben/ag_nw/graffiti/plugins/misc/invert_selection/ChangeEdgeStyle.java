@@ -10,29 +10,29 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
 public class ChangeEdgeStyle extends AbstractEditorAlgorithm {
-
+	
 	public void execute() {
 		getMainFrame().showAndHighlightSidePanelTab("Edge", false);
 	}
-
+	
 	public String getName() {
 		return "Change Edge Attributes";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Edges";
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return "Network.Edges";
 	}
-
+	
 	public boolean activeForView(View v) {
 		return v instanceof GraffitiView;
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.UI));

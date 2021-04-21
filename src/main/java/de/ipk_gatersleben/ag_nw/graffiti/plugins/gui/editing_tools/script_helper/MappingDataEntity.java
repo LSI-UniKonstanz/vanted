@@ -4,17 +4,17 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 public interface MappingDataEntity extends AttributeValuePairSupport {
-
+	
 	static final String ANNO_DIV = "|";
-
+	
 	public boolean setData(Element xmlElement);
-
+	
 	public void setAttribute(Attribute attr);
-
+	
 	public void setDataOfChildElement(Element childElement);
-
+	
 	public void getXMLAttributeString(StringBuilder r);
-
+	
 	public void getStringOfChildren(StringBuilder r);
-
+	
 }

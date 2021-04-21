@@ -17,8 +17,12 @@ import org.vanted.scaling.Toolbox;
 import org.vanted.scaling.scalers.component.JTextComponentScaler;
 
 public class MyScrollLabel extends JPanel {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3333043566410344123L;
+	
 	public MyScrollLabel(String msg) {
 		this.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(500, 300));
@@ -31,7 +35,7 @@ public class MyScrollLabel extends JPanel {
 		add(jsp, BorderLayout.CENTER);
 		validate();
 	}
-
+	
 	public MyScrollLabel(String msg, double width, double height) {
 		this.setLayout(TableLayout.getLayout(width, height));
 		final JScrollPane jsp = new JScrollPane(this.getJEditorPane(msg));
@@ -43,13 +47,13 @@ public class MyScrollLabel extends JPanel {
 		add(jsp, "0,0");
 		validate();
 	}
-
+	
 	private JEditorPane getJEditorPane(String msg) {
 		JEditorPane jep = new JEditorPane("text/html", msg);
 		jep.setEditable(false);
 		JTextComponentScaler.alignJEP(jep);
 		Toolbox.scaleJEditorPaneUnorderedLists(jep, Toolbox.UL_TYPE_DISC, null);
-
+		
 		return jep;
 	}
 }

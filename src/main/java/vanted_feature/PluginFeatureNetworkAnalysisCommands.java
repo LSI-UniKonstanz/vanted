@@ -21,20 +21,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.RemoveSel
  * @author Christian Klukas
  */
 public class PluginFeatureNetworkAnalysisCommands extends IPK_PluginAdapter {
-
+	
 	public PluginFeatureNetworkAnalysisCommands() {
-
+		
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
 			if (new SettingsHelperDefaultIsTrue().isEnabled("Network analysis commands"))
 				ReleaseInfo.enableFeature(FeatureSet.TAB_PATTERNSEARCH);
-
+			
 			this.algorithms = new Algorithm[] { new ShortestPathSelectionAlgorithm(),
 					// new WeightedShortestPathSelectionAlgorithm(),
 					new AllPathsSelectionAlgorithm(), new CircleSearchAndLayoutAlgorithm(),
 					new RemoveSelectedNodesPreserveEdgesAlgorithm() };
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

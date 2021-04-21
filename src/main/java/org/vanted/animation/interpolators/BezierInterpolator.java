@@ -80,12 +80,12 @@ public class BezierInterpolator extends Interpolator {
 					129024480L, 225792840L, 347373600L, 471435600L, 565722720L, 601080390L, 565722720L, 471435600L,
 					347373600L, 225792840L, 129024480L, 64512240L, 28048800L, 10518300L, 3365856L, 906192L, 201376L,
 					35960L, 4960L, 496L, 32L, 1L });
-
+	
 	/**
 	 * Gets the polynomial constants for an expanded polynomial equation.
 	 * 
 	 * @param polynomialOrder
-	 *            Specifies the order of constants that you are trying to retrieve.
+	 *           Specifies the order of constants that you are trying to retrieve.
 	 */
 	private static Long[] getPolynomialConstants(int polynomialOrder) {
 		assert polynomialOrder >= 1;
@@ -101,17 +101,17 @@ public class BezierInterpolator extends Interpolator {
 		}
 		return polynomialConstantsList.get(polynomialOrder - 1);
 	}
-
+	
 	@Override
 	protected int getPointsBefore() {
 		return 0;
 	}
-
+	
 	@Override
 	protected int getPointsAfter() {
 		return 1;
 	}
-
+	
 	@Override
 	public <V, T extends InterpolatableTimePoint<V>> V interpolate(double time, double duration, int previousIndex,
 			List<T> dataPoints, Looper looper) {
@@ -122,7 +122,7 @@ public class BezierInterpolator extends Interpolator {
 		// System.out.println(t);
 		return (V) interpolate(t, dataPoints);
 	}
-
+	
 	@Override
 	protected double interpolate(double t, double... y) {
 		double value = 0;
@@ -135,12 +135,12 @@ public class BezierInterpolator extends Interpolator {
 		for (int i = 0; i < y.length; i++) {
 			tMinusCalculations[y.length - (1 + i)] = tMinusCalculation;
 			tCalculations[i] = tCalculation;
-
+			
 			tMinusCalculation *= 1 - t;
 			tCalculation *= t;
 		}
 		for (int i = 0; i < y.length; i++) {
-
+			
 			value += polynomialConstants[i] * tCalculations[i] * tMinusCalculations[i] * y[i];
 		}
 		// System.out.println(output + "\n");

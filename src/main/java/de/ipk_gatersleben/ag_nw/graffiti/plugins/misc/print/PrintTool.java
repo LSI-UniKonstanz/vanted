@@ -17,7 +17,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.view.View;
 
 public class PrintTool {
-
+	
 	/**
 	 * Prints a <code>View</code>.
 	 * <p>
@@ -27,20 +27,20 @@ public class PrintTool {
 	 * </p>
 	 * 
 	 * @param view
-	 *            - the view to print
+	 *           - the view to print
 	 */
 	public static void print(View view) {
 		if (view == null)
 			return;
-
+		
 		// check whether the view supports printing by itself or not
 		Printable printObject = (view instanceof Printable) ? (Printable) view : null;
-
+		
 		if (view == null) {
 			MainFrame.showMessageDialog("Can not print this kind of view.", "Error");
 			return;
 		}
-
+		
 		PrinterJob printJob = PrinterJob.getPrinterJob();
 		printJob.setJobName(
 				ReleaseInfo.getRunningReleaseStatus().toString() + " print " + view.getGraph().getName(true));
@@ -52,11 +52,11 @@ public class PrintTool {
 				MainFrame.showMessageDialog(e.getMessage(), "Error");
 			}
 	}
-
+	
 	public static void print(Collection<View> views) {
 		if (views == null || views.size() <= 0)
 			return;
-
+		
 		PrinterJob printJob = PrinterJob.getPrinterJob();
 		if (printJob.printDialog()) {
 			try {

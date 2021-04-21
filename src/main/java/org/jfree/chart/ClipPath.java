@@ -53,44 +53,44 @@ import org.jfree.ui.RectangleEdge;
  * @author dmo
  */
 public class ClipPath implements Cloneable {
-
+	
 	/** The x values. */
 	private double[] xValue = null;
-
+	
 	/** The y values. */
 	private double[] yValue = null;
-
+	
 	/**
 	 * Controls whether drawing will be clipped ( false would still allow the
 	 * drawing or filling of path
 	 */
 	private boolean clip = true;
-
+	
 	/** Controls whether the path is drawn as an outline. */
 	private boolean drawPath = false;
-
+	
 	/** Controls whether the path is filled. */
 	private boolean fillPath = false;
-
+	
 	/** The fill paint. */
 	private Paint fillPaint = null;
-
+	
 	/** The draw paint. */
 	private Paint drawPaint = null;
-
+	
 	/** The draw stroke. */
 	private Stroke drawStroke = null;
-
+	
 	/** The composite. */
 	private Composite composite = null;
-
+	
 	/**
 	 * Constructor for ClipPath.
 	 */
 	public ClipPath() {
 		super();
 	}
-
+	
 	/**
 	 * Constructor for ClipPath. Default values are assumed for the fillPath and
 	 * drawPath options as false and true respectively. The fillPaint is set to
@@ -98,101 +98,101 @@ public class ClipPath implements Cloneable {
 	 * composite is AlphaComposite.Src.
 	 * 
 	 * @param xValue
-	 *            x coordinates of curved to be created
+	 *           x coordinates of curved to be created
 	 * @param yValue
-	 *            y coordinates of curved to be created
+	 *           y coordinates of curved to be created
 	 */
 	public ClipPath(double[] xValue, double[] yValue) {
 		this(xValue, yValue, true, false, true);
 	}
-
+	
 	/**
 	 * Constructor for ClipPath. The fillPaint is set to Color.GRAY, the drawColor
 	 * is Color.BLUE, the stroke is BasicStroke(1) and the composite is
 	 * AlphaComposite.Src.
 	 * 
 	 * @param xValue
-	 *            x coordinates of curved to be created
+	 *           x coordinates of curved to be created
 	 * @param yValue
-	 *            y coordinates of curved to be created
+	 *           y coordinates of curved to be created
 	 * @param clip
-	 *            clip?
+	 *           clip?
 	 * @param fillPath
-	 *            whether the path is to filled
+	 *           whether the path is to filled
 	 * @param drawPath
-	 *            whether the path is to drawn as an outline
+	 *           whether the path is to drawn as an outline
 	 */
 	public ClipPath(double[] xValue, double[] yValue, boolean clip, boolean fillPath, boolean drawPath) {
 		this.xValue = xValue;
 		this.yValue = yValue;
-
+		
 		this.clip = clip;
 		this.fillPath = fillPath;
 		this.drawPath = drawPath;
-
+		
 		this.fillPaint = java.awt.Color.gray;
 		this.drawPaint = java.awt.Color.blue;
 		this.drawStroke = new BasicStroke(1);
 		this.composite = java.awt.AlphaComposite.Src;
 	}
-
+	
 	/**
 	 * Constructor for ClipPath.
 	 * 
 	 * @param xValue
-	 *            x coordinates of curved to be created
+	 *           x coordinates of curved to be created
 	 * @param yValue
-	 *            y coordinates of curved to be created
+	 *           y coordinates of curved to be created
 	 * @param fillPath
-	 *            whether the path is to filled
+	 *           whether the path is to filled
 	 * @param drawPath
-	 *            whether the path is to drawn as an outline
+	 *           whether the path is to drawn as an outline
 	 * @param fillPaint
-	 *            the fill paint
+	 *           the fill paint
 	 * @param drawPaint
-	 *            the outline stroke color
+	 *           the outline stroke color
 	 * @param drawStroke
-	 *            the stroke style
+	 *           the stroke style
 	 * @param composite
-	 *            the composite rule
+	 *           the composite rule
 	 */
 	public ClipPath(double[] xValue, double[] yValue, boolean fillPath, boolean drawPath, Paint fillPaint,
 			Paint drawPaint, Stroke drawStroke, Composite composite) {
-
+		
 		this.xValue = xValue;
 		this.yValue = yValue;
-
+		
 		this.fillPath = fillPath;
 		this.drawPath = drawPath;
-
+		
 		this.fillPaint = fillPaint;
 		this.drawPaint = drawPaint;
 		this.drawStroke = drawStroke;
 		this.composite = composite;
-
+		
 	}
-
+	
 	/**
 	 * Draws the clip path.
 	 * 
 	 * @param g2
-	 *            current graphics2D.
+	 *           current graphics2D.
 	 * @param dataArea
-	 *            the dataArea that the plot is being draw in.
+	 *           the dataArea that the plot is being draw in.
 	 * @param horizontalAxis
-	 *            the horizontal axis.
+	 *           the horizontal axis.
 	 * @param verticalAxis
-	 *            the vertical axis.
+	 *           the vertical axis.
 	 * @return the GeneralPath defining the outline
 	 */
 	public GeneralPath draw(Graphics2D g2, Rectangle2D dataArea, ValueAxis horizontalAxis, ValueAxis verticalAxis) {
-
+		
 		GeneralPath generalPath = generateClipPath(dataArea, horizontalAxis, verticalAxis);
 		if (this.fillPath || this.drawPath) {
 			Composite saveComposite = g2.getComposite();
 			Paint savePaint = g2.getPaint();
 			Stroke saveStroke = g2.getStroke();
-
+			
 			if (this.fillPaint != null) {
 				g2.setPaint(this.fillPaint);
 			}
@@ -202,7 +202,7 @@ public class ClipPath implements Cloneable {
 			if (this.fillPath) {
 				g2.fill(generalPath);
 			}
-
+			
 			if (this.drawStroke != null) {
 				g2.setStroke(this.drawStroke);
 			}
@@ -214,22 +214,22 @@ public class ClipPath implements Cloneable {
 			g2.setStroke(saveStroke);
 		}
 		return generalPath;
-
+		
 	}
-
+	
 	/**
 	 * Generates the clip path.
 	 * 
 	 * @param dataArea
-	 *            the dataArea that the plot is being draw in.
+	 *           the dataArea that the plot is being draw in.
 	 * @param horizontalAxis
-	 *            the horizontal axis.
+	 *           the horizontal axis.
 	 * @param verticalAxis
-	 *            the vertical axis.
+	 *           the vertical axis.
 	 * @return the GeneralPath defining the outline
 	 */
 	public GeneralPath generateClipPath(Rectangle2D dataArea, ValueAxis horizontalAxis, ValueAxis verticalAxis) {
-
+		
 		GeneralPath generalPath = new GeneralPath();
 		double transX = horizontalAxis.valueToJava2D(this.xValue[0], dataArea, RectangleEdge.BOTTOM);
 		double transY = verticalAxis.valueToJava2D(this.yValue[0], dataArea, RectangleEdge.LEFT);
@@ -240,11 +240,11 @@ public class ClipPath implements Cloneable {
 			generalPath.lineTo((float) transX, (float) transY);
 		}
 		generalPath.closePath();
-
+		
 		return generalPath;
-
+		
 	}
-
+	
 	/**
 	 * Returns the composite.
 	 * 
@@ -253,7 +253,7 @@ public class ClipPath implements Cloneable {
 	public Composite getComposite() {
 		return this.composite;
 	}
-
+	
 	/**
 	 * Returns the drawPaint.
 	 * 
@@ -262,7 +262,7 @@ public class ClipPath implements Cloneable {
 	public Paint getDrawPaint() {
 		return this.drawPaint;
 	}
-
+	
 	/**
 	 * Returns the drawPath.
 	 * 
@@ -271,7 +271,7 @@ public class ClipPath implements Cloneable {
 	public boolean isDrawPath() {
 		return this.drawPath;
 	}
-
+	
 	/**
 	 * Returns the drawStroke.
 	 * 
@@ -280,7 +280,7 @@ public class ClipPath implements Cloneable {
 	public Stroke getDrawStroke() {
 		return this.drawStroke;
 	}
-
+	
 	/**
 	 * Returns the fillPaint.
 	 * 
@@ -289,7 +289,7 @@ public class ClipPath implements Cloneable {
 	public Paint getFillPaint() {
 		return this.fillPaint;
 	}
-
+	
 	/**
 	 * Returns the fillPath.
 	 * 
@@ -298,7 +298,7 @@ public class ClipPath implements Cloneable {
 	public boolean isFillPath() {
 		return this.fillPath;
 	}
-
+	
 	/**
 	 * Returns the xValue.
 	 * 
@@ -307,7 +307,7 @@ public class ClipPath implements Cloneable {
 	public double[] getXValue() {
 		return this.xValue;
 	}
-
+	
 	/**
 	 * Returns the yValue.
 	 * 
@@ -316,87 +316,87 @@ public class ClipPath implements Cloneable {
 	public double[] getYValue() {
 		return this.yValue;
 	}
-
+	
 	/**
 	 * Sets the composite.
 	 * 
 	 * @param composite
-	 *            The composite to set
+	 *           The composite to set
 	 */
 	public void setComposite(Composite composite) {
 		this.composite = composite;
 	}
-
+	
 	/**
 	 * Sets the drawPaint.
 	 * 
 	 * @param drawPaint
-	 *            The drawPaint to set
+	 *           The drawPaint to set
 	 */
 	public void setDrawPaint(Paint drawPaint) {
 		this.drawPaint = drawPaint;
 	}
-
+	
 	/**
 	 * Sets the drawPath.
 	 * 
 	 * @param drawPath
-	 *            The drawPath to set
+	 *           The drawPath to set
 	 */
 	public void setDrawPath(boolean drawPath) {
 		this.drawPath = drawPath;
 	}
-
+	
 	/**
 	 * Sets the drawStroke.
 	 * 
 	 * @param drawStroke
-	 *            The drawStroke to set
+	 *           The drawStroke to set
 	 */
 	public void setDrawStroke(Stroke drawStroke) {
 		this.drawStroke = drawStroke;
 	}
-
+	
 	/**
 	 * Sets the fillPaint.
 	 * 
 	 * @param fillPaint
-	 *            The fillPaint to set
+	 *           The fillPaint to set
 	 */
 	public void setFillPaint(Paint fillPaint) {
 		this.fillPaint = fillPaint;
 	}
-
+	
 	/**
 	 * Sets the fillPath.
 	 * 
 	 * @param fillPath
-	 *            The fillPath to set
+	 *           The fillPath to set
 	 */
 	public void setFillPath(boolean fillPath) {
 		this.fillPath = fillPath;
 	}
-
+	
 	/**
 	 * Sets the xValue.
 	 * 
 	 * @param xValue
-	 *            The xValue to set
+	 *           The xValue to set
 	 */
 	public void setXValue(double[] xValue) {
 		this.xValue = xValue;
 	}
-
+	
 	/**
 	 * Sets the yValue.
 	 * 
 	 * @param yValue
-	 *            The yValue to set
+	 *           The yValue to set
 	 */
 	public void setYValue(double[] yValue) {
 		this.yValue = yValue;
 	}
-
+	
 	/**
 	 * Returns the clip.
 	 * 
@@ -405,24 +405,24 @@ public class ClipPath implements Cloneable {
 	public boolean isClip() {
 		return this.clip;
 	}
-
+	
 	/**
 	 * Sets the clip.
 	 * 
 	 * @param clip
-	 *            The clip to set
+	 *           The clip to set
 	 */
 	public void setClip(boolean clip) {
 		this.clip = clip;
 	}
-
+	
 	/**
 	 * Returns a clone of the object (a deeper clone than default to avoid bugs when
 	 * setting values in cloned object).
 	 * 
 	 * @return the clone.
 	 * @throws CloneNotSupportedException
-	 *             if cloning is not supported.
+	 *            if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		ClipPath clone = (ClipPath) super.clone();
@@ -430,5 +430,5 @@ public class ClipPath implements Cloneable {
 		clone.yValue = (double[]) this.yValue.clone();
 		return clone;
 	}
-
+	
 }

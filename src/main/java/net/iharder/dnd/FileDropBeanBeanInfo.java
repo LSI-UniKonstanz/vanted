@@ -6,29 +6,29 @@ import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
 public class FileDropBeanBeanInfo extends SimpleBeanInfo {
-
+	
 	// Properties information will be obtained from
 	// introspection.//GEN-FIRST:Properties
 	private static PropertyDescriptor[] properties = null;// GEN-HEADEREND:Properties
-
+	
 	// Here you can add code for customizing the properties array.
-
+	
 	// GEN-LAST:Properties
-
+	
 	// Event set information will be obtained from introspection.//GEN-FIRST:Events
 	private static EventSetDescriptor[] eventSets = null;// GEN-HEADEREND:Events
-
+	
 	// Here you can add code for customizing the event sets array.
-
+	
 	// GEN-LAST:Events
-
+	
 	// Method information will be obtained from introspection.//GEN-FIRST:Methods
 	private static MethodDescriptor[] methods = null;// GEN-HEADEREND:Methods
-
+	
 	// Here you can add code for customizing the methods array.
-
+	
 	// GEN-LAST:Methods
-
+	
 	private static java.awt.Image iconColor16 = null; // GEN-BEGIN:IconsDef
 	private static java.awt.Image iconColor32 = null;
 	private static java.awt.Image iconMono16 = null;
@@ -37,9 +37,9 @@ public class FileDropBeanBeanInfo extends SimpleBeanInfo {
 	private static String iconNameC32 = null;
 	private static String iconNameM16 = null;
 	private static String iconNameM32 = null;// GEN-END:Icons
-
+	
 	private static int defaultPropertyIndex = -1;// GEN-BEGIN:Idx
-
+	
 	/**
 	 * Gets the bean's <code>PropertyDescriptor</code>s.
 	 * 
@@ -57,7 +57,7 @@ public class FileDropBeanBeanInfo extends SimpleBeanInfo {
 	public PropertyDescriptor[] getPropertyDescriptors() {
 		return properties;
 	}
-
+	
 	/**
 	 * Gets the bean's <code>EventSetDescriptor</code>s.
 	 * 
@@ -69,7 +69,7 @@ public class FileDropBeanBeanInfo extends SimpleBeanInfo {
 	public EventSetDescriptor[] getEventSetDescriptors() {
 		return eventSets;
 	}
-
+	
 	/**
 	 * Gets the bean's <code>MethodDescriptor</code>s.
 	 * 
@@ -81,7 +81,7 @@ public class FileDropBeanBeanInfo extends SimpleBeanInfo {
 	public MethodDescriptor[] getMethodDescriptors() {
 		return methods;
 	}
-
+	
 	/**
 	 * A bean may have a "default" property that is the property that will mostly
 	 * commonly be initially chosen for update by human's who are customizing the
@@ -96,7 +96,7 @@ public class FileDropBeanBeanInfo extends SimpleBeanInfo {
 	public int getDefaultPropertyIndex() {
 		return defaultPropertyIndex;
 	}
-
+	
 	/**
 	 * A bean may have a "default" event that is the event that will mostly commonly
 	 * be used by human's when using the bean.
@@ -110,7 +110,7 @@ public class FileDropBeanBeanInfo extends SimpleBeanInfo {
 	public int getDefaultEventIndex() {
 		return defaultPropertyIndex;
 	}
-
+	
 	/**
 	 * This method returns an image object that can be used to represent the bean in
 	 * toolboxes, toolbars, etc. Icon images will typically be GIFs, but may in
@@ -126,49 +126,49 @@ public class FileDropBeanBeanInfo extends SimpleBeanInfo {
 	 * rendered onto an existing background.
 	 * 
 	 * @param iconKind
-	 *            The kind of icon requested. This should be one of the constant
-	 *            values ICON_COLOR_16x16, ICON_COLOR_32x32, ICON_MONO_16x16, or
-	 *            ICON_MONO_32x32.
+	 *           The kind of icon requested. This should be one of the constant
+	 *           values ICON_COLOR_16x16, ICON_COLOR_32x32, ICON_MONO_16x16, or
+	 *           ICON_MONO_32x32.
 	 * @return An image object representing the requested icon. May return null if
 	 *         no suitable icon is available.
 	 */
 	@Override
 	public java.awt.Image getIcon(int iconKind) {
 		switch (iconKind) {
-		case ICON_COLOR_16x16:
-			if (iconNameC16 == null)
-				return null;
-			else {
-				if (iconColor16 == null)
-					iconColor16 = loadImage(iconNameC16);
-				return iconColor16;
-			}
-		case ICON_COLOR_32x32:
-			if (iconNameC32 == null)
-				return null;
-			else {
-				if (iconColor32 == null)
-					iconColor32 = loadImage(iconNameC32);
-				return iconColor32;
-			}
-		case ICON_MONO_16x16:
-			if (iconNameM16 == null)
-				return null;
-			else {
-				if (iconMono16 == null)
-					iconMono16 = loadImage(iconNameM16);
-				return iconMono16;
-			}
-		case ICON_MONO_32x32:
-			if (iconNameM32 == null)
-				return null;
-			else {
+			case ICON_COLOR_16x16:
+				if (iconNameC16 == null)
+					return null;
+				else {
+					if (iconColor16 == null)
+						iconColor16 = loadImage(iconNameC16);
+					return iconColor16;
+				}
+			case ICON_COLOR_32x32:
+				if (iconNameC32 == null)
+					return null;
+				else {
+					if (iconColor32 == null)
+						iconColor32 = loadImage(iconNameC32);
+					return iconColor32;
+				}
+			case ICON_MONO_16x16:
+				if (iconNameM16 == null)
+					return null;
+				else {
+					if (iconMono16 == null)
+						iconMono16 = loadImage(iconNameM16);
+					return iconMono16;
+				}
+			case ICON_MONO_32x32:
 				if (iconNameM32 == null)
-					iconMono32 = loadImage(iconNameM32);
-				return iconMono32;
-			}
+					return null;
+				else {
+					if (iconNameM32 == null)
+						iconMono32 = loadImage(iconNameM32);
+					return iconMono32;
+				}
 		}
 		return null;
 	}
-
+	
 }

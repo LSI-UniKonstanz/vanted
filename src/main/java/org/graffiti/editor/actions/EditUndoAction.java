@@ -26,38 +26,42 @@ import org.graffiti.session.EditorSession;
  * @version $Revision: 1.10 $
  */
 public class EditUndoAction extends GraffitiAction {
-	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8471739910845392234L;
 	
 	// ~ Constructors ===========================================================
 	/**
 	 * Creates a new EditUndoAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public EditUndoAction(MainFrame mainFrame) {
 		super("edit.undo", mainFrame, "editmenu_undo");
 		enabled = false;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
-
+	
 	@Override
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * <b>Implementation Note:</b> The status of the GUIComponents has to be updated
 	 * after actionPerformed was executed.
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		try {
@@ -70,7 +74,7 @@ public class EditUndoAction extends GraffitiAction {
 		}
 		mainFrame.updateActions();
 	}
-
+	
 	/**
 	 * Updates the state of this action.
 	 */
@@ -88,7 +92,7 @@ public class EditUndoAction extends GraffitiAction {
 			putValue(NAME, sBundle.getString("menu." + getName()));
 			putValue(SHORT_DESCRIPTION, sBundle.getString("toolbar." + getName() + ".tooltip"));
 		}
-
+		
 		// SMALL_ICON is for JMenuItem, but not for e.g. JButton, and distorts scaling
 		// putValue(SMALL_ICON,
 		// iBundle.getImageIcon("toolbar." + getName() + ".icon"));

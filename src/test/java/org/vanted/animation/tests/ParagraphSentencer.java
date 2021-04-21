@@ -22,20 +22,20 @@ import org.vanted.animation.loopers.StandardLooper;
 class Point {
 	private int x;
 	private int y;
-
+	
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
-
+	
 	public int getY() {
 		return y;
 	}
-
+	
 	public int getX() {
 		return x;
 	}
-
+	
 	public void setLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -45,66 +45,66 @@ class Point {
 class ParagraphSentencer {
 	public static Letter charToLG(char l) {
 		switch (l) {
-		case 'a':
-			return new LetterA();
-		case 'b':
-			return new LetterB();
-		case 'c':
-			return new LetterC();
-		case 'd':
-			return new LetterD();
-		case 'e':
-			return new LetterE();
-		case 'f':
-			return new LetterF();
-		case 'g':
-			return new LetterG();
-		case 'h':
-			return new LetterH();
-		case 'i':
-			return new LetterI();
-		case 'j':
-			return new LetterJ();
-		case 'k':
-			return new LetterK();
-		case 'l':
-			return new LetterL();
-		case 'm':
-			return new LetterM();
-		case 'n':
-			return new LetterN();
-		case 'o':
-			return new LetterO();
-		case 'p':
-			return new LetterP();
-		case 'q':
-			return new LetterQ();
-		case 'r':
-			return new LetterR();
-		case 's':
-			return new LetterS();
-		case 't':
-			return new LetterT();
-		case 'u':
-			return new LetterU();
-		case 'v':
-			return new LetterV();
-		case 'w':
-			return new LetterW();
-		case 'x':
-			return new LetterX();
-		case 'y':
-			return new LetterY();
-		case 'z':
-			return new LetterZ();
-		case ' ':
-			return new LetterSpace();
-		case '.':
-			return new LetterFullStop();
+			case 'a':
+				return new LetterA();
+			case 'b':
+				return new LetterB();
+			case 'c':
+				return new LetterC();
+			case 'd':
+				return new LetterD();
+			case 'e':
+				return new LetterE();
+			case 'f':
+				return new LetterF();
+			case 'g':
+				return new LetterG();
+			case 'h':
+				return new LetterH();
+			case 'i':
+				return new LetterI();
+			case 'j':
+				return new LetterJ();
+			case 'k':
+				return new LetterK();
+			case 'l':
+				return new LetterL();
+			case 'm':
+				return new LetterM();
+			case 'n':
+				return new LetterN();
+			case 'o':
+				return new LetterO();
+			case 'p':
+				return new LetterP();
+			case 'q':
+				return new LetterQ();
+			case 'r':
+				return new LetterR();
+			case 's':
+				return new LetterS();
+			case 't':
+				return new LetterT();
+			case 'u':
+				return new LetterU();
+			case 'v':
+				return new LetterV();
+			case 'w':
+				return new LetterW();
+			case 'x':
+				return new LetterX();
+			case 'y':
+				return new LetterY();
+			case 'z':
+				return new LetterZ();
+			case ' ':
+				return new LetterSpace();
+			case '.':
+				return new LetterFullStop();
 		}
 		return null;
 	}
-
+	
 	public static List<Animation> sentencesToNodeInfo(Graph graph, List<Node> realNodes, List<String> sentences) {
 		List<Animation> animations = new ArrayList<Animation>();
 		ArrayList<List<Point>> sentenceEdges = new ArrayList<List<Point>>();
@@ -169,7 +169,7 @@ class ParagraphSentencer {
 		}
 		// System.out.println("Length: " + Integer.toString(sentenceNodes.size()));
 		System.out.println("Nodes: " + Integer.toString(sentenceNodes.get(0).size()));
-
+		
 		final double nodeDelay = 25;
 		// TO ANIMATION:
 		ArrayList<ArrayList<Point2DTimePoint>> pointPoints = new ArrayList<ArrayList<Point2DTimePoint>>();
@@ -254,7 +254,7 @@ class ParagraphSentencer {
 						animations.add(new VisibilityAnimation(nodeEdges.get(0),
 								Arrays.asList(new BooleanTimePoint[] { new BooleanTimePoint(0, true) }), lastPoint, 0,
 								1));
-
+					
 			}
 			animations.add(
 					new Position2DAnimation(realNodes.get(i), posPoints, posPoints.get(posPoints.size() - 1).getTime(),
@@ -265,7 +265,7 @@ class ParagraphSentencer {
 		}
 		return animations;
 	}
-
+	
 	final static double pauseTime = 6000;
 	final static double transitionTime = 500;
 }
@@ -275,23 +275,23 @@ class Letter {
 	protected Point edges[];
 	protected double width = 1;
 	protected double height = 1.5;
-
+	
 	public double getHeight() {
 		return height;
 	}
-
+	
 	public double getWidth() {
 		return this.width;
 	}
-
+	
 	public void setWidth(double width) {
 		this.width = width;
 	}
-
+	
 	public List<Point> getEdges() {
 		return Arrays.asList(edges);
 	}
-
+	
 	public List<Point2D.Double> getNodes() {
 		return Arrays.asList(nodes);
 	}

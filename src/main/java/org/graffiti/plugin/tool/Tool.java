@@ -23,14 +23,14 @@ import org.graffiti.graph.Graph;
  */
 public interface Tool extends MouseInputListener {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns true if the tool is active.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public boolean isActive();
-
+	
 	/**
 	 * States whether this class wants to be registered as a
 	 * <code>SelectionListener</code>.
@@ -38,7 +38,7 @@ public interface Tool extends MouseInputListener {
 	 * @return DOCUMENT ME!
 	 */
 	public boolean isSelectionListener();
-
+	
 	/**
 	 * States whether this class wants to be registered as a
 	 * <code>SessionListener</code>.
@@ -46,7 +46,7 @@ public interface Tool extends MouseInputListener {
 	 * @return DOCUMENT ME!
 	 */
 	public boolean isSessionListener();
-
+	
 	/**
 	 * States whether this class wants to be registered as a
 	 * <code>ViewListener</code>, i.e. if it wants to get informed when another view
@@ -57,39 +57,39 @@ public interface Tool extends MouseInputListener {
 	 * @return DOCUMENT ME!
 	 */
 	public boolean isViewListener();
-
+	
 	/**
 	 * Called when the tool is activated.
 	 */
 	public void activate();
-
+	
 	/**
 	 * Resets the state of the tool. Called when another tool is activated.
 	 */
 	public void deactivate();
-
+	
 	/**
 	 * Sets the graph this tool works on.
 	 * 
 	 * @param g
-	 *            the graph this tool should work on.
+	 *           the graph this tool should work on.
 	 */
 	void setGraph(Graph g);
-
+	
 	/**
 	 * Sets the preferences of this tool.
 	 * 
 	 * @param p
-	 *            the preferences of this tool.
+	 *           the preferences of this tool.
 	 */
 	void setPrefs(Preferences p);
-
+	
 	public void deactivateAll();
-
+	
 	public void preProcessImageCreation();
-
+	
 	public void postProcessImageCreation();
-
+	
 	public String getToolName();
 }
 

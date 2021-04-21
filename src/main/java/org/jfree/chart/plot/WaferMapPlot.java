@@ -51,78 +51,78 @@ import org.jfree.data.WaferMapDataset;
  * A wafer map plot.
  */
 public class WaferMapPlot extends Plot implements RendererChangeListener, Cloneable, Serializable {
-
+	
 	/** The default grid line stroke. */
 	public static final Stroke DEFAULT_GRIDLINE_STROKE = new BasicStroke(0.5f, BasicStroke.CAP_BUTT,
 			BasicStroke.JOIN_BEVEL, 0.0f, new float[] { 2.0f, 2.0f }, 0.0f);
-
+	
 	/** The default grid line paint. */
 	public static final Paint DEFAULT_GRIDLINE_PAINT = Color.lightGray;
-
+	
 	/** The default crosshair visibility. */
 	public static final boolean DEFAULT_CROSSHAIR_VISIBLE = false;
-
+	
 	/** The default crosshair stroke. */
 	public static final Stroke DEFAULT_CROSSHAIR_STROKE = DEFAULT_GRIDLINE_STROKE;
-
+	
 	/** The default crosshair paint. */
 	public static final Paint DEFAULT_CROSSHAIR_PAINT = Color.blue;
-
+	
 	/** The resourceBundle for the localization. */
 	protected static ResourceBundle localizationResources = ResourceBundle
 			.getBundle("org.jfree.chart.plot.LocalizationBundle");
-
+	
 	/**
 	 * The plot orientation. vertical = notch down horizontal = notch right
 	 */
 	private PlotOrientation orientation;
-
+	
 	/** The dataset. */
 	private WaferMapDataset dataset;
-
+	
 	/**
 	 * Object responsible for drawing the visual representation of each point on the
 	 * plot.
 	 */
 	private WaferMapRenderer renderer;
-
+	
 	/**
 	 * Creates a new plot.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 */
 	public WaferMapPlot(WaferMapDataset dataset) {
 		this(dataset, null);
 	}
-
+	
 	/**
 	 * Creates a new plot.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @param renderer
-	 *            the renderer (<code>null</code> permitted).
+	 *           the renderer (<code>null</code> permitted).
 	 */
 	public WaferMapPlot(WaferMapDataset dataset, WaferMapRenderer renderer) {
-
+		
 		super();
-
+		
 		this.orientation = PlotOrientation.VERTICAL;
-
+		
 		this.dataset = dataset;
 		if (dataset != null) {
 			dataset.addChangeListener(this);
 		}
-
+		
 		this.renderer = renderer;
 		if (renderer != null) {
 			renderer.setPlot(this);
 			renderer.addChangeListener(this);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the plot type as a string.
 	 * 
@@ -131,56 +131,56 @@ public class WaferMapPlot extends Plot implements RendererChangeListener, Clonea
 	public String getPlotType() {
 		return ("WMAP_Plot");
 	}
-
+	
 	/**
 	 * Sets the item renderer, and notifies all listeners of a change to the plot.
 	 * <P>
 	 * If the renderer is set to <code>null</code>, no chart will be drawn.
 	 * 
 	 * @param renderer
-	 *            the new renderer (<code>null</code> permitted).
+	 *           the new renderer (<code>null</code> permitted).
 	 */
 	public void setRenderer(WaferMapRenderer renderer) {
-
+		
 		if (this.renderer != null) {
 			this.renderer.removeChangeListener(this);
 		}
-
+		
 		this.renderer = renderer;
 		if (renderer != null) {
 			renderer.setPlot(this);
 		}
-
+		
 		notifyListeners(new PlotChangeEvent(this));
-
+		
 	}
-
+	
 	/**
 	 * Draws the wafermap view.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param state
-	 *            the plot state.
+	 *           the plot state.
 	 * @param info
-	 *            the plot rendering info.
+	 *           the plot rendering info.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState state, PlotRenderingInfo info) {
-
+		
 		// if the plot area is too small, just return...
 		boolean b1 = (plotArea.getWidth() <= MINIMUM_WIDTH_TO_DRAW);
 		boolean b2 = (plotArea.getHeight() <= MINIMUM_HEIGHT_TO_DRAW);
 		if (b1 || b2) {
 			return;
 		}
-
+		
 		// record the plot area...
 		if (info != null) {
 			info.setPlotArea(plotArea);
 		}
-
+		
 		// adjust the drawing area for the plot insets (if any)...
 		Insets insets = getInsets();
 		if (insets != null) {
@@ -188,22 +188,22 @@ public class WaferMapPlot extends Plot implements RendererChangeListener, Clonea
 					plotArea.getWidth() - insets.left - insets.right,
 					plotArea.getHeight() - insets.top - insets.bottom);
 		}
-
+		
 		drawChipGrid(g2, plotArea);
 		drawWaferEdge(g2, plotArea);
-
+		
 	}
-
+	
 	/**
 	 * Calculates and draws the chip locations on the wafer.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 */
 	private void drawChipGrid(Graphics2D g2, Rectangle2D plotArea) {
-
+		
 		Shape savedClip = g2.getClip();
 		g2.setClip(getWaferEdge(plotArea));
 		Rectangle2D chip = new Rectangle2D.Double();
@@ -240,7 +240,7 @@ public class WaferMapPlot extends Plot implements RendererChangeListener, Clonea
 				chipHeight = (plotArea.getHeight() - (space * ychips - 1)) / ychips;
 			}
 		}
-
+		
 		for (int x = 1; x <= xchips; x++) {
 			double upperLeftX = (startX - chipWidth) + (chipWidth * x) + (space * (x - 1));
 			for (int y = 1; y <= ychips; y++) {
@@ -257,12 +257,12 @@ public class WaferMapPlot extends Plot implements RendererChangeListener, Clonea
 		}
 		g2.setClip(savedClip);
 	}
-
+	
 	/**
 	 * Calculates the location of the waferedge.
 	 * 
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @return The wafer edge.
 	 */
 	private Ellipse2D getWaferEdge(Rectangle2D plotArea) {
@@ -293,14 +293,14 @@ public class WaferMapPlot extends Plot implements RendererChangeListener, Clonea
 		edge.setFrame(upperLeftX, upperLeftY, diameter, diameter);
 		return edge;
 	}
-
+	
 	/**
 	 * Draws the waferedge, including the notch.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 */
 	private void drawWaferEdge(Graphics2D g2, Rectangle2D plotArea) {
 		// draw the wafer
@@ -329,9 +329,9 @@ public class WaferMapPlot extends Plot implements RendererChangeListener, Clonea
 		g2.fill(notch);
 		g2.setColor(Color.black);
 		g2.draw(notch);
-
+		
 	}
-
+	
 	/**
 	 * Returns the dataset
 	 * 
@@ -340,7 +340,7 @@ public class WaferMapPlot extends Plot implements RendererChangeListener, Clonea
 	public WaferMapDataset getDataset() {
 		return this.dataset;
 	}
-
+	
 	/**
 	 * Return the legend items from the renderer.
 	 * 
@@ -349,15 +349,15 @@ public class WaferMapPlot extends Plot implements RendererChangeListener, Clonea
 	public LegendItemCollection getLegendItems() {
 		return this.renderer.getLegendCollection();
 	}
-
+	
 	/**
 	 * Notifies all registered listeners of a renderer change.
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void rendererChanged(RendererChangeEvent event) {
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 }

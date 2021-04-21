@@ -10,17 +10,21 @@ import javax.swing.JComponent;
 import org.jfree.chart.plot.PlotOrientation;
 
 public class MyColorGrid extends JComponent {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -807742085144304286L;
+	
 	Color[][] colors = null;
-
+	
 	PlotOrientation plotOrientation;
-
+	
 	public MyColorGrid(Color[][] colors, PlotOrientation plotOrientation) {
 		this.colors = colors;
 		this.plotOrientation = plotOrientation;
 	}
-
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -60,7 +64,7 @@ public class MyColorGrid extends JComponent {
 			}
 		}
 	}
-
+	
 	private void drawPoint(Graphics g, double rW, double rH, double yy, int row, double xx, int col) {
 		double off = 0.5;
 		double off2 = 1;
@@ -68,10 +72,10 @@ public class MyColorGrid extends JComponent {
 			off *= 2;
 			off2 *= 2;
 		}
-
+		
 		g.setColor(colors[row][col]);
 		Rectangle2D rr = new Rectangle2D.Double(xx + off, yy + off, rW - off2, rH - off2);
 		((Graphics2D) g).fill(rr);
 	}
-
+	
 }

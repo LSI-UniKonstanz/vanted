@@ -20,19 +20,19 @@ import org.graffiti.plugin.parameter.NodeParameter;
  */
 public class NodeEditComponent extends SingleGraphElementEditComponent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>NodeEditComponent</code>.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public NodeEditComponent(Displayable disp) {
 		super(disp);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/*
 	 * @see
 	 * org.graffiti.plugin.editcomponent.AbstractValueEditComponent#setDisplayable(
@@ -42,13 +42,13 @@ public class NodeEditComponent extends SingleGraphElementEditComponent {
 	public void setDisplayable(Displayable disp) {
 		displayable = disp;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setValue()
 	 */
 	public void setValue() {
 	}
-
+	
 	@Override
 	protected Object[] getPossibilities() {
 		return ((NodeParameter) displayable).getPossibleNodes();

@@ -11,8 +11,12 @@ import javax.swing.JMenuItem;
 import org.OpenFileDialogService;
 
 public class RecentEntry extends JMenuItem {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1437006481718844862L;
+	
 	public RecentEntry(String data, boolean visible, Icon icon) {
 		super();
 		if (!data.equalsIgnoreCase("")) {
@@ -24,7 +28,7 @@ public class RecentEntry extends JMenuItem {
 			setVisible(false);
 		setIcon(icon);
 	}
-
+	
 	public RecentEntry(File data, boolean visible, Icon icon) {
 		super();
 		setAction(getOpenAction(data));
@@ -33,12 +37,12 @@ public class RecentEntry extends JMenuItem {
 		setVisible(visible);
 		setIcon(icon);
 	}
-
+	
 	public RecentEntry(RecentEntry from) {
 		super();
 		setNewData(from);
 	}
-
+	
 	public void setNewData(RecentEntry from) {
 		setAction(from.getAction());
 		setText(from.getText());
@@ -46,7 +50,7 @@ public class RecentEntry extends JMenuItem {
 		setVisible(from.isVisible());
 		setIcon(from.getIcon());
 	}
-
+	
 	private Action getOpenAction(final File file) {
 		return new Action() {
 			public void actionPerformed(ActionEvent e) {
@@ -59,27 +63,27 @@ public class RecentEntry extends JMenuItem {
 					e1.printStackTrace();
 				}
 			}
-
+			
 			public void setEnabled(boolean b) {
 			}
-
+			
 			public void removePropertyChangeListener(PropertyChangeListener listener) {
 			}
-
+			
 			public void putValue(String key, Object value) {
 			}
-
+			
 			public boolean isEnabled() {
 				return true;
 			}
-
+			
 			public Object getValue(String key) {
 				return null;
 			}
-
+			
 			public void addPropertyChangeListener(PropertyChangeListener listener) {
 			}
 		};
 	}
-
+	
 }

@@ -32,13 +32,13 @@ import org.graffiti.plugin.XMLHelper;
  * @version $Revision: 1.15 $
  */
 public abstract class AbstractAttribute implements Attribute {
-
+	
 	protected static HashMap<String, Class<? extends Attribute>> typedAttributesID2TypeForNodes = getDefaultNodeTypedAttributes();
-
+	
 	protected static HashMap<String, Class<? extends Attribute>> typedAttributesID2TypeForEdges = getDefaultEdgeTypedAttributes();
-
+	
 	protected boolean deleted = false;
-
+	
 	public void setId(String id) {
 		if (id == null)
 			return;
@@ -48,7 +48,7 @@ public abstract class AbstractAttribute implements Attribute {
 			this.idd = knownAttributeNames.get(id);
 		}
 	}
-
+	
 	public static void addNodeAttributeType(String id, Class<? extends Attribute> type) {
 		if (typedAttributesID2TypeForNodes.containsKey(id)) {
 			// System.out.println("Information: overwriting previous attribute class mapping
@@ -56,7 +56,7 @@ public abstract class AbstractAttribute implements Attribute {
 		}
 		typedAttributesID2TypeForNodes.put(id, type);
 	}
-
+	
 	public static void addEdgeAttributeType(String id, Class<? extends Attribute> type) {
 		if (typedAttributesID2TypeForEdges.containsKey(id)) {
 			// System.out.println("Information: overwriting previous attribute class mapping
@@ -64,7 +64,7 @@ public abstract class AbstractAttribute implements Attribute {
 		}
 		typedAttributesID2TypeForEdges.put(id, type);
 	}
-
+	
 	public static Attribute getTypedAttribute(String id, boolean isNodeTrue_isEdgeFalse) {
 		Class<? extends Attribute> c;
 		if (isNodeTrue_isEdgeFalse)
@@ -80,7 +80,7 @@ public abstract class AbstractAttribute implements Attribute {
 			return null;
 		}
 	}
-
+	
 	private static HashMap<String, Class<? extends Attribute>> getDefaultNodeTypedAttributes() {
 		HashMap<String, Class<? extends Attribute>> result = new HashMap<String, Class<? extends Attribute>>();
 		result.put("labelgraphics", NodeLabelAttribute.class);
@@ -89,7 +89,7 @@ public abstract class AbstractAttribute implements Attribute {
 		}
 		return result;
 	}
-
+	
 	private static HashMap<String, Class<? extends Attribute>> getDefaultEdgeTypedAttributes() {
 		HashMap<String, Class<? extends Attribute>> result = new HashMap<String, Class<? extends Attribute>>();
 		// result.put("color", ColorAttribute.class);
@@ -98,64 +98,64 @@ public abstract class AbstractAttribute implements Attribute {
 		result.put("tgtLabel", EdgeLabelAttribute.class);
 		return result;
 	}
-
+	
 	public static boolean isTypedAttributeFromID(String id, boolean isNodeTrue_isEdgeFalse) {
 		if (isNodeTrue_isEdgeFalse)
 			return typedAttributesID2TypeForNodes.containsKey(id);
 		else
 			return typedAttributesID2TypeForEdges.containsKey(id);
 	}
-
+	
 	private static final HashMap<String, String> knownAttributeNames = new HashMap<String, String>();
-
+	
 	/** The identifier of this <code>Attribute</code>. */
 	protected String idd;
-
+	
 	/**
 	 * The parent <code>attribute</code>. It is set when the <code>Attribute</code>
 	 * is added somewhere in the hierarchy.
 	 */
 	private CollectionAttribute parent;
-
+	
 	/** A String describing the function of this attribute. */
 	private String description = "";
-
+	
 	/**
 	 * Indicates wether the <code>parent</code> field has already been set.
 	 * <code>parent</code> must not be set more then once.
 	 */
 	private boolean parentNotYetSet = true;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for setting the id of an <code>AbstractAttribute</code>.
 	 * 
 	 * @param id
-	 *            the id of the <code>AbstractAttribute</code>.
+	 *           the id of the <code>AbstractAttribute</code>.
 	 * @exception IllegalIdException
-	 *                if the given id contains a separator.
+	 *               if the given id contains a separator.
 	 */
 	public AbstractAttribute(String id) throws IllegalIdException {
 		assert id != null;
 		// logger.setLevel(Level.OFF);
-
+		
 		if (id.indexOf(Attribute.SEPARATOR) != -1) {
 			throw new IllegalIdException("An id must not contain the SEPARATOR character.");
 		}
-
+		
 		setId(id);
 		// logger.info("id set to " + id + ".");
-
+		
 		setDefaultValue();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	public AbstractAttribute() {
 		// empty
 	}
-
+	
 	/**
 	 * Returns the <code>Attribute</code>'s <code>Attributable</code>.
 	 * 
@@ -163,27 +163,27 @@ public abstract class AbstractAttribute implements Attribute {
 	 */
 	public Attributable getAttributable() {
 		Attribute par = getParent();
-
+		
 		// this means parent is null an this is not a CollectionAttribute
 		// getAttributable() is overwritten in AbstractCollectionAttribute
 		if (par == null) {
 			// logger.info("The attribute is not attached (properly) to an " +
 			// "Attributable yet");
-
+			
 			// return attributable;
 			return null;
 		} else {
 			return par.getAttributable();
 		}
 	}
-
+	
 	private static final HashMap<String, String> knownAttributeDescriptions = new HashMap<String, String>();
-
+	
 	/**
 	 * Provides a description for this attribute. Used in tooltips etc.
 	 * 
 	 * @param desc
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void setDescription(String desc) {
 		if (desc == null)
@@ -194,7 +194,7 @@ public abstract class AbstractAttribute implements Attribute {
 			this.description = knownAttributeDescriptions.get(desc);
 		}
 	}
-
+	
 	/**
 	 * Returns a description for this attribute. Used in tooltips etc. Returns an
 	 * empty string by default.
@@ -204,7 +204,7 @@ public abstract class AbstractAttribute implements Attribute {
 	public String getDescription() {
 		return this.description;
 	}
-
+	
 	/**
 	 * Returns the <code>Attribute</code>'s identifier.
 	 * 
@@ -213,14 +213,14 @@ public abstract class AbstractAttribute implements Attribute {
 	public String getId() {
 		return idd;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.Displayable#getName()
 	 */
 	public String getName() {
 		return getId();
 	}
-
+	
 	/**
 	 * Sets the attribute's parent.
 	 * <p>
@@ -232,14 +232,14 @@ public abstract class AbstractAttribute implements Attribute {
 	 * </p>
 	 * 
 	 * @param parent
-	 *            the new parent of the <code>Attribute</code>.
+	 *           the new parent of the <code>Attribute</code>.
 	 * @throws FieldAlreadySetException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void setParent(CollectionAttribute parent) throws FieldAlreadySetException {
 		// "" as parent denotes root Attribute. therefore parent must be null
 		assert !(this.getId().equals("") && (parent != null)) : "Empty id (and not root attribute).";
-
+		
 		// can't just check whether it's null because root's parent is
 		// null. therefore the variable "parentNotYetSet" is used
 		if (parentNotYetSet) {
@@ -251,7 +251,7 @@ public abstract class AbstractAttribute implements Attribute {
 			throw new FieldAlreadySetException("'parent' field already set");
 		}
 	}
-
+	
 	/**
 	 * Returns the <code>Attribute</code>'s parent, <code>null</code> if it is root.
 	 * 
@@ -260,7 +260,7 @@ public abstract class AbstractAttribute implements Attribute {
 	public CollectionAttribute getParent() {
 		return parent;
 	}
-
+	
 	/**
 	 * Returns the <code>Attribute</code>'s location.
 	 * <p>
@@ -273,14 +273,14 @@ public abstract class AbstractAttribute implements Attribute {
 	 */
 	public String getPath() {
 		Attribute par = this.getParent();
-
+		
 		if (par == null) {
 			return this.getId();
 		} else {
 			return par.getPath() + Attribute.SEPARATOR + this.getId();
 		}
 	}
-
+	
 	/**
 	 * Sets the value of this <code>Attribute</code> to the given value. If the
 	 * value is set via <code>att.setValue(x)</code> and then retrieved via
@@ -289,9 +289,9 @@ public abstract class AbstractAttribute implements Attribute {
 	 * behaviour is not general, in contrast x.equals(y) must be always guaranteed.
 	 * 
 	 * @param v
-	 *            the new value.
+	 *           the new value.
 	 * @exception IllegalArgumentException
-	 *                if v is not of the apropriate type.
+	 *               if v is not of the apropriate type.
 	 */
 	public void setValue(Object v) throws IllegalArgumentException {
 		AttributeEvent ae = new AttributeEvent(this);
@@ -299,7 +299,7 @@ public abstract class AbstractAttribute implements Attribute {
 		doSetValue(v);
 		callPostAttributeChanged(ae);
 	}
-
+	
 	/**
 	 * Returns the ID of this attribute.
 	 * 
@@ -309,26 +309,26 @@ public abstract class AbstractAttribute implements Attribute {
 	public String toString() {
 		return this.getId();
 	}
-
+	
 	/**
 	 * @see org.graffiti.attributes.Attribute#toString(int)
 	 */
 	public String toString(int n) {
 		return getSpaces(n) + getId() + " = " + getValue().toString();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.Displayable#toXMLString()
 	 */
 	public String toXMLString() {
 		String valStr = (getValue() == null) ? "null" : getValue().toString();
-
+		
 		return "<attribute classname=\\\"" + getClass().getName() + "\\\" path=\\\"" + getPath().substring(1) + "\\\">"
 				+ XMLHelper.getDelimiter() + XMLHelper.spc(2) + "<value><![CDATA[" + valStr + "]]>" + XMLHelper.spc(2)
 				+ "<value><![CDATA[" + valStr + "]]>" + XMLHelper.getDelimiter() + XMLHelper.spc(2) + "</value>"
 				+ XMLHelper.getDelimiter() + "</attribute>";
 	}
-
+	
 	/**
 	 * Embeds the given String into an XML String. It includes the classname of the
 	 * parameter and a "value" element that gets the given String
@@ -342,23 +342,23 @@ public abstract class AbstractAttribute implements Attribute {
 				+ XMLHelper.spc(2) + "<value>" + XMLHelper.getDelimiter() + XMLHelper.spc(4) + valueString
 				+ XMLHelper.getDelimiter() + XMLHelper.spc(2) + "</value>" + XMLHelper.getDelimiter() + "</attribute>";
 	}
-
+	
 	/**
 	 * Sets the value of this <code>Attribute</code> to the given value without
 	 * informing the <code>ListenerManager</code>.
 	 * 
 	 * @param v
-	 *            the new value.
+	 *           the new value.
 	 * @exception IllegalArgumentException
-	 *                if <code>v</code> is not of the appropriate type.
+	 *               if <code>v</code> is not of the appropriate type.
 	 */
 	protected abstract void doSetValue(Object v) throws IllegalArgumentException;
-
+	
 	/**
 	 * Returns <code>n</code> spaces.
 	 * 
 	 * @param n
-	 *            the number of spaces.
+	 *           the number of spaces.
 	 * @return <code>n</code> spaces.
 	 */
 	protected String getSpaces(int n) {
@@ -372,135 +372,135 @@ public abstract class AbstractAttribute implements Attribute {
 			return "   ";
 		} else {
 			StringBuffer sb = new StringBuffer();
-
+			
 			for (int i = 0; i < n; ++i) {
 				sb.append(" ");
 			}
-
+			
 			return sb.toString();
 		}
 	}
-
+	
 	/**
 	 * Informs the <code>ListenerManager</code> after an <code>Attribute</code> has
 	 * been added.
 	 * 
 	 * @param ae
-	 *            the <code>Attribute</code> which will be sent to the
-	 *            <code>ListenerManager</code>.
+	 *           the <code>Attribute</code> which will be sent to the
+	 *           <code>ListenerManager</code>.
 	 */
 	protected void callPostAttributeAdded(AttributeEvent ae) {
 		assert ae != null : "AttributeEvent is null!";
-
+		
 		Attributable attbl = getAttributable();
-
+		
 		if (attbl != null) {
 			ListenerManager lm = attbl.getListenerManager();
 			if (lm != null)
 				lm.postAttributeAdded(ae);
 		}
 	}
-
+	
 	/**
 	 * Informs the <code>ListenerManager</code> after the value of an
 	 * <code>Attribute</code> has been changed.
 	 * 
 	 * @param ae
-	 *            the <code>Attribute</code> which will be sent to the
-	 *            <code>ListenerManager</code>.
+	 *           the <code>Attribute</code> which will be sent to the
+	 *           <code>ListenerManager</code>.
 	 */
 	protected void callPostAttributeChanged(AttributeEvent ae) {
 		assert ae != null : "AttributeEvent is null!";
-
+		
 		Attributable attbl = getAttributable();
-
+		
 		if (attbl != null) {
 			ListenerManager lm = attbl.getListenerManager();
 			if (lm != null)
 				lm.postAttributeChanged(ae);
 		}
 	}
-
+	
 	/**
 	 * Informs the <code>ListenerManager</code> after an <code>Attribute</code> has
 	 * been removed.
 	 * 
 	 * @param ae
-	 *            the <code>Attribute</code> which will be sent to the
-	 *            <code>ListenerManager</code>.
+	 *           the <code>Attribute</code> which will be sent to the
+	 *           <code>ListenerManager</code>.
 	 */
 	protected void callPostAttributeRemoved(AttributeEvent ae) {
 		assert ae != null : "AttributeEvent is null!";
-
+		
 		Attributable attbl = getAttributable();
-
+		
 		if (attbl != null) {
 			ListenerManager lm = attbl.getListenerManager();
 			if (lm != null)
 				lm.postAttributeRemoved(ae);
 		}
 	}
-
+	
 	/**
 	 * Informs the <code>ListenerManager</code> before an <code>Attribute</code>
 	 * will be added.
 	 * 
 	 * @param ae
-	 *            the <code>Attribute</code> which will be sent to the
-	 *            <code>ListenerManager</code>.
+	 *           the <code>Attribute</code> which will be sent to the
+	 *           <code>ListenerManager</code>.
 	 */
 	protected void callPreAttributeAdded(AttributeEvent ae) {
 		assert ae != null : "AttributeEvent is null!";
-
+		
 		Attributable attbl = getAttributable();
-
+		
 		if (attbl != null) {
 			ListenerManager lm = attbl.getListenerManager();
 			if (lm != null)
 				lm.preAttributeAdded(ae);
 		}
 	}
-
+	
 	/**
 	 * Informs the <code>ListenerManager</code> before the value of an
 	 * <code>Attribute</code> will be changed.
 	 * 
 	 * @param ae
-	 *            the <code>Attribute</code> which will be sent to the
-	 *            <code>ListenerManager</code>.
+	 *           the <code>Attribute</code> which will be sent to the
+	 *           <code>ListenerManager</code>.
 	 */
 	protected void callPreAttributeChanged(AttributeEvent ae) {
 		assert ae != null : "AttributeEvent is null!";
-
+		
 		Attributable attbl = getAttributable();
-
+		
 		if (attbl != null) {
 			ListenerManager lm = attbl.getListenerManager();
 			if (lm != null)
 				lm.preAttributeChanged(ae);
 		}
 	}
-
+	
 	/**
 	 * Informs the <code>ListenerManager</code> before an <code>Attribute</code>
 	 * will be removed.
 	 * 
 	 * @param ae
-	 *            the <code>Attribute</code> which will be sent to the
-	 *            <code>ListenerManager</code>.
+	 *           the <code>Attribute</code> which will be sent to the
+	 *           <code>ListenerManager</code>.
 	 */
 	protected void callPreAttributeRemoved(AttributeEvent ae) {
 		assert ae != null : "AttributeEvent is null!";
-
+		
 		Attributable attbl = getAttributable();
-
+		
 		if (attbl != null) {
 			ListenerManager lm = attbl.getListenerManager();
 			if (lm != null)
 				lm.preAttributeRemoved(ae);
 		}
 	}
-
+	
 	public JComponent getIcon() {
 		ImageIcon icon = AttributeHelper.getDefaultAttributeIconFor(idd);
 		if (icon != null)
@@ -508,19 +508,19 @@ public abstract class AbstractAttribute implements Attribute {
 		else
 			return null;
 	}
-
+	
 	@Override
 	public boolean isDeleted() {
 		// TODO Auto-generated method stub
 		return deleted;
 	}
-
+	
 	@Override
 	public void setDeleted(boolean deleted) {
 		// TODO Auto-generated method stub
 		this.deleted = deleted;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

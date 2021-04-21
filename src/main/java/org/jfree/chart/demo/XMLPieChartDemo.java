@@ -50,48 +50,48 @@ import org.jfree.ui.RefineryUtilities;
  * data in an XML file.
  */
 public class XMLPieChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XMLPieChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		PieDataset dataset = null;
 		final URL url = getClass().getResource("/org/jfree/chart/demo/piedata.xml");
-
+		
 		try {
 			final InputStream in = url.openStream();
 			dataset = DatasetReader.readPieDatasetFromXML(in);
 		} catch (IOException ioe) {
 			System.out.println(ioe.getMessage());
 		}
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 1", // chart title
 				dataset, // data
 				true, // include legend
 				true, false);
-
+		
 		// set the background color for the chart...
 		chart.setBackgroundPaint(Color.yellow);
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setLabelGenerator(new StandardPieItemLabelGenerator("{0} = {2}", NumberFormat.getNumberInstance(),
 				NumberFormat.getPercentInstance()));
 		plot.setNoDataMessage("No data available");
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -102,20 +102,20 @@ public class XMLPieChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XMLPieChartDemo demo = new XMLPieChartDemo("XML Pie Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

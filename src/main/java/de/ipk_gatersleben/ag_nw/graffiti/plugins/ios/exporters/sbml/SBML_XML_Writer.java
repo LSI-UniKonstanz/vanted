@@ -16,20 +16,20 @@ import org.graffiti.plugin.io.SupportsWriterOutput;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_XML_Writer extends AbstractOutputSerializer implements OutputSerializer, SupportsWriterOutput {
-
+	
 	/**
 	 * Constructor
 	 */
 	public SBML_XML_Writer() {
 		super();
 	}
-
+	
 	/**
 	 * Implemented method of interface InputSerializer.java
 	 */
 	public void write(Writer writer, Graph g) {
 	}
-
+	
 	/**
 	 * Return the file extension that can be read in. Implemented method of
 	 * interface InputSerializer.java
@@ -37,7 +37,7 @@ public class SBML_XML_Writer extends AbstractOutputSerializer implements OutputS
 	public String[] getExtensions() {
 		return new String[] { ".sbml", ".xml" };
 	}
-
+	
 	/**
 	 * returns the file type description. Implemented method of interface
 	 * InputSerializer.java
@@ -45,19 +45,19 @@ public class SBML_XML_Writer extends AbstractOutputSerializer implements OutputS
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "SBML", "SBML" };
 	}
-
+	
 	@Override
 	public boolean validFor(Graph g) {
 		return AttributeHelper.hasAttribute(g, SBML_Constants.SBML, SBML_Constants.LEVEL);
 	}
-
+	
 	/**
 	 * starts the reading in of the model
 	 * 
 	 * @param stream
-	 *            contains the model
+	 *           contains the model
 	 * @param g
-	 *            the data will be read into this data structure
+	 *           the data will be read into this data structure
 	 */
 	public void write(OutputStream stream, Graph g) throws IOException {
 		SBML_SBML_Writer writeSBML = new SBML_SBML_Writer();

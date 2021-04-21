@@ -54,35 +54,35 @@ import org.jfree.ui.RectangleEdge;
  * @author Greg Steckman
  */
 public class XYShapeAnnotation implements XYAnnotation, Serializable {
-
+	
 	/** The Shape to draw. */
 	private Shape shape;
-
+	
 	/** The shape's stroke. */
 	private Stroke stroke;
-
+	
 	/** The shape's color. */
 	private Paint paint;
-
+	
 	/**
 	 * Creates a new annotation.
 	 * 
 	 * @param shape
-	 *            the shape (coordinates in data space).
+	 *           the shape (coordinates in data space).
 	 */
 	public XYShapeAnnotation(Shape shape) {
 		this(shape, new BasicStroke(1.0f), Color.black);
 	}
-
+	
 	/**
 	 * Creates a new annotation.
 	 * 
 	 * @param shape
-	 *            the shape (<code>null</code> not permitted).
+	 *           the shape (<code>null</code> not permitted).
 	 * @param stroke
-	 *            the shape stroke (<code>null</code> not permitted).
+	 *           the shape stroke (<code>null</code> not permitted).
 	 * @param paint
-	 *            the shape color (<code>null</code> not permitted).
+	 *           the shape color (<code>null</code> not permitted).
 	 */
 	public XYShapeAnnotation(Shape shape, Stroke stroke, Paint paint) {
 		if (shape == null) {
@@ -98,28 +98,28 @@ public class XYShapeAnnotation implements XYAnnotation, Serializable {
 		this.stroke = stroke;
 		this.paint = paint;
 	}
-
+	
 	/**
 	 * Draws the annotation. This method is usually called by the {@link XYPlot}
 	 * class, you shouldn't need to call it directly.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 */
 	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea, ValueAxis domainAxis, ValueAxis rangeAxis) {
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(plot.getDomainAxisLocation(), orientation);
 		RectangleEdge rangeEdge = Plot.resolveRangeAxisLocation(plot.getRangeAxisLocation(), orientation);
-
+		
 		// compute transform matrix elements via sample points. Assume no rotation or
 		// shear.
 		// x-axis translation
@@ -130,7 +130,7 @@ public class XYShapeAnnotation implements XYAnnotation, Serializable {
 		double m00 = domainAxis.valueToJava2D(1, dataArea, domainEdge) - m02;
 		// y-axis scale
 		double m11 = rangeAxis.valueToJava2D(1, dataArea, rangeEdge) - m12;
-
+		
 		// create transform & transform shape
 		Shape s = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
@@ -142,11 +142,11 @@ public class XYShapeAnnotation implements XYAnnotation, Serializable {
 			AffineTransform t = new AffineTransform(m00, 0, 0, m11, m02, m12);
 			s = t.createTransformedShape(this.shape);
 		}
-
+		
 		g2.setPaint(this.paint);
 		g2.setStroke(this.stroke);
 		g2.draw(s);
-
+		
 	}
-
+	
 }

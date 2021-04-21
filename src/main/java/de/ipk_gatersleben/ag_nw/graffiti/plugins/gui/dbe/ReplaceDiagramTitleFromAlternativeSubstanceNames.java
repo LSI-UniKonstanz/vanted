@@ -27,34 +27,34 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.process_alternative_ids.ReplaceLabelFromAlternativeSubstanceNames;
 
 public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAlgorithm {
-
+	
 	public String getName() {
 		return "Set Diagram Title";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Mapping.Alternative Identifiers";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.CHART, Category.VISUAL));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null) {
 			errors.add("No graph available!");
 		}
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
 	}
-
+	
 	public void execute() {
 		int maxID = 0;
 		HashMap<Integer, String> exampleValues = new HashMap<Integer, String>();
@@ -80,7 +80,7 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 					"Select Identifier", JOptionPane.QUESTION_MESSAGE, null, selvals.toArray(), null);
 			if (result == null)
 				return; // Cancel
-
+				
 			@SuppressWarnings("unused")
 			int workCnt = 0;
 			String number = result.equals(all) ? "-1" : (String) result;

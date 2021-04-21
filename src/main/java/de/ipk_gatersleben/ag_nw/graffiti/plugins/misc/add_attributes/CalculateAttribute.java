@@ -25,13 +25,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchAnd
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchType;
 
 public class CalculateAttribute extends AbstractAlgorithm {
-
+	
 	AttributePathNameSearchType attributeA, attributeB;
 	AttributeCalculation operation = AttributeCalculation.A;
 	String attributePath = "properties";
 	String attributeName = "M0";
 	ModeOfAttributeOperation modeOfOperation = ModeOfAttributeOperation.createAttribute;
-
+	
 	public void execute() {
 		if (operation == null) {
 			MainFrame.showMessageDialog("Invalid Operation Selected!", "Error");
@@ -115,7 +115,7 @@ public class CalculateAttribute extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	private String ommitZero(double result) {
 		String v = "" + result;
 		if (v.endsWith(".0"))
@@ -123,14 +123,14 @@ public class CalculateAttribute extends AbstractAlgorithm {
 		else
 			return v;
 	}
-
+	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			return "User-defined Attributes";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "With this command you may add new attributes to the selected graph<br>"
@@ -143,7 +143,7 @@ public class CalculateAttribute extends AbstractAlgorithm {
 				+ "numbers at the end. GML file format loading may otherwise fail. Use GRAPHML file format<br>"
 				+ "if you would like to use special characters in attribute names.<br><br>";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		ArrayList<ModeOfAttributeOperation> possibleCommands = new ArrayList<ModeOfAttributeOperation>();
@@ -163,10 +163,10 @@ public class CalculateAttribute extends AbstractAlgorithm {
 				new StringParameter(attributePath, "Attribute Group",
 						"Please specify the desired target folder or leave this field blank"),
 				new StringParameter(attributeName, "Attribute Name", "Please specify the desired attribute name"),
-
+		
 		};
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -177,17 +177,17 @@ public class CalculateAttribute extends AbstractAlgorithm {
 		attributePath = ((StringParameter) params[i++]).getString();
 		attributeName = ((StringParameter) params[i++]).getString();
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Compute Attributes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.ANNOTATION));
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

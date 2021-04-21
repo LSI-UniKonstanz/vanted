@@ -58,51 +58,51 @@ import org.jfree.ui.RefineryUtilities;
  * @author Andreas Schneider
  */
 public class MultiShapesXYDemo extends ApplicationFrame {
-
+	
 	/** The number of point. */
 	private static final int NUMBER_OF_POINTS = 200;
-
+	
 	/** The increment. */
 	private static final double INCREMENT = 0.1;
-
+	
 	/** Color component. */
 	private static final float R1 = 0.0f;
-
+	
 	/** Color component. */
 	private static final float G1 = 1.0f;
-
+	
 	/** Color component. */
 	private static final float B1 = 0.0f;
-
+	
 	/** Color component. */
 	private static final float R2 = 1.0f;
-
+	
 	/** Color component. */
 	private static final float G2 = 0.0f;
-
+	
 	/** Color component. */
 	private static final float B2 = 0.0f;
-
+	
 	/** The series. */
 	private XYSeries series;
-
+	
 	/** The ball image. */
 	private Image ballImage;
-
+	
 	/** The arrow image. */
 	private Image arrowImage;
-
+	
 	/**
 	 * A demonstration application showing a series with different shape attributes
 	 * per item.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MultiShapesXYDemo(final String title) {
-
+		
 		super(title);
-
+		
 		System.out.println("About to get images...");
 		final URL url1 = getClass().getClassLoader().getResource("org/jfree/chart/demo/redball.png");
 		final URL url2 = getClass().getClassLoader().getResource("org/jfree/chart/demo/arrow.png");
@@ -138,56 +138,56 @@ public class MultiShapesXYDemo extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(600, 380));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * A demo renderer.
 	 * 
 	 * @author AS
 	 */
 	class DemoRenderer extends StandardXYItemRenderer {
-
+		
 		/**
 		 * Creates a new renderer.
 		 */
 		public DemoRenderer() {
 			super(StandardXYItemRenderer.SHAPES | StandardXYItemRenderer.IMAGES, null);
 		}
-
+		
 		/**
 		 * Returns true if the shape is filled, and false otherwise.
 		 * 
 		 * @param plot
-		 *            the plot.
+		 *           the plot.
 		 * @param series
-		 *            the series.
+		 *           the series.
 		 * @param item
-		 *            the item.
+		 *           the item.
 		 * @param x
-		 *            the x-value.
+		 *           the x-value.
 		 * @param y
-		 *            the y-value.
+		 *           the y-value.
 		 * @return true if the shape is filled, and false otherwise.
 		 */
 		protected boolean isShapeFilled(final Plot plot, final int series, final int item, final double x,
 				final double y) {
 			return (item % 2 == 0);
 		}
-
+		
 		/**
 		 * Returns the shape scale.
 		 * 
 		 * @param plot
-		 *            the plot.
+		 *           the plot.
 		 * @param series
-		 *            the series.
+		 *           the series.
 		 * @param item
-		 *            the item.
+		 *           the item.
 		 * @param x
-		 *            the x-value.
+		 *           the x-value.
 		 * @param y
-		 *            the y-value.
+		 *           the y-value.
 		 * @return the shape scale.
 		 */
 		protected double getShapeScale(final Plot plot, final int series, final int item, final double x,
@@ -195,20 +195,20 @@ public class MultiShapesXYDemo extends ApplicationFrame {
 			final float rat = (float) item / (float) NUMBER_OF_POINTS; // 0..1
 			return 6.0f - rat * 4.0;
 		}
-
+		
 		/**
 		 * Returns the shape paint.
 		 * 
 		 * @param plot
-		 *            the plot.
+		 *           the plot.
 		 * @param series
-		 *            the series.
+		 *           the series.
 		 * @param item
-		 *            the item.
+		 *           the item.
 		 * @param x
-		 *            the x-value.
+		 *           the x-value.
 		 * @param y
-		 *            the y-value.
+		 *           the y-value.
 		 * @return the shape paint.
 		 */
 		protected Paint getPaint(final Plot plot, final int series, final int item, final double x, final double y) {
@@ -219,51 +219,51 @@ public class MultiShapesXYDemo extends ApplicationFrame {
 			final Color c = new Color(r, g, b);
 			return c;
 		}
-
+		
 		/**
 		 * Returns the shape.
 		 * 
 		 * @param plot
-		 *            the plot.
+		 *           the plot.
 		 * @param series
-		 *            the series.
+		 *           the series.
 		 * @param item
-		 *            the item.
+		 *           the item.
 		 * @param x
-		 *            the x-value.
+		 *           the x-value.
 		 * @param y
-		 *            the y-value.
+		 *           the y-value.
 		 * @param scale
-		 *            the scale.
+		 *           the scale.
 		 * @return the shape.
 		 */
 		protected Shape getShape(final Plot plot, final int series, final int item, final double x, final double y,
 				final double scale) {
 			final Shape shape;
 			switch (item % 2) {
-			case 0:
-				shape = new Rectangle2D.Double(x - 0.5 * scale, y - 0.5 * scale, scale, scale);
-				break;
-			default:
-				shape = new Ellipse2D.Double(x - 0.5 * scale, y - 0.5 * scale, scale, scale);
-				break;
+				case 0:
+					shape = new Rectangle2D.Double(x - 0.5 * scale, y - 0.5 * scale, scale, scale);
+					break;
+				default:
+					shape = new Ellipse2D.Double(x - 0.5 * scale, y - 0.5 * scale, scale, scale);
+					break;
 			}
 			return shape;
 		}
-
+		
 		/**
 		 * Returns the image.
 		 * 
 		 * @param plot
-		 *            the plot.
+		 *           the plot.
 		 * @param series
-		 *            the series.
+		 *           the series.
 		 * @param item
-		 *            the item.
+		 *           the item.
 		 * @param x
-		 *            the x-value.
+		 *           the x-value.
 		 * @param y
-		 *            the y-value.
+		 *           the y-value.
 		 * @return the image.
 		 */
 		protected Image getImage(final Plot plot, final int series, final int item, final double x, final double y) {
@@ -274,22 +274,22 @@ public class MultiShapesXYDemo extends ApplicationFrame {
 			}
 			return null;
 		}
-
+		
 		/**
 		 * Returns the image hot spot.
 		 * 
 		 * @param plot
-		 *            the plot.
+		 *           the plot.
 		 * @param series
-		 *            the series.
+		 *           the series.
 		 * @param item
-		 *            the item.
+		 *           the item.
 		 * @param x
-		 *            the x-value.
+		 *           the x-value.
 		 * @param y
-		 *            the y-value.
+		 *           the y-value.
 		 * @param image
-		 *            the image.
+		 *           the image.
 		 * @return the image hot spot.
 		 */
 		protected Point getImageHotspot(final Plot plot, final int series, final int item, final double x,
@@ -301,7 +301,7 @@ public class MultiShapesXYDemo extends ApplicationFrame {
 			return super.getImageHotspot(plot, series, item, x, y, image);
 		}
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -312,20 +312,20 @@ public class MultiShapesXYDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final MultiShapesXYDemo demo = new MultiShapesXYDemo("XYPlot With Multiple Shapes");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

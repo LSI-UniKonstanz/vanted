@@ -22,9 +22,9 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class KeggRelationSubTypeAttributeEditor extends AbstractValueEditComponent {
-
+	
 	protected ArrayList<? super JComponent> keggRelationSubTypeSelection = new ArrayList<>();
-
+	
 	public KeggRelationSubTypeAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curValuesString = ((KeggRelationSubTypeAttribute) getDisplayable()).getString();
@@ -38,14 +38,16 @@ public class KeggRelationSubTypeAttributeEditor extends AbstractValueEditCompone
 			keggRelationSubTypeSelection.add(rsts);
 		}
 	}
-
+	
 	@SuppressWarnings("unchecked")
+	@Override
 	public JComponent getComponent() {
 		JComponent res = TableLayout.getMultiSplit((ArrayList<JComponent>) keggRelationSubTypeSelection);
 		res.setOpaque(false);
 		return res;
 	}
-
+	
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			for (Object jcb : keggRelationSubTypeSelection) {
@@ -64,7 +66,8 @@ public class KeggRelationSubTypeAttributeEditor extends AbstractValueEditCompone
 			}
 		}
 	}
-
+	
+	@Override
 	public void setValue() {
 		boolean isOneEmpty = false;
 		for (Object jcb : keggRelationSubTypeSelection) {

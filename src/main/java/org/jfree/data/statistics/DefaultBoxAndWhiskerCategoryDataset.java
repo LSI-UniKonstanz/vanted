@@ -49,239 +49,239 @@ import org.jfree.util.ObjectUtils;
  */
 public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 		implements BoxAndWhiskerCategoryDataset, RangeInfo {
-
+	
 	/** Storage for the data. */
 	protected KeyedObjects2D data;
-
+	
 	/** The minimum range value. */
 	private Number minimumRangeValue;
-
+	
 	/** The maximum range value. */
 	private Number maximumRangeValue;
-
+	
 	/** The range of values. */
 	private Range valueRange;
-
+	
 	/**
 	 * Creates a new dataset.
 	 */
 	public DefaultBoxAndWhiskerCategoryDataset() {
-
+		
 		this.data = new KeyedObjects2D();
 		this.minimumRangeValue = null;
 		this.maximumRangeValue = null;
 		this.valueRange = new Range(0.0, 0.0);
-
+		
 	}
-
+	
 	/**
 	 * Returns the value for an item.
 	 * 
 	 * @param row
-	 *            the row index.
+	 *           the row index.
 	 * @param column
-	 *            the column index.
+	 *           the column index.
 	 * @return the value.
 	 */
 	public Number getValue(final int row, final int column) {
 		return getMedianValue(row, column);
 	}
-
+	
 	/**
 	 * Returns the value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the columnKey.
+	 *           the columnKey.
 	 * @return the value.
 	 */
 	public Number getValue(final Comparable rowKey, final Comparable columnKey) {
 		return getMedianValue(rowKey, columnKey);
 	}
-
+	
 	/**
 	 * Returns the mean value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The mean value.
 	 */
 	public Number getMeanValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getMean();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the mean value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The mean value.
 	 */
 	public Number getMeanValue(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getMean();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the median value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the median value.
 	 */
 	public Number getMedianValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getMedian();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the median value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the columnKey.
+	 *           the columnKey.
 	 * @return the median value.
 	 */
 	public Number getMedianValue(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getMedian();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the first quartile value.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The first quartile value.
 	 */
 	public Number getQ1Value(final int row, final int column) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getQ1();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the first quartile value.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The first quartile value.
 	 */
 	public Number getQ1Value(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getQ1();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the third quartile value.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The third quartile value.
 	 */
 	public Number getQ3Value(final int row, final int column) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getQ3();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the third quartile value.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The third quartile value.
 	 */
 	public Number getQ3Value(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getQ3();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *            the column key.
+	 *           the column key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(final Comparable key) {
 		return this.data.getColumnIndex(key);
 	}
-
+	
 	/**
 	 * Returns a column key.
 	 * 
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return the column key.
 	 */
 	public Comparable getColumnKey(final int column) {
 		return this.data.getColumnKey(column);
 	}
-
+	
 	/**
 	 * Returns the column keys.
 	 * 
@@ -290,29 +290,29 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	public List getColumnKeys() {
 		return this.data.getColumnKeys();
 	}
-
+	
 	/**
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *            the row key.
+	 *           the row key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(final Comparable key) {
 		return this.data.getRowIndex(key);
 	}
-
+	
 	/**
 	 * Returns a row key.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getRowKey(final int row) {
 		return this.data.getRowKey(row);
 	}
-
+	
 	/**
 	 * Returns the row keys.
 	 * 
@@ -321,7 +321,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	public List getRowKeys() {
 		return this.data.getRowKeys();
 	}
-
+	
 	/**
 	 * Returns the number of rows in the table.
 	 * 
@@ -330,7 +330,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	public int getRowCount() {
 		return this.data.getRowCount();
 	}
-
+	
 	/**
 	 * Returns the number of columns in the table.
 	 * 
@@ -339,61 +339,61 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	public int getColumnCount() {
 		return this.data.getColumnCount();
 	}
-
+	
 	/**
 	 * Adds a list of values relating to one Box and Whisker entity to the table.
 	 * The various median values are calculated.
 	 * 
 	 * @param list
-	 *            a collection of values from which the various medians will be
-	 *            calculated.
+	 *           a collection of values from which the various medians will be
+	 *           calculated.
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 */
 	public void add(final List list, final Comparable rowKey, final Comparable columnKey) {
-
+		
 		final BoxAndWhiskerItem item = BoxAndWhiskerCalculator.calculateBoxAndWhiskerStatistics(list);
 		add(item, rowKey, columnKey);
-
+		
 	}
-
+	
 	/**
 	 * Adds a list of values relating to one Box and Whisker entity to the table.
 	 * The various median values are calculated.
 	 * 
 	 * @param item
-	 *            a box and whisker item.
+	 *           a box and whisker item.
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 */
 	public void add(final BoxAndWhiskerItem item, final Comparable rowKey, final Comparable columnKey) {
-
+		
 		this.data.addObject(item, rowKey, columnKey);
 		final double minval = item.getMinOutlier().doubleValue();
 		final double maxval = item.getMaxOutlier().doubleValue();
-
+		
 		if (this.maximumRangeValue == null) {
 			this.maximumRangeValue = Double.valueOf(maxval);
 		} else if (maxval > this.maximumRangeValue.doubleValue()) {
 			this.maximumRangeValue = Double.valueOf(maxval);
 		}
-
+		
 		if (this.minimumRangeValue == null) {
 			this.minimumRangeValue = Double.valueOf(minval);
 		} else if (minval < this.minimumRangeValue.doubleValue()) {
 			this.minimumRangeValue = Double.valueOf(minval);
 		}
-
+		
 		this.valueRange = new Range(this.minimumRangeValue.doubleValue(), this.maximumRangeValue.doubleValue());
-
+		
 		fireDatasetChanged();
-
+		
 	}
-
+	
 	/**
 	 * Returns the minimum value in the dataset's range (or null if all the values
 	 * in the range are null).
@@ -403,7 +403,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	public Number getMinimumRangeValue() {
 		return this.minimumRangeValue;
 	}
-
+	
 	/**
 	 * Returns the maximum value in the dataset's range (or null if all the values
 	 * in the range are null).
@@ -413,7 +413,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	public Number getMaximumRangeValue() {
 		return this.maximumRangeValue;
 	}
-
+	
 	/**
 	 * Returns the range of the values in this dataset's range.
 	 * 
@@ -422,7 +422,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	public Range getValueRange() {
 		return this.valueRange;
 	}
-
+	
 	// public Number getInterquartileRangeValue(int row, int column) {
 	//
 	// Number result = null;
@@ -447,230 +447,230 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	// return result;
 	//
 	// }
-
+	
 	/**
 	 * Returns the minimum regular (non outlier) value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The minimum regular value.
 	 */
 	public Number getMinRegularValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getMinRegularValue();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the minimum regular (non outlier) value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The minimum regular value.
 	 */
 	public Number getMinRegularValue(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getMinRegularValue();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the maximum regular (non outlier) value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The maximum regular value.
 	 */
 	public Number getMaxRegularValue(final int row, final int column) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getMaxRegularValue();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the maximum regular (non outlier) value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The maximum regular value.
 	 */
 	public Number getMaxRegularValue(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getMaxRegularValue();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the minimum outlier (non farout) value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The minimum outlier.
 	 */
 	public Number getMinOutlier(final int row, final int column) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getMinOutlier();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the minimum outlier (non farout) value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The minimum outlier.
 	 */
 	public Number getMinOutlier(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getMinOutlier();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the maximum outlier (non farout) value for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The maximum outlier.
 	 */
 	public Number getMaxOutlier(final int row, final int column) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getMaxOutlier();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the maximum outlier (non farout) value for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return The maximum outlier.
 	 */
 	public Number getMaxOutlier(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		Number result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getMaxOutlier();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a list of outlier values for an item.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return A list of outlier values.
 	 */
 	public List getOutliers(final int row, final int column) {
-
+		
 		List result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(row, column);
 		if (item != null) {
 			result = item.getOutliers();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a list of outlier values for an item.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @return A list of outlier values.
 	 */
 	public List getOutliers(final Comparable rowKey, final Comparable columnKey) {
-
+		
 		List result = null;
 		final BoxAndWhiskerItem item = (BoxAndWhiskerItem) this.data.getObject(rowKey, columnKey);
 		if (item != null) {
 			result = item.getOutliers();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Tests this dataset for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test against (<code>null</code> permitted).
+	 *           the object to test against (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof DefaultBoxAndWhiskerCategoryDataset) {
 			final DefaultBoxAndWhiskerCategoryDataset dataset = (DefaultBoxAndWhiskerCategoryDataset) obj;
 			return ObjectUtils.equal(this.data, dataset.data);
 		}
-
+		
 		return false;
 	}
-
+	
 }

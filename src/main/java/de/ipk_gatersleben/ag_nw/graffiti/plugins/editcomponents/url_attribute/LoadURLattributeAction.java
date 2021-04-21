@@ -10,7 +10,7 @@ import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.actions.URLattributeAction;
 
 public class LoadURLattributeAction implements URLattributeAction {
-
+	
 	public ActionListener getActionListener(final Attribute displayable, final Graph graph, final GraphElement ge,
 			final boolean performAltCommand) {
 		return new ActionListener() {
@@ -20,18 +20,18 @@ public class LoadURLattributeAction implements URLattributeAction {
 			}
 		};
 	}
-
+	
 	public String getPreIdentifyer() {
 		return "";
 	}
-
+	
 	public String getCommandDescription(boolean shortDesc, boolean altDesc) {
 		if (shortDesc)
 			return "Show in Browser: ";
 		else
 			return "Show in Browser";
 	}
-
+	
 	public boolean supportsModifyCommand() {
 		return false;
 	}

@@ -44,16 +44,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 @Deprecated
 public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContainer {
 	// to avoid collisions let ID be package name + menu + name of the menu
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1170152185709002720L;
+	
 	public String errorMessagesMenuTitle = "Error Messages";
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
 	public static final String ID = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_example.MenuItemInfoDialog";
-
+	
 	/**
 	 * Create Menu.
 	 */
@@ -64,12 +67,12 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		setMnemonic('H');
 		setEnabled(true);
 		final JMenuItem info = new JMenuItem("About " + DBEgravistoHelper.CLUSTER_ANALYSIS_NAME);
-
+		
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		ImageIcon icon = new ImageIcon(cl.getResource(path + "/dbe_logo_16x16.png"));
 		info.setIcon(icon);
-
+		
 		info.setMnemonic('I');
 		info.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -90,7 +93,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 								+ (SystemAnalysis.getNumberOfCPUs() > 1 ? "s, " : ", ") +
 				// Java_1_5_compatibility.getJavaVersion()+
 				// ",<br>"+
-				"used/free/max memory: "
+								"used/free/max memory: "
 								+ ((r.totalMemory() / divisor / divisor) - (r.freeMemory() / divisor / divisor)) + ""
 								+ "/" + (r.freeMemory() / divisor / divisor) + "/" + (r.maxMemory() / divisor / divisor)
 								+ " MB" + "</font></small></small></small>",
@@ -99,10 +102,10 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 						JOptionPane.INFORMATION_MESSAGE, icon, null, null);
 			}
 		});
-
+		
 		JMenuItem jMenuItemReleaseInfo = new JMenuItem("Release Info");
 		jMenuItemReleaseInfo.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				boolean ext = true;
 				if (ext) {
@@ -120,7 +123,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				w.setVisible(true);
 			}
 		});
-
+		
 		final JMenuItem error = new JMenuItem(errorMessagesMenuTitle);
 		error.setMnemonic('E');
 		error.addActionListener(new ActionListener() {
@@ -145,7 +148,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				JEditorPane errMsg = new JEditorPane("text/html", err);
 				errMsg.setEditable(false);
 				errMsg.setAutoscrolls(false);
-
+				
 				final JScrollPane scp = new JScrollPane(errMsg);
 				scp.setMaximumSize(new Dimension(800, 600));
 				scp.setPreferredSize(new Dimension(800, 600));
@@ -159,14 +162,14 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				t.start();
 				JOptionPane.showMessageDialog(GravistoService.getInstance().getMainFrame(), scp, "Error Messages",
 						JOptionPane.ERROR_MESSAGE);
-
+				
 			}
 		});
-
+		
 		insert(error, 1);
 		// insert(jMenuItemReleaseInfo, 3);
 		insert(info, 2);
-
+		
 		// mark Help Menu and Error menu item in case error messages are available
 		Timer t = new Timer(200, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -192,7 +195,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		});
 		t.start();
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -201,7 +204,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 	public String getId() {
 		return ID;
 	}
-
+	
 	/**
 	 * @return A pane with info about the program
 	 */
@@ -220,7 +223,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		editorPane.addHyperlinkListener(createHyperLinkListener(editorPane));
 		return new JScrollPane(editorPane);
 	}
-
+	
 	/**
 	 * @param editorPane
 	 * @return
@@ -247,7 +250,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 					}
 				}
 			}
-
+			
 			private void closeHelp() {
 				// TODO
 			}

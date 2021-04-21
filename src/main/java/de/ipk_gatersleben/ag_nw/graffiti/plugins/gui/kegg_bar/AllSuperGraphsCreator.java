@@ -28,7 +28,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggSer
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.OrganismEntry;
 
 public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider, Runnable {
-
+	
 	private Graph graph;
 	private String message1 = "Please wait...";
 	private String message2 = "";
@@ -41,7 +41,7 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider, Runn
 	private boolean checkGlycans;
 	private boolean checkCompounds;
 	private OrganismEntry[] orgs;
-
+	
 	public AllSuperGraphsCreator(Graph graph, String targetFolder, OrganismEntry[] orgs, boolean checkOrthologs,
 			boolean checkEnzymes, boolean checkGlycans, boolean checkCompounds, boolean convertKOsToGenes) {
 		this.graph = graph;
@@ -53,39 +53,39 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider, Runn
 		this.checkGlycans = checkGlycans;
 		this.checkCompounds = checkCompounds;
 	}
-
+	
 	public int getCurrentStatusValue() {
 		return (int) getCurrentStatusValueFine();
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		// empty
 	}
-
+	
 	public double getCurrentStatusValueFine() {
 		return progress;
 	}
-
+	
 	public String getCurrentStatusMessage1() {
 		return message1;
 	}
-
+	
 	public String getCurrentStatusMessage2() {
 		return message2;
 	}
-
+	
 	public void pleaseStop() {
 		stop = true;
 	}
-
+	
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void run() {
 		KeggHelper kegg = new KeggHelper();
 		try {
@@ -96,7 +96,7 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider, Runn
 			int max = orgs.length;
 			double step = 1d / orgs.length;
 			int lastErrorCnt = ErrorMsg.getErrorMsgCount();
-
+			
 			ArrayList<String> coveredMaps = new ArrayList<String>();
 			for (Node n : graph.getNodes()) {
 				NodeHelper nh = new NodeHelper(n);

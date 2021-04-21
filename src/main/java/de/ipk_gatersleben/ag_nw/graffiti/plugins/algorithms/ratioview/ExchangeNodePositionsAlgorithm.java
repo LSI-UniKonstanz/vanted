@@ -31,27 +31,27 @@ import org.graffiti.plugin.algorithm.PreconditionException;
  *                  algorithm undo/redo operations.
  */
 public class ExchangeNodePositionsAlgorithm extends AbstractAlgorithm {
-
+	
 	/**
 	 * A stack of changes containing previous positions, before the change.
 	 */
 	private ArrayDeque<HashMap<Node, Point2D>> undoStack = new ArrayDeque<>();
-
+	
 	@Override
 	public String getName() {
 		return "Exchange Positions";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Nodes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -60,17 +60,17 @@ public class ExchangeNodePositionsAlgorithm extends AbstractAlgorithm {
 		if (selection.getNodes().size() < 2)
 			throw new PreconditionException("Minimum 2 nodes must be selected");
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0);
 	}
-
+	
 	/**
 	 * It swaps node positions in counter-clockwise direction.
 	 */
@@ -101,16 +101,16 @@ public class ExchangeNodePositionsAlgorithm extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	@Override
 	public boolean doesUndo() {
 		return true;
 	}
-
+	
 	@Override
 	public void undo() throws CannotUndoException {
 		super.undo();
-
+		
 		HashMap<Node, Point2D> oldPositions = undoStack.removeFirst();
 		Collection<Node> nodes = recycledSelection.getNodes();
 		Graph recycledGraph = nodes.iterator().next().getGraph();

@@ -67,104 +67,104 @@ import org.jfree.util.ObjectUtils;
  * @author David Berry
  */
 public abstract class Title extends Object implements Cloneable, Serializable {
-
+	
 	/**
 	 * Useful constant for the title position (also used for vertical alignment).
 	 */
 	public static final int TOP = 0;
-
+	
 	/**
 	 * Useful constant for the title position (also used for vertical alignment).
 	 */
 	public static final int BOTTOM = 1;
-
+	
 	/**
 	 * Useful constant for the title position (also used for horizontal alignment).
 	 */
 	public static final int RIGHT = 2;
-
+	
 	/**
 	 * Useful constant for the title position (also used for horizontal alignment).
 	 */
 	public static final int LEFT = 3;
-
+	
 	/** Useful constant for the title position. */
 	public static final int NORTH = 0;
-
+	
 	/** Useful constant for the title position. */
 	public static final int SOUTH = 1;
-
+	
 	/** Useful constant for the title position. */
 	public static final int EAST = 2;
-
+	
 	/** Useful constant for the title position. */
 	public static final int WEST = 3;
-
+	
 	/** Useful constant for the title alignment (horizontal or vertical). */
 	public static final int CENTER = 4;
-
+	
 	/** Useful constant for the title alignment (horizontal or vertical). */
 	public static final int MIDDLE = 4;
-
+	
 	/** The default title position. */
 	public static final RectangleEdge DEFAULT_POSITION = RectangleEdge.TOP;
-
+	
 	/** The default horizontal alignment. */
 	public static final HorizontalAlignment DEFAULT_HORIZONTAL_ALIGNMENT = HorizontalAlignment.CENTER;
-
+	
 	/** The default vertical alignment. */
 	public static final VerticalAlignment DEFAULT_VERTICAL_ALIGNMENT = VerticalAlignment.CENTER;
-
+	
 	/** Default title spacer. */
 	public static final Spacer DEFAULT_SPACER = new Spacer(Spacer.RELATIVE, 0.01, 0.15, 0.01, 0.15);
-
+	
 	/** The title position. */
 	private RectangleEdge position;
-
+	
 	/** The horizontal alignment of the title. */
 	private HorizontalAlignment horizontalAlignment;
-
+	
 	/** The vertical alignment of the title. */
 	private VerticalAlignment verticalAlignment;
-
+	
 	/** The amount of blank space to leave around the title. */
 	private Spacer spacer;
-
+	
 	/** Storage for registered change listeners. */
 	private transient EventListenerList listenerList;
-
+	
 	/** A flag that can be used to temporarily disable the listener mechanism. */
 	private boolean notify;
-
+	
 	/**
 	 * Creates a new title, using default attributes where necessary.
 	 */
 	protected Title() {
-
+		
 		this(Title.DEFAULT_POSITION, Title.DEFAULT_HORIZONTAL_ALIGNMENT, Title.DEFAULT_VERTICAL_ALIGNMENT,
 				Title.DEFAULT_SPACER);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new title, using default attributes where necessary.
 	 * 
 	 * @param position
-	 *            the position of the title (<code>null</code> not permitted).
+	 *           the position of the title (<code>null</code> not permitted).
 	 * @param horizontalAlignment
-	 *            the horizontal alignment of the title (<code>null</code> not
-	 *            permitted).
+	 *           the horizontal alignment of the title (<code>null</code> not
+	 *           permitted).
 	 * @param verticalAlignment
-	 *            the vertical alignment of the title (<code>null</code> not
-	 *            permitted).
+	 *           the vertical alignment of the title (<code>null</code> not
+	 *           permitted).
 	 */
 	protected Title(RectangleEdge position, HorizontalAlignment horizontalAlignment,
 			VerticalAlignment verticalAlignment) {
-
+		
 		this(position, horizontalAlignment, verticalAlignment, Title.DEFAULT_SPACER);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new title.
 	 * <P>
@@ -173,20 +173,20 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 	 * this constructor.
 	 * 
 	 * @param position
-	 *            the position of the title (<code>null</code> not permitted).
+	 *           the position of the title (<code>null</code> not permitted).
 	 * @param horizontalAlignment
-	 *            the horizontal alignment of the title (LEFT, CENTER or RIGHT,
-	 *            <code>null</code> not permitted).
+	 *           the horizontal alignment of the title (LEFT, CENTER or RIGHT,
+	 *           <code>null</code> not permitted).
 	 * @param verticalAlignment
-	 *            the vertical alignment of the title (TOP, MIDDLE or BOTTOM,
-	 *            <code>null</code> not permitted).
+	 *           the vertical alignment of the title (TOP, MIDDLE or BOTTOM,
+	 *           <code>null</code> not permitted).
 	 * @param spacer
-	 *            the amount of space to leave around the outside of the title
-	 *            (<code>null</code> not permitted).
+	 *           the amount of space to leave around the outside of the title
+	 *           (<code>null</code> not permitted).
 	 */
 	protected Title(RectangleEdge position, HorizontalAlignment horizontalAlignment,
 			VerticalAlignment verticalAlignment, Spacer spacer) {
-
+		
 		// check arguments...
 		if (position == null) {
 			throw new IllegalArgumentException("Argument 'position' cannot be null.");
@@ -194,14 +194,14 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 		if (horizontalAlignment == null) {
 			throw new IllegalArgumentException("Argument 'horizontalAlignment' cannot be null.");
 		}
-
+		
 		if (verticalAlignment == null) {
 			throw new IllegalArgumentException("Argument 'verticalAlignment' cannot be null.");
 		}
 		if (spacer == null) {
 			throw new IllegalArgumentException("Argument 'spacer' cannot be null.");
 		}
-
+		
 		// initialise...
 		this.position = position;
 		this.horizontalAlignment = horizontalAlignment;
@@ -209,9 +209,9 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 		this.spacer = spacer;
 		this.listenerList = new EventListenerList();
 		this.notify = true;
-
+		
 	}
-
+	
 	/**
 	 * Returns the position of the title.
 	 * 
@@ -220,13 +220,13 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 	public RectangleEdge getPosition() {
 		return this.position;
 	}
-
+	
 	/**
 	 * Sets the position for the title and sends a {@link TitleChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param position
-	 *            the position (<code>null</code> not permitted).
+	 *           the position (<code>null</code> not permitted).
 	 */
 	public void setPosition(RectangleEdge position) {
 		if (position == null) {
@@ -237,7 +237,7 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 			notifyListeners(new TitleChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the horizontal alignment of the title.
 	 * 
@@ -246,13 +246,13 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 	public HorizontalAlignment getHorizontalAlignment() {
 		return this.horizontalAlignment;
 	}
-
+	
 	/**
 	 * Sets the horizontal alignment for the title and sends a
 	 * {@link TitleChangeEvent} to all registered listeners.
 	 * 
 	 * @param alignment
-	 *            the horizontal alignment (<code>null</code> not permitted).
+	 *           the horizontal alignment (<code>null</code> not permitted).
 	 */
 	public void setHorizontalAlignment(HorizontalAlignment alignment) {
 		if (alignment == null) {
@@ -263,7 +263,7 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 			notifyListeners(new TitleChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the vertical alignment of the title.
 	 * 
@@ -272,14 +272,14 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 	public VerticalAlignment getVerticalAlignment() {
 		return this.verticalAlignment;
 	}
-
+	
 	/**
 	 * Sets the vertical alignment for the title, and notifies any registered
 	 * listeners of the change.
 	 * 
 	 * @param alignment
-	 *            the new vertical alignment (TOP, MIDDLE or BOTTOM,
-	 *            <code>null</code> not permitted).
+	 *           the new vertical alignment (TOP, MIDDLE or BOTTOM,
+	 *           <code>null</code> not permitted).
 	 */
 	public void setVerticalAlignment(VerticalAlignment alignment) {
 		if (alignment == null) {
@@ -290,7 +290,7 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 			notifyListeners(new TitleChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the spacer which determines the blank space around the edges of the
 	 * title.
@@ -300,13 +300,13 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 	public Spacer getSpacer() {
 		return this.spacer;
 	}
-
+	
 	/**
 	 * Sets the spacer for the title and sends a {@link TitleChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param spacer
-	 *            the new spacer (<code>null</code> not permitted).
+	 *           the new spacer (<code>null</code> not permitted).
 	 */
 	public void setSpacer(Spacer spacer) {
 		if (spacer == null) {
@@ -316,9 +316,9 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 			this.spacer = spacer;
 			notifyListeners(new TitleChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the flag that indicates whether or not the notification mechanism is
 	 * enabled.
@@ -328,56 +328,56 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 	public boolean getNotify() {
 		return this.notify;
 	}
-
+	
 	/**
 	 * Sets the flag that indicates whether or not the notification mechanism is
 	 * enabled. There are certain situations (such as cloning) where you want to
 	 * turn notification off temporarily.
 	 * 
 	 * @param flag
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 */
 	public void setNotify(boolean flag) {
 		this.notify = flag;
 	}
-
+	
 	/**
 	 * Returns the preferred width of the title. When a title is displayed at the
 	 * left or right of a chart, the chart will attempt to give the title enough
 	 * space for it's preferred width.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param height
-	 *            the height.
+	 *           the height.
 	 * @return the preferred width of the title.
 	 */
 	public abstract float getPreferredWidth(Graphics2D g2, float height);
-
+	
 	/**
 	 * Returns the preferred height of the title. When a title is displayed at the
 	 * top or bottom of a chart, the chart will attempt to give the title enough
 	 * space for it's preferred height.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param width
-	 *            the width.
+	 *           the width.
 	 * @return the preferred height of the title.
 	 */
 	public abstract float getPreferredHeight(Graphics2D g2, float width);
-
+	
 	/**
 	 * Draws the title on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area allocated for the title.
+	 *           the area allocated for the title.
 	 */
 	public abstract void draw(Graphics2D g2, Rectangle2D area);
-
+	
 	/**
 	 * Returns a clone of the title.
 	 * <P>
@@ -386,47 +386,47 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 	 * 
 	 * @return a clone of the title.
 	 * @throws CloneNotSupportedException
-	 *             not thrown by this class, but it may be thrown by subclasses.
+	 *            not thrown by this class, but it may be thrown by subclasses.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		Title duplicate = (Title) super.clone();
 		duplicate.listenerList = new EventListenerList();
 		// Spacer is immutable => same reference in clone OK
 		return duplicate;
 	}
-
+	
 	/**
 	 * Registers an object for notification of changes to the title.
 	 * 
 	 * @param listener
-	 *            the object that is being registered.
+	 *           the object that is being registered.
 	 */
 	public void addChangeListener(TitleChangeListener listener) {
 		this.listenerList.add(TitleChangeListener.class, listener);
 	}
-
+	
 	/**
 	 * Unregisters an object for notification of changes to the chart title.
 	 * 
 	 * @param listener
-	 *            the object that is being unregistered.
+	 *           the object that is being unregistered.
 	 */
 	public void removeChangeListener(TitleChangeListener listener) {
 		this.listenerList.remove(TitleChangeListener.class, listener);
 	}
-
+	
 	/**
 	 * Notifies all registered listeners that the chart title has changed in some
 	 * way.
 	 * 
 	 * @param event
-	 *            an object that contains information about the change to the title.
+	 *           an object that contains information about the change to the title.
 	 */
 	protected void notifyListeners(TitleChangeEvent event) {
-
+		
 		if (this.notify) {
-
+			
 			Object[] listeners = this.listenerList.getListenerList();
 			for (int i = listeners.length - 2; i >= 0; i -= 2) {
 				if (listeners[i] == TitleChangeListener.class) {
@@ -434,30 +434,30 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 				}
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Tests an object for equality with this title.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof Title) {
-
+			
 			Title t = (Title) obj;
-
+			
 			if (this.position != t.position) {
 				return false;
 			}
@@ -473,15 +473,15 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 			if (this.notify != t.notify) {
 				return false;
 			}
-
+			
 			return true;
-
+			
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Returns a hashcode for the title.
 	 * 
@@ -495,32 +495,32 @@ public abstract class Title extends Object implements Cloneable, Serializable {
 		result = 37 * result + ObjectUtils.hashCode(this.spacer);
 		return result;
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.listenerList = new EventListenerList();
 	}
-
+	
 }

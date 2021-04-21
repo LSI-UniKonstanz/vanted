@@ -44,12 +44,12 @@ import org.jfree.ui.RefineryUtilities;
  * A demo of the {@link HistogramDataset} class.
  */
 public class HistogramDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public HistogramDemo2(final String title) {
 		super(title);
@@ -59,7 +59,7 @@ public class HistogramDemo2 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample {@link HistogramDataset}.
 	 * 
@@ -71,7 +71,7 @@ public class HistogramDemo2 extends ApplicationFrame {
 		dataset.addSeries("H1", values, 10, 0.0, 10.0);
 		return dataset;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -82,12 +82,12 @@ public class HistogramDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            a dataset.
+	 *           a dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final IntervalXYDataset dataset) {
@@ -96,22 +96,22 @@ public class HistogramDemo2 extends ApplicationFrame {
 		chart.getXYPlot().setForegroundAlpha(0.75f);
 		return chart;
 	}
-
+	
 	/**
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 * @throws IOException
-	 *             if there is a problem saving the file.
+	 *            if there is a problem saving the file.
 	 */
 	public static void main(final String[] args) throws IOException {
-
+		
 		final HistogramDemo2 demo = new HistogramDemo2("Histogram Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

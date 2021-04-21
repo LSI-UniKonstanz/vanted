@@ -40,17 +40,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.algorithms.RecolorEdges
  */
 public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 	private JPanel jpanel;
-
+	
 	private JButton qsButton;
-
+	
 	private int barCount = -1;
-
+	
 	public ChartColorAttributeEditor(Displayable disp) {
 		super(disp);
 		qsButton = getQuickSetButton();
 		setGUI((ChartColorAttribute) disp, false);
 	}
-
+	
 	private JButton getQuickSetButton() {
 		JButton res = new JButton("P");
 		res.setToolTipText("Select Preset (Quick-Set Colors)");
@@ -138,10 +138,10 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 		});
 		return res;
 	}
-
+	
 	private void setGUI(ChartColorAttribute cca, boolean showEmpty) {
 		jpanel = new JPanel();
-
+		
 		double[][] size = new double[2][];
 		barCount = cca.getDefinedBarCount();
 		if (barCount <= 0) {
@@ -154,7 +154,7 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 				size[0][x] = TableLayoutConstants.FILL;
 			size[1][0] = TableLayoutConstants.PREFERRED; // TableLayoutConstants.FILL;
 			size[1][1] = TableLayoutConstants.PREFERRED; // TableLayoutConstants.FILL;
-
+			
 			jpanel.setLayout(new TableLayout(size));
 			ArrayList<Color> barCols = null;
 			ArrayList<Color> barOutlineCols = null;
@@ -175,33 +175,33 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 					colButton.putClientProperty("barIndex", Integer.valueOf(i));
 					colButton.setToolTipText("Line/Bar-Color: " + cca.getIdList(barCount).get(i) + ": "
 							+ AttributeHelper.getColorName(barCols.get(i)));
-
+					
 					if (barOutlineCols != null && barOutlineCols.get(i) != null && !showEmpty) {
 						colButtonOutline.setBackground(barOutlineCols.get(i));
 						colButtonOutline.setForeground(barOutlineCols.get(i));
 						colButtonOutline.setText("#");
 					} else
 						colButtonOutline.setText(EMPTY_STRING);
-
+					
 					colButtonOutline.setToolTipText("Outline-Color: " + cca.getIdList(barCount).get(i) + ": "
 							+ AttributeHelper.getColorName(barOutlineCols.get(i)));
-
+					
 					addDefaultColorActionListenerAndAddBarInfo(colButtonOutline, false, cca.getIdList(barCount).get(i));
 					colButtonOutline.putClientProperty("isBar", Boolean.valueOf(false));
 					colButtonOutline.putClientProperty("barIndex", Integer.valueOf(i));
 					jpanel.add(colButton, i + ",0");
-
+					
 					jpanel.add(colButtonOutline, i + ",1");
 				}
 			} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-
+			
 		}
 		// jpanel.setMaximumSize(new Dimension(2000, 40));
 		jpanel.validate();
 	}
-
+	
 	private static void addDefaultColorActionListenerAndAddBarInfo(final JLabel colorButton, final boolean barColor,
 			final String bar) {
 		colorButton.setOpaque(true);
@@ -226,27 +226,27 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 						src.setToolTipText("Outline-Color: " + bar + ": " + AttributeHelper.getColorName(c));
 				}
 			}
-
+			
 			public void mousePressed(MouseEvent arg0) {
 			}
-
+			
 			public void mouseReleased(MouseEvent arg0) {
 			}
-
+			
 			public void mouseEntered(MouseEvent arg0) {
 				colorButton.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
 			}
-
+			
 			public void mouseExited(MouseEvent arg0) {
 				colorButton.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 		});
 	}
-
+	
 	public JComponent getComponent() {
 		return TableLayout.getSplit(qsButton, jpanel, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
 	}
-
+	
 	public void setEditFieldValue() {
 		ChartColorAttribute cca = (ChartColorAttribute) getDisplayable();
 		for (int i = 0; i < jpanel.getComponentCount(); i++) {
@@ -264,7 +264,7 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 			}
 		}
 	}
-
+	
 	public void setValue() {
 		ChartColorAttribute cca = (ChartColorAttribute) getDisplayable();
 		for (int i = 0; i < jpanel.getComponentCount(); i++) {

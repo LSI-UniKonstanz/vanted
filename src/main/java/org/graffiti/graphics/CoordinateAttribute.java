@@ -26,46 +26,46 @@ import org.graffiti.event.AttributeEvent;
  */
 public class CoordinateAttribute extends HashMapAttribute implements GraphicAttributeConstants {
 	// ~ Instance fields ========================================================
-
+	
 	/** Contains horizontal coordinate */
 	private DoubleAttribute x;
-
+	
 	/** Contains vertical coordinate */
 	private DoubleAttribute y;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for Coordinate that sets the coordinates to a random number.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 */
 	public CoordinateAttribute(String id) {
 		this(id, 100d, 100d /* Math.random() * 400, Math.random() * 400 */);
 	}
-
+	
 	/**
 	 * Constructor for Coordinate.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param c
-	 *            the coordinate-value of the attriubte.
+	 *           the coordinate-value of the attriubte.
 	 */
 	public CoordinateAttribute(String id, Point2D c) {
 		this(id, c.getX(), c.getY());
 	}
-
+	
 	/**
 	 * Constructor for Coordinate.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param x
-	 *            the x-value of the attribute.
+	 *           the x-value of the attribute.
 	 * @param y
-	 *            the y-value of the attribute.
+	 *           the y-value of the attribute.
 	 */
 	public CoordinateAttribute(String id, double x, double y) {
 		super(id);
@@ -74,9 +74,9 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 		this.add(this.x, false);
 		this.add(this.y, false);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the collection of attributes contained within this
 	 * <tt>CollectionAttribute</tt>. The coordinate values are set, additional
@@ -84,16 +84,16 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 	 * subattribute with the same id, an exception will be thrown).
 	 * 
 	 * @param attrs
-	 *            the map that contains all attributes.
+	 *           the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
 		if (attrs.keySet().contains(X) && attrs.keySet().contains(Y)) {
 			for (Iterator<String> it = attrs.keySet().iterator(); it.hasNext();) {
 				String attrId = (String) it.next();
-
+				
 				if (attrId.equals(X)) {
 					setX(((DoubleAttribute) attrs.get(X)).getDouble());
 				} else if (attrId.equals(Y)) {
@@ -106,12 +106,12 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-
+	
 	/**
 	 * Sets the x and y values of this coordinate to the given points' values.
 	 * 
 	 * @param p
-	 *            <code>Point2D</code> to which this coordinate should be set.
+	 *           <code>Point2D</code> to which this coordinate should be set.
 	 */
 	public void setCoordinate(Point2D p) {
 		AttributeEvent ae = new AttributeEvent(this);
@@ -120,7 +120,7 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 		this.y.value = p.getY();
 		callPostAttributeChanged(ae);
 	}
-
+	
 	public void setCoordinate(double x, double y) {
 		AttributeEvent ae = new AttributeEvent(this);
 		callPreAttributeChanged(ae);
@@ -128,7 +128,7 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 		this.y.value = y;
 		callPostAttributeChanged(ae);
 	}
-
+	
 	/**
 	 * Returns the encapsulated coordinate.
 	 * 
@@ -137,17 +137,17 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 	public Point2D getCoordinate() {
 		return new Point2D.Double(this.getX(), this.getY());
 	}
-
+	
 	/**
 	 * Sets the 'x1'-value.
 	 * 
 	 * @param x
-	 *            the 'x1'-value to be set.
+	 *           the 'x1'-value to be set.
 	 */
 	public void setX(double x) {
 		this.x.setDouble(x);
 	}
-
+	
 	/**
 	 * Returns the 'x'-value of the encapsulated coordinate.
 	 * 
@@ -156,17 +156,17 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 	public double getX() {
 		return this.x.getDouble();
 	}
-
+	
 	/**
 	 * Sets the 'x2'-value.
 	 * 
 	 * @param y
-	 *            the 'x2'-value to be set.
+	 *           the 'x2'-value to be set.
 	 */
 	public void setY(double y) {
 		this.y.setDouble(y);
 	}
-
+	
 	/**
 	 * Returns the 'y'-value of the encapsulated coordinate.
 	 * 
@@ -175,7 +175,7 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 	public double getY() {
 		return this.y.getDouble();
 	}
-
+	
 	/**
 	 * Returns a deep copy of this object.
 	 * 
@@ -186,7 +186,7 @@ public class CoordinateAttribute extends HashMapAttribute implements GraphicAttr
 		CoordinateAttribute copied = new CoordinateAttribute(this.getId(), getX(), getY());
 		return copied;
 	}
-
+	
 	// /**
 	// * Sets the value of this <code>Attribute</code> to the given value without
 	// * informing the <code>ListenerManager</code>.

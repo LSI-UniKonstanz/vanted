@@ -43,14 +43,14 @@ public class UTransport extends UtilitySuperClassToGraph {
 		setSpontaneous(elem, i.getSpontaneous());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		Transport interaction = model.addNew(Transport.class, RDFID);
-
+		
 		UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 		UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 		UtilitySuperClassFromGraph.getConversionDirection(elem, interaction);
@@ -63,9 +63,9 @@ public class UTransport extends UtilitySuperClassToGraph {
 		UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
 		StoichiometryWriter sW = new StoichiometryWriter();
-
+		
 		for (Edge ingoing : elem.getAllInEdges()) {
-
+			
 			CollectionAttribute map = ingoing.getAttributes();
 			boolean isAControl = false;
 			try {
@@ -73,22 +73,22 @@ public class UTransport extends UtilitySuperClassToGraph {
 					// only controls put RDFIds on edges
 					isAControl = true;// do nothing
 				}
-
+				
 			} catch (AttributeNotFoundException e) {
 				ErrorMsg.addErrorMessage(e);
 			} finally {
 				Node in = ingoing.getSource();
-
+				
 				String RDFId = getAttributeSecure(in, Messages.getString("UtilitySuperClassToGraph.82"));
 				PhysicalEntity p = (PhysicalEntity) model.getByID(RDFId);
-
+				
 				if (!isAControl) {
 					// so the node can be added to the conversion
 					interaction.addLeft(p);
 				}
 				sW.readParticipantStoichiometry(p, interaction, ingoing, model);
 			}
-
+			
 		}
 		for (Edge outgoing : elem.getAllOutEdges()) {
 			CollectionAttribute map = outgoing.getAttributes();
@@ -98,15 +98,15 @@ public class UTransport extends UtilitySuperClassToGraph {
 					// only controls put RDFIds on edges
 					isAControl = true;// do nothing
 				}
-
+				
 			} catch (AttributeNotFoundException e) {
 				ErrorMsg.addErrorMessage(e);
 			} finally {
 				Node in = outgoing.getTarget();
-
+				
 				String RDFId = getAttributeSecure(in, Messages.getString("UtilitySuperClassToGraph.82"));
 				PhysicalEntity p = (PhysicalEntity) model.getByID(RDFId);
-
+				
 				if (!isAControl) {
 					// so the node can be added to the conversion
 					interaction.addRight(p);
@@ -115,5 +115,5 @@ public class UTransport extends UtilitySuperClassToGraph {
 			}
 		}
 	}
-
+	
 }

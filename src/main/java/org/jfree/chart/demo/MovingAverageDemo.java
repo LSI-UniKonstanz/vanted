@@ -51,24 +51,24 @@ import org.jfree.ui.RefineryUtilities;
  * An example showing the calculation of a moving average for a time series.
  */
 public class MovingAverageDemo extends ApplicationFrame {
-
+	
 	/**
 	 * A moving average demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MovingAverageDemo(final String title) {
-
+		
 		super(title);
-
+		
 		// create a title...
 		final String chartTitle = "Legal & General Unit Trust Prices";
 		final XYDataset dataset = createDataset();
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Date", "Price Per Unit", dataset, true,
 				true, false);
-
+		
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setDisplaySeriesShapes(true);
 		final XYPlot plot = chart.getXYPlot();
@@ -83,9 +83,9 @@ public class MovingAverageDemo extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a dataset, one series containing unit trust prices, the other a
 	 * moving average.
@@ -93,7 +93,7 @@ public class MovingAverageDemo extends ApplicationFrame {
 	 * @return the dataset.
 	 */
 	public XYDataset createDataset() {
-
+		
 		final TimeSeries s1 = new TimeSeries("L&G European Index Trust", Month.class);
 		s1.add(new Month(2, 2001), 181.8);
 		s1.add(new Month(3, 2001), 167.3);
@@ -113,7 +113,7 @@ public class MovingAverageDemo extends ApplicationFrame {
 		s1.add(new Month(5, 2002), 139.8);
 		s1.add(new Month(6, 2002), 137.0);
 		s1.add(new Month(7, 2002), 132.8);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -124,30 +124,30 @@ public class MovingAverageDemo extends ApplicationFrame {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		final TimeSeries s2 = MovingAverage.createMovingAverage(s1, "Six Month Moving Average", 6, 0);
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(s1);
 		dataset.addSeries(s2);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final MovingAverageDemo demo = new MovingAverageDemo("Moving Average Demo 1");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -22,31 +22,31 @@ import org.graffiti.plugin.actions.GraffitiAction;
  */
 public class ViewNewAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5252117180552221559L;
 	/** DOCUMENT ME! */
 	private StringBundle sBundle;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new ViewNewAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param sBundle
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ViewNewAction(MainFrame mainFrame, StringBundle sBundle) {
 		super("file.newView", mainFrame, "filemenu_new");
 		this.sBundle = sBundle;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -54,7 +54,7 @@ public class ViewNewAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return mainFrame.isSessionActive();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -62,17 +62,17 @@ public class ViewNewAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (mainFrame.isSessionActive()) {
 			String dv = mainFrame.getDefaultView();
-
+			
 			if (dv != null) {
 				mainFrame.createInternalFrame(dv, "", false, false);
 			} else {

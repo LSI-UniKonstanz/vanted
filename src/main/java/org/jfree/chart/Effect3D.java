@@ -35,14 +35,14 @@ package org.jfree.chart;
  * This allows the axes to mirror the same effect by querying the renderer.
  */
 public interface Effect3D {
-
+	
 	/**
 	 * Returns the x-offset (in Java2D units) for the 3D effect.
 	 * 
 	 * @return the offset.
 	 */
 	public double getXOffset();
-
+	
 	/**
 	 * Returns the y-offset (in Java2D units) for the 3D effect.
 	 * 

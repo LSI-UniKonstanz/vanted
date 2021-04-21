@@ -26,13 +26,13 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class LabelFontAttributeEditor extends AbstractValueEditComponent {
-
+	
 	protected JComboBox<String> jFontSelection;
 	private static final String[] fontnames = GraphicsEnvironment.getLocalGraphicsEnvironment()
 			.getAvailableFontFamilyNames();
 	private static final int defaultSize = (int) (new JLabel("").getFont().getSize() * 1.8);
 	private static final int defaultStyle = new JLabel("").getFont().getStyle();
-
+	
 	public LabelFontAttributeEditor(final Displayable disp) {
 		super(disp);
 		jFontSelection = new JComboBox<>(getFontLabels(fontnames));
@@ -57,7 +57,7 @@ public class LabelFontAttributeEditor extends AbstractValueEditComponent {
 			}
 		});
 	}
-
+	
 	private static String[] getFontLabels(String[] fonts) {
 		ArrayList<String> result = new ArrayList<String>();
 		result.add("~");
@@ -66,11 +66,11 @@ public class LabelFontAttributeEditor extends AbstractValueEditComponent {
 		}
 		return result.toArray(new String[] {});
 	}
-
+	
 	public JComponent getComponent() {
 		return jFontSelection;
 	}
-
+	
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			jFontSelection.setSelectedIndex(0);
@@ -84,7 +84,7 @@ public class LabelFontAttributeEditor extends AbstractValueEditComponent {
 			}
 		}
 	}
-
+	
 	public void setValue() {
 		String selected = (String) jFontSelection.getSelectedItem();
 		if (!selected.equalsIgnoreCase(EMPTY_STRING))

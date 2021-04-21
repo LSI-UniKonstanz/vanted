@@ -57,140 +57,140 @@ import org.jfree.data.DefaultValueDataset;
  * @author Bryan Scott
  */
 public class ThermometerDemo extends JPanel {
-
+	
 	/** Options for the value label position combo box. */
 	protected static final String[] OPTIONS = { "None", "Right", "Left", "Bulb" };
-
+	
 	/** Axis position options. */
 	protected static final String[] AXIS_OPTIONS = { "None", "Right", "Left" };
-
+	
 	/** The dataset. */
 	private DefaultValueDataset data = new DefaultValueDataset(20.0);
-
+	
 	/** The meter plot (dial). */
 	private MeterPlot meterplot = new MeterPlot(this.data);
-
+	
 	/** The meter chart (dial). */
 	private JFreeChart meterchart = new JFreeChart("Meter Chart", JFreeChart.DEFAULT_TITLE_FONT, this.meterplot, false);
-
+	
 	/** The meter panel. */
 	private ChartPanel panelMeter = new ChartPanel(this.meterchart);
-
+	
 	/** Panel 1. */
 	private JPanel jPanel1 = new JPanel();
-
+	
 	/** Increment button for thermometer ?. */
 	private JButton butUp3 = new JButton();
-
+	
 	/** Decrement button for thermometer ?. */
 	private JButton butDown3 = new JButton();
-
+	
 	/** Panel 2. */
 	private JPanel jPanel2 = new JPanel();
-
+	
 	/** Borderlayout 2. */
 	private BorderLayout borderLayout2 = new BorderLayout();
-
+	
 	/** Panel 3. */
 	private JPanel jPanel3 = new JPanel();
-
+	
 	/** Borderlayout 3. */
 	private BorderLayout borderLayout3 = new BorderLayout();
-
+	
 	/** Panel 4. */
 	private JPanel jPanel4 = new JPanel();
-
+	
 	/** Decrement button for thermometer ?. */
 	private JButton butDown2 = new JButton();
-
+	
 	/** Increment button for thermometer ?. */
 	private JButton butUp2 = new JButton();
-
+	
 	/** Panel 5. */
 	private JPanel jPanel5 = new JPanel();
-
+	
 	/** Grid layout 1. */
 	private GridLayout gridLayout1 = new GridLayout();
-
+	
 	/** Panel 6. */
 	private JPanel jPanel6 = new JPanel();
-
+	
 	/** Increment button for thermometer ?. */
 	private JButton butUp1 = new JButton();
-
+	
 	/** Decrement button for thermometer ?. */
 	private JButton butDown1 = new JButton();
-
+	
 	/** Thermometer 1. */
 	private JThermometer thermo1 = new JThermometer();
-
+	
 	/** Thermometer 2. */
 	private JThermometer thermo2 = new JThermometer();
-
+	
 	/** Thermometer 2. */
 	private JThermometer thermo3 = new JThermometer();
-
+	
 	/** Array of thermometers. */
 	private JThermometer[] thermo = new JThermometer[3];
-
+	
 	/** Borderlayout 1. */
 	private BorderLayout borderLayout1 = new BorderLayout();
-
+	
 	/** Panel 7. */
 	private JPanel jPanel7 = new JPanel();
-
+	
 	/** Panel 8. */
 	private JPanel jPanel8 = new JPanel();
-
+	
 	/** Panel 9. */
 	private JPanel jPanel9 = new JPanel();
-
+	
 	/** Grid layout 2. */
 	private GridLayout gridLayout2 = new GridLayout();
-
+	
 	/** Grid layout 3. */
 	private GridLayout gridLayout3 = new GridLayout();
-
+	
 	/** Grid layout 4. */
 	private GridLayout gridLayout4 = new GridLayout();
-
+	
 	/** Combo box 1 for value label position. */
 	private JComboBox pickShow0 = new JComboBox(OPTIONS);
-
+	
 	/** Combo box 2 for value label position. */
 	private JComboBox pickShow1 = new JComboBox(OPTIONS);
-
+	
 	/** Combo box 3 for value label position. */
 	private JComboBox pickShow2 = new JComboBox(OPTIONS);
-
+	
 	/** Combo box 1 for axis position. */
 	private JComboBox pickAxis0 = new JComboBox(AXIS_OPTIONS);
 	/** Combo box 2 for axis position. */
 	private JComboBox pickAxis1 = new JComboBox(AXIS_OPTIONS);
 	/** Combo box 3 for axis position. */
 	private JComboBox pickAxis2 = new JComboBox(AXIS_OPTIONS);
-
+	
 	/** An array of combo boxes. */
 	private JComboBox[] pickShow = new JComboBox[3];
-
+	
 	/** An array of combo boxes. */
 	private JComboBox[] pickAxis = new JComboBox[3];
-
+	
 	/** Panel 10. */
 	private JPanel jPanel10 = new JPanel();
-
+	
 	/** Borderlayout 4. */
 	private BorderLayout borderLayout4 = new BorderLayout();
-
+	
 	/** Panel 11. */
 	private JPanel jPanel11 = new JPanel();
-
+	
 	/** Decrement button for thermometer ?. */
 	private JButton butDown4 = new JButton();
-
+	
 	/** Increment button for thermometer ?. */
 	private JButton butUp4 = new JButton();
-
+	
 	/**
 	 * Default constructor.
 	 */
@@ -201,7 +201,7 @@ public class ThermometerDemo extends JPanel {
 			ex.printStackTrace();
 		}
 	}
-
+	
 	// ****************************************************************************
 	// * COMMERCIAL SUPPORT / JFREECHART DEVELOPER GUIDE *
 	// * Please note that commercial support and documentation is available from: *
@@ -212,67 +212,67 @@ public class ThermometerDemo extends JPanel {
 	// * source of funding for the JFreeChart project. Please support us so that *
 	// * we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Initialises the class.
 	 * 
 	 * @throws Exception
-	 *             for any exception.
+	 *            for any exception.
 	 */
 	void jbInit() throws Exception {
-
+		
 		// data.setRange(Double.valueOf(-20), Double.valueOf(20));
 		this.thermo[0] = this.thermo1;
 		this.thermo[1] = this.thermo2;
 		this.thermo[2] = this.thermo3;
-
+		
 		this.thermo[0].setValue(0.0);
 		this.thermo[1].setValue(0.2);
 		this.thermo[2].setValue(0.3);
-
+		
 		this.thermo[0].setBackground(Color.white);
 		this.thermo[2].setBackground(Color.white);
-
+		
 		this.thermo[0].setOutlinePaint(null);
 		this.thermo[1].setOutlinePaint(null);
 		this.thermo[2].setOutlinePaint(null);
-
+		
 		this.thermo[0].setUnits(0);
 		this.thermo[1].setUnits(1);
 		this.thermo[2].setUnits(2);
-
+		
 		// thermo[0].setFont(new Font("SansSerif", Font.BOLD, 20));
 		this.thermo[0].setShowValueLines(true);
 		this.thermo[0].setFollowDataInSubranges(true);
 		this.thermo[1].setValueLocation(1);
-
+		
 		this.thermo[1].setForeground(Color.blue);
 		this.thermo[2].setForeground(Color.pink);
-
+		
 		this.thermo[0].setRange(-10.0, 40.0);
 		this.thermo[0].setSubrangeInfo(0, -50.0, 20.0, -10.0, 22.0);
 		this.thermo[0].setSubrangeInfo(1, 20.0, 24.0, 18.0, 26.0);
 		this.thermo[0].setSubrangeInfo(2, 24.0, 100.0, 22.0, 40.0);
-
+		
 		this.thermo[0].addSubtitle("Sea Water Temp");
 		this.thermo[1].addSubtitle("Air Temp", new Font("SansSerif", Font.PLAIN, 16));
 		this.thermo[2].addSubtitle("Ship Temp", new Font("SansSerif", Font.ITALIC + Font.BOLD, 20));
-
+		
 		this.thermo[1].setValueFormat(new DecimalFormat("#0.0"));
 		this.thermo[2].setValueFormat(new DecimalFormat("#0.00"));
-
+		
 		this.pickShow[0] = this.pickShow0;
 		this.pickShow[1] = this.pickShow1;
 		this.pickShow[2] = this.pickShow2;
-
+		
 		this.pickAxis[0] = this.pickAxis0;
 		this.pickAxis[1] = this.pickAxis1;
 		this.pickAxis[2] = this.pickAxis2;
-
+		
 		this.pickAxis[0].setSelectedIndex(2);
 		this.pickAxis[1].setSelectedIndex(2);
 		this.pickAxis[2].setSelectedIndex(2);
-
+		
 		setLayout(this.gridLayout1);
 		this.butDown3.setText("<");
 		this.butDown3.addActionListener(new java.awt.event.ActionListener() {
@@ -328,7 +328,7 @@ public class ThermometerDemo extends JPanel {
 				setShowValue(2);
 			}
 		});
-
+		
 		this.pickAxis0.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				setShowAxis(0);
@@ -344,7 +344,7 @@ public class ThermometerDemo extends JPanel {
 				setShowAxis(2);
 			}
 		});
-
+		
 		this.jPanel9.setLayout(this.gridLayout2);
 		this.gridLayout2.setColumns(1);
 		this.jPanel8.setLayout(this.gridLayout3);
@@ -398,17 +398,17 @@ public class ThermometerDemo extends JPanel {
 		add(this.jPanel1, null);
 		this.jPanel10.add(this.panelMeter, BorderLayout.CENTER);
 	}
-
+	
 	/**
 	 * Starting point for the demo application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ThermometerDemo panel = new ThermometerDemo();
-
+		
 		final JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new BorderLayout(5, 5));
 		frame.setDefaultCloseOperation(3);
@@ -418,16 +418,16 @@ public class ThermometerDemo extends JPanel {
 		final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation((d.width - frame.getSize().width) / 2, (d.height - frame.getSize().height) / 2);
 		frame.setVisible(true);
-
+		
 	}
-
+	
 	/**
 	 * Sets the value of one of the thermometers.
 	 * 
 	 * @param thermometer
-	 *            the thermometer index.
+	 *           the thermometer index.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	private void setValue(final int thermometer, final double value) {
 		if ((thermometer >= 0) && (thermometer < 3)) {
@@ -438,12 +438,12 @@ public class ThermometerDemo extends JPanel {
 			}
 		}
 	}
-
+	
 	/**
 	 * Sets the meter value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	private void setMeterValue(final double value) {
 		try {
@@ -456,29 +456,29 @@ public class ThermometerDemo extends JPanel {
 			System.err.println(ex.getMessage());
 		}
 	}
-
+	
 	/**
 	 * Sets the value label position for one of the thermometers.
 	 * 
 	 * @param thermometer
-	 *            the thermometer index.
+	 *           the thermometer index.
 	 */
 	private void setShowValue(final int thermometer) {
 		if ((thermometer >= 0) && (thermometer < 3)) {
 			this.thermo[thermometer].setValueLocation(this.pickShow[thermometer].getSelectedIndex());
 		}
 	}
-
+	
 	/**
 	 * Sets the axis position for one of the thermometers.
 	 * 
 	 * @param thermometer
-	 *            the thermometer index.
+	 *           the thermometer index.
 	 */
 	private void setShowAxis(final int thermometer) {
 		if ((thermometer >= 0) && (thermometer < 3)) {
 			this.thermo[thermometer].setShowAxisLocation(this.pickAxis[thermometer].getSelectedIndex());
 		}
 	}
-
+	
 }

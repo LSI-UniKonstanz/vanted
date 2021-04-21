@@ -18,14 +18,14 @@ import org.ErrorMsg;
  * jeweils 1/0 vorzunehmen!
  */
 class InputNeuron {
-
+	
 	String currentValue;
 	double currentDoubleValue;
-
+	
 	public double getOutput() {
 		return currentDoubleValue;
 	}
-
+	
 	public void setDoubleInput(int column, String input) {
 		currentValue = input;
 		try {
@@ -35,7 +35,7 @@ class InputNeuron {
 			currentDoubleValue = Double.NaN;
 		}
 	}
-
+	
 	public void setInput(int column, String input) {
 		currentValue = input;
 		try {

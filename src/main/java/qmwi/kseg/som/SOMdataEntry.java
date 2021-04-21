@@ -9,17 +9,17 @@ import java.util.ArrayList;
 // Eingabezeile wird mit Hilfe des Trennzeichens ";" in einzelne Strings zerlegt
 public interface SOMdataEntry {
 	public String[] getColumnData();
-
+	
 	public SOMdataEntry addValues(String inputLine, boolean normalized);
-
+	
 	public SOMdataEntry addValues(String inputLine);
-
+	
 	public Object getUserData();
-
+	
 	public void setUserData(Object data);
-
+	
 	public String getColumnData(int i);
-
+	
 	/**
 	 * @return True, if the supplied data is already normalized in the range of
 	 *         -1..1. If this value is False, The SOM train and recall method will
@@ -31,10 +31,10 @@ public interface SOMdataEntry {
 	 *         this flag should return true.
 	 */
 	public boolean isAlreadyNormalized();
-
+	
 	public ArrayList<Double> getDifferencesToCentroids();
-
+	
 	public void setDifferences(ArrayList<Double> differences);
-
+	
 	public double getMinDiff();
 } // class DataEnty

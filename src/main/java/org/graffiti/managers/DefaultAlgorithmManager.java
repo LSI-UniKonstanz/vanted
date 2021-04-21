@@ -26,28 +26,28 @@ import org.graffiti.plugin.algorithm.Algorithm;
  */
 public class DefaultAlgorithmManager implements AlgorithmManager {
 	// ~ Instance fields ========================================================
-
+	
 	/** The algorithms: key = algorithm class names, value = algorithm */
 	private Map<String, Algorithm> algorithms;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new algorithm manager.
 	 */
 	public DefaultAlgorithmManager() {
 		algorithms = new HashMap<String, Algorithm>();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/*
 	 * @see org.graffiti.managers.AlgorithmManager#getAlgorithms()
 	 */
 	public List<Algorithm> getAlgorithms() {
 		return new LinkedList<Algorithm>(algorithms.values());
 	}
-
+	
 	/*
 	 * @see org.graffiti.managers.AlgorithmManager#addAlgorithm(org.graffiti.plugin.
 	 * algorithm.Algorithm)
@@ -55,7 +55,7 @@ public class DefaultAlgorithmManager implements AlgorithmManager {
 	public void addAlgorithm(Algorithm algorithm) {
 		algorithms.put(algorithm.getClass().getName(), algorithm);
 	}
-
+	
 	/*
 	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.
 	 * graffiti.plugin.GenericPlugin,
@@ -64,7 +64,7 @@ public class DefaultAlgorithmManager implements AlgorithmManager {
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		if (plugin.getAlgorithms() != null) {
 			Algorithm[] algorithms = plugin.getAlgorithms();
-
+			
 			for (int i = 0; i < algorithms.length; i++) {
 				if (algorithms[i] != null)
 					addAlgorithm(algorithms[i]);

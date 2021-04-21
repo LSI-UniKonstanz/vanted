@@ -12,27 +12,27 @@ import org.graffiti.graph.Node;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
 public class TranspathReaction extends TranspathEntity {
-
+	
 	public String ID, DESCRIPTION, TYPE, REVERSIBLE, QUALITY, EFFECT, EVIDENCE, PATHWAYSTEP, SEMANTIC, COMPOSITION,
 			DECOMPOSITION, REACTANT, PRODUCES, ENZYME, INHIBITOR, COMMENT, REFERENCE, PATHWAY;
-
+	
 	// public String ID, NEGATIVE, CYTOMERORGAN, CYTOMERCELL, CYTOMERSTAGE,
 	// CYTOMERSPECIES, LOCATIONACCNOS, METHOD, MATERIAL, CELLLINE, SPECIES;
-
+	
 	public String getKey() {
 		return ID;
 	}
-
+	
 	@Override
 	public String toString() {
 		return ID + ", desc: " + DESCRIPTION + ", type: " + TYPE + ", reversible: " + REVERSIBLE;
 	}
-
+	
 	public void addElementsToGraph(Graph g, String clusterID, HashMap<String, Node> graphElementId2graphNode) {
 		getGraphNode(g, clusterID, graphElementId2graphNode);
-
+		
 	}
-
+	
 	private Node getGraphNode(Graph g, String clusterID, HashMap<String, Node> graphElementId2graphNode) {
 		if (graphElementId2graphNode.containsKey(ID))
 			return graphElementId2graphNode.get(ID);
@@ -70,11 +70,11 @@ public class TranspathReaction extends TranspathEntity {
 		 */
 		return n;
 	}
-
+	
 	public String getXMLstartEndEntity() {
 		return "Reaction";
 	}
-
+	
 	/*
 	 * TRANSPATHReaction:XN000000000 XN000000000 EGF + 2ErbB1 <=> EGF:(ErbB1)2
 	 * pathway step True 2 binding XN000026374 XN000000071 MO000000071 MO000004374

@@ -38,12 +38,12 @@ package org.jfree.data;
  * {@link org.jfree.chart.renderer.StackedXYAreaRenderer}.
  */
 public interface TableXYDataset extends XYDataset {
-
+	
 	/**
 	 * Returns the number of items every series.
 	 * 
 	 * @return the item count.
 	 */
 	public int getItemCount();
-
+	
 }

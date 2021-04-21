@@ -44,15 +44,15 @@ import org.jfree.ui.RefineryUtilities;
  * A demo scatter plot showing the use of the {@link XYDotRenderer} class.
  */
 public class ScatterPlotDemo4 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing a scatter plot.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ScatterPlotDemo4(final String title) {
-
+		
 		super(title);
 		final XYDataset data = new SampleXYDataset2();
 		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot Demo", "X", "Y", data,
@@ -61,16 +61,16 @@ public class ScatterPlotDemo4 extends ApplicationFrame {
 		plot.setRenderer(new XYDotRenderer());
 		plot.setDomainCrosshairVisible(true);
 		plot.setRangeCrosshairVisible(true);
-
+		
 		final NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
 		domainAxis.setAutoRangeIncludesZero(false);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -81,20 +81,20 @@ public class ScatterPlotDemo4 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ScatterPlotDemo4 demo = new ScatterPlotDemo4("Scatter Plot Demo 4");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

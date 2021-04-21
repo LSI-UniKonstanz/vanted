@@ -43,21 +43,21 @@ import java.awt.geom.Rectangle2D;
  * @author Bryan Scott
  */
 public class PointerNeedle extends MeterNeedle {
-
+	
 	/**
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param rotate
-	 *            the rotation point.
+	 *           the rotation point.
 	 * @param angle
-	 *            the angle.
+	 *           the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
-
+		
 		GeneralPath shape1 = new GeneralPath();
 		GeneralPath shape2 = new GeneralPath();
 		float minX = (float) plotArea.getMinX();
@@ -66,34 +66,34 @@ public class PointerNeedle extends MeterNeedle {
 		float maxY = (float) plotArea.getMaxY();
 		float midX = (float) (minX + (plotArea.getWidth() / 2));
 		float midY = (float) (minY + (plotArea.getHeight() / 2));
-
+		
 		shape1.moveTo(minX, midY);
 		shape1.lineTo(midX, minY);
 		shape1.lineTo(maxX, midY);
 		shape1.closePath();
-
+		
 		shape2.moveTo(minX, midY);
 		shape2.lineTo(midX, maxY);
 		shape2.lineTo(maxX, midY);
 		shape2.closePath();
-
+		
 		if ((rotate != null) && (angle != 0)) {
 			// / we have rotation huston, please spin me
 			getTransform().setToRotation(angle, rotate.getX(), rotate.getY());
 			shape1.transform(getTransform());
 			shape2.transform(getTransform());
 		}
-
+		
 		if (getFillPaint() != null) {
 			g2.setPaint(getFillPaint());
 			g2.fill(shape1);
 		}
-
+		
 		if (getHighlightPaint() != null) {
 			g2.setPaint(getHighlightPaint());
 			g2.fill(shape2);
 		}
-
+		
 		if (getOutlinePaint() != null) {
 			g2.setStroke(getOutlineStroke());
 			g2.setPaint(getOutlinePaint());
@@ -101,12 +101,12 @@ public class PointerNeedle extends MeterNeedle {
 			g2.draw(shape2);
 		}
 	}
-
+	
 	/**
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -121,5 +121,5 @@ public class PointerNeedle extends MeterNeedle {
 		}
 		return false;
 	}
-
+	
 }

@@ -38,18 +38,18 @@ import org.jfree.data.XYZDataset;
  * {@link XYZDataset}.
  */
 public interface XYZToolTipGenerator extends XYToolTipGenerator {
-
+	
 	/**
 	 * Generates a tool tip text item for a particular item within a series.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The tooltip text (possibly <code>null</code>).
 	 */
 	public String generateToolTip(XYZDataset dataset, int series, int item);
-
+	
 }

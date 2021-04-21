@@ -17,11 +17,11 @@ package org.graffiti.plugin.algorithm;
  * @see org.graffiti.plugin.parameter.LimitableParameter
  */
 public class ParameterOutOfBoundsException extends Exception {
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4524277824406026568L;
 }
 
 // ------------------------------------------------------------------------------

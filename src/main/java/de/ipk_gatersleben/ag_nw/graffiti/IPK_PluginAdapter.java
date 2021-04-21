@@ -28,9 +28,9 @@ public class IPK_PluginAdapter extends GenericPluginAdapter {
 			return super.getIcon();
 		}
 	}
-
+	
 	public InspectorTab[] getInspectorTabs() {
 		return null;
 	}
-
+	
 }

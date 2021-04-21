@@ -43,48 +43,48 @@ import org.jfree.util.ObjectUtils;
  * @see org.jfree.data.MatrixSeries
  */
 public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDataset, Serializable {
-
+	
 	/** The series that are included in the collection. */
 	private List seriesList;
-
+	
 	/**
 	 * Constructs an empty dataset.
 	 */
 	public MatrixSeriesCollection() {
 		this(null);
 	}
-
+	
 	/**
 	 * Constructs a dataset and populates it with a single matrix series.
 	 * 
 	 * @param series
-	 *            the time series.
+	 *           the time series.
 	 */
 	public MatrixSeriesCollection(final MatrixSeries series) {
 		this.seriesList = new java.util.ArrayList();
-
+		
 		if (series != null) {
 			this.seriesList.add(series);
 			series.addChangeListener(this);
 		}
 	}
-
+	
 	/**
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param seriesIndex
-	 *            zero-based series index.
+	 *           zero-based series index.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int seriesIndex) {
 		return getSeries(seriesIndex).getItemCount();
 	}
-
+	
 	/**
 	 * Returns the series having the specified index.
 	 * 
 	 * @param seriesIndex
-	 *            zero-based series index.
+	 *           zero-based series index.
 	 * @return The series.
 	 * @throws IllegalArgumentException
 	 */
@@ -92,12 +92,12 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 		if ((seriesIndex < 0) || (seriesIndex > getSeriesCount())) {
 			throw new IllegalArgumentException("MatrixSeriesCollection.getSeries(...): index outside valid range.");
 		}
-
+		
 		final MatrixSeries series = (MatrixSeries) this.seriesList.get(seriesIndex);
-
+		
 		return series;
 	}
-
+	
 	/**
 	 * Returns the number of series in the collection.
 	 * 
@@ -106,72 +106,72 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 	public int getSeriesCount() {
 		return this.seriesList.size();
 	}
-
+	
 	/**
 	 * Returns the name of a series.
 	 * 
 	 * @param seriesIndex
-	 *            zero-based series index.
+	 *           zero-based series index.
 	 * @return the name of a series.
 	 */
 	public String getSeriesName(final int seriesIndex) {
 		return getSeries(seriesIndex).getName();
 	}
-
+	
 	/**
 	 * Returns the j index value of the specified Mij matrix item in the specified
 	 * matrix series.
 	 * 
 	 * @param seriesIndex
-	 *            zero-based series index.
+	 *           zero-based series index.
 	 * @param itemIndex
-	 *            zero-based item index.
+	 *           zero-based item index.
 	 * @return the j index value for the specified matrix item.
 	 * @see org.jfree.data.XYDataset#getXValue(int, int)
 	 */
 	public Number getXValue(final int seriesIndex, final int itemIndex) {
 		final MatrixSeries series = (MatrixSeries) this.seriesList.get(seriesIndex);
 		final int x = series.getItemColumn(itemIndex);
-
+		
 		return Integer.valueOf(x); // I know it's bad to create object. better idea?
 	}
-
+	
 	/**
 	 * Returns the i index value of the specified Mij matrix item in the specified
 	 * matrix series.
 	 * 
 	 * @param seriesIndex
-	 *            zero-based series index.
+	 *           zero-based series index.
 	 * @param itemIndex
-	 *            zero-based item index.
+	 *           zero-based item index.
 	 * @return the i index value for the specified matrix item.
 	 * @see org.jfree.data.XYDataset#getYValue(int, int)
 	 */
 	public Number getYValue(final int seriesIndex, final int itemIndex) {
 		final MatrixSeries series = (MatrixSeries) this.seriesList.get(seriesIndex);
 		final int y = series.getItemRow(itemIndex);
-
+		
 		return Integer.valueOf(y); // I know it's bad to create object. better idea?
 	}
-
+	
 	/**
 	 * Returns the Mij item value of the specified Mij matrix item in the specified
 	 * matrix series.
 	 * 
 	 * @param seriesIndex
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param itemIndex
-	 *            zero-based item index.
+	 *           zero-based item index.
 	 * @return the Mij item value for the specified matrix item.
 	 * @see org.jfree.data.XYZDataset#getZValue(int, int)
 	 */
 	public Number getZValue(final int seriesIndex, final int itemIndex) {
 		final MatrixSeries series = (MatrixSeries) this.seriesList.get(seriesIndex);
 		final Number z = series.getItem(itemIndex);
-
+		
 		return z;
 	}
-
+	
 	/**
 	 * Adds a series to the collection.
 	 * <P>
@@ -179,7 +179,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 	 * </p>
 	 * 
 	 * @param series
-	 *            the series.
+	 *           the series.
 	 * @throws IllegalArgumentException
 	 */
 	public void addSeries(final MatrixSeries series) {
@@ -187,38 +187,38 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 		if (series == null) {
 			throw new IllegalArgumentException("MatrixSeriesCollection.addSeries(...): cannot add null series.");
 		}
-
+		
 		// add the series...
 		this.seriesList.add(series);
 		series.addChangeListener(this);
 		fireDatasetChanged();
 	}
-
+	
 	/**
 	 * Tests this collection for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object obj) {
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof MatrixSeriesCollection) {
 			final MatrixSeriesCollection c = (MatrixSeriesCollection) obj;
-
+			
 			return ObjectUtils.equal(this.seriesList, c.seriesList);
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -227,7 +227,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 	public int hashCode() {
 		return (this.seriesList != null ? this.seriesList.hashCode() : 0);
 	}
-
+	
 	/**
 	 * Removes all the series from the collection.
 	 * <P>
@@ -241,12 +241,12 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 			final MatrixSeries series = (MatrixSeries) this.seriesList.get(i);
 			series.removeChangeListener(this);
 		}
-
+		
 		// Remove all the series from the collection and notify listeners.
 		this.seriesList.clear();
 		fireDatasetChanged();
 	}
-
+	
 	/**
 	 * Removes a series from the collection.
 	 * <P>
@@ -254,7 +254,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 	 * </p>
 	 * 
 	 * @param series
-	 *            the series.
+	 *           the series.
 	 * @throws IllegalArgumentException
 	 */
 	public void removeSeries(final MatrixSeries series) {
@@ -262,7 +262,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 		if (series == null) {
 			throw new IllegalArgumentException("MatrixSeriesCollection.removeSeries(...): cannot remove null series.");
 		}
-
+		
 		// remove the series...
 		if (this.seriesList.contains(series)) {
 			series.removeChangeListener(this);
@@ -270,7 +270,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 			fireDatasetChanged();
 		}
 	}
-
+	
 	/**
 	 * Removes a series from the collection.
 	 * <P>
@@ -278,7 +278,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 	 * </p>
 	 * 
 	 * @param seriesIndex
-	 *            the series (zero based index).
+	 *           the series (zero based index).
 	 * @throws IllegalArgumentException
 	 */
 	public void removeSeries(final int seriesIndex) {
@@ -286,12 +286,12 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 		if ((seriesIndex < 0) || (seriesIndex > getSeriesCount())) {
 			throw new IllegalArgumentException("MatrixSeriesCollection.removeSeries(...): index outside valid range.");
 		}
-
+		
 		// fetch the series, remove the change listener, then remove the series.
 		final MatrixSeries series = (MatrixSeries) this.seriesList.get(seriesIndex);
 		series.removeChangeListener(this);
 		this.seriesList.remove(seriesIndex);
 		fireDatasetChanged();
 	}
-
+	
 }

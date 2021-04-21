@@ -14,15 +14,15 @@ import javax.swing.JButton;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.TabStatistics;
 
 public class MyColorButton extends JButton {
-
+	
 	private static final long serialVersionUID = 6188138418568271704L;
-
+	
 	private Color currentColor;
-
+	
 	public MyColorButton(String label, Color initColor) {
 		super(label);
 		currentColor = initColor;
-
+		
 		setBorder(BorderFactory.createLineBorder(initColor, 3));
 		addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -34,7 +34,7 @@ public class MyColorButton extends JButton {
 			}
 		});
 	}
-
+	
 	public Paint getSelectedColor() {
 		return currentColor;
 	}

@@ -52,25 +52,25 @@ import org.jfree.ui.RefineryUtilities;
  * {@link org.jfree.chart.plot.CategoryPlot}.
  */
 public class CategoryTextAnnotation extends TextAnnotation implements CategoryAnnotation, Cloneable, Serializable {
-
+	
 	/** The category. */
 	private Comparable category;
-
+	
 	/** The category anchor (START, MIDDLE, or END). */
 	private CategoryAnchor categoryAnchor;
-
+	
 	/** The value. */
 	private double value;
-
+	
 	/**
 	 * Creates a new annotation to be displayed at the given location.
 	 * 
 	 * @param text
-	 *            the text.
+	 *           the text.
 	 * @param category
-	 *            the category.
+	 *           the category.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public CategoryTextAnnotation(String text, Comparable category, double value) {
 		super(text);
@@ -78,7 +78,7 @@ public class CategoryTextAnnotation extends TextAnnotation implements CategoryAn
 		this.value = value;
 		this.categoryAnchor = CategoryAnchor.MIDDLE;
 	}
-
+	
 	/**
 	 * Returns the category.
 	 * 
@@ -87,17 +87,17 @@ public class CategoryTextAnnotation extends TextAnnotation implements CategoryAn
 	public Comparable getCategory() {
 		return this.category;
 	}
-
+	
 	/**
 	 * Sets the category that the annotation attaches to.
 	 * 
 	 * @param category
-	 *            the category.
+	 *           the category.
 	 */
 	public void setCategory(Comparable category) {
 		this.category = category;
 	}
-
+	
 	/**
 	 * Returns the category anchor point.
 	 * 
@@ -106,17 +106,17 @@ public class CategoryTextAnnotation extends TextAnnotation implements CategoryAn
 	public CategoryAnchor getCategoryAnchor() {
 		return this.categoryAnchor;
 	}
-
+	
 	/**
 	 * Sets the category anchor point.
 	 * 
 	 * @param anchor
-	 *            the anchor point.
+	 *           the anchor point.
 	 */
 	public void setCategoryAnchor(CategoryAnchor anchor) {
 		this.categoryAnchor = anchor;
 	}
-
+	
 	/**
 	 * Returns the value that the annotation attaches to.
 	 * 
@@ -125,44 +125,44 @@ public class CategoryTextAnnotation extends TextAnnotation implements CategoryAn
 	public double getValue() {
 		return this.value;
 	}
-
+	
 	/**
 	 * Sets the value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void setValue(double value) {
 		this.value = value;
 	}
-
+	
 	/**
 	 * Draws the annotation.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 */
 	public void draw(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea, CategoryAxis domainAxis,
 			ValueAxis rangeAxis) {
-
+		
 		CategoryDataset dataset = plot.getDataset();
 		int catIndex = dataset.getColumnIndex(this.category);
 		int catCount = dataset.getColumnCount();
-
+		
 		float anchorX = 0.0f;
 		float anchorY = 0.0f;
 		PlotOrientation orientation = plot.getOrientation();
 		RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(plot.getDomainAxisLocation(), orientation);
 		RectangleEdge rangeEdge = Plot.resolveRangeAxisLocation(plot.getRangeAxisLocation(), orientation);
-
+		
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			anchorY = (float) domainAxis.getCategoryJava2DCoordinate(this.categoryAnchor, catIndex, catCount, dataArea,
 					domainEdge);
@@ -176,52 +176,52 @@ public class CategoryTextAnnotation extends TextAnnotation implements CategoryAn
 		g2.setPaint(getPaint());
 		RefineryUtilities.drawRotatedString(getText(), g2, anchorX, anchorY, getTextAnchor(), getRotationAnchor(),
 				getRotationAngle());
-
+		
 	}
-
+	
 	/**
 	 * Tests this object for equality with another.
 	 * 
 	 * @param object
-	 *            the object to test against.
+	 *           the object to test against.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object object) {
-
+		
 		if (object == null) {
 			return false;
 		}
-
+		
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (object instanceof CategoryTextAnnotation) {
 			CategoryTextAnnotation cta = (CategoryTextAnnotation) object;
 			if (super.equals(object)) {
-
+				
 				boolean b0 = this.category.equals(cta.getCategory());
 				boolean b1 = this.categoryAnchor.equals(cta.getCategoryAnchor());
 				boolean b2 = (this.value == cta.getValue());
-
+				
 				return b0 && b1 && b2;
-
+				
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone of the annotation.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             this class will not throw this exception, but subclasses (if any)
-	 *             might.
+	 *            this class will not throw this exception, but subclasses (if any)
+	 *            might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

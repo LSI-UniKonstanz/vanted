@@ -3,15 +3,13 @@ package org.vanted.animation.data;
 import java.util.Vector;
 
 /**
- * 
  * @author - Patrick Shaw
- * 
  */
 public class VectorTimePoint<T extends Number> extends InterpolatableTimePoint<Vector<T>> {
 	public VectorTimePoint(double time, Vector<T> dataValue) {
 		super(time, dataValue);
 	}
-
+	
 	@Override
 	public double[] getDoubleValues() {
 		double values[] = new double[dataValue.size()];
@@ -19,7 +17,7 @@ public class VectorTimePoint<T extends Number> extends InterpolatableTimePoint<V
 			values[i] = (Double) dataValue.elementAt(i);
 		return values;
 	}
-
+	
 	@Override
 	public Vector<T> toDataValue(double[] doubleValues) {
 		Vector<Number> vector = new Vector<Number>();

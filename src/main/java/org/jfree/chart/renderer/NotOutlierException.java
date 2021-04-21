@@ -36,15 +36,15 @@ package org.jfree.chart.renderer;
  * @author David Browning
  */
 public class NotOutlierException extends Exception {
-
+	
 	/**
 	 * Creates a new exception.
 	 * 
 	 * @param message
-	 *            the exception message.
+	 *           the exception message.
 	 */
 	public NotOutlierException(String message) {
 		super(message);
 	}
-
+	
 }

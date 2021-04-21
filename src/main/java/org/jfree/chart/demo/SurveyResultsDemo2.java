@@ -53,52 +53,52 @@ import org.jfree.ui.TextAnchor;
  * A vertical bar chart.
  */
 public class SurveyResultsDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public SurveyResultsDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(300, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private CategoryDataset createDataset() {
-
+		
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(1.32, "Results", "Sm.");
 		dataset.addValue(0.40, "Results", "Med.");
 		dataset.addValue(2.62, "Results", "Lg.");
 		dataset.addValue(1.44, "Results", "All");
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createBarChart(null, // chart title
 				null, // domain axis label
 				null, // range axis label
@@ -106,21 +106,21 @@ public class SurveyResultsDemo2 extends ApplicationFrame {
 				PlotOrientation.VERTICAL, // orientation
 				false, // include legend
 				true, false);
-
+		
 		chart.setBackgroundPaint(Color.white);
 		chart.getPlot().setOutlinePaint(null);
 		final TextTitle title = new TextTitle("Figure 8.5 - Case studies are available");
 		title.setHorizontalAlignment(HorizontalAlignment.LEFT);
 		title.setBackgroundPaint(Color.red);
 		title.setPaint(Color.white);
-
+		
 		chart.setTitle(title);
 		final CategoryPlot plot = chart.getCategoryPlot();
-
+		
 		final ValueAxis rangeAxis = plot.getRangeAxis();
 		rangeAxis.setRange(0.0, 5.0);
 		rangeAxis.setVisible(false);
-
+		
 		final ExtendedCategoryAxis domainAxis = new ExtendedCategoryAxis(null);
 		domainAxis.setTickLabelFont(new Font("SansSerif", Font.BOLD, 12));
 		domainAxis.setCategoryMargin(0.30);
@@ -129,21 +129,21 @@ public class SurveyResultsDemo2 extends ApplicationFrame {
 		domainAxis.addSubLabel("Lg.", "(10)");
 		domainAxis.addSubLabel("All", "(10)");
 		plot.setDomainAxis(domainAxis);
-
+		
 		final BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setSeriesPaint(0, new Color(0x9C, 0xA4, 0x4A));
 		renderer.setBaseOutlineStroke(null);
-
+		
 		renderer.setItemLabelsVisible(true);
 		renderer.setItemLabelFont(new Font("SansSerif", Font.PLAIN, 18));
 		final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.INSIDE12, TextAnchor.TOP_CENTER);
 		renderer.setPositiveItemLabelPosition(position);
 		renderer.setPositiveItemLabelPositionFallback(new ItemLabelPosition());
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -154,20 +154,20 @@ public class SurveyResultsDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final SurveyResultsDemo2 demo = new SurveyResultsDemo2("Survey Results Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

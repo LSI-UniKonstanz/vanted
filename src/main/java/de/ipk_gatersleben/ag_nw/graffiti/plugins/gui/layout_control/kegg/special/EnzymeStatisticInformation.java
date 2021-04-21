@@ -16,27 +16,27 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggHelper;
 
 public class EnzymeStatisticInformation {
-
+	
 	private String pathwayId;
-
+	
 	private HashSet<String> reactions = new HashSet<String>();
 	private HashSet<String> enzymes = new HashSet<String>();
 	private HashSet<String> enzymeAnnotationOfLeafNodes = new HashSet<String>();
-
+	
 	private Node node;
-
+	
 	public EnzymeStatisticInformation(Node n) {
 		this.node = n;
 	}
-
+	
 	private static HashMap<String, HashSet<String>> reactionId2enzymeId = new HashMap<String, HashSet<String>>();
-
+	
 	public void setKeggMapNumber(String keggId) {
 		keggId = StringManipulationTools.stringReplace(keggId, ":ko", ":ehvu");
 		// keggId = ErrorMsg.stringReplace(keggId, "path:", "");
 		this.pathwayId = keggId;
 	}
-
+	
 	public void loadKeggReactionAndEnzymeInformation() {
 		System.out.println("[SOAP] Retrieve Reactions of KEGG Map " + pathwayId + "...");
 		String[] reactionIdList = KeggHelper.getKeggReactionsOfMap(pathwayId);
@@ -57,7 +57,7 @@ public class EnzymeStatisticInformation {
 			}
 		}
 	}
-
+	
 	public void enumerateChildNodeEnzymes() {
 		// Find all leaf nodes
 		// interpret label and alternative identifiers and check if there is a
@@ -72,7 +72,7 @@ public class EnzymeStatisticInformation {
 			enzymeAnnotationOfLeafNodes.add(ee.getID());
 		}
 	}
-
+	
 	private Set<EnzymeEntry> getEnzymeInformation(Set<Node> leafNodes) {
 		HashSet<EnzymeEntry> result = new HashSet<EnzymeEntry>();
 		for (Node n : leafNodes) {
@@ -92,19 +92,19 @@ public class EnzymeStatisticInformation {
 		}
 		return result;
 	}
-
+	
 	public int getNumberOfKeggEnzymes() {
 		return enzymes.size();
 	}
-
+	
 	public int getNumberOfEnzymeAnnotations() {
 		return enzymeAnnotationOfLeafNodes.size();
 	}
-
+	
 	public void addInformation(EnzymeStatisticInformation pathwayNodeInfo) {
 		this.reactions.addAll(pathwayNodeInfo.reactions);
 		this.enzymes.addAll(pathwayNodeInfo.enzymes);
 		this.enzymeAnnotationOfLeafNodes.addAll(pathwayNodeInfo.enzymeAnnotationOfLeafNodes);
 	}
-
+	
 }

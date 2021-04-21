@@ -16,12 +16,12 @@ import org.vanted.animation.loopers.Looper;
  * @author matthiak
  */
 public class HideAnimation extends OpacityAnimation {
-
+	
 	public HideAnimation(Attributable attributable, double startTime, double duration, Interpolator interpolator,
 			List<DoubleTimePoint> dataPoints, int noLoops, Looper looper) {
 		super(attributable, startTime, duration, interpolator, dataPoints, noLoops, looper);
 	}
-
+	
 	@Override
 	protected <T> void animate(double time, T interpolatedValue) {
 		super.animate(time, interpolatedValue);

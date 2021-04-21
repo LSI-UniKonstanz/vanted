@@ -24,13 +24,13 @@ import org.graffiti.plugin.algorithm.PreconditionException;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectReactionsAlgorithm extends AbstractAlgorithm implements Algorithm {
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -39,17 +39,17 @@ public class SelectReactionsAlgorithm extends AbstractAlgorithm implements Algor
 	public String getName() {
 		return "Select reactions";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -79,7 +79,7 @@ public class SelectReactionsAlgorithm extends AbstractAlgorithm implements Algor
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(reactions.size() + " reaction-nodes added to selection", MessageType.INFO);
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

@@ -27,24 +27,24 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
-
+	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG)
 			return "Create Distance Matrix from Data Points";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
-
+	
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
 		DistanceMatrix dm = new DistanceMatrix();
@@ -71,7 +71,7 @@ public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "<h2>This algorithm is currently included only for testing purposes:</h2>"
@@ -82,7 +82,7 @@ public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 				+ "A detailed description and a GUI for changing the difference-calcualtion-<br>"
 				+ "settings will be provided with future updates.";
 	}
-
+	
 	private static int calculateDistance(DataSetTable datasetTable1, DataSetTable datasetTable2, ArrayList<String> history,
 			String lbl1, String lbl2) {
 		TreeSet<String> knownSubstanceNames = new TreeSet<String>();
@@ -166,7 +166,7 @@ public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 					}
 				}
 			}
-
+			
 		}
 		return result;
 	}

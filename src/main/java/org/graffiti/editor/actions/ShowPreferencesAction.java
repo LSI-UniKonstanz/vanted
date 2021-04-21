@@ -56,17 +56,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * @author matthiak
- *
  */
 public class ShowPreferencesAction extends GraffitiAction {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6591986799740726360L;
-
+	
 	private JCheckBox keggEnabler;
-
+	
 	/**
 	 * @param name
 	 * @param mainFrame
@@ -74,9 +73,9 @@ public class ShowPreferencesAction extends GraffitiAction {
 	 */
 	public ShowPreferencesAction(MainFrame mainFrame) {
 		super("edit.preferences", mainFrame, "editmenu_preferences");
-
+		
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		new OptionsDialog(mainFrame);
@@ -91,7 +90,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 		 * dialog.setVisible(true);
 		 */
 	}
-
+	
 	private JPanel getSettings() {
 		final JPanel res = new JPanel();
 		res.setBackground(null);
@@ -103,14 +102,14 @@ public class ShowPreferencesAction extends GraffitiAction {
 						TableLayoutConstants.PREFERRED, 2 * border, TableLayoutConstants.PREFERRED, 5 * border,
 						TableLayoutConstants.PREFERRED, 5 * border } }; // Rows
 		res.setLayout(new TableLayout(size));
-
+		
 		JCheckBox helpEnabler = new JCheckBox("<html><font color='gray'>Help Functions (not yet available)");
-
+		
 		final JComboBox<LookAndFeelWrapper> lookSelection = new JComboBox<>();
 		lookSelection.setOpaque(false);
 		final JMButton saveLook = new JMButton("Save");
 		saveLook.setEnabled(false);
-
+		
 		// // windows styles
 		// if (AttributeHelper.windowsRunning()) {
 		// String[] val = new String[] {
@@ -125,7 +124,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 		// LookAndFeelInfo(desc[i], v)));
 		// i++;
 		// }
-
+		
 		try {
 			LookAndFeelWrapper avtiveLaF = null;
 			String sel = UIManager.getLookAndFeel().getClass().getCanonicalName();
@@ -148,7 +147,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 						LookAndFeelWrapper po = (LookAndFeelWrapper) lookSelection.getSelectedItem();
 						if (po == null)
 							return;
-
+						
 						try {
 							UIManager.setLookAndFeel(po.getClassName());
 							if (ReleaseInfo.isRunningAsApplet())
@@ -171,13 +170,13 @@ public class ShowPreferencesAction extends GraffitiAction {
 				});
 			}
 		});
-
+		
 		saveLook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LookAndFeelWrapper op = (LookAndFeelWrapper) lookSelection.getSelectedItem();
 				if (op == null)
 					return;
-
+				
 				try {
 					new File(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel").delete();
 					TextFile.write(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel",
@@ -190,14 +189,14 @@ public class ShowPreferencesAction extends GraffitiAction {
 				}
 			}
 		});
-
+		
 		helpEnabler.addActionListener(getHelpEnabledSettingActionListener(helpEnabler));
 		helpEnabler.setOpaque(false);
 		boolean auto = ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp);
 		helpEnabler.setSelected(auto);
 		res.add(TableLayout.get3Split(new JLabel("Look and feel: "), lookSelection, saveLook, TableLayout.PREFERRED,
 				TableLayout.FILL, TableLayout.PREFERRED), "1,1");
-
+		
 		keggEnabler = new JCheckBox("KEGG access");
 		keggEnabler.setOpaque(false);
 		try {
@@ -256,23 +255,23 @@ public class ShowPreferencesAction extends GraffitiAction {
 				}
 			}
 		});
-
+		
 		// helpEnabler
 		res.add(getPluginConfigurationPanel(null, keggEnabler), "1,3");
 		res.add(TableLayout.get3Split(getAddOnManagerButton(), null, getPreferencesFolderButton(), TableLayout.FILL, 4,
 				TableLayout.FILL, 0, 0), "1,5");
-
+		
 		res.add(TableLayout.getSplit(getGridSettingEditor(), null, TableLayout.FILL, TableLayout.PREFERRED), "1,7");
-
+		
 		res.add(TableLayout.getSplit(null, null, TableLayout.PREFERRED, TableLayout.FILL), "1,9");
-
+		
 		res.add(new JLabel("<html>"
 				+ "<font color='#BB22222'>After restarting the program the changed settings will be fully active."),
 				"1,11");
-
+		
 		JButton btOptionsDialog = new JButton("Options Dialog");
 		btOptionsDialog.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -282,10 +281,10 @@ public class ShowPreferencesAction extends GraffitiAction {
 			}
 		});
 		res.add(btOptionsDialog, "1,13");
-
+		
 		JButton btSavePreferences = new JButton("Safe Preferences");
 		btSavePreferences.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PreferenceManager.storePreferences();
@@ -296,17 +295,17 @@ public class ShowPreferencesAction extends GraffitiAction {
 		// res.add(memLabel, "1,13");
 		return res;
 	}
-
+	
 	private JComponent getGridSettingEditor() {
 		FolderPanel settings = new FolderPanel("Graph-View Settings", false, false, false, null);
 		boolean enabled = new SettingsHelperDefaultIsTrue().isEnabled("graph_view_grid");
 		MegaMoveTool.gridEnabled = enabled;
-
+		
 		Runnable enableGrid = new Runnable() {
 			public void run() {
 				MegaMoveTool.gridEnabled = true;
 			}
-
+			
 		};
 		Runnable disableGrid = new Runnable() {
 			public void run() {
@@ -317,7 +316,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 			public void run() {
 				MegaTools.MouseWheelZoomEnabled = true;
 			}
-
+			
 		};
 		Runnable disableZoom = new Runnable() {
 			public void run() {
@@ -327,13 +326,13 @@ public class ShowPreferencesAction extends GraffitiAction {
 		JComponent gridCheckBox = new SettingsHelperDefaultIsTrue().getBooleanSettingsEditor("Enable Grid",
 				"graph_view_grid", enableGrid, disableGrid);
 		settings.addGuiComponentRow(null, gridCheckBox, false);
-
+		
 		JComponent databaseCheckBox = new SettingsHelperDefaultIsFalse().getBooleanSettingsEditor(
 				"Database-based node statusbar-infos", "grav_view_database_node_status", enableGrid, disableGrid);
 		settings.addGuiComponentRow(null, databaseCheckBox, false);
-
+		
 		// Database-based node statusbar-infos
-
+		
 		JComponent zoomCheckBox = new SettingsHelperDefaultIsTrue().getBooleanSettingsEditor(
 				"<html>Mouse Wheel Zoom<br>(disable to scroll instead)", "graph_view_wheel_zoom", enableZoom,
 				disableZoom);
@@ -349,7 +348,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 		settings.layoutRows();
 		return settings;
 	}
-
+	
 	private ActionListener getHelpEnabledSettingActionListener(final JCheckBox helpEnabler) {
 		ActionListener res = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -362,15 +361,15 @@ public class ShowPreferencesAction extends GraffitiAction {
 				} catch (IOException err) {
 					ErrorMsg.addErrorMessage(err);
 				}
-
+				
 			}
 		};
 		return res;
 	}
-
+	
 	private JComponent getPluginConfigurationPanel(final JComponent additionalSetting1,
 			final JComponent additionalSetting2) {
-
+		
 		JLabel button = new JLabel("Loading of optional program features (");
 		JLabel bt3 = new JLabel("):");
 		JLabelHTMLlink bt2 = new JLabelHTMLlink("Reset", "Resets all settings to their default state. Restart needed!",
@@ -388,7 +387,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 								new File(HomeFolder.getHomeFolder() + "/" + settingsFile).delete();
 					}
 				});
-
+		
 		final FolderPanel features = new FolderPanel(null, false, false, false, null);
 		features.setBackground(null);
 		features.setFrameColor(null, null, 0, 5);
@@ -408,7 +407,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 		return TableLayout.getSplitVertical(TableLayout.get3Split(button, bt2, bt3, TableLayout.PREFERRED,
 				TableLayout.PREFERRED, TableLayout.PREFERRED), features, TableLayout.PREFERRED, TableLayout.PREFERRED);
 	}
-
+	
 	private Collection<JComponent> getOptionalSettingsPanels() {
 		Collection<JComponent> result = new ArrayList<JComponent>();
 		for (PluginEntry pe : MainFrame.getInstance().getPluginManager().getPluginEntries()) {
@@ -419,7 +418,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 		}
 		return result;
 	}
-
+	
 	private JComponent getEnableDisableOption(final PluginEntry pe) {
 		JComponent setting;
 		if (pe.getDescription().isOptionalDefaultTrue())
@@ -436,7 +435,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 		}
 		return setting;
 	}
-
+	
 	private JButton getAddOnManagerButton() {
 		final JButton result = new JMButton("<html>Install / Configure Add-ons");
 		result.setIcon(GenericPluginAdapter.getAddonIcon());
@@ -458,9 +457,9 @@ public class ShowPreferencesAction extends GraffitiAction {
 					p.showManageAddonDialog();
 			}
 		});
-
+		
 		final String oldText = result.getText();
-
+		
 		FileDrop.Listener fdl = new FileDrop.Listener() {
 			public void filesDropped(File[] files) {
 				if (files != null && files.length > 0) {
@@ -482,13 +481,13 @@ public class ShowPreferencesAction extends GraffitiAction {
 				}
 			}
 		};
-
+		
 		Runnable dragdetected = new Runnable() {
 			public void run() {
 				result.setText("<html><br><b>Drop file to install Add-on<br><br>");
 			}
 		};
-
+		
 		Runnable dragenddetected = new Runnable() {
 			public void run() {
 				if (!result.getText().contains("!"))
@@ -496,13 +495,13 @@ public class ShowPreferencesAction extends GraffitiAction {
 			}
 		};
 		new FileDrop(null, result, null, false, fdl, dragdetected, dragenddetected);
-
+		
 		return result;
 	}
-
+	
 	private JButton getPreferencesFolderButton() {
 		JButton result = new JMButton("<html>Show Preferences Folder");
-
+		
 		result.setOpaque(false);
 		result.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -511,7 +510,7 @@ public class ShowPreferencesAction extends GraffitiAction {
 		});
 		return result;
 	}
-
+	
 	public static void showPreferencesFolder() {
 		MainFrame.showMessageDialog("<html>" + "The application preferences folder will be opened in a moment.<br>"
 				+ "This folder contains downloaded database files, stored quick-searches,<br>"
@@ -525,10 +524,10 @@ public class ShowPreferencesAction extends GraffitiAction {
 			}
 		});
 	}
-
+	
 	@Override
 	public boolean isEnabled() {
 		return true;
 	}
-
+	
 }

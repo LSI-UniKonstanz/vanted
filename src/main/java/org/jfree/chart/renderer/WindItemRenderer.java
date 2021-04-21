@@ -65,123 +65,123 @@ import org.jfree.util.PublicCloneable;
  */
 public class WindItemRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/**
 	 * Creates a new renderer.
 	 */
 	public WindItemRenderer() {
 		super();
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param plotArea
-	 *            the area within which the plot is being drawn.
+	 *           the area within which the plot is being drawn.
 	 * @param info
-	 *            optional information collection.
+	 *           optional information collection.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the horizontal axis.
+	 *           the horizontal axis.
 	 * @param rangeAxis
-	 *            the vertical axis.
+	 *           the vertical axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D plotArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		WindDataset windData = (WindDataset) dataset;
-
+		
 		Paint seriesPaint = getItemPaint(series, item);
 		Stroke seriesStroke = getItemStroke(series, item);
 		g2.setPaint(seriesPaint);
 		g2.setStroke(seriesStroke);
-
+		
 		// get the data point...
-
+		
 		Number x = windData.getXValue(series, item);
 		Number windDir = windData.getWindDirection(series, item);
 		Number wforce = windData.getWindForce(series, item);
 		double windForce = wforce.doubleValue();
-
+		
 		double wdirt = Math.toRadians(windDir.doubleValue() * (-30.0) - 90.0);
-
+		
 		double ax1, ax2, ay1, ay2, rax2, ray2;
-
+		
 		RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
 		RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
 		ax1 = domainAxis.valueToJava2D(x.doubleValue(), plotArea, domainAxisLocation);
 		ay1 = rangeAxis.valueToJava2D(0.0, plotArea, rangeAxisLocation);
-
+		
 		rax2 = x.doubleValue() + (windForce * Math.cos(wdirt) * 8000000.0);
 		ray2 = windForce * Math.sin(wdirt);
-
+		
 		ax2 = domainAxis.valueToJava2D(rax2, plotArea, domainAxisLocation);
 		ay2 = rangeAxis.valueToJava2D(ray2, plotArea, rangeAxisLocation);
-
+		
 		int diri = windDir.intValue();
 		int forcei = wforce.intValue();
 		String dirforce = diri + "-" + forcei;
 		Line2D line = new Line2D.Double(ax1, ay1, ax2, ay2);
-
+		
 		g2.draw(line);
 		g2.setPaint(Color.blue);
 		g2.setFont(new Font("foo", 1, 9));
-
+		
 		g2.drawString(dirforce, (float) ax1, (float) ay1);
-
+		
 		g2.setPaint(seriesPaint);
 		g2.setStroke(seriesStroke);
-
+		
 		double alx2, aly2, arx2, ary2;
 		double ralx2, raly2, rarx2, rary2;
-
+		
 		double aldir = Math.toRadians(windDir.doubleValue() * (-30.0) - 90.0 - 5.0);
 		ralx2 = wforce.doubleValue() * Math.cos(aldir) * 8000000 * 0.8 + x.doubleValue();
 		raly2 = wforce.doubleValue() * Math.sin(aldir) * 0.8;
-
+		
 		alx2 = domainAxis.valueToJava2D(ralx2, plotArea, domainAxisLocation);
 		aly2 = rangeAxis.valueToJava2D(raly2, plotArea, rangeAxisLocation);
-
+		
 		line = new Line2D.Double(alx2, aly2, ax2, ay2);
 		g2.draw(line);
-
+		
 		double ardir = Math.toRadians(windDir.doubleValue() * (-30.0) - 90.0 + 5.0);
 		rarx2 = wforce.doubleValue() * Math.cos(ardir) * 8000000 * 0.8 + x.doubleValue();
 		rary2 = wforce.doubleValue() * Math.sin(ardir) * 0.8;
-
+		
 		arx2 = domainAxis.valueToJava2D(rarx2, plotArea, domainAxisLocation);
 		ary2 = rangeAxis.valueToJava2D(rary2, plotArea, rangeAxisLocation);
-
+		
 		line = new Line2D.Double(arx2, ary2, ax2, ay2);
 		g2.draw(line);
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

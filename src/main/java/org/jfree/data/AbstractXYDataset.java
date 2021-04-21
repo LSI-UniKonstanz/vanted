@@ -34,14 +34,14 @@ package org.jfree.data;
  * {@link XYDataset} interface.
  */
 public abstract class AbstractXYDataset extends AbstractSeriesDataset implements XYDataset {
-
+	
 	/**
 	 * Returns the x-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The x-value.
 	 */
 	public double getX(int series, int item) {
@@ -52,14 +52,14 @@ public abstract class AbstractXYDataset extends AbstractSeriesDataset implements
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the y-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The y-value.
 	 */
 	public double getY(int series, int item) {
@@ -70,5 +70,5 @@ public abstract class AbstractXYDataset extends AbstractSeriesDataset implements
 		}
 		return result;
 	}
-
+	
 }

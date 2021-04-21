@@ -58,27 +58,27 @@ import org.jfree.ui.Spacer;
  * dynamically add (random) data by clicking on a button.
  */
 public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener {
-
+	
 	/** Series 1. */
 	private TimeSeries series1;
-
+	
 	/** Series 2. */
 	private TimeSeries series2;
-
+	
 	/** The most recent value added to series 1. */
 	private double lastValue1 = 100.0;
-
+	
 	/** The most recent value added to series 2. */
 	private double lastValue2 = 500.0;
-
+	
 	/**
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public DynamicDataDemo2(final String title) {
-
+		
 		super(title);
 		this.series1 = new TimeSeries("Random 1", Millisecond.class);
 		this.series2 = new TimeSeries("Random 2", Millisecond.class);
@@ -87,7 +87,7 @@ public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Dynamic Data Demo 2", "Time", "Value", dataset1,
 				true, true, false);
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
@@ -96,42 +96,42 @@ public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener
 		final ValueAxis axis = plot.getDomainAxis();
 		axis.setAutoRange(true);
 		axis.setFixedAutoRange(60000.0); // 60 seconds
-
+		
 		plot.setDataset(1, dataset2);
 		final NumberAxis rangeAxis2 = new NumberAxis("Range Axis 2");
 		rangeAxis2.setAutoRangeIncludesZero(false);
 		plot.setRenderer(1, new DefaultXYItemRenderer());
 		plot.setRangeAxis(1, rangeAxis2);
 		plot.mapDatasetToRangeAxis(1, 1);
-
+		
 		final JPanel content = new JPanel(new BorderLayout());
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		content.add(chartPanel);
-
+		
 		final JButton button1 = new JButton("Add To Series 1");
 		button1.setActionCommand("ADD_DATA_1");
 		button1.addActionListener(this);
-
+		
 		final JButton button2 = new JButton("Add To Series 2");
 		button2.setActionCommand("ADD_DATA_2");
 		button2.addActionListener(this);
-
+		
 		final JButton button3 = new JButton("Add To Both");
 		button3.setActionCommand("ADD_BOTH");
 		button3.addActionListener(this);
-
+		
 		final JPanel buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(button1);
 		buttonPanel.add(button2);
 		buttonPanel.add(button3);
-
+		
 		content.add(buttonPanel, BorderLayout.SOUTH);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(content);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -142,12 +142,12 @@ public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Handles a click on the button by adding new (random) data.
 	 * 
 	 * @param e
-	 *            the action event.
+	 *           the action event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		boolean add1 = false;
@@ -175,20 +175,20 @@ public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener
 			this.series2.add(new Millisecond(), this.lastValue2);
 		}
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final DynamicDataDemo2 demo = new DynamicDataDemo2("Dynamic Data Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

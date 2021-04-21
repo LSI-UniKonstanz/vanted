@@ -29,20 +29,20 @@ public class Relation {
 	private IdRef entry2;
 	private RelationType type;
 	private Collection<Subtype> subtypes;
-
+	
 	private boolean valid = true;
-
+	
 	public Relation(IdRef entry1, IdRef entry2, RelationType type, Collection<Subtype> subtypes) {
 		// assert entry1!=null;
 		// assert entry2!=null;
 		// assert type!=null;
-
+		
 		this.entry1 = entry1;
 		this.entry2 = entry2;
 		this.type = type;
-
+		
 		this.subtypes = subtypes;
-
+		
 		for (IdRef ir : getSubtypeRefs())
 			if (ir.getRef() == entry1.getRef() || ir.getRef() == entry2.getRef())
 				valid = false;
@@ -67,7 +67,7 @@ public class Relation {
 		 * (st.getName()==SubtypeName.indirectEffect) )); } }
 		 */
 	}
-
+	
 	public static String getTypeDescription(boolean html) {
 		if (html)
 			return "<html>The relation element specifies relationship between two proteins (gene products) or two KOs<br>"
@@ -82,17 +82,17 @@ public class Relation {
 					+ "element. When the name attribute value of the subtype element is a value with directionality "
 					+ "like \"activation\", the direction of the interaction is from entry1 to entry2.";
 	}
-
+	
 	public static Relation getRelationFromKgmlRelationElement(Element relationElement, Collection<Entry> entryElements,
 			String clusterIdForHiddenCompounds) {
 		try {
 			String relation1value = KGMLhelper.getAttributeValue(relationElement, "entry1", null);
 			String relation2value = KGMLhelper.getAttributeValue(relationElement, "entry2", null);
 			String typeValue = KGMLhelper.getAttributeValue(relationElement, "type", null);
-
+			
 			IdRef entry1 = IdRef.getId(relation1value);
 			IdRef entry2 = IdRef.getId(relation2value);
-
+			
 			for (Entry e : entryElements) {
 				if (e.getId().matches(entry1.getValue())) {
 					entry1.setRef(e);
@@ -105,9 +105,9 @@ public class Relation {
 					break;
 				}
 			}
-
+			
 			RelationType type = RelationType.getRelationType(typeValue);
-
+			
 			Collection<Subtype> subtypes = new ArrayList<Subtype>();
 			List<?> subtypeElements = relationElement.getChildren("subtype");
 			for (Object o : subtypeElements) {
@@ -117,7 +117,7 @@ public class Relation {
 				if (subtype != null)
 					subtypes.add(subtype);
 			}
-
+			
 			Relation result = new Relation(entry1, entry2, type, subtypes);
 			return result;
 		} catch (Exception e) {
@@ -125,7 +125,7 @@ public class Relation {
 			return null;
 		}
 	}
-
+	
 	public Element getKgmlRelationElement() {
 		Element relationElement = new Element("relation");
 		KGMLhelper.addNewAttribute(relationElement, "entry1", entry1.toString());
@@ -140,7 +140,7 @@ public class Relation {
 		}
 		return relationElement;
 	}
-
+	
 	public Collection<NodeCombination> getDesiredNodeCombinations(HashMap<Entry, Node> entry2graphNode,
 			Collection<Entry> entries) {
 		Collection<NodeCombination> result = new ArrayList<NodeCombination>();
@@ -186,15 +186,15 @@ public class Relation {
 		}
 		return result;
 	}
-
+	
 	public RelationType getType() {
 		return type;
 	}
-
+	
 	public void setType(RelationType type) {
 		this.type = type;
 	}
-
+	
 	public static void processEdgeRelationInformation(Edge e,
 			ArrayList<Relation> relationsRequestingThisNodeCombination) {
 		boolean isIndirectRelationDefiningEdge = false;
@@ -228,14 +228,14 @@ public class Relation {
 			}
 			subtypes.addAll(subtypeNames);
 		}
-
+		
 		String lbl = "";
 		for (SubtypeName stn : subtypes)
 			lbl = addLbl(lbl, getEdgeLbl(stn), ",");
 		if (lbl.length() > 0) {
 			KeggGmlHelper.setEdgeLabel(e, lbl);
 		}
-
+		
 		boolean mapLinked = false;
 		if (KeggGmlHelper.getKeggType(e.getSource()).equals("map"))
 			mapLinked = true;
@@ -248,17 +248,17 @@ public class Relation {
 		if (srcIsCompound && tgtIsCompound && relationTypes.size() == 1
 				&& relationTypes.iterator().next() == RelationType.maplink)
 			mapLinked = true;
-
+		
 		if (mapLinked)
 			KeggGmlHelper.setKeggGraphicsLineStyleMap(e);
-
+		
 		if (isIndirectRelationDefiningEdge)
 			KeggGmlHelper.setKeggGraphicsLineStyleIndirect(e);
-
+		
 		if (subtypes.contains(SubtypeName.inhibition) || subtypes.contains(SubtypeName.repression))
 			KeggGmlHelper.setKeggGraphicsLineStyleInhibitionArrow(e);
 	}
-
+	
 	private static String getEdgeLbl(SubtypeName fromName) {
 		return SubtypeValue.getValue(fromName);
 		/*
@@ -271,7 +271,7 @@ public class Relation {
 		 * methylation : return "+m"; case demethylation : return "-m"; } return null;
 		 */
 	}
-
+	
 	public boolean isDirectedRelationDefinedBySubtypes() {
 		if (subtypes == null || subtypes.size() == 0)
 			return false;
@@ -290,7 +290,7 @@ public class Relation {
 		}
 		/* return subtypes.contains(SubtypeName.phosphorylation); */
 	}
-
+	
 	private static String addLbl(String lbl, String addThis, String divisor) {
 		if (addThis != null && addThis.length() > 0) {
 			if (lbl.length() > 0)
@@ -300,7 +300,7 @@ public class Relation {
 		}
 		return lbl;
 	}
-
+	
 	public ArrayList<SubtypeName> getSubtypes() {
 		ArrayList<SubtypeName> result = new ArrayList<SubtypeName>();
 		for (Subtype st : subtypes) {
@@ -308,7 +308,7 @@ public class Relation {
 		}
 		return result;
 	}
-
+	
 	public void addSubtypeName(SubtypeName stn) {
 		boolean found = false;
 		for (Subtype st : subtypes) {
@@ -320,7 +320,7 @@ public class Relation {
 		if (!found)
 			subtypes.add(new Subtype(stn, null));
 	}
-
+	
 	public void removeSubtypeName(SubtypeName stn) {
 		ArrayList<Subtype> del = new ArrayList<Subtype>();
 		for (Subtype st : subtypes) {
@@ -330,7 +330,7 @@ public class Relation {
 		for (Subtype d : del)
 			subtypes.remove(d);
 	}
-
+	
 	public boolean hasSubtypeName(SubtypeName stn) {
 		boolean found = false;
 		for (Subtype st : subtypes) {
@@ -341,7 +341,7 @@ public class Relation {
 		}
 		return found;
 	}
-
+	
 	public ArrayList<IdRef> getSubtypeRefs() {
 		ArrayList<IdRef> result = new ArrayList<IdRef>();
 		for (Subtype st : subtypes) {
@@ -350,7 +350,7 @@ public class Relation {
 		}
 		return result;
 	}
-
+	
 	public void addSubtypeRef(Entry e) {
 		if (e == null)
 			return;
@@ -373,7 +373,7 @@ public class Relation {
 						+ " contains more than one subtype-ref!");
 		}
 	}
-
+	
 	public void removeSubtypeRef(Entry e) {
 		if (e == null)
 			return;
@@ -387,21 +387,21 @@ public class Relation {
 		for (Subtype st : del)
 			subtypes.remove(st);
 	}
-
+	
 	public static Collection<Relation> getRelationElementsFromGraph(Collection<Entry> entries, Graph graph,
 			Collection<Gml2PathwayWarningInformation> warnings, Collection<Gml2PathwayErrorInformation> errors) {
-
+		
 		Collection<Relation> result = new ArrayList<Relation>();
 		HashSet<String> knownRelations = new HashSet<String>();
 		Collection<Edge> edges = graph.getEdges();
 		HashMap<Node, HashSet<Entry>> graphNode2Entries = getGraphNode2EntryStructure(entries);
 		graph.numberGraphElements();
-
+		
 		HashMap<Edge, ArrayList<IndexAndString>> edge2relationTypes = new HashMap<Edge, ArrayList<IndexAndString>>();
 		for (Edge e : edges) {
 			edge2relationTypes.put(e, KeggGmlHelper.getRelationTypes(e));
 		}
-
+		
 		for (Edge e : edges) {
 			ArrayList<IndexAndString> relationTypes = KeggGmlHelper.getRelationTypes(e);
 			for (IndexAndString ias : relationTypes) {
@@ -480,11 +480,11 @@ public class Relation {
 		}
 		return result;
 	}
-
+	
 	private boolean isValid() {
 		return valid;
 	}
-
+	
 	private static Subtype getSubtypeRef(Entry eA, Entry eB, SubtypeName stn) {
 		Entry compoundSubtypeEntry = null;
 		if (stn == SubtypeName.compound) {
@@ -499,7 +499,7 @@ public class Relation {
 		Subtype st = new Subtype(stn, stref);
 		return st;
 	}
-
+	
 	private static Collection<Relation> getRelationElements(Edge skipThisEdge, String searchForThisRelationSubtypeName,
 			Entry sourceEntry, Entry subtypeEntry, Node checkThisNodeEdges, String searchRelationSrcTgt, String srcE1,
 			String tgtE1, Collection<Entry> entries, Collection<Gml2PathwayWarningInformation> warnings,
@@ -511,7 +511,7 @@ public class Relation {
 		SubtypeName relationSubtypeName = SubtypeName.getSubtypeName(searchForThisRelationSubtypeName);
 		if (relationSubtypeName == null)
 			return result;
-
+		
 		for (Edge e : checkThisNodeEdges.getEdges()) {
 			// if (e==skipThisEdge)
 			// continue;
@@ -556,7 +556,7 @@ public class Relation {
 										&& tgtE.getName().getId().equals(tgtE2))
 										|| (tgtE.getName().getId().equals(srcE2)
 												&& srcE.getName().getId().equals(tgtE2)));
-
+								
 								if (!r.entry1.getRef().getId().matches(r.entry2.getRef().getId().getValue()) && valid) {
 									result.add(r);
 								}
@@ -568,7 +568,7 @@ public class Relation {
 		}
 		return result;
 	}
-
+	
 	private static HashMap<Node, HashSet<Entry>> getGraphNode2EntryStructure(Collection<Entry> entries) {
 		HashMap<Node, HashSet<Entry>> result = new HashMap<Node, HashSet<Entry>>();
 		for (Entry e : entries) {
@@ -578,7 +578,7 @@ public class Relation {
 		}
 		return result;
 	}
-
+	
 	private static Entry getEntry(String idA, Node a, HashMap<Node, HashSet<Entry>> graphNode2entries) {
 		HashSet<Entry> entriesOfGraphNode = graphNode2entries.get(a);
 		if (entriesOfGraphNode != null)
@@ -588,23 +588,23 @@ public class Relation {
 			}
 		return null;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Relation [" + getSourceID() + " > " + getTargetID() + "]";
 	}
-
+	
 	public String toStringWithKeggIDs() {
 		return "Relation [" + entry1.getRef().getName().getId() + " (" + entry1.getRef().getId().getValue() + ") > "
 				+ entry2.getRef().getName().getId() + " (" + entry2.getRef().getId().getValue() + ") ; ST: "
 				+ subtypes.toString() + "]";
 	}
-
+	
 	public String toStringWithKeggNames() {
 		return "Relation [" + entry1.getRef().getName().getId() + " > " + entry2.getRef().getName().getId() + "; ST: "
 				+ subtypes.toString() + "]";
 	}
-
+	
 	public String toStringWithShortDesc(boolean showLabels) {
 		if (showLabels) {
 			String subTypes = "";
@@ -622,42 +622,42 @@ public class Relation {
 					+ (entry2 == null ? "" : entry2.getRef().getName().getId()) + "<br>&nbsp;&nbsp;&nbsp;"
 					+ (subtypes == null ? "" : subtypes.toString()) + "";
 	}
-
+	
 	public String getSourceID() {
 		return entry1.getValue();
 	}
-
+	
 	public String getTargetID() {
 		return entry2.getValue();
 	}
-
+	
 	public Entry getSourceEntry() {
 		if (entry1 == null)
 			return null;
 		else
 			return entry1.getRef();
 	}
-
+	
 	public Entry getTargetEntry() {
 		if (entry2 == null)
 			return null;
 		else
 			return entry2.getRef();
 	}
-
+	
 	public void setSourceEntry(Entry e) {
 		this.entry1 = new IdRef(e, e.getId().getValue());
 	}
-
+	
 	public void setTargetEntry(Entry e) {
 		this.entry2 = new IdRef(e, e.getId().getValue());
 	}
-
+	
 	public String getCSVline() {
 		return entry1.getRef().getId().getValue() + "\t" + entry1.getRef().getName().getId() + "\t"
 				+ entry2.getRef().getId().getValue() + "\t" + entry2.getRef().getName().getId();
 	}
-
+	
 	public void removeSubtypes() {
 		subtypes.clear();
 	}

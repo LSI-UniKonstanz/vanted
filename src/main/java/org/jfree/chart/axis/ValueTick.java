@@ -34,31 +34,31 @@ import org.jfree.ui.TextAnchor;
  * A value tick.
  */
 public abstract class ValueTick extends Tick {
-
+	
 	/** The value. */
 	private double value;
-
+	
 	/**
 	 * Creates a new value tick.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @param label
-	 *            the label.
+	 *           the label.
 	 * @param textAnchor
-	 *            the part of the label that is aligned to the anchor point.
+	 *           the part of the label that is aligned to the anchor point.
 	 * @param rotationAnchor
-	 *            defines the rotation point relative to the label.
+	 *           defines the rotation point relative to the label.
 	 * @param angle
-	 *            the rotation angle (in radians).
+	 *           the rotation angle (in radians).
 	 */
 	public ValueTick(double value, String label, TextAnchor textAnchor, TextAnchor rotationAnchor, double angle) {
-
+		
 		super(label, textAnchor, rotationAnchor, angle);
 		this.value = value;
-
+		
 	}
-
+	
 	/**
 	 * Returns the value.
 	 * 
@@ -67,12 +67,12 @@ public abstract class ValueTick extends Tick {
 	public double getValue() {
 		return this.value;
 	}
-
+	
 	/**
 	 * Tests this tick for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test (<code>null</code> permitted).
+	 *           the object to test (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -88,5 +88,5 @@ public abstract class ValueTick extends Tick {
 		}
 		return false;
 	}
-
+	
 }

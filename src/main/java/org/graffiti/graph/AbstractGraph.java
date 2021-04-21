@@ -42,41 +42,41 @@ import org.graffiti.event.ListenerManager;
  */
 public abstract class AbstractGraph extends AbstractAttributable implements Graph {
 	// ~ Static fields/initializers =============================================
-
+	
 	/** The logger for the current class. */
 	private static final Logger logger = Logger.getLogger(AbstractGraph.class.getName());
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/** The <code> AttributeTypesManager</code> for handling attribute types. */
 	protected AttributeTypesManager attTypesManager;
-
+	
 	/**
 	 * The <code>ListenerManager</code> for handling events modifying the graph.
 	 */
 	protected ListenerManager listenerManager;
-
+	
 	boolean isDirected = true;
-
+	
 	private long globalGraphElementIdGeneratorField;
-
+	
 	/**
 	 * The attribute, which will be (deep-)copied and added to every new edge. This
 	 * attribute is extended by the <code>addAttributeConsumer</code> method.
 	 */
 	private CollectionAttribute defaultEdgeAttribute;
-
+	
 	/**
 	 * The attribute, which will be (deep-)copied and added to every new node. This
 	 * attribute is extended by the <code>addAttributeConsumer</code> method.
 	 */
 	private CollectionAttribute defaultNodeAttribute;
-
+	
 	/** Contains a set of attribute consumers. */
 	private Set<AttributeConsumer> attributeConsumers;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new instance of an <code>AbstractGraph</code>. Sets the
 	 * <code>ListenerManager</code> of the new instance to the default
@@ -90,18 +90,18 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 			setBoolean("directed", true);
 		else
 			a.setBoolean(true);
-
+		
 		globalGraphElementIdGeneratorField = 1;
 	}
-
+	
 	/**
 	 * Constructs a new instance of an <code>AbstractGraph</code>. Sets the
 	 * <code>ListenerManager</code> of the new instance to the default
 	 * <code>ListenerManager</code>.
 	 * 
 	 * @param coll
-	 *            the <code>CollectionAttribute</code> of the currently created
-	 *            <code>AbstractGraph</code> instance.
+	 *           the <code>CollectionAttribute</code> of the currently created
+	 *           <code>AbstractGraph</code> instance.
 	 */
 	public AbstractGraph(CollectionAttribute coll) {
 		super(coll);
@@ -111,13 +111,13 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		
 		globalGraphElementIdGeneratorField = 1;
 	}
-
+	
 	/**
 	 * Constructs a new instance of an <code>AdjListGraph</code>. Sets the
 	 * <code>ListenerManager</code> of the new instance to the specified one.
 	 * 
 	 * @param listenerManager
-	 *            listener manager for the graph.
+	 *           listener manager for the graph.
 	 */
 	public AbstractGraph(ListenerManager listenerManager) {
 		this.listenerManager = listenerManager;
@@ -126,16 +126,16 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		
 		globalGraphElementIdGeneratorField = 1;
 	}
-
+	
 	/**
 	 * Constructs a new instance of an <code>AdjListGraph</code>. Sets the
 	 * <code>ListenerManager</code> of the new instance to the specified one.
 	 * 
 	 * @param listenerManager
-	 *            listener manager for the graph.
+	 *           listener manager for the graph.
 	 * @param coll
-	 *            the <code>CollectionAttribute</code> of the currently created
-	 *            <code>AbstractGraph</code> instance.
+	 *           the <code>CollectionAttribute</code> of the currently created
+	 *           <code>AbstractGraph</code> instance.
 	 */
 	public AbstractGraph(ListenerManager listenerManager, CollectionAttribute coll) {
 		super(coll);
@@ -144,9 +144,9 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		
 		globalGraphElementIdGeneratorField = 1;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the <code>AttributeTypesManager</code> of the graph.
 	 * 
@@ -155,7 +155,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	public AttributeTypesManager getAttTypesManager() {
 		return this.attTypesManager;
 	}
-
+	
 	/**
 	 * Indicates whether the graph is directed. A graph is directed if the graph
 	 * setting states this.
@@ -169,7 +169,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		 * == getNumberOfDirectedEdges();
 		 */
 	}
-
+	
 	/**
 	 * Sets all edges to be <code>directed</code>.
 	 * <p>
@@ -193,7 +193,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		for (Edge e : el)
 			addEdgeCopy(e, e.getSource(), e.getTarget());
 	}
-
+	
 	/**
 	 * When passing a true value, all undirected edges in the graph will be set to
 	 * be directed. V.v. for a false value. A second parameter indicates that if the
@@ -227,17 +227,17 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		for (Edge e : el)
 			addEdgeCopy(e, e.getSource(), e.getTarget());
 	}
-
+	
 	@Override
 	public long generateNextUniqueGraphElementId() {
 		return globalGraphElementIdGeneratorField++;
 	}
-
+	
 	@Override
 	public long getCurrentMaxGraphElementId() {
 		return globalGraphElementIdGeneratorField - 1;
 	}
-
+	
 	/**
 	 * Returns a <code>java.util.Collection</code> containing all the edges of the
 	 * current graph.
@@ -247,39 +247,39 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 */
 	public Collection<Edge> getEdges() {
 		Set<Edge> h = new HashSet<Edge>();
-
+		
 		for (Iterator<Node> nodeIt = getNodesIterator(); nodeIt.hasNext();) {
 			Node n = (nodeIt.next());
-
+			
 			h.addAll(n.getEdges());
 		}
-
+		
 		return h;
 	}
-
+	
 	/**
 	 * Returns a collection containing all the edges between n1 and n2. There can be
 	 * more than one edge between two nodes. The edges returned by this method can
 	 * go from n1 to n2 or vice versa, be directed or not.
 	 * 
 	 * @param n1
-	 *            the first node.
+	 *           the first node.
 	 * @param n2
-	 *            the second node.
+	 *           the second node.
 	 * @return a <code>Collection</code> containing all edges between n1 and n2, an
 	 *         empty collection if there is no edge between the two nodes.
 	 * @exception GraphElementNotFoundException
-	 *                if one of the nodes is not contained in the graph.
+	 *               if one of the nodes is not contained in the graph.
 	 */
 	public Collection<Edge> getEdges(Node n1, Node n2) throws GraphElementNotFoundException {
 		assert (n1 != null) && (n2 != null);
-
+		
 		Collection<Edge> col = new LinkedList<Edge>();
-
+		
 		if ((this == n1.getGraph()) && (this == n2.getGraph())) {
 			for (Iterator<Edge> it = n1.getEdgesIterator(); it.hasNext();) {
 				Edge e = it.next();
-
+				
 				if ((n2 == e.getSource()) || (n2 == e.getTarget())) {
 					col.add(e);
 				}
@@ -287,10 +287,10 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		} else {
 			throw new GraphElementNotFoundException("one of the nodes is not in the graph");
 		}
-
+		
 		return col;
 	}
-
+	
 	/**
 	 * Returns an iterator over the edges of the graph.
 	 * 
@@ -299,7 +299,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	public Iterator<Edge> getEdgesIterator() {
 		return getEdges().iterator();
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the graph is empty. The graph is equal to a
 	 * graph which has been cleared.
@@ -310,7 +310,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	public boolean isEmpty() {
 		return getNumberOfNodes() == 0;
 	}
-
+	
 	/**
 	 * Returns all nodes and all edges contained in this graph.
 	 * 
@@ -322,10 +322,10 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		Collection<GraphElement> ges = new ArrayList<GraphElement>(nodes.size() + edges.size());
 		ges.addAll(nodes);
 		ges.addAll(edges);
-
+		
 		return ges;
 	}
-
+	
 	/**
 	 * Returns the ListenerManager of the current graph.
 	 * 
@@ -334,7 +334,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	public ListenerManager getListenerManager() {
 		return this.listenerManager;
 	}
-
+	
 	/**
 	 * Returns the number of directed edges of the graph.
 	 * 
@@ -342,20 +342,20 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 */
 	public int getNumberOfDirectedEdges() {
 		int numberOfDirectedEdges = 0;
-
+		
 		for (Iterator<Edge> edgeIt = getEdgesIterator(); edgeIt.hasNext();) {
 			Edge testedEdge = edgeIt.next();
-
+			
 			if (testedEdge.isDirected()) {
 				numberOfDirectedEdges++;
 			}
 		}
-
+		
 		logger.fine("this graph contains " + numberOfDirectedEdges + " directed edge(s)");
-
+		
 		return numberOfDirectedEdges;
 	}
-
+	
 	/**
 	 * Returns the number of edges of the graph.
 	 * 
@@ -364,7 +364,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	public int getNumberOfEdges() {
 		return getEdges().size();
 	}
-
+	
 	/**
 	 * Returns the number of nodes in the graph.
 	 * 
@@ -373,7 +373,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	public int getNumberOfNodes() {
 		return getNodes().size();
 	}
-
+	
 	/**
 	 * Returns the number of undirected edges in the graph.
 	 * 
@@ -381,12 +381,12 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 */
 	public int getNumberOfUndirectedEdges() {
 		int numberOfUndirectedEdges = getEdges().size() - getNumberOfDirectedEdges();
-
+		
 		logger.fine("this graph contains " + numberOfUndirectedEdges + " undirected edge(s)");
-
+		
 		return numberOfUndirectedEdges;
 	}
-
+	
 	/**
 	 * Indicates whether the graph is undirected. A graph is undirected if all the
 	 * edges are undirected.
@@ -399,14 +399,14 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		else
 			return getEdges().size() == getNumberOfUndirectedEdges();
 	}
-
+	
 	/**
 	 * Adds the given attribute consumer to the list of attribute consumers.
 	 * 
 	 * @param attConsumer
-	 *            the attribute consumer to add.
+	 *           the attribute consumer to add.
 	 * @throws UnificationException
-	 *             in the context of unification failures.
+	 *            in the context of unification failures.
 	 */
 	public void addAttributeConsumer(AttributeConsumer attConsumer) throws UnificationException {
 		unifyWithNodeAttribute(attConsumer.getNodeAttribute());
@@ -415,7 +415,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		addAttributeToExistingEdges(attConsumer.getEdgeAttribute());
 		attributeConsumers.add(attConsumer);
 	}
-
+	
 	/**
 	 * Adds a new edge to the current graph. Informs the ListenerManager about the
 	 * new node. This method adds a copy of the <code>defaultEdgeAttributes</code>
@@ -423,65 +423,65 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 * event.
 	 * 
 	 * @param source
-	 *            the source of the edge to add.
+	 *           the source of the edge to add.
 	 * @param target
-	 *            the target of the edge to add.
+	 *           the target of the edge to add.
 	 * @param directed
-	 *            <code>true</code> if the edge shall be directed,
-	 *            <code>false</code> otherwise.
+	 *           <code>true</code> if the edge shall be directed,
+	 *           <code>false</code> otherwise.
 	 * @return the new edge.
 	 * @exception GraphElementNotFoundException
-	 *                if any of the nodes cannot be found in the graph.
+	 *               if any of the nodes cannot be found in the graph.
 	 */
 	public Edge addEdge(Node source, Node target, boolean directed) throws GraphElementNotFoundException {
 		assert (source != null) && (target != null);
 		// logger.info("adding a new edge to the graph");
-
+		
 		ListenerManager listMan = this.getListenerManager();
-
+		
 		if (this != source.getGraph()) {
 			logger.severe("throwing GENFException, because the given source " + "was not in the same graph");
 			throw new GraphElementNotFoundException("source is not in the same graph as the edge");
 		}
-
+		
 		if (this != target.getGraph()) {
 			logger.severe("throwing GENFException, because the given target " + "was not in the same graph");
 			throw new GraphElementNotFoundException("target is not in the same graph as the edge");
 		}
-
+		
 		if (listMan != null)
 			listMan.preEdgeAdded(new GraphEvent(source, target));
-
+		
 		Edge edge = doAddEdge(source, target, directed);
-
+		
 		// add the edge's default attribute
 		if (defaultEdgeAttribute != null) {
 			edge.addAttribute((Attribute) defaultEdgeAttribute.copy(), "");
 		}
-
+		
 		if (listMan != null)
 			listMan.postEdgeAdded(new GraphEvent(edge));
-
+		
 		return edge;
 	}
-
+	
 	/**
 	 * Adds a new edge to the current graph. Informs the ListenerManager about the
 	 * new node. This method does not add any <code>defaultEdgeAttributes</code>.
 	 * 
 	 * @param source
-	 *            the source of the edge to add.
+	 *           the source of the edge to add.
 	 * @param target
-	 *            the target of the edge to add.
+	 *           the target of the edge to add.
 	 * @param directed
-	 *            <code>true</code> if the edge shall be directed,
-	 *            <code>false</code> otherwise.
+	 *           <code>true</code> if the edge shall be directed,
+	 *           <code>false</code> otherwise.
 	 * @param col
-	 *            the <code>CollectionAttribute</code> with which the edge is
-	 *            initialized.
+	 *           the <code>CollectionAttribute</code> with which the edge is
+	 *           initialized.
 	 * @return the new edge.
 	 * @exception GraphElementNotFoundException
-	 *                if any of the nodes cannot be found in the graph.
+	 *               if any of the nodes cannot be found in the graph.
 	 */
 	public Edge addEdge(Node source, Node target, boolean directed, CollectionAttribute col)
 			throws GraphElementNotFoundException {
@@ -489,35 +489,35 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		if (source == null || target == null || col == null)
 			return null;
 		// logger.info("adding a new edge with collection attributes to the graph");
-
+		
 		source.setGraph(this); // CK
 		target.setGraph(this); // CK
-
+		
 		// System.out.println("Add edge from "+source.toString()+" to
 		// "+target.toString());
-
+		
 		if (this != source.getGraph()) {
 			logger.severe("throwing GENFException, because the given source " + "was not in the same graph");
 			throw new GraphElementNotFoundException("source is not in the same graph as the edge");
 		}
-
+		
 		if (this != target.getGraph()) {
 			logger.severe("throwing GENFException, because the given target " + "was not in the same graph");
 			throw new GraphElementNotFoundException("target is not in the same graph as the edge");
 		}
-
+		
 		// logger.info("adding a new edge to the graph");
 		ListenerManager listMan = this.getListenerManager();
 		if (listMan != null)
 			listMan.preEdgeAdded(new GraphEvent(source, target));
-
+		
 		Edge edge = doAddEdge(source, target, directed, col);
 		if (listMan != null)
 			listMan.postEdgeAdded(new GraphEvent(edge));
-
+		
 		return edge;
 	}
-
+	
 	/**
 	 * Adds a copy of the specified edge to the graph as a new edge between the
 	 * specified source and target node. Informs the ListenerManager about the newly
@@ -526,16 +526,16 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 * them separatly throug <code>CollectionAttribute.add(Attribute)</code>.
 	 * 
 	 * @param edge
-	 *            the <code>Egde</code> which to copy and add.
+	 *           the <code>Egde</code> which to copy and add.
 	 * @param source
-	 *            the source <code>Node</code> of the copied and added edge.
+	 *           the source <code>Node</code> of the copied and added edge.
 	 * @param target
-	 *            the target <code>Node</code> of the copied and added edge.
+	 *           the target <code>Node</code> of the copied and added edge.
 	 * @return DOCUMENT ME!
 	 */
 	public Edge addEdgeCopy(Edge edge, Node source, Node target) {
 		assert (edge != null) && (source != null) && (target != null);
-
+		
 		CollectionAttribute col = (CollectionAttribute) edge.getAttributes().copy();
 		Edge newEdge = addEdge(source, target, edge.isDirected(), col);
 		// newEdge.setID(edge.getID()); // copied edges share the same edge id
@@ -543,14 +543,14 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		newEdge.setGraph(this);
 		return newEdge;
 	}
-
+	
 	/**
 	 * Adds a Graph g to the current graph. Graph g will be copied and then all its
 	 * nodes and edges will be added to the current graph. Like this g will not be
 	 * destroyed.
 	 * 
 	 * @param g
-	 *            the Graph to be added.
+	 *           the Graph to be added.
 	 */
 	public Collection<GraphElement> addGraph(Graph g) {
 		assert g != null;
@@ -569,9 +569,9 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 				b.setValue(a.getValue());
 			}
 		}
-
+		
 		Map<Node, Node> hm = new HashMap<Node, Node>();
-
+		
 		for (Node oldNode : g.getNodes()) {
 			Node newNode = addNodeCopy(oldNode);
 			if (newNode == null) {
@@ -581,10 +581,10 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 			hm.put(oldNode, newNode);
 			newElements.add(newNode);
 		}
-
+		
 		for (Edge oldEdge : g.getEdges()) {
 			CollectionAttribute col = (CollectionAttribute) oldEdge.getAttributes().copy();
-
+			
 			Node source = hm.get(oldEdge.getSource());
 			Node target = hm.get(oldEdge.getTarget());
 			if (source == null || target == null) {
@@ -602,7 +602,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		}
 		return newElements;
 	}
-
+	
 	/**
 	 * Adds a new node to the graph. Informs the ListenerManager about the new node.
 	 * This method adds a copy of the <code>defaultNodeAttribute</code> to the newly
@@ -613,32 +613,32 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 */
 	public Node addNode() {
 		// logger.info("adding a new node to the graph");
-
+		
 		Node node = createNode();
 		GraphEvent ga = new GraphEvent(node);
-
+		
 		listenerManager.preNodeAdded(ga);
 		doAddNode(node);
-
+		
 		// add the node's default attribute
 		if (defaultNodeAttribute != null) {
 			node.addAttribute((Attribute) defaultNodeAttribute.copy(), "");
 		}
-
+		
 		listenerManager.postNodeAdded(ga);
-
+		
 		// logger.fine("returning the created node and exiting addNode()");
-
+		
 		return node;
 	}
-
+	
 	/**
 	 * Adds a new node to the graph. Informs the ListenerManager about the new node.
 	 * Default node attributes (<code>defaultNodeAttribute</code>) are not added by
 	 * this method.
 	 * 
 	 * @param col
-	 *            the <code>CollectionAttribute</code> the node is initialized with.
+	 *           the <code>CollectionAttribute</code> the node is initialized with.
 	 * @return the new node.
 	 */
 	public Node addNode(CollectionAttribute col) {
@@ -646,22 +646,22 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		if (col == null)
 			col = AttributeHelper.getDefaultGraphicsAttributeForNode(100, 100);
 		// logger.info("adding a new node to the graph");
-
+		
 		Node node = createNode(col);
-
+		
 		GraphEvent ga = new GraphEvent(node);
-
+		
 		if (listenerManager != null)
 			listenerManager.preNodeAdded(ga);
 		doAddNode(node);
 		if (listenerManager != null)
 			listenerManager.postNodeAdded(ga);
-
+		
 		// logger.fine("returning the created node and exiting addNode()");
-
+		
 		return node;
 	}
-
+	
 	/**
 	 * Adds a copy of the specified node to the graph and returns the copy. The copy
 	 * will NOT have the same id though!!! Informs the ListenerManager about the
@@ -670,12 +670,12 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 * <code>add(Attribute)</code> method of <code>CollectionAttribute</code>.
 	 * 
 	 * @param node
-	 *            the <code>Node</code> which to copy and to add.
+	 *           the <code>Node</code> which to copy and to add.
 	 * @return the newly created node.
 	 */
 	public Node addNodeCopy(Node node) {
 		assert node != null;
-
+		
 		CollectionAttribute col = (CollectionAttribute) node.getAttributes().copy();
 		Node newNode = this.addNode(col);
 		// newNode.setID(node.getID()); // copied nodes share the same ID
@@ -683,26 +683,26 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		newNode.setGraph(this);
 		return newNode;
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if the graph contains an edge between the nodes n1
 	 * and n2, <code>false</code> otherwise.
 	 * 
 	 * @param n1
-	 *            first node of the edge to search for.
+	 *           first node of the edge to search for.
 	 * @param n2
-	 *            second node of the edge to search for.
+	 *           second node of the edge to search for.
 	 * @return <code>true</code>, if the graph contains an edge between the nodes n1
 	 *         and n2 <code>false</code> otherwise.
 	 * @exception GraphElementNotFoundException
-	 *                if any of the nodes cannot be found in the graph.
+	 *               if any of the nodes cannot be found in the graph.
 	 */
 	public boolean areConnected(Node n1, Node n2) throws GraphElementNotFoundException {
 		assert (n1 != null) && (n2 != null);
-
+		
 		return getEdges(n1, n2).size() > 0;
 	}
-
+	
 	/**
 	 * Deletes the current graph by resetting all its attributes. The graph is then
 	 * equal to a new generated graph i.e. the list of nodes and edges will be
@@ -717,66 +717,66 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		if (listMan != null)
 			listMan.postGraphCleared(new GraphEvent(this));
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if the graph contains the specified edge,
 	 * <code>false</code> otherwise.
 	 * 
 	 * @param e
-	 *            the edge to search for.
+	 *           the edge to search for.
 	 * @return <code>true</code>, if the graph contains the edge e,
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean containsEdge(Edge e) {
 		assert e != null;
-
+		
 		return getEdges().contains(e);
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if the graph contains the specified node,
 	 * <code>false</code> otherwise.
 	 * 
 	 * @param n
-	 *            the node to search for.
+	 *           the node to search for.
 	 * @return <code>true</code>, if the graph contains the node n,
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean containsNode(Node n) {
 		assert n != null;
-
+		
 		return getNodes().contains(n);
 	}
-
+	
 	/**
 	 * Deletes the given edge from the current graph. Informs the ListenerManager
 	 * about the deletion.
 	 * 
 	 * @param e
-	 *            the edge to delete.
+	 *           the edge to delete.
 	 * @exception GraphElementNotFoundException
-	 *                if the edge to delete cannot be found in the graph.
+	 *               if the edge to delete cannot be found in the graph.
 	 */
 	public void deleteEdge(Edge e) throws GraphElementNotFoundException {
 		assert e != null;
 		// if (e.getGraph()==null) return;
-
+		
 		if (!getEdges().contains(e)) {
 			return;
 		}
-
+		
 		// logger.info("deleting edge e from this graph");
-
+		
 		ListenerManager listMan = this.getListenerManager();
 		GraphEvent ga = new GraphEvent(e);
-
+		
 		if (listMan != null)
 			listMan.preEdgeRemoved(ga);
 		doDeleteEdge(e);
 		if (listMan != null)
 			listMan.postEdgeRemoved(ga);
 	}
-
+	
 	/**
 	 * Deletes the given node. First all in- and out-going edges will be deleted
 	 * using <code>deleteEdge()</code> and thereby informs the ListenerManager
@@ -784,9 +784,9 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 * deletion.
 	 * 
 	 * @param n
-	 *            the node to delete.
+	 *           the node to delete.
 	 * @exception GraphElementNotFoundException
-	 *                if the node to delete cannot be found in the graph.
+	 *               if the node to delete cannot be found in the graph.
 	 */
 	public void deleteNode(Node n) throws GraphElementNotFoundException {
 		assert n != null;
@@ -799,12 +799,12 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 			 */
 			return;
 		}
-
+		
 		// logger.info("deleting a node from the graph");
-
+		
 		ListenerManager listMan = this.getListenerManager();
 		GraphEvent ga = new GraphEvent(n);
-
+		
 		if (listMan != null)
 			listMan.preNodeRemoved(ga);
 		doDeleteNode(n);
@@ -812,101 +812,101 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 			listMan.postNodeRemoved(ga);
 		n = null;
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if the given attribute consumer was in the list of
 	 * attribute consumers and could be removed.
 	 * 
 	 * @param attConsumer
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return <code>true</code>, if the given attribute consumer was in the list of
 	 *         attribute consumers and could be removed.
 	 */
 	public boolean removeAttributeConsumer(AttributeConsumer attConsumer) {
 		return attributeConsumers.remove(attConsumer);
 	}
-
+	
 	/**
 	 * Adds a new edge to the current graph.
 	 * 
 	 * @param source
-	 *            the source of the edge to add.
+	 *           the source of the edge to add.
 	 * @param target
-	 *            the target of the edge to add.
+	 *           the target of the edge to add.
 	 * @param directed
-	 *            <code>true</code> if the edge shall be directed,
-	 *            <code>false</code> otherwise.
+	 *           <code>true</code> if the edge shall be directed,
+	 *           <code>false</code> otherwise.
 	 * @return the new edge.
 	 * @exception GraphElementNotFoundException
-	 *                if any of the nodes cannot be found in the graph.
+	 *               if any of the nodes cannot be found in the graph.
 	 */
 	protected abstract Edge doAddEdge(Node source, Node target, boolean directed) throws GraphElementNotFoundException;
-
+	
 	/**
 	 * Adds a new edge to the current graph. Informs the ListenerManager about the
 	 * new node.
 	 * 
 	 * @param source
-	 *            the source of the edge to add.
+	 *           the source of the edge to add.
 	 * @param target
-	 *            the target of the edge to add.
+	 *           the target of the edge to add.
 	 * @param directed
-	 *            <code>true</code> if the edge shall be directed,
-	 *            <code>false</code> otherwise.
+	 *           <code>true</code> if the edge shall be directed,
+	 *           <code>false</code> otherwise.
 	 * @param col
-	 *            the <code>CollectionAttribute</code> with which the edge is
-	 *            initialized.
+	 *           the <code>CollectionAttribute</code> with which the edge is
+	 *           initialized.
 	 * @return the new edge.
 	 * @exception GraphElementNotFoundException
-	 *                if any of the nodes cannot be found in the graph.
+	 *               if any of the nodes cannot be found in the graph.
 	 */
 	protected abstract Edge doAddEdge(Node source, Node target, boolean directed, CollectionAttribute col)
 			throws GraphElementNotFoundException;
-
+	
 	/**
 	 * Adds the node to the graph.
 	 * 
 	 * @param node
-	 *            the node to add
+	 *           the node to add
 	 */
 	protected abstract void doAddNode(Node node);
-
+	
 	/**
 	 * Deletes the current graph by resetting all its attributes. The graph is then
 	 * equal to a new generated graph i.e. the list of nodes and edges will be
 	 * empty.
 	 */
 	protected abstract void doClear();
-
+	
 	/**
 	 * Deletes the given edge from the current graph.
 	 * 
 	 * @param e
-	 *            the edge to delete.
+	 *           the edge to delete.
 	 * @exception GraphElementNotFoundException
-	 *                if the edge to delete cannot be found in the graph.
+	 *               if the edge to delete cannot be found in the graph.
 	 */
 	protected abstract void doDeleteEdge(Edge e) throws GraphElementNotFoundException;
-
+	
 	/**
 	 * Deletes the given node. First all in- and out-going edges will be deleted
 	 * using <code>deleteEdge()</code> and thereby informs the ListenerManager
 	 * implicitly.
 	 * 
 	 * @param n
-	 *            the node to delete.
+	 *           the node to delete.
 	 * @exception GraphElementNotFoundException
-	 *                if the node to delete cannot be found in the graph.
+	 *               if the node to delete cannot be found in the graph.
 	 */
 	protected abstract void doDeleteNode(Node n) throws GraphElementNotFoundException;
-
+	
 	/**
 	 * Creates a new <code>Node</code>.
 	 * 
 	 * @return the newly created node.
 	 */
 	protected abstract Node createNode();
-
+	
 	/**
 	 * Creates a new <code>Node</code> that is initialize with the given
 	 * <code>CollectionAttribute</code>.
@@ -914,18 +914,18 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 	 * @return the newly created node.
 	 */
 	protected abstract Node createNode(CollectionAttribute col);
-
+	
 	/**
 	 * Tries to add the given attribute to every edge in this graph.
 	 * 
 	 * @param att
-	 *            the attribute to add to every edge.
+	 *           the attribute to add to every edge.
 	 */
 	private void addAttributeToExistingEdges(CollectionAttribute att) {
 		if (att == null) {
 			return;
 		}
-
+		
 		for (Edge e : getEdges()) {
 			try {
 				e.addAttribute((Attribute) att.copy(), "");
@@ -936,18 +936,18 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 			}
 		}
 	}
-
+	
 	/**
 	 * Tries to add the given attribute to every node in this graph.
 	 * 
 	 * @param att
-	 *            the attribute to add to every node.
+	 *           the attribute to add to every node.
 	 */
 	private void addAttributeToExistingNodes(CollectionAttribute att) {
 		if (att == null) {
 			return;
 		}
-
+		
 		for (Node n : getNodes()) {
 			try {
 				n.addAttribute((Attribute) att.copy(), "");
@@ -958,18 +958,18 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 			}
 		}
 	}
-
+	
 	/**
 	 * Unifies a given collection attribute with the default edge attribute.
 	 * 
 	 * @param c
-	 *            the new collection attribute to add.
+	 *           the new collection attribute to add.
 	 * @throws UnificationException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	private void unifyWithEdgeAttribute(CollectionAttribute c) throws UnificationException {
 		if (c == null) { // base case
-
+			
 			return;
 		} else {
 			if (defaultEdgeAttribute == null) { // base case
@@ -982,13 +982,13 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 				// and add the given collection attributes sub attributes to the
 				// default attribute
 				String attClazName = defaultEdgeAttribute.getClass().getName();
-
+				
 				if (defaultEdgeAttribute instanceof HashMapAttribute) {
 					// if (attClazName
 					// .equals("org.graffiti.attributes.HashMapAttribute")) {
 					for (Iterator<String> i = c.getCollection().keySet().iterator(); i.hasNext();) {
 						String id = i.next();
-
+						
 						try {
 							defaultEdgeAttribute.add((Attribute) c.getAttribute(id).copy());
 						} catch (AttributeExistsException aee) {
@@ -999,17 +999,17 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 					// c.getClass().getName().equals(
 					// "org.graffiti.attributes.HashMapAttribute")) {
 					CollectionAttribute tmp = (CollectionAttribute) c.copy();
-
+					
 					for (Iterator<String> i = defaultEdgeAttribute.getCollection().keySet().iterator(); i.hasNext();) {
 						String id = i.next();
-
+						
 						try {
 							tmp.add((Attribute) defaultEdgeAttribute.getAttribute(id).copy());
 						} catch (AttributeExistsException aee) {
 							// ErrorMsg.addErrorMessage(aee.getLocalizedMessage());
 						}
 					}
-
+					
 					defaultEdgeAttribute = tmp;
 				} else {
 					throw new UnificationException("Cannot unify " + attClazName + " and " + c.getClass().getName());
@@ -1017,16 +1017,16 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 			}
 		}
 	}
-
+	
 	/**
 	 * Unifies a given collection attribute with the default node attribute.
 	 * 
 	 * @param c
-	 *            the new collection attribute to add.
+	 *           the new collection attribute to add.
 	 */
 	private void unifyWithNodeAttribute(CollectionAttribute c) {
 		if (c == null) { // base case
-
+			
 			return;
 		} else {
 			if (defaultNodeAttribute == null) { // base case
@@ -1046,29 +1046,29 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 				{
 					for (Iterator<String> i = c.getCollection().keySet().iterator(); i.hasNext();) {
 						String id = i.next();
-
+						
 						try {
 							defaultNodeAttribute.add((Attribute) c.getAttribute(id).copy());
 						} catch (AttributeExistsException aee) {
 						}
 					}
 				}
-
+				
 				// // else
 				// if(c.getClass().getName().equals("org.graffiti.attributes.HashMapAttribute"))
 				// else if(c instanceof CollectionAttribute)
 				{
 					CollectionAttribute tmp = (CollectionAttribute) c.copy();
-
+					
 					for (Iterator<String> i = defaultNodeAttribute.getCollection().keySet().iterator(); i.hasNext();) {
 						String id = i.next();
-
+						
 						try {
 							tmp.add((Attribute) defaultNodeAttribute.getAttribute(id).copy());
 						} catch (AttributeExistsException aee) {
 						}
 					}
-
+					
 					defaultNodeAttribute = tmp;
 				}
 				/*

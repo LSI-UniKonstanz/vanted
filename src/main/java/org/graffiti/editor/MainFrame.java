@@ -9,9 +9,6 @@
 
 package org.graffiti.editor;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
-
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -105,8 +102,6 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoableEditSupport;
-
-import net.iharder.dnd.FileDrop;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -204,8 +199,11 @@ import org.graffiti.util.DesktopMenuManager;
 import org.graffiti.util.InstanceCreationException;
 import org.vanted.VantedPreferences;
 
-import scenario.ScenarioService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.navigation.NavigationComponentView;
+import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstants;
+import net.iharder.dnd.FileDrop;
+import scenario.ScenarioService;
 
 /**
  * Constructs a new graffiti frame, which contains the main gui components.
@@ -218,35 +216,37 @@ public class MainFrame extends JFrame
 		IOManager.IOManagerListener, ViewManager.ViewManagerListener, SelectionListener, DropTargetListener
 
 {
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6007845363881721091L;
 	Logger logger = Logger.getLogger(MainFrame.class);
 	/**
 	 * The only and single instance of this object
 	 */
 	private static MainFrame instance;
-
+	
 	@Override
 	public void setTitle(String title) {
 		super.setTitle(title);
 	}
-
+	
 	// ~ Static fields/initializers =============================================
-
-	private static final long serialVersionUID = 1L;
-
+	
 	/** The size of an internal frame for first displaying. */
 	public static final Dimension PREFERRED_INTERNALFRAME_SIZE = new Dimension(1000, 1000);
-
+	
 	private static HideOrDeactivateMenu hideDeactivateSwitch = HideOrDeactivateMenu.DISABLE_INACTIVE_MENUITEMS;
-
+	
 	public static boolean blockUpdates;
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	public static HideOrDeactivateMenu getHideDeactivateSwitch() {
 		return hideDeactivateSwitch;
 	}
-
+	
 	public static void setHideDeactivateSwitch(HideOrDeactivateMenu hideDeactivateSwitch) {
 		MainFrame.hideDeactivateSwitch = hideDeactivateSwitch;
 		SwingUtilities.invokeLater(new Runnable() {
@@ -255,163 +255,163 @@ public class MainFrame extends JFrame
 			}
 		});
 	}
-
+	
 	/**
 	 * The preferences of the editor's main frame. (e.g.: position and size of the
 	 * main frame.
 	 */
 	protected Preferences uiPrefs;
-
+	
 	/** The current active session. */
 	EditorSession activeEditorSession;
-
+	
 	/** Holds all active frames. */
 	List<GraffitiInternalFrame> activeFrames = new LinkedList<GraffitiInternalFrame>();
-
+	
 	/** The list of registered <code>ZoomListener</code>s. */
 	HashSet<ZoomListener> zoomListeners;
-
+	
 	/** Maps from views to internal frames. */
 	Map<View, GraffitiInternalFrame> viewFrameMapper;
-
+	
 	/** Contains all <code>Session</code>s. */
 	Set<Session> sessions = new HashSet<Session>();
-
+	
 	/** Handles the algorithms. */
 	private AlgorithmManager algorithmManager;
-
+	
 	/** Handles the list of attribute components. */
 	private AttributeComponentManager attributeComponentManager;
-
+	
 	/** Handles the list of value edit components. */
 	private EditComponentManager editComponentManager;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction editCopy;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction editCut;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction editDelete;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction editPaste;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction editRedo;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction editSelectAll;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction editUndo;
-
+	
 	/** The programs preferences */
 	private GraffitiAction editPreferences;
-
+	
 	/** The main frame's static actions */
 	public GraffitiAction fileClose;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction fileExit;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction fileOpen;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction fileSave;
-
+	
 	// /** The main frame's static actions */
 	// private GraffitiAction fileSaveAll;
-
+	
 	/** The main frame's static actions */
 	private FileSaveAsAction fileSaveAs;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction newGraph;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction pluginManagerEdit;
 	//
 	// /** The main frame's static actions */
 	// private GraffitiAction redrawView;
-
+	
 	/** The main frame's static actions */
 	private GraffitiAction viewNew;
-
+	
 	/** The listener for the internal frames. */
 	private GraffitiFrameListener graffitiFrameListener;
-
+	
 	/** The manager for IO serializers. */
 	private IOManager ioManager;
-
+	
 	/** The manager for URL attribute actions (load map, view URL, ...). */
 	private URLattributeActionManager urlAttributeActionManager;
-
+	
 	/** The <code>ImageBundle</code> of the main frame. */
 	private final ImageBundle iBundle = ImageBundle.getInstance();
-
+	
 	/** The desktop pane for the internal frames. */
 	private JDesktopPane desktop;
-
+	
 	public JComponent sidepanel;
-
+	
 	/** The main frame's menu entries. */
 	private JMenu pluginMenu;
-
+	
 	/**
 	 * Each algorithm menu item is sorted into a category. This structure holds the
 	 * names of the known categories and its menu items.
 	 */
 	private final HashMap<String, JMenuItem> categoriesForAlgorithms = new HashMap<String, JMenuItem>();
-
+	
 	// /** Container for toolbars at the left of the main frame. */
 	// private JPanel leftToolBarPanel;
 	//
 	// /** Container for toolbars at the top of the main frame. */
 	// private JPanel topToolBarPanel;
-
+	
 	/** The split pane between the center and the pluginPanel. */
 	private JSplitPane vertSplitter;
-
+	
 	/**
 	 * The list of algorithm actions.
 	 * 
 	 * @see org.graffiti.editor.actions.RunAlgorithm
 	 */
 	private HashSet<Action> algorithmActions;
-
+	
 	/** The list of registered <code>SelectionListener</code>s. */
 	private HashSet<SelectionListener> selectionListeners;
-
+	
 	/** The list of registered <code>SessionListener</code>s. */
 	private HashSet<SessionListener> sessionListeners;
-
+	
 	/**
 	 * Contains a mapping between the identifiers of gui-components and the
 	 * corresponding gui-component.
 	 */
 	private Map<String, JComponent> guiMap = new HashMap<String, JComponent>();
-
+	
 	/** The mode manager. */
 	private ModeManager modeManager;
-
+	
 	/** A reference to the graffiti plugin manager. */
 	private PluginManager pluginmgr;
-
+	
 	/** The panel for the plugins. */
 	private PluginPanel pluginPanel;
-
+	
 	/** The main frame's status bar. */
 	private StatusBar statusBar;
-
+	
 	/**
 	 * the main panel for the inspector tabs This will be set by pluginAdded where
 	 * one of the plugins should be the Inspector Plugin
 	 */
 	private InspectorPlugin inspectorPlugin = null;
-
+	
 	/**
 	 * The default view type, that will be always displayed if the user deactivates
 	 * the view chooser dialog. This variable is initialized with null per default.
@@ -419,73 +419,77 @@ public class MainFrame extends JFrame
 	 * a valid view type by the method <code>getDefaultView()</code>.
 	 */
 	private final String defaultView = null;
-
+	
 	/** The <code>StringBundle</code> of the main frame. */
 	StringBundle sBundle = StringBundle.getInstance();
-
+	
 	/** The tool manager. */
 	private ToolManager toolManager;
-
+	
 	/** This object is listener of all undoable actions. */
 	private UndoableEditSupport undoSupport;
-
+	
 	/** The manager, which maps view type names to view types. */
 	private ViewManager viewManager;
-
+	
 	private JPanel progressPanel;
-
+	
 	private NavigationComponentView navigationView;
-
+	
 	// private JSplitPane jSplitPane_pluginPanelAndProgressView;
 	private JComponent jSplitPane_pluginPanelAndProgressView;
-
+	
 	private Object activeProgressPanelLock = new Object();
 	private ArrayList<JPanel> activeProgressPanels;
-
+	
 	private Timer timerCheckActiveProgressPanels;
-
+	
 	private DesktopMenuManager desktopMenuManager;
-
+	
 	private JMenuBar storedMenuBar;
-
+	
 	// for the recentfilelist
 	private RecentEntry[] recentfileslist;
 	private Component enclosingseparator;
 	private final File recentlist = new File(ReleaseInfo.getAppFolderWithFinalSep() + "recentfiles.txt");
-
+	
 	private PreferenceManager preferenceManager;
-
+	
 	// private FrameTabbedPane jtp;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	public MainFrame() {
 		// empty
 		// this constructor is only used for Unit testing
 	}
-
+	
 	/**
 	 * Constructs a new <code>MainFrame</code>.
 	 * 
-	 * @param pluginmgr DOCUMENT ME!
-	 * @param prefs     DOCUMENT ME!
+	 * @param pluginmgr
+	 *           DOCUMENT ME!
+	 * @param prefs
+	 *           DOCUMENT ME!
 	 */
 	public MainFrame(PluginManager pluginmgr, Preferences prefs) {
 		this(pluginmgr, prefs, null, false);
 	}
-
+	
 	/**
 	 * Constructs a new <code>MainFrame</code>.
 	 * 
-	 * @param pluginmgr DOCUMENT ME!
-	 * @param prefs     DOCUMENT ME!
+	 * @param pluginmgr
+	 *           DOCUMENT ME!
+	 * @param prefs
+	 *           DOCUMENT ME!
 	 */
 	public MainFrame(PluginManager pluginmgr, Preferences prefs, JPanel progressPanel, boolean showVantedHelp) {
 		super();
 		ErrorMsg.setRethrowErrorMessages(false);
-
+		
 		instance = this;
-
+		
 		this.setTitle(getDefaultFrameTitle());
 		GraffitiInternalFrame.startTitle = getDefaultFrameTitle();
 		this.sessionListeners = new HashSet<SessionListener>();
@@ -494,21 +498,21 @@ public class MainFrame extends JFrame
 		this.viewFrameMapper = new HashMap<View, GraffitiInternalFrame>();
 		this.algorithmActions = new HashSet<Action>();
 		this.addSessionListener(this);
-
+		
 		viewManager = new DefaultViewManager();
 		algorithmManager = new DefaultAlgorithmManager();
 		modeManager = new DefaultModeManager();
 		toolManager = new DefaultToolManager(modeManager);
 		// logger.debug("loading iomanager");
-
+		
 		ioManager = new DefaultIOManager();
 		// logger.debug("iomanager loaded");
-
+		
 		attributeComponentManager = new AttributeComponentManager();
 		editComponentManager = new EditComponentManager();
 		urlAttributeActionManager = new DefaultURLattributeActionManager();
 		preferenceManager = PreferenceManager.getInstance();
-
+		
 		pluginmgr.addPluginManagerListener(this);
 		pluginmgr.addPluginManagerListener(viewManager);
 		pluginmgr.addPluginManagerListener(toolManager);
@@ -519,29 +523,29 @@ public class MainFrame extends JFrame
 		pluginmgr.addPluginManagerListener(editComponentManager);
 		pluginmgr.addPluginManagerListener(urlAttributeActionManager);
 		pluginmgr.addPluginManagerListener(preferenceManager);
-
+		
 		ioManager.addListener(this);
 		viewManager.addListener(this);
-
+		
 		undoSupport = new UndoableEditSupport();
 		undoSupport.addUndoableEditListener(this);
-
+		
 		graffitiFrameListener = new GraffitiFrameListener(this);
-
+		
 		this.pluginmgr = pluginmgr;
-
+		
 		this.uiPrefs = prefs;
-
+		
 		createActions();
-
+		
 		// initialize map of gui components and create menu bar
 		guiMap = new Hashtable<String, JComponent>();
-
+		
 		// the editor's status bar
 		statusBar = new StatusBar(sBundle);
 		statusBar.setBorder(null);
 		addSessionListener(statusBar);
-
+		
 		selectionListeners.add(statusBar);
 		selectionListeners.add(this);
 		if (showVantedHelp) {
@@ -549,11 +553,11 @@ public class MainFrame extends JFrame
 		}
 		getContentPane().add(statusBar, BorderLayout.SOUTH);
 		// getContentPane().setBackground(null);
-
+		
 		// create the desktop
 		// desktop = new JDesktopPane();
 		desktop = new JDesktopPane();
-
+		
 		desktop.setBackground(Color.LIGHT_GRAY);
 		desktop.setOpaque(true);
 		// create a panel, which will contain the views for plugins
@@ -562,12 +566,12 @@ public class MainFrame extends JFrame
 		// pluginPanel.setLayout(new BoxLayout(pluginPanel, BoxLayout.Y_AXIS));
 		// pluginPanel.setLayout(new BorderLayout()
 		guiMap.put(pluginPanel.getId(), pluginPanel);
-
+		
 		navigationView = new NavigationComponentView();
 		navigationView.setMinimumSize(new Dimension(0, 100));
 		addSessionListener(navigationView);
 		guiMap.put(navigationView.getId(), navigationView);
-
+		
 		if (progressPanel != null) {
 			jSplitPane_pluginPanelAndProgressView = TableLayout.getSplitVertical(navigationView, progressPanel,
 					TableLayout.FILL, TableLayout.PREFERRED);
@@ -576,33 +580,33 @@ public class MainFrame extends JFrame
 		} else {
 			sidepanel = pluginPanel;
 		}
-
+		
 		// JPanel p = new JPanel();
 		// p.setLayout(TableLayout.getLayout(TableLayout.FILL, new double[] {
 		// TableLayout.PREFERRED, TableLayout.FILL }));
 		// jtp = new FrameTabbedPane();
 		// addViewListener(jtp);
-
+		
 		// p.add(jtp, "0,0");
 		// p.add(desktop, "0,1");
 		JSplitPane splitpanePluginNav = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pluginPanel, sidepanel);
 		splitpanePluginNav.setDividerLocation(0.5);
-
+		
 		vertSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, desktop, splitpanePluginNav);
 		this.progressPanel = progressPanel;
-
+		
 		vertSplitter.setContinuousLayout(true);
-
+		
 		// vertSplitter.setOneTouchExpandable(true);
-
+		
 		// vertSplitter.setBorder(null);
 		// vertSplitter.setDividerSize(4);
-
+		
 		vertSplitter.setDividerLocation(uiPrefs.getInt("vertSplitter", VERT_SPLITTER));
 		// the size of the component right of the splitter (the tab panel) is fixed
 		// the size of the component left of the splitter is changed
 		vertSplitter.setResizeWeight(1.0);
-
+		
 		// vertSplitter.setDividerSize(5);
 		// vertSplitter.setBackground(null);
 		// vertSplitter.setOpaque(false);
@@ -610,14 +614,14 @@ public class MainFrame extends JFrame
 		// getContentPane().add(desktop, BorderLayout.CENTER);
 		// else
 		getContentPane().add(vertSplitter, BorderLayout.CENTER);
-
+		
 		JToolBar toolBar = createToolBar();
-
+		
 		guiMap.put("toolbarPanel", toolBar);
 		guiMap.put("defaultToolbar", toolBar);
-
+		
 		// create and set the menu bar
-
+		
 		JMenu windowMenu = createMenu("window");
 		// if (ReleaseInfo.isRunningAsApplet()) {
 		// JMenuBar jmb = createMenuBar(windowMenu);
@@ -629,7 +633,7 @@ public class MainFrame extends JFrame
 		addSessionListener(desktopMenuManager);
 		getContentPane().add(toolBar, BorderLayout.PAGE_START);
 		// }
-
+		
 		// // left toolbars
 		// leftToolBarPanel = new JPanel();
 		// // leftToolBarPanel.setLayout(new BoxLayout(leftToolBarPanel,
@@ -638,15 +642,15 @@ public class MainFrame extends JFrame
 		// SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.CENTER,
 		// 2));
 		// getContentPane().add(leftToolBarPanel, BorderLayout.WEST);
-
+		
 		// window settings like position and size
 		setSize(uiPrefs.getInt("sizeWidth", SIZE_WIDTH), uiPrefs.getInt("sizeHeight", SIZE_HEIGHT));
-
+		
 		setSize(900, 700);
-
+		
 		// if (!ReleaseInfo.isRunningAsApplet())
 		setLocationByPlatform(true);
-
+		
 		// if (!ReleaseInfo.isRunningAsApplet())
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		getContentPane().validate();
@@ -656,27 +660,27 @@ public class MainFrame extends JFrame
 			}
 		});
 	}
-
+	
 	// public void hideSidePanel() {
 	// getContentPane().remove(vertSplitter);
 	// getContentPane().add(desktop, BorderLayout.CENTER);
 	// validate();
 	// }
-
+	
 	private String getDefaultFrameTitle() {
 		return sBundle.getString("name") + " " + sBundle.getString("version") + " "
 				+ sBundle.getString("version.Release") + "." + sBundle.getString("version.Major") + "."
 				+ sBundle.getString("version.Minor");
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	private void setHelpIntroduction() {
 		String s = ReleaseInfo.getHelpIntroductionText();
 		if (s != null && s.length() > 0)
 			showMessage(s, MessageType.INFO);
 	}
-
+	
 	/**
 	 * Returns the current active editor session.
 	 * 
@@ -685,7 +689,7 @@ public class MainFrame extends JFrame
 	public EditorSession getActiveEditorSession() {
 		return activeEditorSession;
 	}
-
+	
 	// public DesktopMenuManager getDesktopMenuManager() {
 	// return desktopMenuManager;
 	// }
@@ -693,11 +697,11 @@ public class MainFrame extends JFrame
 	// public JDesktopPane getJDesktopPane() {
 	// return desktop;
 	// }
-
+	
 	// public List<GraffitiInternalFrame> getActiveFrames() {
 	// return activeFrames;
 	// }
-
+	
 	/**
 	 * Returns the current active session.
 	 * 
@@ -706,11 +710,12 @@ public class MainFrame extends JFrame
 	public Session getActiveSession() {
 		return activeEditorSession;
 	}
-
+	
 	/**
 	 * Sets the current active session.
 	 * 
-	 * @param s The session to be activated.
+	 * @param s
+	 *           The session to be activated.
 	 */
 	public void setActiveSession(Session s, final View targetView) {
 		activeEditorSession = (EditorSession) s;
@@ -733,7 +738,7 @@ public class MainFrame extends JFrame
 		MainFrame.blockUpdates = false;
 		updateActions();
 	}
-
+	
 	// /**
 	// * DOCUMENT ME!
 	// *
@@ -742,7 +747,7 @@ public class MainFrame extends JFrame
 	// public Collection<Action> getAlgorithmActions() {
 	// return algorithmActions;
 	// }
-
+	
 	// /**
 	// * Sets the defaultView.
 	// *
@@ -751,7 +756,7 @@ public class MainFrame extends JFrame
 	// public void setDefaultView(String defaultView) {
 	// this.defaultView = defaultView;
 	// }
-
+	
 	/**
 	 * Returns the defaultView.
 	 * 
@@ -760,16 +765,15 @@ public class MainFrame extends JFrame
 	public String getDefaultView() {
 		return defaultView;
 	}
-
+	
 	/**
-	 * 
 	 * @return the global Attribute Component Manager
 	 * @since 2.7.0
 	 */
 	public AttributeComponentManager getAttributeComponentManager() {
 		return attributeComponentManager;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -778,7 +782,7 @@ public class MainFrame extends JFrame
 	public EditComponentManager getEditComponentManager() {
 		return editComponentManager;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -787,7 +791,7 @@ public class MainFrame extends JFrame
 	public IOManager getIoManager() {
 		return ioManager;
 	}
-
+	
 	// /**
 	// * Get the algorithm manager.
 	// *
@@ -796,7 +800,7 @@ public class MainFrame extends JFrame
 	// public AlgorithmManager getAlgorithmManager() {
 	// return algorithmManager;
 	// }
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -805,7 +809,7 @@ public class MainFrame extends JFrame
 	public PluginManager getPluginManager() {
 		return pluginmgr;
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if a session is active.
 	 * 
@@ -814,7 +818,7 @@ public class MainFrame extends JFrame
 	public boolean isSessionActive() {
 		return getActiveSession() != null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -823,14 +827,14 @@ public class MainFrame extends JFrame
 	public SessionManager getSessionManager() {
 		return this;
 	}
-
+	
 	public static Set<Session> getSessions() {
 		if (getInstance() != null)
 			return instance.sessions;
 		else
 			return new HashSet<Session>();
 	}
-
+	
 	public static Set<EditorSession> getEditorSessions() {
 		HashSet<EditorSession> result = new HashSet<EditorSession>();
 		for (Session s : getSessions()) {
@@ -839,7 +843,7 @@ public class MainFrame extends JFrame
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns an iterator over all sessions.
 	 * 
@@ -849,7 +853,7 @@ public class MainFrame extends JFrame
 	public Iterator<Session> getSessionsIterator() {
 		return sessions.iterator();
 	}
-
+	
 	// /**
 	// * DOCUMENT ME!
 	// *
@@ -859,7 +863,7 @@ public class MainFrame extends JFrame
 	// {
 	// return uiPrefs;
 	// }
-
+	
 	/**
 	 * Returns the class for undoSupport.
 	 * 
@@ -868,7 +872,7 @@ public class MainFrame extends JFrame
 	public UndoableEditSupport getUndoSupport() {
 		return undoSupport;
 	}
-
+	
 	/**
 	 * Returns the viewManager.
 	 * 
@@ -877,7 +881,7 @@ public class MainFrame extends JFrame
 	public ViewManager getViewManager() {
 		return viewManager;
 	}
-
+	
 	// /**
 	// * Returns the zoomListeners.
 	// *
@@ -886,40 +890,42 @@ public class MainFrame extends JFrame
 	// public Collection<ZoomListener> getZoomListeners() {
 	// return zoomListeners;
 	// }
-
+	
 	/**
 	 * Adds the <code>JComponent</code> component to the gui-component specified by
 	 * id. If the specified gui-component does not exist a new one will be created
 	 * with id id and the newly created gui-component will be added to the gui of
 	 * the editor.
 	 * 
-	 * @param id        the id of the gui-component where the component shall be
-	 *                  added.
-	 * @param component the <code>JComponent</code> which shall be added to the
-	 *                  specified gui-component.
+	 * @param id
+	 *           the id of the gui-component where the component shall be
+	 *           added.
+	 * @param component
+	 *           the <code>JComponent</code> which shall be added to the
+	 *           specified gui-component.
 	 */
 	private void addGUIComponent(String id, JComponent component) {
 		// all GraffitiContainers should be JComponents
 		JComponent container = guiMap.get(id);
-
+		
 		if (container != null) {
-
+			
 			if (component instanceof Undoable) {
 				((Undoable) component).setUndoSupport(undoSupport);
 			}
-
+			
 			// if the component is itself a container, then add it to the guiMap
 			if (component instanceof GraffitiContainer) {
 				GraffitiContainer con = (GraffitiContainer) component;
 				guiMap.put(con.getId(), (JComponent) con);
 			}
-
+			
 			// if the component is a ToolButton, the represented tool has to be
 			// added to the mode this ToolButton likes to be in
 			if (component instanceof ToolButton) {
 				ToolButton tb = (ToolButton) component;
 				modeManager.getMode(tb.getPreferredComponent()).addTool(tb.getTool());
-
+				
 				// if the tool provides undo information the undoSupport has
 				// to be set.
 				if (tb.getTool() instanceof Undoable) {
@@ -929,12 +935,12 @@ public class MainFrame extends JFrame
 				if (component instanceof ViewListener) {
 					this.viewManager.addViewListener((ViewListener) component);
 				}
-
+				
 				if (component instanceof SessionListener) {
 					this.sessionListeners.add((SessionListener) component);
 				}
 			}
-
+			
 			if (component instanceof JToolBar) {
 				JToolBar jt = (JToolBar) component;
 				try {
@@ -957,15 +963,15 @@ public class MainFrame extends JFrame
 				}
 			} else
 				container.add(component);
-
+			
 			if (container.getParent() instanceof JSplitPane) {
 				// adjust divider location
 				JSplitPane pane = (JSplitPane) container.getParent();
 				pane.setResizeWeight(1.0);
-
+				
 				if (pane.getWidth() != 0)
 					pane.setDividerLocation(1 - ((container.getPreferredSize().getWidth() + 10) / pane.getWidth()));
-
+				
 				if (container.getPreferredSize().getWidth() < 20) {
 					container.setMinimumSize(new Dimension(160, pane.getHeight()));
 				} else {
@@ -977,64 +983,80 @@ public class MainFrame extends JFrame
 			ErrorMsg.addErrorMessage("Don't know where to put component " + component + " with target id " + id);
 		}
 	}
-
+	
 	/**
 	 * Adds a <code>SelectionListener</code>.
 	 * 
-	 * @param sl DOCUMENT ME!
+	 * @param sl
+	 *           DOCUMENT ME!
 	 */
 	public void addSelectionListener(SelectionListener sl) {
 		this.selectionListeners.add(sl);
-
+		
 		for (EditorSession es : getEditorSessions()) {
 			es.getSelectionModel().addSelectionListener(sl);
 		}
 	}
-
+	
 	/**
 	 * Removes the session from the list of sessions.
 	 * 
-	 * @param s the session to remove.
+	 * @param s
+	 *           the session to remove.
 	 * @since 2.7.0
 	 */
 	public void removeSession(Session s) {
 		sessions.remove(s);
 	}
-
+	
 	/**
 	 * Adds the given session to the list of sessions.
 	 * 
-	 * @param s the new session to add.
+	 * @param s
+	 *           the new session to add.
+	 * @vanted.revision 2.8.0 Resolve legacy issue
 	 */
 	public void addSession(Session s) {
 		sessions.add(s);
-
+		
 		if (s instanceof EditorSession) {
 			SelectionModel selModel = new SelectionModel();
 			((EditorSession) s).setSelectionModel(selModel);
-
+			
 			for (Iterator<SelectionListener> it = selectionListeners.iterator(); it.hasNext();) {
 				selModel.addSelectionListener(it.next());
 			}
-
+			
 			selModel.add(new Selection(sBundle.getString("activeSelection")));
+			{
+				// @since 2.8.0
+				
+				// First set active session and only then the active selection
+				// Otherwise legacy code breaks, e.g. CentiLib on data mapping
+				// However, this conflicts with any logic which may rely on the first
+				// selection event to have a null session / be null
+				if (activeEditorSession == null) {
+					activeEditorSession = (EditorSession) s;
+				}
+			}
 			selModel.setActiveSelection(sBundle.getString("activeSelection"));
 		}
 	}
-
+	
 	/**
 	 * Adds a <code>SessionListener</code>.
 	 * 
-	 * @param sl DOCUMENT ME!
+	 * @param sl
+	 *           DOCUMENT ME!
 	 */
 	public void addSessionListener(SessionListener sl) {
 		this.sessionListeners.add(sl);
 	}
-
+	
 	public void addViewListener(ViewListener vl) {
 		this.getViewManager().addViewListener(vl);
 	}
-
+	
 	// /**
 	// * Removes any messages displayed by calls to <code>showMessage</code> or
 	// * <code>showError</code>.
@@ -1042,15 +1064,18 @@ public class MainFrame extends JFrame
 	// public void clearMessages() {
 	// statusBar.clear();
 	// }
-
+	
 	/**
 	 * Creates and adds a new internal frame to the desktop within an existing
 	 * session.
 	 * 
-	 * @param viewName         a name of the new view
-	 * @param newFrameTitle    the title for the frame, if <code>null</code> or the
-	 *                         empty String no title will be set.
-	 * @param returnScrollpane DOCUMENT ME!
+	 * @param viewName
+	 *           a name of the new view
+	 * @param newFrameTitle
+	 *           the title for the frame, if <code>null</code> or the
+	 *           empty String no title will be set.
+	 * @param returnScrollpane
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public JScrollPane createInternalFrame(String viewName, String newFrameTitle, boolean returnScrollpane,
@@ -1058,39 +1083,44 @@ public class MainFrame extends JFrame
 		return (JScrollPane) createInternalFrame(viewName, newFrameTitle, getActiveEditorSession(), returnScrollpane,
 				false, otherViewWillBeClosed, null, true);
 	}
-
+	
 	public JScrollPane createInternalFrame(String viewName, String newFrameTitle, EditorSession session,
 			boolean returnScrollpane, boolean otherViewWillBeClosed, ConfigureViewAction c) {
 		return (JScrollPane) createInternalFrame(viewName, newFrameTitle, session, returnScrollpane, false,
 				otherViewWillBeClosed, c, true);
 	}
-
+	
 	public Object createInternalFrame(String viewName, String newFrameTitle, EditorSession session,
 			boolean returnScrollPane, boolean returnGraffitiFrame, boolean otherViewWillBeClosed) {
 		return createInternalFrame(viewName, newFrameTitle, session, returnScrollPane, returnGraffitiFrame,
 				otherViewWillBeClosed, null, true);
 	}
-
+	
 	/**
 	 * Creates and adds a new internal frame to the desktop within a new session.
 	 * 
-	 * @param viewName         a name of the new view
-	 * @param newFrameTitle    the title for the frame, if <code>null</code> or the
-	 *                         empty String no title will be set.
-	 * @param session          a new session.
-	 * @param returnScrollPane A scrollpane or a graffitiinternalframe
+	 * @param viewName
+	 *           a name of the new view
+	 * @param newFrameTitle
+	 *           the title for the frame, if <code>null</code> or the
+	 *           empty String no title will be set.
+	 * @param session
+	 *           a new session.
+	 * @param returnScrollPane
+	 *           A scrollpane or a graffitiinternalframe
 	 * @return DOCUMENT ME!
-	 * @throws RuntimeException DOCUMENT ME!
+	 * @throws RuntimeException
+	 *            DOCUMENT ME!
 	 */
 	public Object createInternalFrame(String viewName, String newFrameTitle, EditorSession session,
 			boolean returnScrollPane, boolean returnGraffitiFrame, boolean otherViewWillBeClosed,
 			ConfigureViewAction configNewView, boolean addViewToEditorSession) {
-
+		
 		if (!returnGraffitiFrame && !returnScrollPane && MainFrame.getInstance() != null
 				&& !SwingUtilities.isEventDispatchThread()) {
 			ErrorMsg.addErrorMessage("Internal Error: Creating Frame in Background Thread");
 		}
-
+		
 		View view;
 		try {
 			if (viewManager == null) {
@@ -1105,7 +1135,7 @@ public class MainFrame extends JFrame
 			ErrorMsg.addErrorMessage("Could not create view " + viewName + ". Error: " + e.getLocalizedMessage());
 			return null;
 		}
-
+		
 		if (session == null) {
 			ErrorMsg.addErrorMessage("Could not create frame for graph. Session is NULL");
 			return null;
@@ -1113,20 +1143,20 @@ public class MainFrame extends JFrame
 			if (session.getGraph() == null)
 				return null;
 		}
-
+		
 		view.setAttributeComponentManager(this.attributeComponentManager);
-
+		
 		if (modeManager != null)
 			session.changeActiveMode(modeManager.getMode("org.graffiti.plugins.modes.defaultEditMode"));
-
+		
 		GraffitiInternalFrame frame = null;
-
+		
 		if (!returnScrollPane) {
 			frame = new GraffitiInternalFrame(session, view, newFrameTitle, otherViewWillBeClosed);
 			frame.addInternalFrameListener(graffitiFrameListener);
 			frame.setDefaultCloseOperation(GraffitiInternalFrame.DO_NOTHING_ON_CLOSE);
 		}
-
+		
 		ListenerManager lm = session.getGraph().getListenerManager();
 		lm.addDelayedAttributeListener(view);
 		lm.addDelayedEdgeListener(view);
@@ -1134,26 +1164,26 @@ public class MainFrame extends JFrame
 		lm.addDelayedGraphListener(view);
 		if (statusBar != null)
 			lm.addDelayedGraphListener(statusBar);
-
+		
 		view.setGraph(session.getGraph());
-
+		
 		if (addViewToEditorSession) {
 			session.addView(view);
 			session.setActiveView(view);
 		}
-
+		
 		// this.activeSession = session;
-
+		
 		if (!returnScrollPane)
 			sessions.add(session);
-
+		
 		if (session != null && addViewToEditorSession) {
 			SelectionModel selModel = new SelectionModel();
 			session.setSelectionModel(selModel);
-
+			
 			if (MainFrame.getInstance() != null) {
 				this.fireSessionChanged(session);
-
+				
 				for (Iterator<SelectionListener> it = selectionListeners.iterator(); it.hasNext();) {
 					selModel.addSelectionListener(it.next());
 				}
@@ -1161,48 +1191,48 @@ public class MainFrame extends JFrame
 			selModel.add(new Selection(sBundle.getString("activeSelection")));
 			selModel.setActiveSelection(sBundle.getString("activeSelection"));
 		}
-
+		
 		final JScrollPane scrollPane = new JScrollPane(view.getViewComponent(),
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-
+		
 		/*
 		 * add support for reduced drawing, if view supports it
 		 */
 		final View finalView = view;
 		MouseListener ml = new MouseAdapter() {
-
+			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (finalView instanceof GraffitiView)
 					((GraffitiView) finalView).setDrawMode(DrawMode.REDUCED);
 			}
-
+			
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (finalView instanceof GraffitiView)
 					((GraffitiView) finalView).setDrawMode(DrawMode.NORMAL);
 			}
-
+			
 		};
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(10);
 		scrollPane.getHorizontalScrollBar().addMouseListener(ml);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollPane.getVerticalScrollBar().addMouseListener(ml);
-
+		
 		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.setWheelScrollingEnabled(true);
-
+		
 		if (!returnScrollPane) {
 			Container j = frame.getContentPane();
 			if (view.putInScrollPane()) {
 				placeViewInContainer(view, scrollPane, j);
 			} else
 				placeViewInContainer(view, null, j);
-
+			
 			frame.pack();
-
+			
 			GravistoService.getInstance().framesDeselect();
-
+			
 			if (!returnGraffitiFrame) {
 				frame.setVisible(true);
 				try {
@@ -1222,9 +1252,9 @@ public class MainFrame extends JFrame
 				}
 				Java_1_5_compatibility.setComponentZorder(getDesktop(), frame);
 			}
-
+			
 			final GraffitiInternalFrame fframe = frame;
-
+			
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -1235,29 +1265,29 @@ public class MainFrame extends JFrame
 					}
 				}
 			});
-
+			
 			viewFrameMapper.put(view, frame);
 			activeFrames.add(frame);
 		}
-
+		
 		if (zoomListeners != null)
 			this.zoomListeners.add(view);
-
+		
 		if (returnGraffitiFrame)
 			return frame;
 		else
 			return scrollPane;
 	}
-
+	
 	static void placeViewInContainer(View view, JScrollPane scrollPane, Container j) {
 		if (isViewProvidingToolbar(view)) {
-
+			
 			boolean top = view.getViewToolbarComponentTop() != null;
 			boolean bottom = view.getViewToolbarComponentBottom() != null;
 			boolean left = view.getViewToolbarComponentLeft() != null;
 			boolean right = view.getViewToolbarComponentRight() != null;
 			boolean background = view.getViewToolbarComponentBackground() != null;
-
+			
 			JComponent topC = top && view.getViewToolbarComponentTop() instanceof JComponent
 					? (JComponent) view.getViewToolbarComponentTop()
 					: new JLabel();
@@ -1270,7 +1300,7 @@ public class MainFrame extends JFrame
 			JComponent rightC = right && view.getViewToolbarComponentRight() instanceof JComponent
 					? (JComponent) view.getViewToolbarComponentRight()
 					: new JLabel();
-
+			
 			double topS = top && view.getViewToolbarComponentTop() instanceof Double
 					? (Double) view.getViewToolbarComponentTop()
 					: TableLayout.PREFERRED;
@@ -1283,7 +1313,7 @@ public class MainFrame extends JFrame
 			double rightS = right && view.getViewToolbarComponentRight() instanceof Double
 					? (Double) view.getViewToolbarComponentRight()
 					: TableLayout.PREFERRED;
-
+			
 			j.setLayout(new TableLayout(new double[][] { new double[] { TableLayout.FILL },
 					new double[] { topS, TableLayout.FILL, bottomS }, }));
 			if (top)
@@ -1300,7 +1330,7 @@ public class MainFrame extends JFrame
 		} else
 			j.add(scrollPane != null ? scrollPane : view.getViewComponent());
 	}
-
+	
 	/**
 	 * Creates and returns a new editor session.
 	 * 
@@ -1311,18 +1341,19 @@ public class MainFrame extends JFrame
 		addSession(es);
 		return es;
 	}
-
+	
 	public EditorSession createNewSession(Graph g) {
 		EditorSession es = new EditorSession(g);
 		addSession(es);
 		return es;
 	}
-
+	
 	/**
 	 * Informs all <code>SessionListener</code>s that the active session has
 	 * changed.
 	 * 
-	 * @param session DOCUMENT ME!
+	 * @param session
+	 *           DOCUMENT ME!
 	 */
 	public void fireSessionChanged(Session session) {
 		GravistoService.checkEventDispatchThread();
@@ -1334,7 +1365,7 @@ public class MainFrame extends JFrame
 			s.sessionChanged(session);
 		}
 	}
-
+	
 	public void fireSelectionChanged(EditorSession session) {
 		GravistoService.checkEventDispatchThread();
 		ArrayList<SelectionListener> sl = new ArrayList<SelectionListener>();
@@ -1345,19 +1376,20 @@ public class MainFrame extends JFrame
 			s.selectionChanged(new SelectionEvent((session).getSelectionModel().getActiveSelection()));
 		}
 	}
-
+	
 	/**
 	 * Called, if the session or data (except graph data) in the session have been
 	 * changed.
 	 * 
-	 * @param session DOCUMENT ME!
+	 * @param session
+	 *           DOCUMENT ME!
 	 */
 	public void fireSessionDataChanged(Session session) {
 		for (Iterator<SessionListener> it = this.sessionListeners.iterator(); it.hasNext();) {
 			it.next().sessionDataChanged(session);
 		}
 	}
-
+	
 	/*
 	 * @see org.graffiti.managers.IOManager.IOManagerListener#inputSerializerAdded
 	 * (org.graffiti.plugin.io.InputSerializer)
@@ -1365,11 +1397,12 @@ public class MainFrame extends JFrame
 	public void inputSerializerAdded(InputSerializer is) {
 		updateActions();
 	}
-
+	
 	/**
 	 * Loads a graph from a file;
 	 * 
-	 * @param file File containing the graph;
+	 * @param file
+	 *           File containing the graph;
 	 */
 	public Graph loadGraph(String fileName, URL url) {
 		String ext = fileName.substring(fileName.lastIndexOf("."));
@@ -1391,14 +1424,14 @@ public class MainFrame extends JFrame
 			if (fileTypeDescriptions != null && fileTypeDescriptions.length > 0)
 				g.setFileTypeDescription(fileTypeDescriptions[0]);
 			EditorSession es = new EditorSession(g);
-
+			
 			try {
 				es.setFileName(url.toString());
 			} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}
 			showViewChooserDialog(es, false, null);
-
+			
 			return g;
 		} catch (org.graffiti.plugin.io.ParserException e1) {
 			JOptionPane.showMessageDialog(null,
@@ -1416,7 +1449,7 @@ public class MainFrame extends JFrame
 		}
 		return null;
 	}
-
+	
 	public Graph getGraph(String fileName, URL url) {
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		try {
@@ -1452,7 +1485,7 @@ public class MainFrame extends JFrame
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Loads a graph in the background (using a background thread). During loading a
 	 * progress bar is shown. Do not use this command if you want to work with a
@@ -1460,18 +1493,19 @@ public class MainFrame extends JFrame
 	 * shown after this method returns. Instead the graph will be shown as soon as
 	 * the file loading is finished.
 	 * 
-	 * @param file or url
+	 * @param file
+	 *           or url
 	 */
 	public void loadGraphInBackground(final File file, ActionEvent ae, boolean autoSwitch)
 			throws IllegalAccessException, InstantiationException {
 		loadGraphInBackground(new File[] { file }, ae, autoSwitch);
 	}
-
+	
 	final ExecutorService loader = Executors.newFixedThreadPool(1);
-
+	
 	public void loadGraphInBackground(File[] proposedFiles, final ActionEvent ae, boolean autoSwitch)
 			throws IllegalAccessException, InstantiationException {
-
+		
 		final ArrayList<File> files = new ArrayList<File>();
 		HashSet<File> filesToBeIgnored = new HashSet<File>();
 		for (File file : proposedFiles) {
@@ -1487,20 +1521,20 @@ public class MainFrame extends JFrame
 					}
 				}
 			}
-
+			
 			final EditorSession fesf = esf;
 			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch)) {
 				filesToBeIgnored.add(file);
 			}
 		}
-
+		
 		for (File f : proposedFiles) {
-
+			
 			if (!filesToBeIgnored.contains(f)) {
 				files.add(f);
 			}
 		}
-
+		
 		if (files.size() > 0)
 			new Thread(new Runnable() {
 				public void run() {
@@ -1548,10 +1582,10 @@ public class MainFrame extends JFrame
 									es.setFileName(fileNameX);
 									showViewChooserDialog(es, false, ae);
 									showMessage("Finished graph file loading", MessageType.INFO);
-
+									
 									if (file.exists())
 										addNewRecentFileMenuItem(file);
-
+									
 								}
 							});
 						} catch (Exception e) {
@@ -1569,7 +1603,7 @@ public class MainFrame extends JFrame
 				}
 			}).start();
 	}
-
+	
 	public void addNewRecentFileMenuItem(final File file) {
 		if (!file.exists())
 			return;
@@ -1582,7 +1616,7 @@ public class MainFrame extends JFrame
 		for (int j = Math.min(pos, 4); j > 0; j--)
 			recentfileslist[j].setNewData(recentfileslist[j - 1]);
 		recentfileslist[0].setNewData(new RecentEntry(file, true, iBundle.getImageIcon("menu.file.open.icon")));
-
+		
 		// save recentfile-list in textfile
 		if (!recentlist.exists())
 			try {
@@ -1602,7 +1636,7 @@ public class MainFrame extends JFrame
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	/**
 	 * @return true, if file should be loaded, false if file is already loaded
 	 */
@@ -1642,11 +1676,12 @@ public class MainFrame extends JFrame
 		} else
 			return true;
 	}
-
+	
 	/**
 	 * Loads a graph from a file;
 	 * 
-	 * @param file File containing the graph;
+	 * @param file
+	 *           File containing the graph;
 	 */
 	public void loadGraph(File file) {
 		Graph g;
@@ -1657,7 +1692,7 @@ public class MainFrame extends JFrame
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	public Graph getGraph(File file) throws Exception {
 		Graph newGraph = null;
 		String[] fileTypeDescriptions = null;
@@ -1673,7 +1708,7 @@ public class MainFrame extends JFrame
 			}
 			// jump usual control flow and pass the graph file's path
 			PortableUrlService.setGraphPath(file.getAbsolutePath());
-
+			
 			if (ext.equalsIgnoreCase(".net")) {
 				Graph tempGraph = new AdjListGraph(new ListenerManager());
 				InputSerializer is = ioManager.createInputSerializer(null, ext);
@@ -1706,11 +1741,11 @@ public class MainFrame extends JFrame
 		}
 		return newGraph;
 	}
-
+	
 	public Graph getGraph(IOurl url) throws Exception {
 		return getGraph(url, url.getFileName());
 	}
-
+	
 	/**
 	 * Will not be able to read cluster information (in separate file) for ".net"
 	 * files and .gz-files
@@ -1747,7 +1782,7 @@ public class MainFrame extends JFrame
 		}
 		return newGraph;
 	}
-
+	
 	public boolean isInputSerializerKnown(File file) {
 		String fileName = file.getName();
 		String ext = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".")) : "";
@@ -1772,7 +1807,7 @@ public class MainFrame extends JFrame
 			return false;
 		}
 	}
-
+	
 	public void saveGraphAs(Graph graph, String fileName, String fileTypeDescription) throws Exception {
 		String ext = FileSaveAction.getFileExt(fileName);
 		OutputSerializer os = ioManager.createOutputSerializer(ext, fileTypeDescription);
@@ -1781,14 +1816,14 @@ public class MainFrame extends JFrame
 			ErrorMsg.addErrorMessage("Invalid outputstream serializer for extension " + ext);
 		else
 			os.write(outpS, graph);
-
+		
 		outpS.close();
 	}
 	
 	public void showGraph(final Graph g, final ActionEvent e) {
 		showGraph(g, e, LoadSetting.VIEW_CHOOSER_FOR_LARGE_GRAPHS_ONLY);
 	}
-
+	
 	public void showGraph(final Graph g, final ActionEvent e, final LoadSetting interaction) {
 		if (g == null) {
 			ErrorMsg.addErrorMessage("Can't load NULL graph!");
@@ -1817,36 +1852,38 @@ public class MainFrame extends JFrame
 			});
 		}
 	}
-
+	
 	public void outputSerializerAdded(OutputSerializer os) {
 		updateActions();
 	}
-
+	
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
 	 * 
-	 * @param plugin the added plugin.
-	 * @param desc   the description of the new plugin.
+	 * @param plugin
+	 *           the added plugin.
+	 * @param desc
+	 *           the description of the new plugin.
 	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
-
+		
 		// System.out.println("Plugin added: "+desc.getMain());
-
+		
 		processEditorPlugin(plugin);
-
+		
 		addAlgorithmMenuItems(plugin);
 		addExtensionMenuItems(plugin);
-
+		
 		if (plugin.isViewListener())
 			viewManager.addViewListener((ViewListener) plugin);
-
+		
 		// Registers all plugins that are selection listeners to the listenermanager.
 		checkSelectionListener(plugin);
-
+		
 		if (plugin.needsEditComponents()) {
 			((NeedEditComponents) plugin).setEditComponentMap(editComponentManager.getEditComponents());
 		}
-
+		
 		if (plugin instanceof InspectorPlugin) {
 			if (inspectorPlugin != null) {
 				ErrorMsg.addErrorMessage("Tried to load more than one InpsectorPlugin!");
@@ -1866,10 +1903,10 @@ public class MainFrame extends JFrame
 			EditorPlugin ep = (EditorPlugin) plugin;
 			processTabs(ep);
 		}
-
+		
 		updateActions();
 	}
-
+	
 	private void processTabs(final EditorPlugin ep) {
 		if (!SwingUtilities.isEventDispatchThread()) {
 			SwingUtilities.invokeLater(new Runnable() {
@@ -1881,14 +1918,14 @@ public class MainFrame extends JFrame
 		}
 		if (ep.getInspectorTabs() != null) {
 			for (InspectorTab it : ep.getInspectorTabs()) {
-
+				
 				/*
 				 * check, if the Tab has a Preference and a bool setting 'show'
 				 */
 				if (it instanceof PreferencesInterface && !PreferenceManager.getPreferenceForClass(it.getClass())
 						.getBoolean(InspectorTab.PREFERENCE_TAB_SHOW, true))
 					return;
-
+				
 				if (inspectorPlugin == null) {
 					// ErrorMsg.addErrorMessage("Inspector Plugin not available. Can't add
 					// side-panel tabs.");
@@ -1905,11 +1942,11 @@ public class MainFrame extends JFrame
 			}
 		}
 	}
-
+	
 	public InspectorPlugin getInspectorPlugin() {
 		return inspectorPlugin;
 	}
-
+	
 	/**
 	 * @param plugin
 	 */
@@ -1917,71 +1954,71 @@ public class MainFrame extends JFrame
 		if (plugin.isSessionListener()) {
 			addSessionListener((SessionListener) plugin);
 		}
-
+		
 		if (plugin.isViewListener()) {
 			getViewManager().addViewListener((ViewListener) plugin);
 		}
-
+		
 		if (plugin instanceof EditorPlugin) {
 		}
-
+		
 		if (plugin.isSelectionListener()) {
 			selectionListeners.add((SelectionListener) plugin);
-
+			
 			for (Iterator<Session> it = sessions.iterator(); it.hasNext();) {
 				Session sess = it.next();
-
+				
 				if (sess instanceof EditorSession) {
 					((EditorSession) sess).getSelectionModel().addSelectionListener((SelectionListener) plugin);
 				}
-
+				
 				// TODO: check what todo if non-EditorSession ...
 			}
 		}
 	}
-
+	
 	/**
 	 * @param plugin
 	 */
 	private void processEditorPlugin(GenericPlugin plugin) {
-
+		
 		if (!(plugin instanceof EditorPlugin))
 			return;
-
+		
 		EditorPlugin eplugin = (EditorPlugin) plugin;
-
+		
 		Mode[] modes = eplugin.getModes();
-
+		
 		if (modes != null) {
 			// for every mode create a ModeToolbar
 			for (int i = modes.length - 1; i >= 0; i--) {
 				ModeToolbar mtb = new ModeToolbar(modes[i]);
-
+				
 				guiMap.put(mtb.getId(), mtb);
 				getContentPane().add(mtb, BorderLayout.WEST);
 				// leftToolBarPanel.add(mtb);
 				// mtb.setVisible(false);
 			}
 		}
-
+		
 		// add gui component to gui and if necessary update the mapping
 		GraffitiComponent[] gc = eplugin.getGUIComponents();
-
+		
 		if (gc != null) {
 			for (int i = 0; i < gc.length; i++) {
 				addGUIComponent(gc[i].getPreferredComponent(), (JComponent) gc[i]);
 			}
 		}
-
+		
 		Tool[] tools = eplugin.getTools();
 		if (tools != null) {
 			for (int i = tools.length - 1; i >= 0; i--) {
 				if (tools[i].isSessionListener())
 					addSessionListener((SessionListener) tools[i]);
-
+				
 				if (tools[i].isViewListener())
 					viewManager.addViewListener((ViewListener) tools[i]);
-
+				
 				if (tools[i].isSelectionListener()) {
 					selectionListeners.add((SelectionListener) tools[i]);
 					for (Iterator<Session> it = sessions.iterator(); it.hasNext();) {
@@ -1997,7 +2034,7 @@ public class MainFrame extends JFrame
 			}
 		}
 	}
-
+	
 	/**
 	 * @param algorithms
 	 * @param plugin
@@ -2017,7 +2054,7 @@ public class MainFrame extends JFrame
 			Set<Category> setCategory = a.getSetCategory();
 			if (setCategory != null && setCategory.contains(Category.HIDDEN) && !showHiddenAlgorithms)
 				continue;
-
+			
 			if (a != null && a.getName() != null && a.getMenuCategory() != null) {
 				if (a.isLayoutAlgorithm()) {
 					// System.out.println("Skip Layouter: "+a.getName());
@@ -2025,19 +2062,19 @@ public class MainFrame extends JFrame
 				}
 				final RunAlgorithm action = new RunAlgorithm(a.getClass().getName(), a.getName(), this,
 						editComponentManager, a);
-
+				
 				algorithmActions.add(action);
 				String cat = a.getMenuCategory();// a.getCategory();
 				final String myKey = "jMenuParent";
 				final JMenuItem menu = new JMenuItem(action) {
 					private static final long serialVersionUID = 8398436010665548408L;
-
+					
 					@Override
 					public void setEnabled(boolean b) {
 						super.setEnabled(b);
 						if (getHideDeactivateSwitch() == HideOrDeactivateMenu.HIDE_INACTIVE_MENUITEMS_AND_HIDE_MENU)
 							setVisible(b);
-
+						
 						if (getHideDeactivateSwitch() == HideOrDeactivateMenu.HIDE_MENU_IF_ALL_DISABLED
 								|| getHideDeactivateSwitch() == HideOrDeactivateMenu.HIDE_INACTIVE_MENUITEMS_AND_HIDE_MENU) {
 							JMenu parent = (JMenu) getClientProperty(myKey);
@@ -2054,7 +2091,7 @@ public class MainFrame extends JFrame
 						}
 					}
 				};
-
+				
 				if (isAddon(plugin) || a.showMenuIcon()) {
 					ImageIcon icon = null;
 					if (a instanceof EditorAlgorithm) {
@@ -2067,14 +2104,14 @@ public class MainFrame extends JFrame
 				}
 				if (a.getAcceleratorKeyStroke() != null)
 					menu.setAccelerator(a.getAcceleratorKeyStroke());
-
+				
 				JMenu target = addMenuItemForAlgorithmOrExtension(menu, cat);
 				menu.putClientProperty(myKey, target);
 				// menu items are now in alphabetic list
 			}
 		}
 	}
-
+	
 	private boolean isAddon(GenericPlugin plugin) {
 		for (PluginEntry pe : pluginmgr.getPluginEntries()) {
 			if (pe.getPlugin() == plugin) {
@@ -2085,7 +2122,7 @@ public class MainFrame extends JFrame
 		}
 		return false;
 	}
-
+	
 	/**
 	 * @param algorithms
 	 * @param plugin
@@ -2105,7 +2142,7 @@ public class MainFrame extends JFrame
 				}
 			}
 	}
-
+	
 	/**
 	 * Adds a menu item to the menu given a category The menuitem's action should be
 	 * a GraffitiAction with the implemented Action that is called, when the user
@@ -2121,9 +2158,9 @@ public class MainFrame extends JFrame
 		if (cat == null) {
 			cat = "menu.plugin";
 		}
-
+		
 		JMenu result = null;
-
+		
 		// System.out.println("Adding "+item.getText()+" to "+cat);
 		if (item.getIcon() == null)
 			item.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
@@ -2137,7 +2174,7 @@ public class MainFrame extends JFrame
 					.getClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem");
 			if (pluginMenuAddEmptySpaceInFrontOfMenuItem != null
 					&& pluginMenuAddEmptySpaceInFrontOfMenuItem.booleanValue() == true) {
-
+				
 			}
 			int addAfter = targetNativeMenu.getItemCount();
 			Integer pmp = (Integer) targetNativeMenu.getClientProperty("pluginMenuPosition");
@@ -2152,7 +2189,7 @@ public class MainFrame extends JFrame
 			 */
 			JComponent curMenuComponent = getJMenuBar();
 			JMenu targetMenu;
-
+			
 			StringTokenizer tokenizer = new StringTokenizer(cat, ".");
 			StringBuffer catStringPath = new StringBuffer();
 			JMenu newCatMenu = null;
@@ -2162,7 +2199,7 @@ public class MainFrame extends JFrame
 					catStringPath.append(".");
 				catStringPath.append(curMenuName);
 				if (categoriesForAlgorithms.get(catStringPath.toString().toLowerCase()) == null) {
-
+					
 					newCatMenu = new JMenu(curMenuName);
 					/*
 					 * only add placeholder icon to non menubar root entries, since they create empy
@@ -2171,14 +2208,14 @@ public class MainFrame extends JFrame
 					 */
 					if (!(curMenuComponent instanceof JMenuBar))
 						newCatMenu.setIcon(iBundle.getImageIcon("menu.file.exit.icon")); // placeholder icon resolving
-																							// alignment issues on some
-																							// LaF
-
+					// alignment issues on some
+					// LaF
+					
 					if (curMenuComponent instanceof JMenuBar)
 						curMenuComponent.add(newCatMenu,
 								getTargetMenuPosition((JMenuBar) curMenuComponent, newCatMenu.getText())); // add
 					else {
-
+						
 						Integer pluginMenuPosition = null;
 						if ((pluginMenuPosition = (Integer) curMenuComponent
 								.getClientProperty("pluginMenuPosition")) != null) {
@@ -2187,19 +2224,19 @@ public class MainFrame extends JFrame
 							curMenuComponent.add(newCatMenu);
 							sortMenuItems((JMenu) curMenuComponent, 0);
 						}
-
+						
 					}
-
+					
 					categoriesForAlgorithms.put(catStringPath.toString().toLowerCase(), newCatMenu);
-
+					
 					curMenuComponent = newCatMenu;
 				} else {
 					curMenuComponent = categoriesForAlgorithms.get(catStringPath.toString().toLowerCase());
 				}
 			}
-
+			
 			targetMenu = (JMenu) categoriesForAlgorithms.get(cat.toLowerCase());
-
+			
 			Integer pluginMenuPosition = null;
 			if ((pluginMenuPosition = (Integer) targetMenu.getClientProperty("pluginMenuPosition")) != null) {
 				targetMenu.add(item, pluginMenuPosition);
@@ -2217,7 +2254,7 @@ public class MainFrame extends JFrame
 		validate();
 		return result;
 	}
-
+	
 	@Override
 	public JMenuBar getJMenuBar() {
 		JMenuBar res = super.getJMenuBar();
@@ -2225,7 +2262,7 @@ public class MainFrame extends JFrame
 			res = storedMenuBar;
 		return res;
 	}
-
+	
 	/**
 	 * Determines the target menu position of a new category sub menu. This menu
 	 * will be placed inside the menu (given with the parameter <code>menu</code> ).
@@ -2240,8 +2277,9 @@ public class MainFrame extends JFrame
 	 * the titles are sorted alphabetically.
 	 * 
 	 * @param menu
-	 * @param title Title of the new menu to be added to the target menu (
-	 *              <code>menu</code>).
+	 * @param title
+	 *           Title of the new menu to be added to the target menu (
+	 *           <code>menu</code>).
 	 * @return The target position where the menu should be added to.
 	 */
 	private int getTargetMenuPosition(JMenuBar menu, String title) {
@@ -2260,7 +2298,7 @@ public class MainFrame extends JFrame
 		}
 		return 0;
 	}
-
+	
 	private void sortMenuItems(JMenu menuToSort, int startPoint) {
 		if (startPoint < 0)
 			return;
@@ -2292,7 +2330,7 @@ public class MainFrame extends JFrame
 			menuItems.remove(firstItem);
 		}
 	}
-
+	
 	private String getText(JMenuItem menuItem) {
 		if (menuItem.getIcon() != null) {
 			String lbl = menuItem.getText();
@@ -2301,33 +2339,33 @@ public class MainFrame extends JFrame
 		} else
 			return menuItem.getText();
 	}
-
+	
 	/**
 	 * Removes a <code>SelectionListener</code>.
 	 * 
-	 * @param sl DOCUMENT ME!
+	 * @param sl
+	 *           DOCUMENT ME!
 	 */
 	public void removeSelectionListener(SelectionListener sl) {
 		this.selectionListeners.remove(sl);
-
+		
 		for (EditorSession es : getEditorSessions()) {
 			es.getSelectionModel().removeSelectionListener(sl);
 		}
 	}
-
+	
 	public void saveActiveFileAs() {
 		fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
 	}
-
+	
 	public void saveActiveFile() {
 		fileSave.actionPerformed(new ActionEvent(this, 0, null));
 	}
-
+	
 	/**
 	 * Whether promptClosing() has already been called, i.e. a prompt has already
 	 * been displayed => avoid double show & saveAction.
 	 * <p>
-	 * 
 	 * <b>Thread-safe!</b>
 	 */
 	private AtomicBoolean called = new AtomicBoolean();
@@ -2335,33 +2373,33 @@ public class MainFrame extends JFrame
 	private AtomicInteger sid = new AtomicInteger();
 	/** Set, when external dialog's been cancelled, to restore flow. */
 	public AtomicBoolean cancelledSaveAction = new AtomicBoolean();
-
+	
 	/**
 	 * This delegates the session closing down below the method chain, given the
 	 * user has not chosen 'Cancel'. In this case it simply returns. Used for
 	 * processing the closing of the external GraffitiFrame, encapsulating the above
 	 * mentioned goals.
 	 * <p>
-	 * 
 	 * Code originates from the closeSession() method. Now there is placed only a
 	 * method call instead.
 	 * 
-	 * @param session current active Session
+	 * @param session
+	 *           current active Session
 	 * @return <b>true</b> if the frame should be closed.
 	 */
 	public boolean promptClosing(Session session) {
 		if (session == null)
 			return false;
-
+		
 		if (!session.getGraph().isModified())
 			return true;
-
+		
 		for (GraffitiFrame gf : getDetachedFrames())
 			if (gf.getSession() == session) {
 				called.set(true);
 				sid.set(session.hashCode());
 			}
-
+		
 		String graphName = session.getGraph().getName();
 		if (graphName == null)
 			graphName = "[" + session.getGraph().getName() + "]";
@@ -2372,7 +2410,7 @@ public class MainFrame extends JFrame
 						+ session.getGraph().getNodes().size() + " node(s) and " + session.getGraph().getEdges().size()
 						+ " edge(s)!",
 				sBundle.getString("frame.close_save_title"), JOptionPane.YES_NO_CANCEL_OPTION);
-
+		
 		if (res == JOptionPane.CANCEL_OPTION)
 			return false;
 		if (res == JOptionPane.YES_OPTION) {
@@ -2387,30 +2425,30 @@ public class MainFrame extends JFrame
 				if (cancelledSaveAction.compareAndSet(true, false))
 					return false;
 			}
-
+			
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Closes all views of the given session and removes the session from the list
 	 * of sessions.
 	 * 
-	 * @param session the session to be removed.
-	 * 
+	 * @param session
+	 *           the session to be removed.
 	 * @return <b>true</b> if the session has been closed
 	 */
 	public boolean closeSession(Session session) {
-
+		
 		if (!called.compareAndSet(true, false) || !(sid.get() == session.hashCode()))
 			if (!promptClosing(session)) {
 				called.set(false); // Cancel's pressed, reset
 				return false;
 			}
-
+		
 		List<View> views = new LinkedList<View>();
-
+		
 		// close all views and remove this session
 		// clone the views list of this session, because it is modified
 		// during the iteration and we do not want
@@ -2426,28 +2464,28 @@ public class MainFrame extends JFrame
 		}
 		for (View view : views) {
 			GraffitiInternalFrame frame = viewFrameMapper.get(view);
-
+			
 			viewFrameMapper.remove(view);
 			activeFrames.remove(frame);
 			GravistoService.getInstance().removeFrame(frame);
-
+			
 			if (frame != null) {
 				frame.setVisible(false);
 				frame.dispose();
 				// frame.doDefaultCloseAction();
 				// doDefaultCloseAction();
 			}
-
+			
 			this.zoomListeners.remove(view);
 		}
-
+		
 		// make random next session active session
 		if (!sessions.isEmpty()) {
 			Session next = sessions.iterator().next();
 			MainFrame.getInstance().setActiveSession(next, next.getActiveView());
 		} else
 			MainFrame.getInstance().setActiveSession(null, null);
-
+		
 		sessions.remove(session);
 		session.close();
 		for (SessionListener sl : sessionListeners) {
@@ -2457,96 +2495,98 @@ public class MainFrame extends JFrame
 		// session.getGraph().clear();
 		return true;
 	}
-
+	
 	/**
 	 * Removes a <code>SessionListener</code>.
 	 * 
-	 * @param sl DOCUMENT ME!
+	 * @param sl
+	 *           DOCUMENT ME!
 	 */
 	public void removeSessionListener(SessionListener sl) {
 		this.sessionListeners.remove(sl);
 	}
-
+	
 	/**
 	 * Invoked when the session changed.
 	 * 
-	 * @param s the new session.
+	 * @param s
+	 *           the new session.
 	 */
 	public void sessionChanged(Session s) {
 		Tool lastActive = AbstractTool.getActiveTool();
 		if (lastActive != null)
 			lastActive.deactivateAll();
-
+		
 		if (isSessionActive()) {
 			// removing the old session from undoSupport
 			undoSupport.removeUndoableEditListener(getActiveEditorSession().getUndoManager());
-
+			
 			// removing the MainFrame from undoSupport
 			undoSupport.removeUndoableEditListener(this);
 		}
-
+		
 		if (s != null) {
 			this.activeEditorSession = (EditorSession) s;
-
+			
 			// registering the new session at undoSupport
 			undoSupport.addUndoableEditListener(((EditorSession) s).getUndoManager());
-
+			
 			// registering the MainFrame at undoSupport
 			undoSupport.addUndoableEditListener(this);
-
+			
 			// changing the graph in the tools of the new mode
 			Mode newMode = s.getActiveMode();
 			Tool t = null;
-
+			
 			if (newMode != null) {
 				List<Tool> newTools = newMode.getTools();
-
+				
 				for (Iterator<Tool> it = newTools.iterator(); it.hasNext();) {
 					Tool tl = it.next();
 					tl.setGraph(s.getGraph());
 				}
-
+				
 				ModeToolbar newtb = ((ModeToolbar) (guiMap.get(newMode.getId())));
 				// newtb.setVisible(true);
 				getContentPane().validate();
 				// registering the new activeTool with the views of the new session
 				t = newtb.getActiveTool();
 			}
-
+			
 			List<View> views = s.getViews();
-
+			
 			for (View view : views) {
 				this.zoomListeners.add(view);
-
+				
 				MouseListener[] ml = view.getViewComponent().getMouseListeners();
-
+				
 				// System.out.println("#MouseListeners: " + ml.length);
 				for (int i = ml.length - 1; i >= 0; i--) {
 					view.getViewComponent().removeMouseListener(ml[i]);
-
+					
 					// System.out.println("deleting listeners");
 				}
-
+				
 				MouseMotionListener[] mml = view.getViewComponent().getMouseMotionListeners();
-
+				
 				// System.out.println("#MouseListeners: " + mml.length);
 				for (int i = mml.length; --i >= 0;) {
 					view.getViewComponent().removeMouseMotionListener(mml[i]);
-
+					
 					// System.out.println("deleting listeners");
 				}
-
+				
 				if (t != null) {
 					view.getViewComponent().addMouseListener(t);
 					view.getViewComponent().addMouseMotionListener(t);
 				}
 			}
-
+			
 		} else
 			this.activeEditorSession = null;
-
+		
 		updateActions();
-
+		
 		if (lastActive != null) {
 			lastActive.activate();
 			ToolButton.checkStatusForAllToolButtons();
@@ -2561,28 +2601,29 @@ public class MainFrame extends JFrame
 				oneModified = true;
 		}
 		getRootPane().putClientProperty("windowModified", oneModified);
-
+		
 		// jtp.sessionChanged();
 	}
-
+	
 	/**
 	 * Invoked when the session data changed.
 	 * 
-	 * @param s DOCUMENT ME!
+	 * @param s
+	 *           DOCUMENT ME!
 	 */
 	public void sessionDataChanged(Session s) {
 		EditorSession es = (EditorSession) s;
 		if (es == null || es.getViews().isEmpty())
 			return;
-
+		
 		boolean oneModified = false;
 		for (Iterator<View> i = es.getViews().iterator(); i.hasNext();) {
 			View view = i.next();
-
+			
 			this.zoomListeners.add(view);
-
+			
 			GraffitiInternalFrame frame = viewFrameMapper.get(view);
-
+			
 			if (es != null) {
 				if (frame != null) {
 					frame.setTitle(es.getGraph().getName());
@@ -2598,20 +2639,22 @@ public class MainFrame extends JFrame
 			if (jf.getSession() == s || s == null)
 				jf.setTitle(jf.getSession().getGraph().getName());
 		}
-
+		
 		updateActions();
 	}
-
+	
 	static String lastStatusMessage = null;
-
+	
 	/**
 	 * Method <code>showMesssage</code> displays a message on GUI components
 	 * according to the specified type. The message will be displayed for some
 	 * defined number of seconds. This method can be called from a background
 	 * thread.
 	 * 
-	 * @param message a message string to be displayed
-	 * @param type    a type of the message (e.g. MessageType.INFO)
+	 * @param message
+	 *           a message string to be displayed
+	 * @param type
+	 *           a type of the message (e.g. MessageType.INFO)
 	 */
 	public static void showMessage(final String message, final MessageType type) {
 		int time;
@@ -2635,7 +2678,7 @@ public class MainFrame extends JFrame
 			});
 		}
 	}
-
+	
 	/**
 	 * Use <code>showMessage</code> instead of this method. This method is used by
 	 * showMessage, but showMessage is thread-safe.
@@ -2648,31 +2691,34 @@ public class MainFrame extends JFrame
 			System.out.println(type.toString() + ": " + message);
 			return;
 		}
-
-		switch(type) {
-		case ERROR:
-			getInstance().statusBar.showError(message, timeMillis);
-			break;
-		case INFO:
-			getInstance().statusBar.showInfo(message, timeMillis);
-			break;
-		case PERMANENT_INFO:
-			getInstance().statusBar.showInfo(message, Integer.MAX_VALUE);
-			break;
-		default:
-			System.err.println("Unqualified MessageType for: " + message);
-			break;	
+		
+		switch (type) {
+			case ERROR:
+				getInstance().statusBar.showError(message, timeMillis);
+				break;
+			case INFO:
+				getInstance().statusBar.showInfo(message, timeMillis);
+				break;
+			case PERMANENT_INFO:
+				getInstance().statusBar.showInfo(message, Integer.MAX_VALUE);
+				break;
+			default:
+				System.err.println("Unqualified MessageType for: " + message);
+				break;
 		}
 	}
-
+	
 	/**
 	 * Method <code>showMesssage</code> displays a message on GUI components
 	 * according to the specified type for the given interval. This method is thread
 	 * safe.
 	 * 
-	 * @param message    a message string to be displayed
-	 * @param type       a type of the message (e.g. ERROR)
-	 * @param timeMillis number of milliseconds the message should be displayed
+	 * @param message
+	 *           a message string to be displayed
+	 * @param type
+	 *           a type of the message (e.g. ERROR)
+	 * @param timeMillis
+	 *           number of milliseconds the message should be displayed
 	 */
 	public static void showMessage(final String message, final MessageType type, final int timeMillis) {
 		if (SwingUtilities.isEventDispatchThread()) {
@@ -2685,13 +2731,14 @@ public class MainFrame extends JFrame
 			});
 		}
 	}
-
+	
 	/**
 	 * Method <code>showViewChooserDialog </code> invokes a view chooser dialog for
 	 * choosing view types. The parameter withNewSession specifies whether the new
 	 * view starts within an existing session or within a new session.
 	 * 
-	 * @param returnScrollpane DOCUMENT ME!
+	 * @param returnScrollpane
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public JScrollPane showViewChooserDialog(boolean returnScrollpane, boolean useDefaultViewForSmallGraphs,
@@ -2703,23 +2750,25 @@ public class MainFrame extends JFrame
 			return showViewChooserDialog(getActiveEditorSession(), returnScrollpane, ae,
 					LoadSetting.VIEW_CHOOSER_ALWAYS);
 	}
-
+	
 	public JScrollPane showViewChooserDialog(EditorSession session, boolean returnScrollPane, ActionEvent e) {
 		return showViewChooserDialog(session, returnScrollPane, e, LoadSetting.VIEW_CHOOSER_FOR_LARGE_GRAPHS_ONLY);
 	}
-
+	
 	public JScrollPane showViewChooserDialog(EditorSession session, boolean returnScrollPane, ActionEvent e,
 			LoadSetting interaction) {
 		return showViewChooserDialog(session, returnScrollPane, e, interaction, null);
 	}
-
+	
 	/**
 	 * Method <code>showViewChooserDialog </code> invokes a view chooser dialog for
 	 * choosing view types. The parameter withNewSession specifies whether the new
 	 * view starts within an existing session or within a new session.
 	 * 
-	 * @param session          the session in which to open the new view.
-	 * @param returnScrollPane DOCUMENT ME!
+	 * @param session
+	 *           the session in which to open the new view.
+	 * @param returnScrollPane
+	 *           DOCUMENT ME!
 	 * @param e
 	 * @param interaction
 	 * @return DOCUMENT ME!
@@ -2758,10 +2807,10 @@ public class MainFrame extends JFrame
 			}
 			if (interaction == LoadSetting.VIEW_CHOOSER_FOR_LARGE_GRAPHS_ONLY)
 				interaction = LoadSetting.VIEW_CHOOSER_NEVER;
-
+			
 			// from here on only VIEW_CHOOSER_ALWAYS or
 			// VIEW_CHOOSER_NEVER_ALWAYS_DEFAULT should be set
-
+			
 			if (interaction == LoadSetting.VIEW_CHOOSER_NEVER
 					|| interaction == LoadSetting.VIEW_CHOOSER_NEVER_DONT_ADD_VIEW_TO_EDITORSESSION) {
 				String defaultView = viewManager.getDefaultView();
@@ -2786,17 +2835,17 @@ public class MainFrame extends JFrame
 						sBundle.getString("viewchooser.title") + " (" + session.getGraph().getNumberOfNodes()
 								+ " nodes, " + session.getGraph().getNumberOfEdges() + " edges)",
 						viewManager.getViewDescriptions());
-
+				
 				viewChooser.setLocationRelativeTo(MainFrame.getInstance());
 				viewChooser.setVisible(true);
-
+				
 				// The user did not select a view.
 				if (viewChooser.getSelectedView() == -1) {
 					return null;
 				}
-
+				
 				final String selectedView = views[viewChooser.getSelectedView()];
-
+				
 				if (viewChooser.getUserSelectionCreateInternalFrame()) {
 					if (selectedView != null) {
 						if (sessions.contains(session)) {
@@ -2821,10 +2870,10 @@ public class MainFrame extends JFrame
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * This method is called when an undoableEdit happened.
 	 * 
@@ -2834,14 +2883,14 @@ public class MainFrame extends JFrame
 		editUndo.update();
 		editRedo.update();
 	}
-
+	
 	/**
 	 * Updates the state of the actions.
 	 */
 	public void updateActions() {
 		GraffitiAction.updateAllActions();
 	}
-
+	
 	/*
 	 * @see org.graffiti.managers.ViewManager.ViewManagerListener#viewTypeAdded(java
 	 * .lang.String)
@@ -2849,11 +2898,12 @@ public class MainFrame extends JFrame
 	public void viewTypeAdded(String viewType) {
 		updateActions();
 	}
-
+	
 	/**
 	 * Shows an error in a modal dialog box. (thread safe)
 	 * 
-	 * @param msg the message to be shown.
+	 * @param msg
+	 *           the message to be shown.
 	 */
 	protected void showError(final String msg) {
 		if (SwingUtilities.isEventDispatchThread()) {
@@ -2867,7 +2917,7 @@ public class MainFrame extends JFrame
 			});
 		}
 	}
-
+	
 	/**
 	 * Returns the active <code>Tool</code>.
 	 * 
@@ -2879,7 +2929,7 @@ public class MainFrame extends JFrame
 		} else
 			return null;
 	}
-
+	
 	/**
 	 * Method fireViewChanged.
 	 * 
@@ -2891,17 +2941,19 @@ public class MainFrame extends JFrame
 			viewManager.viewChanged(newView);
 		}
 	}
-
+	
 	/**
 	 * Sets the accel key of the given item. The accel key information is gathered
 	 * from the <code>sBundle</code>.
 	 * 
-	 * @param item   DOCUMENT ME!
-	 * @param action DOCUMENT ME!
+	 * @param item
+	 *           DOCUMENT ME!
+	 * @param action
+	 *           DOCUMENT ME!
 	 */
 	private void setAccelKey(JMenuItem item, GraffitiAction action) {
 		String accel = sBundle.getString("menu." + action.getName() + ".accel");
-
+		
 		if (accel != null) {
 			try {
 				int mask = 0;
@@ -2911,27 +2963,27 @@ public class MainFrame extends JFrame
 					if (accel.equalsIgnoreCase("ALT_F4"))
 						accel = "META_Q";
 				}
-
+				
 				if (accel.startsWith("META")) {
 					mask += ActionEvent.META_MASK;
 					accel = accel.substring(5);
 				}
-
+				
 				if (accel.startsWith("CTRL")) {
 					mask += ActionEvent.CTRL_MASK;
 					accel = accel.substring(5);
 				}
-
+				
 				if (accel.startsWith("SHIFT")) {
 					mask += ActionEvent.SHIFT_MASK;
 					accel = accel.substring(6);
 				}
-
+				
 				if (accel.startsWith("ALT")) {
 					mask += ActionEvent.ALT_MASK;
 					accel = accel.substring(4);
 				}
-
+				
 				int key = KeyEvent.class.getField("VK_" + accel).getInt(null);
 				item.setAccelerator(KeyStroke.getKeyStroke(key, mask));
 			} catch (Exception e) {
@@ -2939,7 +2991,7 @@ public class MainFrame extends JFrame
 			}
 		}
 	}
-
+	
 	/**
 	 * Creates the action instances.
 	 */
@@ -2948,35 +3000,36 @@ public class MainFrame extends JFrame
 		fileOpen = new FileOpenAction(this, ioManager, viewManager, sBundle);
 		fileSave = new FileSaveAction(this, ioManager, this);
 		fileClose = new FileCloseAction(this);
-
+		
 		fileSaveAs = new FileSaveAsAction(this, ioManager, this, sBundle);
 		// fileSaveAll = new FileSaveAllAction(this, ioManager);
-
+		
 		fileExit = new ExitAction(this);
-
+		
 		viewNew = new ViewNewAction(this, sBundle);
-
+		
 		pluginManagerEdit = new PluginManagerEditAction(this, pluginmgr);
-
+		
 		editUndo = new EditUndoAction(this);
 		editRedo = new EditRedoAction(this);
-
+		
 		editCut = new CutAction(this);
 		editCopy = new CopyAction(this);
 		editPaste = new PasteAction(this);
-
+		
 		editDelete = new DeleteAction(this);
 		editSelectAll = new SelectAllAction(this);
-
+		
 		editPreferences = new ShowPreferencesAction(this);
 	}
-
+	
 	/**
 	 * Constructs a menu, and returns the menu. &quot;menu.&quot;<tt>name</tt> is
 	 * read from the string bundle. &uqot;menu.&quot;<tt>name</tt> &quot;.icon&quot;
 	 * is read from the image bundle.
 	 * 
-	 * @param name the name of the menu item.
+	 * @param name
+	 *           the name of the menu item.
 	 * @return DOCUMENT ME!
 	 */
 	private JMenu createMenu(String name) {
@@ -2984,24 +3037,24 @@ public class MainFrame extends JFrame
 		if (title == null)
 			title = name;
 		JMenu menu = new JMenu(title);
-
+		
 		guiMap.put("menu." + name, menu);
-
+		
 		categoriesForAlgorithms.put(title.toLowerCase(), menu);
-
+		
 		try {
 			String mnem = sBundle.getString("menu." + name + ".mnemonic");
-
+			
 			if (mnem != null) {
 				menu.setMnemonic(Class.forName("java.awt.event.KeyEvent").getField(mnem).getInt(null));
 			}
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("Create menu error: " + e.getLocalizedMessage());
 		}
-
+		
 		return menu;
 	}
-
+	
 	/**
 	 * Creates and returns the menu bar.
 	 * 
@@ -3009,15 +3062,15 @@ public class MainFrame extends JFrame
 	 */
 	private JMenuBar createMenuBar(JMenu windowMenu) {
 		JMenuBar menuBar = new JMenuBar();
-
+		
 		// menuBar.putClientProperty(Options.HEADER_STYLE_KEY,
 		// HeaderStyle.SINGLE);
 		guiMap.put("menu", menuBar);
-
+		
 		// menu for file operations
 		JMenu fileMenu = createMenu("file");
 		menuBar.add(fileMenu);
-
+		
 		/*
 		 * create submenu entry for New graphs (random or empty)
 		 */
@@ -3026,15 +3079,15 @@ public class MainFrame extends JFrame
 		categoriesForAlgorithms.put("file.new", menu_new);
 		menu_new.add(createMenuItem(newGraph));
 		fileMenu.add(menu_new);
-
+		
 		fileMenu.add(createMenuItem(viewNew));
 		fileMenu.add(createMenuItem(fileOpen));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem(fileSave));
 		fileMenu.add(createMenuItem(fileSaveAs));
-
+		
 		fileMenu.addSeparator();
-
+		
 		// get recentfile-list from previous run(s)
 		if (!recentlist.exists())
 			try {
@@ -3042,10 +3095,10 @@ public class MainFrame extends JFrame
 			} catch (IOException e1) {
 				ErrorMsg.addErrorMessage(e1);
 			}
-
+		
 		String[] sb = { "", "", "", "", "" };
 		int cnt = 0;
-
+		
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					new FileInputStream(new File(ReleaseInfo.getAppFolderWithFinalSep() + "recentfiles.txt"))));
@@ -3058,21 +3111,21 @@ public class MainFrame extends JFrame
 			ErrorMsg.addErrorMessage(e1);
 			e1.printStackTrace();
 		}
-
+		
 		fileMenu.addSeparator();
 		enclosingseparator = fileMenu.getMenuComponent(fileMenu.getMenuComponentCount() - 1);
 		if (cnt > 0 && !sb[0].equalsIgnoreCase(""))
 			enclosingseparator.setVisible(true);
 		else
 			enclosingseparator.setVisible(false);
-
+		
 		recentfileslist = new RecentEntry[5];
-
+		
 		recentfileslist[0] = new RecentEntry(sb[0], cnt > 0, iBundle.getImageIcon("menu.file.open.icon"));
 		fileMenu.add(recentfileslist[0]);
 		// recentfileslist[0].setAccelerator(KeyStroke.getKeyStroke(
 		// KeyEvent.VK_1, ActionEvent.C));
-
+		
 		recentfileslist[1] = new RecentEntry(sb[1], cnt > 1, iBundle.getImageIcon("menu.file.open.icon"));
 		fileMenu.add(recentfileslist[1]);
 		recentfileslist[2] = new RecentEntry(sb[2], cnt > 2, iBundle.getImageIcon("menu.file.open.icon"));
@@ -3081,17 +3134,17 @@ public class MainFrame extends JFrame
 		fileMenu.add(recentfileslist[3]);
 		recentfileslist[4] = new RecentEntry(sb[4], cnt > 4, iBundle.getImageIcon("menu.file.open.icon"));
 		fileMenu.add(recentfileslist[4]);
-
+		
 		fileMenu.addSeparator();
-
+		
 		fileMenu.add(createMenuItem(fileClose));
 		fileMenu.add(createMenuItem(fileExit));
-
+		
 		// plugin menu entries will be added after position 7
 		// the default commands like open file, save file etc. should be the first
 		// menu items
 		fileMenu.putClientProperty("pluginMenuPosition", Integer.valueOf(7));
-
+		
 		// top level plugin menu entries (category menus) should be added
 		// after the file menu, and also after the edit menu, but
 		// before the window menu, this property controls this behavior
@@ -3099,20 +3152,20 @@ public class MainFrame extends JFrame
 		// the menu items which have first the value true and later the value
 		// false
 		fileMenu.putClientProperty("pluginMenuAddAfter", Boolean.valueOf(true));
-
+		
 		// plugin menu entries should have empty space, where a icon could be
 		// displayed, this
 		// way the plugin menu items will be inline with the other menu items,
 		// which have a menu icon
 		fileMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", Boolean.valueOf(true));
-
+		
 		JMenu editMenu = createMenu("edit");
-
+		
 		categoriesForAlgorithms.put("edit", editMenu);
-
+		
 		editMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", Boolean.valueOf(true));
 		menuBar.add(editMenu);
-
+		
 		editMenu.add(createMenuItem(editUndo));
 		editMenu.add(createMenuItem(editRedo));
 		editMenu.addSeparator();
@@ -3129,19 +3182,19 @@ public class MainFrame extends JFrame
 		// JMenuItem redrawCmd = createMenuItem(redrawView);
 		// redrawCmd.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
 		// editMenu.add(redrawCmd);
-
+		
 		editMenu.putClientProperty("pluginMenuPosition", Integer.valueOf(9));
 		editMenu.putClientProperty("pluginMenuAddAfter", Boolean.valueOf(true));
-
+		
 		pluginMenu = createMenu("plugin");
 		pluginMenu.putClientProperty("pluginMenuAddAfter", Boolean.valueOf(true));
-
+		
 		if (uiPrefs.get("showPluginMenu", "true").equalsIgnoreCase("true"))
 			menuBar.add(pluginMenu);
-
+		
 		if (uiPrefs.get("showPluginManagerMenuOptions", "true").equals("true")) {
 			pluginMenu.add(createMenuItem(pluginManagerEdit));
-
+			
 			// NEW SAVE / LOmenuBarAD PREFRENCES
 			// ***************************************
 			JMenuItem pluginPrefsSave = new JMenuItem("Save Preferences...");
@@ -3196,48 +3249,50 @@ public class MainFrame extends JFrame
 			});
 			pluginMenu.add(pluginPrefsSave);
 			pluginMenu.add(pluginPrefsLoad);
-
+			
 			// ******************************************************************
 			pluginMenu.addSeparator();
 			pluginMenu.putClientProperty("pluginMenuPosition", Integer.valueOf(4));
 		} else
 			pluginMenu.putClientProperty("pluginMenuPosition", Integer.valueOf(0));
-
+		
 		windowMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", Boolean.valueOf(false));
 		windowMenu.putClientProperty("pluginMenuAddAfter", Boolean.valueOf(false));
 		// windowMenu.add(redrawCmd);
 		menuBar.add(windowMenu);
-
+		
 		// menuBar.setBorderPainted(false);
-
+		
 		return menuBar;
 	}
-
+	
 	/**
 	 * Shows an arbitrary message dialog.
 	 * 
-	 * @param msg the message to be shown.
+	 * @param msg
+	 *           the message to be shown.
 	 */
 	public void showMessageDialog(String msg) {
 		showMessageDialog(msg, StringBundle.getInstance().getString("message.dialog.title"));
 	}
-
+	
 	private JComponent getGUIcomponentFromMap(String id) {
 		return guiMap.get(id);
 	}
-
+	
 	public void setGUIcomponent(String id, JComponent o) {
 		if (guiMap.containsKey(id))
 			guiMap.remove(id);
 		guiMap.put(id, o);
 	}
-
+	
 	static FolderPanel shownMessages;
-
+	
 	/**
 	 * Shows an arbitrary message dialog.
 	 * 
-	 * @param msg the message to be shown.
+	 * @param msg
+	 *           the message to be shown.
 	 */
 	public static void showMessageDialog(final String msg, final String title) {
 		if (MainFrame.getInstance() == null)
@@ -3254,19 +3309,19 @@ public class MainFrame extends JFrame
 							public void ancestorRemoved(AncestorEvent event) {
 								shownMessages.clearGuiComponentList();
 							}
-
+							
 							public void ancestorMoved(AncestorEvent event) {
 							}
-
+							
 							public void ancestorAdded(AncestorEvent event) {
 							}
 						});
 					}
 					JLabel lbl = new JLabel(msg);
 					lbl.setOpaque(false);
-
+					
 					shownMessages.addGuiComponentRow(null, lbl, false);
-
+					
 					if (shownMessages.getRowCount() > 1) {
 						shownMessages.setMaximumRowCount(1, true);
 						shownMessages.setTitle("<html><small><font color='gray'>" + (shownMessages.getRowCount() - 1)
@@ -3278,9 +3333,9 @@ public class MainFrame extends JFrame
 						shownMessages.setTitle("");
 						// shownMessages.setIconSize(Iconsize.SMALL);
 					}
-
+					
 					shownMessages.layoutRows();
-
+					
 					if (shownMessages.getRowCount() == 1) {
 						boolean vis = MainFrame.getInstance().isVisible();
 						Component ref;
@@ -3290,7 +3345,7 @@ public class MainFrame extends JFrame
 							ref = MainFrame.getInstance();
 						JOptionPane.showMessageDialog(ref, shownMessages, title, JOptionPane.INFORMATION_MESSAGE);
 					}
-
+					
 					shownMessages.dialogSizeUpdate();
 				}
 			});
@@ -3302,7 +3357,7 @@ public class MainFrame extends JFrame
 			});
 		}
 	}
-
+	
 	public static void showMessageDialogWithScrollBars(final String msg, final String title) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			JOptionPane.showMessageDialog(MainFrame.getInstance(), new MyScrollLabel(msg), title,
@@ -3313,13 +3368,13 @@ public class MainFrame extends JFrame
 					try {
 						showMessageDialogWithScrollBars(msg, title);
 					} catch (Exception e) {
-
+						
 					}
 				}
 			});
 		}
 	}
-
+	
 	public static void showMessageDialogWithScrollBars2(final String msg, final String title) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			JOptionPane.showMessageDialog(MainFrame.getInstance(), new MyScrollLabel(msg, 1000, 700), title,
@@ -3330,31 +3385,32 @@ public class MainFrame extends JFrame
 					try {
 						showMessageDialogWithScrollBars2(msg, title);
 					} catch (Exception e) {
-
+						
 					}
 				}
 			});
 		}
 	}
-
+	
 	public static MainFrame getInstance() {
 		return instance;
 	}
-
+	
 	/**
 	 * Constructs a menu item, registers this class as action listener and returns
 	 * the menu item. &quot;menu.&quot;<tt>name</tt> is read from the string bundle.
 	 * &uqot;menu.&quot;<tt>name</tt>&quot;.icon&quot; is read from the image
 	 * bundle.
 	 * 
-	 * @param action the action, which should be executed by this menu item.
+	 * @param action
+	 *           the action, which should be executed by this menu item.
 	 * @return DOCUMENT ME!
 	 */
 	private JMenuItem createMenuItem(final GraffitiAction action) {
 		String actionName = action.getName();
-
+		
 		JMenuItem item = new JMenuItem(action);
-
+		
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -3367,25 +3423,25 @@ public class MainFrame extends JFrame
 				});
 			}
 		});
-
+		
 		item.setText(sBundle.getString("menu." + actionName));
 		item.setIcon(iBundle.getImageIcon("menu." + actionName + ".icon"));
-
+		
 		try {
 			String mnem = sBundle.getString("menu." + actionName + ".mnemonic");
-
+			
 			if (mnem != null) {
 				item.setMnemonic(Class.forName("java.awt.event.KeyEvent").getField(mnem).getInt(null));
 			}
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e.getLocalizedMessage());
 		}
-
+		
 		setAccelKey(item, action);
-
+		
 		return item;
 	}
-
+	
 	public void installDragNDropForGraphFiles(final JButton target) {
 		target.setToolTipText("<html>" + target.getToolTipText() + "<br>(Drag & Drop supported)");
 		FileDrop.Listener fdl = new FileDrop.Listener() {
@@ -3393,7 +3449,7 @@ public class MainFrame extends JFrame
 				GravistoService.getInstance().loadFiles(files);
 			}
 		};
-
+		
 		Runnable dragdetected = new Runnable() {
 			public void run() {
 				MainFrame.showMessage(
@@ -3403,7 +3459,7 @@ public class MainFrame extends JFrame
 				target.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
 			}
 		};
-
+		
 		Runnable dragenddetected = new Runnable() {
 			public void run() {
 				// MainFrame.showMessage("Drag & Drop action canceled",
@@ -3413,7 +3469,7 @@ public class MainFrame extends JFrame
 		};
 		new FileDrop(target, fdl, dragdetected, dragenddetected);
 	}
-
+	
 	/**
 	 * Creates the editor's tool bar.
 	 * 
@@ -3421,23 +3477,23 @@ public class MainFrame extends JFrame
 	 */
 	private JToolBar createToolBar() {
 		final JToolBar toolBar = new JToolBar();
-
+		
 		toolBar.add(createToolBarButton(newGraph));
-
+		
 		final JButton toolbarButtonFileOpen;
 		toolbarButtonFileOpen = createToolBarButton(fileOpen);
-
+		
 		ErrorMsg.addOnAppLoadingFinishedAction(new Runnable() {
 			public void run() {
 				installDragNDropForGraphFiles(toolbarButtonFileOpen);
 			}
 		});
-
+		
 		toolBar.add(toolbarButtonFileOpen);
 		toolBar.addSeparator();
 		toolBar.add(createToolBarButton(fileSave));
 		toolBar.add(createToolBarButton(fileSaveAs));
-
+		
 		toolBar.addSeparator();
 		// if (!ReleaseInfo.isRunningAsApplet()) {
 		toolBar.add(createToolBarButton(editCut));
@@ -3447,38 +3503,39 @@ public class MainFrame extends JFrame
 		// }
 		toolBar.add(createToolBarButton(editUndo));
 		toolBar.add(createToolBarButton(editRedo));
-
+		
 		toolBar.setFloatable(true);
-
+		
 		return toolBar;
 	}
-
+	
 	/**
 	 * Constructs and returns a button.
 	 * 
-	 * @param action the action, which is associated with this button.
+	 * @param action
+	 *           the action, which is associated with this button.
 	 * @return DOCUMENT ME!
 	 */
 	private JButton createToolBarButton(GraffitiAction action) {
 		JButton button = new JButton(action);
 		button.setBorderPainted(false);
-
+		
 		button.setOpaque(false);
 		button.setBackground(null);
-
+		
 		button.setText(sBundle.getString("toolbar." + action.getName()));
 		button.setToolTipText(sBundle.getString("toolbar." + action.getName() + ".tooltip"));
 		button.setIcon(iBundle.getImageIcon("toolbar." + action.getName() + ".icon"));
-
+		
 		// a little bag of tricks: java developers use a string value for this
 		// property
 		// instead of a constant, moreover is this string value not documented.ww
-
+		
 		button.putClientProperty("hideActionText", Boolean.valueOf(true));
-
+		
 		try {
 			String mnem = sBundle.getString("toolbar." + action.getName() + ".mnemonic");
-
+			
 			if (mnem != null) {
 				button.setMnemonic(Class.forName("java.awt.event.KeyEvent").getField(mnem).getInt(null));
 			}
@@ -3488,56 +3545,56 @@ public class MainFrame extends JFrame
 		// button.setSize(button.getIcon().getIconWidth(), button.getHeight());
 		// int s = 0;
 		// button.setMargin(new Insets(s, 2, s, 2));
-
+		
 		return button;
 	}
-
+	
 	// ~ Inner Classes ==========================================================
-
+	
 	/**
 	 * Listener for the internal frames.
 	 */
 	class GraffitiFrameListener extends InternalFrameAdapter implements WindowListener {
-
+		
 		MainFrame mainFrame;
-
+		
 		public GraffitiFrameListener(MainFrame mainFrame) {
 			this.mainFrame = mainFrame;
 		}
-
+		
 		@Override
 		public void internalFrameActivated(InternalFrameEvent e) {
 			super.internalFrameActivated(e);
-
+			
 			GraffitiInternalFrame iframe = (GraffitiInternalFrame) e.getInternalFrame();
 			graffitiFrameActivated(iframe.getSession(), iframe.getView());
 		}
-
+		
 		@Override
 		public void internalFrameClosed(InternalFrameEvent e) {
 			super.internalFrameClosed(e);
-
+			
 			GraffitiInternalFrame f = (GraffitiInternalFrame) e.getInternalFrame();
-
+			
 			EditorSession session = ((GraffitiInternalFrame) e.getInternalFrame()).getSession();
-
+			
 			if (session == null) {
 				// already processed
 				return;
 			}
-
+			
 			activeFrames.remove(f);
-
+			
 			View view = f.getView();
-
+			
 			viewFrameMapper.remove(view);
 			zoomListeners.remove(view);
-
+			
 			if (session.getGraph() == null)
 				System.out.println("ERROR 987");
 			if (session.getGraph().getListenerManager() == null)
 				System.out.println("ERROR 654");
-
+			
 			ListenerManager lm = session.getGraph().getListenerManager();
 			try {
 				lm.removeAttributeListener(view);
@@ -3547,12 +3604,12 @@ public class MainFrame extends JFrame
 			} catch (ListenerNotFoundException err) {
 				ErrorMsg.addErrorMessage(err);
 			}
-
+			
 			view.setGraph(null);
 			view.close();
-
+			
 			session.removeView(f.getView());
-
+			
 			if (session.getViews().size() == 0) {
 				undoSupport.removeUndoableEditListener((session).getUndoManager());
 				session.getUndoManager().discardAllEdits();
@@ -3563,18 +3620,18 @@ public class MainFrame extends JFrame
 						((SessionListenerExt) sl).sessionClosed(session);
 				}
 			}
-
+			
 			if (getEditorSessions().size() == 0)
 				setActiveSession(null, null);
 		}
-
+		
 		@Override
 		public void internalFrameClosing(InternalFrameEvent e) {
-
+			
 			GraffitiInternalFrame f = (GraffitiInternalFrame) e.getInternalFrame();
-
+			
 			EditorSession session = ((GraffitiInternalFrame) e.getInternalFrame()).getSession();
-
+			
 			if (session.getGraph().isModified()) {
 				String graphName = session.getGraph().getName();
 				if (graphName == null)
@@ -3584,7 +3641,7 @@ public class MainFrame extends JFrame
 								+ " contains<br>" + session.getGraph().getNodes().size() + " node(s) and "
 								+ session.getGraph().getEdges().size() + " edge(s)!",
 						sBundle.getString("frame.close_save_title"), JOptionPane.YES_NO_CANCEL_OPTION);
-
+				
 				if (res == JOptionPane.CANCEL_OPTION || res == JOptionPane.DEFAULT_OPTION)
 					return;
 				if (res == JOptionPane.YES_OPTION) {
@@ -3605,7 +3662,7 @@ public class MainFrame extends JFrame
 			// if (session.getViews().size() >= 2) {
 			// detachedFrames.remove(f);
 			// }
-
+			
 			View view = f.getView();
 			view.closing(e);
 			/*
@@ -3615,98 +3672,98 @@ public class MainFrame extends JFrame
 			 */
 			f.firePropertyChange(JInternalFrame.IS_CLOSED_PROPERTY, Boolean.FALSE, Boolean.TRUE);
 			f.dispose();
-
+			
 		}
-
+		
 		public void windowActivated(WindowEvent e) {
 			// GraffitiFrame iframe = (GraffitiFrame) e.getWindow();
 			// graffitiFrameActivated(iframe.getSession(), iframe.getView());
 		}
-
+		
 		private void graffitiFrameActivated(EditorSession session, View view) {
-
+			
 			// if (session != activeSession) {
 			// setActiveSession(session, view);
 			// } else {
 			// fireViewChanged(view);
 			// }
 		}
-
+		
 		public void windowClosed(WindowEvent e) {
 			// closing external frame ...
 			GraffitiFrame f = (GraffitiFrame) e.getWindow();
 			EditorSession session = f.getSession();
-
+			
 			if (session.getViews().size() >= 2) {
 				detachedFrames.remove(f);
 			}
-
+			
 			View view = f.getView();
-
+			
 			viewFrameMapper.remove(view);
 			zoomListeners.remove(view);
-
+			
 			ListenerManager lm = session.getGraph().getListenerManager();
-
+			
 			/*
 			 * An exception occurs, but to keep consistent the list we have to remove them
 			 */
 			// do not output caught exception in each of the try-catch blocks below
 			// ErrorMsg.addErrorMessage(err);
-
+			
 			try {
 				lm.removeAttributeListener(view);
 			} catch (ListenerNotFoundException err) {
 			}
-
+			
 			try {
 				lm.removeEdgeListener(view);
 			} catch (ListenerNotFoundException err) {
 			}
-
+			
 			try {
 				lm.removeNodeListener(view);
 			} catch (ListenerNotFoundException err) {
 			}
-
+			
 			try {
 				lm.removeGraphListener(view);
 			} catch (ListenerNotFoundException err) {
 			}
-
+			
 			view.setGraph(null);
 			view.close();
 			session.removeView(f.getView());
-
+			
 			setTitle(GraffitiInternalFrame.startTitle);
 			mainFrame.updateActions();
 		}
-
+		
 		public void windowClosing(WindowEvent e) {
 			GraffitiFrame f = (GraffitiFrame) e.getWindow();
 			EditorSession session = f.getSession();
-
+			
 			if (session.getViews().size() >= 2) {
 				detachedFrames.remove(f);
 			}
-
+			
 			View view = f.getView();
 			view.closing(e);
 		}
-
+		
 		public void windowDeactivated(WindowEvent e) {
 		}
-
+		
 		public void windowDeiconified(WindowEvent e) {
 		}
-
+		
 		public void windowIconified(WindowEvent e) {
 		}
-
+		
 		public void windowOpened(WindowEvent e) {
 		}
 	}
-
+	
 	public void closeGravisto() {
 		ArrayList<Graph> unsavedGraphs = new ArrayList<Graph>();
 		List<Session> l = new LinkedList<Session>();
@@ -3739,7 +3796,7 @@ public class MainFrame extends JFrame
 			// JOptionPane.WARNING_MESSAGE);
 			// if (res == JOptionPane.YES_OPTION) {
 			// saveActiveFile();
-
+			
 			/*
 			 * for (Iterator it = l.iterator(); it.hasNext();) { removeSession((Session)
 			 * it.next()); } savePreferences();
@@ -3758,14 +3815,14 @@ public class MainFrame extends JFrame
 				setVisible(false);
 		}
 	}
-
+	
 	@Override
 	protected void processEvent(AWTEvent e) {
 		super.processEvent(e);
 		if (e.getID() == 201)
 			closeGravisto();
 	}
-
+	
 	// /**
 	// * Adds a JComponent to a JFrame which is shown in the Desktop
 	// * @param component
@@ -3784,28 +3841,29 @@ public class MainFrame extends JFrame
 	// frame.setVisible(true);
 	//
 	// }
-
+	
 	/**
-	 * @param panel A status panel that will be shown in the progress area. A timer
-	 *              calls isVisible to this panel. If it is not visible any more, it
-	 *              will be removed from the status area.
+	 * @param panel
+	 *           A status panel that will be shown in the progress area. A timer
+	 *           calls isVisible to this panel. If it is not visible any more, it
+	 *           will be removed from the status area.
 	 */
 	public void addStatusPanel(JPanel panel) {
 		if (jSplitPane_pluginPanelAndProgressView != null && progressPanel != null) {
 			if (activeProgressPanels == null)
 				activeProgressPanels = new ArrayList<JPanel>();
-
+			
 			// create and install status check for the panels
 			if (timerCheckActiveProgressPanels == null)
 				initProgressGuiTimer();
-
+			
 			synchronized (activeProgressPanelLock) {
 				if (panel != null)
 					activeProgressPanels.add(panel);
 			}
 		}
 	}
-
+	
 	// public List<JPanel> getStatusPanels() {
 	// ArrayList<JPanel> result = new ArrayList<JPanel>();
 	// synchronized(activeProgressPanels) {
@@ -3814,10 +3872,10 @@ public class MainFrame extends JFrame
 	// }
 	// return result;
 	// }
-
+	
 	private boolean firstGuiTimerCall = true;
 	private long redrawGUIcount = 0;
-
+	
 	private void initProgressGuiTimer() {
 		timerCheckActiveProgressPanels = new Timer(200, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -3833,7 +3891,7 @@ public class MainFrame extends JFrame
 					}
 					if (foundSomething)
 						activeProgressPanels.removeAll(toBeDeleted);
-
+					
 					if (firstGuiTimerCall || (redrawGUIcount % 10 == 0)
 							|| (progressPanel.getComponentCount() != activeProgressPanels.size())) {
 						if (jSplitPane_pluginPanelAndProgressView.getHeight() > 0)
@@ -3845,7 +3903,7 @@ public class MainFrame extends JFrame
 		});
 		timerCheckActiveProgressPanels.start();
 	}
-
+	
 	private void updatePanelGUI() {
 		synchronized (activeProgressPanelLock) {
 			// int height = 0;
@@ -3856,7 +3914,7 @@ public class MainFrame extends JFrame
 			// .setDividerLocation(jSplitPane_pluginPanelAndProgressView
 			// .getHeight()
 			// - height);
-
+			
 			progressPanel.removeAll();
 			// progressPanel.validate();
 			double border = 0;
@@ -3878,7 +3936,7 @@ public class MainFrame extends JFrame
 			jSplitPane_pluginPanelAndProgressView.validate();
 		}
 	}
-
+	
 	public void selectionChanged(SelectionEvent e) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			repaint(100);
@@ -3906,7 +3964,7 @@ public class MainFrame extends JFrame
 		} else
 			repaint(100);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -3919,24 +3977,24 @@ public class MainFrame extends JFrame
 			GraffitiAction.updateAllActions();
 		}
 	}
-
+	
 	ArrayList<GraffitiFrame> detachedFrames = new ArrayList<GraffitiFrame>();
-
+	
 	private boolean graphLoadingInProgress;
-
+	
 	public GraffitiFrame[] getDetachedFrames() {
 		return detachedFrames.toArray(new GraffitiFrame[] {});
 	}
-
+	
 	public void addDetachedFrame(GraffitiFrame frame) {
 		if (!detachedFrames.contains(frame))
 			detachedFrames.add(frame);
 	}
-
+	
 	public void removeDetachedFrame(GraffitiFrame frame) {
 		detachedFrames.remove(frame);
 	}
-
+	
 	public GraffitiFrame getActiveDetachedFrame() {
 		EditorSession es = getActiveEditorSession();
 		for (GraffitiFrame gf : getDetachedFrames()) {
@@ -3946,7 +4004,7 @@ public class MainFrame extends JFrame
 		}
 		return null;
 	}
-
+	
 	public static Rectangle getRelativeCenterPosition(JDialog md) {
 		Rectangle r = MainFrame.getInstance().getBounds();
 		int w = md.getWidth();
@@ -3955,32 +4013,32 @@ public class MainFrame extends JFrame
 		int y = r.y + r.height / 2 - h / 2;
 		return new Rectangle(x, y, w, h);
 	}
-
+	
 	public void dragEnter(DropTargetDragEvent dtde) {
 		System.out.println("Drag-Enter");
 		showMessage("Drag-Enter", MessageType.INFO);
 	}
-
+	
 	public void dragOver(DropTargetDragEvent dtde) {
 		System.out.println("Drag-Over");
 		showMessage("Drag-Over", MessageType.INFO);
 	}
-
+	
 	public void dropActionChanged(DropTargetDragEvent dtde) {
 		System.out.println("Drag-Changed");
 		showMessage("Drag-Changed", MessageType.INFO);
 	}
-
+	
 	public void dragExit(DropTargetEvent dte) {
 		System.out.println("Drag-Exit");
 		showMessage("Drag-Exit", MessageType.INFO);
 	}
-
+	
 	public void drop(DropTargetDropEvent e) {
 		showMessage("Drop", MessageType.INFO);
 		System.out.println("Drop");
 		e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-
+		
 		String s0 = null;
 		if (e.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
@@ -4011,10 +4069,10 @@ public class MainFrame extends JFrame
 		}
 		@SuppressWarnings("unchecked")
 		List<File> data = (List<File>) data0;
-
+		
 		if (data != null)
 			for (File file : data) {
-
+				
 				if (file.isDirectory())
 					MainFrame.showMessageDialog("Drag & Drop is only supported for files, not folders!", "Error");
 				else {
@@ -4023,16 +4081,16 @@ public class MainFrame extends JFrame
 				}
 			}
 	}
-
+	
 	public static void showMessageDialog(String title, JComponent comp) {
 		comp.setPreferredSize(new Dimension(640, 480));
 		JOptionPane.showMessageDialog(MainFrame.getInstance(), comp, title, JOptionPane.INFORMATION_MESSAGE);
 	}
-
+	
 	public static void showMessageDialogPlain(String title, JComponent comp) {
 		JOptionPane.showMessageDialog(MainFrame.getInstance(), comp, title, JOptionPane.PLAIN_MESSAGE);
 	}
-
+	
 	public static void showMessageWindowUpdate(JFrame jf, String title, JComponent jc) {
 		jf.setTitle(title);
 		jf.removeAll();
@@ -4044,11 +4102,11 @@ public class MainFrame extends JFrame
 		jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jf.setVisible(true);
 	}
-
+	
 	public static JFrame showMessageWindow(String title, JComponent jc) {
 		return showMessageWindow(title, jc, true);
 	}
-
+	
 	public static JFrame showMessageWindow(String title, JComponent jc, boolean show) {
 		JFrame jf = new JFrame(title);
 		jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -4065,7 +4123,7 @@ public class MainFrame extends JFrame
 			jf.setVisible(true);
 		return jf;
 	}
-
+	
 	public boolean isTaskPanelVisible(String string) {
 		synchronized (activeProgressPanelLock) {
 			for (JPanel jp : activeProgressPanels) {
@@ -4076,7 +4134,7 @@ public class MainFrame extends JFrame
 		}
 		return false;
 	}
-
+	
 	public boolean lookUpAndSwitchToNamedSession(String fileName) {
 		if (fileName.indexOf("/") > 0) {
 			fileName = fileName.substring(fileName.lastIndexOf("/") + "/".length());
@@ -4104,7 +4162,7 @@ public class MainFrame extends JFrame
 		}
 		return false;
 	}
-
+	
 	public EditorSession lookUpSession(Graph g, boolean createIfNotFound) {
 		for (EditorSession es : getEditorSessions()) {
 			if (es.getGraph() == g)
@@ -4115,7 +4173,7 @@ public class MainFrame extends JFrame
 		} else
 			return null;
 	}
-
+	
 	public EditorSession lookUpNamedSession(String fileName) {
 		if (fileName.startsWith(AttributeHelper.preFilePath))
 			fileName = fileName.substring(AttributeHelper.preFilePath.length());
@@ -4133,23 +4191,23 @@ public class MainFrame extends JFrame
 		}
 		return null;
 	}
-
+	
 	public URLattributeActionManager getActionManager() {
 		return urlAttributeActionManager;
 	}
-
+	
 	public void frameClosing(EditorSession session, View view) {
 		// remove this view only if there are other open views
 		viewFrameMapper.remove(view);
 		zoomListeners.remove(view);
-
+		
 		if (session == null) {
 			view.close();
-
+			
 		} else {
-
+			
 			ListenerManager lm = session.getGraph().getListenerManager();
-
+			
 			try {
 				lm.removeAttributeListener(view);
 				lm.removeEdgeListener(view);
@@ -4158,18 +4216,18 @@ public class MainFrame extends JFrame
 			} catch (ListenerNotFoundException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-
+			
 			if (session.getViews().size() > 1) {
 				view.close();
 				session.removeView(view);
-
+				
 			} else {
 				// remove the session if we are closing the last view
 				MainFrame.getInstance().closeSession(session);
 				view.close();
 			}
 		}
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (desktop.getAllFrames() != null && desktop.getAllFrames().length > 0) {
@@ -4181,13 +4239,13 @@ public class MainFrame extends JFrame
 				}
 			}
 		});
-
+		
 	}
-
+	
 	@Override
 	public void setVisible(boolean b) {
 		super.setVisible(b);
-
+		
 		try {
 			Runtime r = Runtime.getRuntime();
 			if (r.maxMemory() / 1024 / 1024 < 400) {
@@ -4219,17 +4277,17 @@ public class MainFrame extends JFrame
 		// ErrorMsg.addErrorMessage(e);
 		// }
 	}
-
+	
 	public View createExternalFrame(String viewClassName, EditorSession session, boolean otherViewWillBeClosed,
 			boolean fullscreen, int x, int y, int w, int h) {
 		return createExternalFrame(viewClassName, null, session, otherViewWillBeClosed, fullscreen, x, y, w, h);
 	}
-
+	
 	public View createExternalFrame(String viewClassName, String framename, EditorSession session,
 			boolean otherViewWillBeClosed, boolean fullscreen, int x, int y, int w, int h) {
 		// turn off default decorations for detached windows
 		JFrame.setDefaultLookAndFeelDecorated(false);
-
+		
 		GraffitiInternalFrame gif;
 		if (framename == null)
 			gif = (GraffitiInternalFrame) createInternalFrame(viewClassName, session.getGraph().getName(), session,
@@ -4237,16 +4295,16 @@ public class MainFrame extends JFrame
 		else
 			gif = (GraffitiInternalFrame) createInternalFrame(viewClassName, framename, session, false, true,
 					otherViewWillBeClosed);
-
+		
 		GraffitiFrame gf = new GraffitiFrame(gif, fullscreen);
 		final GraffitiFrame tgf = gf;
 		gf.addWindowListener(graffitiFrameListener);
 		gf.addFocusListener(new FocusListener() {
-
+			
 			@Override
 			public void focusLost(FocusEvent e) {
 			}
-
+			
 			@Override
 			public void focusGained(FocusEvent e) {
 				tgf.toFront();
@@ -4261,25 +4319,25 @@ public class MainFrame extends JFrame
 			gf.setBounds(x0, y + 192, w, h);
 		else
 			gf.setBounds(x0, y + 105, w, h);
-
+		
 		MainFrame.getInstance().addDetachedFrame(gf);
-
+		
 		return gif.getView();
 	}
-
+	
 	public View createInternalFrame(String viewClassName, EditorSession session, boolean otherViewWillBeClosed) {
 		createInternalFrame(viewClassName, session.getGraph().getName(), session, false, false, otherViewWillBeClosed);
-
+		
 		return session.getActiveView();
 	}
-
+	
 	public View createInternalFrame(String viewClassName, String newFrameTitle, EditorSession session,
 			boolean otherViewWillBeClosed) {
 		createInternalFrame(viewClassName, newFrameTitle, session, false, false, otherViewWillBeClosed);
-
+		
 		return session.getActiveView();
 	}
-
+	
 	public void showAndHighlightSidePanelSubTab(String tabtitle, final String subtabtitle) {
 		showAndHighlightSidePanelTab(tabtitle, false);
 		Thread t = new Thread(new Runnable() {
@@ -4294,7 +4352,7 @@ public class MainFrame extends JFrame
 		if (subtabtitle != null)
 			t.start();
 	}
-
+	
 	public void showAndHighlightSidePanelTab(String title, boolean cycle) {
 		boolean found = false;
 		for (InspectorTab it : getInspectorPlugin().getTabs()) {
@@ -4327,7 +4385,7 @@ public class MainFrame extends JFrame
 		if (!found)
 			System.err.println("Internal Error: side panel " + title + " not found!");
 	}
-
+	
 	private Component recurseTabsAndHighlight(SubtabHostTab parent, String title) {
 		Component retDirectChildComponent;
 		for (InspectorTab it2 : parent.getTabs()) {
@@ -4344,20 +4402,20 @@ public class MainFrame extends JFrame
 		}
 		return null;
 	}
-
+	
 	public void setSidePanel(JToolBar component, int width) {
 		vertSplitter.setRightComponent(component);
 		vertSplitter.validate();
 		vertSplitter.setDividerLocation(vertSplitter.getWidth() - width); // uiPrefs.getInt("vertSplitter",
 		// VERT_SPLITTER));
 	}
-
+	
 	public void setSidePanel(int width) {
 		int availableSpace = getWidth();
 		int newWidth = availableSpace - width;
 		vertSplitter.setDividerLocation(newWidth);
 	}
-
+	
 	public enum HideOrDeactivateMenu {
 		/**
 		 * All deactivated menuitems will still be shown (standard behaviour).
@@ -4372,24 +4430,24 @@ public class MainFrame extends JFrame
 		 */
 		HIDE_INACTIVE_MENUITEMS_AND_HIDE_MENU;
 	}
-
+	
 	public void warnUserAboutFileSaveProblem(Exception ioe) {
 		MainFrame.showMessageDialog("<html>Saving file caused and error (" + ioe.getMessage() + "),<br>"
 				+ "To avoid data loss, try saving the file in a different format,<br>"
 				+ "as a different file in a different place.<br>"
 				+ "Consider to print the graph view, to avoid complete loss<br>" + "of information.", "Error");
 	}
-
+	
 	public JDesktopPane getDesktop() {
 		return desktop;
 	}
-
+	
 	public static boolean isViewProvidingToolbar(View view) {
 		return view != null && (view.getViewToolbarComponentTop() != null
 				|| view.getViewToolbarComponentBottom() != null || view.getViewToolbarComponentLeft() != null
 				|| view.getViewToolbarComponentRight() != null || view.getViewToolbarComponentBackground() != null);
 	}
-
+	
 	/**
 	 * @param graph
 	 * @return
@@ -4400,43 +4458,43 @@ public class MainFrame extends JFrame
 				return s;
 		return null;
 	}
-
+	
 	public int getNumberOfOpenSessions() {
 		return sessions.size();
 	}
-
+	
 	public boolean isGraphLoadingInProgress() {
 		return graphLoadingInProgress;
 	}
-
+	
 	public static void showWarningPopup(String text, int time) {
 		showWarningPopup(text, time, null);
 	}
-
+	
 	/**
 	 * Global variable <b>for showWarningPopup() only</b> to check global
 	 * conditions.
 	 */
 	private static Thread show = null; // There is only one instance of MainFrame at a time so we are just fine.
-
+	
 	public static void showWarningPopup(final String text, final int time, final Collection<WarningButton> bts) {
-
+		
 		/**
 		 * We forbid overlapping threads creation, i.e. first wait the last created to
 		 * die and then create a new one.
 		 */
 		if (show != null && show.isAlive())
 			return;
-
+		
 		show = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				PopupFactory fac = new PopupFactory();
-
+				
 				final JPanel border = new JPanel();
 				border.setBackground(new Color(255, 255, 220));
 				border.setBorder(new BevelBorder(BevelBorder.RAISED));
-
+				
 				JLabel lbl = new JLabel(text);
 				lbl.setBackground(new Color(255, 255, 220));
 				lbl.setForeground(Color.DARK_GRAY);
@@ -4452,43 +4510,43 @@ public class MainFrame extends JFrame
 					border.add(TableLayout.getMultiSplit(comps), "0,1");
 				}
 				border.add(lbl, "0,0");
-
+				
 				lbl.validate();
 				border.validate();
-
+				
 				MainFrame f = MainFrame.getInstance();
-
+				
 				final Popup pop = fac.getPopup(f, border, f.getX() + f.vertSplitter.getDividerLocation(),
 						f.getY() + 35);
-
+				
 				border.addMouseListener(new MouseListener() {
-
+					
 					@Override
 					public void mouseReleased(MouseEvent e) {
 						pop.hide();
 					}
-
+					
 					@Override
 					public void mousePressed(MouseEvent e) {
 						pop.hide();
 					}
-
+					
 					@Override
 					public void mouseExited(MouseEvent e) {
 						border.setBorder(new BevelBorder(BevelBorder.RAISED));
 					}
-
+					
 					@Override
 					public void mouseEntered(MouseEvent e) {
 						border.setBorder(new BevelBorder(BevelBorder.LOWERED));
 					}
-
+					
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						pop.hide();
 					}
 				});
-
+				
 				if (bts != null)
 					for (WarningButton bt : bts) {
 						bt.getButton().addActionListener(new ActionListener() {
@@ -4498,9 +4556,9 @@ public class MainFrame extends JFrame
 							}
 						});
 					}
-
+				
 				pop.show();
-
+				
 				if (time > 0) {
 					try {
 						Thread.sleep(time);
@@ -4512,7 +4570,7 @@ public class MainFrame extends JFrame
 			}
 		});
 		show.start();
-
+		
 	}
 }
 

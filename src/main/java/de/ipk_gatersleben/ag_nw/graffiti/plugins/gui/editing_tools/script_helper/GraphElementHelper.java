@@ -19,17 +19,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.xml_attribute.XM
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 public class GraphElementHelper implements HelperClass {
-
+	
 	GraphElement ge;
-
+	
 	public GraphElementHelper(GraphElement ge) {
 		this.ge = ge;
 	}
-
+	
 	public String getLabel() {
 		return AttributeHelper.getLabel(ge, null);
 	}
-
+	
 	public static boolean hasDataMapping(GraphElement ge) {
 		try {
 			CollectionAttribute ca = (CollectionAttribute) ge.getAttribute(Experiment2GraphHelper.mapFolder);
@@ -42,7 +42,7 @@ public class GraphElementHelper implements HelperClass {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * @return The Experiment (will never be null)
 	 */
@@ -56,7 +56,7 @@ public class GraphElementHelper implements HelperClass {
 		}
 		return new Experiment();
 	}
-
+	
 	public double getAverage() {
 		double sum = 0;
 		ExperimentInterface mdl = getDataMappings();
@@ -64,19 +64,19 @@ public class GraphElementHelper implements HelperClass {
 			sum += md.getAverage();
 		return sum / mdl.size();
 	}
-
+	
 	public void setLabel(String label) {
 		AttributeHelper.setLabel(ge, label);
 	}
-
+	
 	public void setCluster(String clusterId) {
 		NodeTools.setClusterID(ge, clusterId);
 	}
-
+	
 	public String getCluster() {
 		return NodeTools.getClusterID(ge, null);
 	}
-
+	
 	public ArrayList<SampleInterface> getMappedSampleData() {
 		ArrayList<SampleInterface> result = new ArrayList<SampleInterface>();
 		for (SubstanceInterface md : getDataMappings()) {
@@ -86,7 +86,7 @@ public class GraphElementHelper implements HelperClass {
 		}
 		return result;
 	}
-
+	
 	public Set<Integer> getMappedTimePointsCoveredByAllLines() {
 		List<HashSet<Integer>> timePoints = new ArrayList<HashSet<Integer>>();
 		for (ConditionInterface sd : getMappedSeriesData()) {
@@ -109,7 +109,7 @@ public class GraphElementHelper implements HelperClass {
 		}
 		return timePointsCoveredInAllSeries;
 	}
-
+	
 	public Set<Integer> getMappedUniqueTimePoints() {
 		HashSet<Integer> result = new HashSet<Integer>();
 		for (SubstanceInterface md : getDataMappings()) {
@@ -119,7 +119,7 @@ public class GraphElementHelper implements HelperClass {
 		}
 		return result;
 	}
-
+	
 	public ArrayList<ConditionInterface> getMappedSeriesData() {
 		ArrayList<ConditionInterface> result = new ArrayList<ConditionInterface>();
 		for (SubstanceInterface md : getDataMappings()) {

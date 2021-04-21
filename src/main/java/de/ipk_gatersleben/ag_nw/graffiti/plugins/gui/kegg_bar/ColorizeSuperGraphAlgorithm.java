@@ -36,25 +36,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class ColorizeSuperGraphAlgorithm extends AbstractAlgorithm {
-
+	
 	OrganismEntry organismSelection;
 	private boolean checkOrthologs = true;
 	private boolean checkEnzymes = false;
 	private boolean checkGlycans = false;
 	private boolean checkCompounds = false;
-
+	
 	public String getName() {
 		return null; // start from kegg tab 2
 		// return "Create Organism-Specific KEGG Super-Graph";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This algorithm enumerates a list of pathways, which are the source of the active<br>"
 				+ "(super)pathway. It then uses the KEGG SOAP API to enumerate the specified elements<br>"
 				+ "for a given organism and marks elements that are returned for the selected organism.";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -67,7 +67,7 @@ public class ColorizeSuperGraphAlgorithm extends AbstractAlgorithm {
 				new BooleanParameter(checkCompounds, "Check Compounds",
 						"If selected, the organism specific Compound ID based entries are processed") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -76,25 +76,25 @@ public class ColorizeSuperGraphAlgorithm extends AbstractAlgorithm {
 		checkGlycans = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		checkCompounds = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Nodes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("The active graph needs to be a KEGG reference pathway!");
-
+		
 		super.check();
 	}
-
+	
 	public void execute() {
 		final List<OrganismEntry> organisms = new ArrayList<OrganismEntry>();
 		try {
@@ -117,7 +117,7 @@ public class ColorizeSuperGraphAlgorithm extends AbstractAlgorithm {
 					+ organismSelections[0].toString(), "Information");
 		}
 		organismSelection = organismSelections[0];
-
+		
 		final ArrayList<String> coveredMaps = new ArrayList<String>();
 		for (Node n : graph.getNodes()) {
 			NodeHelper nh = new NodeHelper(n);

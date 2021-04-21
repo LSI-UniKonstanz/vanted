@@ -38,18 +38,18 @@ import org.jfree.data.XYDataset;
  * @author Richard Atkinson
  */
 public interface XYURLGenerator {
-
+	
 	/**
 	 * Generates a URL for a particular item within a series.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return a string containing the generated URL.
 	 */
 	public String generateURL(XYDataset data, int series, int item);
-
+	
 }

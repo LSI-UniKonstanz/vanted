@@ -51,25 +51,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
-
+	
 	private final String settingLabel = "Interpret Node Label";
 	private final String settingKEGGid = "Interpret KEGG ID";
 	private final String settingAlternativeId = "Interpret Alternative Substance IDs (select the index, below)";
 	private final String settingDataAnnotation = "Interpret Hierarchy Data Annotation";
 	private final String settingSpecialR = "R-calculated cluster-hierarchy (special command, load file)";
-
+	
 	private String currentInformationProvider = settingAlternativeId;
-
+	
 	private final String settingPointDivided = "Direct Interpretation (. or ; divided hierarchy information)";
 	private final String settingKOenzymeLookup = "Lookup Enzyme Name/ID in Enyzme and KO databases (process KO Class Information)";
 	private final String settingKOgeneLookup = "Lookup Gene ID or KO ID in KO database (process KO Class Information)";
 	private final String settingKOdbLinkLookup = "Lookup KO ID in KO database (process KO DB Link Information)";
-
+	
 	private String currentInformationProcessingSetting = settingKOgeneLookup;
 	private final String settingUseAllIdx = "No alternative identifiers are available";
 	private String currentAlternativeSubstanceIDindex = settingUseAllIdx;
 	private final String settingUseAll = "Evaluate all alternative identifiers";
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -81,7 +81,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>"
@@ -96,12 +96,12 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 				+ "<br><small>Hint: The hierarchy menu provides a additional command for the interpretation of gene IDs in order to create a Gene Ontogy<br>"
 				+ "network from the data.<br><br>";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Hierarchy.KEGG";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		int maxID = 0;
@@ -121,23 +121,23 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 				selvals.add(s);
 			}
 		}
-
+		
 		Collection<String> possibleValues = new ArrayList<String>();
 		possibleValues.add(settingLabel);
 		possibleValues.add(settingKEGGid);
 		possibleValues.add(settingAlternativeId);
 		possibleValues.add(settingDataAnnotation);
 		possibleValues.add(settingSpecialR);
-
+		
 		if (maxID == 0 && currentInformationProvider.equals(settingAlternativeId))
 			currentInformationProvider = settingLabel;
-
+		
 		Collection<String> possibleEvaluations = new ArrayList<String>();
 		possibleEvaluations.add(settingPointDivided);
 		possibleEvaluations.add(settingKOenzymeLookup);
 		possibleEvaluations.add(settingKOgeneLookup);
 		possibleEvaluations.add(settingKOdbLinkLookup);
-
+		
 		return new Parameter[] {
 				new ObjectListParameter(currentInformationProvider, "Hierarchy Information Provider",
 						"Select the property which provides the hierarchy information", possibleValues),
@@ -149,7 +149,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 				new ObjectListParameter(currentInformationProcessingSetting, "Hierarchy Information Processing",
 						"Select the way the hierarchy data should be interpreted", possibleEvaluations) };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -157,7 +157,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 		currentAlternativeSubstanceIDindex = (String) ((ObjectListParameter) params[i++]).getValue();
 		currentInformationProcessingSetting = (String) ((ObjectListParameter) params[i++]).getValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -184,7 +184,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 							value.append(".");
 						value.append(l[i]);
 					}
-
+					
 					// for (int i=l.length-1; i>1; i--) {
 					// if (value.length()>0)
 					// value.append(".");
@@ -198,7 +198,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 			}
 		}
 		final Graph fgraph = graph;
-
+		
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Create Hierarchy", "");
 		Runnable task = new Runnable() {
@@ -222,7 +222,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 						status.setCurrentStatusValueFine((double) nn / (double) nn_max * 100d);
 						NodeHelper nh = new NodeHelper(graphNode);
 						HashSet<String> checkTheseIds = new HashSet<String>();
-
+						
 						if (currentInformationProvider.equals(settingAlternativeId)) {
 							if (currentAlternativeSubstanceIDindex.equals(settingUseAll))
 								checkTheseIds.addAll(nh.getAlternativeIDs());
@@ -238,7 +238,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 									if (altId != null && altId.length() > 0)
 										checkTheseIds.add(altId);
 							}
-
+							
 						}
 						if (currentInformationProvider.equals(settingSpecialR)) {
 							String lbl = nh.getLabel();
@@ -309,7 +309,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 									}
 								}
 							}
-
+							
 							/*
 							 * The KO Gene Lookup will be implemented later
 							 */
@@ -329,7 +329,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 							// organismInfo = orgs.iterator().next();
 							// }
 							// }
-
+							
 							/*
 							 * The DB Link functionality will be reimplemented later
 							 */
@@ -369,14 +369,14 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 							// ";", "§");
 							// }
 							// String[] graphH = hierarchyInformation.split("§");
-
+							
 							// String hierarchyEntityName = "";
-
+							
 							// skip actual enzyme and get right to the path elements
 							hierarchyInformation = hierarchyInformation.getParent();
-
+							
 							do {
-
+								
 								String hierarchyEntityName = hierarchyInformation.getName();
 								if (hierarchyEntityName.contains("KEGG Orthology")) {
 									System.err.println();
@@ -389,7 +389,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 											startY + hierarchy_tree_itemName2node.size() * stepY, 1, 150, 30,
 											Color.BLACK, Color.WHITE);
 									AttributeHelper.setLabel(n, hierarchyEntityName);
-
+									
 									if (hierarchyInformation.getPathId() != null) {
 										// this should be a map-node
 										String id = hierarchyInformation.getPathId();
@@ -407,9 +407,9 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 										AttributeHelper.setRoundedEdges(n, 15);
 									} else if (hierarchyInformation.getId() != null)
 										KeggGmlHelper.setKeggId(n, hierarchyInformation.getId().toLowerCase());
-
+									
 									hierarchy_tree_itemName2node.put(hierarchyEntityName, n);
-
+									
 									newNodes.add(n);
 								}
 								Node hierarchy_tree_node = hierarchy_tree_itemName2node.get(hierarchyEntityName);
@@ -423,9 +423,9 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 										newEdges.add(edge);
 									}
 								}
-
+								
 								lastNode = hierarchy_tree_node;
-
+								
 							} while ((hierarchyInformation = hierarchyInformation.getParent()) != null);
 							lastNode = graphNode;
 							// if (lastNode != null) {
@@ -439,7 +439,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 							// }
 						}
 						// }
-
+						
 						// }
 					}
 				} finally {
@@ -457,12 +457,12 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 							RTTreeLayout tree = new RTTreeLayout();
 							tree.attach(fgraph, new Selection(newNodes));
 							tree.execute();
-
+							
 							// layout gene nodes using grid layout (no resize)
 							Collection<Node> geneNodes = new ArrayList<Node>(workNodes);
 							geneNodes.removeAll(newNodes);
 							GridLayouterAlgorithm.layoutOnGrid(geneNodes, 1, 20, 20);
-
+							
 							CenterLayouterAlgorithm.moveGraph(fgraph, getName(), true, 50, 50);
 						}
 					} else {

@@ -38,9 +38,9 @@ public class IAPnodeTools extends NodeTools {
 					list = getSortedDataSetValues(mappingData);
 				mappedData.addAll(list);
 			}
-
+			
 			ArrayList<Double> dataPoints = new ArrayList<Double>();
-
+			
 			for (int column = 0; column < columnDesc.length; column++) {
 				String findDataPointWithColumnDesc = columnDesc[column];
 				MyComparableDataPoint mcdpResult = null;
@@ -69,7 +69,7 @@ public class IAPnodeTools extends NodeTools {
 					lastDataPoint = mcdpResult.mean;
 				}
 			}
-
+			
 			// search min max during
 			double min = Double.MAX_VALUE;
 			double max = Double.NEGATIVE_INFINITY;

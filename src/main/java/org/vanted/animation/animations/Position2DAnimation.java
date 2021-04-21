@@ -22,33 +22,33 @@ public class Position2DAnimation extends ContinuousAnimation<Point2DTimePoint> {
 		super(attributable, dataPoints, loopDuration, startTime, noLoops, looper, interpolator);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public Position2DAnimation(Attributable attributable, List<Point2DTimePoint> dataPoints, double loopDuration,
 			double startTime, int noLoops, Looper looper) {
 		super(attributable, dataPoints, loopDuration, startTime, noLoops, looper);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public Position2DAnimation(Attributable attributable, List<Point2DTimePoint> dataPoints, double loopDuration,
 			double startTime, int noLoops) {
 		super(attributable, dataPoints, loopDuration, startTime, noLoops);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public Position2DAnimation(Attributable attributable, List<Point2DTimePoint> dataPoints, double loopDuration,
 			double startTime) {
 		super(attributable, dataPoints, loopDuration, startTime);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public Position2DAnimation(Attributable attributable, List<Point2DTimePoint> dataPoints, double loopDuration) {
 		super(attributable, dataPoints, loopDuration);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	protected <T> void animate(double time, T interpolatedValue) {
-
+		
 		AttributeHelper.setPosition((Node) attributable, (Point2D) interpolatedValue);
 	}
 }

@@ -22,54 +22,54 @@ import org.graffiti.plugin.XMLHelper;
  */
 public abstract class AbstractSingleParameter implements SingleParameter {
 	// ~ Instance fields ========================================================
-
+	
 	/** The image representing the parameter. */
 	private BufferedImage image = null;
-
+	
 	/** The value of this paramater. */
 	private Object value;
-
+	
 	/** The description of the parameter. */
 	private String description;
-
+	
 	/** The name of the parameter. */
 	private String name;
-
+	
 	private boolean left_aligned;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new abstract single parameter class.
 	 * 
 	 * @param val
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public AbstractSingleParameter(Object val, String name, String description) {
 		this.name = name;
 		this.description = description;
 		value = val;
 	}
-
+	
 	/**
 	 * Constructs a new abstract single parameter class.
 	 * 
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public AbstractSingleParameter(String name, String description) {
 		this.name = name;
 		this.description = description;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the description.
 	 * 
@@ -78,7 +78,7 @@ public abstract class AbstractSingleParameter implements SingleParameter {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 	/**
 	 * Returns the description of the parameter.
 	 * 
@@ -87,7 +87,7 @@ public abstract class AbstractSingleParameter implements SingleParameter {
 	public String getDescription() {
 		return description;
 	}
-
+	
 	/**
 	 * Returns the image representing the parameter.
 	 * 
@@ -96,7 +96,7 @@ public abstract class AbstractSingleParameter implements SingleParameter {
 	public BufferedImage getImage() {
 		return image;
 	}
-
+	
 	/**
 	 * Returns the name of the parameter.
 	 * 
@@ -105,15 +105,15 @@ public abstract class AbstractSingleParameter implements SingleParameter {
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setValue(Object val) throws IllegalArgumentException {
 		value = val;
 	}
-
+	
 	public Object getValue() {
 		return value;
 	}
-
+	
 	@Override
 	public String toString() {
 		if (getValue() == null) {
@@ -122,15 +122,15 @@ public abstract class AbstractSingleParameter implements SingleParameter {
 			return "Parameter (" + name + "), value: " + getValue().toString();
 		}
 	}
-
+	
 	public String toXMLString() {
 		String valStr = (value == null) ? "null" : value.toString();
-
+		
 		return "<parameter classname=\\\"" + getClass().getName() + "\\\">" + XMLHelper.getDelimiter()
 				+ XMLHelper.spc(2) + "<value><![CDATA[" + valStr + "]]>" + XMLHelper.getDelimiter() + XMLHelper.spc(2)
 				+ "</value>" + XMLHelper.getDelimiter() + "</parameter>";
 	}
-
+	
 	/**
 	 * Embeds the given String into an XML String. It includes the classname of the
 	 * parameter and a "value" element that gets the given String
@@ -145,19 +145,19 @@ public abstract class AbstractSingleParameter implements SingleParameter {
 				+ "<value>" + XMLHelper.getDelimiter() + XMLHelper.spc(4) + valueString + XMLHelper.getDelimiter()
 				+ XMLHelper.spc(2) + "</value>" + XMLHelper.getDelimiter() + "</parameter>";
 	}
-
+	
 	public JComponent getIcon() {
 		return null;
 	}
-
+	
 	public boolean isLeftAligned() {
 		return left_aligned;
 	}
-
+	
 	public void setLeftAligned(boolean left_aligned) {
 		this.left_aligned = left_aligned;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

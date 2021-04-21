@@ -42,61 +42,61 @@ import org.jfree.util.ObjectTable;
  *             removed before version 1.0.0 is released.
  */
 public class CategoryURLGeneratorTable extends ObjectTable implements Serializable {
-
+	
 	/**
 	 * Creates a new URL generator table.
 	 */
 	public CategoryURLGeneratorTable() {
 		super();
 	}
-
+	
 	/**
 	 * Returns the URL generator object from a particular cell in the table.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @return The URL generator.
 	 */
 	public CategoryURLGenerator getURLGenerator(int row, int column) {
-
+		
 		return (CategoryURLGenerator) getObject(row, column);
-
+		
 	}
-
+	
 	/**
 	 * Sets the URL generator for a cell in the table. The table is expanded if
 	 * necessary.
 	 * 
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 * @param generator
-	 *            the URL generator.
+	 *           the URL generator.
 	 */
 	public void setURLGenerator(int row, int column, CategoryURLGenerator generator) {
-
+		
 		setObject(row, column, generator);
-
+		
 	}
-
+	
 	/**
 	 * Tests this paint table for equality with another object (typically another
 	 * label generator table).
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (o instanceof CategoryURLGeneratorTable) {
 			return super.equals(o);
 		}
-
+		
 		return false;
-
+		
 	}
 }

@@ -16,7 +16,7 @@ package org.graffiti.event;
  */
 public interface NodeListener extends TransactionListener {
 	// ~ Methods ================================================================
-
+	
 	// /**
 	// * Called just after an incoming edge has been added to the node. (For
 	// * undirected edges postUndirectedEdgeAdded is called instead.)
@@ -48,25 +48,25 @@ public interface NodeListener extends TransactionListener {
 	// * @param e The NodeEvent detailing the changes.
 	// */
 	// public void postOutEdgeRemoved(NodeEvent e);
-
+	
 	/**
 	 * Called after an (undirected) edge has been added to the node. (For directed
 	 * edges pre- In/Out- EdgeAdded is called.)
 	 * 
 	 * @param e
-	 *            The NodeEvent detailing the changes.
+	 *           The NodeEvent detailing the changes.
 	 */
 	public void postUndirectedEdgeAdded(NodeEvent e);
-
+	
 	/**
 	 * Called after an (undirected) edge has been removed from the node. (For
 	 * directed edges pre- In/Out- EdgeRemoved is called.)
 	 * 
 	 * @param e
-	 *            The NodeEvent detailing the changes.
+	 *           The NodeEvent detailing the changes.
 	 */
 	public void postUndirectedEdgeRemoved(NodeEvent e);
-
+	
 	// /**
 	// * Called just before an incoming edge is added to the node. (For
 	// * undirected edges preUndirectedEdgeAdded is called instead.)
@@ -98,22 +98,22 @@ public interface NodeListener extends TransactionListener {
 	// * @param e The NodeEvent detailing the changes.
 	// */
 	// public void preOutEdgeRemoved(NodeEvent e);
-
+	
 	/**
 	 * Called just before an (undirected) edge is added to the node. (For directed
 	 * edges pre- In/Out- EdgeAdded is called.)
 	 * 
 	 * @param e
-	 *            The NodeEvent detailing the changes.
+	 *           The NodeEvent detailing the changes.
 	 */
 	public void preUndirectedEdgeAdded(NodeEvent e);
-
+	
 	/**
 	 * Called just before an (undirected) edge is removed from the node. (For
 	 * directed edges pre- In/Out- EdgeRemoved is called.)
 	 * 
 	 * @param e
-	 *            The NodeEvent detailing the changes.
+	 *           The NodeEvent detailing the changes.
 	 */
 	public void preUndirectedEdgeRemoved(NodeEvent e);
 }

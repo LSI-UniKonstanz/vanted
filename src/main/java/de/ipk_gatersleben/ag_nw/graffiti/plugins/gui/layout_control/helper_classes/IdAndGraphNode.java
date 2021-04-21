@@ -17,7 +17,7 @@ public class IdAndGraphNode {
 	public String id;
 	public org.graffiti.graph.Node graphNode;
 	public QuadNumber quadNumber;
-
+	
 	public IdAndGraphNode(String id2, org.graffiti.graph.Node graphNode) {
 		if (id2 == null)
 			return;
@@ -32,5 +32,5 @@ public class IdAndGraphNode {
 		if (!quadNumber.isValidQuadNumber())
 			quadNumber = null;
 	}
-
+	
 }

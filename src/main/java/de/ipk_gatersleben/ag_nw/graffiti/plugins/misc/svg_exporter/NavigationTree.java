@@ -18,12 +18,12 @@ import org.StringManipulationTools;
  * @author klukas
  */
 public class NavigationTree {
-
+	
 	private final TreeSet<String> titles;
 	private final HashMap<String, String> fileName2title;
 	
 	public String levelSeparator = "\\.";
-
+	
 	/**
 	 * @param titles
 	 * @param fileName2title
@@ -32,7 +32,7 @@ public class NavigationTree {
 		this.titles = titles;
 		this.fileName2title = fileName2title;
 	}
-
+	
 	/**
 	 * @param pathwayLinks
 	 */
@@ -42,7 +42,7 @@ public class NavigationTree {
 		for (String title : titles) {
 			String[] levelNames = title.split(levelSeparator);
 			currLevel = currentLevel.size();
-
+			
 			// last item is file extension, before is the file name
 			int thisLevelSize = levelNames.length - 1;
 			while (currLevel > 0 && !currentLevel.peek().equals(levelNames[currLevel - 1])) {
@@ -57,7 +57,7 @@ public class NavigationTree {
 				currentLevel.push(thisLevelDescription);
 				currLevel++;
 			}
-
+			
 			String fileName = "error";
 			for (Entry<String, String> e : fileName2title.entrySet()) {
 				if (e.getValue().equals(title)) {

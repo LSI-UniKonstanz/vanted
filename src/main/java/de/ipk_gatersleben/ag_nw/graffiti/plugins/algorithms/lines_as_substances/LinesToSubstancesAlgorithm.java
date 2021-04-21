@@ -36,28 +36,28 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  */
 public class LinesToSubstancesAlgorithm extends AbstractAlgorithm {
 	private static int lines2substanceCallCount;
-
+	
 	public String getName() {
 		return null;// "Create Dataset (treat Lines as Substances)";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.COMPUTATION, Category.DATA, Category.GRAPH));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Create a new dataset, where for each line a new node<br>"
 				+ "is created, which shows all of the different substance<br>"
 				+ "measurements in this single graph node.";
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -75,16 +75,16 @@ public class LinesToSubstancesAlgorithm extends AbstractAlgorithm {
 		if (!foundData)
 			throw new PreconditionException("Graph nodes have no data assigned");
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	public void execute() {
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"<html>Create Line -&gt; Substance Dataset", "Please wait...");
-
+		
 		final List<NodeHelper> workNodes;
 		if (MainFrame.getInstance().getActiveEditorSession().getGraph() == graph)
 			workNodes = GraphHelper.getSelectedOrAllHelperNodes(MainFrame.getInstance().getActiveEditorSession());
@@ -96,7 +96,7 @@ public class LinesToSubstancesAlgorithm extends AbstractAlgorithm {
 			}
 		}, null, status);
 	}
-
+	
 	private static void createLine2SubstanceView(BackgroundTaskStatusProviderSupportingExternalCall status,
 			List<NodeHelper> workNodes, Graph graph) {
 		lines2substanceCallCount++;
@@ -140,7 +140,7 @@ public class LinesToSubstancesAlgorithm extends AbstractAlgorithm {
 			}
 		});
 	}
-
+	
 	// private static void processNodeDesign(Graph ratioGraph,
 	// NodeHelper nh1,
 	// NodeHelper nh2,

@@ -46,37 +46,37 @@ import java.util.Date;
  * {@link RegularTimePeriod} subclasses.
  */
 public class FixedMillisecond extends RegularTimePeriod implements Serializable {
-
+	
 	/** The millisecond. */
 	private Date time;
-
+	
 	/**
 	 * Constructs a millisecond based on the current system time.
 	 */
 	public FixedMillisecond() {
 		this(new Date());
 	}
-
+	
 	/**
 	 * Constructs a millisecond.
 	 * 
 	 * @param millisecond
-	 *            the millisecond (same encoding as java.util.Date).
+	 *           the millisecond (same encoding as java.util.Date).
 	 */
 	public FixedMillisecond(final long millisecond) {
 		this(new Date(millisecond));
 	}
-
+	
 	/**
 	 * Constructs a millisecond.
 	 * 
 	 * @param time
-	 *            the time.
+	 *           the time.
 	 */
 	public FixedMillisecond(final Date time) {
 		this.time = time;
 	}
-
+	
 	/**
 	 * Returns the date/time.
 	 * 
@@ -85,61 +85,61 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	public Date getTime() {
 		return this.time;
 	}
-
+	
 	/**
 	 * Returns the millisecond preceding this one.
 	 * 
 	 * @return the millisecond preceding this one.
 	 */
 	public RegularTimePeriod previous() {
-
+		
 		RegularTimePeriod result = null;
-
+		
 		final long t = this.time.getTime();
 		if (t != Long.MIN_VALUE) {
 			result = new FixedMillisecond(t - 1);
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the millisecond following this one.
 	 * 
 	 * @return the millisecond following this one.
 	 */
 	public RegularTimePeriod next() {
-
+		
 		RegularTimePeriod result = null;
-
+		
 		final long t = this.time.getTime();
 		if (t != Long.MAX_VALUE) {
 			result = new FixedMillisecond(t + 1);
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Tests the equality of this object against an arbitrary Object.
 	 * 
 	 * @param object
-	 *            the object to compare
+	 *           the object to compare
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object object) {
-
+		
 		if (object instanceof FixedMillisecond) {
 			final FixedMillisecond m = (FixedMillisecond) object;
 			return this.time.equals(m.getTime());
 		} else {
 			return false;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code for this object instance.
 	 * 
@@ -148,20 +148,20 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	public int hashCode() {
 		return this.time.hashCode();
 	}
-
+	
 	/**
 	 * Returns an integer indicating the order of this Millisecond object relative
 	 * to the specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *            the object to compare.
+	 *           the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
-
+		
 		final int result;
 		final long difference;
-
+		
 		// CASE 1 : Comparing to another Second object
 		// -------------------------------------------
 		if (o1 instanceof FixedMillisecond) {
@@ -177,25 +177,25 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 				}
 			}
 		}
-
+		
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
 		else if (o1 instanceof RegularTimePeriod) {
 			// more difficult case - evaluate later...
 			result = 0;
 		}
-
+		
 		// CASE 3 : Comparing to a non-TimePeriod object
 		// ---------------------------------------------
 		else {
 			// consider time periods to be ordered after general objects
 			result = 1;
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the first millisecond of the time period.
 	 * 
@@ -204,18 +204,18 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	public long getFirstMillisecond() {
 		return this.time.getTime();
 	}
-
+	
 	/**
 	 * Returns the first millisecond of the time period.
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the first millisecond of the time period.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
 		return this.time.getTime();
 	}
-
+	
 	/**
 	 * Returns the last millisecond of the time period.
 	 * 
@@ -224,18 +224,18 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	public long getLastMillisecond() {
 		return this.time.getTime();
 	}
-
+	
 	/**
 	 * Returns the last millisecond of the time period.
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the last millisecond of the time period.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
 		return this.time.getTime();
 	}
-
+	
 	/**
 	 * Returns the millisecond closest to the middle of the time period.
 	 * 
@@ -244,18 +244,18 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	public long getMiddleMillisecond() {
 		return this.time.getTime();
 	}
-
+	
 	/**
 	 * Returns the millisecond closest to the middle of the time period.
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the millisecond closest to the middle of the time period.
 	 */
 	public long getMiddleMillisecond(final Calendar calendar) {
 		return this.time.getTime();
 	}
-
+	
 	/**
 	 * Returns a serial index number for the millisecond.
 	 * 
@@ -264,5 +264,5 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	public long getSerialIndex() {
 		return this.time.getTime();
 	}
-
+	
 }

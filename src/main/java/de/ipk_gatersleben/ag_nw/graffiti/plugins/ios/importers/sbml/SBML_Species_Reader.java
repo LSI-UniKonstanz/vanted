@@ -34,22 +34,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Species_Reader {
-
+	
 	/**
 	 * Provides useful methods
 	 */
 	SBMLSpeciesHelper speciesHelper;
-
+	
 	/**
 	 * reads in species and is called from class SBML_XML_Reader.java. The method
 	 * adds species to the graph and to the node tab
 	 * 
 	 * @param g
-	 *            the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 * @param speciesList
-	 *            contains the species for the import
+	 *           contains the species for the import
 	 * @param pgg
-	 *            is needed for drawing the graph
+	 *           is needed for drawing the graph
 	 */
 	public void addSpecies(Graph g, ListOf<Species> speciesList, PositionGridGenerator pgg,
 			SBMLSpeciesHelper specieshelper) {
@@ -73,7 +73,7 @@ public class SBML_Species_Reader {
 			String notes;
 			Integer charge;
 			String sboTerm;
-
+			
 			while (itSpecies.hasNext()) {
 				speciesJSBML = itSpecies.next();
 				speciesNode = g.addNode();
@@ -111,7 +111,7 @@ public class SBML_Species_Reader {
 					notes = "";
 				}
 				charge = speciesJSBML.getCharge();
-
+				
 				if (speciesJSBML.isSetId()
 						&& Species.isValidId(id, speciesJSBML.getLevel(), speciesJSBML.getVersion())) {
 					speciesHelper.setID(speciesNode, id);
@@ -171,7 +171,7 @@ public class SBML_Species_Reader {
 			}
 		}
 	}
-
+	
 	// old code, has been replaced by new code below on 09/09/2015
 	//
 	// private void processLayoutInformation(Graph g, Species speciesJSBML, Node
@@ -242,9 +242,9 @@ public class SBML_Species_Reader {
 	// }
 	//
 	// }
-
+	
 	private void processLayoutInformation(Graph g, Species species, Node speciesNode) {
-
+		
 		Node _speciesNode = speciesNode;
 		LayoutModelPlugin layoutModel = (LayoutModelPlugin) species.getModel()
 				.getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
@@ -289,9 +289,9 @@ public class SBML_Species_Reader {
 				}
 			}
 		}
-
+		
 	}
-
+	
 	private void printAllSBMLAttributes(Node species) {
 		CollectionAttribute collection = species.getAttributes();
 		Map<String, Attribute> map = collection.getCollection();
@@ -300,11 +300,11 @@ public class SBML_Species_Reader {
 			HashMapAttribute attrHashMap = (HashMapAttribute) attr;
 			TreeMap<String, Attribute> collectionAttr = (TreeMap) attr.getValue();
 			for (Entry<String, Attribute> entryAttr : collectionAttr.entrySet()) {
-
+				
 				String[] attrSeparates = entryAttr.getValue().getPath().split("\\" + Attribute.SEPARATOR);
 				for (String name : attrSeparates) {
 				}
-
+				
 			}
 		}
 	}

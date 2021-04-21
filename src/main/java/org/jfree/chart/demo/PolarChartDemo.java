@@ -50,12 +50,12 @@ import org.jfree.ui.RefineryUtilities;
  * @author Daniel Bridenbecker, Solution Engineering, Inc.
  */
 public class PolarChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new instance of the demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public PolarChartDemo(final String title) {
 		super(title);
@@ -66,7 +66,7 @@ public class PolarChartDemo extends ApplicationFrame {
 		chartPanel.setEnforceFileExtensions(false);
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -82,12 +82,12 @@ public class PolarChartDemo extends ApplicationFrame {
 		data.addSeries(series3);
 		return data;
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
@@ -97,16 +97,16 @@ public class PolarChartDemo extends ApplicationFrame {
 		renderer.setSeriesFilled(2, true);
 		return chart;
 	}
-
+	
 	/**
 	 * Creates a series containing random data.
 	 * 
 	 * @param name
-	 *            the series name.
+	 *           the series name.
 	 * @param baseRadius
-	 *            the base radius.
+	 *           the base radius.
 	 * @param thetaInc
-	 *            the angle increment.
+	 *           the angle increment.
 	 * @return The series.
 	 */
 	private static XYSeries createRandomData(final String name, final double baseRadius, final double thetaInc) {
@@ -117,20 +117,20 @@ public class PolarChartDemo extends ApplicationFrame {
 		}
 		return series;
 	}
-
+	
 	/**
 	 * Main program that creates a thermometer and places it into a JFrame.
 	 * 
 	 * @param argv
-	 *            Command line arguements - none used.
+	 *           Command line arguements - none used.
 	 */
 	public static void main(final String[] argv) {
-
+		
 		final PolarChartDemo demo = new PolarChartDemo("Polar Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

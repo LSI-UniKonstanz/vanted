@@ -37,85 +37,85 @@ import org.graffiti.undo.ChangeAttributesEdit;
  */
 public class LabelTool extends MegaTools {
 	// ~ Instance fields ========================================================
-
+	
 	// maybe put this somewhere else?
-
+	
 	/** DOCUMENT ME! */
 	protected final String labelConst = "label";
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Invoked if user presses mouse button.
 	 * 
 	 * @param e
-	 *            the mouse event
+	 *           the mouse event
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (!SwingUtilities.isLeftMouseButton(e)) {
 			return;
 		}
-
+		
 		Component clickedComp = findComponentAt(e, e.getX(), e.getY());
-
+		
 		if (clickedComp instanceof GraphElementComponent) {
 			GraphElement ge = ((GraphElementComponent) clickedComp).getGraphElement();
 			LabelAttribute labelAttr = (LabelAttribute) searchForAttribute(ge.getAttribute(""), LabelAttribute.class);
-
+			
 			ChangeAttributesEdit edit;
-
+			
 			if (labelAttr != null) {
 				String oldLabel = labelAttr.getLabel();
 				String newLabel = showEditDialog(clickedComp, oldLabel);
-
+				
 				if (!oldLabel.equals(newLabel)) {
 					edit = new ChangeAttributesEdit(session.getGraph(), labelAttr, geMap);
 					labelAttr.setLabel(newLabel);
 					undoSupport.postEdit(edit);
 				}
-
+				
 				clickedComp.getParent().repaint();
 			} else { // no label found
-
+				
 				String newLabel = showEditDialog(clickedComp, "");
-
+				
 				if (ge instanceof Node) {
 					labelAttr = new NodeLabelAttribute(labelConst);
 				} else {
 					labelAttr = new EdgeLabelAttribute(labelConst);
 				}
-
+				
 				ge.addAttribute(labelAttr, "");
 				edit = new ChangeAttributesEdit(session.getGraph(), labelAttr, geMap);
 				labelAttr.setLabel(newLabel);
-
+				
 				undoSupport.postEdit(edit);
 				clickedComp.getParent().repaint();
 			}
-
+			
 		}
 	}
-
+	
 	@Override
 	public void activate() {
 		super.activate();
 		MainFrame.showMessage("Click onto a node or an edge to edit/create a label", MessageType.INFO);
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
 	public void reset() {
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param attr
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param attributeType
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected Attribute searchForAttribute(Attribute attr, Class<LabelAttribute> attributeType) {
@@ -124,10 +124,10 @@ public class LabelTool extends MegaTools {
 		} else {
 			if (attr instanceof CollectionAttribute) {
 				Iterator<?> it = ((CollectionAttribute) attr).getCollection().values().iterator();
-
+				
 				while (it.hasNext()) {
 					Attribute newAttr = searchForAttribute((Attribute) it.next(), attributeType);
-
+					
 					if (newAttr != null) {
 						return newAttr;
 					}
@@ -138,35 +138,35 @@ public class LabelTool extends MegaTools {
 				return null;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param parent
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param initialText
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected String showEditDialog(Component parent, String initialText) {
 		String returnValue = JOptionPane.showInputDialog(parent, "Enter new label:", initialText);
-
+		
 		if (returnValue == null) {
 			return initialText;
 		} else {
 			return returnValue;
 		}
 	}
-
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		super.mouseClicked(e);
 		mouseMoved(e);
 	}
-
+	
 	public String getToolName() {
 		return "LabelTool";
 	}

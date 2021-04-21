@@ -14,11 +14,11 @@ import java.awt.image.WritableRaster;
 
 class RoundGradientPaint implements Paint {
 	protected Point2D point;
-
+	
 	protected Point2D mRadius;
-
+	
 	protected Color mPointColor, mBackgroundColor;
-
+	
 	public RoundGradientPaint(double x, double y, Color pointColor, Point2D radius, Color backgroundColor) {
 		if (radius.distance(0, 0) <= 0)
 			throw new IllegalArgumentException("Radius must be greater than 0.");
@@ -27,14 +27,14 @@ class RoundGradientPaint implements Paint {
 		mRadius = radius;
 		mBackgroundColor = backgroundColor;
 	}
-
+	
 	public PaintContext createContext(ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds,
 			AffineTransform xform, RenderingHints hints) {
 		Point2D transformedPoint = xform.transform(point, null);
 		Point2D transformedRadius = xform.deltaTransform(mRadius, null);
 		return new RoundGradientContext(transformedPoint, mPointColor, transformedRadius, mBackgroundColor);
 	}
-
+	
 	public int getTransparency() {
 		int a1 = mPointColor.getAlpha();
 		int a2 = mBackgroundColor.getAlpha();
@@ -44,28 +44,28 @@ class RoundGradientPaint implements Paint {
 
 public class RoundGradientContext implements PaintContext {
 	protected Point2D mPoint;
-
+	
 	protected Point2D mRadius;
-
+	
 	protected Color color1, color2;
-
+	
 	public RoundGradientContext(Point2D p, Color c1, Point2D r, Color c2) {
 		mPoint = p;
 		color1 = c1;
 		mRadius = r;
 		color2 = c2;
 	}
-
+	
 	public void dispose() {
 	}
-
+	
 	public ColorModel getColorModel() {
 		return ColorModel.getRGBdefault();
 	}
-
+	
 	public Raster getRaster(int x, int y, int w, int h) {
 		WritableRaster raster = getColorModel().createCompatibleWritableRaster(w, h);
-
+		
 		int[] data = new int[w * h * 4];
 		for (int j = 0; j < h; j++) {
 			for (int i = 0; i < w; i++) {
@@ -74,7 +74,7 @@ public class RoundGradientContext implements PaintContext {
 				double ratio = distance / radius;
 				if (ratio > 1.0)
 					ratio = 1.0;
-
+				
 				int base = (j * w + i) * 4;
 				data[base + 0] = (int) (color1.getRed() + ratio * (color2.getRed() - color1.getRed()));
 				data[base + 1] = (int) (color1.getGreen() + ratio * (color2.getGreen() - color1.getGreen()));
@@ -83,7 +83,7 @@ public class RoundGradientContext implements PaintContext {
 			}
 		}
 		raster.setPixels(0, 0, w, h, data);
-
+		
 		return raster;
 	}
 }

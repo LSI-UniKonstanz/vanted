@@ -16,27 +16,27 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityClassSelectorToGraph;
 
 public class BPControl extends BPInteraction {
-
+	
 	public BPControl(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super(Graph, Nodes);
 	}
-
+	
 	public void read(Interaction i) {
 		Control con = (Control) i;
 		Set<Process> controlled = con.getControlled();
 		Set<Controller> controller = con.getController();
-
+		
 		for (Controller c : controller) {
 			for (Process p : controlled) {
 				Node processNode = findORcreateNode(p);
 				Node controllNode = findORcreateNode(c);
-
+				
 				Edge e = addEdge(controllNode, processNode);
 				setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), //$NON-NLS-1$
 						Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$
 				UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(e, con);
 			}
 		}
-
+		
 	}
 }

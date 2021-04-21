@@ -49,7 +49,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 public class ClusterIndividualLayout extends AbstractAlgorithm {
 	boolean currentOptionShowGraphs = false;
 	boolean currentOptionWaitForLayout = false;
-
+	
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -57,38 +57,38 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		else
 			return "Layout Each Cluster";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "Cluster Layout Parameters";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		BooleanParameter showClusterGraphs = new BooleanParameter(currentOptionShowGraphs, "Show Subgraphs",
 				"If set to true, the extracted cluster graphs are shown in the editor");
 		BooleanParameter waitForClusterLayout = new BooleanParameter(currentOptionWaitForLayout, "Wait for Layout",
 				"If set to true, the layout of the cluster graphs is applied after the user confirms the action");
-
+		
 		return new Parameter[] { showClusterGraphs, waitForClusterLayout };
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false; // recursive run should be avoided, thus it is not labeled as a layout algorithm
 	}
-
+	
 	@Override
 	public void reset() {
 		currentOptionShowGraphs = false;
 		currentOptionWaitForLayout = false;
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		currentOptionShowGraphs = ((BooleanParameter) params[0]).getBoolean().booleanValue();
@@ -96,12 +96,12 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		if (currentOptionWaitForLayout)
 			currentOptionShowGraphs = true;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -115,7 +115,7 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		}
 		if (clusters.size() <= 0)
 			throw new PreconditionException("No cluster information available for this graph!");
-
+		
 		// Graph clusterBackgroundGraph = (Graph) AttributeHelper.getAttributeValue(
 		// graph, "cluster", "clustergraph", null, new AdjListGraph());
 		// boolean clusterGraphAvailable = clusterBackgroundGraph != null;
@@ -134,13 +134,13 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		// available");
 		// }
 	}
-
+	
 	@Override
 	public void execute() {
 		String cluster = "Cluster";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			cluster = "Pathway";
-
+		
 		RunAlgorithmDialog rad = new RunAlgorithmDialog("Select " + cluster + " Layout", graph, selection, true, true);
 		rad.setAlwaysOnTop(true);
 		rad.setVisible(true);
@@ -149,7 +149,7 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		final Timer t = new Timer(100, al);
 		al.setAlgorithmDialog(rad);
 		al.setOptions(getName(), t, currentOptionShowGraphs, currentOptionWaitForLayout);
-
+		
 		t.setRepeats(true);
 		t.start();
 	}
@@ -157,14 +157,14 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 
 class MyActionListener implements ActionListener {
 	RunAlgorithmDialog rad = null;
-
+	
 	Timer tref = null;
-
+	
 	String name;
-
+	
 	private boolean currentOptionShowGraphs;
 	private boolean currentOptionWaitForLayout;
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!rad.isVisible() && rad.getAlgorithm() != null) {
@@ -178,14 +178,14 @@ class MyActionListener implements ActionListener {
 		} else
 			rad.setAlwaysOnTop(true);
 	}
-
+	
 	public void setOptions(String name, Timer t, boolean currentOptionShowGraphs, boolean currentOptionWaitForLayout) {
 		this.name = name;
 		tref = t;
 		this.currentOptionShowGraphs = currentOptionShowGraphs;
 		this.currentOptionWaitForLayout = currentOptionWaitForLayout;
 	}
-
+	
 	public void setAlgorithmDialog(RunAlgorithmDialog rad) {
 		this.rad = rad;
 	}
@@ -197,40 +197,40 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 	boolean pleaseStop = false;
 	public boolean currentOptionWaitForLayout = false;
 	public boolean currentOptionShowGraphs;
-
+	
 	String status1, status2;
-
+	
 	private Algorithm layoutAlgorithm;
-
+	
 	@Override
 	public int getCurrentStatusValue() {
 		return statusInt;
 	}
-
+	
 	public void setAlgorithm(Algorithm algorithm) {
 		this.layoutAlgorithm = algorithm;
 	}
-
+	
 	@Override
 	public double getCurrentStatusValueFine() {
 		return statusInt;
 	}
-
+	
 	@Override
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	@Override
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	@Override
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	@Override
 	public void run() {
 		if (mustStop())
@@ -262,21 +262,21 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 			ArrayList<Graph> clusterGraphsToBeAnalyzed = new ArrayList<Graph>();
 			
 			clusters = GraphHelper.getClusters(mainGraph.getNodes());
-
+			
 			for (String clusterID : clusters) {
 				if (mustStop())
 					break;
 				status1 = "Apply " + layoutAlgorithm.getName() + " to Subgraph (" + cluster4 + " " + clusterID + ")...";
-
+				
 				status2 = "Extract Subgraph...";
 				final Graph clusterSubGraph = GraphHelper.getClusterSubGraph(mainGraph, clusterID);
-
+				
 				statusInt = (int) ((cnt + 0.5f) * 100f / clusters.size());
 				status2 = "Do Layout...";
 				layoutAlgorithm.attach(clusterSubGraph, new Selection());
 				clusterSubGraph.setName(cluster4 + " " + clusterID);
 				layoutAlgorithm.execute();
-
+				
 				while (BackgroundTaskHelper.isTaskWithGivenReferenceRunning(layoutAlgorithm)) {
 					status2 = "Wait for layout to finish...";
 					try {
@@ -286,13 +286,13 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 					}
 				}
 				layoutAlgorithm.reset();
-
+				
 				status2 = "Layout finished";
-
+				
 				clusterGraphsToBeAnalyzed.add(clusterSubGraph);
 				statusInt = (int) (++cnt * 100f / clusters.size());
 			}
-
+			
 			if (!mustStop()) {
 				if (currentOptionShowGraphs)
 					for (final Graph clusterSubGraph : clusterGraphsToBeAnalyzed)
@@ -302,7 +302,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 								MainFrame.getInstance().showGraph(clusterSubGraph, null);
 							}
 						});
-
+					
 				if (currentOptionWaitForLayout) {
 					status1 = "It is now possible to modify the Layout";
 					if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -319,20 +319,20 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 						}
 					}
 				}
-
+				
 				for (Graph clusterSubGraph : clusterGraphsToBeAnalyzed) {
 					for (Node n : clusterSubGraph.getNodes()) {
 						newCoordinates.put(Long.valueOf(n.getID()), AttributeHelper.getPosition(n));
 						newSizes.put(Long.valueOf(n.getID()), AttributeHelper.getSize(n));
 					}
 				}
-
+				
 				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 					status1 = "Pathway-Layout finished";
 				else
 					status1 = "Cluster-Layout finished";
 				status2 = "Set node coordinates and size...";
-
+				
 				mainGraph.getListenerManager().transactionStarted(this);
 				statusInt = -1;
 				for (Node n : mainGraph.getNodes()) {
@@ -357,7 +357,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 					}
 				}
 				mainGraph.getListenerManager().transactionFinished(this);
-
+				
 			} else {
 				status1 = "Layouter aborted...";
 				status2 = "";
@@ -365,7 +365,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 			statusInt = 100;
 		}
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -377,17 +377,17 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 		}
 		return pleaseStop;
 	}
-
+	
 	@Override
 	public boolean pluginWaitsForUser() {
 		return userBreak;
 	}
-
+	
 	@Override
 	public void pleaseContinueRun() {
 		userBreak = false;
 	}
-
+	
 	@Override
 	public void setCurrentStatusValue(int value) {
 		statusInt = value;

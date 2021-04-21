@@ -17,7 +17,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SubstanceInterface;
 
 public class XMLAttribute extends StringAttribute {
-
+	
 	private ExperimentInterface mappingData;
 	static final String divChar = "@";
 	public static final String nodeTypeDefault = "default";
@@ -40,44 +40,44 @@ public class XMLAttribute extends StringAttribute {
 	// public static String nodeTypeChart2D_type1_line = "chart2d_type1";
 	public static final String nodeTypeFastSimple = "fast";
 	public static final String nodeTypeSubstrate = "substrate";
-
+	
 	public XMLAttribute() {
 		super();
 	}
-
+	
 	public XMLAttribute(String id) {
 		super(id);
 		// setDescription("Show XML Mapping Data"); // tooltip
 	}
-
+	
 	public XMLAttribute(String id, String value) {
 		super(id);
 		setString(value);
 	}
-
+	
 	public XMLAttribute(String id, ExperimentInterface mappingDataList) {
 		super(id);
 		mappingData = mappingDataList;
 	}
-
+	
 	@Override
 	public void setDefaultValue() {
 		mappingData = new Experiment();
 	}
-
+	
 	public ExperimentInterface getMappedData() {
 		return mappingData;
 	}
-
+	
 	@Override
 	public void setString(final String value) {
 		doSetValue(value);
 	}
-
+	
 	private void doSetValue(String value) {
 		synchronized (this) {
 			assert value != null;
-
+			
 			AttributeEvent ae = new AttributeEvent(this);
 			callPreAttributeChanged(ae);
 			if (mappingData == null)
@@ -108,7 +108,7 @@ public class XMLAttribute extends StringAttribute {
 			callPostAttributeChanged(ae);
 		}
 	}
-
+	
 	@Override
 	public String getString() {
 		if (mappingData == null)
@@ -120,56 +120,56 @@ public class XMLAttribute extends StringAttribute {
 		}
 		return res.toString();
 	}
-
+	
 	@Override
 	public Object getValue() {
 		return getString();
 	}
-
+	
 	@Override
 	public Object copy() {
 		return new XMLAttribute(this.getId(), getMappedData());
 	}
-
+	
 	public Integer getMappingDataListSize() {
 		if (mappingData == null)
 			return 0;
 		else
 			return mappingData.size();
 	}
-
+	
 	@Override
 	public String toString(int n) {
 		return getSpaces(n) + getId() + " = \"" + getString() + "\"";
 	}
-
+	
 	@Override
 	public String toXMLString() {
 		return getStandardXML(getString());
 	}
-
+	
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
 		assert o != null;
-
+		
 		try {
 			setString((String) o);
 		} catch (ClassCastException cce) {
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-
+	
 	public void addData(SubstanceInterface m) {
 		if (mappingData == null)
 			mappingData = new Experiment();
 		mappingData.add(m);
 	}
-
+	
 	// public void setData(ArrayList<org.w3c.dom.Node> mappedDataList) {
 	// mappingData.clear();
 	// if (mappedDataList!=null)
 	// for (org.w3c.dom.Node n : mappedDataList)
 	// mappingData.add(new Mapping(n));
 	// }
-
+	
 }

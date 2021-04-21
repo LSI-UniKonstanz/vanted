@@ -69,7 +69,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addAvailability(a.getValue().toString());
 		}
 	}
-
+	
 	protected static void getCatalysisDirection(GraphElement elem, Catalysis interaction) {
 		String value = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.1"));
 		if (value.length() > 0)
@@ -79,24 +79,24 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				ErrorMsg.addErrorMessage(e);
 			}
 	}
-
+	
 	protected static void getCellularLocation(GraphElement elem, PhysicalEntity interaction, Model model) {
 		// Left-out: Comments
-
+		
 		// RDFId of CellularLocationVocabulary
 		String RDFId = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.2"));
 		if (RDFId.length() > 0) {
 			CellularLocationVocabulary CLV;
-
+			
 			if (!model.containsID(RDFId)) {
 				// CellularLocationVocabulary wasn't already read
 				CLV = model.addNew(CellularLocationVocabulary.class, RDFId);
-
+				
 				// 1.Find out terms
 				for (Attribute a : getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.3"), elem)) {
 					CLV.addTerm(a.getValue().toString());
 				}
-
+				
 				// 2. Find out XRefs
 				for (int i = 1; i <= getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.4"), elem)
 						.size(); i++) {
@@ -104,9 +104,9 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 					Attribute XrefRDFIdAttribute = getAttributeWithOneSpecificInnerReplacement(
 							Messages.getString("UtilitySuperClassToGraph.4"), elem, i);
 					String xrefRDFId = XrefRDFIdAttribute.getValue().toString();
-
+					
 					Xref xref = model.addNew(UnificationXref.class, xrefRDFId);
-
+					
 					// get Comments
 					for (Attribute aa : getAttributeOfSetWithTwoInnerReplacements(
 							Messages.getString("UtilitySuperClassToGraph.5"), elem, i)) {
@@ -141,7 +141,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.setCellularLocation(CLV);
 		}
 	}
-
+	
 	protected static void getCofactor(GraphElement elem, Catalysis interaction, Model model) {
 		/*
 		 * left-out attributes: - cellularLocation, feature, memberPhysicalEntity,
@@ -149,7 +149,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 		 */
 		for (Attribute a : getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.11"), elem)) {
 			String cofactorRDFId = a.getValue().toString();
-
+			
 			if (!model.containsID(cofactorRDFId)) {
 				/*
 				 * not already inserted into model iterate over the nodes of the Graph to find
@@ -157,12 +157,12 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				 */
 				List<Node> nodes = elem.getGraph().getNodes();
 				Node cofactor = null;
-
+				
 				for (int i = 0; i < nodes.size(); i++) {
 					Node iNode = nodes.get(i);
 					Attribute attr = iNode.getAttribute(Messages.getString("UtilitySuperClassToGraph.82"));
 					String iNodeRDFId = attr.getValue().toString();
-
+					
 					if (iNodeRDFId.equals(cofactorRDFId)) {
 						// cofactor node found
 						cofactor = nodes.get(i);
@@ -175,13 +175,13 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addCofactor(p);
 		}
 	}
-
+	
 	protected static void getComment(GraphElement elem, Entity interaction) {
 		for (Attribute a : getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.12"), elem)) {
 			interaction.addComment(a.getValue().toString());
 		}
 	}
-
+	
 	protected static void getComponent(GraphElement elem, Complex interaction, Model model) {
 		/*
 		 * left-out attributes: - cellularLocation, feature, memberPhysicalEntity,
@@ -202,7 +202,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 					Node iNode = nodes.get(i);
 					Attribute attr = iNode.getAttribute(Messages.getString("UtilitySuperClassToGraph.82"));
 					String iNodeRDFId = attr.getValue().toString();
-
+					
 					if (iNodeRDFId.equals(componentRDFId)) {
 						// ComponentNodeFound
 						component = nodes.get(i);
@@ -222,7 +222,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addComponent(p);
 		}
 	}
-
+	
 	protected static void getComponentStoichiometry(GraphElement elem, Complex interaction, Model model) {
 		/*
 		 * search for a node with the RDFId of that is written in the
@@ -242,7 +242,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 					Node iNode = nodes.get(i);
 					Attribute attr = iNode.getAttribute(".BioPax.RDFId");
 					String iNodeRDFId = attr.getValue().toString();
-
+					
 					if (iNodeRDFId.equals(ComponentStoichiometryRDFId)) {
 						// ComponentNode Found
 						component = nodes.get(i);
@@ -253,7 +253,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			}
 		}
 	}
-
+	
 	protected static void getControlType(GraphElement elem, Control interaction) {
 		if (interaction instanceof Catalysis) {
 			String ControlTypeName = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.19"));
@@ -265,31 +265,31 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				interaction.setControlType(ControlType.valueOf(ControlTypeName));
 		}
 	}
-
+	
 	protected static void getConversionDirection(GraphElement elem, Conversion interaction) {
 		String ConversionDirectionName = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.20"));
 		if (ConversionDirectionName.length() > 0)
 			interaction.setConversionDirection(ConversionDirectionType.valueOf(ConversionDirectionName));
 	}
-
+	
 	protected static void getDataSource(GraphElement elem, Entity interaction, Model model) {
 		ArrayList<Attribute> set = getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.23"), elem);
 		for (int i = 1; i <= set.size(); i++) {
 			Provenance p;
-
+			
 			Attribute a = getAttributeWithOneSpecificInnerReplacement(Messages.getString("UtilitySuperClassToGraph.23"),
 					elem, i);
 			String RDFId = a.getValue().toString();
 			if (!model.containsID(RDFId)) {
 				p = model.addNew(Provenance.class, RDFId);
-
+				
 				Attribute aa = getAttributeWithOneSpecificInnerReplacement(
 						Messages.getString("UtilitySuperClassToGraph.22"), elem, i);
 				if (aa != null) {
 					String displayName = aa.getValue().toString();
 					p.setDisplayName(displayName);
 				}
-
+				
 				/*
 				 * find all names belonging to that provenance
 				 */
@@ -304,13 +304,13 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addDataSource(p);
 		}
 	}
-
+	
 	protected static void getDeltaG(GraphElement elem, BiochemicalReaction interaction, Model model) {
 		/*
 		 * left-out attributes: - Comments
 		 */
 		ArrayList<Attribute> set = getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.29"), elem);
-
+		
 		for (int i = 1; i <= set.size(); i++) {
 			Attribute getDeltaGPrime0 = getAttributeWithOneSpecificInnerReplacement(
 					Messages.getString("UtilitySuperClassToGraph.24"), elem, i);
@@ -324,7 +324,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 					Messages.getString("UtilitySuperClassToGraph.28"), elem, i);
 			Attribute getRDFId = getAttributeWithOneSpecificInnerReplacement(
 					Messages.getString("UtilitySuperClassToGraph.29"), elem, i);
-
+			
 			DeltaG delta = model.addNew(DeltaG.class, getRDFId.getValue().toString());
 			if (getDeltaGPrime0 != null)
 				delta.setDeltaGPrime0(Float.valueOf(getDeltaGPrime0.getValue().toString()));
@@ -336,36 +336,36 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				delta.setPMg(Float.valueOf(getPMg.getValue().toString()));
 			if (getTemperature != null)
 				delta.setTemperature(Float.valueOf(getTemperature.getValue().toString()));
-
+			
 			interaction.addDeltaG(delta);
 		}
 	}
-
+	
 	protected static void getDeltaH(GraphElement elem, BiochemicalReaction interaction) {
 		for (Attribute a : getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.30"), elem)) {
 			interaction.addDeltaH(Float.valueOf(a.getValue().toString()));
 		}
 	}
-
+	
 	protected static void getDeltaS(GraphElement elem, BiochemicalReaction interaction) {
 		for (Attribute a : getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.31"), elem)) {
 			interaction.addDeltaS(Float.valueOf(a.getValue().toString()));
 		}
 	}
-
+	
 	protected static void getDisplayName(GraphElement elem, Entity interaction) {
-
+		
 		String DisplayName = "";
 		DisplayName = AttributeHelper.getLabel(elem, DisplayName);
 		interaction.setDisplayName(DisplayName);
 	}
-
+	
 	protected static void getECNumber(GraphElement elem, BiochemicalReaction interaction) {
 		for (Attribute a : getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.32"), elem)) {
 			interaction.addECNumber(a.getValue().toString());
 		}
 	}
-
+	
 	protected static void getEntityReference(GraphElement elem, SimplePhysicalEntity interaction, Model model) {
 		/*
 		 * left-out attributes: - entityFeature, entityReferenceType, evidence,
@@ -388,7 +388,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				EntityReferenceName = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.36"));
 			}
 		} else if (hasAttribute(elem, Messages.getString("UtilitySuperClassToGraph.37"))) {
-
+			
 			EntityReferenceRDFId = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.37"));
 			if (EntityReferenceRDFId.length() > 0) {
 				t = RnaReference.class;
@@ -401,7 +401,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				EntityReferenceName = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.40"));
 			}
 		} else if (hasAttribute(elem, Messages.getString("UtilitySuperClassToGraph.41")))
-
+		
 		{
 			EntityReferenceRDFId = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.41"));
 			if (EntityReferenceRDFId.length() > 0) {
@@ -415,7 +415,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				EntityReferenceName = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.44"));
 			}
 		}
-
+		
 		if (!model.containsID(EntityReferenceRDFId) && EntityReferenceRDFId.length() > 0) {
 			@SuppressWarnings("unchecked")
 			// EntityReference eRef = model.addNew(t, EntityReferenceRDFId);
@@ -423,14 +423,14 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			EntityReference eRef = (EntityReference) model.addNew(t, EntityReferenceRDFId);
 			if (EntityReferenceName.length() > 0)
 				eRef.setDisplayName(EntityReferenceName);
-
+			
 			interaction.setEntityReference(eRef);
 		} else {
 			EntityReference eRef = (EntityReference) model.getByID(EntityReferenceRDFId);
 			interaction.setEntityReference(eRef);
 		}
 	}
-
+	
 	protected static void getEvidence(GraphElement elem, Entity interaction, Model model) {
 		/*
 		 * left-out attributes: - confidence, evidenceCode, experimentalForm, xref,
@@ -442,7 +442,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addEvidence(e);
 		}
 	}
-
+	
 	protected static void getFeature(GraphElement elem, PhysicalEntity interaction, Model model) {
 		ArrayList<Attribute> set;
 		/*
@@ -476,7 +476,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addFeature(feature);
 		}
 		// Modification Feature
-
+		
 		set = getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.49"), elem);
 		for (int i = 1; i <= set.size(); i++) {
 			Attribute RDFIdAttribute = getAttributeWithOneSpecificInnerReplacement(
@@ -486,17 +486,17 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				ModificationFeature MF;
 				if (!model.containsID(RDFId)) {
 					MF = model.addNew(ModificationFeature.class, RDFId);
-
+					
 					// Modification Type
 					Attribute aa = getAttributeWithOneSpecificInnerReplacement(
 							Messages.getString("UtilitySuperClassToGraph.50"), elem, i);
 					String ModificationTypeRDFId = aa.getValue().toString();
-
+					
 					// SequenceModificationVocabulary
 					SequenceModificationVocabulary SMV;
 					if (!model.containsID(ModificationTypeRDFId)) {
 						SMV = model.addNew(SequenceModificationVocabulary.class, ModificationTypeRDFId);
-
+						
 						for (Attribute term : getAttributeOfSetWithTwoInnerReplacements(
 								Messages.getString("UtilitySuperClassToGraph.51"), elem, i)) {
 							SMV.addTerm(term.getValue().toString());
@@ -509,13 +509,13 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 						SMV = (SequenceModificationVocabulary) model.getByID(ModificationTypeRDFId);
 					}
 					MF.setModificationType(SMV);
-
+					
 					// FeatureLocation
 					aa = getAttributeWithOneSpecificInnerReplacement(Messages.getString("UtilitySuperClassToGraph.53"),
 							elem, i);
 					if (aa != null) {
 						String FeatureLocationRDFId = aa.getValue().toString();
-
+						
 						SequenceLocation SL;
 						if (!model.containsID(FeatureLocationRDFId)) {
 							SL = model.addNew(SequenceLocation.class, FeatureLocationRDFId);
@@ -523,23 +523,23 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 									Messages.getString("UtilitySuperClassToGraph.54"), elem, i)) {
 								SL.addComment(comment.getValue().toString());
 							}
-
+							
 						} else {
 							SL = (SequenceLocation) model.getByID(FeatureLocationRDFId);
 						}
 						MF.setFeatureLocation(SL);
 					}
-
+					
 					// FeatureLocationType
 					aa = getAttributeWithOneSpecificInnerReplacement(Messages.getString("UtilitySuperClassToGraph.55"),
 							elem, i);
 					if (aa != null) {
 						String FeatureLocationTypeRDFId = aa.getValue().toString();
-
+						
 						SequenceRegionVocabulary SRV;
 						if (!model.containsID(FeatureLocationTypeRDFId)) {
 							SRV = model.addNew(SequenceRegionVocabulary.class, FeatureLocationTypeRDFId);
-
+							
 							for (Attribute term : getAttributeOfSetWithTwoInnerReplacements(
 									Messages.getString("UtilitySuperClassToGraph.56"), elem, i)) {
 								SRV.addTerm(term.getValue().toString());
@@ -556,19 +556,19 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				} else {
 					MF = (ModificationFeature) model.getByID(RDFId);
 				}
-
+				
 				interaction.addFeature(MF);
 			}
 		}
-
+		
 		for (Attribute RDFIdAttr : getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.58"), elem)) {
 			String RDFId = RDFIdAttr.getValue().toString();
 			EntityFeature E = model.addNew(EntityFeature.class, RDFId);
 			interaction.addFeature(E);
 		}
-
+		
 	}
-
+	
 	protected static void getInteractionScore(GraphElement elem, GeneticInteraction interaction, Model model) {
 		String RDFId = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.61"));
 		if (RDFId.length() > 0) {
@@ -576,7 +576,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			String value = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.60"));
 			if (value.length() > 0)
 				score.setValue(value);
-
+			
 			String sourcerdfid = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.59"));
 			if (sourcerdfid.length() > 0) {
 				Provenance provenance = model.addNew(Provenance.class, sourcerdfid);
@@ -585,7 +585,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.setInteractionScore(score);
 		}
 	}
-
+	
 	protected static void getInteractionType(GraphElement elem, Interaction interaction, Model model) {
 		/*
 		 * left-out attributes: - xref, comment
@@ -608,11 +608,11 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addInteractionType(iV);
 		}
 	}
-
+	
 	protected static void getKPrime(GraphElement elem, BiochemicalReaction interaction, Model model) {
-
+		
 		ArrayList<Attribute> set = getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.70"), elem);
-
+		
 		for (int i = 1; i <= set.size(); i++) {
 			Attribute KPrime = getAttributeWithOneSpecificInnerReplacement(
 					Messages.getString("UtilitySuperClassToGraph.66"), elem, i);
@@ -626,7 +626,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 					Messages.getString("UtilitySuperClassToGraph.69"), elem, i);
 			Attribute getRDFId = getAttributeWithOneSpecificInnerReplacement(
 					Messages.getString("UtilitySuperClassToGraph.70"), elem, i);
-
+			
 			KPrime kPrime = model.addNew(KPrime.class, getRDFId.getValue().toString());
 			if (KPrime != null)
 				kPrime.setKPrime(Float.valueOf(KPrime.getValue().toString()));
@@ -638,7 +638,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				kPrime.setPMg(Float.valueOf(getPMg.getValue().toString()));
 			if (getTemperature != null)
 				kPrime.setTemperature(Float.valueOf(getTemperature.getValue().toString()));
-
+			
 			for (Attribute comment : getAttributeOfSetWithTwoInnerReplacements(
 					Messages.getString("UtilitySuperClassToGraph.64"), elem, i)) {
 				kPrime.addComment(comment.getValue().toString());
@@ -646,7 +646,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addKEQ(kPrime);
 		}
 	}
-
+	
 	protected static void getMemberPhysicalEntity(GraphElement elem, PhysicalEntity interaction, Model model) {
 		/*
 		 * left-out attributes: - cellularLocation, feature, memberPhysicalEntity,
@@ -670,7 +670,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 					Node iNode = nodes.get(j);
 					Attribute attr = iNode.getAttribute(Messages.getString("UtilitySuperClassToGraph.82"));
 					String iNodeRDFId = attr.getValue().toString();
-
+					
 					if (iNodeRDFId.equals(MemberPhysicalEntityRDFId)) {
 						// ComponentNodeFound
 						component = nodes.get(j);
@@ -683,30 +683,30 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 					// Node wasn't found in Graph
 					// Node has to be reconstructed in the model only by ID and
 					// name
-
+					
 					PhysicalEntity p = model.addNew(PhysicalEntity.class, MemberPhysicalEntityRDFId);
 					String MemberPhysicalEntityName = getAttributeWithOneSpecificInnerReplacement(
 							Messages.getString("UtilitySuperClassToGraph.71"), elem, i).getValue().toString();
-
+					
 					if (MemberPhysicalEntityName.length() > 0)
 						p.setDisplayName(MemberPhysicalEntityName);
 				}
 			}
 		}
-
+		
 		// now add it
 		for (Attribute rdfid : set) {
 			PhysicalEntity p = (PhysicalEntity) model.getByID(rdfid.getValue().toString());
 			interaction.addMemberPhysicalEntity(p);
 		}
 	}
-
+	
 	protected static void getName(GraphElement elem, Entity interaction) {
 		for (Attribute a : getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.73"), elem)) {
 			interaction.addName(a.getValue().toString());
 		}
 	}
-
+	
 	protected static void getNotFeature(GraphElement elem, PhysicalEntity interaction, Model model) {
 		/*
 		 * left-out attributes: - evidence, featureLocation, featureLocationType,
@@ -723,7 +723,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addNotFeature(feature);
 		}
 	}
-
+	
 	protected static void getOrganism(GraphElement elem, Gene interaction, Model model) {
 		/*
 		 * left-out attributes: - name, xref, comment
@@ -751,7 +751,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.setOrganism(bioSource);
 		}
 	}
-
+	
 	protected static void getPhenotype(GraphElement elem, GeneticInteraction interaction, Model model) {
 		String pheno = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.80"));
 		if (pheno.length() > 0) {
@@ -759,23 +759,23 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			PhenotypeVocabulary phenoVocabulary = model.addNew(PhenotypeVocabulary.class, pheno);
 			if (pato.length() > 0)
 				phenoVocabulary.setPatoData(pato);
-
+			
 			interaction.setPhenotype(phenoVocabulary);
 		}
 	}
-
+	
 	protected static void getSpontaneous(GraphElement elem, Conversion interaction) {
 		String bool = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.83"));
 		if (bool.length() > 0)
 			interaction.setSpontaneous(Boolean.valueOf(bool));
 	}
-
+	
 	protected static void getStandardName(GraphElement elem, Entity interaction) {
 		String standardName = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.84"));
 		if (standardName.length() > 0)
 			interaction.setStandardName(standardName);
 	}
-
+	
 	protected static void getXRef(GraphElement elem, Entity interaction, Model model) {
 		// Unification Xref
 		ArrayList<Attribute> set = getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.91"), elem);
@@ -784,7 +784,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			UnificationXref x;
 			if (!model.containsID(RDFId)) {
 				x = model.addNew(UnificationXref.class, RDFId);
-
+				
 				Attribute db = getAttributeWithOneSpecificInnerReplacement(
 						Messages.getString("UtilitySuperClassToGraph.87"), elem, i);
 				if (db != null) {
@@ -811,11 +811,11 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			interaction.addXref(x);
 		}
 		// Publication Xref
-
+		
 		set = getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.95"), elem);
 		for (int i = 1; i <= set.size(); i++) {
 			String RDFId = set.get(i - 1).getValue().toString();
-
+			
 			PublicationXref x;
 			if (!model.containsID(RDFId)) {
 				x = model.addNew(PublicationXref.class, RDFId);
@@ -849,7 +849,7 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				if (year != null) {
 					x.setYear(Integer.valueOf(year.getValue().toString()));
 				}
-
+				
 				ArrayList<Attribute> secondSet = getAttributeOfSetWithTwoInnerReplacements(
 						Messages.getString("UtilitySuperClassToGraph.102"), elem, i);
 				for (Attribute a : secondSet) {
@@ -865,22 +865,22 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 				for (Attribute a : secondSet) {
 					x.addUrl(a.getValue().toString());
 				}
-
+				
 			} else {
 				x = (PublicationXref) model.getByID(RDFId);
 			}
 			interaction.addXref(x);
 		}
-
+		
 		// Relationship Xref
-
+		
 		set = getAttributeOfSetOfString(Messages.getString("UtilitySuperClassToGraph.92"), elem);
 		for (int i = 1; i <= set.size(); i++) {
 			String RDFId = set.get(i - 1).getValue().toString();
 			RelationshipXref relX;
 			if (!model.containsID(RDFId)) {
 				relX = model.addNew(RelationshipXref.class, RDFId);
-
+				
 				Attribute RelationshipVocRDFIdAttr = getAttributeWithOneSpecificInnerReplacement(
 						Messages.getString("UtilitySuperClassToGraph.93"), elem, i);
 				if (RelationshipVocRDFIdAttr != null) {
@@ -900,13 +900,13 @@ public class UtilitySuperClassFromGraph extends HelperClass {
 			} else {
 				relX = (RelationshipXref) model.getByID(RDFId);
 			}
-
+			
 			interaction.addXref(relX);
 		}
 	}
-
+	
 	public UtilitySuperClassFromGraph() {
 		super();
 	}
-
+	
 }

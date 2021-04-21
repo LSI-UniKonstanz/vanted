@@ -47,19 +47,19 @@ import org.jfree.data.XYDataset;
  * your own datasets.
  */
 public class SampleXYDataset extends AbstractXYDataset implements XYDataset {
-
+	
 	/**
 	 * Use the translate to change the data and demonstrate dynamic data changes.
 	 */
 	private double translate;
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public SampleXYDataset() {
 		this.translate = 0.0;
 	}
-
+	
 	/**
 	 * Returns the translation factor.
 	 * 
@@ -68,40 +68,40 @@ public class SampleXYDataset extends AbstractXYDataset implements XYDataset {
 	public double getTranslate() {
 		return this.translate;
 	}
-
+	
 	/**
 	 * Sets the translation constant for the x-axis.
 	 * 
 	 * @param translate
-	 *            the translation factor.
+	 *           the translation factor.
 	 */
 	public void setTranslate(final double translate) {
 		this.translate = translate;
 		notifyListeners(new DatasetChangeEvent(this, this));
 	}
-
+	
 	/**
 	 * Returns the x-value for the specified series and item. Series are numbered 0,
 	 * 1, ...
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @param item
-	 *            the index (zero-based) of the required item.
+	 *           the index (zero-based) of the required item.
 	 * @return the x-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
 		return Double.valueOf(-10.0 + this.translate + (item / 10.0));
 	}
-
+	
 	/**
 	 * Returns the y-value for the specified series and item. Series are numbered 0,
 	 * 1, ...
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @param item
-	 *            the index (zero-based) of the required item.
+	 *           the index (zero-based) of the required item.
 	 * @return the y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -111,7 +111,7 @@ public class SampleXYDataset extends AbstractXYDataset implements XYDataset {
 			return Double.valueOf(2 * (Math.sin(-10.0 + this.translate + (item / 10.0))));
 		}
 	}
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
@@ -120,12 +120,12 @@ public class SampleXYDataset extends AbstractXYDataset implements XYDataset {
 	public int getSeriesCount() {
 		return 2;
 	}
-
+	
 	/**
 	 * Returns the name of the series.
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(final int series) {
@@ -137,16 +137,16 @@ public class SampleXYDataset extends AbstractXYDataset implements XYDataset {
 			return "Error";
 		}
 	}
-
+	
 	/**
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
 		return 200;
 	}
-
+	
 }

@@ -35,21 +35,21 @@ package org.jfree.chart.event;
  * plot.
  */
 public class RendererChangeEvent extends ChartChangeEvent {
-
+	
 	/** The renderer that generated the event. */
 	private Object renderer;
-
+	
 	/**
 	 * Creates a new event.
 	 * 
 	 * @param renderer
-	 *            the renderer that generated the event.
+	 *           the renderer that generated the event.
 	 */
 	public RendererChangeEvent(Object renderer) {
 		super(renderer);
 		this.renderer = renderer;
 	}
-
+	
 	/**
 	 * Returns the renderer that generated the event.
 	 * 
@@ -58,5 +58,5 @@ public class RendererChangeEvent extends ChartChangeEvent {
 	public Object getRenderer() {
 		return this.renderer;
 	}
-
+	
 }

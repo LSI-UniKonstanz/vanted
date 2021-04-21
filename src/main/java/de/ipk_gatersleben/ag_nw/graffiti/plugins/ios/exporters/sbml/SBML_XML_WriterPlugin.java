@@ -16,12 +16,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
  */
 public class SBML_XML_WriterPlugin extends IPK_PluginAdapter {
 	public SBML_XML_WriterPlugin() {
-
+		
 		super();
 		SBMLNodesNiceIdHelper.initNiceIds();
 		SBML_Constants.init();
 		this.outputSerializers = new OutputSerializer[] { new SBML_XML_Writer() };
-
+		
 	}
-
+	
 }

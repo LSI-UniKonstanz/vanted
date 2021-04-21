@@ -12,11 +12,11 @@ import java.io.File;
  * @author klukas
  */
 public interface ImageFileResultProcessor {
-
+	
 	public void processCreatedImageFile(File imageFile);
-
+	
 	public void processCreatedWebsiteFile(File htmlImageFile);
-
+	
 	public void processCreatedTabWebsiteFile(File htmlTabbedFile);
-
+	
 }

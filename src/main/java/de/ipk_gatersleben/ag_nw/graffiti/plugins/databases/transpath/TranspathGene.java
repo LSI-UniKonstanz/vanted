@@ -14,15 +14,15 @@ public class TranspathGene extends TranspathEntity {
 	public ArrayList<String> REFERENCES_ITEM = new ArrayList<String>();
 	public ArrayList<String> MEMBERS_ITEM = new ArrayList<String>();
 	public ArrayList<String> ACCNOS = new ArrayList<String>();
-
+	
 	public String getKey() {
 		return NAME; // e.g. TFPA36117
 	}
-
+	
 	public String getXMLstartEndEntity() {
 		return "Gene";
 	}
-
+	
 	@Override
 	public void processXMLentityValue(String environment, String value) {
 		if (environment.equals("/groups/item"))

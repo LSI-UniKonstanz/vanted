@@ -21,30 +21,30 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.session.EditorSession;
 
 public class ShowClusterGraphAlgorithm extends AbstractAlgorithm {
-
+	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			return "Show Overview Graph";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		// return "Analysis";
 		return "Cluster";
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return "Network.Cluster.Process Cluster Overview-Graph";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -57,7 +57,7 @@ public class ShowClusterGraphAlgorithm extends AbstractAlgorithm {
 					+ "Then create an overview graph G<sub>O</sub> using the <i>Create Overview Graph</i> command.");
 		}
 	}
-
+	
 	public void execute() {
 		MainFrame mf = GravistoService.getInstance().getMainFrame();
 		Graph emptyGraph = new AdjListGraph();
@@ -72,5 +72,5 @@ public class ShowClusterGraphAlgorithm extends AbstractAlgorithm {
 			mf.showViewChooserDialog(es, false, getActionEvent());
 		}
 	}
-
+	
 }

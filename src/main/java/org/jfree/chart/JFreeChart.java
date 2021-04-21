@@ -169,76 +169,76 @@ import org.jfree.util.ObjectUtils;
  */
 public class JFreeChart
 		implements Drawable, TitleChangeListener, LegendChangeListener, PlotChangeListener, Serializable, Cloneable {
-
+	
 	/** Information about the project. */
 	public static final ProjectInfo INFO = new JFreeChartInfo();
-
+	
 	/** The default font for titles. */
 	public static final Font DEFAULT_TITLE_FONT = new Font("SansSerif", Font.BOLD, 18);
-
+	
 	/** The default background color. */
 	public static final Paint DEFAULT_BACKGROUND_PAINT = SystemColor.control;
-
+	
 	/** The default background image. */
 	public static final Image DEFAULT_BACKGROUND_IMAGE = null;
-
+	
 	/** The default background image alignment. */
 	public static final int DEFAULT_BACKGROUND_IMAGE_ALIGNMENT = Align.FIT;
-
+	
 	/** The default background image alpha. */
 	public static float DEFAULT_BACKGROUND_IMAGE_ALPHA = 0.5f;
-
+	
 	/** Rendering hints that will be used for chart drawing. */
 	private transient RenderingHints renderingHints;
-
+	
 	/** A flag that controls whether or not the chart border is drawn. */
 	private boolean borderVisible;
-
+	
 	/** The stroke used to draw the chart border (if visible). */
 	private transient Stroke borderStroke;
-
+	
 	/** The paint used to draw the chart border (if visible). */
 	private transient Paint borderPaint;
-
+	
 	/** The chart title (optional). */
 	private TextTitle title;
-
+	
 	/** The chart subtitles (zero, one or many). */
 	private List subtitles;
-
+	
 	/** The chart legend. */
 	private Legend legend;
-
+	
 	/** Draws the visual representation of the data. */
 	private Plot plot;
-
+	
 	/** Paint used to draw the background of the chart. */
 	private transient Paint backgroundPaint;
-
+	
 	/** An optional background image for the chart. */
 	private transient Image backgroundImage; // todo: not serialized yet
-
+	
 	/** The alignment for the background image. */
 	private int backgroundImageAlignment = Align.FIT;
-
+	
 	/** The alpha transparency for the background image. */
 	private float backgroundImageAlpha = 0.5f;
-
+	
 	/** Storage for registered change listeners. */
 	private transient EventListenerList changeListeners;
-
+	
 	/** Storage for registered progress listeners. */
 	private transient EventListenerList progressListeners;
-
+	
 	/**
 	 * A flag that can be used to enable/disable notification of chart change
 	 * events.
 	 */
 	private boolean notify;
-
+	
 	/** Access to logging facilities. */
 	private static final LogContext LOGGER = Log.createContext(JFreeChart.class);
-
+	
 	/**
 	 * Constructs a chart.
 	 * <P>
@@ -246,30 +246,30 @@ public class JFreeChart
 	 * return a ready-made chart.
 	 * 
 	 * @param plot
-	 *            controller of the visual representation of the data
-	 *            (<code>null</code> not permitted).
+	 *           controller of the visual representation of the data
+	 *           (<code>null</code> not permitted).
 	 */
 	public JFreeChart(Plot plot) {
-
+		
 		this(null, // title
 				null, // font
 				plot, false // create legend
 		);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new chart.
 	 * 
 	 * @param title
-	 *            the chart title (<code>null</code> permitted).
+	 *           the chart title (<code>null</code> permitted).
 	 * @param plot
-	 *            the plot (<code>null</code> not permitted).
+	 *           the plot (<code>null</code> not permitted).
 	 */
 	public JFreeChart(String title, Plot plot) {
 		this(title, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 	}
-
+	
 	/**
 	 * Constructs a chart.
 	 * <P>
@@ -277,44 +277,44 @@ public class JFreeChart
 	 * ready-made chart.
 	 * 
 	 * @param title
-	 *            the chart title (<code>null</code> permitted).
+	 *           the chart title (<code>null</code> permitted).
 	 * @param titleFont
-	 *            the font for displaying the chart title (<code>null</code>
-	 *            permitted).
+	 *           the font for displaying the chart title (<code>null</code>
+	 *           permitted).
 	 * @param plot
-	 *            controller of the visual representation of the data
-	 *            (<code>null</code> not permitted).
+	 *           controller of the visual representation of the data
+	 *           (<code>null</code> not permitted).
 	 * @param createLegend
-	 *            a flag indicating whether or not a legend should be created for
-	 *            the chart.
+	 *           a flag indicating whether or not a legend should be created for
+	 *           the chart.
 	 */
 	public JFreeChart(String title, Font titleFont, Plot plot, boolean createLegend) {
-
+		
 		if (plot == null) {
 			throw new NullPointerException("JFreeChart(..): Plot is null");
 		}
-
+		
 		// create storage for listeners...
 		this.progressListeners = new EventListenerList();
 		this.changeListeners = new EventListenerList();
 		this.notify = true; // default is to notify listeners when the chart changes
-
+		
 		this.renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+		
 		this.borderVisible = false;
 		this.borderStroke = new BasicStroke(1.0f);
 		this.borderPaint = Color.black;
-
+		
 		this.plot = plot;
 		plot.addChangeListener(this);
-
+		
 		this.subtitles = new ArrayList();
-
+		
 		// create a legend, if requested...
 		if (createLegend) {
 			setLegend(Legend.createInstance(this));
 		}
-
+		
 		// add the chart title, if one has been specified...
 		if (title != null) {
 			if (titleFont == null) {
@@ -323,15 +323,15 @@ public class JFreeChart
 			this.title = new TextTitle(title, titleFont);
 			this.title.addChangeListener(this);
 		}
-
+		
 		this.backgroundPaint = DEFAULT_BACKGROUND_PAINT;
-
+		
 		this.backgroundImage = DEFAULT_BACKGROUND_IMAGE;
 		this.backgroundImageAlignment = DEFAULT_BACKGROUND_IMAGE_ALIGNMENT;
 		this.backgroundImageAlpha = DEFAULT_BACKGROUND_IMAGE_ALPHA;
-
+		
 	}
-
+	
 	/**
 	 * Returns the collection of rendering hints for the chart.
 	 * 
@@ -340,14 +340,14 @@ public class JFreeChart
 	public RenderingHints getRenderingHints() {
 		return this.renderingHints;
 	}
-
+	
 	/**
 	 * Sets the rendering hints for the chart. These will be added (using the
 	 * Graphics2D addRenderingHints(...) method) near the start of the
 	 * JFreeChart.draw(...) method.
 	 * 
 	 * @param renderingHints
-	 *            the rendering hints (<code>null</code> not permitted).
+	 *           the rendering hints (<code>null</code> not permitted).
 	 */
 	public void setRenderingHints(RenderingHints renderingHints) {
 		if (renderingHints == null) {
@@ -356,7 +356,7 @@ public class JFreeChart
 		this.renderingHints = renderingHints;
 		fireChartChanged();
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not a border is drawn around the
 	 * outside of the chart.
@@ -366,19 +366,19 @@ public class JFreeChart
 	public boolean isBorderVisible() {
 		return this.borderVisible;
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether or not a border is drawn around the outside
 	 * of the chart.
 	 * 
 	 * @param visible
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setBorderVisible(boolean visible) {
 		this.borderVisible = visible;
 		fireChartChanged();
 	}
-
+	
 	/**
 	 * Returns the stroke used to draw the chart border (if visible).
 	 * 
@@ -387,18 +387,18 @@ public class JFreeChart
 	public Stroke getBorderStroke() {
 		return this.borderStroke;
 	}
-
+	
 	/**
 	 * Sets the stroke used to draw the chart border (if visible).
 	 * 
 	 * @param stroke
-	 *            the stroke.
+	 *           the stroke.
 	 */
 	public void setBorderStroke(Stroke stroke) {
 		this.borderStroke = stroke;
 		fireChartChanged();
 	}
-
+	
 	/**
 	 * Returns the paint used to draw the chart border (if visible).
 	 * 
@@ -407,18 +407,18 @@ public class JFreeChart
 	public Paint getBorderPaint() {
 		return this.borderPaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to draw the chart border (if visible).
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setBorderPaint(Paint paint) {
 		this.borderPaint = paint;
 		fireChartChanged();
 	}
-
+	
 	/**
 	 * Returns the chart title.
 	 * 
@@ -427,28 +427,28 @@ public class JFreeChart
 	public TextTitle getTitle() {
 		return this.title;
 	}
-
+	
 	/**
 	 * Sets the title for the chart. If you do not want a title for the chart, set
 	 * it to <code>null</code>.
 	 * 
 	 * @param title
-	 *            the title (<code>null</code> permitted).
+	 *           the title (<code>null</code> permitted).
 	 */
 	public void setTitle(TextTitle title) {
 		this.title = title;
 		fireChartChanged();
 	}
-
+	
 	/**
 	 * Sets the chart title. This is a convenience method that ends up calling the
 	 * {@link #setTitle(TextTitle)} method.
 	 * 
 	 * @param title
-	 *            the new title (<code>null</code> permitted).
+	 *           the new title (<code>null</code> permitted).
 	 */
 	public void setTitle(String title) {
-
+		
 		if (title != null) {
 			if (this.title == null) {
 				setTitle(new TextTitle(title, JFreeChart.DEFAULT_TITLE_FONT));
@@ -458,9 +458,9 @@ public class JFreeChart
 		} else {
 			setTitle((TextTitle) null);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the list of subtitles.
 	 * 
@@ -469,12 +469,12 @@ public class JFreeChart
 	public List getSubtitles() {
 		return this.subtitles;
 	}
-
+	
 	/**
 	 * Sets the title list for the chart (completely replaces any existing titles).
 	 * 
 	 * @param subtitles
-	 *            the new list of subtitles.
+	 *           the new list of subtitles.
 	 */
 	public void setSubtitles(List subtitles) {
 		if (subtitles == null) {
@@ -483,7 +483,7 @@ public class JFreeChart
 		this.subtitles = subtitles;
 		fireChartChanged();
 	}
-
+	
 	/**
 	 * Returns the number of titles for the chart.
 	 * 
@@ -492,42 +492,42 @@ public class JFreeChart
 	public int getSubtitleCount() {
 		return this.subtitles.size();
 	}
-
+	
 	/**
 	 * Returns a chart subtitle.
 	 * 
 	 * @param index
-	 *            the index of the chart subtitle (zero based).
+	 *           the index of the chart subtitle (zero based).
 	 * @return a chart subtitle.
 	 */
 	public Title getSubtitle(int index) {
-
+		
 		// check arguments...
 		if ((index < 0) || (index == getSubtitleCount())) {
 			throw new IllegalArgumentException("JFreeChart.getSubtitle(...): index out of range.");
 		}
-
+		
 		return (Title) this.subtitles.get(index);
-
+		
 	}
-
+	
 	/**
 	 * Adds a chart subtitle, and notifies registered listeners that the chart has
 	 * been modified.
 	 * 
 	 * @param subtitle
-	 *            the subtitle.
+	 *           the subtitle.
 	 */
 	public void addSubtitle(Title subtitle) {
-
+		
 		if (subtitle != null) {
 			this.subtitles.add(subtitle);
 			subtitle.addChangeListener(this);
 			fireChartChanged();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the chart legend.
 	 * 
@@ -536,16 +536,16 @@ public class JFreeChart
 	public Legend getLegend() {
 		return this.legend;
 	}
-
+	
 	/**
 	 * Sets the chart legend. Registered listeners are notified that the chart has
 	 * been modified. The legends chart reference is updated.
 	 * 
 	 * @param legend
-	 *            the new chart legend (null permitted).
+	 *           the new chart legend (null permitted).
 	 */
 	public void setLegend(Legend legend) {
-
+		
 		// if there is an existing legend, remove the chart from the list of
 		// change listeners...
 		Legend existing = this.legend;
@@ -553,19 +553,19 @@ public class JFreeChart
 			existing.removeChangeListener(this);
 			existing.registerChart(null);
 		}
-
+		
 		// set the new legend, and register the chart as a change listener...
 		this.legend = legend;
 		if (legend != null) {
 			legend.registerChart(this);
 			legend.addChangeListener(this);
 		}
-
+		
 		// notify chart change listeners...
 		fireChartChanged();
-
+		
 	}
-
+	
 	/**
 	 * Returns the plot for the chart. The plot is a class responsible for
 	 * coordinating the visual representation of the data, including the axes (if
@@ -576,7 +576,7 @@ public class JFreeChart
 	public Plot getPlot() {
 		return this.plot;
 	}
-
+	
 	/**
 	 * Returns the plot cast as a {@link CategoryPlot}.
 	 * <p>
@@ -588,7 +588,7 @@ public class JFreeChart
 	public CategoryPlot getCategoryPlot() {
 		return (CategoryPlot) this.plot;
 	}
-
+	
 	/**
 	 * Returns the plot cast as an {@link XYPlot}.
 	 * <p>
@@ -600,7 +600,7 @@ public class JFreeChart
 	public XYPlot getXYPlot() {
 		return (XYPlot) this.plot;
 	}
-
+	
 	/**
 	 * Returns a flag that indicates whether or not anti-aliasing is used when the
 	 * chart is drawn.
@@ -614,7 +614,7 @@ public class JFreeChart
 		}
 		return (o.equals(RenderingHints.VALUE_ANTIALIAS_ON));
 	}
-
+	
 	/**
 	 * Sets a flag that indicates whether or not anti-aliasing is used when the
 	 * chart is drawn.
@@ -622,7 +622,7 @@ public class JFreeChart
 	 * Anti-aliasing usually improves the appearance of charts, but is slower.
 	 * 
 	 * @param flag
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 */
 	public void setAntiAlias(boolean flag) {
 		if (renderingHints == null) {
@@ -644,9 +644,9 @@ public class JFreeChart
 			this.renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		}
 		fireChartChanged();
-
+		
 	}
-
+	
 	/**
 	 * Returns the paint used for the chart background.
 	 * 
@@ -655,16 +655,16 @@ public class JFreeChart
 	public Paint getBackgroundPaint() {
 		return this.backgroundPaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to fill the chart background and sends a
 	 * {@link ChartChangeEvent} to all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setBackgroundPaint(Paint paint) {
-
+		
 		if (this.backgroundPaint != null) {
 			if (!this.backgroundPaint.equals(paint)) {
 				this.backgroundPaint = paint;
@@ -676,9 +676,9 @@ public class JFreeChart
 				fireChartChanged();
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the background image for the chart, or <code>null</code> if there is
 	 * no image.
@@ -688,16 +688,16 @@ public class JFreeChart
 	public Image getBackgroundImage() {
 		return this.backgroundImage;
 	}
-
+	
 	/**
 	 * Sets the background image for the chart and sends a {@link ChartChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param image
-	 *            the image (<code>null</code> permitted).
+	 *           the image (<code>null</code> permitted).
 	 */
 	public void setBackgroundImage(Image image) {
-
+		
 		if (this.backgroundImage != null) {
 			if (!this.backgroundImage.equals(image)) {
 				this.backgroundImage = image;
@@ -709,9 +709,9 @@ public class JFreeChart
 				fireChartChanged();
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the background image alignment. Alignment constants are defined in
 	 * the <code>com.jrefinery.ui.Align</code> class in the JCommon class library.
@@ -721,14 +721,14 @@ public class JFreeChart
 	public int getBackgroundImageAlignment() {
 		return this.backgroundImageAlignment;
 	}
-
+	
 	/**
 	 * Sets the background alignment.
 	 * <p>
 	 * Alignment options are defined by the {@link org.jfree.ui.Align} class.
 	 * 
 	 * @param alignment
-	 *            the alignment.
+	 *           the alignment.
 	 */
 	public void setBackgroundImageAlignment(int alignment) {
 		if (this.backgroundImageAlignment != alignment) {
@@ -736,34 +736,34 @@ public class JFreeChart
 			fireChartChanged();
 		}
 	}
-
+	
 	/**
 	 * Returns the alpha-transparency for the chart's background image.
 	 * 
 	 * @return the alpha-transparency.
 	 */
 	public float getBackgroundImageAlpha() {
-
+		
 		return this.backgroundImageAlpha;
-
+		
 	}
-
+	
 	/**
 	 * Sets the alpha-transparency for the chart's background image. Registered
 	 * listeners are notified that the chart has been changed.
 	 * 
 	 * @param alpha
-	 *            the alpha value.
+	 *           the alpha value.
 	 */
 	public void setBackgroundImageAlpha(float alpha) {
-
+		
 		if (this.backgroundImageAlpha != alpha) {
 			this.backgroundImageAlpha = alpha;
 			fireChartChanged();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not change events are sent to
 	 * registered listeners.
@@ -773,13 +773,13 @@ public class JFreeChart
 	public boolean isNotify() {
 		return this.notify;
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether or not listeners receive
 	 * {@link ChartChangeEvent} notifications.
 	 * 
 	 * @param notify
-	 *            a boolean.
+	 *           a boolean.
 	 */
 	public void setNotify(boolean notify) {
 		this.notify = notify;
@@ -788,7 +788,7 @@ public class JFreeChart
 			notifyListeners(new ChartChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Draws the chart on a Java 2D graphics device (such as the screen or a
 	 * printer).
@@ -796,14 +796,14 @@ public class JFreeChart
 	 * This method is the focus of the entire JFreeChart library.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area within which the chart should be drawn.
+	 *           the area within which the chart should be drawn.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D area) {
 		draw(g2, area, null, null);
 	}
-
+	
 	/**
 	 * Draws the chart on a Java 2D graphics device (such as the screen or a
 	 * printer).
@@ -811,16 +811,16 @@ public class JFreeChart
 	 * This method is the focus of the entire JFreeChart library.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area within which the chart should be drawn.
+	 *           the area within which the chart should be drawn.
 	 * @param info
-	 *            records info about the drawing (null means collect no info).
+	 *           records info about the drawing (null means collect no info).
 	 */
 	public void draw(Graphics2D g2, Rectangle2D area, ChartRenderingInfo info) {
 		draw(g2, area, null, info);
 	}
-
+	
 	/**
 	 * Draws the chart on a Java 2D graphics device (such as the screen or a
 	 * printer).
@@ -828,40 +828,40 @@ public class JFreeChart
 	 * This method is the focus of the entire JFreeChart library.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param chartArea
-	 *            the area within which the chart should be drawn.
+	 *           the area within which the chart should be drawn.
 	 * @param anchor
-	 *            the anchor point (in Java2D space) for the chart
-	 *            (<code>null</code> permitted).
+	 *           the anchor point (in Java2D space) for the chart
+	 *           (<code>null</code> permitted).
 	 * @param info
-	 *            records info about the drawing (null means collect no info).
+	 *           records info about the drawing (null means collect no info).
 	 */
 	public void draw(Graphics2D g2, Rectangle2D chartArea, Point2D anchor, ChartRenderingInfo info) {
-
+		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Entering draw() method, chartArea = " + chartArea.toString());
 		}
 		notifyListeners(new ChartProgressEvent(this, this, ChartProgressEvent.DRAWING_STARTED, 0));
-
+		
 		// record the chart area, if info is requested...
 		if (info != null) {
 			info.clear();
 			info.setChartArea(chartArea);
 		}
-
+		
 		// ensure no drawing occurs outside chart area...
 		Shape savedClip = g2.getClip();
 		g2.clip(chartArea);
-
+		
 		g2.addRenderingHints(this.renderingHints);
-
+		
 		// draw the chart background...
 		if (this.backgroundPaint != null) {
 			g2.setPaint(this.backgroundPaint);
 			g2.fill(chartArea);
 		}
-
+		
 		if (this.backgroundImage != null) {
 			Composite originalComposite = g2.getComposite();
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.backgroundImageAlpha));
@@ -875,7 +875,7 @@ public class JFreeChart
 					(int) dest.getHeight(), null);
 			g2.setComposite(originalComposite);
 		}
-
+		
 		if (isBorderVisible()) {
 			Paint paint = getBorderPaint();
 			Stroke stroke = getBorderStroke();
@@ -887,28 +887,28 @@ public class JFreeChart
 				g2.draw(borderArea);
 			}
 		}
-
+		
 		// draw the title and subtitles...
 		Rectangle2D nonTitleArea = new Rectangle2D.Double();
 		nonTitleArea.setRect(chartArea);
-
+		
 		if (this.title != null) {
 			drawTitle(this.title, g2, nonTitleArea);
 		}
-
+		
 		Iterator iterator = this.subtitles.iterator();
 		while (iterator.hasNext()) {
 			Title currentTitle = (Title) iterator.next();
 			drawTitle(currentTitle, g2, nonTitleArea);
 		}
-
+		
 		// draw the legend - the draw method will return the remaining area
 		// after the legend steals a chunk of the non-title area for itself
 		Rectangle2D plotArea = nonTitleArea;
 		if (this.legend != null) {
 			plotArea.setRect(this.legend.draw(g2, nonTitleArea, info));
 		}
-
+		
 		// draw the plot (axes and data visualisation)
 		PlotRenderingInfo plotInfo = null;
 		if (info != null) {
@@ -916,31 +916,31 @@ public class JFreeChart
 		}
 		if (plot.isPlotShowing())
 			this.plot.draw(g2, plotArea, anchor, null, plotInfo);
-
+		
 		g2.setClip(savedClip);
-
+		
 		notifyListeners(new ChartProgressEvent(this, this, ChartProgressEvent.DRAWING_FINISHED, 100));
-
+		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Leaving draw() method");
 		}
 	}
-
+	
 	/**
 	 * Draws a title. The title should be drawn at the top, bottom, left or right of
 	 * the specified area, and the area should be updated to reflect the amount of
 	 * space used by the title.
 	 * 
 	 * @param title
-	 *            the title (<code>null</code> not permitted).
+	 *           the title (<code>null</code> not permitted).
 	 * @param g2
-	 *            the graphics device (<code>null</code> not permitted).
+	 *           the graphics device (<code>null</code> not permitted).
 	 * @param area
-	 *            the chart area, excluding any existing titles (<code>null</code>
-	 *            not permitted).
+	 *           the chart area, excluding any existing titles (<code>null</code>
+	 *           not permitted).
 	 */
 	public void drawTitle(Title title, Graphics2D g2, Rectangle2D area) {
-
+		
 		if (title == null) {
 			throw new IllegalArgumentException("Null 'title' argument.");
 		}
@@ -950,7 +950,7 @@ public class JFreeChart
 		Rectangle2D titleArea = new Rectangle2D.Double();
 		double availableHeight = 0.0;
 		double availableWidth = 0.0;
-
+		
 		RectangleEdge position = title.getPosition();
 		if (position == RectangleEdge.TOP) {
 			availableWidth = area.getWidth();
@@ -972,7 +972,7 @@ public class JFreeChart
 			title.draw(g2, titleArea);
 			area.setRect(area.getX(), area.getY(), area.getWidth() - availableWidth, availableHeight);
 		}
-
+		
 		else if (position == RectangleEdge.LEFT) {
 			availableHeight = area.getHeight();
 			availableWidth = Math.min(title.getPreferredWidth(g2, (float) availableHeight), area.getWidth());
@@ -982,52 +982,52 @@ public class JFreeChart
 		} else {
 			throw new RuntimeException("JFreeChart.drawTitle(...): unknown title position.");
 		}
-
+		
 	}
-
+	
 	/**
 	 * Creates and returns a buffered image into which the chart has been drawn.
 	 * 
 	 * @param width
-	 *            the width.
+	 *           the width.
 	 * @param height
-	 *            the height.
+	 *           the height.
 	 * @return a buffered image.
 	 */
 	public BufferedImage createBufferedImage(int width, int height) {
-
+		
 		return createBufferedImage(width, height, null);
-
+		
 	}
-
+	
 	/**
 	 * Creates and returns a buffered image into which the chart has been drawn.
 	 * 
 	 * @param width
-	 *            the width.
+	 *           the width.
 	 * @param height
-	 *            the height.
+	 *           the height.
 	 * @param info
-	 *            carries back chart state information (<code>null</code>
-	 *            permitted).
+	 *           carries back chart state information (<code>null</code>
+	 *           permitted).
 	 * @return a buffered image.
 	 */
 	public BufferedImage createBufferedImage(int width, int height, ChartRenderingInfo info) {
 		return createBufferedImage(width, height, BufferedImage.TYPE_INT_RGB, info);
 	}
-
+	
 	/**
 	 * Creates and returns a buffered image into which the chart has been drawn.
 	 * 
 	 * @param width
-	 *            the width.
+	 *           the width.
 	 * @param height
-	 *            the height.
+	 *           the height.
 	 * @param imageType
-	 *            the image type.
+	 *           the image type.
 	 * @param info
-	 *            carries back chart state information (<code>null</code>
-	 *            permitted).
+	 *           carries back chart state information (<code>null</code>
+	 *           permitted).
 	 * @return a buffered image.
 	 */
 	public BufferedImage createBufferedImage(int width, int height, int imageType, ChartRenderingInfo info) {
@@ -1037,26 +1037,26 @@ public class JFreeChart
 		g2.dispose();
 		return image;
 	}
-
+	
 	/**
 	 * Creates and returns a buffered image into which the chart has been drawn.
 	 * 
 	 * @param imageWidth
-	 *            the image width.
+	 *           the image width.
 	 * @param imageHeight
-	 *            the image height.
+	 *           the image height.
 	 * @param drawWidth
-	 *            the width for drawing the chart (will be scaled to fit image).
+	 *           the width for drawing the chart (will be scaled to fit image).
 	 * @param drawHeight
-	 *            the height for drawing the chart (will be scaled to fit image).
+	 *           the height for drawing the chart (will be scaled to fit image).
 	 * @param info
-	 *            optional object for collection chart dimension and entity
-	 *            information.
+	 *           optional object for collection chart dimension and entity
+	 *           information.
 	 * @return a buffered image.
 	 */
 	public BufferedImage createBufferedImage(int imageWidth, int imageHeight, double drawWidth, double drawHeight,
 			ChartRenderingInfo info) {
-
+		
 		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = image.createGraphics();
 		double scaleX = imageWidth / drawWidth;
@@ -1066,9 +1066,9 @@ public class JFreeChart
 		draw(g2, new Rectangle2D.Double(0, 0, drawWidth, drawHeight), null, info);
 		g2.dispose();
 		return image;
-
+		
 	}
-
+	
 	/**
 	 * Handles a 'click' on the chart.
 	 * <P>
@@ -1078,40 +1078,40 @@ public class JFreeChart
 	 * required (and hopefully it doesn't get in the way).
 	 * 
 	 * @param x
-	 *            x-coordinate of the click (in Java2D space).
+	 *           x-coordinate of the click (in Java2D space).
 	 * @param y
-	 *            y-coordinate of the click (in Java2D space).
+	 *           y-coordinate of the click (in Java2D space).
 	 * @param info
-	 *            contains chart dimension and entity information.
+	 *           contains chart dimension and entity information.
 	 */
 	public void handleClick(int x, int y, ChartRenderingInfo info) {
-
+		
 		// pass the click on to the plot...
 		// rely on the plot to post a plot change event and redraw the chart...
 		this.plot.handleClick(x, y, info.getPlotInfo());
-
+		
 	}
-
+	
 	/**
 	 * Registers an object for notification of changes to the chart.
 	 * 
 	 * @param listener
-	 *            the object being registered.
+	 *           the object being registered.
 	 */
 	public void addChangeListener(ChartChangeListener listener) {
 		this.changeListeners.add(ChartChangeListener.class, listener);
 	}
-
+	
 	/**
 	 * Deregisters an object for notification of changes to the chart.
 	 * 
 	 * @param listener
-	 *            the object being deregistered.
+	 *           the object being deregistered.
 	 */
 	public void removeChangeListener(ChartChangeListener listener) {
 		this.changeListeners.remove(ChartChangeListener.class, listener);
 	}
-
+	
 	/**
 	 * Sends a default {@link ChartChangeEvent} to all registered listeners.
 	 * <P>
@@ -1121,15 +1121,15 @@ public class JFreeChart
 		ChartChangeEvent event = new ChartChangeEvent(this);
 		notifyListeners(event);
 	}
-
+	
 	/**
 	 * Sends a {@link ChartChangeEvent} to all registered listeners.
 	 * 
 	 * @param event
-	 *            information about the event that triggered the notification.
+	 *           information about the event that triggered the notification.
 	 */
 	protected void notifyListeners(ChartChangeEvent event) {
-
+		
 		if (this.notify) {
 			Object[] listeners = this.changeListeners.getListenerList();
 			for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -1138,102 +1138,102 @@ public class JFreeChart
 				}
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Registers an object for notification of progress events relating to the
 	 * chart.
 	 * 
 	 * @param listener
-	 *            the object being registered.
+	 *           the object being registered.
 	 */
 	public void addProgressListener(ChartProgressListener listener) {
 		this.progressListeners.add(ChartProgressListener.class, listener);
 	}
-
+	
 	/**
 	 * Deregisters an object for notification of changes to the chart.
 	 * 
 	 * @param listener
-	 *            the object being deregistered.
+	 *           the object being deregistered.
 	 */
 	public void removeProgressListener(ChartProgressListener listener) {
 		this.progressListeners.remove(ChartProgressListener.class, listener);
 	}
-
+	
 	/**
 	 * Sends a {@link ChartProgressEvent} to all registered listeners.
 	 * 
 	 * @param event
-	 *            information about the event that triggered the notification.
+	 *           information about the event that triggered the notification.
 	 */
 	protected void notifyListeners(ChartProgressEvent event) {
-
+		
 		Object[] listeners = this.progressListeners.getListenerList();
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == ChartProgressListener.class) {
 				((ChartProgressListener) listeners[i + 1]).chartProgress(event);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Receives notification that a chart title has changed, and passes this on to
 	 * registered listeners.
 	 * 
 	 * @param event
-	 *            information about the chart title change.
+	 *           information about the chart title change.
 	 */
 	public void titleChanged(TitleChangeEvent event) {
 		event.setChart(this);
 		notifyListeners(event);
 	}
-
+	
 	/**
 	 * Receives notification that the chart legend has changed, and passes this on
 	 * to registered listeners.
 	 * 
 	 * @param event
-	 *            information about the chart legend change.
+	 *           information about the chart legend change.
 	 */
 	public void legendChanged(LegendChangeEvent event) {
 		event.setChart(this);
 		notifyListeners(event);
 	}
-
+	
 	/**
 	 * Receives notification that the plot has changed, and passes this on to
 	 * registered listeners.
 	 * 
 	 * @param event
-	 *            information about the plot change.
+	 *           information about the plot change.
 	 */
 	public void plotChanged(PlotChangeEvent event) {
 		event.setChart(this);
 		notifyListeners(event);
 	}
-
+	
 	/**
 	 * Tests this chart for equality with another object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof JFreeChart) {
-
+			
 			JFreeChart c = (JFreeChart) obj;
 			boolean b0 = ObjectUtils.equal(this.title, c.title);
 			boolean b1 = ObjectUtils.equal(this.subtitles, c.subtitles);
@@ -1245,22 +1245,22 @@ public class JFreeChart
 			boolean b7 = (this.backgroundImageAlignment == c.backgroundImageAlignment);
 			boolean b8 = (this.backgroundImageAlpha == c.backgroundImageAlpha);
 			boolean b9 = (this.notify == c.notify);
-
+			
 			return b0 && b1 && b2 && b3 && b5 && b6 && b7 && b8 && b9;
-
+			
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -1268,16 +1268,16 @@ public class JFreeChart
 		SerialUtilities.writePaint(this.borderPaint, stream);
 		SerialUtilities.writePaint(this.backgroundPaint, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -1287,37 +1287,37 @@ public class JFreeChart
 		this.progressListeners = new EventListenerList();
 		this.changeListeners = new EventListenerList();
 		this.renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+		
 		// register as a listener with sub-components...
 		if (this.title != null) {
 			this.title.addChangeListener(this);
 		}
-
+		
 		for (int i = 0; i < getSubtitleCount(); i++) {
 			getSubtitle(i).addChangeListener(this);
 		}
-
+		
 		if (this.legend != null) {
 			this.legend.addChangeListener(this);
 		}
-
+		
 		// if (this.plot != null) {
 		// the plot can never be null.
 		this.plot.addChangeListener(this);
 		// }
-
+		
 	}
-
+	
 	/**
 	 * Prints information about JFreeChart to standard output.
 	 * 
 	 * @param args
-	 *            no arguments are honored.
+	 *           no arguments are honored.
 	 */
 	public static void main(String[] args) {
 		System.out.println(JFreeChart.INFO.toString());
 	}
-
+	
 	/**
 	 * Returns the flag that controls whether notification of chart change events is
 	 * suppressed.
@@ -1328,74 +1328,74 @@ public class JFreeChart
 	public boolean getSuppressChartChangeEvents() {
 		return isNotify();
 	}
-
+	
 	/**
 	 * Sets a flag that is used to suppress notification of chart change events.
 	 * 
 	 * @param flag
-	 *            the flag.
+	 *           the flag.
 	 * @deprecated Use setNotify(boolean) instead.
 	 */
 	public void setSuppressChartChangeEvents(boolean flag) {
 		setNotify(!flag);
 	}
-
+	
 	/**
 	 * Clones the object, and takes care of listeners. Note: caller shall register
 	 * its own listeners on cloned graph.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the chart is not cloneable.
+	 *            if the chart is not cloneable.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		JFreeChart chart = (JFreeChart) super.clone();
-
+		
 		chart.renderingHints = (RenderingHints) this.renderingHints.clone();
 		// private boolean borderVisible;
 		// private transient Stroke borderStroke;
 		// private transient Paint borderPaint;
-
+		
 		if (this.title != null) {
 			chart.title = (TextTitle) this.title.clone();
 			chart.title.addChangeListener(chart);
 		}
-
+		
 		chart.subtitles = new ArrayList();
 		for (int i = 0; i < getSubtitleCount(); i++) {
 			Title subtitle = (Title) getSubtitle(i).clone();
 			chart.subtitles.add(subtitle);
 			subtitle.addChangeListener(chart);
 		}
-
+		
 		if (this.legend != null) {
 			chart.legend = (Legend) this.legend.clone();
 			chart.legend.registerChart(chart);
 			chart.legend.addChangeListener(chart);
 		}
-
+		
 		if (this.plot != null) {
 			chart.plot = (Plot) this.plot.clone();
 			chart.plot.addChangeListener(chart);
 		}
-
+		
 		// private boolean antialias;
 		// private transient Paint backgroundPaint;
 		// private transient Image backgroundImage; // todo: not serialized yet
 		// private int backgroundImageAlignment = Align.FIT;
 		// private float backgroundImageAlpha = 0.5f;
-
+		
 		chart.progressListeners = new EventListenerList();
 		chart.changeListeners = new EventListenerList();
 		// private boolean notify;
-
+		
 		return chart;
 	}
-
+	
 	public void setHidePlot(boolean hidePlot) {
 		plot.setPlotShowing(!hidePlot);
 	}
-
+	
 }
 
 /**
@@ -1403,14 +1403,14 @@ public class JFreeChart
  * assigned to <code>JFreeChart.INFO<code>.
  */
 class JFreeChartInfo extends ProjectInfo {
-
+	
 	/** Default constructor. */
 	public JFreeChartInfo() {
-
+		
 		// get a locale-specific resource bundle...
 		String baseResourceClass = "org.jfree.chart.resources.JFreeChartResources";
 		ResourceBundle resources = ResourceBundle.getBundle(baseResourceClass);
-
+		
 		setName(resources.getString("project.name"));
 		setVersion(resources.getString("project.version"));
 		setInfo(resources.getString("project.info"));
@@ -1418,7 +1418,7 @@ class JFreeChartInfo extends ProjectInfo {
 		setLogo(null); // load only when required
 		setLicenceName("LGPL");
 		setLicenceText(Licences.getInstance().getLGPL());
-
+		
 		setContributors(Arrays.asList(new Contributor[] { new Contributor("Eric Alexander", "-"),
 				new Contributor("Richard Atkinson", "richard_c_atkinson@ntlworld.com"),
 				new Contributor("David Basten", "-"), new Contributor("David Berry", "-"),
@@ -1455,18 +1455,18 @@ class JFreeChartInfo extends ProjectInfo {
 				new Contributor("Matthew Wright", "-"), new Contributor("Benoit Xhenseval", "-"),
 				new Contributor("Christian W. Zuckschwerdt", "Christian.Zuckschwerdt@Informatik.Uni-Oldenburg.de"),
 				new Contributor("Hari", "-"), new Contributor("Sam (oldman)", "-"), }));
-
+		
 		addLibrary(JCommon.INFO);
-
+		
 	}
-
+	
 	/**
 	 * Returns the JFreeChart logo (a picture of a gorilla).
 	 * 
 	 * @return the JFreeChart logo.
 	 */
 	public Image getLogo() {
-
+		
 		Image logo = super.getLogo();
 		if (logo == null) {
 			URL imageURL = ClassLoader.getSystemResource("org/jfree/chart/gorilla.jpg");
@@ -1478,7 +1478,7 @@ class JFreeChartInfo extends ProjectInfo {
 			}
 		}
 		return logo;
-
+		
 	}
-
+	
 }

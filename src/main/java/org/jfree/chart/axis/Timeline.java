@@ -61,26 +61,26 @@ import java.util.Date;
  * @author Bill Kelemen
  */
 public interface Timeline {
-
+	
 	/**
 	 * Translates a millisecond (as defined by java.util.Date) into an index along
 	 * this timeline.
 	 * 
 	 * @param millisecond
-	 *            the millisecond.
+	 *           the millisecond.
 	 * @return A timeline value.
 	 */
 	public long toTimelineValue(long millisecond);
-
+	
 	/**
 	 * Translates a date into a value on this timeline.
 	 * 
 	 * @param date
-	 *            the date.
+	 *           the date.
 	 * @return A timeline value
 	 */
 	public long toTimelineValue(Date date);
-
+	
 	/**
 	 * Translates a value relative to this timeline into a domain value. The domain
 	 * value obtained by this method is not always the same domain value that could
@@ -89,53 +89,53 @@ public interface Timeline {
 	 * 
 	 * @see org.jfree.chart.axis.SegmentedTimeline
 	 * @param timelineValue
-	 *            a timeline value.
+	 *           a timeline value.
 	 * @return A domain value.
 	 */
 	public long toMillisecond(long timelineValue);
-
+	
 	/**
 	 * Returns <code>true</code> if a value is contained in the timeline values.
 	 * 
 	 * @param millisecond
-	 *            the millisecond.
+	 *           the millisecond.
 	 * @return <code>true</code> if value is contained in the timeline and
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean containsDomainValue(long millisecond);
-
+	
 	/**
 	 * Returns <code>true</code> if a date is contained in the timeline values.
 	 * 
 	 * @param date
-	 *            the date to verify.
+	 *           the date to verify.
 	 * @return <code>true</code> if value is contained in the timeline and
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean containsDomainValue(Date date);
-
+	
 	/**
 	 * Returns <code>true</code> if a range of values are contained in the timeline.
 	 * 
 	 * @param fromMillisecond
-	 *            the start of the range to verify.
+	 *           the start of the range to verify.
 	 * @param toMillisecond
-	 *            the end of the range to verify.
+	 *           the end of the range to verify.
 	 * @return <code>true</code> if the range is contained in the timeline or
 	 *         <code>false</code> otherwise
 	 */
 	public boolean containsDomainRange(long fromMillisecond, long toMillisecond);
-
+	
 	/**
 	 * Returns <code>true</code> if a range of dates are contained in the timeline.
 	 * 
 	 * @param fromDate
-	 *            the start of the range to verify.
+	 *           the start of the range to verify.
 	 * @param toDate
-	 *            the end of the range to verify.
+	 *           the end of the range to verify.
 	 * @return <code>true</code> if the range is contained in the timeline or
 	 *         <code>false</code> otherwise
 	 */
 	public boolean containsDomainRange(Date fromDate, Date toDate);
-
+	
 }

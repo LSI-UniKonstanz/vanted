@@ -19,14 +19,14 @@ import org.ErrorMsg;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer<Object> {
-
+	
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 			boolean cellHasFocus) {
-
+		
 		JLabel result = new JLabel();
-
+		
 		result.setText(value + "");
-
+		
 		if (isSelected)
 			result.setBackground(list.getSelectionBackground());
 		else {
@@ -35,7 +35,7 @@ public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer<O
 			else
 				result.setBackground(list.getBackground());
 		}
-
+		
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		ImageIcon icon = null;
@@ -74,8 +74,8 @@ public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer<O
 		}
 		if (icon != null)
 			result.setIcon(icon);
-
+		
 		return result;
 	}
-
+	
 }

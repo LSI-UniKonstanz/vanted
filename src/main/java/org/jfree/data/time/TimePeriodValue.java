@@ -35,42 +35,42 @@ import java.io.Serializable;
  * Represents a time period and an associated value.
  */
 public class TimePeriodValue implements Cloneable, Serializable {
-
+	
 	/** The time period. */
 	private TimePeriod period;
-
+	
 	/** The value associated with the time period. */
 	private Number value;
-
+	
 	/**
 	 * Constructs a new data item.
 	 * 
 	 * @param period
-	 *            the time period.
+	 *           the time period.
 	 * @param value
-	 *            the value associated with the time period.
+	 *           the value associated with the time period.
 	 */
 	public TimePeriodValue(final TimePeriod period, final Number value) {
-
+		
 		this.period = period;
 		this.value = value;
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new data pair.
 	 * 
 	 * @param period
-	 *            the time period.
+	 *           the time period.
 	 * @param value
-	 *            the value associated with the time period.
+	 *           the value associated with the time period.
 	 */
 	public TimePeriodValue(final TimePeriod period, final double value) {
-
+		
 		this(period, Double.valueOf(value));
-
+		
 	}
-
+	
 	/**
 	 * Returns the time period.
 	 * 
@@ -79,7 +79,7 @@ public class TimePeriodValue implements Cloneable, Serializable {
 	public TimePeriod getPeriod() {
 		return this.period;
 	}
-
+	
 	/**
 	 * Returns the value.
 	 * 
@@ -88,22 +88,22 @@ public class TimePeriodValue implements Cloneable, Serializable {
 	public Number getValue() {
 		return this.value;
 	}
-
+	
 	/**
 	 * Sets the value for this data item.
 	 * 
 	 * @param value
-	 *            the new value.
+	 *           the new value.
 	 */
 	public void setValue(final Number value) {
 		this.value = value;
 	}
-
+	
 	/**
 	 * Tests this object for equality with the target object.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -113,19 +113,19 @@ public class TimePeriodValue implements Cloneable, Serializable {
 		if (!(o instanceof TimePeriodValue)) {
 			return false;
 		}
-
+		
 		final TimePeriodValue timePeriodValue = (TimePeriodValue) o;
-
+		
 		if (this.period != null ? !this.period.equals(timePeriodValue.period) : timePeriodValue.period != null) {
 			return false;
 		}
 		if (this.value != null ? !this.value.equals(timePeriodValue.value) : timePeriodValue.value != null) {
 			return false;
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code value for the object.
 	 * 
@@ -137,7 +137,7 @@ public class TimePeriodValue implements Cloneable, Serializable {
 		result = 29 * result + (this.value != null ? this.value.hashCode() : 0);
 		return result;
 	}
-
+	
 	/**
 	 * Clones the data pair.
 	 * <P>
@@ -147,17 +147,17 @@ public class TimePeriodValue implements Cloneable, Serializable {
 	 * @return a clone of this data pair.
 	 */
 	public Object clone() {
-
+		
 		Object clone = null;
-
+		
 		try {
 			clone = super.clone();
 		} catch (CloneNotSupportedException e) { // won't get here...
 			System.err.println("TimePeriodValue.clone(): operation not supported.");
 		}
-
+		
 		return clone;
-
+		
 	}
-
+	
 }

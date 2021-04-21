@@ -5,7 +5,6 @@ import java.util.List;
 import org.vanted.animation.data.InterpolatableTimePoint;
 
 /**
- * 
  * Similar to a StandardLooper but allows interpolators to interpolate from the
  * end of the animation to the start of the animation. <br>
  * Note: This looper should only be used with that are continuous. Use a
@@ -15,22 +14,21 @@ import org.vanted.animation.data.InterpolatableTimePoint;
  * longer than the largest time value in the animation's set of data points.
  * 
  * @author - Patrick Shaw
- * 
  */
 public class ForwardLooper extends Looper {
 	public ForwardLooper() {
 	}
-
+	
 	@Override
 	protected int getIndexBeforePreviousPoint(int kthIndex, int dataPointsSize, int pointsBefore, int pointsAfter) {
 		return kthIndex < 0 ? dataPointsSize + (kthIndex) : kthIndex;
 	}
-
+	
 	@Override
 	protected int getIndexAfterPreviousPoint(int kthIndex, int dataPointsSize, int pointsBefore, int pointsAfter) {
 		return kthIndex % dataPointsSize;
 	}
-
+	
 	@Override
 	public <V, T extends InterpolatableTimePoint<V>> double getNormalizedTime(double time, double loopDuration,
 			List<T> dataPoints, List<T> pointsUsed, T previousPoint, T nextPoint) {

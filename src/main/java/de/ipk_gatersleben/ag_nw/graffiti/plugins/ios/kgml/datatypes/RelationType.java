@@ -8,7 +8,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes;
 
 public enum RelationType implements ProvidesExplanation {
 	ECrel, PPrel, GErel, PCrel, maplink;
-
+	
 	public String getExplanation() {
 		if (this == ECrel)
 			return "enzyme-enzyme relation, indicating two enzymes catalyzing successive reaction steps";
@@ -22,7 +22,7 @@ public enum RelationType implements ProvidesExplanation {
 			return "link to another map";
 		return null;
 	}
-
+	
 	public String getTypeDescription(boolean html) {
 		if (html)
 			return "<html>"
@@ -36,7 +36,7 @@ public enum RelationType implements ProvidesExplanation {
 					+ "a chemical compound, and maplink for linkage between a protein and a map. The maplink "
 					+ "relation is provided for interaction between a protein and another in the specified map.";
 	}
-
+	
 	public static RelationType getRelationType(String typeValue) {
 		if (typeValue.equals("ECrel"))
 			return ECrel;
@@ -52,20 +52,20 @@ public enum RelationType implements ProvidesExplanation {
 			return maplink;
 		return null;
 	}
-
+	
 	@Override
 	public String toString() {
 		switch (this) {
-		case ECrel:
-			return "ECrel";
-		case PPrel:
-			return "PPrel";
-		case GErel:
-			return "GErel";
-		case PCrel:
-			return "PCrel";
-		case maplink:
-			return "maplink";
+			case ECrel:
+				return "ECrel";
+			case PPrel:
+				return "PPrel";
+			case GErel:
+				return "GErel";
+			case PCrel:
+				return "PCrel";
+			case maplink:
+				return "maplink";
 		}
 		return "";
 	}

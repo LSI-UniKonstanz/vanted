@@ -45,21 +45,21 @@ import java.io.Serializable;
  * @author Bryan Scott
  */
 public class ShipNeedle extends MeterNeedle implements Serializable {
-
+	
 	/**
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param rotate
-	 *            the rotation point.
+	 *           the rotation point.
 	 * @param angle
-	 *            the angle.
+	 *           the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
-
+		
 		GeneralPath shape = new GeneralPath();
 		shape.append(new Arc2D.Double(-9.0, -7.0, 10, 14, 0.0, 25.5, Arc2D.OPEN), true);
 		shape.append(new Arc2D.Double(0.0, -7.0, 10, 14, 154.5, 25.5, Arc2D.OPEN), true);
@@ -67,21 +67,21 @@ public class ShipNeedle extends MeterNeedle implements Serializable {
 		getTransform().setToTranslation(plotArea.getMinX(), plotArea.getMaxY());
 		getTransform().scale(plotArea.getWidth(), plotArea.getHeight() / 3);
 		shape.transform(getTransform());
-
+		
 		if ((rotate != null) && (angle != 0)) {
 			// / we have rotation
 			getTransform().setToRotation(angle, rotate.getX(), rotate.getY());
 			shape.transform(getTransform());
 		}
-
+		
 		defaultDisplay(g2, shape);
 	}
-
+	
 	/**
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -96,5 +96,5 @@ public class ShipNeedle extends MeterNeedle implements Serializable {
 		}
 		return false;
 	}
-
+	
 }

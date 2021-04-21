@@ -10,70 +10,70 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 
 public class BackgroundTaskStatusProviderSupportingExternalCallImpl
 		implements BackgroundTaskStatusProviderSupportingExternalCall {
-
+	
 	private String status1, status2;
 	private double currentProgress = -1d;
 	private boolean stopRequested = false;
-
+	
 	public BackgroundTaskStatusProviderSupportingExternalCallImpl(String status1, String status2) {
 		this.status1 = status1;
 		this.status2 = status2;
 	}
-
+	
 	public synchronized void setCurrentStatusValueFine(double value) {
 		currentProgress = value;
 	}
-
+	
 	public boolean wantsToStop() {
 		return stopRequested;
 	}
-
+	
 	public synchronized void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
-
+	
 	public synchronized void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
-
+	
 	public synchronized int getCurrentStatusValue() {
 		return (int) currentProgress;
 	}
-
+	
 	public synchronized void setCurrentStatusValue(int value) {
 		currentProgress = value;
 	}
-
+	
 	public synchronized double getCurrentStatusValueFine() {
 		return currentProgress;
 	}
-
+	
 	public synchronized String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	public synchronized String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	public synchronized void pleaseStop() {
 		stopRequested = true;
 	}
-
+	
 	boolean waitForUser = false;
-
+	
 	public boolean pluginWaitsForUser() {
 		return waitForUser;
 	}
-
+	
 	public void pleaseContinueRun() {
 		waitForUser = false;
 	}
-
+	
 	public void setPluginWaitsForUser(boolean wait) {
 		this.waitForUser = wait;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

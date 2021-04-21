@@ -27,22 +27,22 @@ class Getattr {
 		env.put(Context.SECURITY_CREDENTIALS, "<pass>");
 		env.put(Context.SECURITY_PRINCIPAL, "uid=klukas,o=agnw,dc=ipk-gatersleben.de,dc=de,ou=people");
 		try {
-
+			
 			// Create the initial directory context
 			DirContext ctx = new InitialDirContext(env);
-
+			
 			// Ask for all attributes of the object
 			Attributes attrs = ctx.getAttributes("cn=klukas"); // dc=ipk-gatersleben.de,cn=klukas, ou=people
-
+			
 			NamingEnumeration<?> ne = attrs.getIDs();
 			for (String id = (String) ne.next(); ne.hasMore();) {
 				String val = attrs.get(id).toString();
 				System.out.println(id + " = " + val);
 			}
-
+			
 			// Find the surname ("sn") and print it
 			System.out.println("sn: " + attrs.get("sn").get());
-
+			
 			// Close the context when we're done
 			ctx.close();
 		} catch (NamingException e) {

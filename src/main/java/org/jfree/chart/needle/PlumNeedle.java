@@ -44,47 +44,47 @@ import java.io.Serializable;
  * @author Bryan Scott
  */
 public class PlumNeedle extends MeterNeedle implements Serializable {
-
+	
 	/**
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param rotate
-	 *            the rotation point.
+	 *           the rotation point.
 	 * @param angle
-	 *            the angle.
+	 *           the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
-
+		
 		Arc2D shape = new Arc2D.Double(Arc2D.PIE);
 		double radius = plotArea.getHeight();
 		double halfX = plotArea.getWidth() / 2;
 		double diameter = 2 * radius;
-
+		
 		shape.setFrame(plotArea.getMinX() + halfX - radius, plotArea.getMinY() - radius, diameter, diameter);
 		radius = Math.toDegrees(Math.asin(halfX / radius));
 		shape.setAngleStart(270 - radius);
 		shape.setAngleExtent(2 * radius);
-
+		
 		Area s = new Area(shape);
-
+		
 		if ((rotate != null) && (angle != 0)) {
 			// / we have rotation houston, please spin me
 			getTransform().setToRotation(angle, rotate.getX(), rotate.getY());
 			s.transform(getTransform());
 		}
-
+		
 		defaultDisplay(g2, s);
 	}
-
+	
 	/**
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -99,5 +99,5 @@ public class PlumNeedle extends MeterNeedle implements Serializable {
 		}
 		return false;
 	}
-
+	
 }

@@ -16,11 +16,11 @@ package org.graffiti.plugin.algorithm;
  * @version $Revision: 1.5 $ $Date: 2010/12/22 13:05:32 $
  */
 public class NoNextStepException extends RuntimeException {
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1457683508898063396L;
 }
 
 // ------------------------------------------------------------------------------

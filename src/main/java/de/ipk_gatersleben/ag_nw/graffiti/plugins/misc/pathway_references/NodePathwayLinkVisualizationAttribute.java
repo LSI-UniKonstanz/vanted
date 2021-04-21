@@ -9,7 +9,7 @@ public class NodePathwayLinkVisualizationAttribute extends StringAttribute {
 	public NodePathwayLinkVisualizationAttribute() {
 		super();
 	}
-
+	
 	public NodePathwayLinkVisualizationAttribute(String id, String value) {
 		super(id, value);
 	}

@@ -43,46 +43,46 @@ import org.jfree.ui.RefineryUtilities;
  * A simple demonstration application showing how to...
  */
 public class CompassDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public CompassDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		final ValueDataset dataset = new DefaultValueDataset(Double.valueOf(45.0));
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel.setEnforceFileExtensions(false);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final ValueDataset dataset) {
-
+		
 		final CompassPlot plot = new CompassPlot(dataset);
 		plot.setSeriesNeedle(7);
 		plot.setSeriesPaint(0, Color.red);
 		plot.setSeriesOutlinePaint(0, Color.red);
 		final JFreeChart chart = new JFreeChart(plot);
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -93,20 +93,20 @@ public class CompassDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final CompassDemo2 demo = new CompassDemo2("Compass Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

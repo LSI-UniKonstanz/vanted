@@ -18,15 +18,18 @@ package org.graffiti.graph;
  */
 public class GraphElementNotFoundException extends RuntimeException {
 	// ~ Constructors ===========================================================
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2530160011271799940L;
+	
 	/**
 	 * Constructs a new <code>GraphElementNotFoundException</code> with the
 	 * specified detail message.
 	 * 
 	 * @param msg
-	 *            the error message.
+	 *           the error message.
 	 */
 	public GraphElementNotFoundException(String msg) {
 		super(msg);

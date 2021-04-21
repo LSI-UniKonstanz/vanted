@@ -29,11 +29,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class SetNumericAttributeFromDataAlgorithm extends AbstractAlgorithm {
-
+	
 	private double minimumTargetValue = 1d;
 	private double maximumTargetValue = 10d;
 	private AttributePathNameSearchType attributeA, attributeB1, attributeB2;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -42,30 +42,30 @@ public class SetNumericAttributeFromDataAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Visual Attributes using Attribute Values";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Compute Attributes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(
 				Arrays.asList(Category.GRAPH, Category.ANNOTATION, Category.VISUAL, Category.COMPUTATION));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Change numeric visual properties such as the width of edges or node borders depending on<br>"
 				+ "the value of any of the available attributes.<br>" + "<br>";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		ArrayList<AttributePathNameSearchType> possibleAttributes = new ArrayList<AttributePathNameSearchType>();
 		SearchAndSelecAlgorithm.enumerateAllAttributes(possibleAttributes, graph,
 				SearchType.getSetOfNumericSearchTypes());
-
+		
 		return new Parameter[] {
 				new ObjectListParameter(null, "Source Attribute", "Select the source attribute", possibleAttributes),
 				new DoubleParameter(minimumTargetValue, "Linear transformation: minimum",
@@ -76,7 +76,7 @@ public class SetNumericAttributeFromDataAlgorithm extends AbstractAlgorithm {
 				new ObjectListParameter(null, "Target Attribute 2 (optional)", "Select the target attribute",
 						possibleAttributes) };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -86,7 +86,7 @@ public class SetNumericAttributeFromDataAlgorithm extends AbstractAlgorithm {
 		attributeB1 = (AttributePathNameSearchType) ((ObjectListParameter) params[i++]).getValue();
 		attributeB2 = (AttributePathNameSearchType) ((ObjectListParameter) params[i++]).getValue();
 	}
-
+	
 	public void execute() {
 		Collection<GraphElement> graphElements = getSelectedOrAllGraphElements();
 		double minValue = Double.MAX_VALUE;
@@ -121,7 +121,7 @@ public class SetNumericAttributeFromDataAlgorithm extends AbstractAlgorithm {
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

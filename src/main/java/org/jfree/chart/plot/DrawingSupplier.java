@@ -41,21 +41,21 @@ import java.awt.Stroke;
  * should also implement <code>PublicCloneable</code>.
  */
 public interface DrawingSupplier {
-
+	
 	/**
 	 * Returns the next paint in a sequence maintained by the supplier.
 	 * 
 	 * @return The paint.
 	 */
 	public Paint getNextPaint();
-
+	
 	/**
 	 * Returns the next outline paint in a sequence maintained by the supplier.
 	 * 
 	 * @return The paint.
 	 */
 	public Paint getNextOutlinePaint();
-
+	
 	/**
 	 * Returns the next <code>Stroke</code> object in a sequence maintained by the
 	 * supplier.
@@ -63,7 +63,7 @@ public interface DrawingSupplier {
 	 * @return The stroke.
 	 */
 	public Stroke getNextStroke();
-
+	
 	/**
 	 * Returns the next <code>Stroke</code> object in a sequence maintained by the
 	 * supplier.
@@ -71,7 +71,7 @@ public interface DrawingSupplier {
 	 * @return The stroke.
 	 */
 	public Stroke getNextOutlineStroke();
-
+	
 	/**
 	 * Returns the next <code>Shape</code> object in a sequence maintained by the
 	 * supplier.
@@ -79,5 +79,5 @@ public interface DrawingSupplier {
 	 * @return The shape.
 	 */
 	public Shape getNextShape();
-
+	
 }

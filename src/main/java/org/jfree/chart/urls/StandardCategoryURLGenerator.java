@@ -51,30 +51,33 @@ import org.jfree.util.ObjectUtils;
  * @author Richard Atkinson
  */
 public class StandardCategoryURLGenerator implements CategoryURLGenerator, Cloneable, Serializable {
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8275944906298579767L;
+	
 	/** Prefix to the URL */
 	private String prefix = "index.html";
-
+	
 	/** Series parameter name to go in each URL */
 	private String seriesParameterName = "series";
-
+	
 	/** Category parameter name to go in each URL */
 	private String categoryParameterName = "category";
-
+	
 	/**
 	 * Creates a new generator with default settings.
 	 */
 	public StandardCategoryURLGenerator() {
 		super();
 	}
-
+	
 	/**
 	 * Constructor that overrides default prefix to the URL.
 	 * 
 	 * @param prefix
-	 *            the prefix to the URL (<code>null</code> not permitted).
+	 *           the prefix to the URL (<code>null</code> not permitted).
 	 */
 	public StandardCategoryURLGenerator(String prefix) {
 		if (prefix == null) {
@@ -82,21 +85,21 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator, Clone
 		}
 		this.prefix = prefix;
 	}
-
+	
 	/**
 	 * Constructor that overrides all the defaults.
 	 * 
 	 * @param prefix
-	 *            the prefix to the URL (<code>null</code> not permitted).
+	 *           the prefix to the URL (<code>null</code> not permitted).
 	 * @param seriesParameterName
-	 *            the name of the series parameter to go in each URL
-	 *            (<code>null</code> not permitted).
+	 *           the name of the series parameter to go in each URL
+	 *           (<code>null</code> not permitted).
 	 * @param categoryParameterName
-	 *            the name of the category parameter to go in each URL
-	 *            (<code>null</code> not permitted).
+	 *           the name of the category parameter to go in each URL
+	 *           (<code>null</code> not permitted).
 	 */
 	public StandardCategoryURLGenerator(String prefix, String seriesParameterName, String categoryParameterName) {
-
+		
 		if (prefix == null) {
 			throw new IllegalArgumentException("Null 'prefix' argument.");
 		}
@@ -109,18 +112,18 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator, Clone
 		this.prefix = prefix;
 		this.seriesParameterName = seriesParameterName;
 		this.categoryParameterName = categoryParameterName;
-
+		
 	}
-
+	
 	/**
 	 * Generates a URL for a particular item within a series.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param category
-	 *            the category index (zero-based).
+	 *           the category index (zero-based).
 	 * @return The generated URL.
 	 */
 	public String generateURL(CategoryDataset dataset, int series, int category) {
@@ -147,26 +150,26 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator, Clone
 		// }
 		return url;
 	}
-
+	
 	/**
 	 * Returns an independent copy of the URL generator.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             not thrown by this class, but subclasses (if any) might.
+	 *            not thrown by this class, but subclasses (if any) might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		// all attributes are immutable, so we can just return the super.clone()
 		return super.clone();
-
+		
 	}
-
+	
 	/**
 	 * Tests the generator for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -180,7 +183,7 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator, Clone
 		if (!ObjectUtils.equal(this.prefix, generator.prefix)) {
 			return false;
 		}
-
+		
 		if (!ObjectUtils.equal(this.seriesParameterName, generator.seriesParameterName)) {
 			return false;
 		}
@@ -189,7 +192,7 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator, Clone
 		}
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -202,5 +205,5 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator, Clone
 		result = 29 * result + (this.categoryParameterName != null ? this.categoryParameterName.hashCode() : 0);
 		return result;
 	}
-
+	
 }

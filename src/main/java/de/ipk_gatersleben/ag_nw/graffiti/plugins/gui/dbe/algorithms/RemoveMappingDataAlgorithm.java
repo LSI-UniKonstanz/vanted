@@ -34,24 +34,24 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
-
+	
 	private ArrayDeque<Collection<ExperimentInterface>> undoStack = new ArrayDeque<>();
-
+	
 	@Override
 	public String getName() {
 		return "Remove Mapping Data";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.DATA));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -60,7 +60,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 		if (selection.getNodes().size() < 1)
 			throw new PreconditionException("Graph is empty");
 	}
-
+	
 	@Override
 	public void execute() {
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
@@ -78,7 +78,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 				for (GraphElement ge : workNodes) {
 					if (status.wantsToStop())
 						break;
-
+					
 					progress++;
 					status.setCurrentStatusText2("Processing element " + progress + "/" + workload);
 					status.setCurrentStatusValueFine(100d * progress / (double) workload);
@@ -104,7 +104,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 			status.setCurrentStatusText2("");
 		}, null, status);
 	}
-
+	
 	@Override
 	public void undo() throws CannotUndoException {
 		super.undo();
@@ -116,12 +116,12 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 			dm.execute();
 		});
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 	@Override
 	public boolean doesUndo() {
 		return true;
@@ -138,7 +138,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 		} catch (AttributeNotFoundException anfe) {
 			// empty
 		}
-
+		
 		try {
 			n.removeAttribute("charting");
 		} catch (AttributeNotFoundException anfe) {
@@ -146,7 +146,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 		}
 		try {
 			n.removeAttribute("graphics.component");
-
+			
 		} catch (AttributeNotFoundException anfe) {
 			// empty
 		}

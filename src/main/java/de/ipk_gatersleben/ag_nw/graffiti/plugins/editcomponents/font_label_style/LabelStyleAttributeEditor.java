@@ -27,7 +27,7 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
-
+	
 	private static final String SHADOWSTRING = "<html>shadow";
 	private static final String MOUSEOVERSTRING = "<html>Mouse over";
 	private static final String ITALICSTRING = "<html><i>italic";
@@ -37,7 +37,7 @@ public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
 	protected JCheckBox jFontStyleMouseOver;
 	protected JCheckBox jFontStyleShadow;
 	protected JComboBox<LabelFrameSetting> jFontStyleFrame;
-
+	
 	public LabelStyleAttributeEditor(final Displayable disp) {
 		super(disp);
 		jFontStyleBold = new JCheckBox(BOLDSTRING);
@@ -45,13 +45,13 @@ public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
 		jFontStyleMouseOver = new JCheckBox(MOUSEOVERSTRING);
 		jFontStyleShadow = new JCheckBox(SHADOWSTRING);
 		jFontStyleFrame = new JComboBox<>(LabelFrameSetting.values());
-
+		
 		jFontStyleBold.setOpaque(false);
 		jFontStyleItalic.setOpaque(false);
 		jFontStyleMouseOver.setOpaque(false);
 		jFontStyleShadow.setOpaque(false);
 		jFontStyleFrame.setOpaque(false);
-
+		
 		jFontStyleBold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jFontStyleBold.setText(BOLDSTRING);
@@ -93,7 +93,7 @@ public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
 			}
 		});
 	}
-
+	
 	public JComponent getComponent() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
 			ArrayList<JComponent> ll = new ArrayList<JComponent>();
@@ -107,7 +107,7 @@ public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
 			return TableLayout.get3SplitVertical(jFontStyleBold, jFontStyleItalic, jFontStyleMouseOver,
 					TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
 	}
-
+	
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			jFontStyleFrame.setSelectedItem(null);
@@ -128,7 +128,7 @@ public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
 			jFontStyleFrame.setSelectedItem(LabelFrameSetting.getSettingFromString(sel));
 		}
 	}
-
+	
 	public void setValue() {
 		boolean isBold = jFontStyleBold.isSelected();
 		boolean isItalic = jFontStyleItalic.isSelected();

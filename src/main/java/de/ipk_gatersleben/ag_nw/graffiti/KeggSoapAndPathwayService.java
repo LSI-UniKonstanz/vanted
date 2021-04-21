@@ -36,7 +36,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatusProvider, HelperClass {
-
+	
 	private String status1;
 	private String targetDirectory;
 	private ArrayList<KeggPathwayEntry> keggPathwayEntries;
@@ -44,13 +44,13 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 	private String status2;
 	private double statusFine = -1d;
 	private Color enzymeColor;
-
+	
 	public void setOptions(String targetdirectory, ArrayList<KeggPathwayEntry> keggPathwayEntries, Color enzymeColor) {
 		this.targetDirectory = targetdirectory;
 		this.keggPathwayEntries = keggPathwayEntries;
 		this.enzymeColor = enzymeColor;
 	}
-
+	
 	private static Graph getKeggPathway(int index, ArrayList<KeggPathwayEntry> keggPathwayEntries, Color enzymeColor) {
 		if (index >= keggPathwayEntries.size() || index < 0)
 			return null;
@@ -67,7 +67,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 			return null;
 		}
 	}
-
+	
 	public static boolean writeGML(Graph g, String fileName) {
 		if (g == null || g.getNodes().size() <= 0)
 			return false;
@@ -85,7 +85,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 		}
 		return false;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -118,7 +118,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 				errTxt = errTxt + ", " + errorCount + " graph(s) not loaded";
 			status1 = "Process graph " + i + "/" + maxI + errTxt + ": ";
 			status2 = graph.getName();
-
+			
 			String search = "rn:";
 			Selection selection = new Selection();
 			search = search.toUpperCase(); // case insensitive
@@ -159,7 +159,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 			status2 = success + "/" + keggPathwayEntries.size() + " pathways saved in folder " + targetDirectory;
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -170,7 +170,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 	public int getCurrentStatusValue() {
 		return (int) getCurrentStatusValueFine();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -181,7 +181,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 	public double getCurrentStatusValueFine() {
 		return statusFine;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -192,7 +192,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -203,7 +203,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -214,7 +214,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -225,7 +225,7 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -236,9 +236,9 @@ public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatus
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		statusFine = value;
 	}
-
+	
 }

@@ -56,17 +56,17 @@ import org.jfree.util.SortOrder;
  * A demo showing the creation of a pareto chart.
  */
 public class ParetoChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ParetoChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final DefaultKeyedValues data = new DefaultKeyedValues();
 		data.addValue("C", Integer.valueOf(4843));
 		data.addValue("C++", Integer.valueOf(2098));
@@ -78,11 +78,11 @@ public class ParetoChartDemo extends ApplicationFrame {
 		data.addValue("Ruby", Integer.valueOf(100));
 		data.addValue("SQL", Integer.valueOf(263));
 		data.addValue("Unix Shell", Integer.valueOf(485));
-
+		
 		data.sortByValues(SortOrder.DESCENDING);
 		final KeyedValues cumulative = DataUtilities.getCumulativePercentages(data);
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Languages", data);
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart("Freshmeat Software Projects", // chart title
 				"Language", // domain axis label
@@ -90,27 +90,27 @@ public class ParetoChartDemo extends ApplicationFrame {
 				dataset, // data
 				PlotOrientation.VERTICAL, true, // include legend
 				true, false);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		chart.addSubtitle(new TextTitle("By Programming Language"));
 		chart.addSubtitle(new TextTitle("As at 5 March 2003"));
-
+		
 		// set the background color for the chart...
 		chart.setBackgroundPaint(new Color(0xBBBBDD));
-
+		
 		// get a reference to the plot for further customisation...
 		final CategoryPlot plot = chart.getCategoryPlot();
-
+		
 		final CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setLowerMargin(0.02);
 		domainAxis.setUpperMargin(0.02);
-
+		
 		// set the range axis to display integers only...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+		
 		final LineAndShapeRenderer renderer2 = new LineAndShapeRenderer();
-
+		
 		final CategoryDataset dataset2 = DatasetUtilities.createCategoryDataset("Cumulative", cumulative);
 		final NumberAxis axis2 = new NumberAxis("Percent");
 		axis2.setNumberFormatOverride(NumberFormat.getPercentInstance());
@@ -118,17 +118,17 @@ public class ParetoChartDemo extends ApplicationFrame {
 		plot.setDataset(1, dataset2);
 		plot.setRenderer(1, renderer2);
 		plot.mapDatasetToRangeAxis(1, 1);
-
+		
 		plot.setDatasetRenderingOrder(DatasetRenderingOrder.REVERSE);
 		// OPTIONAL CUSTOMISATION COMPLETED.
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(550, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -139,20 +139,20 @@ public class ParetoChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final ParetoChartDemo demo = new ParetoChartDemo("Pareto Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

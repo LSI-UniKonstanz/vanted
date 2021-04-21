@@ -16,26 +16,26 @@ import org.xml.sax.Attributes;
  * @version $Revision$
  */
 class StackElement {
-
+	
 	/** Name of the element */
 	private String elementName;
-
+	
 	/** Attributes of the element */
 	private Attributes elementAttributes;
-
+	
 	/**
 	 * Creates StackElement instance.
 	 * 
 	 * @param name
-	 *            = element name
+	 *           = element name
 	 * @param attribs
-	 *            = element attributes
+	 *           = element attributes
 	 */
 	public StackElement(String name, Attributes attribs) {
 		this.elementName = name;
 		this.elementAttributes = attribs;
 	}
-
+	
 	/**
 	 * Get the element name.
 	 * 
@@ -44,7 +44,7 @@ class StackElement {
 	public String getElementName() {
 		return this.elementName;
 	}
-
+	
 	/**
 	 * Get the element attributes.
 	 * 
@@ -53,5 +53,5 @@ class StackElement {
 	public Attributes getElementAttributes() {
 		return this.elementAttributes;
 	}
-
+	
 }

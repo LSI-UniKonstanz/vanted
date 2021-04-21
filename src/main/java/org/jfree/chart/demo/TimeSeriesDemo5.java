@@ -47,15 +47,15 @@ import org.jfree.ui.RefineryUtilities;
  * so this needs to be worked on (4000 points is not that many!).
  */
 public class TimeSeriesDemo5 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo5(final String title) {
-
+		
 		super(title);
 		final XYDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
@@ -63,16 +63,16 @@ public class TimeSeriesDemo5 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel.setMouseZoomable(true, false);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return A sample dataset.
 	 */
 	private XYDataset createDataset() {
-
+		
 		final TimeSeries series = new TimeSeries("Random Data");
 		Day current = new Day(1, 1, 1990);
 		double value = 100.0;
@@ -87,18 +87,18 @@ public class TimeSeriesDemo5 extends ApplicationFrame {
 		}
 		return new TimeSeriesCollection(series);
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 		return ChartFactory.createTimeSeriesChart("Test", "Day", "Value", dataset, false, false, false);
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -109,21 +109,21 @@ public class TimeSeriesDemo5 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final String title = "\u20A2\u20A2\u20A2\u20A3\u20A4\u20A5\u20A6\u20A7\u20A8\u20A9\u20AA";
 		final TimeSeriesDemo5 demo = new TimeSeriesDemo5(title);
 		demo.pack();
 		RefineryUtilities.positionFrameRandomly(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

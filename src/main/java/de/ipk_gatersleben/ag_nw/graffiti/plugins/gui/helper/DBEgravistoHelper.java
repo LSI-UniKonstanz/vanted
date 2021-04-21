@@ -27,16 +27,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
  *         Comments
  */
 public class DBEgravistoHelper implements HelperClass {
-
+	
 	public static String DBE_GRAVISTO_VERSION_CODE;// = "2.3.1"; // "DBE-Visualisation and Analysis V1.1";
 	public static String DBE_MIN_COMPATIBILITY_VERSION;
 	public static String VANTED_BUILD;
 	public static String VANTED_BUILDDATE;
 	public static String VANTED_BUILDDATE_TEXTFORMAT;
 	static {
-
+		
 		InputStream resourceAsStream = DBEgravistoHelper.class.getClassLoader().getResourceAsStream("build.number");
-
+		
 		try {
 			Properties props = new Properties();
 			props.load(resourceAsStream);
@@ -49,7 +49,7 @@ public class DBEgravistoHelper implements HelperClass {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");
 		try {
 			Date d = s.parse(VANTED_BUILDDATE);
@@ -59,20 +59,20 @@ public class DBEgravistoHelper implements HelperClass {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public static String DBE_GRAVISTO_VERSION_CODE_SUBVERSION = "release " + VANTED_BUILDDATE_TEXTFORMAT; // "DBE-Visualisation
-																											// and
-																											// Analysis
-																											// V1.1";
+	// and
+	// Analysis
+	// V1.1";
 	public static String DBE_GRAVISTO_VERSION = "DBE-Gravisto V" + DBE_GRAVISTO_VERSION_CODE; // "DBE-Visualisation and
-																								// Analysis V1.1";
+	// Analysis V1.1";
 	public static String DBE_GRAVISTO_NAME = "DBE-Gravisto";
 	public static String DBE_INFORMATIONSYSTEM_NAME = "DBE Information System";
 	public static final String CLUSTER_ANALYSIS_NAME = "Cluster Visualisation";
 	public static final String CLUSTER_ANALYSIS_VERSION = "Cluster Visualisation V" + DBE_GRAVISTO_VERSION_CODE;
 	public static String DBE_GRAVISTO_NAME_SHORT = "DBE-Gravisto";
 	public static String kgmlFileVersionHint = "<sub><small>v0.7.0</small></sub>";
-
+	
 	public static String getPluginStatusText() {
 		boolean patternTabsLoaded = GravistoService.getInstance()
 				.getPluginInstanceFromPluginDescription("IPK Pattern Tabs") != null;
@@ -83,7 +83,7 @@ public class DBEgravistoHelper implements HelperClass {
 		boolean ipkEditToolsLoaded = te != null && te.getDescription().getAuthor().toUpperCase().indexOf("IPK") >= 0;
 		boolean ipkGraffitiViewLoaded = GravistoService.getInstance()
 				.getPluginInstanceFromPluginDescription("IPK Default View") != null;
-
+		
 		return "Plugin Status:\n" + "Pattern Control/Layouter: " + patternTabsLoaded + "\n"
 				+ "Pattern Spring Embedder: " + springEmbedderLoaded + "\n" + "Enhanced IPK Editing Tools: "
 				+ ipkEditToolsLoaded + "\n" + "Enhanced IPK Gravisto View: " + ipkGraffitiViewLoaded;

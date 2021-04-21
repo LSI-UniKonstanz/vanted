@@ -16,9 +16,9 @@ import java.util.Vector;
  * @author klukas
  */
 public class StringManipulationTools implements HelperClass {
-
+	
 	public static final String Unicode = "UTF-8";
-
+	
 	public static final String[][] htmlNamedEntity2Unicode = { { "&nbsp;", "\u00A0" }, { "&iexcl;", "\u00A1" },
 			{ "&cent;", "\u00A2" }, { "&pound;", "\u00A3" }, { "&curren;", "\u00A4" }, { "&yen;", "\u00A5" },
 			{ "&brvbar;", "\u00A6" }, { "&sect;", "\u00A7" }, { "&uml;", "\u00A8" }, { "&copy;", "\u00A9" },
@@ -83,7 +83,7 @@ public class StringManipulationTools implements HelperClass {
 			{ "&chi;", "\u03C7" }, { "&loz;", "\u25CA" }, { "&psi;", "\u03C8" }, { "&omega;", "\u03C9" },
 			{ "&thetasym;", "\u03D1" }, { "&upsih;", "\u03D2" }, { "&piv;", "\u03D6" }, { "&spades;", "\u2660" },
 			{ "&clubs;", "\u2663" }, { "&hearts;", "\u2665" }, { "&diams;", "\u2666" } };
-
+	
 	/**
 	 * Replace occurrences of a substring.
 	 * http://ostermiller.org/utils/StringHelper.html StringHelper.replace("1-2-3",
@@ -99,14 +99,14 @@ public class StringManipulationTools implements HelperClass {
 	 * result: "1-2----3------4"<br>
 	 * 
 	 * @param s
-	 *            String to be modified.
+	 *           String to be modified.
 	 * @param find
-	 *            String to find.
+	 *           String to find.
 	 * @param replace
-	 *            String to replace.
+	 *           String to replace.
 	 * @return a string with all the occurrences of the string to find replaced.
 	 * @throws NullPointerException
-	 *             if s is null.
+	 *            if s is null.
 	 */
 	public static String stringReplace(String s, String find, String replace) {
 		int findLength;
@@ -123,7 +123,7 @@ public class StringManipulationTools implements HelperClass {
 			replace = ""; //$NON-NLS-1$
 		}
 		int replaceLength = replace.length();
-
+		
 		// We need to figure out how long our resulting string will be.
 		// This is required because without it, the possible resizing
 		// and copying of memory structures could lead to an unacceptable runtime.
@@ -138,7 +138,7 @@ public class StringManipulationTools implements HelperClass {
 			int count;
 			int start;
 			int end;
-
+			
 			// Scan s and count the number of times we find our target.
 			count = 0;
 			start = 0;
@@ -154,7 +154,7 @@ public class StringManipulationTools implements HelperClass {
 			}
 			length = stringLength - (count * (findLength - replaceLength));
 		}
-
+		
 		int start = 0;
 		int end = s.indexOf(find, start);
 		if (end == -1) {
@@ -167,7 +167,7 @@ public class StringManipulationTools implements HelperClass {
 		// it looks like we actually have something to replace
 		// *sigh* allocate memory for it.
 		StringBuffer sb = new StringBuffer(length);
-
+		
 		// Scan s and do the replacements
 		while (end != -1) {
 			sb.append(s.substring(start, end).toString());
@@ -177,10 +177,10 @@ public class StringManipulationTools implements HelperClass {
 		}
 		end = stringLength;
 		sb.append(s.substring(start, end).toString());
-
+		
 		return (sb.toString());
 	}
-
+	
 	public static String removeHTMLtags(String textWithHtmlTags) {
 		if (textWithHtmlTags == null)
 			return null;
@@ -189,7 +189,7 @@ public class StringManipulationTools implements HelperClass {
 		res = stringReplace(res, "%20", " ");
 		return res;
 	}
-
+	
 	public static String removeTags(String textWithHtmlTags, String tagA, String tagB) {
 		if (textWithHtmlTags == null)
 			return null;
@@ -208,16 +208,16 @@ public class StringManipulationTools implements HelperClass {
 			textWithHtmlTags = textWithHtmlTags.substring(textWithHtmlTags.indexOf(tagB) + tagB.length());
 		return textWithHtmlTags;
 	}
-
+	
 	/**
 	 * Removes the tags from a html-text and gives back the striped text.
 	 * 
 	 * @param textWithHtmlTags
-	 *            the text with html tags
+	 *           the text with html tags
 	 * @param tagA
-	 *            The left tag (e.g. <a>)
+	 *           The left tag (e.g. <a>)
 	 * @param tagB
-	 *            The right tag (e.g. </a>)
+	 *           The right tag (e.g. </a>)
 	 * @return The array list< string>, where get(0) is the striped text and all
 	 *         other are the striped texts
 	 */
@@ -226,7 +226,7 @@ public class StringManipulationTools implements HelperClass {
 		ArrayList<String> tu = new ArrayList<String>();
 		if (textWithHtmlTags == null)
 			return null;
-
+		
 		tu.add(textWithHtmlTags);
 		int tagApos = tu.get(0).indexOf(tagA);
 		while (tagApos >= 0) {
@@ -243,10 +243,10 @@ public class StringManipulationTools implements HelperClass {
 		}
 		if (tu.get(0).indexOf(tagB) >= 0)
 			tu.set(0, tu.get(0).substring(tu.get(0).indexOf(tagB) + tagB.length()));
-
+		
 		return tu;
 	}
-
+	
 	public static String getWordWrap(String desc, int width) {
 		String[] words = desc.split(" ");
 		String result = "";
@@ -265,7 +265,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return result;
 	}
-
+	
 	public static String getWordWrap(String[] desc, int width) {
 		StringBuilder sb = new StringBuilder();
 		for (String s : desc) {
@@ -273,19 +273,19 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return sb.toString();
 	}
-
+	
 	/**
 	 * @param mapName
 	 * @return
 	 */
 	final static String[] numbers = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-
+	
 	public static String removeNumbersFromString(String s) {
 		for (String r : numbers)
 			s = stringReplace(s, r, "");
 		return s;
 	}
-
+	
 	public static String getNumbersFromString(String s) {
 		StringBuilder res = new StringBuilder();
 		for (Character c : s.toCharArray()) {
@@ -298,20 +298,20 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return res.toString();
 	}
-
+	
 	public static List<Integer> getAllNumbersFromString(String str) {
-
+		
 		if (str == null || str.length() == 0) {
 			return null;
 		}
 		ArrayList<Integer> ints = new ArrayList<Integer>();
-
+		
 		StringBuffer strBuff = new StringBuffer();
 		char c;
-
+		
 		for (int i = 0; i < str.length(); i++) {
 			c = str.charAt(i);
-
+			
 			if (Character.isDigit(c))
 				strBuff.append(c);
 			else if (strBuff.length() > 0) {
@@ -321,7 +321,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return ints;
 	}
-
+	
 	public static String UnicodeToURLsyntax(String unicodeText) {
 		StringBuffer result = new StringBuffer();
 		char[] characters = unicodeText.toCharArray();
@@ -336,7 +336,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return result.toString();
 	}
-
+	
 	public static String UnicodeToHtml(String unicodeText, HashSet<Character> badChars) {
 		StringBuffer result = new StringBuffer();
 		char[] characters = unicodeText.toCharArray();
@@ -353,7 +353,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return result.toString();
 	}
-
+	
 	public static String UnicodeToHtml(String unicodeText) {
 		StringBuffer result = new StringBuffer();
 		char[] characters = unicodeText.toCharArray();
@@ -370,7 +370,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return result.toString();
 	}
-
+	
 	/**
 	 * @param html
 	 * @return
@@ -403,7 +403,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return uni;
 	}
-
+	
 	/**
 	 * converts all HTML named entities within a string to unicode
 	 * 
@@ -416,7 +416,7 @@ public class StringManipulationTools implements HelperClass {
 			unicode = stringReplace(unicode, htmlNamedEntity2Unicode[k][0], htmlNamedEntity2Unicode[k][1]);
 		return unicode;
 	}
-
+	
 	public static String getFileSystemName(String name) {
 		String namenew = stringReplace(name, "*", "");
 		namenew = stringReplace(namenew, " ", "_");
@@ -424,7 +424,7 @@ public class StringManipulationTools implements HelperClass {
 		namenew = stringReplace(namenew, "\\", "_");
 		return namenew;
 	}
-
+	
 	public static String getStringList(ArrayList<?> elements, String div) {
 		if (elements == null || elements.size() <= 0)
 			return "";
@@ -438,24 +438,24 @@ public class StringManipulationTools implements HelperClass {
 			return sb.toString();
 		}
 	}
-
+	
 	public static String[] splitSafe(String str, String delimiter) {
 		String[] stringPieces;
 		try {
 			Vector<String> v = new Vector<String>();
 			int start = 0;
 			int end = str.indexOf(delimiter);
-
+			
 			while (-1 != end) {
 				if (end > start) {
 					v.addElement(new String(str.substring(start, end)));
 				}
-
+				
 				start = end + delimiter.length();
 				end = str.indexOf(delimiter, start);
 			}
 			v.addElement(new String(str.substring(start, str.length())));
-
+			
 			stringPieces = new String[v.size()];
 			for (int i = 0; i < v.size(); ++i) {
 				stringPieces[i] = v.elementAt(i).toString();
@@ -464,10 +464,10 @@ public class StringManipulationTools implements HelperClass {
 			System.err.println(e.toString());
 			stringPieces = null;
 		}
-
+		
 		return stringPieces;
 	}
-
+	
 	public static String reverse(String in) {
 		StringBuilder out = new StringBuilder(in.length());
 		int len = in.length();

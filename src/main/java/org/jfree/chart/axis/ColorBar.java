@@ -59,62 +59,62 @@ import org.jfree.ui.RectangleEdge;
  * @author David M. O'Donnell
  */
 public class ColorBar implements Cloneable, Serializable {
-
+	
 	/** The default color bar thickness. */
 	public static final int DEFAULT_COLORBAR_THICKNESS = 0;
-
+	
 	/** The default color bar thickness percentage. */
 	public static final double DEFAULT_COLORBAR_THICKNESS_PERCENT = 0.10;
-
+	
 	/** The default outer gap. */
 	public static final int DEFAULT_OUTERGAP = 2;
-
+	
 	/** The axis. */
 	private ValueAxis axis;
-
+	
 	/** The color bar thickness. */
 	private int colorBarThickness = DEFAULT_COLORBAR_THICKNESS;
-
+	
 	/** The color bar thickness as a percentage of the height of the data area. */
 	private double colorBarThicknessPercent = DEFAULT_COLORBAR_THICKNESS_PERCENT;
-
+	
 	/** The color palette. */
 	private ColorPalette colorPalette = null;
-
+	
 	/** The color bar length. */
 	private int colorBarLength = 0; // default make height of plotArea
-
+	
 	/** The amount of blank space around the colorbar. */
 	private int outerGap;
-
+	
 	/**
 	 * Constructs a horizontal colorbar axis, using default values where necessary.
 	 * 
 	 * @param label
-	 *            the axis label.
+	 *           the axis label.
 	 */
 	public ColorBar(String label) {
-
+		
 		NumberAxis a = new NumberAxis(label);
 		a.setAutoRangeIncludesZero(false);
 		this.axis = a;
 		this.axis.setLowerMargin(0.0);
 		this.axis.setUpperMargin(0.0);
-
+		
 		this.colorPalette = new RainbowPalette();
 		this.colorBarThickness = DEFAULT_COLORBAR_THICKNESS;
 		this.colorBarThicknessPercent = DEFAULT_COLORBAR_THICKNESS_PERCENT;
 		this.outerGap = DEFAULT_OUTERGAP;
 		this.colorPalette.setMinZ(this.axis.getRange().getLowerBound());
 		this.colorPalette.setMaxZ(this.axis.getRange().getUpperBound());
-
+		
 	}
-
+	
 	/**
 	 * Configures the color bar.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 */
 	public void configure(ContourPlot plot) {
 		double minZ = plot.getDataset().getMinZValue();
@@ -122,7 +122,7 @@ public class ColorBar implements Cloneable, Serializable {
 		setMinimumValue(minZ);
 		setMaximumValue(maxZ);
 	}
-
+	
 	/**
 	 * Returns the axis.
 	 * 
@@ -131,17 +131,17 @@ public class ColorBar implements Cloneable, Serializable {
 	public ValueAxis getAxis() {
 		return this.axis;
 	}
-
+	
 	/**
 	 * Sets the axis.
 	 * 
 	 * @param axis
-	 *            the axis.
+	 *           the axis.
 	 */
 	public void setAxis(ValueAxis axis) {
 		this.axis = axis;
 	}
-
+	
 	/**
 	 * Rescales the axis to ensure that all data are visible.
 	 */
@@ -150,47 +150,47 @@ public class ColorBar implements Cloneable, Serializable {
 		this.colorPalette.setMinZ(this.axis.getLowerBound());
 		this.colorPalette.setMaxZ(this.axis.getUpperBound());
 	}
-
+	
 	/**
 	 * Draws the plot on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param cursor
-	 *            the cursor.
+	 *           the cursor.
 	 * @param plotArea
-	 *            the area within which the chart should be drawn.
+	 *           the area within which the chart should be drawn.
 	 * @param dataArea
-	 *            the area within which the plot should be drawn (a subset of the
-	 *            drawArea).
+	 *           the area within which the plot should be drawn (a subset of the
+	 *           drawArea).
 	 * @param reservedArea
-	 *            the reserved area.
+	 *           the reserved area.
 	 * @param edge
-	 *            the color bar location.
+	 *           the color bar location.
 	 * @return The new cursor location.
 	 */
 	public double draw(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea,
 			Rectangle2D reservedArea, RectangleEdge edge) {
-
+		
 		Rectangle2D colorBarArea = null;
-
+		
 		double thickness = calculateBarThickness(dataArea, edge);
 		if (this.colorBarThickness > 0) {
 			thickness = this.colorBarThickness; // allow fixed thickness
 		}
-
+		
 		double length = 0.0;
 		if (RectangleEdge.isLeftOrRight(edge)) {
 			length = dataArea.getHeight();
 		} else {
 			length = dataArea.getWidth();
 		}
-
+		
 		if (this.colorBarLength > 0) {
 			length = this.colorBarLength;
 		}
-
+		
 		if (edge == RectangleEdge.BOTTOM) {
 			colorBarArea = new Rectangle2D.Double(dataArea.getX(), plotArea.getMaxY() + this.outerGap, length,
 					thickness);
@@ -204,12 +204,12 @@ public class ColorBar implements Cloneable, Serializable {
 			colorBarArea = new Rectangle2D.Double(plotArea.getMaxX() + this.outerGap, dataArea.getMinY(), thickness,
 					length);
 		}
-
+		
 		// update, but dont draw tick marks (needed for stepped colors)
 		this.axis.refreshTicks(g2, new AxisState(), plotArea, colorBarArea, edge);
 		if (colorBarArea != null)
 			drawColorBar(g2, colorBarArea, edge);
-
+		
 		AxisState state = null;
 		if (edge == RectangleEdge.TOP) {
 			cursor = colorBarArea.getMinY();
@@ -225,31 +225,31 @@ public class ColorBar implements Cloneable, Serializable {
 			state = this.axis.draw(g2, cursor, reservedArea, colorBarArea, RectangleEdge.RIGHT, null);
 		}
 		return state.getCursor();
-
+		
 	}
-
+	
 	/**
 	 * Draws the plot on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param colorBarArea
-	 *            the area within which the axis should be drawn.
+	 *           the area within which the axis should be drawn.
 	 * @param edge
-	 *            the location.
+	 *           the location.
 	 */
 	public void drawColorBar(Graphics2D g2, Rectangle2D colorBarArea, RectangleEdge edge) {
-
+		
 		Object antiAlias = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-
+		
 		// setTickValues was missing from ColorPalette v. 0.96
 		// colorPalette.setTickValues(this.axis.getTicks());
-
+		
 		Stroke strokeSaved = g2.getStroke();
 		g2.setStroke(new BasicStroke(1.0f));
-
+		
 		if (RectangleEdge.isTopOrBottom(edge)) {
 			double y1 = colorBarArea.getY();
 			double y2 = colorBarArea.getMaxY();
@@ -275,12 +275,12 @@ public class ColorBar implements Cloneable, Serializable {
 				xx += 1;
 			}
 		}
-
+		
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAlias);
 		g2.setStroke(strokeSaved);
-
+		
 	}
-
+	
 	/**
 	 * Returns the color palette.
 	 * 
@@ -289,85 +289,85 @@ public class ColorBar implements Cloneable, Serializable {
 	public ColorPalette getColorPalette() {
 		return this.colorPalette;
 	}
-
+	
 	/**
 	 * Returns the Paint associated with a value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return the paint.
 	 */
 	public Paint getPaint(double value) {
 		return this.colorPalette.getPaint(value);
 	}
-
+	
 	/**
 	 * Sets the color palette.
 	 * 
 	 * @param palette
-	 *            the new palette.
+	 *           the new palette.
 	 */
 	public void setColorPalette(ColorPalette palette) {
 		this.colorPalette = palette;
 	}
-
+	
 	/**
 	 * Sets the maximum value.
 	 * 
 	 * @param value
-	 *            the maximum value.
+	 *           the maximum value.
 	 */
 	public void setMaximumValue(double value) {
 		this.colorPalette.setMaxZ(value);
 		this.axis.setUpperBound(value);
 	}
-
+	
 	/**
 	 * Sets the minimum value.
 	 * 
 	 * @param value
-	 *            the minimum value.
+	 *           the minimum value.
 	 */
 	public void setMinimumValue(double value) {
 		this.colorPalette.setMinZ(value);
 		this.axis.setLowerBound(value);
 	}
-
+	
 	/**
 	 * Reserves the space required to draw the color bar.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot that the axis belongs to.
+	 *           the plot that the axis belongs to.
 	 * @param plotArea
-	 *            the area within which the plot should be drawn.
+	 *           the area within which the plot should be drawn.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param edge
-	 *            the axis location.
+	 *           the axis location.
 	 * @param space
-	 *            the space already reserved.
+	 *           the space already reserved.
 	 * @return The space required to draw the axis in the specified plot area.
 	 */
 	public AxisSpace reserveSpace(Graphics2D g2, Plot plot, Rectangle2D plotArea, Rectangle2D dataArea,
 			RectangleEdge edge, AxisSpace space) {
-
+		
 		AxisSpace result = this.axis.reserveSpace(g2, plot, plotArea, edge, space, true);
-
+		
 		double thickness = calculateBarThickness(dataArea, edge);
 		result.add(thickness + 2 * this.outerGap, edge);
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Calculates the bar thickness.
 	 * 
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param edge
-	 *            the location.
+	 *           the location.
 	 * @return The thickness.
 	 */
 	private double calculateBarThickness(Rectangle2D plotArea, RectangleEdge edge) {
@@ -379,41 +379,41 @@ public class ColorBar implements Cloneable, Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns a clone of the object.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if some component of the color bar does not support cloning.
+	 *            if some component of the color bar does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		ColorBar clone = (ColorBar) super.clone();
-
+		
 		clone.axis = (ValueAxis) this.axis.clone();
-
+		
 		return clone;
-
+		
 	}
-
+	
 	/**
 	 * Tests this object for equality with another.
 	 * 
 	 * @param obj
-	 *            the object to test against.
+	 *           the object to test against.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof ColorBar) {
 			ColorBar cb = (ColorBar) obj;
 			boolean b0 = this.axis.equals(cb.axis);
@@ -424,9 +424,9 @@ public class ColorBar implements Cloneable, Serializable {
 			boolean b5 = this.outerGap == cb.outerGap;
 			return b0 && b1 && b2 && b3 && b4 && b5;
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 }

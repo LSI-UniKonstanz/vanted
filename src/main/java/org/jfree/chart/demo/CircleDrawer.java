@@ -45,39 +45,39 @@ import org.jfree.ui.Drawable;
  * the {@link org.jfree.chart.annotations.XYDrawableAnnotation} class.
  */
 public class CircleDrawer implements Drawable {
-
+	
 	/** The outline paint. */
 	private Paint outlinePaint;
-
+	
 	/** The outline stroke. */
 	private Stroke outlineStroke;
-
+	
 	/** The fill paint. */
 	private Paint fillPaint;
-
+	
 	/**
 	 * Creates a new instance.
 	 * 
 	 * @param outlinePaint
-	 *            the outline paint.
+	 *           the outline paint.
 	 * @param outlineStroke
-	 *            the outline stroke.
+	 *           the outline stroke.
 	 * @param fillPaint
-	 *            the fill paint.
+	 *           the fill paint.
 	 */
 	public CircleDrawer(final Paint outlinePaint, final Stroke outlineStroke, final Paint fillPaint) {
 		this.outlinePaint = outlinePaint;
 		this.outlineStroke = outlineStroke;
 		this.fillPaint = fillPaint;
 	}
-
+	
 	/**
 	 * Draws the circle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area in which to draw.
+	 *           the area in which to draw.
 	 */
 	public void draw(final Graphics2D g2, final Rectangle2D area) {
 		final Ellipse2D ellipse = new Ellipse2D.Double(area.getX(), area.getY(), area.getWidth(), area.getHeight());
@@ -90,7 +90,7 @@ public class CircleDrawer implements Drawable {
 			g2.setStroke(this.outlineStroke);
 			g2.draw(ellipse);
 		}
-
+		
 		g2.setPaint(Color.black);
 		g2.setStroke(new BasicStroke(1.0f));
 		final Line2D line1 = new Line2D.Double(area.getCenterX(), area.getMinY(), area.getCenterX(), area.getMaxY());

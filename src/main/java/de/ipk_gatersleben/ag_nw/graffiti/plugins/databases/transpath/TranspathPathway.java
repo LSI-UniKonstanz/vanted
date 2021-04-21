@@ -10,23 +10,23 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 
 public class TranspathPathway extends TranspathEntity {
-
+	
 	public String ID, NAME, ALIASES, TYPE, SUPERFAMILY, SUBFAMILY, REACTION, MOLECULE, COMMENT, REFERENCE;
-
+	
 	public String getKey() {
 		return ID;
 	}
-
+	
 	@Override
 	public String toString() {
 		return SUPERFAMILY + "/" + SUBFAMILY + ": " + ID + " - " + ALIASES;
 	}
-
+	
 	@Override
 	public void processXMLentityValue(String environment, String value) {
 		super.processXMLentityValue(environment, value);
 	}
-
+	
 	public void addElementsToGraph(Graph g, String clusterID, HashMap<String, Node> graphElementId2graphNode) {
 		System.out.println("Create graph from " + toString());
 		System.out.println("Reactions: " + REACTION);
@@ -71,7 +71,7 @@ public class TranspathPathway extends TranspathEntity {
 			}
 		}
 	}
-
+	
 	public String getXMLstartEndEntity() {
 		return "Pathway";
 	}

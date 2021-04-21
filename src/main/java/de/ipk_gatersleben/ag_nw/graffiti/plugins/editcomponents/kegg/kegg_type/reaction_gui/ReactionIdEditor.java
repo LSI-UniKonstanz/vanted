@@ -16,24 +16,28 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.KeggId;
 
 public class ReactionIdEditor extends JTextField {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3836585138360538033L;
+	
 	private Reaction currReaction;
-
+	
 	private Pathway currPathway;
-
+	
 	private MyReactionList list;
-
+	
 	public ReactionIdEditor(Reaction initReaction, Pathway pathway) {
-
+		
 		this.currPathway = pathway;
-
+		
 		updateReactionSelection(initReaction);
-
+		
 		addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 				updateReactionSelection(currReaction);
 			}
-
+			
 			public void focusLost(FocusEvent e) {
 				if (currReaction != null) {
 					String newId = getText();
@@ -70,11 +74,11 @@ public class ReactionIdEditor extends JTextField {
 			}
 		});
 	}
-
+	
 	public void setCallBack(MyReactionList list) {
 		this.list = list;
 	}
-
+	
 	public void updateReactionSelection(Reaction r) {
 		this.currReaction = r;
 		if (currReaction != null)
@@ -82,5 +86,5 @@ public class ReactionIdEditor extends JTextField {
 		else
 			setText("");
 	}
-
+	
 }

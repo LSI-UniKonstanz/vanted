@@ -8,13 +8,13 @@ import java.net.URI;
 
 public class LoggingProxy extends ProxySelector {
 	ProxySelector defsel = null;
-
+	
 	public LoggingProxy(ProxySelector def) {
 		defsel = def;
 		// System.out.println("Proxy information will be printed to output for debugging
 		// purposes.");
 	}
-
+	
 	@Override
 	public java.util.List<Proxy> select(URI uri) {
 		java.util.List<Proxy> defProxy = defsel.select(uri);
@@ -40,7 +40,7 @@ public class LoggingProxy extends ProxySelector {
 		// }
 		return defProxy;
 	}
-
+	
 	@Override
 	public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
 		if (defsel != null)

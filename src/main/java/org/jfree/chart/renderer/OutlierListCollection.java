@@ -45,29 +45,29 @@ import java.util.List;
  * @author David Browning
  */
 public class OutlierListCollection {
-
+	
 	/** Storage for the outlier lists. */
 	private List outlierLists;
-
+	
 	/**
 	 * Unbelievably, outliers which are more than 2 * interquartile range are called
 	 * far outs... See Tukey EDA (a classic one of a kind...)
 	 */
 	private boolean highFarOut = false;
-
+	
 	/**
 	 * A flag that indicates whether or not the collection contains low far out
 	 * values.
 	 */
 	private boolean lowFarOut = false;
-
+	
 	/**
 	 * Creates a new empty collection.
 	 */
 	public OutlierListCollection() {
 		this.outlierLists = new ArrayList();
 	}
-
+	
 	/**
 	 * A flag to indicate the presence of one or more far out values at the top end
 	 * of the range.
@@ -77,18 +77,18 @@ public class OutlierListCollection {
 	protected boolean isHighFarOut() {
 		return this.highFarOut;
 	}
-
+	
 	/**
 	 * Sets the flag that indicates the presence of one or more far out values at
 	 * the top end of the range.
 	 * 
 	 * @param farOut
-	 *            the flag.
+	 *           the flag.
 	 */
 	protected void setHighFarOut(boolean farOut) {
 		this.highFarOut = farOut;
 	}
-
+	
 	/**
 	 * A flag to indicate the presence of one or more far out values at the bottom
 	 * end of the range.
@@ -98,18 +98,18 @@ public class OutlierListCollection {
 	protected boolean isLowFarOut() {
 		return this.lowFarOut;
 	}
-
+	
 	/**
 	 * Sets the flag that indicates the presence of one or more far out values at
 	 * the bottom end of the range.
 	 * 
 	 * @param farOut
-	 *            the flag.
+	 *           the flag.
 	 */
 	protected void setLowFarOut(boolean farOut) {
 		this.lowFarOut = farOut;
 	}
-
+	
 	/**
 	 * Appends the specified element as a new <code>OutlierList</code> to the end of
 	 * this list if it does not overlap an outlier in an existing list. If it does
@@ -117,11 +117,11 @@ public class OutlierListCollection {
 	 * is updated.
 	 * 
 	 * @param outlier
-	 *            element to be appended to this list.
+	 *           element to be appended to this list.
 	 * @return <tt>true</tt> (as per the general contract of Collection.add).
 	 */
 	public boolean add(Outlier outlier) {
-
+		
 		if (this.outlierLists.isEmpty()) {
 			return this.outlierLists.add(new OutlierList(outlier));
 		} else {
@@ -138,9 +138,9 @@ public class OutlierListCollection {
 			}
 			return updated;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns an iterator for the outlier lists.
 	 * 
@@ -149,16 +149,16 @@ public class OutlierListCollection {
 	public Iterator iterator() {
 		return this.outlierLists.iterator();
 	}
-
+	
 	/**
 	 * Updates the outlier list by adding the outlier to the end of the list and
 	 * setting the averaged outlier to the average x and y coordinnate values of the
 	 * outliers in the list.
 	 * 
 	 * @param list
-	 *            the outlier list to be updated.
+	 *           the outlier list to be updated.
 	 * @param outlier
-	 *            the outlier to be added
+	 *           the outlier to be added
 	 * @return <tt>true</tt> (as per the general contract of Collection.add).
 	 */
 	private boolean updateOutlierList(OutlierList list, Outlier outlier) {
@@ -168,5 +168,5 @@ public class OutlierListCollection {
 		list.setMultiple(true);
 		return result;
 	}
-
+	
 }

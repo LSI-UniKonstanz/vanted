@@ -46,17 +46,17 @@ import org.jfree.ui.RefineryUtilities;
  * This line chart demo shows many series, each displaying a different shape.
  */
 public class LineChartDemo3 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public LineChartDemo3(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		for (int i = 0; i < 10; i++) {
@@ -66,16 +66,16 @@ public class LineChartDemo3 extends ApplicationFrame {
 			}
 			dataset.addSeries(series);
 		}
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -86,16 +86,16 @@ public class LineChartDemo3 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            a dataset.
+	 *           a dataset.
 	 * @return A chart based on the supplied dataset.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createXYLineChart("Line Chart Demo 3", // chart title
 				"X", // x axis label
 				"Y", // y axis label
@@ -104,34 +104,34 @@ public class LineChartDemo3 extends ApplicationFrame {
 				true, // tooltips
 				false // urls
 		);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
+		
 		// get a reference to the plot for further customisation...
 		final XYPlot plot = chart.getXYPlot();
 		final StandardXYItemRenderer renderer = (StandardXYItemRenderer) plot.getRenderer();
 		renderer.setPlotShapes(true);
-
+		
 		// change the auto tick unit selection to integer units only...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+		
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final LineChartDemo3 demo = new LineChartDemo3("Line Chart Demo 3");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

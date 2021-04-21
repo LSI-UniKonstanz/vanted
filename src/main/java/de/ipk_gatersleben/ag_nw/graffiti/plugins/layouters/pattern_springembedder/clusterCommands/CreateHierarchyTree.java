@@ -18,7 +18,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
 @Deprecated
 public class CreateHierarchyTree extends LaunchGui {
-
+	
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -27,7 +27,7 @@ public class CreateHierarchyTree extends LaunchGui {
 		res.add(new CreateFuncatGraphAlgorithm());
 		return res;
 	}
-
+	
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
@@ -35,16 +35,16 @@ public class CreateHierarchyTree extends LaunchGui {
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy";
-
+		
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.ANNOTATION));
 	}
-
+	
 }

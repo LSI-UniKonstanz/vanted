@@ -44,41 +44,41 @@ import org.sbml.jsbml.xml.XMLNode;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_SBase_Writer {
-
+	
 	/**
 	 * Saves the number of the current Unit
 	 */
 	int sBaseAttributeUnitCount = 1;
-
+	
 	/**
 	 * Saves the number of the current EventAssignment
 	 */
 	int SBaseAttributeFromEACount = 1;
-
+	
 	/**
 	 * Saves the number of the current local parameter
 	 */
 	private int localParameterCount = 1;
-
+	
 	/**
 	 * To make the code shorter
 	 */
 	public final String ATT = AttributeHelper.attributeSeparator;
-
+	
 	private HashMap<String, String> nameSpaceCollector = new HashMap<String, String>();
-
+	
 	/**
 	 * This Method helps processing the attributes with a variable headline
 	 * inherited by SBase
 	 * 
 	 * @param sbase
-	 *            has the attribute which will be set
+	 *           has the attribute which will be set
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param intern
-	 *            representation of headline
+	 *           representation of headline
 	 */
 	public void addSBaseAttributes(AbstractSBase sbase, Graph g, String niceID) {
 		if (sbase instanceof org.sbml.jsbml.Priority) {
@@ -118,7 +118,7 @@ public class SBML_SBase_Writer {
 			addSBaseAttributesFromEvent((Event) sbase, g, niceID);
 		}
 	}
-
+	
 	public void addSBaseAttributes(AbstractSBase sbase, Graph g) {
 		if (sbase instanceof SBMLDocument) {
 			// Processing the name spaces
@@ -192,7 +192,7 @@ public class SBML_SBase_Writer {
 					SBML_Constants.MODEL_NON_RDF_ANNOTATION, true);
 		}
 	}
-
+	
 	// gIsSet is true if g is used und not element
 	private void addAnnotation(AbstractSBase sbase, Graph g, GraphElement element, String headline,
 			String rdfAttributeName, String nonRDFAttributeName, Boolean gIsSet) {
@@ -200,7 +200,7 @@ public class SBML_SBase_Writer {
 			Annotation annotation = null;
 			if (AttributeHelper.hasAttribute(g, headline, rdfAttributeName)) {
 				annotation = (Annotation) getAttribute(g, headline, rdfAttributeName);
-
+				
 			}
 			if (AttributeHelper.hasAttribute(g, headline, nonRDFAttributeName)) {
 				if (annotation == null) {
@@ -249,7 +249,7 @@ public class SBML_SBase_Writer {
 			Annotation annotation = null;
 			if (AttributeHelper.hasAttribute(element, headline, rdfAttributeName)) {
 				annotation = (Annotation) getAttribute(element, headline, rdfAttributeName);
-
+				
 			}
 			if (AttributeHelper.hasAttribute(element, headline, nonRDFAttributeName)) {
 				if (annotation == null) {
@@ -264,7 +264,7 @@ public class SBML_SBase_Writer {
 					
 					e.printStackTrace();
 				}
-
+				
 				// Map<String, String> namespaces;
 				// if (!(sbase instanceof SBMLDocument)
 				// && (!(sbase instanceof SimpleSpeciesReference))) {
@@ -310,9 +310,9 @@ public class SBML_SBase_Writer {
 			}
 		}
 	}
-
+	
 	private void addSBaseAttributesFromEvent(Event sbase, Graph g, String niceID) {
-
+		
 		if (AttributeHelper.hasAttribute(g, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.META_ID).toString())) {
 			String metaID = (String) getAttribute(g, niceID,
@@ -339,9 +339,9 @@ public class SBML_SBase_Writer {
 		addAnnotation(sbase, g, null, niceID, new StringBuffer(niceID).append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), true);
 	}
-
+	
 	private void addSBaseAttributesFromConstraint(Constraint sbase, Graph g, String niceID) {
-
+		
 		if (AttributeHelper.hasAttribute(g, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.META_ID).toString())) {
 			String metaID = (String) getAttribute(g, niceID,
@@ -368,7 +368,7 @@ public class SBML_SBase_Writer {
 		addAnnotation(sbase, g, null, niceID, new StringBuffer(niceID).append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), true);
 	}
-
+	
 	private void addSBaseAttributesFromRule(Rule sbase, Graph g, String niceID) {
 		if (AttributeHelper.hasAttribute(g, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.META_ID).toString())) {
@@ -396,7 +396,7 @@ public class SBML_SBase_Writer {
 		addAnnotation(sbase, g, null, niceID, new StringBuffer(niceID).append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), true);
 	}
-
+	
 	private void addSBaseAttributesFromInitialAssignmnet(InitialAssignment sbase, Graph g, String niceID) {
 		if (AttributeHelper.hasAttribute(g, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.META_ID).toString())) {
@@ -424,7 +424,7 @@ public class SBML_SBase_Writer {
 		addAnnotation(sbase, g, null, niceID, new StringBuffer(niceID).append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), true);
 	}
-
+	
 	private void addSBaseAttributesFromParameter(Parameter sbase, Graph g, String niceID) {
 		if (AttributeHelper.hasAttribute(g, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.META_ID).toString())) {
@@ -452,7 +452,7 @@ public class SBML_SBase_Writer {
 		addAnnotation(sbase, g, null, niceID, new StringBuffer(niceID).append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), true);
 	}
-
+	
 	private void addSBaseAttributesFromCompartment(Compartment sbase, Graph g, String niceID) {
 		if (AttributeHelper.hasAttribute(g, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.META_ID).toString())) {
@@ -480,7 +480,7 @@ public class SBML_SBase_Writer {
 		addAnnotation(sbase, g, null, niceID, new StringBuffer(niceID).append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), true);
 	}
-
+	
 	private void addSBaseAttributesFromUnitDefinition(UnitDefinition sbase, Graph g, String niceID) {
 		if (AttributeHelper.hasAttribute(g, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.META_ID).toString())) {
@@ -507,9 +507,9 @@ public class SBML_SBase_Writer {
 		}
 		addAnnotation(sbase, g, null, niceID, new StringBuffer(niceID).append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), true);
-
+		
 	}
-
+	
 	private void addSBaseAttributesFromFunctionDefinition(FunctionDefinition sbase, Graph g, String niceID) {
 		if (AttributeHelper.hasAttribute(g, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.META_ID).toString())) {
@@ -537,9 +537,9 @@ public class SBML_SBase_Writer {
 		addAnnotation(sbase, g, null, niceID, new StringBuffer(niceID).append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), true);
 	}
-
+	
 	public void addSBaseAttributes(AbstractSBase sbase, Edge e, String niceID) {
-
+		
 		if (AttributeHelper.getSBMLrole(e).equals("modifier")) {
 			if (AttributeHelper.hasAttribute(e, niceID, SBML_Constants.MODIFIER_META_ID)) {
 				String metaID = (String) getAttribute(e, niceID, SBML_Constants.MODIFIER_META_ID);
@@ -565,9 +565,9 @@ public class SBML_SBase_Writer {
 			}
 			addAnnotation(sbase, null, e, niceID, SBML_Constants.MODIFIER_ANNOTATION,
 					SBML_Constants.MODIFIER_NON_RDF_ANNOTATION, false);
-
+			
 		}
-
+		
 		if (AttributeHelper.getSBMLrole(e).equals("reactant")) {
 			if (AttributeHelper.hasAttribute(e, niceID, SBML_Constants.REACTANT_META_ID)) {
 				String metaID = (String) getAttribute(e, niceID, SBML_Constants.REACTANT_META_ID);
@@ -593,9 +593,9 @@ public class SBML_SBase_Writer {
 			}
 			addAnnotation(sbase, null, e, niceID, SBML_Constants.REACTANT_ANNOTATION,
 					SBML_Constants.REACTANT_NON_RDF_ANNOTATION, false);
-
+			
 		}
-
+		
 		if (AttributeHelper.getSBMLrole(e).equals("product")) {
 			if (AttributeHelper.hasAttribute(e, niceID, SBML_Constants.PRODUCT_META_ID)) {
 				String metaID = (String) getAttribute(e, niceID, SBML_Constants.PRODUCT_META_ID);
@@ -623,37 +623,37 @@ public class SBML_SBase_Writer {
 					SBML_Constants.PRODUCT_NON_RDF_ANNOTATION, false);
 		}
 	}
-
+	
 	/**
 	 * Shortens the statement for getting the value of an attribute
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param attributeName
-	 *            is the attribute to be read
+	 *           is the attribute to be read
 	 * @return the value of the attribute
 	 */
 	public Object getAttribute(Graph g, String headline, String attributeName) {
 		return AttributeHelper.getAttributeValue(g, headline, attributeName, SBML_Constants.EMPTY, null);
 	}
-
+	
 	public Object getAttribute(Edge e, String headline, String attributeName) {
 		return AttributeHelper.getAttributeValue(e, headline, attributeName, SBML_Constants.EMPTY, null);
 	}
-
+	
 	/**
 	 * This method writes the SBase Attributes of Priority
 	 * 
 	 * @param priority
-	 *            the SBase Attributes will be added to this object
+	 *           the SBase Attributes will be added to this object
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param niceID
-	 *            intern representation of headline
+	 *           intern representation of headline
 	 */
 	private void addSBaseAttributeFromPriority(Priority priority, Graph g, String niceID) {
 		if (AttributeHelper.hasAttribute(g, niceID,
@@ -683,20 +683,20 @@ public class SBML_SBase_Writer {
 		addAnnotation(priority, g, null, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.PRIORITY_ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.PRIORITY_NON_RDF_ANNOTATION).toString(), true);
-
+		
 	}
-
+	
 	/**
 	 * This method writes the SBase Attributes of Delay
 	 * 
 	 * @param delay
-	 *            the SBase Attributes will be added to this object
+	 *           the SBase Attributes will be added to this object
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param niceID
-	 *            intern representation of headline
+	 *           intern representation of headline
 	 */
 	private void addSBaseAttributeFromDelay(Delay delay, Graph g, String niceID) {
 		if (AttributeHelper.hasAttribute(g, niceID,
@@ -727,18 +727,18 @@ public class SBML_SBase_Writer {
 				new StringBuffer(niceID).append(SBML_Constants.DELAY_ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.DELAY_NON_RDF_ANNOTATION).toString(), true);
 	}
-
+	
 	/**
 	 * This method writes the SBase Attributes of EventAssignment
 	 * 
 	 * @param eventAssignment
-	 *            the SBase Attributes will be added to this object
+	 *           the SBase Attributes will be added to this object
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param niceID
-	 *            intern representation of headline
+	 *           intern representation of headline
 	 */
 	private void addSBaseAttributeFromEventAssignment(EventAssignment eventAssignment, Graph g, String niceID) {
 		String ea_metaid = new StringBuffer(niceID).append(SBML_Constants.EVENT_ASSIGNMENT)
@@ -773,7 +773,7 @@ public class SBML_SBase_Writer {
 				true);
 		SBaseAttributeFromEACount++;
 	}
-
+	
 	private void addSBaseAttributeFromUnit(Unit unit, Graph g, String niceID) {
 		String su_metaid = new StringBuffer(niceID).append(SBML_Constants.SUB_UNIT).append(sBaseAttributeUnitCount)
 				.append(SBML_Constants.META_ID).toString();
@@ -799,28 +799,28 @@ public class SBML_SBase_Writer {
 				unit.setSBOTerm(sboTerm);
 			}
 		}
-
+		
 		addAnnotation(unit, g, null, niceID,
 				new StringBuffer(niceID).append(SBML_Constants.SUB_UNIT).append(sBaseAttributeUnitCount)
 						.append(SBML_Constants.ANNOTATION).toString(),
 				new StringBuffer(niceID).append(SBML_Constants.SUB_UNIT).append(sBaseAttributeUnitCount)
 						.append(SBML_Constants.NON_RDF_ANNOTATION).toString(),
 				true);
-
+		
 		sBaseAttributeUnitCount++;
 	}
-
+	
 	/**
 	 * Method adds all sBase attributes to an object of a model
 	 * 
 	 * @param sbase
-	 *            will set new attributes
+	 *           will set new attributes
 	 * @param node
-	 *            is the current graph element
+	 *           is the current graph element
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param niceID
-	 *            the intern representation of headline
+	 *           the intern representation of headline
 	 */
 	public void addSBaseAttributes(AbstractSBase sbase, Node node) {
 		if (sbase instanceof org.sbml.jsbml.LocalParameter) {
@@ -836,7 +836,7 @@ public class SBML_SBase_Writer {
 			addSBaseAttributeFromKineticLaw((KineticLaw) sbase, node);
 		}
 	}
-
+	
 	private void addSBaseAttributeFromKineticLaw(KineticLaw sbase, Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_META_ID)) {
 			String metaID = (String) getAttribute(node, SBML_Constants.SBML_KINETIC_LAW,
@@ -861,11 +861,11 @@ public class SBML_SBase_Writer {
 		}
 		addAnnotation(sbase, null, node, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_ANNOTATION,
 				SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION, false);
-
+		
 	}
-
+	
 	private void addSBaseAttributeFromReaction(Reaction sbase, Node node) {
-
+		
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.REACTION_META_ID)) {
 			String metaID = (String) getAttribute(node, SBML_Constants.SBML, SBML_Constants.REACTION_META_ID);
 			if (!SBML_Constants.EMPTY.equals(metaID)) {
@@ -890,9 +890,9 @@ public class SBML_SBase_Writer {
 		}
 		addAnnotation(sbase, null, node, SBML_Constants.SBML, SBML_Constants.REACTION_ANNOTATION,
 				SBML_Constants.REACTION_NON_RDF_ANNOTATION, false);
-
+		
 	}
-
+	
 	private void addSBaseAttributeFromSpecies(Species sbase, Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_META_ID)) {
 			String metaID = (String) getAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_META_ID);
@@ -918,20 +918,20 @@ public class SBML_SBase_Writer {
 		}
 		addAnnotation(sbase, null, node, SBML_Constants.SBML, SBML_Constants.SPECIES_ANNOTATION,
 				SBML_Constants.SPECIES_NON_RDF_ANNOTATION, false);
-
+		
 	}
-
+	
 	/**
 	 * This method writes the SBase Attributes of LocalPatameter
 	 * 
 	 * @param localParameter
-	 *            the SBase Attributes will be added to this object
+	 *           the SBase Attributes will be added to this object
 	 * @param node
-	 *            the SBase Attributes will be added to this object
+	 *           the SBase Attributes will be added to this object
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param niceID
-	 *            the intern representation of headline
+	 *           the intern representation of headline
 	 */
 	private void addSBaseAttributeFromLocalParameter(LocalParameter localParameter, Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML_KINETIC_LAW,
@@ -970,38 +970,38 @@ public class SBML_SBase_Writer {
 				new StringBuffer(SBML_Constants.LOCAL_PARAMETER).append(localParameterCount)
 						.append(SBML_Constants.NON_RDF_ANNOTATION).toString(),
 				false);
-
+		
 		localParameterCount++;
-
+		
 	}
-
+	
 	/**
 	 * Shortens the statement for getting the value of an attribute
 	 * 
 	 * @param n
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param attributeName
-	 *            is the attribute to be read
+	 *           is the attribute to be read
 	 * @return the value of the attribute
 	 */
 	public Object getAttribute(Node n, String headline, String attributeName) {
 		return AttributeHelper.getAttributeValue(n, headline, attributeName, null, null);
 	}
-
+	
 	public Object getAttribute(GraphElement n, String headline, String attributeName) {
 		return AttributeHelper.getAttributeValue(n, headline, attributeName, null, null);
 	}
-
+	
 	/**
 	 * Method returns all headlines in the graph tab which begin with a certain
 	 * pattern
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param pattern
-	 *            is the headline to be found
+	 *           is the headline to be found
 	 * @return all headlines with the required beginning
 	 */
 	public ArrayList<String> headlineHelper(Graph g, String pattern) {
@@ -1021,15 +1021,15 @@ public class SBML_SBase_Writer {
 		} else
 			return new ArrayList<String>();
 	}
-
+	
 	/**
 	 * Method returns all headlines in the node tab which begin with a certain
 	 * pattern
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param pattern
-	 *            is the headline to be found
+	 *           is the headline to be found
 	 * @return all headlines with the required beginning
 	 */
 	public ArrayList<String> headlineHelper(Node n, String pattern) {

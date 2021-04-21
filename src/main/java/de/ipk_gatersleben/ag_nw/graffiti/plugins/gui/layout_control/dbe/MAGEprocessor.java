@@ -14,5 +14,5 @@ public class MAGEprocessor {
 	public static Document getDataset(File mageFile) {
 		return null;
 	}
-
+	
 }

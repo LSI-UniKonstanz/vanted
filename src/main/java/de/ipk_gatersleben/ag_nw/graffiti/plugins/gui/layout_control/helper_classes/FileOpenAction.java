@@ -38,31 +38,34 @@ import org.graffiti.session.EditorSession;
  */
 public class FileOpenAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1996719968269727433L;
+	
 	/** DOCUMENT ME! */
 	private IOManager ioManager;
-
+	
 	/** DOCUMENT ME! */
 	private StringBundle sBundle;
-
+	
 	/** DOCUMENT ME! */
 	private ViewManager viewManager;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new FileOpenAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param ioManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param viewManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param sBundle
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public FileOpenAction(MainFrame mainFrame) {
 		super("file.open", mainFrame, "filemenu_open");
@@ -70,9 +73,9 @@ public class FileOpenAction extends GraffitiAction {
 		this.viewManager = mainFrame.getViewManager();
 		this.sBundle = StringBundle.getInstance();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * This action is enabled, if the editor's io manager contains an input
 	 * serializer.
@@ -84,7 +87,7 @@ public class FileOpenAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return ioManager.hasInputSerializer() && viewManager.hasViews();
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -92,44 +95,44 @@ public class FileOpenAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public JScrollPane loadFile(java.awt.event.ActionEvent evt) // String fileNameOrNull
 	{
 		JFileChooser fc = ioManager.createOpenFileChooser();
-
+		
 		OpenFileDialogService.setActiveDirectoryFor(fc);
-
+		
 		int returnVal = fc.showDialog(mainFrame, sBundle.getString("menu.file.open"));
-
+		
 		OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
-
+		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			String fileName = file.getName();
-
+			
 			// System.err.println(fileName);
 			if (fileName.indexOf(".") == -1) {
 				fileName = file.getName() + ((GenericFileFilter) fc.getFileFilter()).getExtension();
 			}
-
+			
 			// System.err.println(fileName);
 			String ext = fileName.substring(fileName.lastIndexOf("."));
-
+			
 			try {
-
+				
 				try {
 					MyInputStreamCreator ic = new MyInputStreamCreator(file);
 					InputSerializer is = ioManager.createInputSerializer(ic.getNewInputStream(), ext);
-
+					
 					Graph g = null;
 					g = is.read(ic.getNewInputStream());
-
+					
 					EditorSession es = new EditorSession(g);
 					es.setFileName(file.getAbsolutePath());
 					String[] fileTypeDescriptions = is.getFileTypeDescriptions();
@@ -151,7 +154,7 @@ public class FileOpenAction extends GraffitiAction {
 		}
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -160,7 +163,7 @@ public class FileOpenAction extends GraffitiAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		//
-
+		
 	}
 }
 

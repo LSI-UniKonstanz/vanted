@@ -38,7 +38,7 @@ import java.io.Serializable;
  * @author David M. O'Donnell.
  */
 public class GreyPalette extends ColorPalette implements Serializable {
-
+	
 	/**
 	 * Creates a new palette.
 	 */
@@ -46,31 +46,31 @@ public class GreyPalette extends ColorPalette implements Serializable {
 		super();
 		initialize();
 	}
-
+	
 	/**
 	 * Intializes the palette's indices.
 	 */
 	public void initialize() {
-
+		
 		setPaletteName("Grey");
-
+		
 		this.r = new int[256];
 		this.g = new int[256];
 		this.b = new int[256];
-
+		
 		this.r[0] = 255;
 		this.g[0] = 255;
 		this.b[0] = 255;
 		this.r[1] = 0;
 		this.g[1] = 0;
 		this.b[1] = 0;
-
+		
 		for (int i = 2; i < 256; i++) {
 			this.r[i] = i;
 			this.g[i] = i;
 			this.b[i] = i;
 		}
-
+		
 	}
-
+	
 }

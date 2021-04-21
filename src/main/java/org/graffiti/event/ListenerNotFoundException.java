@@ -17,18 +17,18 @@ package org.graffiti.event;
  */
 public class ListenerNotFoundException extends Exception {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -7480920926138456854L;
+	
 	/**
 	 * Constructs a <code>ListenerNotFoundException</code> with the specified detail
 	 * message.
 	 * 
 	 * @param msg
-	 *            the detail message for the exception.
+	 *           the detail message for the exception.
 	 */
 	public ListenerNotFoundException(String msg) {
 		super(msg);

@@ -26,17 +26,16 @@ import org.graffiti.plugin.editcomponent.ValueEditComponent;
  * @see AbstractValueEditContainer
  */
 public class AbstractGraffitiValueEditContainer extends AbstractValueEditContainer {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7465463694726902155L;
+	// ~ Instance fields ========================================================
 	/** The table containing the component for editing values. */
 	private NameValueTable nvt;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for AbstractGraffitiValueEditContainer.
 	 */
@@ -44,9 +43,9 @@ public class AbstractGraffitiValueEditContainer extends AbstractValueEditContain
 		super();
 		nvt = new NameValueTable(javax.swing.JSplitPane.VERTICAL_SPLIT);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns a <code>java.util.List</code> containing all the edit components of
 	 * this <code>ValueEditContainer</code>.
@@ -54,35 +53,35 @@ public class AbstractGraffitiValueEditContainer extends AbstractValueEditContain
 	 * @return a <code>java.util.List</code> containing all the edit components of
 	 *         this <code>ValueEditContainer</code>.
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public List<?> getEditComponents() {
 		throw new RuntimeException("implement me");
 	}
-
+	
 	/**
 	 * Adds a <code>ValueEditComponent</code> to the value edit container.
 	 * 
 	 * @param vec
-	 *            the <code>ValueEditComponent</code> to be added.
+	 *           the <code>ValueEditComponent</code> to be added.
 	 */
 	@Override
 	public void addValueEditComponent(ValueEditComponent vec) {
 		nvt.addValueEditComponent(vec);
 	}
-
+	
 	/**
 	 * Adds the specified <code>ValueEditComponent</code> to the container.
 	 * 
 	 * @param vec
-	 *            the <code>ValueEditComponent</code> to be added to the container.
+	 *           the <code>ValueEditComponent</code> to be added to the container.
 	 */
 	@Override
 	protected void doAddValueEditComponent(ValueEditComponent vec) {
 	}
-
+	
 	// ~ Inner Classes ==========================================================
-
+	
 	/**
 	 * <code>NameValueTable</code> provides a graffiti style table for editing name
 	 * value pairs packed into a <code>ValueEditComponent</code>.
@@ -90,22 +89,23 @@ public class AbstractGraffitiValueEditContainer extends AbstractValueEditContain
 	 * @see javax.swing.JSplitPane
 	 */
 	protected class NameValueTable extends JSplitPane {
+		
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
-
+		private static final long serialVersionUID = 4111403064206902630L;
+		
 		/** DOCUMENT ME! */
 		private JPanel left = new JPanel();
-
+		
 		/** DOCUMENT ME! */
 		private JPanel right = new JPanel();
-
+		
 		/**
 		 * Constructor for NameValueTable.
 		 * 
 		 * @param newOrientation
-		 *            the orientation of the split pane.
+		 *           the orientation of the split pane.
 		 */
 		public NameValueTable(int newOrientation) {
 			super(newOrientation);
@@ -115,12 +115,12 @@ public class AbstractGraffitiValueEditContainer extends AbstractValueEditContain
 			setRightComponent(right);
 			setDividerSize(3);
 		}
-
+		
 		/**
 		 * Adds a <code>ValueEditComponent</code> to the value edit container.
 		 * 
 		 * @param vec
-		 *            the <code>ValueEditComponent</code> to be added.
+		 *           the <code>ValueEditComponent</code> to be added.
 		 */
 		public void addValueEditComponent(ValueEditComponent vec) {
 			left.add(new JTextField(vec.getDisplayable().getName()));

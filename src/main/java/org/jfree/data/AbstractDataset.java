@@ -56,13 +56,13 @@ import javax.swing.event.EventListenerList;
  * mechanism for registering change listeners.
  */
 public abstract class AbstractDataset implements Dataset, Cloneable, Serializable, ObjectInputValidation {
-
+	
 	/** The group that the dataset belongs to. */
 	private DatasetGroup group;
-
+	
 	/** Storage for registered change listeners. */
 	private transient EventListenerList listenerList;
-
+	
 	/**
 	 * Constructs a dataset.
 	 * <P>
@@ -72,7 +72,7 @@ public abstract class AbstractDataset implements Dataset, Cloneable, Serializabl
 		this.group = new DatasetGroup();
 		this.listenerList = new EventListenerList();
 	}
-
+	
 	/**
 	 * Returns the dataset group for the dataset.
 	 * 
@@ -81,38 +81,38 @@ public abstract class AbstractDataset implements Dataset, Cloneable, Serializabl
 	public DatasetGroup getGroup() {
 		return this.group;
 	}
-
+	
 	/**
 	 * Sets the dataset group for the dataset.
 	 * 
 	 * @param group
-	 *            the dataset group.
+	 *           the dataset group.
 	 */
 	public void setGroup(final DatasetGroup group) {
 		this.group = group;
 	}
-
+	
 	/**
 	 * Registers an object to receive notification of changes to the dataset.
 	 * 
 	 * @param listener
-	 *            the object to register.
+	 *           the object to register.
 	 */
 	public void addChangeListener(final DatasetChangeListener listener) {
 		this.listenerList.add(DatasetChangeListener.class, listener);
 	}
-
+	
 	/**
 	 * Deregisters an object so that it no longer receives notification of changes
 	 * to the dataset.
 	 * 
 	 * @param listener
-	 *            the object to deregister.
+	 *           the object to deregister.
 	 */
 	public void removeChangeListener(final DatasetChangeListener listener) {
 		this.listenerList.remove(DatasetChangeListener.class, listener);
 	}
-
+	
 	/**
 	 * Notifies all registered listeners that the dataset has changed.
 	 */
@@ -121,25 +121,25 @@ public abstract class AbstractDataset implements Dataset, Cloneable, Serializabl
 				this // dataset
 		));
 	}
-
+	
 	/**
 	 * Notifies all registered listeners that the dataset has changed.
 	 * 
 	 * @param event
-	 *            contains information about the event that triggered the
-	 *            notification.
+	 *           contains information about the event that triggered the
+	 *           notification.
 	 */
 	protected void notifyListeners(final DatasetChangeEvent event) {
-
+		
 		final Object[] listeners = this.listenerList.getListenerList();
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == DatasetChangeListener.class) {
 				((DatasetChangeListener) listeners[i + 1]).datasetChanged(event);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the dataset.
 	 * <p>
@@ -148,35 +148,35 @@ public abstract class AbstractDataset implements Dataset, Cloneable, Serializabl
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the dataset does not support cloning.
+	 *            if the dataset does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final AbstractDataset clone = (AbstractDataset) super.clone();
 		clone.listenerList = new EventListenerList();
 		return clone;
 	}
-
+	
 	/**
 	 * Handles serialization.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O problem.
+	 *            if there is an I/O problem.
 	 */
 	private void writeObject(final ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 	}
-
+	
 	/**
 	 * Restores a serialized object.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O problem.
+	 *            if there is an I/O problem.
 	 * @throws ClassNotFoundException
-	 *             if there is a problem loading a class.
+	 *            if there is a problem loading a class.
 	 */
 	private void readObject(final ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -184,7 +184,7 @@ public abstract class AbstractDataset implements Dataset, Cloneable, Serializabl
 		stream.registerValidation(this, 10); // see comments about priority of 10 in
 		// validateObject()
 	}
-
+	
 	/**
 	 * Validates the object. We use this opportunity to call listeners who have
 	 * registered during the deserialization process, as listeners are not
@@ -197,10 +197,10 @@ public abstract class AbstractDataset implements Dataset, Cloneable, Serializabl
 	 * them that this dataset has changed.
 	 * 
 	 * @exception InvalidObjectException
-	 *                If the object cannot validate itself.
+	 *               If the object cannot validate itself.
 	 */
 	public void validateObject() throws InvalidObjectException {
 		fireDatasetChanged();
 	}
-
+	
 }

@@ -15,10 +15,10 @@ import org.HelperClass;
  * @since 2.6.5
  */
 public class BuildInfo implements HelperClass {
-
+	
 	private BuildInfo() {
 	}
-
+	
 	/**
 	 * Gets the current Vanted version, as specified in the build file.
 	 * 
@@ -27,7 +27,7 @@ public class BuildInfo implements HelperClass {
 	public static String getCurrentVersion() {
 		return BuildInfo.getBuildProperty("vanted.version.number");
 	}
-
+	
 	/**
 	 * Gets the minimal Vanted compatibility, as specified in the build file.
 	 * 
@@ -36,7 +36,7 @@ public class BuildInfo implements HelperClass {
 	public static String getMinimalCompatibility() {
 		return BuildInfo.getBuildProperty("vanted.min.compatibility");
 	}
-
+	
 	/**
 	 * Gets the last Vanted build number, as specified in the build file.
 	 * 
@@ -46,7 +46,7 @@ public class BuildInfo implements HelperClass {
 	public static String getLastBuildNumber() {
 		return BuildInfo.getBuildProperty("build.number");
 	}
-
+	
 	/**
 	 * Gets the last Vanted build number, as specified in the build file.
 	 * 
@@ -56,12 +56,12 @@ public class BuildInfo implements HelperClass {
 	public static String getLastBuildDate() {
 		return BuildInfo.getBuildProperty("build.date");
 	}
-
+	
 	/**
 	 * Worker method for retrieving properties.
 	 * 
 	 * @param property
-	 *            build file variable key
+	 *           build file variable key
 	 * @return the retrieved property or empty String
 	 */
 	private static String getBuildProperty(String property) {

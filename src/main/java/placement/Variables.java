@@ -12,11 +12,12 @@ import java.util.Comparator;
  */
 
 public class Variables extends ArrayList<Variable> {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 6057989365330332912L;
+	
 	Variables getSources() {
 		Variables sources = new Variables();
 		for (Variable v : this) {
@@ -27,7 +28,7 @@ public class Variables extends ArrayList<Variable> {
 		}
 		return sources;
 	}
-
+	
 	double getMaxPos() {
 		double max = 0;
 		for (Variable v : this) {
@@ -36,7 +37,7 @@ public class Variables extends ArrayList<Variable> {
 		}
 		return max;
 	}
-
+	
 	double getMinPos() {
 		double min = Double.MAX_VALUE;
 		for (Variable v : this) {
@@ -45,7 +46,7 @@ public class Variables extends ArrayList<Variable> {
 		}
 		return min;
 	}
-
+	
 	boolean contains(String label) {
 		for (Variable v : this) {
 			if (v.name.equals(label)) {
@@ -54,7 +55,7 @@ public class Variables extends ArrayList<Variable> {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Sorts the variables in this list from lowest constraintDepth to highest.
 	 */
@@ -67,7 +68,7 @@ public class Variables extends ArrayList<Variable> {
 					return -1;
 				return 0;
 			}
-
+			
 		});
 	}
 }

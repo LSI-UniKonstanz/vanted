@@ -14,7 +14,7 @@ import org.graffiti.graph.Node;
  */
 public class NodePair {
 	public Node a, b;
-
+	
 	public NodePair(Node a, Node b) {
 		this.a = a;
 		this.b = b;

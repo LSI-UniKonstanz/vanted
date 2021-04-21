@@ -24,62 +24,62 @@ import org.graffiti.graph.Graph;
  */
 public interface InputSerializer extends Serializer {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Reads in a graph from the given filename.
 	 * 
 	 * @param filename
-	 *            The name of the file to read the graph from.
+	 *           The name of the file to read the graph from.
 	 * @param g
-	 *            The graph to add the newly read graph to.
+	 *           The graph to add the newly read graph to.
 	 * @exception IOException
-	 *                If an IO error occurs.
+	 *               If an IO error occurs.
 	 */
 	public void read(String filename, Graph g) throws IOException;
-
+	
 	/**
 	 * @param reader
-	 *            Warning: The Inputstream-Length may be limited in size, e.g. may
-	 *            only provide access to the first 5000 bytes.
+	 *           Warning: The Inputstream-Length may be limited in size, e.g. may
+	 *           only provide access to the first 5000 bytes.
 	 * @return
 	 */
 	public boolean validFor(InputStream reader);
-
+	
 	/**
 	 * Reads in the graph from the given url.
 	 * 
 	 * @param url
-	 *            The URL to read the graph from.
+	 *           The URL to read the graph from.
 	 * @param g
-	 *            The graph to add the newly read graph to.
+	 *           The graph to add the newly read graph to.
 	 * @exception IOException
-	 *                If an IO error occurs.
+	 *               If an IO error occurs.
 	 */
 	public void read(URL url, Graph g) throws IOException;
-
+	
 	/**
 	 * Reads in a graph from the given input stream.
 	 * 
 	 * @param in
-	 *            The input stream to read the graph from.
+	 *           The input stream to read the graph from.
 	 * @param g
-	 *            The graph to add the newly read graph to.
+	 *           The graph to add the newly read graph to.
 	 * @exception IOException
-	 *                If an IO error occurs.
+	 *               If an IO error occurs.
 	 */
 	public void read(InputStream in, Graph g) throws IOException;
-
+	
 	/**
 	 * Reads in a graph from the given input stream.
 	 * 
 	 * @param in
-	 *            The input stream to read the graph from.
+	 *           The input stream to read the graph from.
 	 * @return The newly read graph.
 	 * @exception IOException
-	 *                If an IO error occurs.
+	 *               If an IO error occurs.
 	 */
 	public Graph read(InputStream in) throws IOException;
-
+	
 	public void read(Reader reader, Graph newGraph) throws Exception;
 }
 

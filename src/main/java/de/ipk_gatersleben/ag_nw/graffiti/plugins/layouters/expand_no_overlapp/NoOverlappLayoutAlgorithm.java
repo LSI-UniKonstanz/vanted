@@ -29,20 +29,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @author Christian Klukas
  */
 public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
-
+	
 	private double space = 10;
 	private boolean doNotAskForParameters = false;
 	private boolean layoutFirstX = false;
 	private boolean layoutFirstY = false;
 	private boolean layoutXY = true;
-
+	
 	// private boolean considerViewComponents = true;
-
+	
 	public NoOverlappLayoutAlgorithm() {
 		super();
 		doNotAskForParameters = false;
 	}
-
+	
 	public NoOverlappLayoutAlgorithm(int space, boolean doFirstX, boolean doFirstY, boolean doXY) {
 		doNotAskForParameters = true;
 		this.space = space;
@@ -50,7 +50,7 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 		this.layoutFirstY = doFirstY;
 		this.layoutXY = doXY;
 	}
-
+	
 	@Override
 	public void reset() {
 		super.reset();
@@ -59,54 +59,54 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 		layoutFirstY = true;
 		// considerViewComponents = true;
 	}
-
+	
 	public String getName() {
 		return "Remove Node Overlaps (simple)";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>Simple algorithm to remove node overlap, which also works for nodes with the same position.";
 	}
-
+	
 	/**
 	 * Checks, if a graph was given and that the radius is positive.
 	 * 
 	 * @throws PreconditionException
-	 *             if no graph was given during algorithm invocation or the radius
-	 *             is negative
+	 *            if no graph was given during algorithm invocation or the radius
+	 *            is negative
 	 */
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null) {
 			errors.add("No graph available!");
 		}
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
-
+		
 		if (graph.getNumberOfNodes() <= 0) {
 			throw new PreconditionException("The graph is empty. Cannot run layouter.");
 		}
-
+		
 	}
-
+	
 	/**
 	 * Performs the layout.
 	 */
 	@SuppressWarnings("unchecked")
 	public void execute() {
 		Collection<Node> workNodesC = getSelectedOrAllNodes();
-
+		
 		Node[] workNodes = workNodesC.toArray(new Node[] {});
-
+		
 		HashMap<Node, Vector2d> nodePositionOld = new HashMap<Node, Vector2d>();
 		final HashMap<Node, Vector2d> nodePosition = new HashMap<Node, Vector2d>();
 		HashMap<Node, Vector2d> nodeSize = new HashMap<Node, Vector2d>();
-
+		
 		// retrieve position and size of nodes
 		for (Node n : workNodes) {
 			nodePositionOld.put(n, AttributeHelper.getPositionVec2d(n));
@@ -122,17 +122,17 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 			}
 		});
 		// calculate new positions
-
+		
 		if (!layoutFirstX && !layoutFirstY)
 			doLayout(true, true, workNodes, nodePositionOld, nodePosition, nodeSize);
 		else {
 			doLayout(layoutFirstX, layoutFirstY, workNodes, nodePositionOld, nodePosition, nodeSize);
 			doLayout(!layoutFirstX, !layoutFirstY, workNodes, nodePositionOld, nodePosition, nodeSize);
 		}
-
+		
 		GraphHelper.applyUndoableNodePositionUpdate(nodePosition, getName());
 	}
-
+	
 	private void doLayout(boolean doX, boolean doY, Node[] workNodes, HashMap<Node, Vector2d> nodePositionOld,
 			HashMap<Node, Vector2d> nodePosition, HashMap<Node, Vector2d> nodeSize) {
 		for (Node n1 : workNodes) {
@@ -151,7 +151,7 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 			}
 		}
 	}
-
+	
 	private void checkOverlapp(Vector2d p1, Vector2d s1, Node n2, Vector2d p2, Vector2d s2, Node n1, Node[] workNodes,
 			HashMap<Node, Vector2d> nodePositionOld, HashMap<Node, Vector2d> nodePosition, boolean layoutX,
 			boolean layoutY) {
@@ -169,27 +169,27 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 				p3.y = p3.y + vy;
 		}
 	}
-
+	
 	private double getHorOverlapp(Vector2d p1, Vector2d p2, Vector2d s1, Vector2d s2, double space) {
 		double minDist = (s1.x / 2d + s2.x / 2d + space);
 		double dist = Math.abs(p1.x - p2.x);
 		return dist < minDist ? minDist - dist : 0;
 	}
-
+	
 	private double getVertOverlapp(Vector2d p1, Vector2d p2, Vector2d s1, Vector2d s2, double space) {
 		double minDist = (s1.y / 2d + s2.y / 2d + space);
 		double dist = Math.abs(p1.y - p2.y);
 		return dist < minDist ? minDist - dist : 0;
 	}
-
+	
 	private boolean horOverlapp(Vector2d p1, Vector2d p2, Vector2d s1, Vector2d s2, double space) {
 		return getHorOverlapp(p1, p2, s1, s2, space) > 0;
 	}
-
+	
 	private boolean vertOverlapp(Vector2d p1, Vector2d p2, Vector2d s1, Vector2d s2, double space) {
 		return getVertOverlapp(p1, p2, s1, s2, space) > 0;
 	}
-
+	
 	/**
 	 * Returns the parameter object for the radius.
 	 * 
@@ -201,7 +201,7 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 			return null;
 		DoubleParameter spaceParam = new DoubleParameter(space, "Gap between Nodes",
 				"Specify the minimum space between all nodes");
-
+		
 		BooleanParameter firstXparam = new BooleanParameter(layoutFirstX || layoutXY, "First expand horizontally",
 				"If this is selected, the horizontal overlapping will be removed, first");
 		BooleanParameter firstYparam = new BooleanParameter(layoutFirstY || layoutXY, "First expand vertically",
@@ -210,15 +210,15 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 		// "Consider View Components",
 		// "If enabled, graphical annotations, like the node labels will be considered
 		// and processed - Enable");
-
+		
 		return new Parameter[] { spaceParam, firstXparam, firstYparam, /* considerView /*, debugParam */ };
 	}
-
+	
 	/**
 	 * Sets the radius parameter to the given value.
 	 * 
 	 * @param params
-	 *            An array with exact one DoubleParameter.
+	 *           An array with exact one DoubleParameter.
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
@@ -241,7 +241,7 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 		// considerViewComponents = ((BooleanParameter)
 		// params[i++]).getBoolean().booleanValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -251,12 +251,12 @@ public class NoOverlappLayoutAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Layout";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;

@@ -20,7 +20,7 @@ import org.graffiti.plugin.EditorPluginAdapter;
  */
 public class StandardAttributeComponents extends EditorPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new StandardAttributeComponents object.
 	 */

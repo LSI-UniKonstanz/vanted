@@ -33,27 +33,25 @@ import org.vanted.animation.loopers.ForwardLooper;
 import org.vanted.animation.loopers.StandardLooper;
 
 /**
- * 
  * @author - Patrick Shaw
- * 
  */
 public class RainbowSwappingTest extends AbstractEditorAlgorithm {
-
+	
 	@Override
 	public boolean activeForView(View v) {
 		return true;
 	}
-
+	
 	@Override
 	public String getName() {
 		return "Test Rainbow Animation";
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return "Network";
 	}
-
+	
 	@Override
 	public void execute() {
 		List<Node> nodes = new ArrayList<Node>();
@@ -79,7 +77,7 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 			double input = inputRate * i * 2 * colourPointsPerNode + 1785 + inputOffset;// i * colourPointsPerNode;
 			double outlineInput = input / 2.0;
 			double sinX = 0;
-
+			
 			for (int q = 0; q < pointSize; q++) {
 				nextNodeIndex += 2;
 				nextNodeIndex = nextNodeIndex % nodes.size();
@@ -104,7 +102,7 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 						randomSizeFactor * size.x * sizeFactor, randomSizeFactor * size.y * sizeFactor);
 				thicknessArray[q] = new DoubleTimePoint(percentageTime * animationDuration,
 						1 * (Math.random() * 5.5 + 1));
-
+				
 				sinX += Math.PI / 2.0;
 				input += colourChangeRate;
 				outlineInput -= colourChangeRate;
@@ -129,7 +127,7 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 			animator.addAnimation(labelColourAnim);
 			animator.addAnimation(thicknessAnim);
 		}
-
+		
 		// This doesn't work
 		List<Edge> edges = (List<Edge>) graph.getEdges();
 		double colourPointsPerEdge = 1 * colourPointsPerNode * (double) nodes.size() / (double) edges.size();
@@ -156,5 +154,5 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 		}
 		animator.start();
 	}
-
+	
 }

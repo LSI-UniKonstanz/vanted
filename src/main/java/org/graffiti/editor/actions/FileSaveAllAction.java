@@ -24,26 +24,26 @@ import org.graffiti.session.EditorSession;
  */
 public class FileSaveAllAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -53357153860385957L;
+	
 	/**
 	 * Creates a new FileSaveAllAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param ioManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public FileSaveAllAction(MainFrame mainFrame, IOManager ioManager) {
 		super("file.saveAll", mainFrame, null);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -53,7 +53,7 @@ public class FileSaveAllAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return false;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -61,16 +61,16 @@ public class FileSaveAllAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		String dv = mainFrame.getDefaultView();
-
+		
 		if (dv != null) {
 			mainFrame.createInternalFrame(dv, "", false, false);
 		} else {

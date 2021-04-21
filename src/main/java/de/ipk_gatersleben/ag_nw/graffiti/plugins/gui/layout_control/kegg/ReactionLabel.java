@@ -27,8 +27,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 
 public class ReactionLabel extends JLabel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7849357907025579068L;
 	private Reaction reaction;
-
+	
 	public ReactionLabel(final Reaction r, final HashMap<Entry, Node> entry2graphNode, final Pathway p,
 			final Collection<Gml2PathwayWarningInformation> warnings,
 			final Collection<Gml2PathwayErrorInformation> errors, final Graph graph) {
@@ -40,7 +44,7 @@ public class ReactionLabel extends JLabel {
 		setToolTipText("<html>" + "<b>Click to select</b> related graph-elements<br>"
 				+ "<b>Double-click to modify</b>/delete this reaction<br><br>"
 				+ "Double-click graph edges to edit reactions");
-
+		
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				HashSet<Node> nodes = new HashSet<Node>();
@@ -50,7 +54,7 @@ public class ReactionLabel extends JLabel {
 					nodes.add(entry2graphNode.get(enz));
 				for (Entry p : r.getProducts())
 					nodes.add(entry2graphNode.get(p));
-
+				
 				if (nodes.size() > 0) {
 					Graph graph = nodes.iterator().next().getGraph();
 					EditorSession es = MainFrame.getInstance().getActiveEditorSession();
@@ -66,25 +70,24 @@ public class ReactionLabel extends JLabel {
 					KeggReactionIdAttributeEditor.editReactions(r, p, warnings, errors, entry2graphNode, graph);
 				}
 			}
-
+			
 			public void mouseEntered(MouseEvent e) {
 			}
-
+			
 			public void mouseExited(MouseEvent e) {
 			}
-
+			
 			public void mousePressed(MouseEvent e) {
 			}
-
+			
 			public void mouseReleased(MouseEvent e) {
 			}
 		});
-
+		
 	}
-
+	
 	public Reaction getReaction() {
 		return reaction;
 	}
-
-	private static final long serialVersionUID = 1L;
+	
 }

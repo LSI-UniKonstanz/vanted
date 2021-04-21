@@ -30,39 +30,34 @@ import org.vanted.scaling.Toolbox;
  * components' decorations scaling.
  * 
  * @author D. Garkov
- *
  */
 public class WindowScaler extends ComponentScaler {
-
+	
 	private static final float INITIAL_UNSET = -1f;
-
+	
 	public WindowScaler(float scaleFactor) {
 		super(scaleFactor);
 	}
-
+	
 	/**
 	 * A method to be called when this {@linkplain WindowScaler} has been dispatched
 	 * to some immediate Component to be scaled.
 	 * <p>
-	 * 
 	 * <b>Note:</b> Use this only when JFrame or JDialog, are *not* LookAndFeel
 	 * decorated. Otherwise, this has no effect (Metal LookAndFeel tested).
-	 * 
 	 * Doesn't override {@link ComponentScaler#coscaleIcon(javax.swing.JComponent)}!
 	 * 
 	 * @see {@linkplain DPIHelper#adjustWindowDecoratations()}
-	 * 
 	 * @param immediateComponent
-	 *            to be scaled
+	 *           to be scaled
 	 */
 	public void scaleComponent(Component immediateComponent) {
 		this.coscaleIcon(immediateComponent);
 		resizeWindow(immediateComponent);
 	}
-
+	
 	/**
 	 * Scales JFrame and JDialog icons.
-	 * 
 	 * Doesn't override {@link ComponentScaler#coscaleIcon(javax.swing.JComponent)}!
 	 * 
 	 * @param component
@@ -78,12 +73,12 @@ public class WindowScaler extends ComponentScaler {
 			dialog.setIconImages(scaleIconImages(li));
 		}
 	}
-
+	
 	/**
 	 * Worker mehtod for {@link WindowScaler#coscaleIcon(Component)}.
 	 * 
 	 * @param li
-	 *            images list
+	 *           images list
 	 * @return list of newly scaled Image instances
 	 */
 	private List<Image> scaleIconImages(List<Image> li) {
@@ -93,46 +88,45 @@ public class WindowScaler extends ComponentScaler {
 			li.remove(i);
 			li.add(i, ((ImageIcon) modifyIcon(null, new ImageIcon(im))).getImage());
 		}
-
+		
 		return li;
 	}
-
+	
 	private static float previousRatio = INITIAL_UNSET;
 	private static ArrayList<Integer> scaledWindows = new ArrayList<>();
-
+	
 	/**
 	 * Specialized implementation of the {@linkplain AWTEventListener} that resizes
 	 * any new window. One notable exception are HeavyWeightWindows, whose scaling
 	 * is part of the normal DPI emulating cycle.
 	 * 
 	 * @author D. Garkov
-	 *
 	 */
 	private static class WindowResizerListener implements AWTEventListener {
-
+		
 		@Override
 		public void eventDispatched(AWTEvent event) {
 			if (Toolbox.getDPIScalingRatio() == 1f && WindowScaler.getPreviousRatio() == INITIAL_UNSET)
 				return;
-
+			
 			switch (event.getID()) {
-			case WindowEvent.WINDOW_OPENED:
-				resizeWindow((Window) event.getSource(), false);
-				break;
-			case WindowEvent.WINDOW_CLOSED:
-				// nothing
-				break;
+				case WindowEvent.WINDOW_OPENED:
+					resizeWindow((Window) event.getSource(), false);
+					break;
+				case WindowEvent.WINDOW_CLOSED:
+					// nothing
+					break;
 			}
 		}
 	}
-
+	
 	/**
 	 * Attach a WindowResizerListener to the default system window Toolkit.
 	 */
 	public static void attachSystemWindowResizer() {
 		Toolkit.getDefaultToolkit().addAWTEventListener(new WindowResizerListener(), AWTEvent.WINDOW_EVENT_MASK);
 	}
-
+	
 	/**
 	 * Resizes window components. If the window is not scaling-persistent then its
 	 * actual scaled size is adjusted by scale-back value, meaning it is scaled only
@@ -141,14 +135,14 @@ public class WindowScaler extends ComponentScaler {
 	 * are set to be impersistent, e.g. dialogs.
 	 * 
 	 * @param window
-	 *            to be resized
+	 *           to be resized
 	 * @param isPersistent
-	 *            if the window instance would persist through and get rescaled
+	 *           if the window instance would persist through and get rescaled
 	 */
 	public static void resizeWindow(Component window, boolean isPersistent) {
 		if (!isWindowScalable(window))
 			return;
-
+		
 		float scalingFactor = Toolbox.getDPIScalingRatio();
 		if (previousRatio == INITIAL_UNSET)
 			previousRatio = Toolbox.getDPIScalingRatio();
@@ -160,65 +154,65 @@ public class WindowScaler extends ComponentScaler {
 			scalingFactor = Toolbox.getDPIScalingRatio() / previousRatio;
 			previousRatio = Toolbox.getDPIScalingRatio();
 		}
-
+		
 		float scaleback = (isPersistent) ? 1 : getScalebackFactor(Toolbox.getDPIScalingRatio());
-
+		
 		Dimension size = window.getSize();
 		size.setSize(Math.round(size.width * (scalingFactor * scaleback)),
 				Math.round(size.height * (scalingFactor * scaleback)));
 		window.setSize(size);
-
+		
 		// avoid adding dialog pop-ups and duplicates
 		if (isPersistent && !scaledWindows.contains(window.hashCode()))
 			scaledWindows.add(window.hashCode());
-
+		
 		window.invalidate();
 		window.repaint();
 	}
-
+	
 	/**
 	 * Resize children components of the main container, given there are some.
 	 * Currently not part of the central scaling routine.
 	 * 
 	 * @param window
-	 *            component to scaler
+	 *           component to scaler
 	 */
 	private void resizeWindow(Component window) {
 		if (!isWindowScalable(window))
 			return;
-
+		
 		Dimension size = window.getSize();
 		size.setSize(Math.round(size.width * scaleFactor), Math.round(size.height * scaleFactor));
 		window.setSize(size);
-
+		
 		window.invalidate();
 		window.repaint();
 	}
-
+	
 	/**
 	 * Certain windows do not tolerate resizing, therefore those remain non-scaled.
 	 * 
 	 * @param window
-	 *            to check onto
+	 *           to check onto
 	 * @return true, if not a heavy weight window
 	 */
 	private static boolean isWindowScalable(Component window) {
 		return !window.getClass().getSimpleName().endsWith("HeavyWeightWindow");
 	}
-
+	
 	/**
 	 * @return last most recently used scaling ratio/factor.
 	 */
 	public static float getPreviousRatio() {
 		return previousRatio;
 	}
-
+	
 	/**
 	 * Returns suitable scaleback-value for window scaling. Should be called once
 	 * per overall scaling change, not per window.
 	 * 
 	 * @param ratio
-	 *            {@link Toolbox#getDPIScalingRatio()}
+	 *           {@link Toolbox#getDPIScalingRatio()}
 	 * @return 1 or {@link WindowScaler#SCALEBACK_DECREASE} or
 	 *         {@link WindowScaler#SCALEBACK_INCREASE}
 	 */
@@ -241,9 +235,9 @@ public class WindowScaler extends ComponentScaler {
 			} else
 				return 1;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Used to scale windows' width and height back, since the actual scale by
 	 * itself is too much.

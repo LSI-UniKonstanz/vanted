@@ -40,17 +40,17 @@ import org.jfree.util.PublicCloneable;
  * A collection of (key, object) pairs.
  */
 public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/** Storage for the data. */
 	private List data;
-
+	
 	/**
 	 * Creates a new collection (initially empty).
 	 */
 	public KeyedObjects() {
 		this.data = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Returns the number of items (values) in the collection.
 	 * 
@@ -59,12 +59,12 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	public int getItemCount() {
 		return this.data.size();
 	}
-
+	
 	/**
 	 * Returns an object.
 	 * 
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The object (<code>null</code> if the index is out of range).
 	 */
 	public Object getObject(final int item) {
@@ -77,12 +77,12 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns a key.
 	 * 
 	 * @param index
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getKey(final int index) {
@@ -94,23 +94,23 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	HashMap<Comparable, Integer> key2idx = new HashMap<Comparable, Integer>();
-
+	
 	/**
 	 * Returns the index for a given key.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return the index.
 	 */
 	public int getIndex(final Comparable key) {
-
+		
 		if (key2idx.containsKey(key))
 			return key2idx.get(key);
-
+		
 		int result = -1;
 		int i = 0;
 		final Iterator iterator = this.data.iterator();
@@ -123,16 +123,16 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 			i++;
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the keys.
 	 * 
 	 * @return the keys.
 	 */
 	public List getKeys() {
-
+		
 		final List result = new java.util.ArrayList();
 		final Iterator iterator = this.data.iterator();
 		while (iterator.hasNext()) {
@@ -140,44 +140,44 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 			result.add(ko.getKey());
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the object for a given key. If the key is not recognised, the method
 	 * should return <code>null</code>.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return The object (possibly <code>null</code>).
 	 */
 	public Object getObject(final Comparable key) {
 		return getObject(getIndex(key));
 	}
-
+	
 	/**
 	 * Adds a new object to the collection, or overwrites an existing object.
 	 * <P>
 	 * This is the same as the setObject(...) method.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param object
-	 *            the object.
+	 *           the object.
 	 */
 	public void addObject(final Comparable key, final Object object) {
 		setObject(key, object);
 	}
-
+	
 	/**
 	 * Replaces an existing object, or adds a new object to the collection.
 	 * <P>
 	 * This is the same as the addObject(...) method.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param object
-	 *            the object.
+	 *           the object.
 	 */
 	public void setObject(final Comparable key, final Object object) {
 		final int keyIndex = getIndex(key);
@@ -189,33 +189,33 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 			this.data.add(ko);
 		}
 	}
-
+	
 	/**
 	 * Removes a value from the collection.
 	 * 
 	 * @param index
-	 *            the index of the item to remove.
+	 *           the index of the item to remove.
 	 */
 	public void removeValue(final int index) {
 		this.data.remove(index);
 	}
-
+	
 	/**
 	 * Removes a value from the collection.
 	 * 
 	 * @param key
-	 *            the key of the item to remove.
+	 *           the key of the item to remove.
 	 */
 	public void removeValue(final Comparable key) {
 		removeValue(getIndex(key));
 	}
-
+	
 	/**
 	 * Returns a clone of this object.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if there is a problem cloning.
+	 *            if there is a problem cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final KeyedObjects clone = (KeyedObjects) super.clone();
@@ -227,33 +227,33 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 		}
 		return clone;
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if (!(o instanceof KeyedObjects)) {
 			return false;
 		}
-
+		
 		final KeyedObjects kos = (KeyedObjects) o;
 		final int count = getItemCount();
 		if (count != kos.getItemCount()) {
 			return false;
 		}
-
+		
 		for (int i = 0; i < count; i++) {
 			final Comparable k1 = getKey(i);
 			final Comparable k2 = kos.getKey(i);
@@ -273,7 +273,7 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 			}
 		}
 		return true;
-
+		
 	}
-
+	
 }

@@ -65,30 +65,30 @@ import org.jfree.ui.RefineryUtilities;
  * vertical XY bar chart.
  */
 public class OverlaidXYPlotDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public OverlaidXYPlotDemo(final String title) {
-
+		
 		super(title);
 		final JFreeChart chart = createOverlaidChart();
 		final ChartPanel panel = new ChartPanel(chart, true, true, true, true, true);
 		panel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(panel);
-
+		
 	}
-
+	
 	/**
 	 * Creates an overlaid chart.
 	 * 
 	 * @return The chart.
 	 */
 	private JFreeChart createOverlaidChart() {
-
+		
 		// create plot ...
 		final IntervalXYDataset data1 = createDataset1();
 		final XYItemRenderer renderer1 = new XYBarRenderer(0.20);
@@ -102,7 +102,7 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 		final XYTextAnnotation annotation = new XYTextAnnotation("Hello!", x, 10000.0);
 		annotation.setFont(new Font("SansSerif", Font.PLAIN, 9));
 		plot.addAnnotation(annotation);
-
+		
 		// add a second dataset and renderer...
 		final XYDataset data2 = createDataset2();
 		final XYItemRenderer renderer2 = new StandardXYItemRenderer();
@@ -110,21 +110,21 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 		plot.setDataset(1, data2);
 		plot.setRenderer(1, renderer2);
-
+		
 		plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
-
+		
 		// return a new chart containing the overlaid plot...
 		return new JFreeChart("Overlaid Plot Example", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private IntervalXYDataset createDataset1() {
-
+		
 		// create dataset 1...
 		final TimeSeries series1 = new TimeSeries("Series 1", Day.class);
 		series1.add(new Day(1, SerialDate.MARCH, 2002), 12353.3);
@@ -142,11 +142,11 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 		series1.add(new Day(13, SerialDate.MARCH, 2002), 13102.2);
 		series1.add(new Day(14, SerialDate.MARCH, 2002), 14230.2);
 		series1.add(new Day(15, SerialDate.MARCH, 2002), 11235.2);
-
+		
 		return new TimeSeriesCollection(series1);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -157,17 +157,17 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private XYDataset createDataset2() {
-
+		
 		// create dataset 2...
 		final TimeSeries series2 = new TimeSeries("Series 2", Day.class);
-
+		
 		series2.add(new Day(3, SerialDate.MARCH, 2002), 16853.2);
 		series2.add(new Day(4, SerialDate.MARCH, 2002), 19642.3);
 		series2.add(new Day(5, SerialDate.MARCH, 2002), 18253.5);
@@ -182,25 +182,25 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 		series2.add(new Day(14, SerialDate.MARCH, 2002), 17943.6);
 		series2.add(new Day(15, SerialDate.MARCH, 2002), 18500.7);
 		series2.add(new Day(16, SerialDate.MARCH, 2002), 19595.9);
-
+		
 		final TimeSeriesCollection tsc = new TimeSeriesCollection(series2);
 		return tsc;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final OverlaidXYPlotDemo demo = new OverlaidXYPlotDemo("Overlaid XYPlot Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

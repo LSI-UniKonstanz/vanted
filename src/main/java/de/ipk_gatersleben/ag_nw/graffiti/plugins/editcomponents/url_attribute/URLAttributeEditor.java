@@ -30,20 +30,20 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  * @author Christian Klukas (c) 2004, 2008 IPK-Gatersleben
  */
 public class URLAttributeEditor extends AbstractValueEditComponent {
-
+	
 	protected JButton jButtonShowURL;
 	protected JTextField jEditField;
-
+	
 	protected static Collection<URLattributeAction> attributeActions = MainFrame.getInstance().getActionManager()
 			.getActions();
-
+	
 	public URLAttributeEditor(final Displayable disp) {
 		super(disp);
-
+		
 		String curVal = ((URLAttribute) getDisplayable()).getString();
 		jButtonShowURL = new JButton(getDescription((URLAttribute) getDisplayable(), false, false));
 		jButtonShowURL.addActionListener(getActionListener((URLAttribute) getDisplayable(), false));
-
+		
 		String tooltip = curVal;
 		if (tooltip != null) {
 			for (URLattributeAction ua : attributeActions) {
@@ -55,11 +55,11 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 			jButtonShowURL.setToolTipText(tooltip);
 		}
 		jButtonShowURL.setOpaque(false);
-
+		
 		jEditField = new JTextField(curVal);
 		jEditField.setPreferredSize(new Dimension(10, (int) jEditField.getPreferredSize().getHeight()));
 	}
-
+	
 	public static String getDescription(URLAttribute displayable, boolean shortDesc, boolean modifyCommand) {
 		String curVal = displayable.getString();
 		String prior = "<html><small>";
@@ -71,7 +71,7 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 		else
 			return "Unknown Action";
 	}
-
+	
 	private static URLattributeAction getAttributeAction(String attributeValue) {
 		URLattributeAction defaultUA = null;
 		for (URLattributeAction ua : attributeActions) {
@@ -84,7 +84,7 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 		}
 		return defaultUA;
 	}
-
+	
 	public static ActionListener getActionListener(final URLAttribute disp, final boolean modifyCommand) {
 		if (disp == null)
 			return getDefaultActionListener("Error: Displayable is NULL!");
@@ -94,7 +94,7 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 					"Error: No default handler for current attribute value! (" + disp.getString() + ")");
 		return ua.getActionListener(disp, getGraph(disp), getGraphElement(disp), modifyCommand);
 	}
-
+	
 	private static ActionListener getDefaultActionListener(final String msg) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -102,7 +102,7 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 			}
 		};
 	}
-
+	
 	private static GraphElement getGraphElement(URLAttribute disp) {
 		Attributable a = disp.getAttributable();
 		if (a != null && a instanceof GraphElement)
@@ -110,7 +110,7 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 		else
 			return null;
 	}
-
+	
 	private static Graph getGraph(URLAttribute disp) {
 		Attributable a = disp.getAttributable();
 		if (a != null && a instanceof GraphElement)
@@ -122,12 +122,14 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 				return null;
 		}
 	}
-
+	
+	@Override
 	public JComponent getComponent() {
 		return TableLayout.getSplit(jEditField, jButtonShowURL, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED);
 	}
-
+	
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			jButtonShowURL.setEnabled(false);
@@ -143,12 +145,13 @@ public class URLAttributeEditor extends AbstractValueEditComponent {
 				jButtonShowURL.setText("Unknown Action");
 		}
 	}
-
+	
+	@Override
 	public void setValue() {
 		if (!jEditField.getText().equals(EMPTY_STRING))
 			((URLAttribute) displayable).setString(jEditField.getText());
 	}
-
+	
 	public static boolean supportsModifyCommand(URLAttribute displayable) {
 		if (displayable == null)
 			return false;

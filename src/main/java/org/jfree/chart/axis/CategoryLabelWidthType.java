@@ -36,21 +36,21 @@ import java.io.Serializable;
  * Represents the width types for a category label.
  */
 public final class CategoryLabelWidthType implements Serializable {
-
+	
 	/** Percentage of category. */
 	public static final CategoryLabelWidthType CATEGORY = new CategoryLabelWidthType("CategoryLabelWidthType.CATEGORY");
-
+	
 	/** Percentage of range. */
 	public static final CategoryLabelWidthType RANGE = new CategoryLabelWidthType("CategoryLabelWidthType.RANGE");
-
+	
 	/** The name. */
 	private String name;
-
+	
 	/**
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *            the name (<code>null</code> not permitted).
+	 *           the name (<code>null</code> not permitted).
 	 */
 	private CategoryLabelWidthType(String name) {
 		if (name == null) {
@@ -58,7 +58,7 @@ public final class CategoryLabelWidthType implements Serializable {
 		}
 		this.name = name;
 	}
-
+	
 	/**
 	 * Returns a string representing the object.
 	 * 
@@ -67,39 +67,39 @@ public final class CategoryLabelWidthType implements Serializable {
 	public String toString() {
 		return this.name;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if this object is equal to the specified object,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (this == o) {
 			return true;
 		}
 		if (!(o instanceof CategoryLabelWidthType)) {
 			return false;
 		}
-
+		
 		final CategoryLabelWidthType t = (CategoryLabelWidthType) o;
 		if (!this.name.equals(t.toString())) {
 			return false;
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Ensures that serialization returns the unique instances.
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *             if there is a problem.
+	 *            if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(CategoryLabelWidthType.CATEGORY)) {
@@ -109,5 +109,5 @@ public final class CategoryLabelWidthType implements Serializable {
 		}
 		return null;
 	}
-
+	
 }

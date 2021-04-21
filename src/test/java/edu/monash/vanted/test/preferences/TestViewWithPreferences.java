@@ -10,30 +10,30 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
 public class TestViewWithPreferences extends GraffitiView implements PreferencesInterface {
-
+	
 	private static final long serialVersionUID = -4521565999324787369L;
-
+	
 	Preferences preferences;
-
+	
 	public TestViewWithPreferences() {
-
+		
 		System.out.println("constsructor called");
-
+		
 	}
-
+	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
 		arrayList.add(new BooleanParameter(true, "BooleanParamForTestView", "this is some arbitrary description"));
 		return arrayList;
 	}
-
+	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
@@ -45,5 +45,5 @@ public class TestViewWithPreferences extends GraffitiView implements Preferences
 	// preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
 	// return preferences;
 	// }
-
+	
 }

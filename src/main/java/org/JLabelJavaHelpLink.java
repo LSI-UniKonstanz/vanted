@@ -24,17 +24,20 @@ import javax.swing.JLabel;
 import org.graffiti.editor.MainFrame;
 
 public class JLabelJavaHelpLink extends JLabel {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1715926055847923180L;
 	String labelText;
-
+	
 	public JLabelJavaHelpLink(String label, final String topic) {
 		super(label);
-
+		
 		if (!ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp)) {
 			setText("");
 			return;
 		}
-
+		
 		labelText = label;
 		setToolTipText("Show Help-Topic \"" + topic + "\"");
 		setForeground(Color.BLUE);
@@ -46,7 +49,7 @@ public class JLabelJavaHelpLink extends JLabel {
 			setText(labelText);
 			return;
 		}
-
+		
 		final ActionListener fal = al;
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
@@ -55,28 +58,28 @@ public class JLabelJavaHelpLink extends JLabel {
 				else
 					fal.actionPerformed(new ActionEvent(e.getSource(), e.getID(), ""));
 			}
-
+			
 			public void mousePressed(MouseEvent e) {
 			}
-
+			
 			public void mouseReleased(MouseEvent e) {
 			}
-
+			
 			public void mouseEntered(MouseEvent e) {
 				setText("<html><u>" + labelText);
 			}
-
+			
 			public void mouseExited(MouseEvent e) {
 				setText("<html>" + labelText);
 			}
 		});
 	}
-
+	
 	// private static HelpBroker hb;
 	// private static HelpSet hs;
-
+	
 	private static HashSet<String> invalidTopics = new HashSet<String>();
-
+	
 	public static ActionListener getHelpActionListener(final String topic) {
 		if (!ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp)) {
 			ActionListener al = new ActionListener() {
@@ -87,7 +90,7 @@ public class JLabelJavaHelpLink extends JLabel {
 			};
 			return al;
 		}
-
+		
 		if (topic == null)
 			return null;
 		ActionListener al = new ActionListener() {
@@ -126,5 +129,5 @@ public class JLabelJavaHelpLink extends JLabel {
 		};
 		return al;
 	}
-
+	
 }

@@ -46,10 +46,10 @@ import org.jfree.data.ContourDataset;
  * @author David M. O'Donnell
  */
 public class StandardContourToolTipGenerator implements ContourToolTipGenerator, Serializable {
-
+	
 	/** The number formatter. */
 	private DecimalFormat valueForm = (DecimalFormat) getDecimalFormat("##.###");
-
+	
 	/**
 	 * Replace occurrences of a substring.
 	 * http://ostermiller.org/utils/StringHelper.html StringHelper.replace("1-2-3",
@@ -65,14 +65,14 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 	 * result: "1-2----3------4"<br>
 	 * 
 	 * @param s
-	 *            String to be modified.
+	 *           String to be modified.
 	 * @param find
-	 *            String to find.
+	 *           String to find.
 	 * @param replace
-	 *            String to replace.
+	 *           String to replace.
 	 * @return a string with all the occurrences of the string to find replaced.
 	 * @throws NullPointerException
-	 *             if s is null.
+	 *            if s is null.
 	 */
 	public static String stringReplace(String s, String find, String replace) {
 		int findLength;
@@ -89,7 +89,7 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 			replace = ""; //$NON-NLS-1$
 		}
 		int replaceLength = replace.length();
-
+		
 		// We need to figure out how long our resulting string will be.
 		// This is required because without it, the possible resizing
 		// and copying of memory structures could lead to an unacceptable runtime.
@@ -104,7 +104,7 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 			int count;
 			int start;
 			int end;
-
+			
 			// Scan s and count the number of times we find our target.
 			count = 0;
 			start = 0;
@@ -119,7 +119,7 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 			}
 			length = stringLength - (count * (findLength - replaceLength));
 		}
-
+		
 		int start = 0;
 		int end = s.indexOf(find, start);
 		if (end == -1) {
@@ -132,7 +132,7 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 		// it looks like we actually have something to replace
 		// *sigh* allocate memory for it.
 		StringBuffer sb = new StringBuffer(length);
-
+		
 		// Scan s and do the replacements
 		while (end != -1) {
 			sb.append(s.substring(start, end).toString());
@@ -142,10 +142,10 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 		}
 		end = stringLength;
 		sb.append(s.substring(start, end).toString());
-
+		
 		return (sb.toString());
 	}
-
+	
 	public static DecimalFormat getDecimalFormat(String pattern) {
 		pattern = stringReplace(pattern, ",", "");
 		NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
@@ -153,23 +153,23 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 		df.applyPattern(pattern);
 		return df;
 	}
-
+	
 	/**
 	 * Generates a tooltip text item for a particular item within a series.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The tooltip text.
 	 */
 	public String generateToolTip(ContourDataset data, int item) {
-
+		
 		Number x = data.getXValue(0, item);
 		Number y = data.getYValue(0, item);
 		Number z = data.getZValue(0, item);
 		String xString = null;
-
+		
 		if (data.isDateAxis(0)) {
 			SimpleDateFormat formatter = new java.text.SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 			StringBuffer strbuf = new StringBuffer();
@@ -184,34 +184,34 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 		} else {
 			return "X: " + xString + ", Y: " + this.valueForm.format(y.doubleValue()) + ", Z: no data";
 		}
-
+		
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if (o instanceof StandardContourToolTipGenerator) {
 			StandardContourToolTipGenerator generator = (StandardContourToolTipGenerator) o;
 			if (this.valueForm != null) {
 				return this.valueForm.equals(generator.valueForm);
 			}
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 }

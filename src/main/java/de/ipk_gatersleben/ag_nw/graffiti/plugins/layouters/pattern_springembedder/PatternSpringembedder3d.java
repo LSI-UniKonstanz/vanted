@@ -102,44 +102,44 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 // implements EditorAlgorithm
 {
-
+	
 	public static boolean enabled = true;
-
+	
 	public static final String springName = "Force Directed";
-
+	
 	private Graph non_interact_graph;
-
+	
 	private Selection non_interact_selection;
-
+	
 	public int calcCounter = 0;
-
+	
 	/**
 	 * Saves the positions of the clusters. The hashMap contains Vector2d values.
 	 * The keys are Integers for the cluster numbers. This hashMap might be empty,
 	 * if no cluster locations are calculated or known.
 	 */
 	private HashMap<String, Vector3d> clusterLocations = new HashMap<String, Vector3d>();
-
+	
 	/**
 	 * used for non interactive run, is used in the <code>reset</code> method to set
 	 * the maximum move value back to the desired value.
 	 */
 	private double initLength;
-
+	
 	private double cachedClusterForce;
-
+	
 	private ThreadSafeOptions nonInteractiveTSO;
-
+	
 	/**
 	 * An image with an animated progress bar
 	 */
 	// ImageIcon progressImg;
-
+	
 	/**
 	 * An image with an progress bar, which shows the idle state
 	 */
 	// ImageIcon progressImgOK;
-
+	
 	/**
 	 * Sets Menu Command Title
 	 * 
@@ -151,26 +151,26 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		else
 			return springName + " 3D";
 	}
-
+	
 	public String toString() {
 		return getName();
 	}
-
+	
 	public ActionEvent getActionEvent() {
 		return null;
 	}
-
+	
 	public void setActionEvent(ActionEvent a) {
 		// empty
 	}
-
+	
 	/**
 	 * This method returns a <code>Vector</code> with all
 	 * <code>NodeCacheEntry3d</code> entries that have the same pattern type and
 	 * index.
 	 * 
 	 * @param options
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param nodeInfo
 	 * @return <code>Vector</code> with <code>NodeCacheEntry3d</code> Objects. The
 	 *         node is returned in the result set, if it has no pattern.
@@ -180,11 +180,11 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		return getPatternNodesPublic((ArrayList<NodeCacheEntry3d>) options.nodeArray,
 				nodeInfo);
 	}
-
+	
 	public static ArrayList<NodeCacheEntry3d> getPatternNodesPublic(ArrayList<NodeCacheEntry3d> nodeArray,
 			NodeCacheEntry3d nodeInfo) {
 		ArrayList<NodeCacheEntry3d> resultVec = new ArrayList<NodeCacheEntry3d>();
-
+		
 		if (nodeInfo.patternType.compareTo("") != 0) {
 			for (int i = 0; i < nodeArray.size(); i++) {
 				if (nodeArray.get(i).patternType.compareTo("") != 0) {
@@ -200,26 +200,26 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		}
 		return resultVec;
 	}
-
+	
 	/**
 	 * Error Checking
 	 * 
 	 * @throws PreconditionException
 	 * @throws PreconditionException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void check() throws PreconditionException {
 		if (non_interact_graph == null)
 			throw new PreconditionException("No graph available!");
 	}
-
+	
 	/**
 	 * euclidian distance
 	 */
 	private static double getDistance(org.Vector3d a, org.Vector3d b) {
 		return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
 	}
-
+	
 	private static double borderForceX(ThreadSafeOptions options, double x) {
 		if (x < options.borderWidth) {
 			return Math.max(-options.maxBorderForce / options.borderWidth * x + options.maxBorderForce, 0);
@@ -227,7 +227,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			return -1;
 		}
 	}
-
+	
 	private static double borderForceY(ThreadSafeOptions options, double y) {
 		if (y < options.borderWidth) {
 			return Math.max(-options.maxBorderForce / options.borderWidth * y + options.maxBorderForce, 0);
@@ -235,7 +235,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			return -1;
 		}
 	}
-
+	
 	private static double borderForceZ(ThreadSafeOptions options, double y) {
 		if (y < options.borderWidth) {
 			return Math.max(-options.maxBorderForce / options.borderWidth * y + options.maxBorderForce, 0);
@@ -243,47 +243,47 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			return -1;
 		}
 	}
-
+	
 	private static NodeCacheEntry3d getPatternNodeStructFromNode(ThreadSafeOptions options, Node search) {
 		return (NodeCacheEntry3d) options.nodeSearch.get(search);
 	}
-
+	
 	/**
 	 * @return If position-update for Nodes are done, length of movement vectors
 	 */
 	private double doSpringEmbedder(ThreadSafeOptions options, int runValue, int n) {
 		double returnValue = 0;
-
+		
 		for (int i = 0; i < n; i++) {
 			returnValue += doCalcAndMoveNode(options, runValue, returnValue, i);
 		}
 		return returnValue;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	double doCalcAndMoveNode(ThreadSafeOptions options, int runValue, double returnValue, int i) {
 		NodeCacheEntry3d nodeI = (NodeCacheEntry3d) options.nodeArray.get(i);
-
+		
 		calcCounter++;
-
+		
 		boolean calcNode = true;
-
+		
 		// in case the node has been "touched" before, do not calc again
 		if (nodeI.lastTouch >= runValue)
 			calcNode = false;
-
+		
 		// in case the current option says, move only selected nodes and the current
 		// node
 		// is not selected, then do not calc this node
 		if (options.getSelection().getNodes().size() > 0 && !nodeI.selected)
 			calcNode = false;
-
+		
 		if (calcNode) {
 			org.Vector3d force = new org.Vector3d(0, 0, 0);
 			org.Vector3d sumForce = new org.Vector3d(0, 0, 0);
 			for (int patternI = 0; patternI < nodeI.patternNodes.size(); patternI++) {
 				NodeCacheEntry3d patternNode = (NodeCacheEntry3d) nodeI.patternNodes.get(patternI);
-
+				
 				patternNode.lastTouch = runValue;
 				calcSpringEmbedderForce(options, patternNode, force, sumForce);
 			}
@@ -331,7 +331,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		}
 		return returnValue;
 	}
-
+	
 	private static void rotate(double angle, ArrayList<NodeCacheEntry3d> patternNodes, Vector3d centerOfPattern) {
 		AffineTransform transform = AffineTransform.getRotateInstance(angle, centerOfPattern.x, centerOfPattern.y);
 		for (NodeCacheEntry3d nce : patternNodes) {
@@ -340,13 +340,12 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				Point2D.Double ptSrc = new Point2D.Double(nce.position.x, nce.position.y);
 				Point2D.Double ptDst = new Point2D.Double(nce.position.x, nce.position.y);
 				transform.transform(ptSrc, ptDst);
-				nce.position.x = ptDst.getX();
-				;
+				nce.position.x = ptDst.getX();;
 				nce.position.y = ptDst.getY();
 			}
 		}
 	}
-
+	
 	private static double linearTransformation(double value, double minS, double maxS, double minT, double maxT) {
 		if (value <= minS)
 			return minT;
@@ -354,35 +353,35 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			return maxT;
 		return (value - minS) / (maxS - minS) * (maxT - minT) + minT;
 	}
-
+	
 	/**
 	 * Determines if two nodes belong to the same pattern.
 	 * 
 	 * @param n1
-	 *            Node 1
+	 *           Node 1
 	 * @param n2
-	 *            Node 2
+	 *           Node 2
 	 * @return True, if the two nodes belong to the same pattern. False, if not.
 	 */
 	private static boolean samePattern(NodeCacheEntry3d n1, NodeCacheEntry3d n2) {
 		boolean sameNode = n1.nodeIndex == n2.nodeIndex;
-
+		
 		if (sameNode) {
 			return true;
 		}
-
+		
 		boolean noPattern = ((n1.patternType.compareTo("") == 0) && (n2.patternType.compareTo("") == 0));
-
+		
 		if (noPattern) {
 			return false;
 		}
-
+		
 		boolean samePattern = (n1.patternType.compareTo(n2.patternType) == 0);
 		boolean sameIndex = n1.patternIndex == n2.patternIndex;
-
+		
 		return samePattern && sameIndex;
 	}
-
+	
 	/**
 	 * Calculates the springembedder force for a given node. For all nodes the
 	 * distance to the given node is calculated and used to calculate an average
@@ -391,11 +390,11 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	 * greater than the borderLengths.
 	 * 
 	 * @param options
-	 *            The options
+	 *           The options
 	 * @param nodeI
-	 *            For this node the force will be calculated.
+	 *           For this node the force will be calculated.
 	 * @param force
-	 *            The calculation result (RETURN/call by reference).
+	 *           The calculation result (RETURN/call by reference).
 	 * @param sumForce
 	 */
 	private void calcSpringEmbedderForce(ThreadSafeOptions options, NodeCacheEntry3d nodeI, org.Vector3d force,
@@ -404,23 +403,23 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		double distanceX;
 		double distanceY;
 		double distanceZ;
-
+		
 		double d1_1000 = options.getDval(myOp.DvalIndexSliderHorForce, 1000);
 		double d2_1000 = options.getDval(myOp.DvalIndexSliderVertForce, 1000);
-
+		
 		double initFx = force.x;
 		double initFy = force.y;
 		double initFz = force.z;
-
+		
 		// Abstoßungskräfte zu restlichen Knoten
 		int sz = options.nodeArray.size();
 		for (int i2 = 0; i2 < sz; i2++) {
 			NodeCacheEntry3d nodeI2 = (NodeCacheEntry3d) options.nodeArray.get(i2);
-
+			
 			if (calcForce(nodeI, nodeI2)) {
 				org.Vector3d workA = nodeI.position;
 				org.Vector3d workB = nodeI2.position;
-
+				
 				distance = getDistance(workA, workB);
 				double d_sq = distance * distance;
 				distanceX = workA.x - workB.x;
@@ -453,11 +452,11 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			sz = nodeI.connectedNodes.size();
 			for (int i2 = 0; i2 < sz; i2++) {
 				NodeCacheEntry3d nodeI2 = (NodeCacheEntry3d) nodeI.connectedNodes.get(i2);
-
+				
 				if (calcForce(nodeI, nodeI2)) {
 					org.Vector3d workA = nodeI.position;
 					org.Vector3d workB = nodeI2.position;
-
+					
 					distance = getDistance(workA, workB);
 					distanceX = workB.x - workA.x;
 					distanceY = workB.y - workA.y;
@@ -492,25 +491,25 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				} // if calc force
 			}
 		}
-
+		
 		if (options.borderForce) {
 			force.x += borderForceX(options, nodeI.position.x) / nodeI.patternNodes.size();
 			force.y += borderForceY(options, nodeI.position.y) / nodeI.patternNodes.size();
 			force.z += borderForceZ(options, nodeI.position.z) / nodeI.patternNodes.size();
 		}
-
+		
 		if (options.getBval(myOp.BvalIndexDoClusterLayoutIndex, false)) {
 			// apply cluster forces
 			Vector3d clusterPosition = clusterLocations.get(nodeI.clusterIndexNumber);
 			if (clusterPosition != null)
 				applyMagneticClusterForce(options, force, nodeI.position, clusterPosition);
 		}
-
+		
 		sumForce.x += Math.abs(force.x + sumAddX - initFx);
 		sumForce.y += Math.abs(force.y + sumAddY - initFy);
 		sumForce.z += Math.abs(force.z + sumAddZ - initFz);
 	}
-
+	
 	/**
 	 * Applies magnetic forces between a node (with a cluster index) and a cluster
 	 * graph node that represents the cluster the node is belonging to. This force
@@ -518,7 +517,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	 * position of the cluster representation node.
 	 * 
 	 * @param force
-	 *            This force is modified
+	 *           This force is modified
 	 * @param nodePosition
 	 * @param clusterPosition
 	 */
@@ -534,44 +533,44 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		force.y += -ydiff / len * cachedClusterForce;
 		force.z += -zdiff / len * cachedClusterForce;
 	}
-
+	
 	/**
 	 * Layout Algorithm
 	 */
 	public void execute() {
-
+		
 		// Graph gi =
 		// GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
 		// Selection s =
 		// GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();
-
+		
 		MyNonInteractiveSpringEmb mse = new MyNonInteractiveSpringEmb(non_interact_graph, non_interact_selection,
 				nonInteractiveTSO);
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(mse, mse, "Force Directed Layout", "Force Directed Layout",
 				true, false);
 		bth.startWork(this);
-
+		
 		// JOptionPane.showMessageDialog(
 		// GraffitiSingleton.getInstance().getMainFrame(),
 		// "Use the Pattern Graffiti Plugins to start this plugin interactively.",
 		// "This plugin currently can not be started from the Plugin-Menu",
 		// JOptionPane.INFORMATION_MESSAGE);
 	}
-
+	
 	/**
 	 * returns length of move vector
 	 * 
 	 * @param options
-	 *            options var for the thread
+	 *           options var for the thread
 	 * @param moveVec
-	 *            movement vector (will be modified to be smaller than maxmove)
+	 *           movement vector (will be modified to be smaller than maxmove)
 	 * @param node
-	 *            node to be moved
+	 *           node to be moved
 	 * @return actual movement
 	 */
 	private static double moveNode(ThreadSafeOptions options, org.Vector3d moveVec, NodeCacheEntry3d node) {
 		double l = Math.sqrt(moveVec.x * moveVec.x + moveVec.y * moveVec.y);
-
+		
 		if (l > options.temperature_max_move) {
 			moveVec.x = moveVec.x / l * options.temperature_max_move;
 			moveVec.y = moveVec.y / l * options.temperature_max_move;
@@ -587,14 +586,14 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		 * } else return 0;
 		 */
 	}
-
+	
 	/**
 	 * Defines if a force between two nodes should be calculated.
 	 * 
 	 * @param n1
-	 *            Node 1
+	 *           Node 1
 	 * @param relN
-	 *            Node 2
+	 *           Node 2
 	 * @return True, if a force between the two nodes should be calculated, false if
 	 *         not
 	 */
@@ -602,21 +601,21 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		if (n1.nodeIndex == relN.nodeIndex) {
 			return false;
 		}
-
+		
 		if (n1.patternType.length() == 0) {
 			return true;
 		}
-
+		
 		return !samePattern(n1, relN);
 	}
-
+	
 	/**
 	 * Init method for cache
 	 * 
 	 * @param options
-	 *            the thread-safe options
+	 *           the thread-safe options
 	 * @param nodeI
-	 *            the node to be analyzed
+	 *           the node to be analyzed
 	 * @return An <code>Vector</code> with the connected nodes.
 	 *         (<code>NodeCacheEntry3d</code> list)
 	 */
@@ -629,26 +628,26 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			else
 				connectedNodes.add(n2);
 		}
-
+		
 		return connectedNodes;
 	}
-
+	
 	/**
 	 * Init cache entry for a node (get pattern nodes-call cache)
 	 * 
 	 * @param options
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void readPatternConnections(ThreadSafeOptions options) {
 		for (int i = 0; i < options.nodeArray.size(); i++) {
 			NodeCacheEntry3d pi = (NodeCacheEntry3d) options.nodeArray.get(i);
-
+			
 			pi.patternNodes = getPatternNodes(options, pi);
-
+			
 			pi.connectedNodes = getConnectedNodes(options, pi);
 		}
 	}
-
+	
 	public void setParameters(Parameter[] params) {
 		initLength = ((DoubleParameter) params[0]).getDouble().doubleValue();
 		nonInteractiveTSO.setDval(myOp.DvalIndexSliderZeroLength,
@@ -658,7 +657,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		nonInteractiveTSO.setDval(myOp.DvalIndexSliderVertForce,
 				((DoubleParameter) params[2]).getDouble().doubleValue());
 	}
-
+	
 	public Parameter[] getParameters() {
 		if (nonInteractiveTSO == null) {
 			nonInteractiveTSO = MyNonInteractiveSpringEmb.getNewThreadSafeOptionsWithDefaultSettings();
@@ -672,7 +671,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				new DoubleParameter(d1_1000, "Horizontal Repulsion", "Strength of horizontal repulsion"),
 				new DoubleParameter(d2_1000, "Vertical Repulsion", "Strength of vertical repulsion") };
 	}
-
+	
 	public boolean setControlInterface(final ThreadSafeOptions options, JComponent jc) {
 		int border = 5;
 		jc.setBorder(BorderFactory.createEmptyBorder(border, border, border, border));
@@ -699,8 +698,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 								options.setSelection(selection);
 								executeThreadSafe(options);
 							}
-						}) {
-						};
+						}) {};
 						newBackgroundThread.setName("SpringEmbedderLayout3d");
 						newBackgroundThread.setPriority(Thread.MIN_PRIORITY);
 						newBackgroundThread.start();
@@ -716,9 +714,9 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				}
 			}
 		});
-
+		
 		jc.add(startStopButton);
-
+		
 		final JButton redrawButton = new JButton("Refresh View");
 		redrawButton.setToolTipText("Make the current calculated graph layout visible");
 		redrawButton.addActionListener(new ActionListener() {
@@ -732,7 +730,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		} else {
 			redrawButton.setEnabled(true);
 		}
-
+		
 		JCheckBox autoRefresh = new JCheckBox("Auto Redraw", options.autoRedraw);
 		autoRefresh.setToolTipText(
 				"<html>If selected, the graph view will be updated after each run of the spring embedder loop.<br>"
@@ -748,17 +746,17 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				}
 			}
 		});
-
+		
 		JComponent helpButton = FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("layout_force"),
 				jc.getBackground());
-
+		
 		jc.add(TableLayout
 				.getSplit(
 						redrawButton, TableLayout.get3Split(autoRefresh, new JLabel(""), helpButton,
 								TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED),
 						TableLayout.PREFERRED, TableLayout.FILL));
 		JLabel labelSliderLength = new JLabel("Target Length of Edges:");
-
+		
 		JSlider sliderLength = new JSlider();
 		sliderLength.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 		sliderLength.setMinimum(0);
@@ -771,18 +769,18 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		sliderLength.setPaintTicks(true);
 		sliderLength.setLabelTable(sliderLength.createStandardLabels(100));
 		sliderLength.setValue((int) options.getDval(myOp.DvalIndexSliderZeroLength, 200));
-
+		
 		jc.add(TableLayout.getDoubleRow(labelSliderLength, sliderLength, Color.WHITE));
-
+		
 		sliderLength.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				options.setDval(myOp.DvalIndexSliderZeroLength, ((JSlider) e.getSource()).getValue());
 			}
 		});
-
+		
 		sliderLength.setAlignmentX(10);
 		sliderLength.setAlignmentY(70);
-
+		
 		JSlider sliderEnergyHor = new JSlider();
 		sliderEnergyHor.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 		sliderEnergyHor.setMinimum(0);
@@ -798,7 +796,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		sliderEnergyHor.setToolTipText(
 				"<html>This value determines the horizontal<br>" + "repulsive energy between all nodes");
 		sliderEnergyHor.setValue((int) options.getDval(myOp.DvalIndexSliderHorForce, 1000));
-
+		
 		sliderEnergyHor.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				options.setDval(myOp.DvalIndexSliderHorForce, ((JSlider) e.getSource()).getValue());
@@ -806,9 +804,9 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		});
 		jc.add(TableLayout.getDoubleRow(new JLabel("Horizontal Repulsive Force Between Nodes:"), sliderEnergyHor,
 				Color.WHITE));
-
+		
 		JSlider sliderEnergyVert = new JSlider();
-
+		
 		sliderEnergyVert.setMinimum(0);
 		sliderEnergyVert.setMaximum(1000000);
 		sliderEnergyVert.setMinorTickSpacing(50000);
@@ -820,7 +818,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		d2.put(Integer.valueOf(1000000), new JLabel("high repulsion"));
 		sliderEnergyVert.setLabelTable(d2);
 		sliderEnergyVert.setValue((int) options.getDval(myOp.DvalIndexSliderVertForce, 1000));
-
+		
 		jc.add(TableLayout.getDoubleRow(new JLabel("Vertical Repulsive Force Between Nodes:"), sliderEnergyVert,
 				Color.WHITE));
 		sliderEnergyVert
@@ -830,7 +828,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				options.setDval(myOp.DvalIndexSliderVertForce, ((JSlider) e.getSource()).getValue());
 			}
 		});
-
+		
 		// if (ReleaseInfo.getIsAllowedFeature(FeatureSet.PATTERN_LAYOUT)) {
 		JSlider sliderMultiplyRepulsive = new JSlider();
 		// sliderMultiplyRepulsive.setBackground(Color.YELLOW);
@@ -850,12 +848,12 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		sliderMultiplyRepulsive.setPaintLabels(true);
 		sliderMultiplyRepulsive.setPaintTicks(true);
 		sliderMultiplyRepulsive.setValue((int) options.getDval(myOp.DmultiplyRepulsiveForces2Patterns, 1d));
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH))
 			jc.add(TableLayout.getDoubleRow(
 					new JLabel("Multiply repulsive Forces between Patterns and remaining Network:"),
 					sliderMultiplyRepulsive, Color.WHITE));
-
+		
 		sliderMultiplyRepulsive.setToolTipText(
 				"<html>This value determines a multipicator for the repulsive energy between pattern nodes and the remaining nodes");
 		sliderMultiplyRepulsive.addChangeListener(new ChangeListener() {
@@ -865,12 +863,12 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		});
 		// }
 		JLabel stiffnessDesc = new JLabel("Stiffness of Springs:");
-
+		
 		JSlider sliderStiffnes = new JSlider();
 		sliderStiffnes.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 		sliderStiffnes
 				.setToolTipText("Modifes the forces determined by the connection to other nodes (edge target length).");
-
+		
 		sliderStiffnes.setMinimum(0);
 		sliderStiffnes.setMaximum(75);
 		sliderStiffnes.setMinorTickSpacing(10);
@@ -890,7 +888,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				options.setDval(myOp.DvalIndexSliderStiffness, ((JSlider) e.getSource()).getValue());
 			}
 		});
-
+		
 		// final JCheckBox useIndepClusterLayout = new JCheckBox();
 		final JCheckBox useClusterInfo = new JCheckBox();
 		useClusterInfo
@@ -906,7 +904,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				options.setBval(myOp.BvalIndexDoIndividualClusterLayoutIndex, !newVal);
 			}
 		});
-
+		
 		JSlider sliderClusterForce = new JSlider();
 		sliderClusterForce.setMinimum(0);
 		sliderClusterForce.setMaximum(1000);
@@ -935,7 +933,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				}
 			}
 		});
-
+		
 		final JSlider tempSlider = new JSlider();
 		tempSlider.setMinimum(0);
 		tempSlider.setMaximum(300);
@@ -954,7 +952,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			}
 		});
 		jc.add(TableLayout.getDoubleRow(new JLabel("Maximum Node Movement (progress):"), tempSlider, Color.WHITE));
-
+		
 		JCheckBox borderForce = new JCheckBox("Border Force", options.borderForce);
 		borderForce.setToolTipText("<html>If selected, a force will be added, which lets the nodes<br>"
 				+ "move slowly to the top left. The nodes will avoid movement towards negative coordinates.");
@@ -964,7 +962,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			}
 		});
 		// jc.add(borderForce);
-
+		
 		// JCheckBox useSelection = new JCheckBox();
 		// useSelection.setText("Work on Selection");
 		// useSelection.setToolTipText("If seleceted, the not selected nodes will have a
@@ -976,7 +974,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		// }
 		// });
 		// jc.add(useSelection);
-
+		
 		JCheckBox randomInit = new JCheckBox("Init: Random Node Positions", options.doRandomInit);
 		randomInit.setToolTipText("<html>If selected, the graph will have a random layout applied<br>"
 				+ "before executing the spring embedder layouter");
@@ -986,10 +984,10 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			}
 		});
 		jc.add(randomInit);
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH)) {
 			JCheckBox copyLayout = new JCheckBox("Init: Apply Search-Subgraph Layout", options.doCopyPatternLayout);
-
+			
 			copyLayout.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					options.doCopyPatternLayout = ((JCheckBox) e.getSource()).isSelected();
@@ -997,7 +995,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			});
 			jc.add(copyLayout);
 		}
-
+		
 		JCheckBox removeOverlapping = new JCheckBox("Finish: Remove Node Overlaps", options.doFinishRemoveOverlapp);
 		removeOverlapping.setToolTipText("If selected, the final layout will be modified to remove any node overlaps");
 		removeOverlapping.addActionListener(new ActionListener() {
@@ -1006,7 +1004,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			}
 		});
 		jc.add(removeOverlapping);
-
+		
 		JCheckBox finishToTop = new JCheckBox("Finish: Move Network to Top-Left", options.doFinishMoveToTop);
 		finishToTop
 				.setToolTipText("If selected, all network elements will be moved to the top-left corner of the view");
@@ -1016,11 +1014,11 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			}
 		});
 		jc.add(finishToTop);
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH)) {
 			JCheckBox rotatePattern = new JCheckBox("Rotate Patterns",
 					options.getBval(myOp.BvalIndexRotatePatternIndex, false));
-
+			
 			rotatePattern.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					boolean newVal = ((JCheckBox) e.getSource()).isSelected();
@@ -1029,7 +1027,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			});
 			jc.add(rotatePattern);
 		}
-
+		
 		// useIndepClusterLayout.setSelected(options.getBval(
 		// myOp.BvalIndexDoIndividualClusterLayoutIndex, false));
 		// useIndepClusterLayout.setText("Do individual Cluster Layout");
@@ -1044,7 +1042,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		// }
 		// });
 		// jc.add(useIndepClusterLayout, "1,21");
-
+		
 		// /////////////////////////////
 		// double threadBorder = 2;
 		// double[][] threadSize = {
@@ -1054,9 +1052,9 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		// { threadBorder, TableLayout.PREFERRED, threadBorder } }; // Rows
 		// JPanel componentForThreadSetting = new JPanel();
 		// componentForThreadSetting.setLayout(new TableLayout(threadSize));
-
+		
 		// JLabel threadDesc = new JLabel("Thread-Count:");
-
+		
 		// JSpinner maxThreads = new JSpinner();
 		// maxThreads.addChangeListener(new ChangeListener() {
 		//
@@ -1078,53 +1076,53 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		// componentForThreadSetting.add(maxThreads, "2,1");
 		// componentForThreadSetting.validate();
 		// jc.add(componentForThreadSetting, "1,21");
-
+		
 		sliderLength.setValue(100);
 		// sliderStiffnes.setValue(10);
 		sliderEnergyHor.setValue(90000);
 		sliderEnergyVert.setValue(90000);
-
+		
 		jc.validate();
-
+		
 		// /////////////////////////////////////////
 		// TIMER
-
+		
 		Timer runCheckTimer = new Timer(200, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				switch (options.runStatus) {
-				case 0:
-					// startStopButton.setIcon(null); // not started
-					break;
-				case 1:
-					// startStopButton.setIcon(progressImg); // running
-					startStopButton.setText("Stop Layout (Running)");
-					break;
-				case 2:
-					// startStopButton.setIcon(progressImgOK); // idle
-					startStopButton.setText("Stop Layout (Idle)");
-					break;
-				case 3:
-					// startStopButton.setIcon(null); // finished
-					startStopButton.setText("Layout Network (3D)");
-					if (tempSlider.getValue() == 0) {
-						options.temperature_max_move = 300;
-					}
-					break;
+					case 0:
+						// startStopButton.setIcon(null); // not started
+						break;
+					case 1:
+						// startStopButton.setIcon(progressImg); // running
+						startStopButton.setText("Stop Layout (Running)");
+						break;
+					case 2:
+						// startStopButton.setIcon(progressImgOK); // idle
+						startStopButton.setText("Stop Layout (Idle)");
+						break;
+					case 3:
+						// startStopButton.setIcon(null); // finished
+						startStopButton.setText("Layout Network (3D)");
+						if (tempSlider.getValue() == 0) {
+							options.temperature_max_move = 300;
+						}
+						break;
 				}
 				// set max movement / temperature slider value to current value
 				tempSlider.setValue((int) options.temperature_max_move);
 			}
 		});
 		runCheckTimer.start();
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Initialized the node cache structures.
 	 * 
 	 * @param options
-	 *            The options to use
+	 *           The options to use
 	 */
 	@SuppressWarnings("unchecked")
 	public void resetDataCache(ThreadSafeOptions options) {
@@ -1134,9 +1132,9 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				options.getSelection());
 		readPatternConnections(options);
 	}
-
+	
 	// private Timer errorDebugTimer = new Timer(500, new DebugSelectionCheck());
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1144,7 +1142,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	 * graffiti.plugin.algorithm.ThreadSafeOptions)
 	 */
 	public void executeThreadSafe(final ThreadSafeOptions options) {
-
+		
 		// if (!errorDebugTimer.isRunning()) {
 		// DebugSelectionCheck.setCheckThis(options);
 		// errorDebugTimer.setRepeats(true);
@@ -1156,57 +1154,57 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			rla.attach(options.getGraphInstance(), options.getSelection());
 			rla.execute();
 		}
-
+		
 		if (options.doCopyPatternLayout) {
 			GravistoService.getInstance().runPlugin(new CopyPatternLayoutAlgorithm().getName(),
 					options.getGraphInstance(), null);
 		}
-
+		
 		// Remove bends
 		if (options.doRemoveAllBends)
 			GraphHelper.removeAllBends(options.getGraphInstance(), true);
-
+		
 		resetDataCache(options);
-
+		
 		doClusterInitialization(options);
-
+		
 		int runValue = 0;
-
+		
 		long loopTime = 0;
-
+		
 		double moveRun;
-
+		
 		HashMap<CoordinateAttribute, Vector3d> oldPositions = new HashMap<CoordinateAttribute, Vector3d>();
 		HashMap<CoordinateAttribute, Vector3d> newPositions = new HashMap<CoordinateAttribute, Vector3d>();
-
+		
 		GraphHelper.enumerateNodePositions3d(options.getGraphInstance(), oldPositions);
-
+		
 		int n = options.getGraphInstance().getNumberOfNodes();
-
+		
 		Graph clusterGraph = (Graph) AttributeHelper.getAttributeValue(options.getGraphInstance(), "cluster",
 				"clustergraph", null, new AdjListGraph());
 		boolean clusterGraphAvailable = clusterGraph != null;
 		boolean idleCheckResultOK = true;
 		do {
 			runValue++;
-
+			
 			loopTime = System.currentTimeMillis();
 			calcCounter = 0;
 			moveRun = doSpringEmbedder(options, runValue, n);
-
+			
 			options.temperature_max_move *= options.temp_alpha;
 			if (options.redraw) {
 				propagateCachedGraphPositions(options);
 			}
-
+			
 			if (!options.autoRedraw) {
 				options.redraw = false;
 			}
-
+			
 			cachedClusterForce = options.getDval(myOp.DvalIndexSliderClusterForce, myOp.InitClusterForce);
-
+			
 			loopTime = System.currentTimeMillis() - loopTime;
-
+			
 			if (moveRun <= 0.1) {
 				try {
 					options.runStatus = 2; // idle
@@ -1223,7 +1221,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 					clusterMessage = ", considering cluster-information";
 				if (!clusterGraphAvailable && useClusterLayout)
 					clusterMessage = ", no cluster-information available";
-
+				
 				MainFrame.showMessage(
 						"Force Directed Layout 3d: RUNNING (max single node movements:"
 								+ Math.round(options.temperature_max_move) + ", loop time:" + loopTime
@@ -1235,15 +1233,15 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 					idleCheckResultOK = false;
 			}
 		} while (!options.isAbortWanted() && options.temperature_max_move > 0.1 && idleCheckResultOK);
-
+		
 		propagateCachedGraphPositions(options);
-
+		
 		GraphHelper.enumerateNodePositions3d(options.getGraphInstance(), newPositions);
-
+		
 		GraphHelper.postUndoableChanges3d(options.getGraphInstance(), oldPositions, newPositions, getName());
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
-
+			
 			public void run() {
 				if (options.doFinishRemoveOverlapp) {
 					// int enlDir = getEnlargeDirectionFromNodesSize(options.nodeArray);
@@ -1265,12 +1263,12 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				MainFrame.showMessage("Spring Embedder 3d - STOP", MessageType.INFO, 3000);
 			}
 		});
-
+		
 		options.setAbortWanted(false);
-
+		
 		options.runStatus = 3; // finished
 	}
-
+	
 	/**
 	 * @param options
 	 */
@@ -1293,7 +1291,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			}
 		}
 	}
-
+	
 	private void propagateCachedGraphPositions(final ThreadSafeOptions options) {
 		try {
 			if (!SwingUtilities.isEventDispatchThread()) {
@@ -1311,16 +1309,16 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	// AnimGifEncoder agif;
 	// boolean createGIF = false;
 	int pictureCount = 0;
-
+	
 	private void propagatePositions(final ThreadSafeOptions options) {
 		options.getGraphInstance().getListenerManager().transactionStarted(this);
 		for (int i = 0; i < options.nodeArray.size(); i++) {
 			NodeCacheEntry3d curNode = (NodeCacheEntry3d) options.nodeArray.get(i);
-
+			
 			MyTools.setXYZ(curNode.node, curNode.position.x, curNode.position.y, curNode.position.z);
 		}
 		options.getGraphInstance().getListenerManager().transactionFinished(this);
@@ -1346,7 +1344,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		// }
 		// }
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1356,7 +1354,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		non_interact_graph = g;
 		non_interact_selection = s;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1366,7 +1364,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		nonInteractiveTSO.setDval(myOp.DvalIndexSliderZeroLength, initLength);
 		nonInteractiveTSO.temperature_max_move = initLength;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1375,17 +1373,17 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	public String getCategory() {
 		return "Layout";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.LAYOUT, Category.GRAPH));
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1394,12 +1392,12 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-
+	
 	public String getDescription() {
 		//
 		return null;
 	}
-
+	
 	// /* (non-Javadoc)
 	// * @see
 	// org.graffiti.plugin.algorithm.EditorAlgorithm#getParameterDialog(org.graffiti.selection.Selection)

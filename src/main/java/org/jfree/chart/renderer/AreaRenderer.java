@@ -73,10 +73,10 @@ import org.jfree.util.PublicCloneable;
  * @author Jon Iles
  */
 public class AreaRenderer extends AbstractCategoryItemRenderer implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/** A flag that controls how the ends of the areas are drawn. */
 	private AreaRendererEndType endType;
-
+	
 	/**
 	 * Creates a new renderer.
 	 */
@@ -84,7 +84,7 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 		super();
 		this.endType = AreaRendererEndType.TAPER;
 	}
-
+	
 	/**
 	 * Returns a token that controls how the renderer draws the end points.
 	 * 
@@ -93,13 +93,13 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 	public AreaRendererEndType getEndType() {
 		return this.endType;
 	}
-
+	
 	/**
 	 * Sets a token that controls how the renderer draws the end points, and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param type
-	 *            the end type (<code>null</code> not permitted).
+	 *           the end type (<code>null</code> not permitted).
 	 */
 	public void setEndType(AreaRendererEndType type) {
 		if (type == null) {
@@ -108,32 +108,32 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 		this.endType = type;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Draw a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the data plot area.
+	 *           the data plot area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
-
+		
 		// plot non-null values only...
 		Number value = dataset.getValue(row, column);
 		if (value != null) {
@@ -143,11 +143,11 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 			float x0 = (float) domainAxis.getCategoryStart(column, count, dataArea, axisEdge);
 			float x1 = (float) domainAxis.getCategoryMiddle(column, count, dataArea, axisEdge);
 			float x2 = (float) domainAxis.getCategoryEnd(column, count, dataArea, axisEdge);
-
+			
 			x0 = Math.round(x0);
 			x1 = Math.round(x1);
 			x2 = Math.round(x2);
-
+			
 			if (this.endType == AreaRendererEndType.TRUNCATE) {
 				if (column == 0) {
 					x0 = x1;
@@ -155,9 +155,9 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 					x2 = x1;
 				}
 			}
-
+			
 			double yy1 = value.doubleValue();
-
+			
 			double yy0 = 0.0;
 			if (column > 0) {
 				Number n0 = dataset.getValue(row, column - 1);
@@ -165,7 +165,7 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 					yy0 = (n0.doubleValue() + yy1) / 2.0;
 				}
 			}
-
+			
 			double yy2 = 0.0;
 			if (column < dataset.getColumnCount() - 1) {
 				Number n2 = dataset.getValue(row, column + 1);
@@ -173,18 +173,18 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 					yy2 = (n2.doubleValue() + yy1) / 2.0;
 				}
 			}
-
+			
 			RectangleEdge edge = plot.getRangeAxisEdge();
 			float y0 = (float) rangeAxis.valueToJava2D(yy0, dataArea, edge);
 			float y1 = (float) rangeAxis.valueToJava2D(yy1, dataArea, edge);
 			float y2 = (float) rangeAxis.valueToJava2D(yy2, dataArea, edge);
 			float yz = (float) rangeAxis.valueToJava2D(0.0, dataArea, edge);
-
+			
 			g2.setPaint(getItemPaint(row, column));
 			g2.setStroke(getItemStroke(row, column));
-
+			
 			GeneralPath area = new GeneralPath();
-
+			
 			if (orientation == PlotOrientation.VERTICAL) {
 				area.moveTo(x0, yz);
 				area.lineTo(x0, y0);
@@ -199,15 +199,15 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 				area.lineTo(yz, x2);
 			}
 			area.closePath();
-
+			
 			g2.setPaint(getItemPaint(row, column));
 			g2.fill(area);
-
+			
 			// draw the item labels if there are any...
 			if (isItemLabelVisible(row, column)) {
 				drawItemLabel(g2, orientation, dataset, row, column, x1, y1, (value.doubleValue() < 0.0));
 			}
-
+			
 			// collect entity and tool tip information...
 			if (state.getInfo() != null) {
 				EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -227,18 +227,18 @@ public class AreaRenderer extends AbstractCategoryItemRenderer implements Clonea
 				}
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns an independent copy of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             should not happen.
+	 *            should not happen.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

@@ -23,7 +23,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.pathway_references.PathwayReferenceAutoCreationAlgorithm;
 
 public class LoadGraphFileAttributeAction implements URLattributeAction {
-
+	
 	public ActionListener getActionListener(final Attribute displayable, final Graph graph, final GraphElement ge,
 			final boolean performAltCommand) {
 		return new ActionListener() {
@@ -37,15 +37,15 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 					loadFile(val, graph, n, e);
 				else
 					addMapLink(val, graph, n, e);
-
+				
 			}
 		};
 	}
-
+	
 	public String getPreIdentifyer() {
 		return AttributeHelper.preFilePath;
 	}
-
+	
 	private void addMapLink(String fileName, Graph g, Node initialMapNode, ActionEvent ae) {
 		if (fileName != null && fileName.startsWith(getPreIdentifyer()))
 			fileName = fileName.substring(getPreIdentifyer().length());
@@ -79,7 +79,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 			se.run();
 		}
 	}
-
+	
 	private void loadFile(String fileName, Graph g, Node initialMapNode, ActionEvent ae) {
 		if (fileName == null || fileName.length() <= 0) {
 			MainFrame.showMessageDialog("No file name given! Can't load referenced network.", "Error");
@@ -92,7 +92,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 		File file = checkFile(g, fileName);
 		// check for graphs in the same directory
 		file = checkFile(g, new File(g.getName(true)).getParent() + "/" + fileName);
-
+		
 		if (!file.exists())
 			MainFrame.showMessageDialog("File " + file.getAbsolutePath() + " could not be found!", "Error");
 		else {
@@ -109,10 +109,10 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 			}
 		}
 	}
-
+	
 	private static File checkFile(Graph g, String fileName) {
 		java.io.File file = new File(fileName);
-
+		
 		if (!file.exists() || !file.canRead())
 			for (org.graffiti.session.Session s : MainFrame.getSessions()) {
 				if (s instanceof EditorSession) {
@@ -135,7 +135,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 			}
 		return file;
 	}
-
+	
 	public String getCommandDescription(boolean shortDesc, boolean altDesc) {
 		if (shortDesc) {
 			if (altDesc)
@@ -149,7 +149,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 				return "Load File";
 		}
 	}
-
+	
 	public boolean supportsModifyCommand() {
 		return true;
 	}

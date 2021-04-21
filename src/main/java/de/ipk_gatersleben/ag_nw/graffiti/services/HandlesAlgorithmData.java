@@ -13,6 +13,6 @@ import org.graffiti.plugin.algorithm.Algorithm;
  */
 public interface HandlesAlgorithmData {
 	public void setAlgorithm(Algorithm algorithm);
-
+	
 	public Algorithm getAlgorithm();
 }

@@ -26,34 +26,34 @@ import org.graffiti.plugin.view.GraffitiShape;
  */
 public class EditorPluginAdapter extends GenericPluginAdapter implements EditorPlugin {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * Maps from an attribute class to an AttributeComponent class. old comment: A
 	 * <code>java.util.Map</code> from <code>Attribute</code> to the corresponding
 	 * <code>LabelValueRow</code>-instance.
 	 */
 	protected Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-
+	
 	/** The mapping between attribute classes and attributeComponent classes. */
 	protected Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
-
+	
 	/** The gui components the plugin provides. */
 	protected GraffitiComponent[] guiComponents;
-
+	
 	/** The modes the plugin provides. */
 	protected Mode[] modes;
-
+	
 	/** The shapes the plugin provides. */
 	protected GraffitiShape[] shapes;
-
+	
 	/** The tools the plugin provides. */
 	public Tool[] tools;
-
+	
 	/** The InspectorTabs the plugin provides. */
 	protected InspectorTab[] tabs;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for EditorPluginAdapter.
 	 */
@@ -66,9 +66,9 @@ public class EditorPluginAdapter extends GenericPluginAdapter implements EditorP
 		this.valueEditComponents = new HashMap<>();
 		this.attributeComponents = new HashMap<>();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns a mapping between attribute classnames and attributeComponent
 	 * classnames.
@@ -79,7 +79,7 @@ public class EditorPluginAdapter extends GenericPluginAdapter implements EditorP
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return this.attributeComponents;
 	}
-
+	
 	/**
 	 * Returns the array of <code>GraffitiComponent</code>s the plugin contains.
 	 * 
@@ -88,7 +88,7 @@ public class EditorPluginAdapter extends GenericPluginAdapter implements EditorP
 	public GraffitiComponent[] getGUIComponents() {
 		return this.guiComponents;
 	}
-
+	
 	/**
 	 * Returns the array of <code>org.graffiti.plugin.mode.Mode</code>s the plugin
 	 * contains.
@@ -99,7 +99,7 @@ public class EditorPluginAdapter extends GenericPluginAdapter implements EditorP
 	public Mode[] getModes() {
 		return this.modes;
 	}
-
+	
 	/**
 	 * Returns the array of <code>org.graffiti.plugin.view.GraffitiShape</code>s the
 	 * plugin contains.
@@ -110,7 +110,7 @@ public class EditorPluginAdapter extends GenericPluginAdapter implements EditorP
 	public GraffitiShape[] getShapes() {
 		return this.shapes;
 	}
-
+	
 	/**
 	 * Returns an array of <code>org.graffiti.plugin.mode.Tool</code>s the plugin
 	 * provides.
@@ -120,7 +120,7 @@ public class EditorPluginAdapter extends GenericPluginAdapter implements EditorP
 	public Tool[] getTools() {
 		return this.tools;
 	}
-
+	
 	/**
 	 * Returns a mapping from attribute classes to attributeComponent classes.
 	 * 
@@ -129,7 +129,7 @@ public class EditorPluginAdapter extends GenericPluginAdapter implements EditorP
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return this.valueEditComponents;
 	}
-
+	
 	public InspectorTab[] getInspectorTabs() {
 		return tabs;
 	}

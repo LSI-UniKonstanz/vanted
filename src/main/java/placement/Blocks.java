@@ -9,7 +9,7 @@ package placement;
  * @author dwyer
  */
 class Blocks {
-
+	
 	/**
 	 * Examine the active constraints of each block. If a constraint is found,
 	 * across which its container block may be split such that the new blocks can be
@@ -76,9 +76,9 @@ class Blocks {
 		}
 		return null;
 	}
-
+	
 	Block head = null;
-
+	
 	synchronized void mergeLeft(Block b, ActiveSetPlacement debug) {
 		b.setUpInConstraints();
 		Constraint c = b.findMaxInConstraint();
@@ -103,7 +103,7 @@ class Blocks {
 			c = b.findMaxInConstraint();
 		}
 	}
-
+	
 	void delete(Block b) {
 		if (b == head) {
 			head = b.nextRight;
@@ -115,7 +115,7 @@ class Blocks {
 			b.nextRight.nextLeft = b.nextLeft;
 		}
 	}
-
+	
 	synchronized void mergeRight(Block b, ActiveSetPlacement debug) {
 		b.setUpOutConstraints();
 		Constraint c = b.findMaxOutConstraint();
@@ -139,13 +139,13 @@ class Blocks {
 			c = b.findMaxOutConstraint();
 		}
 	}
-
+	
 	Blocks(Variable[] vars) {
 		for (Variable v : vars) {
 			add(new Block(v));
 		}
 	}
-
+	
 	void add(Block b) {
 		b.nextLeft = null;
 		b.nextRight = null;
@@ -155,10 +155,10 @@ class Blocks {
 		}
 		head = b;
 	}
-
+	
 	Blocks() {
 	}
-
+	
 	float cost() {
 		float c = 0;
 		Block b = head;
@@ -168,7 +168,7 @@ class Blocks {
 		}
 		return c;
 	}
-
+	
 	Variables getAllVariables() {
 		Variables vs = new Variables();
 		Block b = head;
@@ -178,7 +178,7 @@ class Blocks {
 		}
 		return vs;
 	}
-
+	
 	int size() {
 		int s = 0;
 		Block b = head;
@@ -188,12 +188,12 @@ class Blocks {
 		}
 		return s;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "" + size();
 	}
-
+	
 	/**
 	 * DFS search of variables in the constraint DAG. From each variable constraints
 	 * are processed from largest separation to smallest, and the constraint
@@ -201,7 +201,7 @@ class Blocks {
 	 * DFS.
 	 * 
 	 * @param v
-	 *            current dfs node
+	 *           current dfs node
 	 */
 	private void dfsVisit(Variable v) {
 		v.visited = true;
@@ -215,7 +215,7 @@ class Blocks {
 		}
 		add(v.container);
 	}
-
+	
 	/**
 	 * Computes a total ordering of constraints by depth-first search of the
 	 * directed acyclic graph where nodes are variables and constraints b>=a+1 are

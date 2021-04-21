@@ -39,32 +39,32 @@ import java.io.Serializable;
  * {@link org.jfree.chart.plot.XYPlot}.
  */
 public final class DatasetRenderingOrder implements Serializable {
-
+	
 	/**
 	 * Render datasets in the order 0, 1, 2, ..., N-1, where N is the number of
 	 * datasets.
 	 */
 	public static final DatasetRenderingOrder FORWARD = new DatasetRenderingOrder("DatasetRenderingOrder.FORWARD");
-
+	
 	/**
 	 * Render datasets in the order N-1, N-2, ..., 2, 1, 0, where N is the number of
 	 * datasets.
 	 */
 	public static final DatasetRenderingOrder REVERSE = new DatasetRenderingOrder("DatasetRenderingOrder.REVERSE");
-
+	
 	/** The name. */
 	private String name;
-
+	
 	/**
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *            the name.
+	 *           the name.
 	 */
 	private DatasetRenderingOrder(String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * Returns a string representing the object.
 	 * 
@@ -73,39 +73,39 @@ public final class DatasetRenderingOrder implements Serializable {
 	public String toString() {
 		return this.name;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if this object is equal to the specified object,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (this == o) {
 			return true;
 		}
 		if (!(o instanceof DatasetRenderingOrder)) {
 			return false;
 		}
-
+		
 		final DatasetRenderingOrder order = (DatasetRenderingOrder) o;
 		if (!this.name.equals(order.toString())) {
 			return false;
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Ensures that serialization returns the unique instances.
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *             if there is a problem.
+	 *            if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(DatasetRenderingOrder.FORWARD)) {
@@ -115,5 +115,5 @@ public final class DatasetRenderingOrder implements Serializable {
 		}
 		return null;
 	}
-
+	
 }

@@ -23,53 +23,53 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 public class KeggAttributePlugin extends IPK_PluginAdapter implements EditorPlugin {
 	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
 	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-
+	
 	@SuppressWarnings("unchecked")
 	public KeggAttributePlugin() {
-
+		
 		this.algorithms = new Algorithm[] {};
-
+		
 		this.attributes = new Class[] { KeggTypeAttribute.class, KeggRelationTypeAttribute.class,
 				KeggRelationSubTypeAttribute.class, KeggReactionTypeAttribute.class, KeggIdAttribute.class,
 				KeggReactionIdAttribute.class, KeggGroupPartAttribute.class, KeggRelationSrcTgtAttribute.class };
-
+		
 		StringAttribute.putAttributeType("grouppart", KeggGroupPartAttribute.class);
-
+		
 		StringAttribute.putAttributeType("relation_src_tgt", KeggRelationSrcTgtAttribute.class);
 		for (int index = 0; index < 100; index++)
 			StringAttribute.putAttributeType("relation_src_tgt" + index, KeggRelationSrcTgtAttribute.class);
-
+		
 		StringAttribute.putAttributeType("kegg_type", KeggTypeAttribute.class);
 		for (int index = 0; index < 100; index++)
 			StringAttribute.putAttributeType("kegg_type" + index, KeggTypeAttribute.class);
-
+		
 		StringAttribute.putAttributeType("kegg_reaction", KeggTypeAttribute.class);
 		for (int index = 0; index < 100; index++) {
 			StringAttribute.putAttributeType("kegg_reaction" + index, KeggReactionIdAttribute.class);
 			StringAttribute.putAttributeType("kegg_reaction_product" + index, KeggReactionIdAttribute.class);
 			StringAttribute.putAttributeType("kegg_reaction_substrate" + index, KeggReactionIdAttribute.class);
 		}
-
+		
 		StringAttribute.putAttributeType("kegg_name", KeggIdAttribute.class);
 		StringAttribute.putAttributeType("kegg_name_old", KeggIdAttribute.class);
 		for (int index = 0; index < 100; index++)
 			StringAttribute.putAttributeType("kegg_name" + index, KeggIdAttribute.class);
-
+		
 		StringAttribute.putAttributeType("relation_type", KeggRelationTypeAttribute.class);
 		for (int index = 0; index < 100; index++)
 			StringAttribute.putAttributeType("relation_type" + index, KeggRelationTypeAttribute.class);
-
+		
 		StringAttribute.putAttributeType("relation_subtype", KeggRelationSubTypeAttribute.class);
 		for (int index = 0; index < 100; index++)
 			StringAttribute.putAttributeType("relation_subtype" + index, KeggRelationSubTypeAttribute.class);
-
+		
 		StringAttribute.putAttributeType("kegg_reaction_type", KeggReactionTypeAttribute.class);
 		for (int index = 0; index < 100; index++)
 			StringAttribute.putAttributeType("kegg_reaction_type" + index, KeggReactionTypeAttribute.class);
-
+		
 		valueEditComponents = new HashMap<>();
 		attributeComponents = new HashMap<>();
-
+		
 		valueEditComponents.put(KeggTypeAttribute.class, KeggTypeAttributeEditor.class);
 		valueEditComponents.put(KeggRelationTypeAttribute.class, KeggRelationTypeAttributeEditor.class);
 		valueEditComponents.put(KeggRelationSubTypeAttribute.class, KeggRelationSubTypeAttributeEditor.class);
@@ -77,7 +77,7 @@ public class KeggAttributePlugin extends IPK_PluginAdapter implements EditorPlug
 		valueEditComponents.put(KeggReactionIdAttribute.class, KeggReactionIdAttributeEditor.class);
 		valueEditComponents.put(KeggGroupPartAttribute.class, KeggGroupPartAttributeEditor.class);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -86,7 +86,7 @@ public class KeggAttributePlugin extends IPK_PluginAdapter implements EditorPlug
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -95,7 +95,7 @@ public class KeggAttributePlugin extends IPK_PluginAdapter implements EditorPlug
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -104,7 +104,7 @@ public class KeggAttributePlugin extends IPK_PluginAdapter implements EditorPlug
 	public Mode[] getModes() {
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -113,7 +113,7 @@ public class KeggAttributePlugin extends IPK_PluginAdapter implements EditorPlug
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -122,7 +122,7 @@ public class KeggAttributePlugin extends IPK_PluginAdapter implements EditorPlug
 	public Tool[] getTools() {
 		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

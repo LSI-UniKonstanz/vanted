@@ -29,7 +29,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class AlgorithmServices implements HelperClass {
-
+	
 	/**
 	 * @param sortedNodes
 	 * @param object
@@ -42,13 +42,13 @@ public class AlgorithmServices implements HelperClass {
 				"Reduce Edge Crossings", true, false);
 		bth.startWork(referenceObject);
 	}
-
+	
 	public static int getNumberOfCircularEdgeCrossings(Collection<Node> nodes) {
 		Stack<Node> s = new Stack<Node>();
 		s.addAll(nodes);
 		return new AlgorithmServices().new MyEdgeCrossingReduction(null, null).calculateEdgeCrossings(s);
 	}
-
+	
 	class MyEdgeCrossingReduction implements BackgroundTaskStatusProvider, Runnable {
 		Runnable threadUnsafePostTask;
 		double statusProgress = -1;
@@ -56,41 +56,41 @@ public class AlgorithmServices implements HelperClass {
 		boolean pleaseStop = false;
 		int nodeCount = -1;
 		ArrayList<Node> nodes;
-
+		
 		ArrayList<Node> bestResult = new ArrayList<Node>();
 		int edgeCrossingsForBestResult = Integer.MAX_VALUE;
 		int edgeCrossingsForInitalSet;
 		double currIteration;
 		double maxIteration;
 		private long lastUpdate = 0;
-
+		
 		HashMap<Edge, Integer> multiplicators = new HashMap<Edge, Integer>();
-
+		
 		public MyEdgeCrossingReduction(ArrayList<Node> nodes, Runnable threadUnsafePostTask) {
 			this.threadUnsafePostTask = threadUnsafePostTask;
 			this.nodes = nodes;
 		}
-
+		
 		@Override
 		public int getCurrentStatusValue() {
 			return (int) Math.round(statusProgress);
 		}
-
+		
 		@Override
 		public String getCurrentStatusMessage1() {
 			return status1;
 		}
-
+		
 		@Override
 		public String getCurrentStatusMessage2() {
 			return status2;
 		}
-
+		
 		@Override
 		public void pleaseStop() {
 			pleaseStop = true;
 		}
-
+		
 		@Override
 		public void run() {
 			// work
@@ -99,7 +99,7 @@ public class AlgorithmServices implements HelperClass {
 			nodeCount = nodes.size();
 			for (int i = 0; i < nodes.size(); i++)
 				nodeAndCirclePosition.put(Integer.valueOf(i), nodes.get(i));
-
+			
 			Stack<Node> nodeStack = new Stack<Node>();
 			Stack<Node> currentResult = new Stack<Node>();
 			nodeStack.addAll(nodes);
@@ -119,7 +119,7 @@ public class AlgorithmServices implements HelperClass {
 			if (threadUnsafePostTask != null)
 				SwingUtilities.invokeLater(threadUnsafePostTask);
 		}
-
+		
 		/**
 		 * @param i
 		 * @return
@@ -130,7 +130,7 @@ public class AlgorithmServices implements HelperClass {
 				res = res * i;
 			return res;
 		}
-
+		
 		private void doIteration(Stack<Node> currentResult, Stack<Node> nodeStack) {
 			if (pleaseStop)
 				return;
@@ -164,13 +164,13 @@ public class AlgorithmServices implements HelperClass {
 				}
 			}
 		}
-
+		
 		private void setStatus1() {
 			String s = Double.valueOf(currIteration).toString();
 			s = StringManipulationTools.stringReplace(s, ".0", "");
 			status1 = "Iterate possibilities (" + s + "/" + maxIteration + ")";
 		}
-
+		
 		/**
 		 * @param currentResult
 		 * @return
@@ -205,7 +205,7 @@ public class AlgorithmServices implements HelperClass {
 										multiplicators.put(edgB, edgeDoublingB);
 										mB = edgeDoublingB;
 									}
-
+									
 									result += mA.intValue() * mB.intValue();
 								}
 							}
@@ -215,7 +215,7 @@ public class AlgorithmServices implements HelperClass {
 			}
 			return result;
 		}
-
+		
 		private boolean cross(Edge edgA, Edge edgB, Stack<Node> currentResult) {
 			int a0 = currentResult.indexOf(edgA.getSource());
 			int a1 = currentResult.indexOf(edgA.getTarget());
@@ -231,7 +231,7 @@ public class AlgorithmServices implements HelperClass {
 				b0 = b1;
 				b1 = t;
 			}
-
+			
 			if (b0 < a0) {
 				int t0 = b0;
 				int t1 = b1;
@@ -250,28 +250,28 @@ public class AlgorithmServices implements HelperClass {
 			// System.out.println(result);
 			return result;
 		}
-
+		
 		@Override
 		public double getCurrentStatusValueFine() {
 			return statusProgress;
 		}
-
+		
 		@Override
 		public boolean pluginWaitsForUser() {
 			return false;
 		}
-
+		
 		@Override
 		public void pleaseContinueRun() {
 			// empty
 		}
-
+		
 		@Override
 		public void setCurrentStatusValue(int value) {
 			statusProgress = value;
 		}
 	}
-
+	
 	/**
 	 * This method calls a user defined layout algorithm for the given graph.
 	 * 

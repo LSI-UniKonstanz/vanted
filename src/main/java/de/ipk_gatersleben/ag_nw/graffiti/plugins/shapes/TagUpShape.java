@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.Vector2d;
 
 public class TagUpShape extends RelativePolyShape {
-
+	
 	@Override
 	protected Collection<Vector2d> getRelativePointPositions() {
 		Collection<Vector2d> points = new ArrayList<Vector2d>();
@@ -18,5 +18,5 @@ public class TagUpShape extends RelativePolyShape {
 		points.add(new Vector2d(0, 1));
 		return points;
 	}
-
+	
 }

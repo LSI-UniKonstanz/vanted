@@ -51,17 +51,17 @@ import org.jfree.ui.RefineryUtilities;
  * A simple demonstration application showing how to create an area chart.
  */
 public class XYAreaChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYAreaChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final XYSeries series1 = new XYSeries("Random 1");
 		series1.add(Integer.valueOf(1), Double.valueOf(500.2));
 		series1.add(Integer.valueOf(2), Double.valueOf(694.1));
@@ -71,7 +71,7 @@ public class XYAreaChartDemo extends ApplicationFrame {
 		series1.add(Integer.valueOf(6), Double.valueOf(300.7));
 		series1.add(Integer.valueOf(7), Double.valueOf(734.4));
 		series1.add(Integer.valueOf(8), Double.valueOf(453.2));
-
+		
 		final XYSeries series2 = new XYSeries("Random 2");
 		series2.add(Integer.valueOf(1), Double.valueOf(700.2));
 		series2.add(Integer.valueOf(2), Double.valueOf(534.1));
@@ -81,54 +81,54 @@ public class XYAreaChartDemo extends ApplicationFrame {
 		series2.add(Integer.valueOf(6), Double.valueOf(432.7));
 		series2.add(Integer.valueOf(7), Double.valueOf(564.4));
 		series2.add(Integer.valueOf(8), Double.valueOf(322.2));
-
+		
 		final XYSeriesCollection dataset = new XYSeriesCollection(series1);
 		dataset.addSeries(series2);
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createXYAreaChart("XY Area Chart Demo", "Domain (X)", "Range (Y)",
 				dataset, PlotOrientation.VERTICAL, true, // legend
 				true, // tool tips
 				false // URLs
 		);
-
+		
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		// plot.setOutlinePaint(Color.black);
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setForegroundAlpha(0.65f);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		final ValueAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setTickMarkPaint(Color.black);
 		domainAxis.setLowerMargin(0.0);
 		domainAxis.setUpperMargin(0.0);
-
+		
 		final ValueAxis rangeAxis = plot.getRangeAxis();
 		rangeAxis.setTickMarkPaint(Color.black);
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -139,20 +139,20 @@ public class XYAreaChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYAreaChartDemo demo = new XYAreaChartDemo("XY Area Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

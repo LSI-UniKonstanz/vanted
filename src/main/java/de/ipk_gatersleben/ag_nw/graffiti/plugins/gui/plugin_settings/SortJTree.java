@@ -14,7 +14,7 @@ public class SortJTree {
 			sortChildren(n, ascending);
 		}
 	}
-
+	
 	// Sort code from:
 	// http://groups.google.com/groups?hl=de&lr=&ie=UTF-8&oe=utf-8&selm=3569178B.6611%40Aston.no
 	// (public domain)
@@ -26,7 +26,7 @@ public class SortJTree {
 		for (int i = 0; i < NmbChildren; i++) {
 			arrayOfNodes[i] = (DefaultMutableTreeNode) node.getChildAt(i);
 		}
-
+		
 		QuickSort(arrayOfNodes, 0, arrayOfNodes.length - 1, ascending, startAt);
 		// Remove all children from top
 		node.removeAllChildren();
@@ -35,13 +35,13 @@ public class SortJTree {
 			node.add(arrayOfNodes[i]);
 		}
 	}
-
+	
 	private static void QuickSort(DefaultMutableTreeNode[] a, int lo0, int hi0, boolean ascending, int posInText) {
 		int lo = lo0;
 		int hi = hi0;
 		DefaultMutableTreeNode mid;
 		DefaultMutableTreeNode T;
-
+		
 		if (hi0 > lo0) {
 			mid = a[(lo0 + hi0) / 2];
 			while (lo <= hi) {
@@ -74,5 +74,5 @@ public class SortJTree {
 				QuickSort(a, lo, hi0, ascending, posInText);
 		}
 	}
-
+	
 }

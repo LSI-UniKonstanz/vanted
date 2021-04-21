@@ -39,9 +39,9 @@ public class URna extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement elem, Graph g, Model model) {
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		if (!model.containsID(RDFID)) {
@@ -61,5 +61,5 @@ public class URna extends UtilitySuperClassToGraph {
 			UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
 		}
 	}
-
+	
 }

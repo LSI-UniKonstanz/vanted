@@ -15,7 +15,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Christian Klukas
  */
 public class PluginCopyPatternLayout extends IPK_PluginAdapter {
-
+	
 	/**
 	 * DOCTODO: Include method header
 	 */
@@ -23,7 +23,7 @@ public class PluginCopyPatternLayout extends IPK_PluginAdapter {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH))
 			this.algorithms = new Algorithm[] { new CopyPatternLayoutAlgorithm() };
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

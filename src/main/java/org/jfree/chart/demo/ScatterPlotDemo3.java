@@ -52,15 +52,15 @@ import org.jfree.ui.RefineryUtilities;
  * coordinates and (x, y) coordinates.
  */
 public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseListener {
-
+	
 	/** The panel used to display the chart. */
 	private ChartPanel chartPanel;
-
+	
 	/**
 	 * A demonstration application showing a scatter plot.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ScatterPlotDemo3(final String title) {
 		super(title);
@@ -75,12 +75,12 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 		chartPanel.setHorizontalZoom(true);
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A dataset.
 	 */
 	private JFreeChart createChart(XYDataset dataset) {
@@ -95,47 +95,47 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 		domainAxis.setAutoRangeIncludesZero(false);
 		return chart;
 	}
-
+	
 	/**
 	 * Callback method for receiving notification of a mouse click on a chart.
 	 * 
 	 * @param event
-	 *            information about the event.
+	 *           information about the event.
 	 */
 	public void chartMouseClicked(ChartMouseEvent event) {
 		int x = event.getTrigger().getX();
 		int y = event.getTrigger().getY();
-
+		
 		// the following translation takes account of the fact that the chart image may
 		// have been scaled up or down to fit the panel...
 		Point2D p = chartPanel.translateScreenToJava2D(new Point(x, y));
-
+		
 		// now convert the Java2D coordinate to axis coordinates...
 		XYPlot plot = chartPanel.getChart().getXYPlot();
 		Rectangle2D dataArea = chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea();
 		double xx = plot.getDomainAxis().java2DToValue(p.getX(), dataArea, plot.getDomainAxisEdge());
 		double yy = plot.getRangeAxis().java2DToValue(p.getY(), dataArea, plot.getRangeAxisEdge());
-
+		
 		// just for fun, lets convert the axis coordinates back to component
 		// coordinates...
 		double xxx = plot.getDomainAxis().valueToJava2D(xx, dataArea, plot.getDomainAxisEdge());
 		double yyy = plot.getRangeAxis().valueToJava2D(yy, dataArea, plot.getRangeAxisEdge());
-
+		
 		Point2D p2 = chartPanel.translateJava2DToScreen(new Point2D.Double(xxx, yyy));
 		System.out.println("Mouse coordinates are (" + x + ", " + y + "), in data space = (" + xx + ", " + yy + ").");
 		System.out.println("--> (" + p2.getX() + ", " + p2.getY() + ")");
 	}
-
+	
 	/**
 	 * Callback method for receiving notification of a mouse movement on a chart.
 	 * 
 	 * @param event
-	 *            information about the event.
+	 *           information about the event.
 	 */
 	public void chartMouseMoved(ChartMouseEvent event) {
 		// ignore
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -146,12 +146,12 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final ScatterPlotDemo3 demo = new ScatterPlotDemo3("Scatter Plot Demo 3");
@@ -159,5 +159,5 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 	}
-
+	
 }

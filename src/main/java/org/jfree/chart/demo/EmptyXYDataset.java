@@ -38,40 +38,40 @@ import org.jfree.data.XYDataset;
  * An empty dataset for testing purposes.
  */
 public class EmptyXYDataset extends AbstractXYDataset implements XYDataset {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public EmptyXYDataset() {
 		super();
 	}
-
+	
 	/**
 	 * Returns the x-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the x-value (always null for this class).
 	 */
 	public Number getXValue(final int series, final int item) {
 		return null;
 	}
-
+	
 	/**
 	 * Returns the y-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the y-value (always null for this class).
 	 */
 	public Number getYValue(final int series, final int item) {
 		return null;
 	}
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
@@ -80,27 +80,27 @@ public class EmptyXYDataset extends AbstractXYDataset implements XYDataset {
 	public int getSeriesCount() {
 		return 0;
 	}
-
+	
 	/**
 	 * Returns the name of the series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the name of the series (always null in this class).
 	 */
 	public String getSeriesName(final int series) {
 		return null;
 	}
-
+	
 	/**
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the item count (always zero in this class).
 	 */
 	public int getItemCount(final int series) {
 		return 0;
 	}
-
+	
 }

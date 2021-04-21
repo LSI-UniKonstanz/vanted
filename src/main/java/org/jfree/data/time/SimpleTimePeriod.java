@@ -43,33 +43,33 @@ import java.util.Date;
  * alter the start and end attributes).
  */
 public class SimpleTimePeriod implements TimePeriod, Serializable {
-
+	
 	/** The start date/time. */
 	private Date start;
-
+	
 	/** The end date/time. */
 	private Date end;
-
+	
 	/**
 	 * Creates a new time allocation.
 	 * 
 	 * @param start
-	 *            the start date/time.
+	 *           the start date/time.
 	 * @param end
-	 *            the end date/time.
+	 *           the end date/time.
 	 */
 	public SimpleTimePeriod(final Date start, final Date end) {
-
+		
 		// check arguments...
 		if (start.getTime() > end.getTime()) {
 			throw new IllegalArgumentException("SimpleTimePeriod: requires end >= start.");
 		}
-
+		
 		this.start = start;
 		this.end = end;
-
+		
 	}
-
+	
 	/**
 	 * Returns the start date/time.
 	 * 
@@ -78,7 +78,7 @@ public class SimpleTimePeriod implements TimePeriod, Serializable {
 	public Date getStart() {
 		return this.start;
 	}
-
+	
 	/**
 	 * Returns the end date/time.
 	 * 
@@ -87,7 +87,7 @@ public class SimpleTimePeriod implements TimePeriod, Serializable {
 	public Date getEnd() {
 		return this.end;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if this time period is equal to another object, and
 	 * <code>false</code> otherwise.
@@ -96,22 +96,22 @@ public class SimpleTimePeriod implements TimePeriod, Serializable {
 	 * period.
 	 * 
 	 * @param obj
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object obj) {
-
+		
 		boolean result = false;
-
+		
 		if (obj instanceof TimePeriod) {
 			final TimePeriod p = (TimePeriod) obj;
 			result = this.start.equals(p.getStart()) && this.end.equals(p.getEnd());
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
@@ -128,5 +128,5 @@ public class SimpleTimePeriod implements TimePeriod, Serializable {
 		result = 37 * result + this.end.hashCode();
 		return result;
 	}
-
+	
 }

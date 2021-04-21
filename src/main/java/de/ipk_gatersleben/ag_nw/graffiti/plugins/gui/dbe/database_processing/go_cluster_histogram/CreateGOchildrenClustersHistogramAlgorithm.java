@@ -39,26 +39,26 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  */
 public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorithm
 		implements AlgorithmWithComponentDescription {
-
+	
 	private boolean setLabel = true;
 	private boolean removeExistingDatamapping = true;
 	private boolean processUpstreamOfSelection = true;
-
+	
 	public String getName() {
 		return "Add Cluster-Histogram";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.STATISTICS,
 				Category.CHART, Category.VISUAL, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command enumerates all<br>" + "leaf nodes with mapping data, connected<br>"
@@ -68,14 +68,14 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 				+ "A similar command which processes<br>" + "the cluster distribution of neighbour-<br>"
 				+ "nodes of nodes with mapping-data is<br>" + "available from the &quot;Analysis&quot; menu.";
 	}
-
+	
 	public JComponent getDescriptionComponent() {
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		ImageIcon icon = new ImageIcon(cl.getResource(path + "/images/cluster_hist_cmd_desc_scaled.png"));
 		return FolderPanel.getBorderedComponent(new JLabel(icon), 5, 5, 5, 5);
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -85,10 +85,10 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 						"If disabled, a additional mapping is performed, existing data is not removed."),
 				new BooleanParameter(processUpstreamOfSelection, "Process upstream",
 						"If enabled, not only the selection is processed, but also all nodes upstream.")
-
+		
 		};
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -96,7 +96,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 		removeExistingDatamapping = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		processUpstreamOfSelection = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
-
+	
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -106,16 +106,16 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 			for (Node n : workingSet) {
 				knownClusterIDs.addAll(getLeafNodesClusterIDs(processedNodes, new NodeHelper(n)));
 			}
-
+			
 			final boolean fsl = setLabel;
-
+			
 			/**
 			 * Used in case upstream-processing is used.
 			 */
 			final HashSet<Node> specialModeValidLeafNodes = new HashSet<Node>(workingSet);
-
+			
 			ExecutorService run = Executors.newFixedThreadPool(1); // SystemAnalysis.getNumberOfCPUs());
-
+			
 			HashSet<Node> hierarchyNodesToBeProcessed = new HashSet<Node>();
 			if (processUpstreamOfSelection) {
 				// add upstream nodes
@@ -123,9 +123,9 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 					if (n.getOutDegree() > 0)
 						processUpstreamNodes(n, hierarchyNodesToBeProcessed);
 			}
-
+			
 			hierarchyNodesToBeProcessed.addAll(workingSet);
-
+			
 			for (Node n : hierarchyNodesToBeProcessed) {
 				final NodeHelper nh = new NodeHelper(n);
 				String clusterId = nh.getClusterID(null);
@@ -151,12 +151,12 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	private static void processNode(NodeHelper nh, TreeSet<String> knownClusterIDs, boolean setLabel,
 			boolean removeExistingDataMapping, boolean specialModeUpstreamProcessing,
 			HashSet<Node> specialModeValidLeafNodes) {
 		HashSet<Node> childNodes = nh.getAllOutChildNodes();
-
+		
 		if (specialModeUpstreamProcessing) {
 			HashSet<Node> remove = new HashSet<Node>();
 			for (Node n : childNodes)
@@ -164,11 +164,11 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 					remove.add(n);
 			childNodes.removeAll(remove);
 		}
-
+		
 		TreeMap<String, Integer> cluster2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
 			cluster2frequency.put(ci, Integer.valueOf(0));
-
+		
 		for (Node n : childNodes) {
 			NodeHelper nnh = new NodeHelper(n);
 			if (nnh.getOutDegree() == 0) {
@@ -181,13 +181,13 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 				}
 			}
 		}
-
+		
 		if (removeExistingDataMapping)
 			nh.removeDataMapping();
 		StringBuilder sb = null;
 		if (setLabel)
 			sb = new StringBuilder();
-
+		
 		for (String clusterID : cluster2frequency.keySet()) {
 			int plantID = nh.memGetPlantID(clusterID, "", "", "", "");
 			Integer value = cluster2frequency.get(clusterID);
@@ -221,10 +221,10 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 		nh.memAddDataMapping("Cluster Distribution for " + nh.getLabel(), "cluster frequency", null,
 				"calculated analysis", "system", "Frequency of clusters in child nodes of a GO-Term-Hierarchy-Node",
 				"");
-
+		
 		nh.setChartType(GraffitiCharts.PIE);
 	}
-
+	
 	public static Collection<String> getLeafNodesClusterIDs(HashSet<Node> processedNodes, NodeHelper nh) {
 		Collection<String> result = new ArrayList<String>();
 		if (!processedNodes.contains(nh.getGraphNode())) {
@@ -241,7 +241,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 		}
 		return result;
 	}
-
+	
 	public void processUpstreamNodes(Node n, HashSet<Node> processedNodes) {
 		if (!processedNodes.contains(n)) {
 			processedNodes.add(n);

@@ -36,79 +36,79 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
  */
 public abstract class AbstractAttributeListener implements AttributeListener {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Called after an attribute has been added.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	/**
 	 * Called after an attribute has been changed.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	/**
 	 * Called after an attribute has been removed.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	/**
 	 * Called just before an attribute is added.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	/**
 	 * Called before a change of an attribute takes place.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	/**
 	 * Called just before an attribute is removed.
 	 * 
 	 * @param e
-	 *            the AttributeEvent detailing the changes.
+	 *           the AttributeEvent detailing the changes.
 	 */
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	/**
 	 * Called after a transaction has been finished.
 	 * 
 	 * @param e
-	 *            gives details about the transaction.
+	 *           gives details about the transaction.
 	 */
 	public void transactionFinished(TransactionEvent e) {
-	}	
-
-	@Override
-	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {		
 	}
-
+	
+	@Override
+	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
+	}
+	
 	/**
 	 * Called after a transaction has been started.
 	 * 
 	 * @param e
-	 *            gives details about the transaction.
+	 *           gives details about the transaction.
 	 */
 	public void transactionStarted(TransactionEvent e) {
 	}

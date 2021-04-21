@@ -66,22 +66,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.NoOverlappOfClustersAlgorithm;
 
 public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
-
+	
 	private int progressVal = -1;
-
+	
 	private String status1 = "";
-
+	
 	private String status2 = "";
-
+	
 	private boolean pleaseStop = false;
-
+	
 	@SuppressWarnings("unused")
 	private static String getNumString(String s, int len) {
 		while (s.length() < len)
 			s = "0" + s;
 		return s;
 	}
-
+	
 	/**
 	 * If loadBlockingIntoThisGraph is != null, this method adds the loaded graph to
 	 * the given graph instance. If this parameter is NULL (default), then this
@@ -99,7 +99,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 				Graph myGraph = null;
 				try {
 					myGraph = KeggService.getKeggPathwayGravistoGraph(myEntry, false /* true */, enzymeColor);
-
+					
 					MainFrame.showMessage("Pathway loaded, creating view...", MessageType.INFO);
 					if (loadBlockingIntoThisGraph == null) {
 						final Graph myGraphF = myGraph;
@@ -170,7 +170,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 		}
 		return (Boolean) objref.getObject();
 	}
-
+	
 	public static void mergeKeggGraphs(Graph mergeIntoThisGraph, Graph newGraph, Vector2d centerOfNewGraph,
 			boolean linkToExistingMaps, boolean clusterSeparation) {
 		Collection<GraphElement> addedNodesAndEdges = mergeIntoThisGraph.addGraph(newGraph);
@@ -219,7 +219,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 				}
 			}
 		}
-
+		
 		if (linkToExistingMaps) {
 			HashMap<String, Node> mapName2node = new HashMap<String, Node>();
 			for (NodeHelper nh : GraphHelper.getHelperNodes(mergeIntoThisGraph)) {
@@ -243,10 +243,10 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 				}
 			}
 		}
-
+		
 		for (Node del : toBeDeleted)
 			mergeIntoThisGraph.deleteNode(del);
-
+		
 		if (clusterSeparation) {
 			Algorithm layout = new NoOverlappOfClustersAlgorithm();
 			layout.attach(mergeIntoThisGraph, new Selection("empty"));
@@ -258,20 +258,20 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 			}
 		}
 	}
-
+	
 	public static void loadPathway(KeggPathwayEntry myEntry, boolean processLabels) {
 		loadPathway(myEntry, null, processLabels);
 	}
-
+	
 	public static void loadPathway(KeggPathwayEntry myEntry, Graph targetGraph, boolean processLabels) {
 		loadPathway(myEntry, targetGraph, null, processLabels);
 	}
-
+	
 	public static void loadPathway(KeggPathwayEntry myEntry, Graph targetGraph, Node initialMapNode,
 			boolean processLabels) {
 		loadPathway(myEntry, targetGraph, initialMapNode, true, false);
 	}
-
+	
 	public static void loadPathway(KeggPathwayEntry myEntry, Graph targetGraph, Node initialMapNode,
 			boolean askForNewWindow, boolean separateClusters) {
 		Object[] input;
@@ -341,15 +341,15 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 				initialMapNode.getGraph().deleteNode(initialMapNode);
 		}
 	}
-
+	
 	public static Graph getKeggPathwayGravistoGraph(KeggPathwayEntry myEntry, boolean showErrorMessages,
 			Color enzymeColors) throws JDOMException, IOException, MalformedURLException {
 		return getKeggPathwayGravistoGraph(myEntry, showErrorMessages, enzymeColors, true);
 	}
-
+	
 	public static Graph getKeggPathwayGravistoGraph(KeggPathwayEntry myEntry, boolean showErrorMessages,
 			Color enzymeColors, boolean includeMapNodes) throws JDOMException, IOException, MalformedURLException {
-
+		
 		InputStream inpStream = null;
 		Graph myGraph = new AdjListGraph();
 		int startErrorMsgCnt = ErrorMsg.getErrorMsgCount();
@@ -358,16 +358,16 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 				AttributeHelper.setAttribute(myGraph, "kegg", "xml_url", myEntry.getPathwayURLstring());
 			SAXBuilder builder = new SAXBuilder();
 			Document doc;
-
+			
 			inpStream = myEntry.getOpenInputStream();
 			if (inpStream != null) {
 				doc = builder.build(inpStream);
 				// Lesen des Wurzelelements des JDOM-Dokuments doc
 				Element kegg = doc.getRootElement();
-
+				
 				Pathway p = Pathway.getPathwayFromKGML(kegg);
 				p.getGraph(myGraph);
-
+				
 				if (myEntry.isColorEnzymesAndUseReferencePathway()) {
 					colorizeEnzymesGlycansCompounds(myGraph, myEntry.getMapName(), enzymeColors, true, true, false,
 							false, false, true);
@@ -376,7 +376,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 					AttributeHelper.copyReplaceStringAttribute(myGraph, "kegg", "xml_url", "xml_url_os", "ko",
 							myEntry.getOrganismLetters());
 				}
-
+				
 				MainFrame.showMessage("Pathway " + myEntry.getPathwayName() + " loaded", MessageType.INFO);
 				if ((ErrorMsg.getErrorMsgCount() - startErrorMsgCnt > 0) && showErrorMessages) {
 					MainFrame.showMessageDialog("<html>The pathway might not be loaded completely.<br>Additional "
@@ -389,10 +389,10 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 			if (inpStream != null)
 				inpStream.close();
 		}
-
+		
 		return myGraph;
 	}
-
+	
 	public static void colorizeEnzymesGlycansCompounds(Graph graph, String mapName, Color enzymeColor,
 			boolean markNotPresent, boolean orthologs, boolean enzymes, boolean glycans, boolean compounds,
 			boolean convertTypeToGeneWhenProcessingOrthologs) {
@@ -538,7 +538,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 			}
 		}
 	}
-
+	
 	/**
 	 * @param keggTree
 	 * @param keggTree
@@ -556,7 +556,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 					"Error");
 			return;
 		}
-
+		
 		List<Object> projects = new ArrayList<Object>(); // contains ProjectEntity or a String
 		projects.addAll(TabDBE.getLoadedProjectEntities());
 		projects.addAll(TabDBE.getProjectList());
@@ -576,7 +576,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 				projects.iterator().next());
 		if (sel != null)
 			sel = projects.get(prettyFiedProjects.indexOf(sel));
-
+		
 		if (sel instanceof ProjectEntity) {
 			ProjectEntity pe = (ProjectEntity) sel;
 			RunnableWithXMLexperimentData r = getPathwayMappingRunnable(keggTree, keggPathways, pathwayToTreeNodeMap,
@@ -585,16 +585,16 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 			r.run();
 		}
 	}
-
+	
 	private RunnableWithXMLexperimentData getPathwayMappingRunnable(final JTree keggTree,
 			final List<KeggPathwayEntry> keggPathways, final HashMap pathwayToTreeNodeMap, final Color enzymeColor) {
 		return new RunnableWithXMLexperimentData() {
 			private ExperimentInterface md = null;
-
+			
 			public void setExperimenData(ExperimentInterface md) {
 				this.md = md;
 			}
-
+			
 			public void run() {
 				progressVal = 0;
 				int cnt = 0;
@@ -611,7 +611,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 						DefaultMutableTreeNode dmt = (DefaultMutableTreeNode) pathwayToTreeNodeMap.get(myEntry);
 						if (dmt != null) {
 							KeggPathwayEntry kpe = (KeggPathwayEntry) dmt.getUserObject();
-
+							
 							int enzymeCount = EnzymeService.getNumberOfEnzymeNodes(myGraph);
 							int compoundCount;
 							if (myGraph == null)
@@ -629,7 +629,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 								}
 								compoundCount = count;
 							}
-
+							
 							kpe.setMappingCount(mapResult.substanceCount + "/" + enzymeCount + "/" + compoundCount + "/"
 									+ myGraph.getNodes().size());
 							keggTree.repaint();
@@ -652,7 +652,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 			}
 		};
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -662,7 +662,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	public int getCurrentStatusValue() {
 		return progressVal;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -672,7 +672,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -682,7 +682,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -692,7 +692,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -702,7 +702,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -713,7 +713,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -724,20 +724,20 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public static void loadKeggPathwayIntoGraph(InputStream in, Graph g, Color enzymeColor) {
 		KeggPathwayEntry ke = new KeggPathwayEntry(in);
 		ke.setPathwayName("[Loaded from file]");
 		ke.setMapName("[Loaded from file]");
 		loadKeggPathwayIntoEditor(ke, g, enzymeColor, false);
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		progressVal = value;
 	}
-
+	
 	public static Color getDefaultEnzymeColor() {
 		return new Color(200, 255, 200);
 	}
-
+	
 }

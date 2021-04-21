@@ -34,21 +34,21 @@ package org.jfree.data;
  * An interface through which (single-dimension) data values can be accessed.
  */
 public interface Values {
-
+	
 	/**
 	 * Returns the number of items (values) in the collection.
 	 * 
 	 * @return the item count.
 	 */
 	public int getItemCount();
-
+	
 	/**
 	 * Returns a value.
 	 * 
 	 * @param item
-	 *            the item of interest (zero-based index).
+	 *           the item of interest (zero-based index).
 	 * @return the value.
 	 */
 	public Number getValue(int item);
-
+	
 }

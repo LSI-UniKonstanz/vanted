@@ -47,15 +47,15 @@ package org.jfree.data;
  */
 public class CategoryTableXYDataset extends AbstractIntervalXYDataset
 		implements TableXYDataset, IntervalXYDataset, DomainInfo {
-
+	
 	/**
 	 * The backing data structure.
 	 */
 	private DefaultKeyedValues2D values;
-
+	
 	/** A delegate for controlling the interval width. */
 	private IntervalXYDelegate intervalDelegate;
-
+	
 	/**
 	 * Creates a new empty CategoryTableXYDataset.
 	 */
@@ -63,78 +63,78 @@ public class CategoryTableXYDataset extends AbstractIntervalXYDataset
 		this.values = new DefaultKeyedValues2D(true);
 		this.intervalDelegate = new IntervalXYDelegate(this);
 	}
-
+	
 	/**
 	 * Adds a data item to this data set.
 	 * 
 	 * @param x
-	 *            the x value of the item to add.
+	 *           the x value of the item to add.
 	 * @param y
-	 *            the y value of the item to add.
+	 *           the y value of the item to add.
 	 * @param seriesName
-	 *            the name of the series to add the data item.
+	 *           the name of the series to add the data item.
 	 */
 	public void add(final double x, final double y, final String seriesName) {
 		add(Double.valueOf(x), Double.valueOf(y), seriesName, true);
 	}
-
+	
 	/**
 	 * Adds a data item to this data set.
 	 * 
 	 * @param x
-	 *            the x value of the item to add.
+	 *           the x value of the item to add.
 	 * @param y
-	 *            the y value of the item to add.
+	 *           the y value of the item to add.
 	 * @param seriesName
-	 *            the name of the series to add the data item.
+	 *           the name of the series to add the data item.
 	 * @param notify
-	 *            a flag that controls whether or not a {@link SeriesChangeEvent} is
-	 *            sent to all registered listeners.
+	 *           a flag that controls whether or not a {@link SeriesChangeEvent} is
+	 *           sent to all registered listeners.
 	 */
 	public void add(final Number x, final Number y, final String seriesName, final boolean notify) {
 		this.values.addValue(y, (Comparable) x, seriesName);
-
+		
 		final int series = this.values.getColumnIndex(seriesName);
 		final int item = this.values.getRowIndex((Comparable) x);
 		this.intervalDelegate.itemAdded(series, item);
-
+		
 		if (notify) {
 			fireDatasetChanged();
 		}
 	}
-
+	
 	/**
 	 * Removes a value from the dataset.
 	 * 
 	 * @param x
-	 *            the x-value.
+	 *           the x-value.
 	 * @param seriesName
-	 *            the series name.
+	 *           the series name.
 	 */
 	public void remove(final double x, final String seriesName) {
 		remove(Double.valueOf(x), seriesName, true);
 	}
-
+	
 	/**
 	 * Removes an item from the dataset.
 	 * 
 	 * @param x
-	 *            the x-value.
+	 *           the x-value.
 	 * @param seriesName
-	 *            the series name.
+	 *           the series name.
 	 * @param notify
-	 *            notify listeners?
+	 *           notify listeners?
 	 */
 	public void remove(final Number x, final String seriesName, final boolean notify) {
 		this.values.removeValue((Comparable) x, seriesName);
-
+		
 		this.intervalDelegate.itemRemoved(x.doubleValue());
-
+		
 		if (notify) {
 			fireDatasetChanged();
 		}
 	}
-
+	
 	/**
 	 * Returns the number of series in the collection.
 	 * 
@@ -143,18 +143,18 @@ public class CategoryTableXYDataset extends AbstractIntervalXYDataset
 	public int getSeriesCount() {
 		return this.values.getColumnCount();
 	}
-
+	
 	/**
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the name of a series.
 	 */
 	public String getSeriesName(final int series) {
 		return this.values.getColumnKey(series).toString();
 	}
-
+	
 	/**
 	 * Returns the number of x values in the dataset.
 	 * 
@@ -163,119 +163,119 @@ public class CategoryTableXYDataset extends AbstractIntervalXYDataset
 	public int getItemCount() {
 		return this.values.getRowCount();
 	}
-
+	
 	/**
 	 * Returns the number of items in the specified series. Returns the same as
 	 * {@link CategoryTableXYDataset#getItemCount()}.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
 		return getItemCount();
 	}
-
+	
 	/**
 	 * Returns the x-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the x-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
 		return (Number) this.values.getRowKey(item);
 	}
-
+	
 	/**
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The starting X value.
 	 */
 	public Number getStartXValue(final int series, final int item) {
 		return this.intervalDelegate.getStartXValue(series, item);
 	}
-
+	
 	/**
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The ending X value.
 	 */
 	public Number getEndXValue(final int series, final int item) {
 		return this.intervalDelegate.getEndXValue(series, item);
 	}
-
+	
 	/**
 	 * Returns the y-value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the index of the item of interest (zero-based).
+	 *           the index of the item of interest (zero-based).
 	 * @return the y-value for the specified series and item (possibly
 	 *         <code>null</code>).
 	 */
 	public Number getYValue(final int series, final int item) {
 		return this.values.getValue(item, series);
 	}
-
+	
 	/**
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The starting Y value.
 	 */
 	public Number getStartYValue(final int series, final int item) {
 		return getYValue(series, item);
 	}
-
+	
 	/**
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The ending Y value.
 	 */
 	public Number getEndYValue(final int series, final int item) {
 		return getYValue(series, item);
 	}
-
+	
 	/**
 	 * @return the domain range
 	 */
 	public Range getDomainRange() {
 		return this.intervalDelegate.getDomainRange();
 	}
-
+	
 	/**
 	 * @return the maximum domain value.
 	 */
 	public Number getMaximumDomainValue() {
 		return this.intervalDelegate.getMaximumDomainValue();
 	}
-
+	
 	/**
 	 * @return the minimum domain value.
 	 */
 	public Number getMinimumDomainValue() {
 		return this.intervalDelegate.getMinimumDomainValue();
 	}
-
+	
 	/**
 	 * Returns the interval position factor.
 	 * 
@@ -284,7 +284,7 @@ public class CategoryTableXYDataset extends AbstractIntervalXYDataset
 	public double getIntervalPositionFactor() {
 		return this.intervalDelegate.getIntervalPositionFactor();
 	}
-
+	
 	/**
 	 * Sets the interval position factor. Must be between 0.0 and 1.0 inclusive. If
 	 * the factor is 0.5, the gap is in the middle of the x values. If it is lesser
@@ -292,13 +292,13 @@ public class CategoryTableXYDataset extends AbstractIntervalXYDataset
 	 * farther to the right.
 	 * 
 	 * @param d
-	 *            the new interval position factor.
+	 *           the new interval position factor.
 	 */
 	public void setIntervalPositionFactor(final double d) {
 		this.intervalDelegate.setIntervalPositionFactor(d);
 		fireDatasetChanged();
 	}
-
+	
 	/**
 	 * returns the full interval width.
 	 * 
@@ -307,18 +307,18 @@ public class CategoryTableXYDataset extends AbstractIntervalXYDataset
 	public double getIntervalWidth() {
 		return this.intervalDelegate.getIntervalWidth();
 	}
-
+	
 	/**
 	 * Sets the interval width manually.
 	 * 
 	 * @param d
-	 *            the new interval width.
+	 *           the new interval width.
 	 */
 	public void setIntervalWidth(final double d) {
 		this.intervalDelegate.setIntervalWidth(d);
 		fireDatasetChanged();
 	}
-
+	
 	/**
 	 * Returns wether the interval width is automatically calculated or not.
 	 * 
@@ -327,13 +327,13 @@ public class CategoryTableXYDataset extends AbstractIntervalXYDataset
 	public boolean isAutoWidth() {
 		return this.intervalDelegate.isAutoWidth();
 	}
-
+	
 	/**
 	 * Sets the flag that indicates wether the interval width is automatically
 	 * calculated or not.
 	 * 
 	 * @param b
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setAutoWidth(final boolean b) {
 		this.intervalDelegate.setAutoWidth(b);

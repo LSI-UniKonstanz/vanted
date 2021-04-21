@@ -22,47 +22,46 @@ import org.graffiti.graph.GraphElement;
  * @version $Revision: 1.6 $
  */
 public abstract class GraffitiAbstractUndoableEdit extends AbstractUndoableEdit {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -337942202981548644L;
+	
+	// ~ Instance fields ========================================================
 	/**
 	 * The reference for the map between graph elements recreated after undo
 	 * processing and original graph elements.
 	 */
 	protected Map<GraphElement, GraphElement> geMap;
-
+	
 	/** The <code>StringBundle</code> of the main frame. */
 	protected StringBundle sBundle = StringBundle.getInstance();
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new <code>GraffitiAbstractUndoableEdit</code> object.
 	 * 
 	 * @param geMap
-	 *            reference to the map supports the undo operations.
+	 *           reference to the map supports the undo operations.
 	 */
 	public GraffitiAbstractUndoableEdit(Map<GraphElement, GraphElement> geMap) {
 		super();
 		this.geMap = geMap;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Executes action for corresponding tools.
 	 */
 	public abstract void execute();
-
+	
 	/**
 	 * Return a new graph element reference through the mapping from old ones.
 	 * 
 	 * @param oldGraphElement
-	 *            a graph element has to be updated.
+	 *           a graph element has to be updated.
 	 * @return a new existing graph element mapped from the given ones.
 	 */
 	protected GraphElement getNewGraphElement(GraphElement oldGraphElement) {
@@ -71,7 +70,7 @@ public abstract class GraffitiAbstractUndoableEdit extends AbstractUndoableEdit 
 		else
 			return oldGraphElement;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

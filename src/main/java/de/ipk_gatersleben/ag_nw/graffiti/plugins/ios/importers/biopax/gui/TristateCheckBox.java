@@ -19,7 +19,6 @@ import javax.swing.plaf.ActionMapUIResource;
 
 /**
  * Maintenance tip - There were some tricks to getting this code working:
- * 
  * 1. You have to overwite addMouseListener() to do nothing 2. You have to add a
  * mouse event on mousePressed by calling super.addMouseListener() 3. You have
  * to replace the UIActionMap for the keyboard event "pressed" with your own
@@ -36,13 +35,13 @@ public class TristateCheckBox extends JCheckBox {
 		private State() {
 		}
 	}
-
+	
 	public static final State NOT_SELECTED = new State();
 	public static final State SELECTED = new State();
 	public static final State DONT_CARE = new State();
-
+	
 	private final TristateDecorator model;
-
+	
 	public TristateCheckBox(String text, Icon icon, State initial) {
 		super(text, icon);
 		// Add a listener for when the mouse is pressed
@@ -69,24 +68,24 @@ public class TristateCheckBox extends JCheckBox {
 		setModel(model);
 		setState(initial);
 	}
-
+	
 	public TristateCheckBox(String text, State initial) {
 		this(text, null, initial);
 	}
-
+	
 	public TristateCheckBox(String text) {
 		this(text, DONT_CARE);
 	}
-
+	
 	public TristateCheckBox() {
 		this(null);
 	}
-
+	
 	/** No one may add mouse listeners, not even Swing! */
 	@Override
 	public void addMouseListener(MouseListener l) {
 	}
-
+	
 	/**
 	 * Set the new state to either SELECTED, NOT_SELECTED or DONT_CARE. If state ==
 	 * null, it is treated as DONT_CARE.
@@ -94,7 +93,7 @@ public class TristateCheckBox extends JCheckBox {
 	public void setState(State state) {
 		model.setState(state);
 	}
-
+	
 	/**
 	 * Return the current state, which is determined by the selection status of the
 	 * model.
@@ -102,7 +101,7 @@ public class TristateCheckBox extends JCheckBox {
 	public State getState() {
 		return model.getState();
 	}
-
+	
 	@Override
 	public void setSelected(boolean b) {
 		if (b) {
@@ -111,7 +110,7 @@ public class TristateCheckBox extends JCheckBox {
 			setState(NOT_SELECTED);
 		}
 	}
-
+	
 	/**
 	 * Exactly which Design Pattern is this? Is it an Adapter, a Proxy or a
 	 * Decorator? In this case, my vote lies with the Decorator, because we are
@@ -120,11 +119,11 @@ public class TristateCheckBox extends JCheckBox {
 	 */
 	private class TristateDecorator implements ButtonModel {
 		private final ButtonModel other;
-
+		
 		private TristateDecorator(ButtonModel other) {
 			this.other = other;
 		}
-
+		
 		private void setState(State state) {
 			if (state == NOT_SELECTED) {
 				other.setArmed(false);
@@ -140,10 +139,9 @@ public class TristateCheckBox extends JCheckBox {
 				setSelected(true);
 			}
 		}
-
+		
 		/**
 		 * The current state is embedded in the selection / armed state of the model.
-		 * 
 		 * We return the SELECTED state when the checkbox is selected but not armed,
 		 * DONT_CARE state when the checkbox is selected and armed (grey) and
 		 * NOT_SELECTED when the checkbox is deselected.
@@ -160,7 +158,7 @@ public class TristateCheckBox extends JCheckBox {
 				return NOT_SELECTED;
 			}
 		}
-
+		
 		/** We rotate between NOT_SELECTED, SELECTED and DONT_CARE. */
 		private void nextState() {
 			State current = getState();
@@ -172,12 +170,12 @@ public class TristateCheckBox extends JCheckBox {
 				setState(NOT_SELECTED);
 			}
 		}
-
+		
 		/** Filter: No one may change the armed status except us. */
 		@Override
 		public void setArmed(boolean b) {
 		}
-
+		
 		/**
 		 * We disable focusing on the component when it is not enabled.
 		 */
@@ -186,7 +184,7 @@ public class TristateCheckBox extends JCheckBox {
 			setFocusable(b);
 			other.setEnabled(b);
 		}
-
+		
 		/**
 		 * All these methods simply delegate to the "other" model that is being
 		 * decorated.
@@ -195,101 +193,101 @@ public class TristateCheckBox extends JCheckBox {
 		public boolean isArmed() {
 			return other.isArmed();
 		}
-
+		
 		@Override
 		public boolean isSelected() {
 			return other.isSelected();
 		}
-
+		
 		@Override
 		public boolean isEnabled() {
 			return other.isEnabled();
 		}
-
+		
 		@Override
 		public boolean isPressed() {
 			return other.isPressed();
 		}
-
+		
 		@Override
 		public boolean isRollover() {
 			return other.isRollover();
 		}
-
+		
 		@Override
 		public void setSelected(boolean b) {
 			other.setSelected(b);
 		}
-
+		
 		@Override
 		public void setPressed(boolean b) {
 			other.setPressed(b);
 		}
-
+		
 		@Override
 		public void setRollover(boolean b) {
 			other.setRollover(b);
 		}
-
+		
 		@Override
 		public void setMnemonic(int key) {
 			other.setMnemonic(key);
 		}
-
+		
 		@Override
 		public int getMnemonic() {
 			return other.getMnemonic();
 		}
-
+		
 		@Override
 		public void setActionCommand(String s) {
 			other.setActionCommand(s);
 		}
-
+		
 		@Override
 		public String getActionCommand() {
 			return other.getActionCommand();
 		}
-
+		
 		@Override
 		public void setGroup(ButtonGroup group) {
 			other.setGroup(group);
 		}
-
+		
 		@Override
 		public void addActionListener(ActionListener l) {
 			other.addActionListener(l);
 		}
-
+		
 		@Override
 		public void removeActionListener(ActionListener l) {
 			other.removeActionListener(l);
 		}
-
+		
 		@Override
 		public void addItemListener(ItemListener l) {
 			other.addItemListener(l);
 		}
-
+		
 		@Override
 		public void removeItemListener(ItemListener l) {
 			other.removeItemListener(l);
 		}
-
+		
 		@Override
 		public void addChangeListener(ChangeListener l) {
 			other.addChangeListener(l);
 		}
-
+		
 		@Override
 		public void removeChangeListener(ChangeListener l) {
 			other.removeChangeListener(l);
 		}
-
+		
 		@Override
 		public Object[] getSelectedObjects() {
 			return other.getSelectedObjects();
 		}
 	}
-
+	
 }

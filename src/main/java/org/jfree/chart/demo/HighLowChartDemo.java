@@ -42,17 +42,17 @@ import org.jfree.ui.RefineryUtilities;
  * A demo showing a high-low-open-close chart.
  */
 public class HighLowChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing a high-low-open-close chart.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public HighLowChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final HighLowDataset dataset = DemoDatasetFactory.createHighLowDataset();
 		final JFreeChart chart = ChartFactory.createHighLowChart("High-Low-Open-Close Demo", "Time", "Value", dataset,
 				true);
@@ -61,9 +61,9 @@ public class HighLowChartDemo extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -74,20 +74,20 @@ public class HighLowChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final HighLowChartDemo demo = new HighLowChartDemo("High-Low-Open-Close Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

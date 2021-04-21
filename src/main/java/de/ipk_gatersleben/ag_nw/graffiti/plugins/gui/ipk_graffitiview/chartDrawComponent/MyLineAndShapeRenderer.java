@@ -28,46 +28,49 @@ import org.jfree.chart.renderer.LineAndShapeRenderer;
 import org.jfree.data.CategoryDataset;
 
 public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1841523689414463224L;
+	
 	boolean showStdDevAsVerticalT = false;
-
+	
 	boolean showStdDevAsFilLRange = false;
-
+	
 	boolean connectPriorMissing = false;
-
+	
 	float stdDevLineWidth = 4f;
 	double stdDevTopWidth = 2;
-
+	
 	Stroke stdDevStroke = new BasicStroke(stdDevLineWidth);
-
+	
 	public void setDrawStdDev(boolean showStdDevAsVerticalT, boolean showStdDevAsFilLRange) {
 		this.showStdDevAsVerticalT = showStdDevAsVerticalT;
 		this.showStdDevAsFilLRange = showStdDevAsFilLRange;
 	}
-
+	
 	public void setConnectPriorItems(boolean value) {
 		this.connectPriorMissing = value;
 	}
-
+	
 	public void setStdDevLineWidth(float stdDevLineWidth) {
 		this.stdDevLineWidth = stdDevLineWidth;
 		stdDevStroke = new BasicStroke(stdDevLineWidth);
 	}
-
+	
 	public void setStdDevTopWidth(double stdDevTopWidth) {
 		this.stdDevTopWidth = stdDevTopWidth;
 	}
-
+	
 	@Override
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
-
+		
 		if (!showStdDevAsFilLRange)
 			defaultDrawItem(g2, state, dataArea, plot, domainAxis, rangeAxis, dataset, row, column,
 					connectPriorMissing);
-
+		
 		if (showStdDevAsVerticalT || showStdDevAsFilLRange) {
 			// nothing is drawn for null...
 			Number v = dataset.getValue(row, column);
@@ -77,27 +80,27 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 			if (!(dataset instanceof BioStatisticalCategoryDataset)) {
 				return;
 			}
-
+			
 			BioStatisticalCategoryDataset bioDataset = (BioStatisticalCategoryDataset) dataset;
-
+			
 			boolean stdDevAvail = true;
-
+			
 			Number stdDev = bioDataset.getStdDevValue(row, column);
 			if (stdDev == null || Double.isNaN(stdDev.doubleValue())) {
 				stdDev = 0;
 				stdDevAvail = false;
 			}
-
+			
 			PlotOrientation orientation = plot.getOrientation();
-
+			
 			// current data point...
 			double x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 			double value = v.doubleValue();
 			double y1 = rangeAxis.valueToJava2D(value, dataArea, plot.getRangeAxisEdge());
-
+			
 			double stdDevValue = stdDev.doubleValue();
 			double yStdDev1 = rangeAxis.valueToJava2D(value + stdDevValue, dataArea, plot.getRangeAxisEdge()) - y1;
-
+			
 			if (showStdDevAsVerticalT && stdDevAvail) {
 				if (getItemShapeFilled(row, column)) {
 					g2.setPaint(getItemPaint(row, column));
@@ -115,7 +118,7 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 				Line2D c = null;
 				if (orientation == PlotOrientation.HORIZONTAL) {
 					a = new Line2D.Double(y1 - yStdDev1, x1, y1 + yStdDev1, x1);
-
+					
 					b = new Line2D.Double(y1 - yStdDev1, x1 - stdDevTopWidth, y1 - yStdDev1, x1 + stdDevTopWidth);
 					c = new Line2D.Double(y1 + yStdDev1, x1 - stdDevTopWidth, y1 + yStdDev1, x1 + stdDevTopWidth);
 				} else if (orientation == PlotOrientation.VERTICAL) {
@@ -153,10 +156,10 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 					double x0 = domainAxis.getCategoryMiddle(column - 1 - offset, getColumnCount(), dataArea,
 							plot.getDomainAxisEdge());
 					double y0 = rangeAxis.valueToJava2D(previous, dataArea, plot.getRangeAxisEdge());
-
+					
 					double yStdDev0 = rangeAxis.valueToJava2D(previous + previousStdDev, dataArea,
 							plot.getRangeAxisEdge()) - y0;
-
+					
 					Line2D lineA = null;
 					Line2D lineB = null;
 					if (orientation == PlotOrientation.HORIZONTAL) {
@@ -205,24 +208,24 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 			defaultDrawItem(g2, state, dataArea, plot, domainAxis, rangeAxis, dataset, row, column,
 					connectPriorMissing);
 	}
-
+	
 	public void defaultDrawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column,
 			boolean connectPrior) {
-
+		
 		// nothing is drawn for null...
 		Number v = dataset.getValue(row, column);
 		if (v == null) {
 			return;
 		}
-
+		
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		// current data point...
 		double x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 		double value = v.doubleValue();
 		double y1 = rangeAxis.valueToJava2D(value, dataArea, plot.getRangeAxisEdge());
-
+		
 		Shape shape = getItemShape(row, column);
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			shape = createTransformedShape(shape, y1, x1);
@@ -230,7 +233,7 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 			shape = createTransformedShape(shape, x1, y1);
 		}
 		if (isDrawShapes()) {
-
+			
 			if (getItemShapeFilled(row, column)) {
 				g2.setPaint(getItemPaint(row, column));
 				g2.fill(shape);
@@ -244,10 +247,10 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 				g2.draw(shape);
 			}
 		}
-
+		
 		if (isDrawLines()) {
 			if (column != 0) {
-
+				
 				Number previousValue;
 				int offset = 0;
 				do {
@@ -259,13 +262,13 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 				// if (previousValue==null)
 				// System.out.println("No value for column "+column+" offset="+offset);
 				if (previousValue != null) {
-
+					
 					// previous data point...
 					double previous = previousValue.doubleValue();
 					double x0 = domainAxis.getCategoryMiddle(column - 1 - offset, getColumnCount(), dataArea,
 							plot.getDomainAxisEdge());
 					double y0 = rangeAxis.valueToJava2D(previous, dataArea, plot.getRangeAxisEdge());
-
+					
 					Line2D line = null;
 					if (orientation == PlotOrientation.HORIZONTAL) {
 						line = new Line2D.Double(y0, x0, y1, x1);
@@ -278,12 +281,12 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 				}
 			}
 		}
-
+		
 		// draw the item label if there is one...
 		if (isItemLabelVisible(row, column)) {
 			drawItemLabel(g2, orientation, dataset, row, column, x1, y1, (value < 0.0));
 		}
-
+		
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -300,10 +303,10 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 				CategoryItemEntity entity = new CategoryItemEntity(shape, tip, url, dataset, row,
 						dataset.getColumnKey(column), column);
 				entities.addEntity(entity);
-
+				
 			}
-
+			
 		}
-
+		
 	}
 }

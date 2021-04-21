@@ -26,79 +26,79 @@ import org.graffiti.session.SessionListener;
 
 /**
  * DOCUMENT ME!
+ * 
  * @vanted.revision 2.7.0
  * @deprecated Use {@link org.graffiti.plugins.tools.enhancedzoomtool.ZoomChangeComponent} instead.
  */
 public class ZoomChangeComponent extends AbstractGraffitiComponent
 		implements ActionListener, ViewListener, SessionListener {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -8781891824935548293L;
+	
+	// ~ Instance fields ========================================================
 	/** DOCUMENT ME! */
 	private JComboBox<String> combo;
-
+	
 	// /** DOCUMENT ME! */
 	// private MainFrame mainframe;
 	// /** DOCUMENT ME! */
 	// private Object zoomValue;
-
+	
 	/** DOCUMENT ME! */
 	private Session activeSession;
-
+	
 	/** DOCUMENT ME! */
 	private final String[] zoomValues = new String[] { " 10%", " 25%", " 50%", " 75%", "100%", "125%", "150%", "175%",
 			"200%" };
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for ZoomChangeComponent.
 	 * 
 	 * @param prefComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ZoomChangeComponent(String prefComp) {
 		super(prefComp);
 		setLayout(new BorderLayout());
-
+		
 		combo = new JComboBox<String>(zoomValues);
 		combo.setSelectedIndex(4);
 		combo.setEditable(true);
 		add(combo);
-
+		
 		combo.addActionListener(this);
 	}
-
+	
 	@Override
 	public Dimension getMaximumSize() {
 		return combo.getPreferredSize();
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
 		Object selectedZoom = combo.getSelectedItem();
-
+		
 		String zoomStr;
-
+		
 		if (selectedZoom instanceof AffineTransform) {
 			AffineTransform at = (AffineTransform) selectedZoom;
 			zoomStr = ((int) ((at.getScaleX() + at.getScaleY()) / 2d) * 100) + "%";
 		} else {
 			zoomStr = selectedZoom.toString();
 		}
-
+		
 		double zoom = 1d;
-
+		
 		if (zoomStr.indexOf("%") != -1) {
 			// crop "%"
 			zoom = Double.parseDouble(zoomStr.substring(0, zoomStr.length() - 1)) / 100d;
 		} else {
 			zoom = Double.parseDouble(zoomStr) / 100d;
 		}
-
+		
 		if (activeSession != null) {
 			ZoomListener zoomView = activeSession.getActiveView();
 			AffineTransform at = new AffineTransform();
@@ -106,31 +106,31 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 			zoomView.zoomChanged(at);
 		}
 	}
-
+	
 	public void sessionChanged(Session s) {
 		activeSession = s;
-
+		
 		if (s != null) {
 			viewChanged(s.getActiveView());
 		}
 	}
-
+	
 	public void sessionDataChanged(Session s) {
 		activeSession = s;
 		viewChanged(s.getActiveView());
 	}
-
+	
 	public void viewChanged(View newView) {
 		Object newZoom = newView.getZoom();
 		String zoomStr;
-
+		
 		if (newZoom instanceof AffineTransform) {
 			AffineTransform at = (AffineTransform) newZoom;
 			zoomStr = (int) (((at.getScaleX() + at.getScaleY()) / 2d) * 100) + "%";
 		} else {
 			zoomStr = newZoom.toString();
 		}
-
+		
 		combo.setSelectedItem(zoomStr);
 	}
 }

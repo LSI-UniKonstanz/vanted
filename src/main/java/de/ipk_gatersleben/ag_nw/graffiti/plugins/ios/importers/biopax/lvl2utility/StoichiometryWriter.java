@@ -13,14 +13,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
  * writes on one edge a Stochiometry and reads it again
  * 
  * @author ricardo
- * 
  */
 public class StoichiometryWriter extends HelperClass {
-
+	
 	public void writeParticipantStoichiometry(Node node, Node center, Edge e, Set<physicalEntityParticipant> set) {
 		String nodeRDFId = node.getAttribute(Messages.getString("UtilitySuperClassToGraph.82")).getValue().toString();
 		for (physicalEntityParticipant part : set) {
-
+			
 			String physicalEntityRDFId = part.getPHYSICAL_ENTITY().getRDFId();
 			if (physicalEntityRDFId.matches(nodeRDFId)) {
 				// Stoichiometry found
@@ -32,6 +31,6 @@ public class StoichiometryWriter extends HelperClass {
 				break;
 			}
 		}
-
+		
 	}
 }

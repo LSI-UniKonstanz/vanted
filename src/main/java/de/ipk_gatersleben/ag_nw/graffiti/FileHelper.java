@@ -41,10 +41,10 @@ import org.graffiti.editor.GravistoService;
  * @author Tobias Czauderna
  */
 public class FileHelper implements HelperClass {
-
+	
 	public static String getFileName(final String defaultExt, final String description, String defaultFileName) {
 		JFileChooser fc = new JFileChooser();
-
+		
 		OpenFileDialogService.setActiveDirectoryFor(fc);
 		if (defaultFileName != null && defaultFileName.length() > 0)
 			fc.setSelectedFile(new File(defaultFileName));
@@ -57,33 +57,33 @@ public class FileHelper implements HelperClass {
 				}
 				return f.getName().toUpperCase().endsWith(defaultExt.toUpperCase());
 			}
-
+			
 			@Override
 			public String getDescription() {
 				return defaultExt + " files";
 			}
 		});
-
+		
 		String fileName = "";
 		File file = null;
 		boolean needFile = true;
-
+		
 		while (needFile) {
 			int returnVal = fc.showDialog(GravistoService.getInstance().getMainFrame(), "Create " + description);
-
+			
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				file = fc.getSelectedFile();
 				fileName = file.getName();
 				String ext = defaultExt;
-
+				
 				if (fileName.indexOf(".") == -1) {
 					fileName = file.getName() + "." + ext;
 					file = new File(file.getAbsolutePath() + "." + ext);
 				}
-
+				
 				// checks, if location is on UNC windows network path
 				if (UNCFileLocationCheck.showUNCPathConfirmDialogForPath(file) == UNCFileLocationCheck.CONFIRM) {
-
+					
 					if (file.exists()) {
 						if (JOptionPane.showConfirmDialog(GravistoService.getInstance().getMainFrame(),
 								"<html>Do you want to overwrite the existing file <i>" + fileName + "</i>?</html>",
@@ -94,17 +94,17 @@ public class FileHelper implements HelperClass {
 					} else {
 						needFile = false;
 					}
-
+					
 				} else {
 					file = null;
 				}
-
+				
 			} else {
 				// leave loop
 				needFile = false;
 			}
 		}
-
+		
 		if (file != null) {
 			OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
 			return file.getAbsolutePath();
@@ -112,16 +112,16 @@ public class FileHelper implements HelperClass {
 			return null;
 		}
 	}
-
+	
 	public static String getFileName(final String defaultExt, final String description) {
 		return getFileName(defaultExt, description, null);
 	}
-
+	
 	/**
 	 * Recursively deletes a directory
 	 * 
 	 * @param path
-	 *            the path of the directory to be deleted
+	 *           the path of the directory to be deleted
 	 */
 	public static void deleteDirRecursively(File f) {
 		if (f == null)
@@ -141,45 +141,45 @@ public class FileHelper implements HelperClass {
 				}
 		}
 	}
-
+	
 	/**
 	 * Copy file from jar to file system.
 	 * 
 	 * @param uri
-	 *            URI for the jar file
+	 *           URI for the jar file
 	 * @param sourceFolder
-	 *            folder within the jar file
+	 *           folder within the jar file
 	 * @param targetFolder
-	 *            folder on the file system to copy the file to
+	 *           folder on the file system to copy the file to
 	 * @param fileName
-	 *            file to copy
+	 *           file to copy
 	 */
 	public static void copyFileFromJar(URI uri, String sourceFolder, String targetFolder, String fileName) {
-
+		
 		copyFilesFromJar(uri, sourceFolder, targetFolder, new String[] { fileName });
-
+		
 	}
-
+	
 	/**
 	 * Copy files from jar to file system.
 	 * 
 	 * @param uri
-	 *            URI for the jar file
+	 *           URI for the jar file
 	 * @param sourceFolder
-	 *            folder within the jar file
+	 *           folder within the jar file
 	 * @param targetFolder
-	 *            folder on the file system to copy the files to
+	 *           folder on the file system to copy the files to
 	 * @param fileNames
-	 *            files to copy
+	 *           files to copy
 	 */
 	public static void copyFilesFromJar(final URI uri, final String sourceFolder, final String targetFolder,
 			final String[] fileNames) {
-
+		
 		Runnable runnable = new Runnable() {
-
+			
 			@Override
 			public void run() {
-
+				
 				Map<String, String> env = new HashMap<>();
 				try (FileSystem fileSystem = FileSystems.newFileSystem(uri, env)) {
 					for (String fileName : fileNames) {
@@ -191,32 +191,32 @@ public class FileHelper implements HelperClass {
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				}
-
+				
 			}
-
+			
 		};
 		Thread t = new Thread(runnable);
 		t.start();
-
+		
 	}
-
+	
 	/**
 	 * Copy file from resource (as stream) to file system.
 	 * 
 	 * @param sourceFolder
-	 *            folder on the resource to copy the files from
+	 *           folder on the resource to copy the files from
 	 * @param targetFolder
-	 *            folder on the file system to copy the files to
+	 *           folder on the file system to copy the files to
 	 * @param fileName
-	 *            file to copy
+	 *           file to copy
 	 */
 	public static void copyFileFromStream(final String sourceFolder, final String targetFolder, final String fileName) {
-
+		
 		Runnable runnable = new Runnable() {
-
+			
 			@Override
 			public void run() {
-
+				
 				try (InputStream inputStream = this.getClass().getClassLoader()
 						.getResourceAsStream(sourceFolder + "/" + fileName)) {
 					int index = fileName.lastIndexOf(".");
@@ -236,73 +236,73 @@ public class FileHelper implements HelperClass {
 					ErrorMsg.addErrorMessage(e);
 				}
 			}
-
+			
 		};
 		Thread t = new Thread(runnable);
 		t.start();
-
+		
 	}
-
+	
 	/**
 	 * Copy file from a folder on the file system to another folder on the file
 	 * system.
 	 * 
 	 * @param sourceFolder
-	 *            folder on the file system to copy the file from
+	 *           folder on the file system to copy the file from
 	 * @param targetFolder
-	 *            folder on the file system to copy the file to
+	 *           folder on the file system to copy the file to
 	 * @param fileName
-	 *            file to copy
+	 *           file to copy
 	 */
 	public static void copyFile(String sourceFolder, String targetFolder, String fileName) {
-
+		
 		copyFiles(sourceFolder, targetFolder, new String[] { fileName });
-
+		
 	}
-
+	
 	/**
 	 * Copy files from a folder on the file system to another folder on the file
 	 * system.
 	 * 
 	 * @param sourceFolder
-	 *            folder on the file system to copy the files from
+	 *           folder on the file system to copy the files from
 	 * @param targetFolder
-	 *            folder on the file system to copy the files to
+	 *           folder on the file system to copy the files to
 	 * @param fileNames
-	 *            files to copy
+	 *           files to copy
 	 */
 	public static void copyFiles(final String sourceFolder, final String targetFolder, final String[] fileNames) {
-
+		
 		Runnable runnable = new Runnable() {
-
+			
 			@Override
 			public void run() {
-
+				
 				for (String fileName : fileNames) {
 					Path sourcePath = Paths.get(sourceFolder, fileName);
 					Path targetPath = Paths.get(targetFolder, fileName);
 					if (Files.exists(sourcePath))
 						compareAndCopyFile(sourcePath, targetPath);
 				}
-
+				
 			}
-
+			
 		};
 		Thread t = new Thread(runnable);
 		t.start();
-
+		
 	}
-
+	
 	/**
 	 * Compare and copy a file. Copies the file only if it is a newer version.
 	 * 
 	 * @param sourcePath
-	 *            source path
+	 *           source path
 	 * @param targetPath
-	 *            target path
+	 *           target path
 	 */
 	static void compareAndCopyFile(Path sourcePath, Path targetPath) {
-
+		
 		boolean copyFile = true;
 		FileTime sourceLastModifiedTime = null;
 		try {
@@ -343,9 +343,9 @@ public class FileHelper implements HelperClass {
 				} else
 					ErrorMsg.addErrorMessage(exception);
 			}
-
+		
 	}
-
+	
 	/**
 	 * Downloads a file from the web to a local folder.
 	 * 
@@ -358,21 +358,21 @@ public class FileHelper implements HelperClass {
 	public static boolean downloadFile(URL urlFile, String destPath, String localFilename) throws IOException {
 		if (urlFile == null || destPath == null || localFilename == null)
 			return false;
-
+		
 		InputStream openStream = urlFile.openStream();
-
+		
 		File destDir = new File(destPath);
 		if (!destDir.exists())
 			destDir.mkdirs();
-
+		
 		File destFile = new File(destPath + "/" + localFilename);
 		FileOutputStream fos = new FileOutputStream(destFile);
-
+		
 		byte[] buffer = new byte[1024];
 		int len;
 		while ((len = openStream.read(buffer)) != -1)
 			fos.write(buffer, 0, len);
-
+		
 		fos.close();
 		openStream.close();
 		return true;

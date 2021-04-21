@@ -14,12 +14,12 @@ import org.graffiti.graph.Node;
  * @author klukas
  */
 public class NodeCacheEntry {
-
+	
 	/**
 	 * Cache for Node Positions
 	 */
 	public org.Vector2d position;
-
+	
 	/**
 	 * Used for storing the information about the last run-number of the last
 	 * movement. The springembedder algorithm runs a number of times, each time a
@@ -31,30 +31,30 @@ public class NodeCacheEntry {
 	 * frequently. This number has to be initialized to -1.
 	 */
 	public int lastTouch;
-
+	
 	/**
 	 * Vector contains the size of the node (width, height)
 	 */
 	public org.Vector2d size;
-
+	
 	/**
 	 * Name of pattern, "" if no pattern assigned
 	 */
 	public String patternType;
-
+	
 	public boolean patternTypeEmpty;
-
+	
 	/**
 	 * Vector with <code>patterNodes</code> Objects, which store the information
 	 * about all connected patterns.
 	 */
 	public ArrayList<NodeCacheEntry> patternNodes;
-
+	
 	/**
 	 * Contains the connected nodes (NodeCacheEntrys)
 	 */
 	public ArrayList<NodeCacheEntry> connectedNodes;
-
+	
 	/**
 	 * 1..x Number of pattern. Similar patterns in the graph are numbered. One node
 	 * might have the patternType 1 and patternIndex 1, the next node, that is not
@@ -62,14 +62,14 @@ public class NodeCacheEntry {
 	 * patternIndex 2. patternIndex == -1 if no pattern is assigned
 	 */
 	public int patternIndex;
-
+	
 	public int subgraphIndex;
-
+	
 	/**
 	 * Saves the index of the node in the graph-array.
 	 */
 	public int nodeIndex;
-
+	
 	/**
 	 * If cluster information for a node is available, then this number is set to
 	 * the specific cluster number. All nodes within a cluster get the same cluster
@@ -77,17 +77,17 @@ public class NodeCacheEntry {
 	 * value will be set to "", if no cluster information is set for this node.
 	 */
 	String clusterIndexNumber;
-
+	
 	/**
 	 * Reference to a node in the pattern graph.
 	 */
 	public Node patternNode;
-
+	
 	/**
 	 * Reference to the node in the graph.
 	 */
 	public Node node;
-
+	
 	/**
 	 * This field should be set to true, if the user has selected this node in the
 	 * GUI.

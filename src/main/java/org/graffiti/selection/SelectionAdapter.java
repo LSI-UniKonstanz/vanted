@@ -13,16 +13,15 @@ package org.graffiti.selection;
  * 
  * @author D. Garkov
  * @since 2.7.0
- *
  */
 public class SelectionAdapter implements SelectionListener {
-
+	
 	@Override
 	public void selectionChanged(SelectionEvent e) {
 	}
-
+	
 	@Override
 	public void selectionListChanged(SelectionEvent e) {
 	}
-
+	
 }

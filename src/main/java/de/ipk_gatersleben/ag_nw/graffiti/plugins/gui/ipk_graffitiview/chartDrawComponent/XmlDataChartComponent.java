@@ -63,61 +63,65 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
  *         Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class XmlDataChartComponent extends JComponent {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 772491557595392217L;
+	
 	public XmlDataChartComponent(String preferredChartType, Graph graph, org.graffiti.graph.GraphElement ge) {
-
+		
 		if (ge == null || ge.getGraph() == null)
 			return;
-
+		
 		ChartOptions co = new ChartOptions();
-
+		
 		ExperimentInterface experiment = Experiment2GraphHelper.getMappedDataListFromGraphElement(ge);
 		if (experiment == null)
 			return;
-
+		
 		Integer mappedDataListSize = experiment.size();
-
+		
 		int maxInRow = co.setLayoutOfChartComponent(ge, this, mappedDataListSize);
-
+		
 		co.readAttributes(ge);
-
+		
 		int currentXposition = 0;
 		int currentYposition = 2;
-
+		
 		HeatMapOptions hmo = null;
-
+		
 		int idx = 0;
 		for (int index = 0; index < mappedDataListSize; index++) {
-
+			
 			SubstanceInterface xmldata = experiment.get(index);
-
+			
 			if (currentXposition >= maxInRow) {
 				currentYposition++;
 				currentXposition = 0;
 			}
 			currentXposition++;
 			String chartType = preferredChartType;
-
+			
 			if (preferredChartType.equalsIgnoreCase(GraffitiCharts.AUTOMATIC.getName()))
 				chartType = getAutoChartTypeFor(xmldata).getName();
-
+			
 			boolean alsoUsedForPlottingStdDev = chartType.equals(GraffitiCharts.BAR_FLAT.getName())
 					|| (chartType.equals(GraffitiCharts.LINE.getName())
 							&& (co.showStdDevAsT || co.showStdDevAsFillRange));
-
+			
 			if (hmo == null && chartType.equals(GraffitiCharts.HEATMAP.getName()))
 				hmo = new HeatMapOptions(graph);
-
+			
 			boolean SalsoUsedForPlottingStdDev = alsoUsedForPlottingStdDev;
 			boolean SshowOnlyHalfErrorBar = co.showOnlyHalfErrorBar
 					&& chartType.equals(GraffitiCharts.BAR_FLAT.getName());
 			boolean SfillTimeGaps = co.fillTimeGaps && chartType.equals(GraffitiCharts.LINE.getName());
 			boolean removeEmptyConditions = co.removeEmptyConditions;// &&
-																		// chartType.equals(GraffitiCharts.BAR_FLAT.getName());
-
+			// chartType.equals(GraffitiCharts.BAR_FLAT.getName());
+			
 			BioStatisticalCategoryDataset dataset = null;
-
+			
 			try {
 				dataset = getDataset(xmldata, graph, SalsoUsedForPlottingStdDev, SshowOnlyHalfErrorBar, SfillTimeGaps,
 						removeEmptyConditions);
@@ -125,19 +129,19 @@ public class XmlDataChartComponent extends JComponent {
 				ErrorMsg.addErrorMessage(e);
 				continue;
 			}
-
+			
 			dataset.setDrawOnlyTopOfErrorBar(SshowOnlyHalfErrorBar);
 			dataset.setErrorBarLen(co.stdDevTopWidth);
-
+			
 			co.rangeAxis = prettifyRangeAxisText(co.rangeAxis, dataset);
-
+			
 			co.domainAxis = prettifyDomainAxisText(co.domainAxis, dataset);
-
+			
 			idx++;
 			String chartTitle = getChartTitle(ge, idx);
-
+			
 			co.setFurtherOptions(graph, dataset, chartTitle);
-
+			
 			// ChartOptions co = new ChartOptions(ge, graph, dataset, chartTitle,
 			// orientation,
 			// showLegend,
@@ -157,9 +161,9 @@ public class XmlDataChartComponent extends JComponent {
 			// categoryPaintBackgroundColorA, categoryPaintBackgroundColorB,
 			// categoryPaintBackgroundColorC,
 			// useCustomStepsize, customStepSize);
-
+			
 			Object chart = createChart(chartType, co, hmo);
-
+			
 			if (chart == null) {
 				// emtpty
 			} else {
@@ -177,11 +181,11 @@ public class XmlDataChartComponent extends JComponent {
 							chartPanel.setOpaque(false);
 							chartPanel.setBackground(null);
 						}
-
+						
 					}
 					if (chart instanceof JComponent)
 						add((JComponent) chart, currentXposition + "," + currentYposition);
-
+					
 				}
 			}
 		}
@@ -192,7 +196,7 @@ public class XmlDataChartComponent extends JComponent {
 				validateTree();
 		}
 	}
-
+	
 	public static JPanel prettifyChart(org.graffiti.graph.GraphElement ge, ChartOptions co, String chartType,
 			JFreeChart jfChart) {
 		if (jfChart.getTitle() != null) {
@@ -214,7 +218,7 @@ public class XmlDataChartComponent extends JComponent {
 			chartPanel = new MyLegendComponent(sl, scale.doubleValue());
 		} else
 			chartPanel = new ChartPanel(jfChart, false, false, false, false, false);
-
+		
 		// chartPanel.set
 		Color cbc = NodeTools.getChartBackgroundColor(ge);
 		if (cbc != null) {
@@ -224,7 +228,7 @@ public class XmlDataChartComponent extends JComponent {
 			chartPanel.setOpaque(false);
 			chartPanel.setBackground(null);
 		}
-
+		
 		if (chartPanel instanceof ChartPanel) {
 			ChartPanel cp = (ChartPanel) chartPanel;
 			cp.setMinimumDrawHeight(300);
@@ -234,43 +238,43 @@ public class XmlDataChartComponent extends JComponent {
 			chartPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 0));
 		return chartPanel;
 	}
-
+	
 	protected String prettifyDomainAxisText(String domainAxis, BioStatisticalCategoryDataset dataset) {
 		if (domainAxis != null && domainAxis.equalsIgnoreCase("[unit]"))
 			domainAxis = dataset.getDomainUnits();
 		return domainAxis;
 	}
-
+	
 	protected String prettifyRangeAxisText(String rangeAxis, BioStatisticalCategoryDataset dataset) {
 		if (rangeAxis != null && rangeAxis.equalsIgnoreCase("[unit]"))
 			rangeAxis = dataset.getRangeUnits();
 		return rangeAxis;
 	}
-
+	
 	protected Object createChart(String chartType, ChartOptions co, HeatMapOptions hmo) {
 		GraffitiCharts c = GraffitiCharts.getChartStyleFromString(chartType);
 		switch (c) {
-		case LINE:
-			return createLineChart(co);
-		case BAR:
-			return createBarChart(co);
-		case BAR_FLAT:
-			return createBarChartFlat(co);
-		case PIE:
-			return createPieChart(co);
-		case PIE3D:
-			return createPieChart3d(co);
-		case HEATMAP:
-			return createHeatmap(co, hmo);
-		case LEGEND_ONLY:
-			return createLegendChart(co);
-		case HIDDEN:
-			return null;
+			case LINE:
+				return createLineChart(co);
+			case BAR:
+				return createBarChart(co);
+			case BAR_FLAT:
+				return createBarChartFlat(co);
+			case PIE:
+				return createPieChart(co);
+			case PIE3D:
+				return createPieChart3d(co);
+			case HEATMAP:
+				return createHeatmap(co, hmo);
+			case LEGEND_ONLY:
+				return createLegendChart(co);
+			case HIDDEN:
+				return null;
 		}
 		ErrorMsg.addErrorMessage("Unknown chart type: " + chartType);
 		return null;
 	}
-
+	
 	private static GraffitiCharts getAutoChartTypeFor(SubstanceInterface xmldata) {
 		int conditions = xmldata.size();
 		int times = xmldata.getNumberOfDifferentTimePoints();
@@ -281,7 +285,7 @@ public class XmlDataChartComponent extends JComponent {
 		else
 			return GraffitiCharts.BAR_FLAT;
 	}
-
+	
 	private static JComponent createHeatmap(ChartOptions co, HeatMapOptions hmo) {
 		Color[][] colors = new Color[co.dataset.getRowCount()][co.dataset.getColumnCount()];
 		boolean opaque = true;
@@ -300,7 +304,7 @@ public class XmlDataChartComponent extends JComponent {
 		res.setOpaque(opaque);
 		return res;
 	}
-
+	
 	public static String getChartTitle(org.graffiti.graph.GraphElement ge, int idx) {
 		String chartTitle = (String) AttributeHelper.getAttributeValue(ge, "charting", "chartTitle" + idx, "", "");
 		if (chartTitle.length() == 0)
@@ -310,7 +314,7 @@ public class XmlDataChartComponent extends JComponent {
 		}
 		return chartTitle;
 	}
-
+	
 	private JFreeChart createBarChart(ChartOptions co) {
 		final JFreeChart chart = ChartFactory.createBarChart3D(co.chartTitle, // chart
 				// title
@@ -322,38 +326,38 @@ public class XmlDataChartComponent extends JComponent {
 				false, // tooltips
 				false // urls
 		);
-
+		
 		CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundPaint(null);
-
+		
 		if (co.useLogYscale)
 			plot.setRangeAxis(new LogarithmicAxis(co.rangeAxis));
-
+		
 		// plot.setBackgroundPaint(getBackgroundCol());
-
+		
 		setCategoryAxisOptions(plot.getDomainAxis(), co);
 		plot.getRangeAxis().setVisible(co.showRangeAxis);
-
+		
 		if (!Double.isNaN(co.lowerBound))
 			plot.getRangeAxis().setLowerBound(co.lowerBound);
 		if (!Double.isNaN(co.upperBound))
 			plot.getRangeAxis().setUpperBound(co.upperBound);
-
+		
 		if (co.useCustomRangeSteps) {
 			NumberAxis na = (NumberAxis) plot.getRangeAxis();
 			NumberTickUnit unit = new NumberTickUnit(co.customRangeSteps);
 			na.setTickUnit(unit, false, true);
 		}
-
+		
 		final BarRenderer3D renderer = (BarRenderer3D) plot.getRenderer();
-
+		
 		setSeriesColorsAndStroke(renderer, co.outlineBorderWidth, co.graph);
-
+		
 		pretifyCategoryPlot(renderer, co);
 		chart.setBackgroundPaint(null);
 		return chart;
 	}
-
+	
 	private static JFreeChart createPieChart(ChartOptions co) {
 		final JFreeChart chart = ChartFactory.createMultiplePieChart(co.chartTitle, // chart
 				co.dataset, // data
@@ -364,7 +368,7 @@ public class XmlDataChartComponent extends JComponent {
 		prettifyPiePlot(co, chart, false);
 		return chart;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private static void prettifyPiePlot(ChartOptions co, final JFreeChart chart, boolean d3d) {
 		MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
@@ -373,13 +377,13 @@ public class XmlDataChartComponent extends JComponent {
 		plot.setLimit(0);
 		JFreeChart fc = plot.getPieChart();
 		PiePlot pp = (PiePlot) fc.getPlot();
-
+		
 		// ////////////////////
-
+		
 		ChartColorAttribute chartColorAttribute = (ChartColorAttribute) AttributeHelper.getAttributeValue(co.graph,
 				ChartColorAttribute.attributeFolder, ChartColorAttribute.attributeName, new ChartColorAttribute(),
 				new ChartColorAttribute());
-
+		
 		Collection<String> rowKeys;
 		try {
 			rowKeys = co.dataset.getRowKeys();
@@ -387,12 +391,12 @@ public class XmlDataChartComponent extends JComponent {
 			rowKeys = new ArrayList<String>();
 			System.err.println("Row keys of chart could not be determined.");
 		}
-
+		
 		ArrayList<Color> colors1 = chartColorAttribute.getSeriesColors(rowKeys);
 		ArrayList<Color> colors2 = null;
 		if (d3d)
 			colors2 = colors1; // chartColorAttribute.getSeriesOutlineColors(co.dataset.getRowKeys());
-
+			
 		if ((int) co.outlineBorderWidth != 4)
 			pp.setSectionOutlineStroke(new BasicStroke(co.outlineBorderWidth));
 		pp.setSectionOutlineStroke(null);
@@ -412,14 +416,14 @@ public class XmlDataChartComponent extends JComponent {
 			}
 		}
 		// ////////////////////
-
+		
 		// pp.setCircular(!d3d);
 		pp.setMaximumLabelWidth(0);
 		pp.setLabelGap(0d);
 		pp.setLabelLinkMargin(0d);
 		pp.setLabelGenerator(null);
 		pp.setInteriorGap(0d);
-
+		
 		// pp.setExplodePercent(0, 0.55);
 		pp.setBackgroundPaint(null);
 		pp.setShadowPaint(null);
@@ -428,7 +432,7 @@ public class XmlDataChartComponent extends JComponent {
 		// chart.setSubtitles(new ArrayList());
 		chart.setBackgroundPaint(null);
 	}
-
+	
 	private static JFreeChart createPieChart3d(ChartOptions co) {
 		final JFreeChart chart = ChartFactory.createMultiplePieChart3D(co.chartTitle, // chart
 				co.dataset, // data
@@ -439,7 +443,7 @@ public class XmlDataChartComponent extends JComponent {
 		prettifyPiePlot(co, chart, true);
 		return chart;
 	}
-
+	
 	private JFreeChart createBarChartFlat(ChartOptions co) {
 		final JFreeChart chart = ChartFactory.createBarChart(co.chartTitle, // chart
 				// title
@@ -451,38 +455,38 @@ public class XmlDataChartComponent extends JComponent {
 				false, // tooltips
 				false // urls
 		);
-
+		
 		CategoryPlot plot = chart.getCategoryPlot();
 		if (co.useLogYscale)
 			plot.setRangeAxis(new LogarithmicAxis(co.rangeAxis));
-
+		
 		plot.setRenderer(new StatisticalBarRenderer());
 		plot.setBackgroundPaint(null);
-
+		
 		// plot.setBackgroundPaint(getBackgroundCol());
 		setCategoryAxisOptions(plot.getDomainAxis(), co);
 		plot.getRangeAxis().setVisible(co.showRangeAxis);
-
+		
 		if (co.useCustomRangeSteps) {
 			NumberAxis na = (NumberAxis) plot.getRangeAxis();
 			NumberTickUnit unit = new NumberTickUnit(co.customRangeSteps);
 			na.setTickUnit(unit, false, true);
 		}
-
+		
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		setSeriesColorsAndStroke(renderer, co.outlineBorderWidth, co.graph);
-
+		
 		if (!Double.isNaN(co.lowerBound))
 			plot.getRangeAxis().setLowerBound(co.lowerBound);
 		if (!Double.isNaN(co.upperBound))
 			plot.getRangeAxis().setUpperBound(co.upperBound);
-
+		
 		pretifyCategoryPlot(renderer, co);
-
+		
 		chart.setBackgroundPaint(null);
 		return chart;
 	}
-
+	
 	private static void pretifyCategoryPlot(BarRenderer renderer, ChartOptions co) {
 		if (co.axisFontSize > 0) {
 			Font af = new Font(Axis.DEFAULT_AXIS_LABEL_FONT.getFontName(), Axis.DEFAULT_AXIS_LABEL_FONT.getStyle(),
@@ -491,7 +495,7 @@ public class XmlDataChartComponent extends JComponent {
 			renderer.getPlot().getDomainAxis().setTickLabelFont(af);
 			renderer.getPlot().getDomainAxis().setLabelFont(af);
 			renderer.getPlot().getRangeAxis().setLabelFont(af);
-
+			
 			// renderer.getPlot().setFixedRangeAxisSpace(new AxisSpace());
 			// renderer.getPlot().getFixedRangeAxisSpace().setBottom(9);
 		}
@@ -512,15 +516,15 @@ public class XmlDataChartComponent extends JComponent {
 			renderer.getPlot().getRangeAxis().setAxisLinePaint(co.axisColor);
 			renderer.getPlot().getDomainAxis().setAxisLinePaint(co.axisColor);
 		}
-
+		
 		if (co.axisWidth >= 0) {
 			renderer.getPlot().getRangeAxis().setAxisLineStroke(new BasicStroke((float) co.axisWidth));
 			renderer.getPlot().getDomainAxis().setAxisLineStroke(new BasicStroke((float) co.axisWidth));
 		}
-
+		
 		renderer.getPlot().setOutlinePaint(null);
 	}
-
+	
 	private JFreeChart createLegendChart(ChartOptions co) {
 		final JFreeChart chart = ChartFactory.createBarChart(co.chartTitle, // chart
 				// title
@@ -532,7 +536,7 @@ public class XmlDataChartComponent extends JComponent {
 				false, // tooltips
 				false // urls
 		);
-
+		
 		CategoryPlot plot = chart.getCategoryPlot();
 		plot.setRenderer(new StatisticalBarRenderer());
 		plot.setBackgroundPaint(null);
@@ -540,27 +544,27 @@ public class XmlDataChartComponent extends JComponent {
 		plot.getRangeAxis().setVisible(co.showRangeAxis);
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		setSeriesColorsAndStroke(renderer, co.outlineBorderWidth, co.graph);
-
+		
 		renderer.setDrawBarOutline(false);
 		chart.setBackgroundPaint(null);
 		chart.setHidePlot(true);
 		return chart;
 	}
-
+	
 	/**
 	 * @param renderer
 	 */
 	@SuppressWarnings("unchecked")
 	public static void setSeriesColorsAndStroke(CategoryItemRenderer renderer, float outlineBorderWidth, Graph graph) {
-
+		
 		ChartColorAttribute chartColorAttribute = (ChartColorAttribute) AttributeHelper.getAttributeValue(graph,
 				ChartColorAttribute.attributeFolder, ChartColorAttribute.attributeName, new ChartColorAttribute(),
 				new ChartColorAttribute());
-
+		
 		ArrayList<Color> colors1 = chartColorAttribute.getSeriesColors(renderer.getPlot().getDataset().getRowKeys());
 		ArrayList<Color> colors2 = chartColorAttribute
 				.getSeriesOutlineColors(renderer.getPlot().getDataset().getRowKeys());
-
+		
 		if (outlineBorderWidth >= 0)
 			renderer.setStroke(new BasicStroke(outlineBorderWidth));
 		int i = 0;
@@ -574,13 +578,13 @@ public class XmlDataChartComponent extends JComponent {
 			i++;
 		}
 	}
-
+	
 	protected static synchronized Shape createTransformedShape(Shape shape, double translateX, double translateY) {
 		AffineTransform transformer = new AffineTransform();
 		transformer.setToTranslation(translateX, translateY);
 		return transformer.createTransformedShape(shape);
 	}
-
+	
 	// /**
 	// * @param renderer
 	// */
@@ -614,7 +618,7 @@ public class XmlDataChartComponent extends JComponent {
 	// }
 	// }
 	// }
-
+	
 	/**
 	 * @param axis
 	 */
@@ -638,28 +642,28 @@ public class XmlDataChartComponent extends JComponent {
 		axis.setSkipLabels(co.plotAxisSteps);
 		((CategoryPlot) axis.getPlot()).setSkipLabels(co.plotAxisSteps);
 	}
-
+	
 	private JFreeChart createLineChart(ChartOptions co) {
 		JFreeChart chart = ChartFactory.createLineChart(co.chartTitle, co.domainAxis, // "DOMAIN AXIS",
 				co.rangeAxis, // "RANGE AXIS",
 				co.dataset, co.orientation, co.showLegend, false, false);
-
+		
 		CategoryPlot plot = chart.getCategoryPlot();
-
+		
 		if (co.useLogYscale)
 			plot.setRangeAxis(new LogarithmicAxis(co.rangeAxis));
-
+		
 		setCategoryAxisOptions(plot.getDomainAxis(), co);
-
+		
 		plot.setDrawingSupplier(new MyDefaultShapeDrawingSupplier(co.shapeSize));
 		plot.setBackgroundPaint(null);
-
+		
 		if (co.useCustomRangeSteps) {
 			NumberAxis na = (NumberAxis) plot.getRangeAxis();
 			NumberTickUnit unit = new NumberTickUnit(co.customRangeSteps);
 			na.setTickUnit(unit, false, true);
 		}
-
+		
 		plot.getRangeAxis().setVisible(co.showRangeAxis);
 		BioStatisticalCategoryDataset bsc = co.dataset;
 		double currLB = plot.getRangeAxis().getLowerBound();
@@ -672,27 +676,27 @@ public class XmlDataChartComponent extends JComponent {
 			plot.getRangeAxis().setLowerBound(minVal < 0 ? minVal * (1 - lowerMargin) : 0);
 		if (maxVal * (1 + upperMargin) > currUB)
 			plot.getRangeAxis().setUpperBound(maxVal * (1 + upperMargin));
-
+		
 		if (!Double.isNaN(co.lowerBound))
 			plot.getRangeAxis().setLowerBound(co.lowerBound);
 		if (!Double.isNaN(co.upperBound))
 			plot.getRangeAxis().setUpperBound(co.upperBound);
-
+		
 		MyLineAndShapeRenderer myRenderer = new MyLineAndShapeRenderer();
 		myRenderer.setConnectPriorItems(co.connectPriorItems);
 		plot.setRenderer(myRenderer);
-
+		
 		MyLineAndShapeRenderer renderer = (MyLineAndShapeRenderer) plot.getRenderer();
 		renderer.setStdDevTopWidth(co.stdDevTopWidth);
 		renderer.setDrawStdDev(co.showStdDevAsT, co.showStdDevAsFillRange);
 		renderer.setStdDevLineWidth(co.stdDevLineWidth);
 		setSeriesColorsAndStroke(renderer, co.outlineBorderWidth, co.graph);
-
+		
 		renderer.setDrawShapes(co.showShapes);
 		renderer.setDrawLines(co.showLines);
-
+		
 		// renderer.getSeriesShape(0);
-
+		
 		// renderer.setSeriesStroke(0, new BasicStroke(2.0f,
 		// BasicStroke.CAP_ROUND,
 		// BasicStroke.JOIN_ROUND, 1.0f, new float[] { 10.0f, 6.0f }, 0.0f));
@@ -702,22 +706,22 @@ public class XmlDataChartComponent extends JComponent {
 		// renderer.setSeriesStroke(2, new BasicStroke(2.0f,
 		// BasicStroke.CAP_ROUND,
 		// BasicStroke.JOIN_ROUND, 1.0f, new float[] { 2.0f, 6.0f }, 0.0f));
-
+		
 		chart.setBackgroundPaint(null);
-
+		
 		renderer.setItemLabelsVisible(false);
 		renderer.setLabelGenerator(new StandardCategoryLabelGenerator());
 		renderer.getPlot().setDomainGridlinesVisible(co.showGridCategory);
 		renderer.getPlot().setRangeGridlinesVisible(co.showGridRange);
 		renderer.getPlot().setOutlinePaint(null);
-
+		
 		if (co.gridWidth >= 0) {
 			renderer.getPlot().setRangeGridlineStroke(new BasicStroke((float) co.gridWidth, BasicStroke.CAP_BUTT,
 					BasicStroke.JOIN_BEVEL, 0.0f, new float[] { (float) co.gridWidth * 8f, 2f }, 0.0f));
 			renderer.getPlot().setDomainGridlineStroke(new BasicStroke((float) co.gridWidth, BasicStroke.CAP_BUTT,
 					BasicStroke.JOIN_BEVEL, 0.0f, new float[] { (float) co.gridWidth * 8f, 2f }, 0.0f));
 		}
-
+		
 		if (co.axisWidth >= 0) {
 			renderer.getPlot().getRangeAxis().setAxisLineStroke(new BasicStroke((float) co.axisWidth));
 			renderer.getPlot().getDomainAxis().setAxisLineStroke(new BasicStroke((float) co.axisWidth));
@@ -738,10 +742,10 @@ public class XmlDataChartComponent extends JComponent {
 			renderer.getPlot().getDomainAxis().setLabelFont(af);
 			renderer.getPlot().getRangeAxis().setLabelFont(af);
 		}
-
+		
 		return chart;
 	}
-
+	
 	protected BioStatisticalCategoryDataset getDataset(SubstanceInterface xmldata, Graph g,
 			boolean alsoUsedForPlottingStdDev, boolean showOnlyHalfErrorBar, boolean fillTimeGaps,
 			boolean removeEmptyConditions) {
@@ -789,7 +793,7 @@ public class XmlDataChartComponent extends JComponent {
 		}
 		return dataset;
 	}
-
+	
 	private static void addMissingTimePoints(BioStatisticalCategoryDataset dataset, SortedSet<Integer> timePoints, int minTime,
 			int maxTime, String timeUnit, String measUnit, String series) {
 		int minDiff;
@@ -821,7 +825,7 @@ public class XmlDataChartComponent extends JComponent {
 			}
 		} while (minDiff < maxDiff);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -830,7 +834,7 @@ public class XmlDataChartComponent extends JComponent {
 	public String getCategory() {
 		return "Visualisation";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

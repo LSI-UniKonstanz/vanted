@@ -9,16 +9,16 @@ import org.ObjectRef;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class MyOutputStream extends OutputStream {
-
+	
 	BackgroundTaskStatusProviderSupportingExternalCallImpl status;
 	FileOutputStream fileOutputStream;
 	long maxBytes = 0;
 	long received = 0;
 	long startTime = System.currentTimeMillis();
-
+	
 	public String lastStatus = "Download initiated";
 	private ObjectRef lastStatusRef = null;
-
+	
 	private void updateStatus(int rec) {
 		received += rec;
 		long currentTime = System.currentTimeMillis();
@@ -37,11 +37,11 @@ public class MyOutputStream extends OutputStream {
 			}
 		}
 	}
-
+	
 	public void setMaxBytes(long max) {
 		this.maxBytes = max;
 	}
-
+	
 	public MyOutputStream(ObjectRef lastStatusRef, BackgroundTaskStatusProviderSupportingExternalCallImpl status,
 			FileOutputStream fileOutputStream) {
 		this.maxBytes = 0;
@@ -49,29 +49,29 @@ public class MyOutputStream extends OutputStream {
 		this.lastStatusRef = lastStatusRef;
 		this.fileOutputStream = fileOutputStream;
 	}
-
+	
 	@Override
 	public void write(int b) throws IOException {
 		fileOutputStream.write(b);
 		updateStatus(1);
 	}
-
+	
 	@Override
 	public void close() throws IOException {
 		fileOutputStream.close();
 	}
-
+	
 	@Override
 	public void flush() throws IOException {
 		fileOutputStream.flush();
 	}
-
+	
 	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
 		fileOutputStream.write(b, off, len);
 		updateStatus(len);
 	}
-
+	
 	@Override
 	public void write(byte[] b) throws IOException {
 		fileOutputStream.write(b);

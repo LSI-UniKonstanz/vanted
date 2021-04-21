@@ -12,12 +12,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_organisms.Organi
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class OrganismEntry {
-
+	
 	private String shortName;
 	private String title;
 	private boolean showHierarchy;
 	private String hierarchy = "";
-
+	
 	public OrganismEntry(String shortName, String title) {
 		this.shortName = shortName;
 		this.title = title;
@@ -26,7 +26,7 @@ public class OrganismEntry {
 			hierarchy = OrganismInfo.getOrganismHierarchyInfo(shortName, "/", title);
 		}
 	}
-
+	
 	public OrganismEntry(boolean showHierarchy, String shortName, String title) {
 		this.shortName = shortName;
 		this.title = title;
@@ -35,7 +35,7 @@ public class OrganismEntry {
 			hierarchy = OrganismInfo.getOrganismHierarchyInfo(shortName, "/", title);
 		}
 	}
-
+	
 	@Override
 	public String toString() {
 		if (showHierarchy) {
@@ -48,11 +48,11 @@ public class OrganismEntry {
 			return title + " - " + shortName;
 		}
 	}
-
+	
 	public String getShortName() {
 		return shortName;
 	}
-
+	
 	public String getDefinition() {
 		return title;
 	}

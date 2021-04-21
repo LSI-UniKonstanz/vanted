@@ -50,12 +50,12 @@ import org.jfree.ui.RefineryUtilities;
  * A simple internal frame demo.
  */
 public class InternalFrameDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new instance of the demo.
 	 * 
 	 * @param title
-	 *            the title.
+	 *           the title.
 	 */
 	public InternalFrameDemo(final String title) {
 		super(title);
@@ -72,7 +72,7 @@ public class InternalFrameDemo extends ApplicationFrame {
 		frame2.setVisible(true);
 		getContentPane().add(desktopPane);
 	}
-
+	
 	/**
 	 * Creates an internal frame.
 	 * 
@@ -90,9 +90,9 @@ public class InternalFrameDemo extends ApplicationFrame {
 		final JInternalFrame frame = new JInternalFrame("Frame 1", true);
 		frame.getContentPane().add(chartPanel);
 		return frame;
-
+		
 	}
-
+	
 	/**
 	 * Creates an internal frame.
 	 * 
@@ -100,7 +100,7 @@ public class InternalFrameDemo extends ApplicationFrame {
 	 */
 	private JInternalFrame createFrame2() {
 		final XYDataset dataset1 = createDataset("Series 1", 100.0, new Minute(), 200);
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Time Series Chart", "Time of Day", "Value",
 				dataset1, true, true, false);
 		final ChartPanel chartPanel = new ChartPanel(chart);
@@ -109,23 +109,23 @@ public class InternalFrameDemo extends ApplicationFrame {
 		frame.getContentPane().add(chartPanel);
 		return frame;
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @param name
-	 *            the dataset name.
+	 *           the dataset name.
 	 * @param base
-	 *            the starting value.
+	 *           the starting value.
 	 * @param start
-	 *            the starting period.
+	 *           the starting period.
 	 * @param count
-	 *            the number of values to generate.
+	 *           the number of values to generate.
 	 * @return The dataset.
 	 */
 	private XYDataset createDataset(final String name, final double base, final RegularTimePeriod start,
 			final int count) {
-
+		
 		final TimeSeries series = new TimeSeries(name, start.getClass());
 		RegularTimePeriod period = start;
 		double value = base;
@@ -134,14 +134,14 @@ public class InternalFrameDemo extends ApplicationFrame {
 			period = period.next();
 			value = value * (1 + (Math.random() - 0.495) / 10.0);
 		}
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(series);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -152,19 +152,19 @@ public class InternalFrameDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final InternalFrameDemo demo = new InternalFrameDemo("Internal Frame Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -40,49 +40,49 @@ public class MyClusterGraphBasedReLayoutService
 	boolean userBreak = false;
 	double statusValue = -1;
 	boolean pleaseStop = false;
-
+	
 	String status1, status2;
-
+	
 	private Algorithm layoutAlgorithm;
 	private final boolean currentOptionWaitForLayout;
 	private final Graph graph;
 	private Algorithm optLayoutAlgorithm2;
-
+	
 	public MyClusterGraphBasedReLayoutService(boolean waitForLayout, Graph g) {
 		this.currentOptionWaitForLayout = waitForLayout;
 		this.graph = g;
 	}
-
+	
 	@Override
 	public int getCurrentStatusValue() {
 		return (int) statusValue;
 	}
-
+	
 	public void setAlgorithm(Algorithm algorithm, Algorithm optAlgorithm2) {
 		this.layoutAlgorithm = algorithm;
 		this.optLayoutAlgorithm2 = optAlgorithm2;
 	}
-
+	
 	@Override
 	public double getCurrentStatusValueFine() {
 		return statusValue;
 	}
-
+	
 	@Override
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	@Override
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	@Override
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	@Override
 	public void run() {
 		if (checkStop())
@@ -106,7 +106,7 @@ public class MyClusterGraphBasedReLayoutService
 		}
 		if (checkStop())
 			return;
-
+		
 		boolean creationNeeded = true;
 		Graph testGraph = (Graph) AttributeHelper.getAttributeValue(mainGraph, "cluster", "clustergraph", null,
 				new AdjListGraph(), false);
@@ -144,10 +144,10 @@ public class MyClusterGraphBasedReLayoutService
 			pleaseStop();
 			MainFrame.showMessageDialog("Error: Could not create overview-graph", "Error");
 		}
-
+		
 		if (checkStop())
 			return;
-
+		
 		status1 = "Process cluster node size and position...";
 		HashMap<String, Vector2d> clusterLocationsBeforeLayout = new HashMap<String, Vector2d>();
 		if (clusterGraph != null) {
@@ -160,10 +160,10 @@ public class MyClusterGraphBasedReLayoutService
 				clusterLocationsBeforeLayout.put(clusterId, new Vector2d(position));
 			}
 		}
-
+		
 		if (checkStop())
 			return;
-
+		
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 			// add kegg-ed relevant information to edges
 			for (Edge e : clusterGraph.getEdges()) {
@@ -174,7 +174,7 @@ public class MyClusterGraphBasedReLayoutService
 				KeggGmlHelper.setRelationTypeInformation(e, 0, RelationType.maplink);
 			}
 		}
-
+		
 		status2 = "Layout overview-graph...";
 		layoutAlgorithm.attach(clusterGraph, new Selection());
 		layoutAlgorithm.execute();
@@ -187,7 +187,7 @@ public class MyClusterGraphBasedReLayoutService
 			}
 		}
 		layoutAlgorithm.reset();
-
+		
 		if (optLayoutAlgorithm2 != null) {
 			optLayoutAlgorithm2.attach(clusterGraph, new Selection());
 			optLayoutAlgorithm2.execute();
@@ -201,9 +201,9 @@ public class MyClusterGraphBasedReLayoutService
 			}
 			optLayoutAlgorithm2.reset();
 		}
-
+		
 		status2 = "Layout finished";
-
+		
 		if (!checkStop()) {
 			if (currentOptionWaitForLayout) {
 				clusterGraph.setName("overview-graph (apply layout then click OK, you may then close this window)");
@@ -244,21 +244,21 @@ public class MyClusterGraphBasedReLayoutService
 			Point2D position = AttributeHelper.getPosition(clusterNode);
 			clusterLocationsAfterLayout.put(clusterId, new Vector2d(position));
 		}
-
+		
 		// GraphHelper.printNodeLayout(mainGraph);
 		// GraphHelper.printNodeLayout(clusterGraph);
-
+		
 		if (checkStop())
 			return;
-
+		
 		// ArrayList<Graph> clusterGraphsToBeAnalyzed = new ArrayList<Graph>();
 		// ArrayList<String> clusterGraphsToBeAnalyzedID = new ArrayList<String>();
-
+		
 		status1 = "Apply layout...";
 		status2 = "";
-
+		
 		boolean error = false;
-
+		
 		final HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		for (Node n : mainGraph.getNodes()) {
 			String clusterId = NodeTools.getClusterID(n, null);
@@ -303,7 +303,7 @@ public class MyClusterGraphBasedReLayoutService
 				// "Overview-Graph based layout");
 				GraphHelper.applyUndoableNodeAndBendPositionUpdate(nodes2newPositions, bends2newPositions,
 						"Overview-Graph based layout");
-
+				
 				for (Node n : mainGraphF.getNodes()) {
 					String clusterId = NodeTools.getClusterID(n, "no cluster");
 					if (clusterId.equals("no cluster"))
@@ -314,9 +314,9 @@ public class MyClusterGraphBasedReLayoutService
 			}
 		});
 		statusValue = 100;
-
+		
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -328,38 +328,37 @@ public class MyClusterGraphBasedReLayoutService
 		}
 		return pleaseStop;
 	}
-
+	
 	@Override
 	public boolean pluginWaitsForUser() {
 		return userBreak;
 	}
-
+	
 	@Override
 	public void pleaseContinueRun() {
 		userBreak = false;
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		statusValue = value;
 	}
-
+	
 	public void setCurrentStatusValueFine(double value) {
-		statusValue = value;
-		;
+		statusValue = value;;
 	}
-
+	
 	public boolean wantsToStop() {
 		return pleaseStop;
 	}
-
+	
 	public void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
-
+	
 	public void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
-
+	
 	@Override
 	public void setCurrentStatusValueFineAdd(double smallProgressStep) {
 		statusValue += smallProgressStep;

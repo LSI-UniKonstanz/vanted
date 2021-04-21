@@ -44,75 +44,75 @@ import org.jfree.chart.axis.ValueTick;
  * @author David M. O'Donnell.
  */
 public abstract class ColorPalette implements Cloneable, Serializable {
-
+	
 	/** The min z-axis value. */
 	protected double minZ = -1;
-
+	
 	/** The max z-axis value. */
 	protected double maxZ = -1;
-
+	
 	/** Red components. */
 	protected int[] r;
-
+	
 	/** Green components. */
 	protected int[] g;
-
+	
 	/** Blue components. */
 	protected int[] b;
-
+	
 	/** Tick values are stored for use with stepped palette. */
 	protected double[] tickValues = null;
-
+	
 	/** Logscale? */
 	protected boolean logscale = false;
-
+	
 	/** Inverse palette (ie, min and max colors are reversed). */
 	protected boolean inverse = false;
-
+	
 	/** The palette name. */
 	protected String paletteName = null;
-
+	
 	/** Controls whether palette colors are stepped (not continuous). */
 	protected boolean stepped = false;
-
+	
 	/** Constant for converting loge to log10. */
 	protected static final double log10 = Math.log(10);
-
+	
 	/**
 	 * Default contructor.
 	 */
 	public ColorPalette() {
 		super();
 	}
-
+	
 	/**
 	 * Returns the color associated with a value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return the color.
 	 */
 	public Paint getColor(double value) {
 		int izV = (int) (253 * (value - this.minZ) / (this.maxZ - this.minZ)) + 2;
 		return new Color(this.r[izV], this.g[izV], this.b[izV]);
 	}
-
+	
 	/**
 	 * Returns a color.
 	 * 
 	 * @param izV
-	 *            ??.
+	 *           ??.
 	 * @return the color.
 	 */
 	public Color getColor(int izV) {
 		return new Color(this.r[izV], this.g[izV], this.b[izV]);
 	}
-
+	
 	/**
 	 * Returns Color by mapping a given value to a linear palette.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return The color.
 	 */
 	public Color getColorLinear(double value) {
@@ -122,7 +122,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 			if (index < 0) {
 				index = -1 * index - 2;
 			}
-
+			
 			if (index < 0) { // For the case were the first tick is greater than minZ
 				value = this.minZ;
 			} else {
@@ -134,12 +134,12 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 		izV = Math.max(izV, 2);
 		return getColor(izV);
 	}
-
+	
 	/**
 	 * Returns Color by mapping a given value to a common log palette.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return The color.
 	 */
 	public Color getColorLog(double value) {
@@ -166,13 +166,13 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 		}
 		izV = Math.min(izV, 255);
 		izV = Math.max(izV, 2);
-
+		
 		this.minZ = minZtmp;
 		this.maxZ = maxZtmp;
-
+		
 		return getColor(izV);
 	}
-
+	
 	/**
 	 * Returns the maximum Z value.
 	 * 
@@ -181,7 +181,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	public double getMaxZ() {
 		return this.maxZ;
 	}
-
+	
 	/**
 	 * Returns the minimum Z value.
 	 * 
@@ -190,13 +190,13 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	public double getMinZ() {
 		return this.minZ;
 	}
-
+	
 	/**
 	 * Returns Paint by mapping a given value to a either a linear or common log
 	 * palette as controlled by the value logscale.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return The paint.
 	 */
 	public Paint getPaint(double value) {
@@ -206,7 +206,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 			return getColorLinear(value);
 		}
 	}
-
+	
 	/**
 	 * Returns the palette name.
 	 * 
@@ -215,7 +215,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	public String getPaletteName() {
 		return this.paletteName;
 	}
-
+	
 	/**
 	 * Returns the tick values.
 	 * 
@@ -224,17 +224,17 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	public double[] getTickValues() {
 		return this.tickValues;
 	}
-
+	
 	/**
 	 * Called to initialize the palette's color indexes
 	 */
 	public abstract void initialize();
-
+	
 	/**
 	 * Inverts Palette
 	 */
 	public void invertPalette() {
-
+		
 		int[] red = new int[256];
 		int[] green = new int[256];
 		int[] blue = new int[256];
@@ -243,14 +243,14 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 			green[i] = this.g[i];
 			blue[i] = this.b[i];
 		}
-
+		
 		for (int i = 2; i < 256; i++) {
 			this.r[i] = red[257 - i];
 			this.g[i] = green[257 - i];
 			this.b[i] = blue[257 - i];
 		}
 	}
-
+	
 	/**
 	 * Returns the inverse flag.
 	 * 
@@ -259,7 +259,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	public boolean isInverse() {
 		return this.inverse;
 	}
-
+	
 	/**
 	 * Returns the log-scale flag.
 	 * 
@@ -268,7 +268,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	public boolean isLogscale() {
 		return this.logscale;
 	}
-
+	
 	/**
 	 * Returns the 'is-stepped' flag.
 	 * 
@@ -277,12 +277,12 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	public boolean isStepped() {
 		return this.stepped;
 	}
-
+	
 	/**
 	 * Sets the inverse flag.
 	 * 
 	 * @param inverse
-	 *            the new value.
+	 *           the new value.
 	 */
 	public void setInverse(boolean inverse) {
 		this.inverse = inverse;
@@ -292,75 +292,75 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 		}
 		return;
 	}
-
+	
 	/**
 	 * Sets the 'log-scale' flag.
 	 * 
 	 * @param logscale
-	 *            the new value.
+	 *           the new value.
 	 */
 	public void setLogscale(boolean logscale) {
 		this.logscale = logscale;
 	}
-
+	
 	/**
 	 * Sets the maximum Z value.
 	 * 
 	 * @param newMaxZ
-	 *            the new value.
+	 *           the new value.
 	 */
 	public void setMaxZ(double newMaxZ) {
 		this.maxZ = newMaxZ;
 	}
-
+	
 	/**
 	 * Sets the minimum Z value.
 	 * 
 	 * @param newMinZ
-	 *            the new value.
+	 *           the new value.
 	 */
 	public void setMinZ(double newMinZ) {
 		this.minZ = newMinZ;
 	}
-
+	
 	/**
 	 * Sets the palette name.
 	 * 
 	 * @param paletteName
-	 *            the name.
+	 *           the name.
 	 */
 	public void setPaletteName(String paletteName) {
 		// String oldValue = this.paletteName;
 		this.paletteName = paletteName;
 		return;
 	}
-
+	
 	/**
 	 * Sets the stepped flag.
 	 * 
 	 * @param stepped
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setStepped(boolean stepped) {
 		this.stepped = stepped;
 		return;
 	}
-
+	
 	/**
 	 * Sets the tick values.
 	 * 
 	 * @param newTickValues
-	 *            the tick values.
+	 *           the tick values.
 	 */
 	public void setTickValues(double[] newTickValues) {
 		this.tickValues = newTickValues;
 	}
-
+	
 	/**
 	 * Store ticks. Required when doing stepped axis
 	 * 
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 */
 	public void setTickValues(java.util.List ticks) {
 		this.tickValues = new double[ticks.size()];
@@ -368,12 +368,12 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 			this.tickValues[i] = ((ValueTick) ticks.get(i)).getValue();
 		}
 	}
-
+	
 	/**
 	 * Tests an object for equality with this instance.
 	 * 
 	 * @param o
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -383,9 +383,9 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 		if (!(o instanceof ColorPalette)) {
 			return false;
 		}
-
+		
 		final ColorPalette colorPalette = (ColorPalette) o;
-
+		
 		if (this.inverse != colorPalette.inverse) {
 			return false;
 		}
@@ -417,10 +417,10 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 		if (!Arrays.equals(this.tickValues, colorPalette.tickValues)) {
 			return false;
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -439,19 +439,19 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 		result = 29 * result + (this.stepped ? 1 : 0);
 		return result;
 	}
-
+	
 	/**
 	 * Returns a clone of the palette.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             never.
+	 *            never.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		ColorPalette clone = (ColorPalette) super.clone();
 		return clone;
-
+		
 	}
-
+	
 }

@@ -17,14 +17,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLConstraintHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_Constraint_Reader extends SBML_SBase_Reader {
-
+	
 	/**
 	 * Method reads in constraints and is called from class SBML_XML_Reader.java
 	 * 
 	 * @param listOfConstraints
-	 *            contains the constraints for the import
+	 *           contains the constraints for the import
 	 * @param g
-	 *            the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 */
 	public void addConstraint(ListOf<Constraint> listOfConstraints, Graph g) {
 		int constraintCount = 1;
@@ -32,13 +32,13 @@ public class SBML_Constraint_Reader extends SBML_SBase_Reader {
 		Iterator<Constraint> itConstraint = listOfConstraints.iterator();
 		while (itConstraint.hasNext()) {
 			Constraint constraint = itConstraint.next();
-
+			
 			String internHeadline = new StringBuffer(SBML_Constants.SBML_CONSTRAINT).append(constraintCount).toString();
 			String presentedHeadline = new StringBuffer("SBML Constraint ").append(constraintCount).toString();
 			// initConstraintNideIDs(internHeadline, presentedHeadline);
 			SBMLConstraint constraintHelper = constraintHelperObject.addConstraint(g, internHeadline,
 					presentedHeadline);
-
+			
 			String metaID = constraint.getMetaId();
 			String sboTerm = constraint.getSBOTermID();
 			String mathFormula = "";
@@ -86,9 +86,9 @@ public class SBML_Constraint_Reader extends SBML_SBase_Reader {
 			if (constraint.isSetMath()) {
 				constraintHelper.setFunction(mathFormula);
 			}
-
+			
 			constraintCount++;
 		}
 	}
-
+	
 }

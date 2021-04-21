@@ -15,40 +15,39 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
  * 
  * @author D. Garkov
  * @since 2.7.0
- *
  */
 public class AttributeAdapter implements AttributeListener {
-
+	
 	@Override
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 	}
-
+	
 	@Override
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 	@Override
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	@Override
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	@Override
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	@Override
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	@Override
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 }

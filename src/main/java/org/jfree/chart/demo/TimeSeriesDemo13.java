@@ -60,25 +60,25 @@ import org.jfree.ui.Spacer;
  * collection is defined to control the domain axis formatting.
  */
 public class TimeSeriesDemo13 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo13(final String title) {
-
+		
 		super(title);
-
+		
 		final XYDataset dataset1 = createDataset(26);
 		final JFreeChart chart1 = createChart(dataset1);
 		final ChartPanel chartPanel1 = new ChartPanel(chart1);
-
+		
 		final XYDataset dataset2 = createDataset(1);
 		final JFreeChart chart2 = createChart(dataset2);
 		final ChartPanel chartPanel2 = new ChartPanel(chart2);
-
+		
 		final JTabbedPane tabs = new JTabbedPane();
 		tabs.add("Chart 1", chartPanel1);
 		tabs.add("Chart 2", chartPanel2);
@@ -86,26 +86,26 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 		content.setPreferredSize(new java.awt.Dimension(500, 270));
 		content.add(tabs);
 		setContentPane(content);
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            a dataset.
+	 *           a dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Weekly Data", "Date", "Value", dataset, true, true,
 				false);
-
+		
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final StandardLegend sl = (StandardLegend) chart.getLegend();
 		sl.setDisplaySeriesShapes(true);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
@@ -113,25 +113,25 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
 		plot.setDomainCrosshairVisible(true);
 		plot.setRangeCrosshairVisible(true);
-
+		
 		final XYItemRenderer renderer = plot.getRenderer();
 		if (renderer instanceof StandardXYItemRenderer) {
 			final StandardXYItemRenderer rr = (StandardXYItemRenderer) renderer;
 			rr.setPlotShapes(true);
 			rr.setShapesFilled(true);
 		}
-
+		
 		final DateAxis axis = (DateAxis) plot.getDomainAxis();
 		final TickUnits standardUnits = new TickUnits();
 		standardUnits.add(new DateTickUnit(DateTickUnit.DAY, 1, new SimpleDateFormat("MMM dd ''yy")));
 		standardUnits.add(new DateTickUnit(DateTickUnit.DAY, 7, new SimpleDateFormat("MMM dd ''yy")));
 		standardUnits.add(new DateTickUnit(DateTickUnit.MONTH, 1, new SimpleDateFormat("MMM ''yy")));
 		axis.setStandardTickUnits(standardUnits);
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -142,16 +142,16 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a dataset containing random values at weekly intervals.
 	 * 
 	 * @param items
-	 *            the number of items in the dataset.
+	 *           the number of items in the dataset.
 	 * @return the dataset.
 	 */
 	private XYDataset createDataset(final int items) {
-
+		
 		final TimeSeries s1 = new TimeSeries("Random Data", Week.class);
 		RegularTimePeriod t = new Week();
 		double v = 100.0;
@@ -160,27 +160,27 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 			v = v * (1 + ((Math.random() - 0.499) / 100.0));
 			t = t.next();
 		}
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection(s1);
 		dataset.setDomainIsPointsInTime(true);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimeSeriesDemo13 demo = new TimeSeriesDemo13("Time Series Demo 13");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

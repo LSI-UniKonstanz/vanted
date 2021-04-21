@@ -33,45 +33,45 @@ import org.graffiti.core.StringBundle;
  */
 public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 	// ~ Static fields/initializers =============================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -4207645953489122114L;
+	
 	/** The <code>StringBundle</code> of this option pane. */
 	protected static StringBundle sBundle = StringBundle.getInstance();
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/** The layout of this panel. */
 	protected GridBagLayout gridBag;
-
+	
 	/** <code>true</code>, if this option pane has been initialized. */
 	protected boolean initialized;
-
+	
 	/** The number of components already added to the layout manager. */
 	protected int y;
-
+	
 	/** The internal name of this option pane. */
 	private String name;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new option pane.
 	 * 
 	 * @param name
-	 *            the internal name. The option pane's label is set to the value of
-	 *            the property named <code>options.<i>name</i>.label</code>.
+	 *           the internal name. The option pane's label is set to the value of
+	 *           the property named <code>options.<i>name</i>.label</code>.
 	 */
 	protected AbstractOptionPane(String name) {
 		this.name = name;
 		setLayout(gridBag = new GridBagLayout());
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the component that should be displayed for this option pane. Because
 	 * this class implements component, it simply returns <code>this</code>.
@@ -81,7 +81,7 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 	public JComponent getOptionDialogComponent() {
 		return this;
 	}
-
+	
 	/**
 	 * Returns the internal name of the option pane.
 	 * 
@@ -91,16 +91,16 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 	public String getName() {
 		return name;
 	}
-
+	
 	/**
 	 * Adds the given label and component to the option pane. Components are added
 	 * in vertical fashion, one per row. The label is displayed to the left of the
 	 * component.
 	 * 
 	 * @param label
-	 *            the label.
+	 *           the label.
 	 * @param component
-	 *            the component.
+	 *           the component.
 	 */
 	public void addComponent(String label, Component component) {
 		GridBagConstraints constraint = new GridBagConstraints();
@@ -110,24 +110,24 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 		constraint.weightx = 0.0f;
 		constraint.insets = new Insets(1, 0, 1, 0);
 		constraint.fill = GridBagConstraints.BOTH;
-
+		
 		JLabel l = new JLabel(label, SwingConstants.RIGHT);
 		l.setBorder(new EmptyBorder(0, 0, 0, 12));
 		gridBag.setConstraints(l, constraint);
 		add(l);
-
+		
 		constraint.gridx = 1;
 		constraint.weightx = 1.0f;
 		gridBag.setConstraints(component, constraint);
 		add(component);
 	}
-
+	
 	/**
 	 * Adds the given component to the option pane. Components are added in vertical
 	 * fashion., one per row.
 	 * 
 	 * @param component
-	 *            the component.
+	 *           the component.
 	 */
 	public void addComponent(Component component) {
 		GridBagConstraints constraint = new GridBagConstraints();
@@ -138,31 +138,30 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 		constraint.anchor = GridBagConstraints.WEST;
 		constraint.weightx = 1.0f;
 		constraint.insets = new Insets(1, 0, 1, 0);
-
+		
 		gridBag.setConstraints(component, constraint);
 		add(component);
 	}
-
+	
 	/**
 	 * Adds a component according to an anchor. This allows for more flexible
 	 * placement of Components over the pane. However, there are still general
 	 * constraints taking place, because of the orientation, here horizontal, and
 	 * display area.
 	 * <p>
-	 * 
 	 * If the provided anchor argument doesn't match a GridBagConstraints Anchor
 	 * value, then the component is simply not added.
 	 * 
 	 * @param component
-	 *            the component
+	 *           the component
 	 * @param anchor
-	 *            GridBagConstraints anchor value
+	 *           GridBagConstraints anchor value
 	 */
 	public void addComponent(Component component, int anchor) {
 		if (!(anchor >= 10 && anchor <= 26))
 			if (!(anchor % 0x100 == 0 && anchor >= 0x100 && anchor <= 0x900))
 				return;
-
+			
 		GridBagConstraints constraint = new GridBagConstraints();
 		constraint.gridy = y++;
 		constraint.gridheight = 1;
@@ -172,16 +171,16 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 		constraint.gridx = 0;
 		constraint.weightx = 1.0f;
 		constraint.insets = new Insets(1, 0, 1, 0);
-
+		
 		gridBag.setConstraints(component, constraint);
 		add(component);
 	}
-
+	
 	/**
 	 * Adds a separator to the option pane.
 	 * 
 	 * @param label
-	 *            the separator label.
+	 *           the separator label.
 	 */
 	public void addSeparator(String label) {
 		Box box = new Box(BoxLayout.X_AXIS);
@@ -190,17 +189,17 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 		box2.add(new JSeparator(SwingConstants.HORIZONTAL));
 		box2.add(Box.createGlue());
 		box.add(box2);
-
+		
 		JLabel l = new JLabel(label);
 		l.setMaximumSize(l.getPreferredSize());
 		box.add(l);
-
+		
 		Box box3 = new Box(BoxLayout.Y_AXIS);
 		box3.add(Box.createGlue());
 		box3.add(new JSeparator(SwingConstants.HORIZONTAL));
 		box3.add(Box.createGlue());
 		box.add(box3);
-
+		
 		GridBagConstraints cons = new GridBagConstraints();
 		cons.gridy = y++;
 		cons.gridheight = 1;
@@ -209,11 +208,11 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 		cons.anchor = GridBagConstraints.WEST;
 		cons.weightx = 1.0f;
 		cons.insets = new Insets(1, 0, 1, 0);
-
+		
 		gridBag.setConstraints(box, cons);
 		add(box);
 	}
-
+	
 	/**
 	 * This method is called every time this option pane is displayed. The
 	 * <code>AbstractOptionPane</code> class uses this to create the option pane's
@@ -225,28 +224,28 @@ public abstract class AbstractOptionPane extends JPanel implements OptionPane {
 			initDefault();
 		}
 	}
-
+	
 	@Override
 	public void save(JComponent options) {
 		if (initialized) {
 			saveDefault();
 		}
 	}
-
+	
 	/**
 	 * Called when the options dialog's "ok" button is clicked. This should save any
 	 * properties being edited in this option pane.
 	 */
 	public void save() {
-
+		
 	}
-
+	
 	/**
 	 * Creates this option pane's dialog. Implement this method, to create your
 	 * option pane's dialog.
 	 */
 	protected abstract void initDefault();
-
+	
 	/**
 	 * Should save the properties being edited in this option panel. Implement this
 	 * method, to save your option pane's preferences.

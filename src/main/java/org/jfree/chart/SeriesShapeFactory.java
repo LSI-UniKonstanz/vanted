@@ -44,132 +44,132 @@ import java.awt.geom.Rectangle2D;
  * @author Jeremy Bowman
  */
 public class SeriesShapeFactory implements ShapeFactory {
-
+	
 	/** The number of distinct shapes available */
 	private static final int SHAPE_COUNT = 11;
-
+	
 	/**
 	 * Returns a Shape that can be used in plotting data. Used in XYPlots.
 	 * 
 	 * @param series
-	 *            the index of the series.
+	 *           the index of the series.
 	 * @param item
-	 *            the index of the item.
+	 *           the index of the item.
 	 * @param x
-	 *            x-coordinate of the item.
+	 *           x-coordinate of the item.
 	 * @param y
-	 *            y-coordinate of the item.
+	 *           y-coordinate of the item.
 	 * @param scale
-	 *            the size.
+	 *           the size.
 	 * @return a Shape that can be used in plotting data.
 	 */
 	public Shape getShape(int series, int item, double x, double y, double scale) {
-
+		
 		return getShape(series, null, x, y, scale);
-
+		
 	}
-
+	
 	/**
 	 * Returns a Shape that can be used in plotting data. Used in CategoryPlots.
 	 * 
 	 * @param series
-	 *            the index of the series.
+	 *           the index of the series.
 	 * @param category
-	 *            the category.
+	 *           the category.
 	 * @param x
-	 *            x-coordinate of the category.
+	 *           x-coordinate of the category.
 	 * @param y
-	 *            y-coordinate of the category.
+	 *           y-coordinate of the category.
 	 * @param scale
-	 *            the size.
+	 *           the size.
 	 * @return a Shape that can be used in plotting data.
 	 */
 	public Shape getShape(int series, Object category, double x, double y, double scale) {
-
+		
 		double delta = 0.5 * scale;
 		int index = series % SHAPE_COUNT;
 		int[] xpoints = null;
 		int[] ypoints = null;
 		switch (index) {
-		case 0:
-			// Square
-			return new Rectangle2D.Double(x - delta, y - delta, scale, scale);
-		case 1:
-			// Circle
-			return new Ellipse2D.Double(x - delta, y - delta, scale, scale);
-		case 2:
-			// Up-pointing triangle
-			xpoints = intArray(x, x + delta, x - delta);
-			ypoints = intArray(y - delta, y + delta, y + delta);
-			return new Polygon(xpoints, ypoints, 3);
-		case 3:
-			// Diamond
-			xpoints = intArray(x, x + delta, x, x - delta);
-			ypoints = intArray(y - delta, y, y + delta, y);
-			return new Polygon(xpoints, ypoints, 4);
-		case 4:
-			// Horizontal rectangle
-			return new Rectangle2D.Double(x - delta, y - delta / 2, scale, scale / 2);
-		case 5:
-			// Down-pointing triangle
-			xpoints = intArray(x - delta, x + delta, x);
-			ypoints = intArray(y - delta, y - delta, y + delta);
-			return new Polygon(xpoints, ypoints, 3);
-		case 6:
-			// Horizontal ellipse
-			return new Ellipse2D.Double(x - delta, y - delta / 2, scale, scale / 2);
-		case 7:
-			// Right-pointing triangle
-			xpoints = intArray(x - delta, x + delta, x - delta);
-			ypoints = intArray(y - delta, y, y + delta);
-			return new Polygon(xpoints, ypoints, 3);
-		case 8:
-			// Vertical rectangle
-			return new Rectangle2D.Double(x - delta / 2, y - delta, scale / 2, scale);
-		case 9:
-			// Left-pointing triangle
-			xpoints = intArray(x - delta, x + delta, x + delta);
-			ypoints = intArray(y, y - delta, y + delta);
-			return new Polygon(xpoints, ypoints, 3);
-		default:
-			// Vertical ellipse
-			return new Ellipse2D.Double(x - delta / 2, y - delta, scale / 2, scale);
+			case 0:
+				// Square
+				return new Rectangle2D.Double(x - delta, y - delta, scale, scale);
+			case 1:
+				// Circle
+				return new Ellipse2D.Double(x - delta, y - delta, scale, scale);
+			case 2:
+				// Up-pointing triangle
+				xpoints = intArray(x, x + delta, x - delta);
+				ypoints = intArray(y - delta, y + delta, y + delta);
+				return new Polygon(xpoints, ypoints, 3);
+			case 3:
+				// Diamond
+				xpoints = intArray(x, x + delta, x, x - delta);
+				ypoints = intArray(y - delta, y, y + delta, y);
+				return new Polygon(xpoints, ypoints, 4);
+			case 4:
+				// Horizontal rectangle
+				return new Rectangle2D.Double(x - delta, y - delta / 2, scale, scale / 2);
+			case 5:
+				// Down-pointing triangle
+				xpoints = intArray(x - delta, x + delta, x);
+				ypoints = intArray(y - delta, y - delta, y + delta);
+				return new Polygon(xpoints, ypoints, 3);
+			case 6:
+				// Horizontal ellipse
+				return new Ellipse2D.Double(x - delta, y - delta / 2, scale, scale / 2);
+			case 7:
+				// Right-pointing triangle
+				xpoints = intArray(x - delta, x + delta, x - delta);
+				ypoints = intArray(y - delta, y, y + delta);
+				return new Polygon(xpoints, ypoints, 3);
+			case 8:
+				// Vertical rectangle
+				return new Rectangle2D.Double(x - delta / 2, y - delta, scale / 2, scale);
+			case 9:
+				// Left-pointing triangle
+				xpoints = intArray(x - delta, x + delta, x + delta);
+				ypoints = intArray(y, y - delta, y + delta);
+				return new Polygon(xpoints, ypoints, 3);
+			default:
+				// Vertical ellipse
+				return new Ellipse2D.Double(x - delta / 2, y - delta, scale / 2, scale);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Helper method to avoid lots of explicit casts in getShape(). Returns an array
 	 * containing the provided doubles cast to ints.
 	 * 
 	 * @param a
-	 *            x
+	 *           x
 	 * @param b
-	 *            y
+	 *           y
 	 * @param c
-	 *            z
+	 *           z
 	 * @return int[3] with converted params.
 	 */
 	private static int[] intArray(double a, double b, double c) {
 		return new int[] { (int) a, (int) b, (int) c };
 	}
-
+	
 	/**
 	 * Helper method to avoid lots of explicit casts in getShape(). Returns an array
 	 * containing the provided doubles cast to ints.
 	 * 
 	 * @param a
-	 *            x
+	 *           x
 	 * @param b
-	 *            y
+	 *           y
 	 * @param c
-	 *            z
+	 *           z
 	 * @param d
-	 *            t
+	 *           t
 	 * @return int[3] with converted params.
 	 */
 	private static int[] intArray(double a, double b, double c, double d) {
 		return new int[] { (int) a, (int) b, (int) c, (int) d };
 	}
-
+	
 }

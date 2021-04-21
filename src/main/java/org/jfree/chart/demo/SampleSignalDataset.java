@@ -39,28 +39,28 @@ import org.jfree.data.SignalsDataset;
  * A sample signal dataset.
  */
 public class SampleSignalDataset extends AbstractXYDataset implements SignalsDataset {
-
+	
 	/** The data. */
 	private HighLowDataset data;
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public SampleSignalDataset() {
 		this.data = DemoDatasetFactory.createHighLowDataset();
 	}
-
+	
 	/**
 	 * Returns the number of items in a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the number of items within the series.
 	 */
 	public int getItemCount(final int series) {
 		return this.data.getItemCount(series);
 	}
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
@@ -69,18 +69,18 @@ public class SampleSignalDataset extends AbstractXYDataset implements SignalsDat
 	public int getSeriesCount() {
 		return this.data.getSeriesCount();
 	}
-
+	
 	/**
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(final int series) {
 		return this.data.getSeriesName(series);
 	}
-
+	
 	/**
 	 * Returns the x-value for an item within a series.
 	 * <P>
@@ -88,73 +88,73 @@ public class SampleSignalDataset extends AbstractXYDataset implements SignalsDat
 	 * presented in ascending order.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
 		return this.data.getXValue(series, item);
 	}
-
+	
 	/**
 	 * Returns the y-value for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the y-value.
 	 */
 	public Number getYValue(final int series, final int item) {
 		return this.data.getYValue(series, item);
 	}
-
+	
 	/**
 	 * Returns the type.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the type.
 	 */
 	public int getType(final int series, final int item) {
 		return SignalsDataset.ENTER_LONG;
 	}
-
+	
 	/**
 	 * Returns the level.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the level.
 	 */
 	public double getLevel(final int series, final int item) {
 		return getXValue(series, item).doubleValue();
 	}
-
+	
 	/**
 	 * Registers an object to receive notification of changes to the dataset.
 	 * 
 	 * @param listener
-	 *            the object to register.
+	 *           the object to register.
 	 */
 	public void addChangeListener(final DatasetChangeListener listener) {
 		this.data.addChangeListener(listener);
 	}
-
+	
 	/**
 	 * Deregisters an object so that it no longer receives notification of changes
 	 * to the dataset.
 	 * 
 	 * @param listener
-	 *            the object to deregister.
+	 *           the object to deregister.
 	 */
 	public void removeChangeListener(final DatasetChangeListener listener) {
 		this.data.removeChangeListener(listener);
 	}
-
+	
 }

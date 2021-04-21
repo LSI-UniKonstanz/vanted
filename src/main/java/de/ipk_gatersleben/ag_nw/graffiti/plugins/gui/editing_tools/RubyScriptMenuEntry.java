@@ -17,32 +17,35 @@ import javax.swing.JMenuItem;
  * @author klukas
  */
 public class RubyScriptMenuEntry extends JMenuItem {
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4594810662012219162L;
+	
 	/**
 	 * The beanshell commando file-name
 	 */
 	private String cmdFile;
-
+	
 	/**
 	 * The menu title
 	 */
 	private String menuTitle;
-
+	
 	/**
 	 * Creates a new ScriptMenuEntry object.
 	 * 
 	 * @param title
-	 *            Label text for the menu item
+	 *           Label text for the menu item
 	 * @param commandFile
-	 *            The name of the beanshell command file
+	 *           The name of the beanshell command file
 	 */
 	public RubyScriptMenuEntry(String title, String commandFile) {
 		cmdFile = commandFile;
 		menuTitle = title;
 	}
-
+	
 	/**
 	 * Returns the name of the beanshell commando file for this menuitem.
 	 * 
@@ -51,7 +54,7 @@ public class RubyScriptMenuEntry extends JMenuItem {
 	public String getCmdFile() {
 		return cmdFile;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

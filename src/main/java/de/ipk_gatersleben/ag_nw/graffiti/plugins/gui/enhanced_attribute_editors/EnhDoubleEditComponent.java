@@ -29,25 +29,25 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  */
 public class EnhDoubleEditComponent extends AbstractValueEditComponent implements ActionListener {
 	Displayable disp;
-
+	
 	JComponent viewComp;
 	JCheckBox nan;
 	JSpinner spinner;
-
+	
 	/**
 	 * @param disp
 	 */
 	public EnhDoubleEditComponent(Displayable disp) {
 		super(disp);
 		this.disp = disp;
-
+		
 		viewComp = new JPanel();
 		try {
 			double border = 0;
 			double[][] size = { { border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border }, // Columns
 					{ border, TableLayoutConstants.PREFERRED, border } }; // Rows
 			viewComp.setLayout(new TableLayout(size));
-
+			
 			nan = new JCheckBox("NaN");
 			nan.addActionListener(this);
 			spinner = new JSpinner();
@@ -66,7 +66,7 @@ public class EnhDoubleEditComponent extends AbstractValueEditComponent implement
 				nan.setSelected(false);
 			}
 			spinner.setModel(nm);
-
+			
 			viewComp.add(nan, "1,1");
 			viewComp.add(spinner, "2,1");
 		} catch (Exception e) {
@@ -81,30 +81,18 @@ public class EnhDoubleEditComponent extends AbstractValueEditComponent implement
 		viewComp.setMaximumSize(new Dimension(2000, 30));
 		viewComp.validate();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#getComponent()
-	 */
+	
+	@Override
 	public JComponent getComponent() {
 		return viewComp;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setEditFieldValue()
-	 */
+	
+	@Override
 	public void setEditFieldValue() {
 		//
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setValue()
-	 */
+	
+	@Override
 	public void setValue() {
 		if (disp.getValue() != null) {
 			// if (disp.getValue() instanceof Integer) disp.setValue(new
@@ -125,13 +113,8 @@ public class EnhDoubleEditComponent extends AbstractValueEditComponent implement
 		} else
 			disp.setValue(spinner.getValue());
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
+	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == nan)
 			if (nan.isSelected()) {
@@ -139,5 +122,5 @@ public class EnhDoubleEditComponent extends AbstractValueEditComponent implement
 				// disp.setValue(Double.valueOf(Double.NaN));
 			}
 	}
-
+	
 }

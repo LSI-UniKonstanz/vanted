@@ -39,10 +39,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid.GridLayouterAlgo
  * @author Christian Klukas
  */
 public class HierarchyAlgorithm extends AbstractAlgorithm implements ActionListener, ProvidesNodeContextMenu {
-
+	
 	JMenu myMenu;
 	JMenuItem m1showLeafNodes;
-
+	
 	/**
 	 * Constructs a new instance.
 	 */
@@ -51,7 +51,7 @@ public class HierarchyAlgorithm extends AbstractAlgorithm implements ActionListe
 		m1showLeafNodes = new JMenuItem("Show leaf nodes in new window");
 		m1showLeafNodes.addActionListener(this);
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
@@ -91,7 +91,7 @@ public class HierarchyAlgorithm extends AbstractAlgorithm implements ActionListe
 			if (pos.y < minY)
 				minY = (int) pos.y;
 		}
-
+		
 		int offX = 50 + maxWidth / 2;
 		int offY = 50 + maxHeight / 2;
 		for (Node n : g.getNodes()) {
@@ -105,7 +105,7 @@ public class HierarchyAlgorithm extends AbstractAlgorithm implements ActionListe
 		else
 			MainFrame.showMessageDialog("No leaf nodes could be found for display!", "Result");
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -114,34 +114,34 @@ public class HierarchyAlgorithm extends AbstractAlgorithm implements ActionListe
 		graph = null;
 		selection = null;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return null; // "Show leaf nodes in new window";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return null; // "Hierarchy";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.VISUAL, Category.LAYOUT, Category.HIDDEN));
 	}
-
+	
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *            the selection
+	 *           the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -153,7 +153,7 @@ public class HierarchyAlgorithm extends AbstractAlgorithm implements ActionListe
 			execute();
 		}
 	}
-
+	
 	public JMenuItem[] getCurrentNodeContextMenuItem(Collection<Node> selectedNodes) {
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 		if (session != null)

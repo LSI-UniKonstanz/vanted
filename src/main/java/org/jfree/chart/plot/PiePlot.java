@@ -162,156 +162,156 @@ import org.jfree.util.StrokeList;
  * @see PieDataset
  */
 public class PiePlot extends Plot implements Cloneable, Serializable {
-
+	
 	/** The default interior gap. */
 	public static final double DEFAULT_INTERIOR_GAP = 0.25;
-
+	
 	/** The maximum interior gap (currently 40%). */
 	public static final double MAX_INTERIOR_GAP = 0.40;
-
+	
 	/** The default starting angle for the pie chart. */
 	public static final double DEFAULT_START_ANGLE = 90.0;
-
+	
 	/** The default section label font. */
 	public static final Font DEFAULT_LABEL_FONT = new Font("SansSerif", Font.PLAIN, 10);
-
+	
 	/** The default section label paint. */
 	public static final Paint DEFAULT_LABEL_PAINT = Color.black;
-
+	
 	/** The default section label background paint. */
 	public static final Paint DEFAULT_LABEL_BACKGROUND_PAINT = new Color(255, 255, 192);
-
+	
 	/** The default section label outline paint. */
 	public static final Paint DEFAULT_LABEL_OUTLINE_PAINT = Color.black;
-
+	
 	/** The default section label outline stroke. */
 	public static final Stroke DEFAULT_LABEL_OUTLINE_STROKE = new BasicStroke(0.5f);
-
+	
 	/** The default section label shadow paint. */
 	public static final Paint DEFAULT_LABEL_SHADOW_PAINT = Color.lightGray;
-
+	
 	/** The default minimum arc angle to draw. */
 	public static final double DEFAULT_MINIMUM_ARC_ANGLE_TO_DRAW = 0; // 0.00001;
-
+	
 	/** The dataset for the pie chart. */
 	private PieDataset dataset;
-
+	
 	/** The pie index (used by the {@link MultiplePiePlot} class). */
 	private int pieIndex;
-
+	
 	/**
 	 * The amount of space left around the outside of the pie plot, expressed as a
 	 * percentage.
 	 */
 	private double interiorGap;
-
+	
 	/** Flag determining whether to draw an ellipse or a perfect circle. */
 	private boolean circular;
-
+	
 	/** The starting angle. */
 	private double startAngle;
-
+	
 	/** The direction for the pie segments. */
 	private Rotation direction;
-
+	
 	/** The paint for ALL sections (overrides list). */
 	private transient Paint sectionPaint;
-
+	
 	/** The section paint list. */
 	private PaintList sectionPaintList;
-
+	
 	/** The base section paint (fallback). */
 	private transient Paint baseSectionPaint;
-
+	
 	/** The outline paint for ALL sections (overrides list). */
 	private transient Paint sectionOutlinePaint;
-
+	
 	/** The section outline paint list. */
 	private PaintList sectionOutlinePaintList;
-
+	
 	/** The base section outline paint (fallback). */
 	private transient Paint baseSectionOutlinePaint;
-
+	
 	/** The outline stroke for ALL sections (overrides list). */
 	private transient Stroke sectionOutlineStroke;
-
+	
 	/** The section outline stroke list. */
 	private StrokeList sectionOutlineStrokeList;
-
+	
 	/** The base section outline stroke (fallback). */
 	private transient Stroke baseSectionOutlineStroke;
-
+	
 	/** The shadow paint. */
 	private transient Paint shadowPaint = Color.gray;
-
+	
 	/** The x-offset for the shadow effect. */
 	private double shadowXOffset = 4.0f;
-
+	
 	/** The y-offset for the shadow effect. */
 	private double shadowYOffset = 4.0f;
-
+	
 	/** The percentage amount to explode each pie section. */
 	private ObjectList explodePercentages;
-
+	
 	/** The section label generator. */
 	private PieSectionLabelGenerator labelGenerator;
-
+	
 	/** The font used to display the section labels. */
 	private Font labelFont;
-
+	
 	/** The color used to draw the section labels. */
 	private transient Paint labelPaint;
-
+	
 	/** The color used to draw the background of the section labels. */
 	private transient Paint labelBackgroundPaint;
-
+	
 	/**
 	 * The paint used to draw the outline of the section labels (<code>null</code>
 	 * permitted).
 	 */
 	private transient Paint labelOutlinePaint;
-
+	
 	/**
 	 * The stroke used to draw the outline of the section labels (<code>null</code>
 	 * permitted).
 	 */
 	private transient Stroke labelOutlineStroke;
-
+	
 	/**
 	 * The paint used to draw the shadow for the section labels (<code>null</code>
 	 * permitted).
 	 */
 	private transient Paint labelShadowPaint;
-
+	
 	/** The maximum label width as a percentage of the plot width. */
 	private double maximumLabelWidth = 0.20;
-
+	
 	/**
 	 * The gap between the labels and the plot as a percentage of the plot width.
 	 */
 	private double labelGap = 0.05;
-
+	
 	/** The link margin. */
 	private double labelLinkMargin = 0.05;
-
+	
 	/** The paint used for the label linking lines. */
 	private transient Paint labelLinkPaint = Color.black;
-
+	
 	/** The stroke used for the label linking lines. */
 	private transient Stroke labelLinkStroke = new BasicStroke(0.5f);
-
+	
 	/** The tooltip generator. */
 	private PieToolTipGenerator toolTipGenerator;
-
+	
 	/** The URL generator. */
 	private PieURLGenerator urlGenerator;
-
+	
 	/**
 	 * A flag that controls whether null values are ignored. Set this to true if you
 	 * prefer null values to have no legend entry.
 	 */
 	private boolean ignoreNullValues = false;
-
+	
 	/**
 	 * The smallest arc angle that will get drawn (this is to avoid a bug in various
 	 * Java implementations that causes the JVM to crash). See this link for
@@ -320,26 +320,26 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	 * http://developer.java.sun.com/developer/bugParade/bugs/4836495.html
 	 */
 	private double minimumArcAngleToDraw;
-
+	
 	/** The resourceBundle for the localization. */
 	protected static ResourceBundle localizationResources = ResourceBundle
 			.getBundle("org.jfree.chart.plot.LocalizationBundle");
-
+	
 	/** Access to logging facilities. */
 	private static final LogContext LOGGER = Log.createContext(PiePlot.class);
-
+	
 	/**
 	 * Creates a new plot. The dataset is initially set to <code>null</code>.
 	 */
 	public PiePlot() {
 		this(null);
 	}
-
+	
 	/**
 	 * Creates a plot that will draw a pie chart for the specified dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 */
 	public PiePlot(PieDataset dataset) {
 		super();
@@ -348,27 +348,27 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			dataset.addChangeListener(this);
 		}
 		this.pieIndex = 0;
-
+		
 		this.interiorGap = DEFAULT_INTERIOR_GAP;
 		this.circular = true;
 		this.startAngle = DEFAULT_START_ANGLE;
 		this.direction = Rotation.CLOCKWISE;
 		this.minimumArcAngleToDraw = DEFAULT_MINIMUM_ARC_ANGLE_TO_DRAW;
-
+		
 		this.sectionPaint = null;
 		this.sectionPaintList = new PaintList();
 		this.baseSectionPaint = null;
-
+		
 		this.sectionOutlinePaint = null;
 		this.sectionOutlinePaintList = new PaintList();
 		this.baseSectionOutlinePaint = DEFAULT_OUTLINE_PAINT;
-
+		
 		this.sectionOutlineStroke = null;
 		this.sectionOutlineStrokeList = new StrokeList();
 		this.baseSectionOutlineStroke = DEFAULT_OUTLINE_STROKE;
-
+		
 		this.explodePercentages = new ObjectList();
-
+		
 		this.labelGenerator = new StandardPieItemLabelGenerator();
 		this.labelFont = DEFAULT_LABEL_FONT;
 		this.labelPaint = DEFAULT_LABEL_PAINT;
@@ -376,11 +376,11 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.labelOutlinePaint = DEFAULT_LABEL_OUTLINE_PAINT;
 		this.labelOutlineStroke = DEFAULT_LABEL_OUTLINE_STROKE;
 		this.labelShadowPaint = DEFAULT_LABEL_SHADOW_PAINT;
-
+		
 		this.toolTipGenerator = null;
 		this.urlGenerator = null;
 	}
-
+	
 	/**
 	 * Returns the dataset.
 	 * 
@@ -389,12 +389,12 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public PieDataset getDataset() {
 		return this.dataset;
 	}
-
+	
 	/**
 	 * Sets the dataset and sends a {@link DatasetChangeEvent} to 'this'.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 */
 	public void setDataset(PieDataset dataset) {
 		// if there is an existing dataset, remove the plot from the list of change
@@ -403,19 +403,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		if (existing != null) {
 			existing.removeChangeListener(this);
 		}
-
+		
 		// set the new dataset, and register the chart as a change listener...
 		this.dataset = dataset;
 		if (dataset != null) {
 			setDatasetGroup(dataset.getGroup());
 			dataset.addChangeListener(this);
 		}
-
+		
 		// send a dataset change event to self...
 		DatasetChangeEvent event = new DatasetChangeEvent(this, dataset);
 		datasetChanged(event);
 	}
-
+	
 	/**
 	 * Returns the pie index (this is used by the {@link MultiplePiePlot} class to
 	 * track subplots).
@@ -425,18 +425,18 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public int getPieIndex() {
 		return this.pieIndex;
 	}
-
+	
 	/**
 	 * Sets the pie index (this is used by the {@link MultiplePiePlot} class to
 	 * track subplots).
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 */
 	public void setPieIndex(int index) {
 		this.pieIndex = index;
 	}
-
+	
 	/**
 	 * Returns the start angle for the first pie section.
 	 * <P>
@@ -448,7 +448,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public double getStartAngle() {
 		return this.startAngle;
 	}
-
+	
 	/**
 	 * Sets the starting angle and sends a {@link PlotChangeEvent} to all registered
 	 * listeners.
@@ -458,13 +458,13 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	 * Arc2D class.
 	 * 
 	 * @param angle
-	 *            the angle (in degrees).
+	 *           the angle (in degrees).
 	 */
 	public void setStartAngle(double angle) {
 		this.startAngle = angle;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the direction in which the pie sections are drawn (clockwise or
 	 * anti-clockwise).
@@ -474,13 +474,13 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Rotation getDirection() {
 		return this.direction;
 	}
-
+	
 	/**
 	 * Sets the direction in which the pie sections are drawn and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param direction
-	 *            the direction (<code>null</code> not permitted).
+	 *           the direction (<code>null</code> not permitted).
 	 */
 	public void setDirection(Rotation direction) {
 		if (direction == null) {
@@ -488,9 +488,9 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		}
 		this.direction = direction;
 		notifyListeners(new PlotChangeEvent(this));
-
+		
 	}
-
+	
 	/**
 	 * Returns the interior gap, measured as a percentage of the available drawing
 	 * space.
@@ -500,31 +500,31 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public double getInteriorGap() {
 		return this.interiorGap;
 	}
-
+	
 	/**
 	 * Sets the interior gap and sends a {@link PlotChangeEvent} to all registered
 	 * listeners. This controls the space between the edges of the pie plot and the
 	 * plot area itself (the region where the section labels appear).
 	 * 
 	 * @param percent
-	 *            the gap (as a percentage of the available drawing space).
+	 *           the gap (as a percentage of the available drawing space).
 	 */
 	public void setInteriorGap(double percent) {
-
+		
 		// check arguments...
 		if ((percent < 0.0) || (percent > MAX_INTERIOR_GAP)) {
 			throw new IllegalArgumentException(
 					"PiePlot.setInteriorGapPercent(double): percentage outside valid range.");
 		}
-
+		
 		// make the change...
 		if (this.interiorGap != percent) {
 			this.interiorGap = percent;
 			notifyListeners(new PlotChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a flag indicating whether the pie chart is circular, or stretched
 	 * into an elliptical shape.
@@ -534,26 +534,26 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public boolean isCircular() {
 		return this.circular;
 	}
-
+	
 	/**
 	 * A flag indicating whether the pie chart is circular, or stretched into an
 	 * elliptical shape.
 	 * 
 	 * @param flag
-	 *            the new value.
+	 *           the new value.
 	 */
 	public void setCircular(boolean flag) {
 		setCircular(flag, true);
 	}
-
+	
 	/**
 	 * Sets the circular attribute and, if requested, sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param circular
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 * @param notify
-	 *            notify listeners?
+	 *           notify listeners?
 	 */
 	public void setCircular(boolean circular, boolean notify) {
 		this.circular = circular;
@@ -561,10 +561,10 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	// // SECTION PAINT
 	// ////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the paint for ALL sections in the plot.
 	 * 
@@ -573,34 +573,34 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getSectionPaint() {
 		return this.sectionPaint;
 	}
-
+	
 	/**
 	 * Sets the paint for ALL sections in the plot. If this is set to
 	 * </code>null</code>, then a list of paints is used instead (to allow different
 	 * colors to be used for each section).
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setSectionPaint(Paint paint) {
 		this.sectionPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint for the specified section.
 	 * 
 	 * @param section
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @return the paint (never <code>null</code>).
 	 */
 	public Paint getSectionPaint(int section) {
-
+		
 		// return the override, if there is one...
 		if (this.sectionPaint != null) {
 			return this.sectionPaint;
 		}
-
+		
 		// otherwise look up the paint list
 		Paint result = this.sectionPaintList.getPaint(section);
 		if (result == null) {
@@ -614,23 +614,23 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Sets the paint used to fill a section of the pie and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param section
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setSectionPaint(int section, Paint paint) {
 		this.sectionPaintList.setPaint(section, paint);
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the base section paint. This is used when no other paint is
 	 * available.
@@ -640,12 +640,12 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getBaseSectionPaint() {
 		return this.baseSectionPaint;
 	}
-
+	
 	/**
 	 * Sets the base section paint.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setBaseSectionPaint(Paint paint) {
 		if (paint == null) {
@@ -654,10 +654,10 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.baseSectionPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	// // SECTION OUTLINE PAINT
 	// ////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the outline paint for ALL sections in the plot.
 	 * 
@@ -666,57 +666,57 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getSectionOutlinePaint() {
 		return this.sectionOutlinePaint;
 	}
-
+	
 	/**
 	 * Sets the outline paint for ALL sections in the plot. If this is set to
 	 * </code>null</code>, then a list of paints is used instead (to allow different
 	 * colors to be used for each section).
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setSectionOutlinePaint(Paint paint) {
 		this.sectionOutlinePaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint for the specified section.
 	 * 
 	 * @param section
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @return the paint (never <code>null</code>).
 	 */
 	public Paint getSectionOutlinePaint(int section) {
-
+		
 		// return the override, if there is one...
 		if (this.sectionOutlinePaint != null) {
 			return this.sectionOutlinePaint;
 		}
-
+		
 		// otherwise look up the paint list
 		Paint result = this.sectionOutlinePaintList.getPaint(section);
 		if (result == null) {
 			result = this.baseSectionOutlinePaint;
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Sets the paint used to fill a section of the pie and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param section
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setSectionOutlinePaint(int section, Paint paint) {
 		this.sectionOutlinePaintList.setPaint(section, paint);
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the base section paint. This is used when no other paint is
 	 * available.
@@ -726,12 +726,12 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getBaseSectionOutlinePaint() {
 		return this.baseSectionOutlinePaint;
 	}
-
+	
 	/**
 	 * Sets the base section paint.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setBaseSectionOutlinePaint(Paint paint) {
 		if (paint == null) {
@@ -740,10 +740,10 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.baseSectionOutlinePaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	// // SECTION OUTLINE STROKE
 	// ///////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the outline stroke for ALL sections in the plot.
 	 * 
@@ -752,57 +752,57 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Stroke getSectionOutlineStroke() {
 		return this.sectionOutlineStroke;
 	}
-
+	
 	/**
 	 * Sets the outline stroke for ALL sections in the plot. If this is set to
 	 * </code>null</code>, then a list of paints is used instead (to allow different
 	 * colors to be used for each section).
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setSectionOutlineStroke(Stroke stroke) {
 		this.sectionOutlineStroke = stroke;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the stroke for the specified section.
 	 * 
 	 * @param section
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @return the stroke (never <code>null</code>).
 	 */
 	public Stroke getSectionOutlineStroke(int section) {
-
+		
 		// return the override, if there is one...
 		if (this.sectionOutlineStroke != null) {
 			return this.sectionOutlineStroke;
 		}
-
+		
 		// otherwise look up the paint list
 		Stroke result = this.sectionOutlineStrokeList.getStroke(section);
 		if (result == null) {
 			result = this.baseSectionOutlineStroke;
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Sets the stroke used to fill a section of the pie and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param section
-	 *            the section index (zero-based).
+	 *           the section index (zero-based).
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setSectionOutlineStroke(int section, Stroke stroke) {
 		this.sectionOutlineStrokeList.setStroke(section, stroke);
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the base section stroke. This is used when no other stroke is
 	 * available.
@@ -812,12 +812,12 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Stroke getBaseSectionOutlineStroke() {
 		return this.baseSectionOutlineStroke;
 	}
-
+	
 	/**
 	 * Sets the base section stroke.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> not permitted).
+	 *           the stroke (<code>null</code> not permitted).
 	 */
 	public void setBaseSectionOutlineStroke(Stroke stroke) {
 		if (stroke == null) {
@@ -826,7 +826,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.baseSectionOutlineStroke = stroke;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the shadow paint.
 	 * 
@@ -835,19 +835,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getShadowPaint() {
 		return this.shadowPaint;
 	}
-
+	
 	/**
 	 * Sets the shadow paint and sends a {@link PlotChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setShadowPaint(Paint paint) {
 		this.shadowPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the x-offset for the shadow effect.
 	 * 
@@ -856,19 +856,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public double getShadowXOffset() {
 		return this.shadowXOffset;
 	}
-
+	
 	/**
 	 * Sets the x-offset for the shadow effect and sends a {@link PlotChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param offset
-	 *            the offset (in Java2D units).
+	 *           the offset (in Java2D units).
 	 */
 	public void setShadowXOffset(double offset) {
 		this.shadowXOffset = offset;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the y-offset for the shadow effect.
 	 * 
@@ -877,24 +877,24 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public double getShadowYOffset() {
 		return this.shadowYOffset;
 	}
-
+	
 	/**
 	 * Sets the y-offset for the shadow effect and sends a {@link PlotChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param offset
-	 *            the offset (in Java2D units).
+	 *           the offset (in Java2D units).
 	 */
 	public void setShadowYOffset(double offset) {
 		this.shadowYOffset = offset;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the amount that a section should be 'exploded'.
 	 * 
 	 * @param section
-	 *            the section number.
+	 *           the section number.
 	 * @return the amount that a section should be 'exploded'.
 	 */
 	public double getExplodePercent(int section) {
@@ -907,15 +907,15 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Sets the amount that a pie section should be exploded and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param section
-	 *            the section index.
+	 *           the section index.
 	 * @param percent
-	 *            the explode percentage (0.30 = 30 percent).
+	 *           the explode percentage (0.30 = 30 percent).
 	 */
 	public void setExplodePercent(int section, double percent) {
 		if (this.explodePercentages == null) {
@@ -924,7 +924,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.explodePercentages.set(section, Double.valueOf(percent));
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the maximum explode percent.
 	 * 
@@ -940,7 +940,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the section label generator.
 	 * 
@@ -949,19 +949,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public PieSectionLabelGenerator getLabelGenerator() {
 		return this.labelGenerator;
 	}
-
+	
 	/**
 	 * Sets the section label generator and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setLabelGenerator(PieSectionLabelGenerator generator) {
 		this.labelGenerator = generator;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the gap between the edge of the pie and the labels, expressed as a
 	 * percentage of the plot width.
@@ -971,20 +971,20 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public double getLabelGap() {
 		return this.labelGap;
 	}
-
+	
 	/**
 	 * Sets the gap between the edge of the pie and the labels (expressed as a
 	 * percentage of the plot width) and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param gap
-	 *            the gap (a percentage, where 0.05 = five percent).
+	 *           the gap (a percentage, where 0.05 = five percent).
 	 */
 	public void setLabelGap(double gap) {
 		this.labelGap = gap;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the maximum label width as a percentage of the plot width.
 	 * 
@@ -993,19 +993,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public double getMaximumLabelWidth() {
 		return this.maximumLabelWidth;
 	}
-
+	
 	/**
 	 * Sets the maximum label width as a percentage of the plot width and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param width
-	 *            the width (a percentage, where 0.20 = 20 percent).
+	 *           the width (a percentage, where 0.20 = 20 percent).
 	 */
 	public void setMaximumLabelWidth(double width) {
 		this.maximumLabelWidth = width;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the margin (expressed as a percentage of the width or height) between
 	 * the edge of the pie and the link point.
@@ -1015,19 +1015,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public double getLabelLinkMargin() {
 		return this.labelLinkMargin;
 	}
-
+	
 	/**
 	 * Sets the link margin and sends a {@link PlotChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param margin
-	 *            the margin.
+	 *           the margin.
 	 */
 	public void setLabelLinkMargin(double margin) {
 		this.labelLinkMargin = margin;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint used for the lines that connect pie sections to their
 	 * corresponding labels.
@@ -1037,14 +1037,14 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getLabelLinkPaint() {
 		return this.labelLinkPaint;
 	}
-
+	
 	/**
 	 * Sets the paint used for the lines that connect pie sections to their
 	 * corresponding labels, and sends a {@link PlotChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setLabelLinkPaint(Paint paint) {
 		if (paint == null) {
@@ -1053,7 +1053,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.labelLinkPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the stroke used for the label linking lines.
 	 * 
@@ -1062,13 +1062,13 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Stroke getLabelLinkStroke() {
 		return this.labelLinkStroke;
 	}
-
+	
 	/**
 	 * Sets the link stroke and sends a {@link PlotChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param stroke
-	 *            the stroke.
+	 *           the stroke.
 	 */
 	public void setLabelLinkStroke(Stroke stroke) {
 		if (stroke == null) {
@@ -1077,7 +1077,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.labelLinkStroke = stroke;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the section label font.
 	 * 
@@ -1086,13 +1086,13 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Font getLabelFont() {
 		return this.labelFont;
 	}
-
+	
 	/**
 	 * Sets the section label font and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param font
-	 *            the font (<code>null</code> not permitted).
+	 *           the font (<code>null</code> not permitted).
 	 */
 	public void setLabelFont(Font font) {
 		if (font == null) {
@@ -1101,7 +1101,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.labelFont = font;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the section label paint.
 	 * 
@@ -1110,13 +1110,13 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getLabelPaint() {
 		return this.labelPaint;
 	}
-
+	
 	/**
 	 * Sets the section label paint and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setLabelPaint(Paint paint) {
 		if (paint == null) {
@@ -1125,7 +1125,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.labelPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the section label background paint.
 	 * 
@@ -1134,19 +1134,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getLabelBackgroundPaint() {
 		return this.labelBackgroundPaint;
 	}
-
+	
 	/**
 	 * Sets the section label background paint and sends a {@link PlotChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setLabelBackgroundPaint(Paint paint) {
 		this.labelBackgroundPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the section label outline paint.
 	 * 
@@ -1155,19 +1155,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getLabelOutlinePaint() {
 		return this.labelOutlinePaint;
 	}
-
+	
 	/**
 	 * Sets the section label outline paint and sends a {@link PlotChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setLabelOutlinePaint(Paint paint) {
 		this.labelOutlinePaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the section label outline stroke.
 	 * 
@@ -1176,19 +1176,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Stroke getLabelOutlineStroke() {
 		return this.labelOutlineStroke;
 	}
-
+	
 	/**
 	 * Sets the section label outline stroke and sends a {@link PlotChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setLabelOutlineStroke(Stroke stroke) {
 		this.labelOutlineStroke = stroke;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the section label shadow paint.
 	 * 
@@ -1197,19 +1197,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public Paint getLabelShadowPaint() {
 		return this.labelShadowPaint;
 	}
-
+	
 	/**
 	 * Sets the section label shadow paint and sends a {@link PlotChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setLabelShadowPaint(Paint paint) {
 		this.labelShadowPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the tool tip generator, an object that is responsible for generating
 	 * the text items used for tool tips by the plot. If the generator is
@@ -1220,20 +1220,20 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public PieToolTipGenerator getToolTipGenerator() {
 		return this.toolTipGenerator;
 	}
-
+	
 	/**
 	 * Sets the tool tip generator and sends a {@link PlotChangeEvent} to all
 	 * registered listeners. Set the generator to <code>null</code> if you don't
 	 * want any tool tips.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setToolTipGenerator(PieToolTipGenerator generator) {
 		this.toolTipGenerator = generator;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the URL generator.
 	 * 
@@ -1242,19 +1242,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public PieURLGenerator getURLGenerator() {
 		return this.urlGenerator;
 	}
-
+	
 	/**
 	 * Sets the URL generator and sends a {@link PlotChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param generator
-	 *            the generator (<code>null</code> permitted).
+	 *           the generator (<code>null</code> permitted).
 	 */
 	public void setURLGenerator(PieURLGenerator generator) {
 		this.urlGenerator = generator;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the minimum arc angle that will be drawn. Pie sections for an angle
 	 * smaller than this are not drawn, to avoid a JDK bug.
@@ -1264,7 +1264,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public double getMinimumArcAngleToDraw() {
 		return this.minimumArcAngleToDraw;
 	}
-
+	
 	/**
 	 * Sets the minimum arc angle that will be drawn. Pie sections for an angle
 	 * smaller than this are not drawn, to avoid a JDK bug. See this link for
@@ -1273,12 +1273,12 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	 * http://developer.java.sun.com/developer/bugParade/bugs/4836495.html
 	 * 
 	 * @param angle
-	 *            the minimum angle.
+	 *           the minimum angle.
 	 */
 	public void setMinimumArcAngleToDraw(double angle) {
 		this.minimumArcAngleToDraw = angle;
 	}
-
+	
 	/**
 	 * Returns the flag that controls whether <code>null</code> values in the
 	 * dataset are ignored.
@@ -1288,68 +1288,68 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public boolean getIgnoreNullValues() {
 		return this.ignoreNullValues;
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether <code>null</code> values are ignored, and
 	 * sends a {@link PlotChangeEvent} to all registered listeners. At present, this
 	 * only affects whether or not the key is presented in the legend.
 	 * 
 	 * @param flag
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setIgnoreNullValues(boolean flag) {
 		this.ignoreNullValues = flag;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Initialises the drawing procedure. This method will be called before the
 	 * first item is rendered, giving the plot an opportunity to initialise any
 	 * state information it wants to maintain.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area (<code>null</code> not permitted).
+	 *           the plot area (<code>null</code> not permitted).
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param index
-	 *            the secondary index (<code>null</code> for primary renderer).
+	 *           the secondary index (<code>null</code> for primary renderer).
 	 * @param info
-	 *            collects chart rendering information for return to caller.
+	 *           collects chart rendering information for return to caller.
 	 * @return A state object (maintains state information relevant to one chart
 	 *         drawing).
 	 */
 	public PiePlotState initialise(Graphics2D g2, Rectangle2D plotArea, PiePlot plot, Integer index,
 			PlotRenderingInfo info) {
-
+		
 		PiePlotState state = new PiePlotState(info);
 		state.setPassesRequired(2);
 		state.setTotal(DatasetUtilities.calculatePieDatasetTotal(plot.getDataset()));
 		state.setLatestAngle(plot.getStartAngle());
 		return state;
-
+		
 	}
-
+	
 	/**
 	 * Draws the plot on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the area within which the plot should be drawn.
+	 *           the area within which the plot should be drawn.
 	 * @param parentState
-	 *            the state from the parent plot, if there is one.
+	 *           the state from the parent plot, if there is one.
 	 * @param info
-	 *            collects info about the drawing (<code>null</code> permitted).
+	 *           collects info about the drawing (<code>null</code> permitted).
 	 */
 	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState, PlotRenderingInfo info) {
-
+		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Entering draw() method, plot area = " + plotArea.toString());
 		}
-
+		
 		// adjust for insets...
 		Insets insets = getInsets();
 		if (insets != null) {
@@ -1357,48 +1357,48 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 					plotArea.getWidth() - insets.left - insets.right,
 					plotArea.getHeight() - insets.top - insets.bottom);
 		}
-
+		
 		if (info != null) {
 			info.setPlotArea(plotArea);
 			info.setDataArea(plotArea);
 		}
-
+		
 		drawBackground(g2, plotArea);
 		drawOutline(g2, plotArea);
-
+		
 		Shape savedClip = g2.getClip();
 		g2.clip(plotArea);
-
+		
 		Composite originalComposite = g2.getComposite();
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getForegroundAlpha()));
-
+		
 		if (!DatasetUtilities.isEmptyOrNull(this.dataset)) {
 			drawPie(g2, plotArea, info);
 		} else {
 			drawNoDataMessage(g2, plotArea);
 		}
-
+		
 		g2.setClip(savedClip);
 		g2.setComposite(originalComposite);
-
+		
 		drawOutline(g2, plotArea);
-
+		
 	}
-
+	
 	/**
 	 * Draws the pie.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param info
-	 *            chart rendering info.
+	 *           chart rendering info.
 	 */
 	protected void drawPie(Graphics2D g2, Rectangle2D plotArea, PlotRenderingInfo info) {
-
+		
 		PiePlotState state = initialise(g2, plotArea, this, null, info);
-
+		
 		// adjust the plot area for interior spacing and labels...
 		double labelWidth = 0.0;
 		if (this.labelGenerator != null) {
@@ -1406,12 +1406,12 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		}
 		double gapHorizontal = plotArea.getWidth() * (this.interiorGap + labelWidth);
 		double gapVertical = plotArea.getHeight() * this.interiorGap;
-
+		
 		double linkX = plotArea.getX() + gapHorizontal / 2;
 		double linkY = plotArea.getY() + gapVertical / 2;
 		double linkW = plotArea.getWidth() - gapHorizontal;
 		double linkH = plotArea.getHeight() - gapVertical;
-
+		
 		// make the link area a square if the pie chart is to be circular...
 		if (this.circular) {
 			double min = Math.min(linkW, linkH) / 2;
@@ -1420,30 +1420,30 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			linkW = 2 * min;
 			linkH = 2 * min;
 		}
-
+		
 		// the link area defines the dog leg points for the linking lines to the labels
 		Rectangle2D linkArea = new Rectangle2D.Double(linkX, linkY, linkW, linkH);
 		state.setLinkArea(linkArea);
-
+		
 		// the explode area defines the max circle/ellipse for the exploded pie
 		// sections.
 		// it is defined by shrinking the linkArea by the linkMargin factor.
 		double hh = linkArea.getWidth() * this.labelLinkMargin;
 		double vv = linkArea.getHeight() * this.labelLinkMargin;
 		Rectangle2D explodeArea = new Rectangle2D.Double(linkX + hh / 2.0, linkY + vv / 2.0, linkW - hh, linkH - vv);
-
+		
 		state.setExplodedPieArea(explodeArea);
-
+		
 		// the pie area defines the circle/ellipse for regular pie sections.
 		// it is defined by shrinking the explodeArea by the explodeMargin factor.
 		double maximumExplodePercent = getMaximumExplodePercent();
 		double percent = maximumExplodePercent / (1.0 + maximumExplodePercent);
-
+		
 		double h1 = explodeArea.getWidth() * percent;
 		double v1 = explodeArea.getHeight() * percent;
 		Rectangle2D pieArea = new Rectangle2D.Double(explodeArea.getX() + h1 / 2.0, explodeArea.getY() + v1 / 2.0,
 				explodeArea.getWidth() - h1, explodeArea.getHeight() - v1);
-
+		
 		if (circular) {
 			double min = pieArea.getWidth();
 			if (pieArea.getHeight() < min)
@@ -1452,7 +1452,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			double ycenter = pieArea.getCenterY();
 			pieArea = new Rectangle2D.Double(xcenter - (min / 2), ycenter - (min / 2), min, min);
 		}
-
+		
 		if (circular) {
 			double min = explodeArea.getWidth();
 			if (explodeArea.getHeight() < min)
@@ -1461,19 +1461,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			double ycenter = explodeArea.getCenterY();
 			explodeArea = new Rectangle2D.Double(xcenter - (min / 2), ycenter - (min / 2), min, min);
 		}
-
+		
 		state.setPieArea(pieArea);
 		state.setPieCenterX(pieArea.getCenterX());
 		state.setPieCenterY(pieArea.getCenterY());
 		state.setPieWRadius(pieArea.getWidth() / 2.0);
 		state.setPieHRadius(pieArea.getHeight() / 2.0);
-
+		
 		// plot the data (unless the dataset is null)...
 		if ((this.dataset != null) && (this.dataset.getKeys().size() > 0)) {
-
+			
 			List keys = this.dataset.getKeys();
 			double totalValue = DatasetUtilities.calculatePieDatasetTotal(this.dataset);
-
+			
 			int passesRequired = state.getPassesRequired();
 			for (int pass = 0; pass < passesRequired; pass++) {
 				double runningTotal = 0.0;
@@ -1488,30 +1488,30 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 					}
 				}
 			}
-
+			
 			drawLabels(g2, keys, totalValue, plotArea, linkArea, state);
-
+			
 		} else {
 			drawNoDataMessage(g2, plotArea);
 		}
 	}
-
+	
 	/**
 	 * Draws a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device (<code>null</code> not permitted).
+	 *           the graphics device (<code>null</code> not permitted).
 	 * @param section
-	 *            the section index.
+	 *           the section index.
 	 * @param dataArea
-	 *            the data plot area.
+	 *           the data plot area.
 	 * @param state
-	 *            state information for one chart.
+	 *           state information for one chart.
 	 * @param currentPass
-	 *            the current pass index.
+	 *           the current pass index.
 	 */
 	protected void drawItem(Graphics2D g2, int section, Rectangle2D dataArea, PiePlotState state, int currentPass) {
-
+		
 		Number n = this.dataset.getValue(section);
 		if (n == null) {
 			return;
@@ -1519,7 +1519,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		double value = n.doubleValue();
 		double angle1 = 0.0;
 		double angle2 = 0.0;
-
+		
 		if (this.direction == Rotation.CLOCKWISE) {
 			angle1 = state.getLatestAngle();
 			angle2 = angle1 - value / state.getTotal() * 360.0;
@@ -1529,7 +1529,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		} else {
 			throw new IllegalStateException("Rotation type not recognised.");
 		}
-
+		
 		double angle = (angle2 - angle1);
 		if (Math.abs(angle) > getMinimumArcAngleToDraw()) {
 			double ep = 0.0;
@@ -1539,7 +1539,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			}
 			Rectangle2D arcBounds = getArcBounds(state.getPieArea(), state.getExplodedPieArea(), angle1, angle, ep);
 			Arc2D.Double arc = new Arc2D.Double(arcBounds, angle1, angle, Arc2D.PIE);
-
+			
 			if (currentPass == 0) {
 				if (this.shadowPaint != null) {
 					Shape shadowArc = ShapeUtils.translateShape(arc, (float) this.shadowXOffset,
@@ -1548,11 +1548,11 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 					g2.fill(shadowArc);
 				}
 			} else if (currentPass == 1) {
-
+				
 				Paint paint = getSectionPaint(section);
 				g2.setPaint(paint);
 				g2.fill(arc);
-
+				
 				Paint outlinePaint = getSectionOutlinePaint(section);
 				Stroke outlineStroke = getSectionOutlineStroke(section);
 				if (outlinePaint != null && outlineStroke != null) {
@@ -1560,7 +1560,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 					g2.setStroke(outlineStroke);
 					g2.draw(arc);
 				}
-
+				
 				// update the linking line target for later
 				// add an entity for the pie section
 				if (state.getInfo() != null) {
@@ -1584,33 +1584,33 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		}
 		state.setLatestAngle(angle2);
 	}
-
+	
 	/**
 	 * Draws the labels for the pie sections.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param keys
-	 *            the keys.
+	 *           the keys.
 	 * @param totalValue
-	 *            the total value.
+	 *           the total value.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param linkArea
-	 *            the link area.
+	 *           the link area.
 	 * @param state
-	 *            the state.
+	 *           the state.
 	 */
 	protected void drawLabels(Graphics2D g2, List keys, double totalValue, Rectangle2D plotArea, Rectangle2D linkArea,
 			PiePlotState state) {
-
+		
 		Composite originalComposite = g2.getComposite();
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-
+		
 		// classify the keys according to which side the label will appear...
 		DefaultKeyedValues leftKeys = new DefaultKeyedValues();
 		DefaultKeyedValues rightKeys = new DefaultKeyedValues();
-
+		
 		double runningTotal1 = 0.0;
 		Iterator iterator1 = keys.iterator();
 		while (iterator1.hasNext()) {
@@ -1631,40 +1631,40 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 				}
 			}
 		}
-
+		
 		g2.setFont(getLabelFont());
 		float maxLabelWidth = (float) (getMaximumLabelWidth() * plotArea.getWidth());
-
+		
 		// draw the left labels...
 		if (this.labelGenerator != null) {
-
+			
 			drawLeftLabels(leftKeys, g2, plotArea, linkArea, maxLabelWidth, state);
 			drawRightLabels(rightKeys, g2, plotArea, linkArea, maxLabelWidth, state);
-
+			
 		}
 		g2.setComposite(originalComposite);
-
+		
 	}
-
+	
 	/**
 	 * Draws the left labels.
 	 * 
 	 * @param leftKeys
-	 *            the keys.
+	 *           the keys.
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param linkArea
-	 *            the link area.
+	 *           the link area.
 	 * @param maxLabelWidth
-	 *            the maximum label width.
+	 *           the maximum label width.
 	 * @param state
-	 *            the state.
+	 *           the state.
 	 */
 	protected void drawLeftLabels(KeyedValues leftKeys, Graphics2D g2, Rectangle2D plotArea, Rectangle2D linkArea,
 			float maxLabelWidth, PiePlotState state) {
-
+		
 		PieLabelDistributor distributor1 = new PieLabelDistributor(leftKeys.getItemCount());
 		double lGap = plotArea.getWidth() * this.labelGap;
 		double verticalLinkRadius = state.getLinkArea().getHeight() / 2.0;
@@ -1684,7 +1684,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Label height = " + hh);
 				}
-
+				
 				distributor1.addPieLabelRecord(new PieLabelRecord(leftKeys.getKey(i), theta, baseY, labelBox, hh,
 						lGap / 2.0 + lGap / 2.0 * -Math.cos(theta),
 						0.9 + getExplodePercent(this.dataset.getIndex(leftKeys.getKey(i)))));
@@ -1695,34 +1695,34 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			drawLeftLabel(g2, state, distributor1.getPieLabelRecord(i));
 		}
 	}
-
+	
 	/**
 	 * Draws the right labels.
 	 * 
 	 * @param keys
-	 *            the keys.
+	 *           the keys.
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param linkArea
-	 *            the link area.
+	 *           the link area.
 	 * @param maxLabelWidth
-	 *            the maximum label width.
+	 *           the maximum label width.
 	 * @param state
-	 *            the state.
+	 *           the state.
 	 */
 	protected void drawRightLabels(KeyedValues keys, Graphics2D g2, Rectangle2D plotArea, Rectangle2D linkArea,
 			float maxLabelWidth, PiePlotState state) {
-
+		
 		// draw the right labels...
 		PieLabelDistributor distributor2 = new PieLabelDistributor(keys.getItemCount());
 		double lGap = plotArea.getWidth() * this.labelGap;
 		double verticalLinkRadius = state.getLinkArea().getHeight() / 2.0;
-
+		
 		for (int i = 0; i < keys.getItemCount(); i++) {
 			String label = this.labelGenerator.generateSectionLabel(this.dataset, keys.getKey(i));
-
+			
 			if (label != null) {
 				TextBlock block = TextUtilities.createTextBlock(label, this.labelFont, this.labelPaint, maxLabelWidth,
 						new G2TextMeasurer(g2));
@@ -1746,18 +1746,18 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		for (int i = 0; i < distributor2.getItemCount(); i++) {
 			drawRightLabel(g2, state, distributor2.getPieLabelRecord(i));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a collection of legend items for the pie chart.
 	 * 
 	 * @return The legend items (never <code>null</code>).
 	 */
 	public LegendItemCollection getLegendItems() {
-
+		
 		LegendItemCollection result = new LegendItemCollection();
-
+		
 		List keys = null;
 		if (this.dataset != null) {
 			keys = this.dataset.getKeys();
@@ -1773,19 +1773,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 					Paint paint = getSectionPaint(section);
 					Paint outlinePaint = getSectionOutlinePaint(section);
 					Stroke stroke = getSectionOutlineStroke(section);
-
+					
 					LegendItem item = new LegendItem(label, description, shape, true, paint, stroke, outlinePaint,
 							stroke);
-
+					
 					result.add(item);
 					section++;
 				}
 			}
 		}
-
+		
 		return result;
 	}
-
+	
 	/**
 	 * Returns a short string describing the type of plot.
 	 * 
@@ -1794,7 +1794,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	public String getPlotType() {
 		return localizationResources.getString("Pie_Plot");
 	}
-
+	
 	/**
 	 * A zoom method that does nothing.
 	 * <p>
@@ -1802,31 +1802,31 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 	 * it doesn't make sense to zoom in or out, so the method is empty.
 	 * 
 	 * @param percent
-	 *            the zoom percentage.
+	 *           the zoom percentage.
 	 */
 	public void zoom(double percent) {
 		// no zooming for pie plots
 	}
-
+	
 	/**
 	 * Returns a rectangle that can be used to create a pie section (taking into
 	 * account the amount by which the pie section is 'exploded').
 	 * 
 	 * @param unexploded
-	 *            the area inside which the unexploded pie sections are drawn.
+	 *           the area inside which the unexploded pie sections are drawn.
 	 * @param exploded
-	 *            the area inside which the exploded pie sections are drawn.
+	 *           the area inside which the exploded pie sections are drawn.
 	 * @param angle
-	 *            the start angle.
+	 *           the start angle.
 	 * @param extent
-	 *            the extent of the arc.
+	 *           the extent of the arc.
 	 * @param explodePercent
-	 *            the amount by which the pie section is exploded.
+	 *           the amount by which the pie section is exploded.
 	 * @return a rectangle that can be used to create a pie section.
 	 */
 	protected Rectangle2D getArcBounds(Rectangle2D unexploded, Rectangle2D exploded, double angle, double extent,
 			double explodePercent) {
-
+		
 		if (explodePercent == 0.0) {
 			return unexploded;
 		} else {
@@ -1838,19 +1838,19 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			double deltaY = (point1.getY() - point2.getY()) * explodePercent;
 			return new Rectangle2D.Double(unexploded.getX() - deltaX, unexploded.getY() - deltaY, unexploded.getWidth(),
 					unexploded.getHeight());
-
+			
 		}
 	}
-
+	
 	/**
 	 * Draws a section label on the left side of the pie chart.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the state.
+	 *           the state.
 	 * @param record
-	 *            the label record.
+	 *           the label record.
 	 */
 	protected void drawLeftLabel(Graphics2D g2, PiePlotState state, PieLabelRecord record) {
 		double theta = record.getAngle();
@@ -1870,16 +1870,16 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		TextBox tb = record.getLabel();
 		tb.draw(g2, (float) targetX, (float) targetY, RectangleAnchor.RIGHT);
 	}
-
+	
 	/**
 	 * Draws a section label on the right side of the pie chart.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the state.
+	 *           the state.
 	 * @param record
-	 *            the label record.
+	 *           the label record.
 	 */
 	protected void drawRightLabel(Graphics2D g2, PiePlotState state, PieLabelRecord record) {
 		double theta = record.getAngle();
@@ -1899,21 +1899,21 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		TextBox tb = record.getLabel();
 		tb.draw(g2, (float) targetX, (float) targetY, RectangleAnchor.LEFT);
 	}
-
+	
 	/**
 	 * Tests this plot for equality with an arbitrary object. Note that the plot's
 	 * dataset is NOT included in the test for equality.
 	 * 
 	 * @param obj
-	 *            the object to test against (<code>null</code> permitted).
+	 *           the object to test against (<code>null</code> permitted).
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof PiePlot && super.equals(obj)) {
 			PiePlot plot = (PiePlot) obj;
 			boolean b0 = (this.pieIndex == plot.pieIndex);
@@ -1930,21 +1930,21 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			boolean b11 = ObjectUtils.equal(this.sectionOutlineStroke, plot.sectionOutlineStroke);
 			boolean b12 = ObjectUtils.equal(this.sectionOutlineStrokeList, plot.sectionOutlineStrokeList);
 			boolean b13 = ObjectUtils.equal(this.baseSectionOutlineStroke, plot.baseSectionOutlineStroke);
-
+			
 			boolean b14 = ObjectUtils.equal(this.shadowPaint, plot.shadowPaint);
 			boolean b15 = (this.shadowXOffset == plot.shadowXOffset);
 			boolean b16 = (this.shadowYOffset == plot.shadowYOffset);
-
+			
 			boolean b17 = ObjectUtils.equal(this.explodePercentages, plot.explodePercentages);
 			boolean b18 = ObjectUtils.equal(this.labelGenerator, plot.labelGenerator);
 			boolean b19 = ObjectUtils.equal(this.labelFont, plot.labelFont);
 			boolean b20 = ObjectUtils.equal(this.labelPaint, plot.labelPaint);
-
+			
 			boolean b21 = ObjectUtils.equal(this.labelBackgroundPaint, plot.labelBackgroundPaint);
 			boolean b22 = ObjectUtils.equal(this.labelOutlinePaint, plot.labelOutlinePaint);
 			boolean b23 = ObjectUtils.equal(this.labelOutlineStroke, plot.labelOutlineStroke);
 			boolean b24 = ObjectUtils.equal(this.labelShadowPaint, plot.labelShadowPaint);
-
+			
 			boolean b25 = (this.maximumLabelWidth == plot.maximumLabelWidth);
 			boolean b26 = (this.labelGap == plot.labelGap);
 			boolean b27 = (this.labelLinkMargin == plot.labelLinkMargin);
@@ -1953,42 +1953,42 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			boolean b30 = ObjectUtils.equal(this.toolTipGenerator, plot.toolTipGenerator);
 			boolean b31 = ObjectUtils.equal(this.urlGenerator, plot.urlGenerator);
 			boolean b32 = (this.minimumArcAngleToDraw == plot.minimumArcAngleToDraw);
-
+			
 			return b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && b10 && b11 && b12 && b13 && b14 && b15
 					&& b16 && b17 && b18 && b19 && b20 && b21 && b22 && b23 && b24 && b25 && b26 && b27 && b28 && b29
 					&& b30 && b31 && b32;
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the plot.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if some component of the plot does not support cloning.
+	 *            if some component of the plot does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		PiePlot clone = (PiePlot) super.clone();
-
+		
 		if (clone.dataset != null) {
 			clone.dataset.addChangeListener(clone);
 		}
-
+		
 		return clone;
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -2007,16 +2007,16 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		SerialUtilities.writePaint(this.labelLinkPaint, stream);
 		SerialUtilities.writeStroke(this.labelLinkStroke, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -2035,5 +2035,5 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		this.labelLinkPaint = SerialUtilities.readPaint(stream);
 		this.labelLinkStroke = SerialUtilities.readStroke(stream);
 	}
-
+	
 }

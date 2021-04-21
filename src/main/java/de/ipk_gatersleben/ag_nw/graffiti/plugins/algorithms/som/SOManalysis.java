@@ -14,7 +14,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.PajekClusterColor;
 
 public class SOManalysis extends LaunchGui implements Algorithm {
-
+	
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -33,12 +33,12 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 		// res.add(new NoOverlappOfClustersAlgorithm());
 		return res;
 	}
-
+	
 	@Override
 	public boolean closeDialogBeforeExecution(Algorithm algorithm) {
 		return !(algorithm instanceof SOMclusterAnalysis || algorithm instanceof SOMclusterAnalysisDoCluster);
 	}
-
+	
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
@@ -46,12 +46,12 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 		else
 			return null;
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return null;
 	}
-
+	
 	@Override
 	public String getLaunchGuiDescription() {
 		return "With the first command a SOM weight matrix is trained, based on<br>"
@@ -73,17 +73,17 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 				+ "for coloring of different graph element clustes or with the fourth<br>"
 				+ "button for re-layouting the graph.";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
-	}	
-
+	}
+	
 	@Override
 	public boolean isModal() {
 		return false;
 	}
-
+	
 	@Override
 	public ButtonSize getButtonSize() {
 		return ButtonSize.LARGE;

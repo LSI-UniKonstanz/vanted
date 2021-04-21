@@ -38,51 +38,51 @@ import org.graffiti.session.EditorSession;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
-//import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
+// import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 
 public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm implements Algorithm {
-
+	
 	private static boolean onlyCompounds;
 	boolean processLoadedFiles = true;
 	boolean considerCluster = true;
 	boolean multipleClusterTargets = false;
 	boolean processOnlyCompounds = false;
-
+	
 	boolean linkViz = false;
 	private boolean performRecreationOfView = true;
-
+	
 	public String getName() {
 		return "Analyze open network files and auto-create links...";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.window";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.MAPPING));
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "From the current node selection, nodes with the same node labels are searched<br>"
@@ -100,7 +100,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 				+ "under the category Links, new menu items will be included in the context menu,<br>" + "respectively."
 				+ "<br><br>";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -118,7 +118,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 				new BooleanParameter(onlyCompounds, "Consider only Compounds", "<html>"
 						+ "If enabled, only compound nodes (KEGG attribute or label derived) are considered.") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -129,7 +129,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 		linkViz = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		onlyCompounds = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
-
+	
 	public synchronized void execute() {
 		EditorSession thisSession = null;
 		for (EditorSession s : MainFrame.getEditorSessions()) {
@@ -140,11 +140,11 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 		}
 		if (performErrorCheck(thisSession))
 			return;
-
+		
 		TreeMap<SessionLinkInfo, HashSet<Node>> linkSessions = new TreeMap<SessionLinkInfo, HashSet<Node>>();
 		HashMap<SessionLinkInfo, HashSet<String>> linkSessionsAndClusters = new HashMap<SessionLinkInfo, HashSet<String>>();
 		HashSet<SessionLinkInfo> invalidUnsavedSessions = new HashSet<SessionLinkInfo>();
-
+		
 		if (processLoadedFiles) {
 			ArrayList<SessionLinkInfo> sessions = new ArrayList<SessionLinkInfo>();
 			for (EditorSession s : MainFrame.getEditorSessions()) {
@@ -163,20 +163,20 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 				File file : fileList) {
 					try {
 						// Graph g = MainFrame.getInstance().getGraph(file);
-
+						
 					} catch (Exception e) {
 						ErrorMsg.addErrorMessage(e);
 					}
 				}
 			}
 		}
-
+		
 		String workSessionFilePath = thisSession.getWorkSessionFilePath();
-
+		
 		createLinks(linkViz, performRecreationOfView, graph, multipleClusterTargets, considerCluster, linkSessions,
 				linkSessionsAndClusters, invalidUnsavedSessions, workSessionFilePath);
 	}
-
+	
 	// public void connectSessionsToSessions(Collection<EditorSession> sessions,
 	// String workSessionFilePath) {
 	//
@@ -198,11 +198,11 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 	// createLinks(true, false, linkSessions, linkSessionsAndClusters,
 	// invalidUnsavedSessions, workSessionFilePath);
 	// }
-
+	
 	public void connectGraphToGraphs(Collection<Graph> graphs, String workSessionFilePath, boolean linkviz) {
-
+		
 		HashSet<SessionLinkInfo> invalidUnsavedSessions = new HashSet<SessionLinkInfo>();
-
+		
 		Collection<SessionLinkInfo> workSessions = new ArrayList<SessionLinkInfo>();
 		for (Graph g : graphs) {
 			try {
@@ -220,7 +220,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 					workSessionFilePath);
 		}
 	}
-
+	
 	private static void createLinks(boolean linkViz, boolean performRecreationOfView, Graph graph,
 			boolean multipleClusterTargets, boolean considerClusters,
 			TreeMap<SessionLinkInfo, HashSet<Node>> linkSessions,
@@ -264,7 +264,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 			// Get File Group Information from KEGG (for KEGG Pathways)
 			// Indicate Group Information:
 			// ignore / add in parenthesis / don't include in label (remove)
-
+			
 			createMapLinkNodes(graph, multipleClusterTargets, considerClusters, workSessionFilePath, linkSessions,
 					linkSessionsAndClusters);
 		}
@@ -272,7 +272,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 			showUnsavedGraphsWarningMessage(invalidUnsavedSessions);
 		}
 	}
-
+	
 	private boolean performErrorCheck(EditorSession thisSession) {
 		if (thisSession == null) {
 			MainFrame.showMessageDialog("Internal error: Work-Graph-Session could not be found!", "Error");
@@ -290,7 +290,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 		}
 		return false;
 	}
-
+	
 	private static void showUnsavedGraphsWarningMessage(HashSet<SessionLinkInfo> invalidUnsavedSessions) {
 		StringBuilder sessions = new StringBuilder();
 		for (SessionLinkInfo s : invalidUnsavedSessions) {
@@ -302,7 +302,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 								+ "not saved to disk:<ul>" + sessions.toString() + "</ul>",
 						"Invalid link targets found");
 	}
-
+	
 	private static void createMapLinkNodes(Graph graph, boolean multipleClusterTargets, boolean considerCluster,
 			String workSessionFilePath, TreeMap<SessionLinkInfo, HashSet<Node>> linkSessions,
 			HashMap<SessionLinkInfo, HashSet<String>> linkSessionsAndClusters) {
@@ -341,7 +341,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 			graph.getListenerManager().transactionFinished(graph);
 		}
 	}
-
+	
 	private static TargetYandNewNodeResult addMapLinkNodeInternal(Graph graph, boolean considerCluster,
 			boolean multipleClusterTargets, TreeMap<SessionLinkInfo, HashSet<Node>> linkSessions, int linkNodeWidth,
 			int offY, double targetY, SessionLinkInfo ls, String validCluster, String targetLink, double targetX) {
@@ -365,11 +365,11 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 		}
 		return new TargetYandNewNodeResult(targetY, linkNode);
 	}
-
+	
 	private static String getTargetLink(String workSessionFilePath, SessionLinkInfo es) {
 		return es.graph.getName(false);
 	}
-
+	
 	private static void processLoadedFiles(Graph g, boolean considerCluster,
 			TreeMap<SessionLinkInfo, HashSet<Node>> linkSessions,
 			HashMap<SessionLinkInfo, HashSet<String>> linkSessionsAndClusters,
@@ -378,15 +378,15 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 		// System.out.println("Graph "+graph.getName(true)+"
 		// ("+graph.getNumberOfNodes()+" nodes)");
 		for (SessionLinkInfo infoAboutOtherSession : allSessions) {
-
+			
 			if (infoAboutOtherSession.getGraph() == g)
 				continue;
-
+			
 			for (Node n : workingset) {
 				String lbl = AttributeHelper.getLabel(n, null);
 				if (lbl == null || lbl.length() == 0)
 					continue;
-
+				
 				String tn = KeggGmlHelper.getKeggType(n);
 				if (tn != null && tn.equals("map"))
 					continue;
@@ -433,7 +433,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 					if (!linkSessions.containsKey(sli))
 						linkSessions.put(sli, new HashSet<Node>());
 					linkSessions.get(sli).add(n);
-
+					
 					if (!linkSessionsAndClusters.containsKey(sli))
 						linkSessionsAndClusters.put(sli, new HashSet<String>());
 					linkSessionsAndClusters.get(sli).add(cluster);
@@ -441,11 +441,11 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 			}
 		}
 	}
-
+	
 	private static int pretifyLinkNode(String title, Node linkNode, int linkNodeWidth, GroupLinkProcessingMode glpm) {
 		if (title.indexOf(".") > 0)
 			title = title.substring(0, title.lastIndexOf("."));
-
+		
 		if (glpm == GroupLinkProcessingMode.ADD_PARENTHESIS) {
 			if (title.indexOf(".") > 0) {
 				String group = title.substring(0, title.indexOf("."));
@@ -458,7 +458,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 				title = title.substring(title.lastIndexOf(".") + ".".length());
 			}
 		}
-
+		
 		title = title.replaceAll("%20", " ");
 		AttributeHelper.setLabel(linkNode, title);
 		AttributeHelper.setRoundedEdges(linkNode, 25);
@@ -470,14 +470,14 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 		AttributeHelper.setPosition(linkNode, AttributeHelper.getPositionX(linkNode) + (w - linkNodeWidth) / 2,
 				AttributeHelper.getPositionY(linkNode));
 		AttributeHelper.setSize(linkNode, w, linkNodeHeight);
-
+		
 		// AttributeHelper.setDashInfo(linkNode, 5, 5);
 		// AttributeHelper.setFillColor(linkNode, new Color(225,225,255));
 		// AttributeHelper.setLabelColor(linkNode, Color.DARK_GRAY);
-
+		
 		return linkNodeHeight;
 	}
-
+	
 	public static Node addMapLinkNode(String fileName, Graph graph, Node initNode, ActionEvent ae,
 			boolean searchExistingMapLinkNode, boolean searchAndLinkSimilarNodes, boolean searchAndLinkSameTarget) {
 		HashSet<Node> sourceNodes = new HashSet<Node>();
@@ -523,7 +523,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 			linkNode = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(targetX, targetY));
 			int linkNodeWidth = 70;
 			pretifyLinkNode(fileName, linkNode, linkNodeWidth, GroupLinkProcessingMode.ADD_PARENTHESIS);
-
+			
 			AttributeHelper.setPathwayReference(linkNode, fileName);
 		}
 		for (Node n : sourceNodes) {
@@ -535,7 +535,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 		}
 		return linkNode;
 	}
-
+	
 	public void setPerformRecreationOfView(boolean performRecreationOfView) {
 		this.performRecreationOfView = performRecreationOfView;
 	}

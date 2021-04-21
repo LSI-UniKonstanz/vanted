@@ -38,7 +38,7 @@ import java.util.ListResourceBundle;
  * @author Thomas Meier
  */
 public class DataPackageResources_de extends ListResourceBundle {
-
+	
 	/**
 	 * Returns the array of strings in the resource bundle.
 	 * 
@@ -47,12 +47,12 @@ public class DataPackageResources_de extends ListResourceBundle {
 	public Object[][] getContents() {
 		return CONTENTS;
 	}
-
+	
 	/** The resources to be localised. */
 	private static final Object[][] CONTENTS = {
-
+			
 			{ "series.default-prefix", "Reihen" }, { "categories.default-prefix", "Kategorien" },
-
+	
 	};
-
+	
 }

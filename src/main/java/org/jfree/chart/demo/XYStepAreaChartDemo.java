@@ -61,13 +61,13 @@ import org.jfree.ui.RefineryUtilities;
  * @author Matthias Rose
  */
 public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListener {
-
+	
 	/** Vertical orientation. */
 	private static final String ORIENT_VERT = "Plot vertical";
-
+	
 	/** Horizontal orientation. */
 	private static final String ORIENT_HORIZ = "Plot horizontal";
-
+	
 	/** Problem data. */
 	private static final Object[][] TEST_DATA = {
 			// domain values, range values, may be null?
@@ -77,85 +77,85 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 			{ Integer.valueOf(7), Integer.valueOf(550), Boolean.TRUE }, { Integer.valueOf(8), Integer.valueOf(-150), Boolean.TRUE },
 			{ Integer.valueOf(9), Integer.valueOf(232) }, { Integer.valueOf(10), Integer.valueOf(734) },
 			{ Integer.valueOf(11), Integer.valueOf(400), Boolean.TRUE }, };
-
+	
 	/** The chart panel. */
 	private ChartPanel chartPanel;
-
+	
 	/** The data series. */
 	private XYSeries xySeries;
-
+	
 	/** The null values checkbox. */
 	private JCheckBox nullValuesCheckBox;
-
+	
 	/** The outline checkbox. */
 	private JCheckBox outlineCheckBox;
-
+	
 	/** The range base text field. */
 	private JTextField rangeBaseTextField;
-
+	
 	/** The orientation combobox. */
 	private JComboBox orientationComboBox;
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYStepAreaChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		this.xySeries = new XYSeries("Some data");
 		for (int i = 0; i < TEST_DATA.length; i++) {
 			this.xySeries.add((Integer) TEST_DATA[i][0], (Integer) TEST_DATA[i][1]);
 		}
-
+		
 		final XYSeriesCollection dataset = new XYSeriesCollection(this.xySeries);
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		this.chartPanel = new ChartPanel(chart);
-
+		
 		// allow zooming
 		this.chartPanel.setHorizontalZoom(true);
 		this.chartPanel.setVerticalZoom(true);
-
+		
 		// size
 		this.chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-
+		
 		// make stroke more striking
 		final Plot plot = this.chartPanel.getChart().getPlot();
 		plot.setOutlineStroke(new BasicStroke(2));
 		plot.setOutlinePaint(Color.magenta);
-
+		
 		// add some components to make options changable
 		final JPanel main = new JPanel(new BorderLayout());
 		final JPanel optionsPanel = new JPanel();
-
+		
 		final String[] options = { ORIENT_VERT, ORIENT_HORIZ };
 		this.orientationComboBox = new JComboBox(options);
 		this.orientationComboBox.addActionListener(this);
 		optionsPanel.add(this.orientationComboBox);
-
+		
 		this.outlineCheckBox = new JCheckBox("Outline");
 		this.outlineCheckBox.addActionListener(this);
 		optionsPanel.add(this.outlineCheckBox);
-
+		
 		optionsPanel.add(new JLabel("Base"));
 		this.rangeBaseTextField = new JTextField("0", 5);
 		this.rangeBaseTextField.addActionListener(this);
 		optionsPanel.add(this.rangeBaseTextField);
-
+		
 		this.nullValuesCheckBox = new JCheckBox("NULL values");
 		this.nullValuesCheckBox.addActionListener(this);
 		optionsPanel.add(this.nullValuesCheckBox);
-
+		
 		main.add(optionsPanel, BorderLayout.SOUTH);
 		main.add(this.chartPanel);
 		setContentPane(main);
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -166,45 +166,45 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createXYStepAreaChart("XY Step Area Chart Demo", "Domain (X)",
 				"Range (Y)", dataset, PlotOrientation.VERTICAL, true, // legend
 				true, // tool tips
 				false // URLs
 		);
-
+		
 		// color
 		final XYPlot plot = chart.getXYPlot();
 		plot.getRenderer().setSeriesPaint(0, Color.green);
-
+		
 		// fill shapes
 		final XYStepAreaRenderer rend = (XYStepAreaRenderer) plot.getRenderer();
 		rend.setShapesFilled(true);
-
+		
 		return chart;
 	}
-
+	
 	/**
 	 * Change options according to settings.
 	 * 
 	 * @param evt
-	 *            the event.
+	 *           the event.
 	 */
 	public void actionPerformed(final ActionEvent evt) {
-
+		
 		final Object source = evt.getSource();
-
+		
 		if (source == this.nullValuesCheckBox) {
-
+			
 			final boolean withNulls = this.nullValuesCheckBox.isSelected();
 			for (int i = 0; i < TEST_DATA.length; i++) {
 				Integer yVal = (Integer) TEST_DATA[i][1];
@@ -213,21 +213,21 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 				}
 				this.xySeries.getDataItem(i).setY(yVal);
 			}
-
+			
 		} else if (source == this.outlineCheckBox) {
-
+			
 			final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
 			((XYStepAreaRenderer) plot.getRenderer()).setOutline(this.outlineCheckBox.isSelected());
-
+			
 		} else if (source == this.rangeBaseTextField) {
-
+			
 			final double val = Double.parseDouble(this.rangeBaseTextField.getText());
 			final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
 			final XYStepAreaRenderer rend = (XYStepAreaRenderer) plot.getRenderer();
 			rend.setRangeBase(val);
-
+			
 		} else if (source == this.orientationComboBox) {
-
+			
 			final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
 			if (this.orientationComboBox.getSelectedItem() == ORIENT_HORIZ) {
 				plot.setOrientation(PlotOrientation.HORIZONTAL);
@@ -235,15 +235,15 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 				plot.setOrientation(PlotOrientation.VERTICAL);
 			}
 		}
-
+		
 		this.chartPanel.repaint();
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final XYStepAreaChartDemo demo = new XYStepAreaChartDemo("Step Area XY Chart Demo");

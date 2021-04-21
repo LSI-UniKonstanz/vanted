@@ -45,13 +45,13 @@ import java.util.List;
  * A utility class that provides some simple statistical functions.
  */
 public abstract class Statistics {
-
+	
 	/**
 	 * Returns the mean of an array of numbers.
 	 * 
 	 * @param values
-	 *            the values (<code>null</code> permitted, returns
-	 *            <code>Double.NaN</code>).
+	 *           the values (<code>null</code> permitted, returns
+	 *           <code>Double.NaN</code>).
 	 * @return The mean.
 	 */
 	public static double calculateMean(final Number[] values) {
@@ -66,17 +66,17 @@ public abstract class Statistics {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the mean of a collection of <code>Number</code> objects.
 	 * 
 	 * @param values
-	 *            the values (<code>null</code> permitted, returns
-	 *            <code>Double.NaN</code>).
+	 *           the values (<code>null</code> permitted, returns
+	 *           <code>Double.NaN</code>).
 	 * @return The mean.
 	 */
 	public static double calculateMean(final Collection values) {
-
+		
 		double result = Double.NaN;
 		int count = 0;
 		double total = 0.0;
@@ -93,34 +93,34 @@ public abstract class Statistics {
 			result = total / count;
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Calculates the median for a list of values (<code>Number</code> objects). The
 	 * list of values will be sorted first.
 	 * 
 	 * @param values
-	 *            the values.
+	 *           the values.
 	 * @return The median.
 	 */
 	public static double calculateMedian(final List values) {
 		return calculateMedian(values, true);
 	}
-
+	
 	/**
 	 * Calculates the median for a list of values (<code>Number</code> objects) that
 	 * are assumed to be in ascending order.
 	 * 
 	 * @param values
-	 *            the values.
+	 *           the values.
 	 * @param copyAndSort
-	 *            a flag that controls whether the list of values is copied and
-	 *            sorted.
+	 *           a flag that controls whether the list of values is copied and
+	 *           sorted.
 	 * @return The median.
 	 */
 	public static double calculateMedian(List values, boolean copyAndSort) {
-
+		
 		double result = Double.NaN;
 		if (values != null) {
 			if (copyAndSort) {
@@ -151,41 +151,41 @@ public abstract class Statistics {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Calculates the median for a sublist within a list of values
 	 * (<code>Number</code> objects).
 	 * 
 	 * @param values
-	 *            the values (in any order).
+	 *           the values (in any order).
 	 * @param start
-	 *            the start index.
+	 *           the start index.
 	 * @param end
-	 *            the end index.
+	 *           the end index.
 	 * @return The median.
 	 */
 	public static double calculateMedian(final List values, final int start, final int end) {
 		return calculateMedian(values, start, end, true);
 	}
-
+	
 	/**
 	 * Calculates the median for a sublist within a list of values
 	 * (<code>Number</code> objects). The entire list will be sorted if the
 	 * <code>ascending</code< argument is <code>false</code>.
 	 * 
 	 * @param values
-	 *            the values.
+	 *           the values.
 	 * @param start
-	 *            the start index.
+	 *           the start index.
 	 * @param end
-	 *            the end index.
+	 *           the end index.
 	 * @param copyAndSort
-	 *            a flag that that controls whether the list of values is copied and
-	 *            sorted.
+	 *           a flag that that controls whether the list of values is copied and
+	 *           sorted.
 	 * @return The median.
 	 */
 	public static double calculateMedian(final List values, final int start, final int end, boolean copyAndSort) {
-
+		
 		double result = Double.NaN;
 		if (copyAndSort) {
 			List working = new ArrayList(end - start + 1);
@@ -213,70 +213,70 @@ public abstract class Statistics {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the standard deviation of a set of numbers.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return the standard deviation of a set of numbers.
 	 */
 	public static double getStdDev(final Number[] data) {
 		final double avg = getAverage(data);
 		double sum = 0.0;
-
+		
 		for (int counter = 0; counter < data.length; counter++) {
 			final double diff = data[counter].doubleValue() - avg;
 			sum = sum + diff * diff;
 		}
 		return Math.sqrt(sum / (data.length - 1));
 	}
-
+	
 	/**
 	 * Fits a straight line to a set of (x, y) data, returning the slope and
 	 * intercept.
 	 * 
 	 * @param xData
-	 *            the x-data.
+	 *           the x-data.
 	 * @param yData
-	 *            the y-data.
+	 *           the y-data.
 	 * @return a double array with the intercept in [0] and the slope in [1].
 	 */
 	public static double[] getLinearFit(final Number[] xData, final Number[] yData) {
-
+		
 		// check arguments...
 		if (xData.length != yData.length) {
 			throw new IllegalArgumentException("Statistics.getLinearFit(...): array lengths must be equal.");
 		}
-
+		
 		final double[] result = new double[2];
 		// slope
 		result[1] = getSlope(xData, yData);
 		// intercept
 		result[0] = getAverage(yData) - result[1] * getAverage(xData);
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Finds the slope of a regression line using least squares.
 	 * 
 	 * @param xData
-	 *            an array of Numbers (the x values).
+	 *           an array of Numbers (the x values).
 	 * @param yData
-	 *            an array of Numbers (the y values).
+	 *           an array of Numbers (the y values).
 	 * @return the slope.
 	 */
 	public static double getSlope(final Number[] xData, final Number[] yData) {
-
+		
 		// check arguments...
 		if (xData.length != yData.length) {
 			throw new IllegalArgumentException("Statistics.getSlope(...): array lengths must be equal.");
 		}
-
+		
 		// ********* stat function for linear slope ********
 		// y = a + bx
 		// a = ybar - b * xbar
@@ -284,7 +284,7 @@ public abstract class Statistics {
 		// b = ------------------------------------
 		// sum (x^2) - (sum(x)^2 / n
 		// *************************************************
-
+		
 		// sum of x, x^2, x * y, y
 		double sx = 0.0, sxx = 0.0, sxy = 0.0, sy = 0.0;
 		int counter;
@@ -295,9 +295,9 @@ public abstract class Statistics {
 			sy = sy + yData[counter].doubleValue();
 		}
 		return (sxy - (sx * sy) / counter) / (sxx - (sx * sx) / counter);
-
+		
 	}
-
+	
 	/**
 	 * Calculates the correlation between two datasets. Both arrays should contain
 	 * the same number of items. Null values are treated as zero.
@@ -306,9 +306,9 @@ public abstract class Statistics {
 	 * http://trochim.human.cornell.edu/kb/statcorr.htm
 	 * 
 	 * @param data1
-	 *            the first dataset.
+	 *           the first dataset.
 	 * @param data2
-	 *            the second dataset.
+	 *           the second dataset.
 	 * @return The correlation.
 	 */
 	public static double getCorrelation(final Number[] data1, final Number[] data2) {
@@ -344,31 +344,31 @@ public abstract class Statistics {
 		}
 		return (n * sumXY - sumX * sumY) / Math.pow((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY), 0.5);
 	}
-
+	
 	/**
 	 * Returns a data set for a moving average on the data set passed in.
 	 * 
 	 * @param xData
-	 *            an array of the x data.
+	 *           an array of the x data.
 	 * @param yData
-	 *            an array of the y data.
+	 *           an array of the y data.
 	 * @param period
-	 *            the number of data points to average
+	 *           the number of data points to average
 	 * @return a double[][] the length of the data set in the first dimension, with
 	 *         two doubles for x and y in the second dimension
 	 */
 	public static double[][] getMovingAverage(final Number[] xData, final Number[] yData, final int period) {
-
+		
 		// check arguments...
 		if (xData.length != yData.length) {
 			throw new IllegalArgumentException("Statistics.getMovingAverage(...): array lengths must be equal.");
 		}
-
+		
 		if (period > xData.length) {
 			throw new IllegalArgumentException(
 					"Statistics.getMovingAverage(...): period can't be longer than dataset.");
 		}
-
+		
 		final double[][] result = new double[xData.length - period][2];
 		for (int i = 0; i < result.length; i++) {
 			result[i][0] = xData[i + period].doubleValue();
@@ -381,17 +381,17 @@ public abstract class Statistics {
 			result[i][1] = sum;
 		}
 		return result;
-
+		
 	}
-
+	
 	// // DEPRECATED CODE
 	// /////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Returns the average of a set of numbers.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @return The average of a set of numbers.
 	 * @deprecated Renamed calculateMean().
 	 */
@@ -403,5 +403,5 @@ public abstract class Statistics {
 		}
 		return (sum / counter);
 	}
-
+	
 }

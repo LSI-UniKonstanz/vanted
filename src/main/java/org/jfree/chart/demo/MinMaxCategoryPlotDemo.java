@@ -47,17 +47,17 @@ import org.jfree.ui.RefineryUtilities;
  * plot.
  */
 public class MinMaxCategoryPlotDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MinMaxCategoryPlotDemo(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(1.0, "First", "Category 1");
@@ -84,7 +84,7 @@ public class MinMaxCategoryPlotDemo extends ApplicationFrame {
 		dataset.addValue(3.0, "Third", "Category 6");
 		dataset.addValue(4.0, "Third", "Category 7");
 		dataset.addValue(3.0, "Third", "Category 8");
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart("Min/Max Category Plot", // chart title
 				"Category", // domain axis label
@@ -94,24 +94,24 @@ public class MinMaxCategoryPlotDemo extends ApplicationFrame {
 				true, // tooltips
 				false // urls
 		);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
+		
 		// set the background color for the chart...
 		chart.setBackgroundPaint(Color.yellow);
-
+		
 		// get a reference to the plot for further customisation...
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setRenderer(new MinMaxCategoryRenderer());
 		// OPTIONAL CUSTOMISATION COMPLETED.
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -122,20 +122,20 @@ public class MinMaxCategoryPlotDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final MinMaxCategoryPlotDemo demo = new MinMaxCategoryPlotDemo("Min/Max Category Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

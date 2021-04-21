@@ -33,35 +33,38 @@ import org.graffiti.session.SessionManager;
  */
 public class FileSaveAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6260210660304675944L;
+	
 	/** DOCUMENT ME! */
 	private final IOManager ioManager;
-
+	
 	/** DOCUMENT ME! */
 	private final SessionManager sessionManager;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new FileSaveAction object.
 	 * 
 	 * @param mainFrame
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param ioManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param sessionManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public FileSaveAction(MainFrame mainFrame, IOManager ioManager, SessionManager sessionManager) {
 		super("file.save", mainFrame, "filemenu_save");
 		this.ioManager = ioManager;
 		this.sessionManager = sessionManager;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -84,18 +87,18 @@ public class FileSaveAction extends GraffitiAction {
 		} catch (Exception e) {
 			return false;
 		}
-
+		
 		if (session != null && session.getActiveView() instanceof SuppressSaveActionsView)
 			return false;
-
+		
 		try {
 			String ext = getFileExt(fullName);
-
+			
 			File file = new File(fullName);
-
+			
 			if (file.canWrite()) {
 				ioManager.createOutputSerializer("." + ext, fileTypeDescription);
-
+				
 				// runtime error check, if exception, ioManager can not
 				// handle current file for saving.
 			} else {
@@ -110,10 +113,10 @@ public class FileSaveAction extends GraffitiAction {
 		} catch (Exception e) {
 			return false;
 		}
-
+		
 		return (ioManager.hasOutputSerializer() && sessionManager.isSessionActive());
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -121,19 +124,19 @@ public class FileSaveAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// CK, 1.Juli.2003 Copied and modified from SaveAsAction
 		EditorSession session;
 		String fullName;
 		String fileTypeDescription;
-
+		
 		try {
 			session = (EditorSession) mainFrame.getActiveSession();
 			if (session == null)
@@ -145,17 +148,17 @@ public class FileSaveAction extends GraffitiAction {
 		} catch (Exception err) {
 			MainFrame.showMessageDialog("Could not save network.", "Error");
 			ErrorMsg.addErrorMessage(err);
-
+			
 			// signal any graphs waiting on it to close
 			MainFrame.getInstance().cancelledSaveAction.set(true);
-
+			
 			return;
 		}
-
+		
 		String ext = getFileExt(fullName);
-
+		
 		File file = new File(fullName);
-
+		
 		if (file.canWrite()) {
 			try {
 				OutputSerializer os = ioManager.createOutputSerializer(ext, fileTypeDescription);
@@ -176,21 +179,21 @@ public class FileSaveAction extends GraffitiAction {
 			} catch (Exception ioe) {
 				ErrorMsg.addErrorMessage(ioe);
 				MainFrame.getInstance().warnUserAboutFileSaveProblem(ioe);
-
+				
 				// signal any graphs waiting on it to close
 				MainFrame.getInstance().cancelledSaveAction.set(true);
 			}
-
+			
 			mainFrame.fireSessionDataChanged(session);
 		} else {
 			// signal any graphs waiting on it to close
 			MainFrame.getInstance().cancelledSaveAction.set(true);
-
+			
 			MainFrame.showMessageDialog("<html>Error: Network could not be saved (file not writeable).", "Error");
 			System.err.println("Error: file not writable. (FileSave-Action).");
 		}
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -199,18 +202,18 @@ public class FileSaveAction extends GraffitiAction {
 	 */
 	public static String getFileExt(String fileName) {
 		String workName;
-
+		
 		int lastSep = fileName.lastIndexOf(File.pathSeparator);
-
+		
 		if (lastSep == -1) {
 			// no extension
 			workName = fileName;
 		} else {
 			workName = fileName.substring(lastSep + 1);
 		}
-
+		
 		int lastDot = workName.lastIndexOf('.');
-
+		
 		if (lastDot == -1) {
 			return "";
 		} else {

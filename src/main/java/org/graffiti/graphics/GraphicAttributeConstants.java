@@ -18,7 +18,7 @@ import org.graffiti.attributes.Attribute;
  */
 public interface GraphicAttributeConstants {
 	// ~ Static fields/initializers =============================================
-
+	
 	// the names of the graphic attributes
 	public static final String GRAPHICS = "graphics";
 	public static final String BGIMAGE = "backgroundImage";
@@ -76,18 +76,18 @@ public interface GraphicAttributeConstants {
 	public static final String GRIDCOLOR = "grid_color";
 	public static final String AXISCOLOR = "axis_color";
 	public static final String COLOR = "color";
-
+	
 	public static final String HEATMAP_LOWER_COL = "hm_lower_col";
 	public static final String HEATMAP_MIDDLE_COL = "hm_middle_col";
 	public static final String HEATMAP_UPPER_COL = "hm_upper_col";
-
+	
 	// for NodeLabelPosition:
 	public static final String RELVERT = "relVert";
 	public static final String RELHOR = "relHor";
 	public static final String LOCALALIGN = "localAlign";
 	// relative offset of label position from center of a node
 	public static final String LABELOFFSET = "labelOffset";
-
+	
 	// for EdgeLabelPosition:
 	public static final String RELALIGN = "relAlign";
 	public static final String ALIGNSEGMENT = "alignSegment";
@@ -101,162 +101,162 @@ public interface GraphicAttributeConstants {
 	public static final String SQUARESPLINE = "squarespline";
 	public static final String CUBICSPLINE = "cubicspline";
 	public static final String SMOOTHLINE = "smoothline";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String BELOW = "s";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String ABOVE = "n";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String RIGHT = "e";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String LEFT = "w";
-
+	
 	public static final String AUTO_OUTSIDE = "auto_outside";
-
+	
 	public static final String HIDDEN = "hidden";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String INSIDEBOTTOM = "b";
 	public static final String INSIDEBOTTOMLEFT = "ibl";
 	public static final String INSIDEBOTTOMRIGHT = "ibr";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String INSIDETOP = "t";
 	public static final String INSIDETOPLEFT = "itl";
 	public static final String INSIDETOPRIGHT = "itr";
 	public static final String INSIDELEFT = "il";
 	public static final String INSIDERIGHT = "ir";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String CENTERED = "c";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String CENTERED_FIT = "cf";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String BELOWRIGHT = "se";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String BELOWLEFT = "sw";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String ABOVELEFT = "nw";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String ABOVERIGHT = "ne";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String NEARSOURCE = "nearsource";
-
+	
 	/** Constant used to specify the position of a label according to a node. */
 	public static final String NEARTARGET = "neartarget";
-
+	
 	public static final String BORDER_TOP_LEFT = "btl";
 	public static final String BORDER_TOP_CENTER = "btc";
 	public static final String BORDER_TOP_RIGHT = "btr";
-
+	
 	public static final String BORDER_BOTTOM_LEFT = "bbl";
 	public static final String BORDER_BOTTOM_CENTER = "bbc";
 	public static final String BORDER_BOTTOM_RIGHT = "bbr";
-
+	
 	public static final String BORDER_LEFT_TOP = "blt";
 	public static final String BORDER_LEFT_CENTER = "blc";
 	public static final String BORDER_LEFT_BOTTOM = "blb";
-
+	
 	public static final String BORDER_RIGHT_TOP = "brt";
 	public static final String BORDER_RIGHT_CENTER = "brc";
 	public static final String BORDER_RIGHT_BOTTOM = "brb";
-
+	
 	/**
 	 * Distance between a label and the surrounding rectangle of the according node.
 	 */
 	public static final double LABEL_DISTANCE = 2.0d;
-
+	
 	/**
 	 * Path at which label attributes are placed in the attribute hierarchy by
 	 * defult.
 	 */
 	public static final String LABEL_ATTRIBUTE_PATH = "";
-
+	
 	/** Path to coordinate attribute */
 	public static final String COORD_PATH = GRAPHICS + Attribute.SEPARATOR + COORDINATE;
-
+	
 	/** Path to x-coordinate attribute */
 	public static final String COORDX_PATH = COORD_PATH + Attribute.SEPARATOR + X;
-
+	
 	/** Path to y-coordinate attribute */
 	public static final String COORDY_PATH = COORD_PATH + Attribute.SEPARATOR + Y;
-
+	
 	/** Path to dimension attribute */
 	public static final String DIM_PATH = GRAPHICS + Attribute.SEPARATOR + DIMENSION;
-
+	
 	/** Path to width attribute */
 	public static final String DIMW_PATH = DIM_PATH + Attribute.SEPARATOR + WIDTH;
-
+	
 	/** Path to height attribute */
 	public static final String DIMH_PATH = DIM_PATH + Attribute.SEPARATOR + HEIGHT;
-
+	
 	/** Path to fill color attribute */
 	public static final String FILLCOLOR_PATH = GRAPHICS + Attribute.SEPARATOR + FILLCOLOR;
-
+	
 	/** Path to outline color attribute */
 	public static final String OUTLINE_PATH = GRAPHICS + Attribute.SEPARATOR + FRAMECOLOR;
-
+	
 	/** Path to line width attribute */
 	public static final String LINEWIDTH_PATH = GRAPHICS + Attribute.SEPARATOR + FRAMETHICKNESS;
-
+	
 	/** Path to shape attribute */
 	public static final String SHAPE_PATH = GRAPHICS + Attribute.SEPARATOR + SHAPE;
-
+	
 	/** Path to shape description attribute */
 	public static final String SHAPE_DESC_PATH = GRAPHICS + Attribute.SEPARATOR + SHAPEDESCRIPTION;
-
+	
 	/** Path to bends attribute */
 	public static final String BENDS_PATH = GRAPHICS + Attribute.SEPARATOR + BENDS;
-
+	
 	/** Path to ports attribute */
 	public static final String PORTS_PATH = GRAPHICS + Attribute.SEPARATOR + PORTS;
-
+	
 	/** Path to docking attribute */
 	public static final String DOCKING_PATH = GRAPHICS + Attribute.SEPARATOR + DOCKING;
-
+	
 	/** Path to frame thickness attribute */
 	public static final String FRAMETHICKNESS_PATH = GRAPHICS + Attribute.SEPARATOR + FRAMETHICKNESS;
-
+	
 	/** rectangle node shape class name */
 	public static final String RECTANGLE_CLASSNAME = "org.graffiti.plugins.views.defaults.RectangleNodeShape";
-
+	
 	/** ellipse node shape class name */
 	public static final String ELLIPSE_CLASSNAME = "org.graffiti.plugins.views.defaults.EllipseNodeShape";
-
+	
 	/** circle node shape class name */
 	public static final String CIRCLE_CLASSNAME = "org.graffiti.plugins.views.defaults.CircleNodeShape";
-
+	
 	/** closed polygonal shape class name */
 	public static final String POLYCLOSED_CLASSNAME = "org.graffiti.plugins.views.defaults.PolygonalNodeShape";
-
+	
 	/** polyline edge shape class name */
 	public static final String POLYLINE_CLASSNAME = "org.graffiti.plugins.views.defaults.PolyLineEdgeShape";
-
+	
 	/** simple straight line edge shape class name */
 	public static final String STRAIGHTLINE_CLASSNAME = "org.graffiti.plugins.views.defaults.StraightLineEdgeShape";
-
+	
 	/** smooth line edge shape class name */
 	public static final String SMOOTH_CLASSNAME = "org.graffiti.plugins.views.defaults.SmoothLineEdgeShape";
-
+	
 	/** quadratic spline edge shape class name */
 	public static final String SQUARESPLINE_CLASSNAME = "org.graffiti.plugins.views.defaults.QuadCurveEdgeShape";
-
+	
 	/** cubic spline edge shape class name; not yet implemented. */
 	public static final String CUBICSPLINE_CLASSNAME = "org.graffiti.plugins.views.defaults.CubicCurveEdgeShape";
-
+	
 	public static final String CATEGORY_BACKGROUND_A = "node_categoryBackgroundColorA";
 	public static final String CATEGORY_BACKGROUND_B = "node_categoryBackgroundColorB";
 	public static final String CATEGORY_BACKGROUND_C = "node_categoryBackgroundColorC";
-
+	
 	/**
 	 * The cap used by default.
 	 * 
@@ -264,14 +264,14 @@ public interface GraphicAttributeConstants {
 	 */
 	public static int DEFAULT_CAP_R = BasicStroke.CAP_ROUND;
 	public static int DEFAULT_CAP_B = BasicStroke.CAP_BUTT;
-
+	
 	/**
 	 * The join used by default.
 	 * 
 	 * @see java.awt.BasicStroke
 	 */
 	public static int DEFAULT_JOIN = BasicStroke.JOIN_ROUND;
-
+	
 	/**
 	 * The miter limit used by default.
 	 * 

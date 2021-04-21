@@ -26,35 +26,40 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 public class PatchedHTMLEditorKit extends HTMLEditorKit {
-
-	private static final long serialVersionUID = 1L;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 817683297749618803L;
+	
 	// Since we only have two mouse events to listen to, we'll use the same
 	// method to generate the appropriate hyperlinks and distinguish
 	// between them when we react to the mouse events.
 	public static final int JUMP = 0;
-
+	
 	public static final int MOVE = 1;
-
+	
 	LinkController myController = new LinkController();
-
+	
 	@Override
 	public void install(JEditorPane c) {
 		c.addMouseListener(myController);
 		c.addMouseMotionListener(myController);
 	}
-
+	
 	public static class LinkController extends MouseInputAdapter implements Serializable {
-		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8646533360830612263L;
 		URL currentUrl = null;
-
+		
 		// here's the mouseClicked event similar to the one in
 		// the regular HTMLEditorKit, updated to indicate this is
 		// a "jump" event
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			JEditorPane editor = (JEditorPane) e.getSource();
-
+			
 			if (!editor.isEditable()) {
 				Point pt = new Point(e.getX(), e.getY());
 				int pos = editor.viewToModel(pt);
@@ -63,13 +68,13 @@ public class PatchedHTMLEditorKit extends HTMLEditorKit {
 				}
 			}
 		}
-
+		
 		// And here's our addition. Now the mouseMove events will
 		// also call activateLink, but with a "move" type
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			JEditorPane editor = (JEditorPane) e.getSource();
-
+			
 			if (!editor.isEditable()) {
 				Point pt = new Point(e.getX(), e.getY());
 				int pos = editor.viewToModel(pt);
@@ -78,7 +83,7 @@ public class PatchedHTMLEditorKit extends HTMLEditorKit {
 				}
 			}
 		}
-
+		
 		// activateLink has now been updated to decide which hyperlink
 		// event to generate, based on the event type and status of the
 		// currentUrl field. Rather than have two handlers (one for
@@ -95,7 +100,7 @@ public class PatchedHTMLEditorKit extends HTMLEditorKit {
 				AttributeSet anchor = (AttributeSet) a.getAttribute(HTML.Tag.A);
 				String href = (anchor != null) ? (String) anchor.getAttribute(HTML.Attribute.HREF) : null;
 				boolean shouldExit = false;
-
+				
 				HyperlinkEvent linkEvent = null;
 				if (href != null) {
 					URL u;
@@ -103,16 +108,15 @@ public class PatchedHTMLEditorKit extends HTMLEditorKit {
 						u = new URL(hdoc.getBase(), href);
 					} catch (MalformedURLException m) {
 						try {
-							u = new URL(href);
-							;
+							u = new URL(href);;
 						} catch (Exception err) {
 							u = null;
 						}
 					}
-
+					
 					if (u == null)
 						return;
-
+					
 					if ((type == MOVE) && (!u.equals(currentUrl))) {
 						linkEvent = new HyperlinkEvent(html, HyperlinkEvent.EventType.ENTERED, u, href);
 						currentUrl = u;

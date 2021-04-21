@@ -24,14 +24,15 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.11 $
  */
 public class GraphTab extends AbstractTab {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7244001973611463035L;
 	// ~ Instance fields ========================================================
-
-	private static final long serialVersionUID = 1L;
-
 	private static GraphTab instance = null;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a <code>GraphTab</code> and sets the title.
 	 */
@@ -40,23 +41,23 @@ public class GraphTab extends AbstractTab {
 		this.title = "Network";
 		instance = this;
 	}
-
+	
 	@Override
 	public String getEmptyDescription() {
 		return "Properties of active networks are editable at this place.";
 	}
-
+	
 	@Override
 	public String getTabNameForAttributeDescription() {
 		return "Network";
 	}
-
+	
 	public static GraphTab getInstance() {
 		return instance;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * If the path to the changed attribute is ".directed", then the directed
 	 * property of the graph (attributable of the attribute) is updated.
@@ -67,11 +68,11 @@ public class GraphTab extends AbstractTab {
 	public void postAttributeChanged(AttributeEvent e) {
 		super.postAttributeChanged(e);
 	}
-
+	
 	public void selectionChanged(SelectionEvent e) {
 		// empty
 	}
-
+	
 	@Override
 	public void sessionChanged(Session s) {
 		ArrayList<Attributable> ge = new ArrayList<Attributable>();
@@ -79,19 +80,19 @@ public class GraphTab extends AbstractTab {
 			ge.add(s.getGraph());
 		attributables = ge;
 		super.sessionChanged(s);
-
+		
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Attributes";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

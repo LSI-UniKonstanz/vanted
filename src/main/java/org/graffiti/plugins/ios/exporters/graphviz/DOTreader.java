@@ -35,7 +35,7 @@ public class DOTreader extends AbstractInputSerializer {
 	public void read(InputStream in, Graph g) throws IOException {
 		read(new InputStreamReader(in), g);
 	}
-
+	
 	private double getViewHeight(String line) {
 		double res = 0;
 		String bb = getEntry("bb=", line, "0,0,0,0");
@@ -51,7 +51,7 @@ public class DOTreader extends AbstractInputSerializer {
 		}
 		return res;
 	}
-
+	
 	private void processEdgeDesign(Edge e, String line, double viewHeight) {
 		try {
 			String label = getEntry("label=", line, null);
@@ -120,13 +120,13 @@ public class DOTreader extends AbstractInputSerializer {
 			ErrorMsg.addErrorMessage(err);
 		}
 	}
-
+	
 	private double distance(double x, double y, double x2, double y2) {
 		if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(x2) || Double.isNaN(y2))
 			return Double.MAX_VALUE;
 		return Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
 	}
-
+	
 	private boolean inside(Node n, double x, double y, double epsilon) {
 		epsilon = epsilon / 2;
 		Vector2d np = AttributeHelper.getPositionVec2d(n);
@@ -134,7 +134,7 @@ public class DOTreader extends AbstractInputSerializer {
 		return new Rectangle2D.Double(np.x - ns.x / 2 - epsilon / 2, np.y - ns.y / 2 - epsilon / 2, ns.x + epsilon,
 				ns.y + epsilon).contains(x, y);
 	}
-
+	
 	private String getNextEdgeId(String line) {
 		if (line.indexOf("->") <= 0 && line.indexOf("--") <= 0)
 			return null;
@@ -147,7 +147,7 @@ public class DOTreader extends AbstractInputSerializer {
 		String id = getFirstId(rol);
 		return id;
 	}
-
+	
 	private void processNodeDesign(Node n, String line, String defaultShape, String defaultFontSize, Color defaultColor,
 			double viewHeight, String id) {
 		try {
@@ -155,7 +155,7 @@ public class DOTreader extends AbstractInputSerializer {
 			if (label == null)
 				label = id;
 			AttributeHelper.setLabel(n, label);
-
+			
 			boolean isCircle = false;
 			String shape = getEntry("shape=", line, null);
 			if (shape != null) {
@@ -164,7 +164,7 @@ public class DOTreader extends AbstractInputSerializer {
 				if (defaultShape != null)
 					isCircle = setShapeFromDesc(n, defaultShape);
 			}
-
+			
 			String height = getEntry("height=", line, null);
 			if (height != null) {
 				double h = Double.parseDouble(height);
@@ -192,7 +192,7 @@ public class DOTreader extends AbstractInputSerializer {
 					w = h;
 				AttributeHelper.setSize(n, w, h);
 			}
-
+			
 			String color = getEntry("color=", line, null);
 			if (color != null) {
 				Color c = null;
@@ -231,7 +231,7 @@ public class DOTreader extends AbstractInputSerializer {
 			ErrorMsg.addErrorMessage("Invalid node settings: " + line);
 		}
 	}
-
+	
 	private boolean setShapeFromDesc(Node n, String shape) {
 		if (shape.equalsIgnoreCase("circle")) {
 			AttributeHelper.setShape(n, CircleNodeShape.class.getCanonicalName());
@@ -251,7 +251,7 @@ public class DOTreader extends AbstractInputSerializer {
 		}
 		return false;
 	}
-
+	
 	private String getFirstId(String line) {
 		try {
 			if (line.indexOf("[") > 0) {
@@ -266,7 +266,7 @@ public class DOTreader extends AbstractInputSerializer {
 			return null;
 		}
 	}
-
+	
 	private String getEntry(String setting, String line, String defaultReturn) {
 		String r1 = getEntryImpl(setting, line, defaultReturn);
 		if (r1 == null) {
@@ -276,7 +276,7 @@ public class DOTreader extends AbstractInputSerializer {
 		} else
 			return r1;
 	}
-
+	
 	private String getEntryImpl(String setting, String line, String defaultReturn) {
 		if (line.indexOf(setting) < 0)
 			return defaultReturn;
@@ -301,15 +301,15 @@ public class DOTreader extends AbstractInputSerializer {
 			}
 		}
 	}
-
+	
 	public String[] getExtensions() {
 		return new String[] { ".dot" };
 	}
-
+	
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "DOT" };
 	}
-
+	
 	public void read(Reader in, Graph g) throws IOException {
 		ArrayList<String> lines = new ArrayList<String>();
 		BufferedReader br = new BufferedReader(in);
@@ -444,7 +444,7 @@ public class DOTreader extends AbstractInputSerializer {
 			}
 		}
 	}
-
+	
 	private Node addNodeOrSetStyle(Node existingNode, Graph g, PositionGridGenerator pgg,
 			HashMap<String, Node> id2graphNode, String defaultShape, String defaultFontSize, Color defaultColor,
 			double viewHeight, String line, String id) {

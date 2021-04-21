@@ -16,13 +16,12 @@ package org.graffiti.session;
  * @see java.lang.Exception
  */
 public class UnsatisfiedConstraintException extends Exception {
-	// ~ Constructors ===========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -3955734766797671546L;
+	
+	// ~ Constructors ===========================================================
 	/**
 	 * Constructs a new <code>UnsatisfiedConstraintException</code> with
 	 * <code>null</code> as its detail message.
@@ -30,13 +29,13 @@ public class UnsatisfiedConstraintException extends Exception {
 	public UnsatisfiedConstraintException() {
 		super();
 	}
-
+	
 	/**
 	 * Constructs a new <code>UnsatisfiedConstraintException</code> with the
 	 * specifiecd detail message.
 	 * 
 	 * @param msg
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public UnsatisfiedConstraintException(String msg) {
 		super(msg);

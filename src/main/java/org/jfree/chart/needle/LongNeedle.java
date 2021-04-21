@@ -45,7 +45,7 @@ import java.io.Serializable;
  * @author Bryan Scott
  */
 public class LongNeedle extends MeterNeedle implements Serializable {
-
+	
 	/**
 	 * Default constructor.
 	 */
@@ -53,25 +53,25 @@ public class LongNeedle extends MeterNeedle implements Serializable {
 		super();
 		setRotateY(0.8);
 	}
-
+	
 	/**
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param rotate
-	 *            the rotation point.
+	 *           the rotation point.
 	 * @param angle
-	 *            the angle.
+	 *           the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
-
+		
 		GeneralPath shape1 = new GeneralPath();
 		GeneralPath shape2 = new GeneralPath();
 		GeneralPath shape3 = new GeneralPath();
-
+		
 		float minX = (float) plotArea.getMinX();
 		float minY = (float) plotArea.getMinY();
 		float maxX = (float) plotArea.getMaxX();
@@ -88,22 +88,22 @@ public class LongNeedle extends MeterNeedle implements Serializable {
 		shape1.lineTo(midX, minY);
 		shape1.lineTo(midX, y);
 		shape1.closePath();
-
+		
 		shape2.moveTo(maxX, midY);
 		shape2.lineTo(midX, minY);
 		shape2.lineTo(midX, y);
 		shape2.closePath();
-
+		
 		shape3.moveTo(minX, midY);
 		shape3.lineTo(midX, maxY);
 		shape3.lineTo(maxX, midY);
 		shape3.lineTo(midX, y);
 		shape3.closePath();
-
+		
 		Shape s1 = shape1;
 		Shape s2 = shape2;
 		Shape s3 = shape3;
-
+		
 		if ((rotate != null) && (angle != 0)) {
 			// / we have rotation huston, please spin me
 			getTransform().setToRotation(angle, rotate.getX(), rotate.getY());
@@ -111,18 +111,18 @@ public class LongNeedle extends MeterNeedle implements Serializable {
 			s2 = shape2.createTransformedShape(transform);
 			s3 = shape3.createTransformedShape(transform);
 		}
-
+		
 		if (getHighlightPaint() != null) {
 			g2.setPaint(getHighlightPaint());
 			g2.fill(s3);
 		}
-
+		
 		if (getFillPaint() != null) {
 			g2.setPaint(getFillPaint());
 			g2.fill(s1);
 			g2.fill(s2);
 		}
-
+		
 		if (getOutlinePaint() != null) {
 			g2.setStroke(getOutlineStroke());
 			g2.setPaint(getOutlinePaint());
@@ -131,12 +131,12 @@ public class LongNeedle extends MeterNeedle implements Serializable {
 			g2.draw(s3);
 		}
 	}
-
+	
 	/**
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -151,5 +151,5 @@ public class LongNeedle extends MeterNeedle implements Serializable {
 		}
 		return false;
 	}
-
+	
 }

@@ -15,12 +15,12 @@ import org.graffiti.selection.Selection;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatusProvider {
-
+	
 	private Graph graph;
 	private Selection selection;
 	private int initMaxMove = 30;
 	ThreadSafeOptions tso;
-
+	
 	/**
 	 * @param gi
 	 * @param s
@@ -30,7 +30,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 		this.selection = s;
 		this.tso = tso;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -41,7 +41,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 	public int getCurrentStatusValue() {
 		return (int) getCurrentStatusValueFine();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -55,7 +55,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 		else
 			return 100f;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -72,7 +72,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 		else
 			return "Layout " + nme + " (" + tso.getRunStatus() + ")";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -83,7 +83,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 	public String getCurrentStatusMessage2() {
 		return "";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -93,7 +93,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 	 */
 	public void pleaseStop() {
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -106,7 +106,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 		tso.setSelection(selection);
 		pse.executeThreadSafe(tso);
 	}
-
+	
 	public static ThreadSafeOptions getNewThreadSafeOptionsWithDefaultSettings() {
 		ThreadSafeOptions tso = new ThreadSafeOptions();
 		tso.borderForce = false;
@@ -123,7 +123,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 		tso.doRemoveAllBends = false;
 		return tso;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -134,7 +134,7 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -145,9 +145,9 @@ public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatus
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		// empty
 	}
-
+	
 }

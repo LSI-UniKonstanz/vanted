@@ -17,11 +17,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @version $Revision$
  */
 public class DeleteNodesPlugin extends IPK_PluginAdapter {
-
+	
 	public DeleteNodesPlugin() {
 		this.algorithms = new Algorithm[2];
 		this.algorithms[0] = new DeleteNodesAlgorithm();
 		this.algorithms[1] = new NumberNodesAndEdgesAlgorithm();
 	}
-
+	
 }

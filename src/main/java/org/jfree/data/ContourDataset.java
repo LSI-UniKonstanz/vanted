@@ -38,74 +38,74 @@ package org.jfree.data;
  * @author David M. O'Donnell
  */
 public interface ContourDataset extends XYZDataset {
-
+	
 	/**
 	 * Returns the smallest Z data value.
 	 * 
 	 * @return The minimum Z value.
 	 */
 	public double getMinZValue();
-
+	
 	/**
 	 * Returns the largest Z data value.
 	 * 
 	 * @return The maximum Z value.
 	 */
 	public double getMaxZValue();
-
+	
 	/**
 	 * Returns the array of Numbers representing the x data values.
 	 * 
 	 * @return The array of x values.
 	 */
 	public Number[] getXValues();
-
+	
 	/**
 	 * Returns the array of Numbers representing the y data values.
 	 * 
 	 * @return The array of y values.
 	 */
 	public Number[] getYValues();
-
+	
 	/**
 	 * Returns the array of Numbers representing the z data values.
 	 * 
 	 * @return The array of z values.
 	 */
 	public Number[] getZValues();
-
+	
 	/**
 	 * Returns an int array contain the index into the x values.
 	 * 
 	 * @return The X values.
 	 */
 	public int[] indexX();
-
+	
 	/**
 	 * Returns the index of the xvalues.
 	 * 
 	 * @return The x values.
 	 */
 	public int[] getXIndices();
-
+	
 	/**
 	 * Returns the maximum z-value within visible region of plot.
 	 * 
 	 * @param x
-	 *            the x-value.
+	 *           the x-value.
 	 * @param y
-	 *            the y-value.
+	 *           the y-value.
 	 * @return The maximum z-value.
 	 */
 	public Range getZValueRange(Range x, Range y);
-
+	
 	/**
 	 * Returns true if axis are dates.
 	 * 
 	 * @param axisNumber
-	 *            the axis where 0-x, 1-y, and 2-z.
+	 *           the axis where 0-x, 1-y, and 2-z.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean isDateAxis(int axisNumber);
-
+	
 }

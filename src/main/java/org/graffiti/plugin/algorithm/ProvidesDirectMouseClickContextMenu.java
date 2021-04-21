@@ -14,7 +14,7 @@ import org.graffiti.graph.Graph;
  * @author Christian Klukas
  */
 public interface ProvidesDirectMouseClickContextMenu {
-
+	
 	JMenuItem[] getContextCommand(MouseEvent lastMouseE, Component lastMouseSrc, Graph graph);
-
+	
 }

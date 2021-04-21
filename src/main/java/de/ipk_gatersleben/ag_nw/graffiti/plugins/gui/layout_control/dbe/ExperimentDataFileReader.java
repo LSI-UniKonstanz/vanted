@@ -41,25 +41,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.kegg_expression.TextFileColumnInformation;
 
 public abstract class ExperimentDataFileReader implements BackgroundTaskStatusProvider {
-
+	
 	static Logger logger = Logger.getLogger(ExperimentDataFileReader.class);
-
+	
 	protected String status1 = "-";
 	protected String status2 = "";
 	private boolean please_stop = false;
-
+	
 	protected String fileName;
-
+	
 	protected double progressDouble = 0d;
 	protected String optCoordinatorValue;
 	protected String optExperimentName;
 	protected String optTimeUnit;
 	protected String optMeasurementUnit;
-
+	
 	public static TableData getExcelTableData(File excelFile) {
 		return getExcelTableData(excelFile, null);
 	}
-
+	
 	public static TableData getExcelTableData(File excelFile, ArrayList<String> optRelevantColumn) {
 		logger.debug("entering getExcelTableData");
 		final TableData myData = new TableData();
@@ -73,7 +73,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 				for (String col : optRelevantColumn)
 					optValidColumn.add(new TextFileColumnInformation(col, -1, -1));
 			}
-
+			
 			if (excelFile.getName().toUpperCase().endsWith(".CSV") || excelFile.getName().toUpperCase().endsWith(".DAT")
 					|| excelFile.getName().toUpperCase().endsWith(".TXT")
 					|| excelFile.getName().toUpperCase().endsWith(".LIST")) {
@@ -96,11 +96,11 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			return null;
 		}
 	}
-
+	
 	public static TableData getExcelTableDataPeak(File excelFile, int maximumRowToBeProcessed) {
 		return getExcelTableData(excelFile, maximumRowToBeProcessed, null, null);
 	}
-
+	
 	public static TableData getExcelTableData(File excelFile, int maximumRowToBeProcessed,
 			ArrayList<TextFileColumnInformation> optValidColumns,
 			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
@@ -133,7 +133,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			return null;
 		}
 	}
-
+	
 	public static TableData getExcelTableData(String tableData, int maximumRowToBeProcessed,
 			ArrayList<TextFileColumnInformation> optValidColumns,
 			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
@@ -141,7 +141,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 		processCSVExcelFile(myData, tableData, maximumRowToBeProcessed, optValidColumns, optStatus);
 		return myData;
 	}
-
+	
 	public static TableData getExcelTableData(BufferedReader csvFile, int maximumRowToBeProcessed,
 			ArrayList<TextFileColumnInformation> optValidColumns,
 			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
@@ -149,7 +149,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 		processCSVExcelFile(myData, csvFile, maximumRowToBeProcessed, optValidColumns, optStatus);
 		return myData;
 	}
-
+	
 	public static TableData getCSVdata(File textFile, ArrayList<String> arrayList,
 			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		try {
@@ -165,7 +165,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 					System.out.println("valid: " + col);
 				}
 			}
-
+			
 			// read complete file, ignore non-relevant columns
 			fin = new FileInputStream(textFile);
 			TableData myData = new TableData();
@@ -177,13 +177,13 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			return null;
 		}
 	}
-
+	
 	private static void processCSVExcelFile(TableData myData, BufferedReader in, int maximumRowToBeProcessed,
 			ArrayList<TextFileColumnInformation> optValidColumns,
 			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		processCSVExcelFile(myData, in, maximumRowToBeProcessed, optValidColumns, optStatus, null);
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	private static void processCSVExcelFile(TableData myData, BufferedReader in, int maximumRowToBeProcessed,
 			ArrayList<TextFileColumnInformation> optValidColumns,
@@ -199,7 +199,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 						String[] cellsComma = s.split(",");
 						String[] cellsTab = s.split("\t");
 						String[] cellsSemi = s.split(";");
-
+						
 						if (cellsComma.length > cellsTab.length && cellsComma.length > cellsSemi.length)
 							separator = ",";
 						else {
@@ -280,7 +280,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	private static void processCSVExcelFile(TableData myData, String ins, int maximumRowToBeProcessed,
 			ArrayList<TextFileColumnInformation> optValidColumns,
@@ -295,7 +295,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 					String[] cellsComma = s.split(",");
 					String[] cellsTab = s.split("\t");
 					String[] cellsSemi = s.split(";");
-
+					
 					if (cellsComma.length > cellsTab.length && cellsComma.length > cellsSemi.length)
 						separator = ",";
 					else {
@@ -366,11 +366,11 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 				break;
 		}
 	}
-
+	
 	private static boolean validColumn(int col, ArrayList<TextFileColumnInformation> optValidColumns) {
 		if (col == 0) // the first column will always be loaded; containing gene ids
 			return true;
-
+		
 		if (optValidColumns == null)
 			return true;
 		for (TextFileColumnInformation tci : optValidColumns) {
@@ -381,21 +381,21 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 		}
 		return false;
 	}
-
+	
 	private static void processCSVExcelFile(TableData myData, FileInputStream fin, int maximumRowToBeProcessed,
 			ArrayList<TextFileColumnInformation> optValidColumns,
 			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(fin));
 		processCSVExcelFile(myData, in, maximumRowToBeProcessed, optValidColumns, optStatus);
 	}
-
+	
 	private static void processCSVExcelFile(TableData myData, FileInputStream fin, int maximumRowToBeProcessed,
 			ArrayList<TextFileColumnInformation> optValidColumns,
 			BackgroundTaskStatusProviderSupportingExternalCall optStatus, HashSet<Integer> optValidColumnsNew) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(fin));
 		processCSVExcelFile(myData, in, maximumRowToBeProcessed, optValidColumns, optStatus, optValidColumnsNew);
 	}
-
+	
 	@SuppressWarnings("unused")
 	private static void processBinaryExcelFile(final TableData myData, FileInputStream fin,
 			final int maximumRowToBeProcessed, ArrayList<TextFileColumnInformation> optValidColumn) throws IOException {
@@ -411,7 +411,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			}
 		}
 		new HashSet<Integer>();
-
+		
 		// req.addListenerForAllRecords(new HSSFListener()
 		req.addListener(new HSSFListener() {
 			public void processRecord(Record rec) {
@@ -421,7 +421,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 							myData.getStringRec().getString(recT.getSSTIndex()));
 			}
 		}, LabelSSTRecord.sid);
-
+		
 		req.addListener(new HSSFListener() {
 			public void processRecord(Record rec) {
 				NumberRecord recT = (NumberRecord) rec;
@@ -429,7 +429,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 					myData.addCellData(recT.getColumn(), recT.getRow(), Double.valueOf(recT.getValue()));
 			}
 		}, NumberRecord.sid);
-
+		
 		req.addListener(new HSSFListener() {
 			public void processRecord(Record rec) {
 				FormulaRecord recT = (FormulaRecord) rec;
@@ -437,18 +437,18 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 					myData.addCellData(recT.getColumn(), recT.getRow(), Double.valueOf(recT.getValue()));
 			}
 		}, FormulaRecord.sid);
-
+		
 		req.addListener(new HSSFListener() {
 			public void processRecord(Record rec) {
 				SSTRecord recT = (SSTRecord) rec;
 				myData.setStringRec(recT);
 			}
 		}, SSTRecord.sid);
-
+		
 		HSSFEventFactory factory = new HSSFEventFactory();
 		factory.processEvents(req, din);
 	}
-
+	
 	private static void processExcelFile(TableData myData, FileInputStream fin, final int maximumRowToBeProcessed)
 			throws IOException, InvalidFormatException {
 		logger.debug("entering processExcelFile");
@@ -458,13 +458,13 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 				logger.debug("workbook opened");
 			else
 				logger.error("workbook failed to open");
-
+			
 			Sheet sheet = workbook.getSheetAt(0);
 			if (sheet != null)
 				logger.debug("sheet opened");
 			else
 				logger.error("sheet failed to open");
-
+			
 			int celltype;
 			for (Row row : sheet) {
 				if (maximumRowToBeProcessed > 0 && row.getRowNum() >= maximumRowToBeProcessed)
@@ -474,21 +474,21 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 					if (celltype == Cell.CELL_TYPE_FORMULA)
 						celltype = cell.getCachedFormulaResultType();
 					switch (celltype) {
-					case Cell.CELL_TYPE_STRING:
-						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(), cell.getStringCellValue());
-						break;
-					case Cell.CELL_TYPE_NUMERIC:
-						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
-								Double.valueOf(cell.getNumericCellValue()));
-						break;
-					case Cell.CELL_TYPE_BOOLEAN:
-						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
-								Boolean.valueOf(cell.getBooleanCellValue()));
-						break;
+						case Cell.CELL_TYPE_STRING:
+							myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(), cell.getStringCellValue());
+							break;
+						case Cell.CELL_TYPE_NUMERIC:
+							myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
+									Double.valueOf(cell.getNumericCellValue()));
+							break;
+						case Cell.CELL_TYPE_BOOLEAN:
+							myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
+									Boolean.valueOf(cell.getBooleanCellValue()));
+							break;
 					}
 				}
 			}
-
+			
 		} catch (Exception e) {
 			logger.error(e);
 			ErrorMsg.addErrorMessage(e);
@@ -504,24 +504,24 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			fin.close();
 		}
 	}
-
+	
 	public ExperimentInterface getXMLdata(File excelFile, TableData myData,
 			BackgroundTaskStatusProviderSupportingExternalCall statusProvider) {
 		if (excelFile != null)
 			fileName = excelFile.getName();
 		else
 			fileName = "not available";
-
+		
 		logger.debug("getXMLdata: filename:" + fileName);
-
+		
 		status1 = "Process data...";
 		status2 = "";
 		return getXMLDataFromExcelTable(excelFile, myData, statusProvider);
 	}
-
+	
 	public abstract ExperimentInterface getXMLDataFromExcelTable(File excelFile, TableData myData,
 			BackgroundTaskStatusProviderSupportingExternalCall statusProvider);
-
+	
 	/**
 	 * @return
 	 */
@@ -532,7 +532,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 		}
 		return false;
 	}
-
+	
 	/**
 	 * searches for a column that looks like this: 0test_3 0 is the time index
 	 * (might be also 00, 01, 02, 2, 3, ... test is here the analysed part of a
@@ -555,7 +555,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 		}
 		return result;
 	}
-
+	
 	/**
 	 * get the column (in row 1) which matches the given pattern. Possible patterns
 	 * are: "*searchText" -> any text in front and then the searchText,
@@ -565,9 +565,9 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 	 * the given argument exactly.
 	 * 
 	 * @param myData
-	 *            The TableData
+	 *           The TableData
 	 * @param search
-	 *            The pattern to look for
+	 *           The pattern to look for
 	 * @return The index of the column or -1, if from column 1 to
 	 *         TableData.MAX_COLUMN no match is found.
 	 */
@@ -597,51 +597,51 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 		}
 		return result;
 	}
-
+	
 	public int getCurrentStatusValue() {
 		return (int) progressDouble;
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		progressDouble = Double.valueOf(value);
 	}
-
+	
 	public double getCurrentStatusValueFine() {
 		return progressDouble;
 	}
-
+	
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	public void pleaseStop() {
 		please_stop = true;
 	}
-
+	
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void setCoordinator(String desiredCoordinatorValue) {
 		this.optCoordinatorValue = desiredCoordinatorValue;
 	}
-
+	
 	public void setExperimentName(String desiredExperimentName) {
 		this.optExperimentName = desiredExperimentName;
 	}
-
+	
 	public void setTimeUnit(String desiredTimeUnit) {
 		this.optTimeUnit = desiredTimeUnit;
 	}
-
+	
 	public void setMeasurementUnit(String desiredMeasurementUnit) {
 		this.optMeasurementUnit = desiredMeasurementUnit;
 	}

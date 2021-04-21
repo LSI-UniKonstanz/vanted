@@ -17,15 +17,15 @@ import org.graffiti.plugin.algorithm.Category;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 
 public class IterateGridPlacementLayout extends AbstractAlgorithm implements Algorithm {
-
+	
 	public void execute() {
 		Collection<Node> nodes = getSelectedOrAllNodes();
 		if (nodes.size() < 1)
 			return;
-
+		
 		new Grid(nodes.size(), nodes.size());
 		ExecutorService run = Executors.newFixedThreadPool(SystemAnalysis.getNumberOfCPUs());
-
+		
 		run.shutdown();
 		try {
 			run.awaitTermination(60 * 60, TimeUnit.SECONDS);
@@ -33,20 +33,20 @@ public class IterateGridPlacementLayout extends AbstractAlgorithm implements Alg
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	public String getName() {
 		return null;
 		// return "Grid Placement Iteration Test";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-
+	
 }

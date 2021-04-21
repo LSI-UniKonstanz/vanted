@@ -19,81 +19,80 @@ import org.graffiti.editor.MainFrame;
  * TODO
  */
 public abstract class GraffitiButton extends JButton implements GraffitiComponent {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8413161275632854152L;
+	// ~ Instance fields ========================================================
 	/** The preffered component of this button. */
 	protected String preferredComponent;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new GraffitiButton object.
 	 * 
 	 * @param preferredComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiButton(String preferredComp) {
 		preferredComponent = preferredComp;
 	}
-
+	
 	/**
 	 * Creates a new GraffitiButton object.
 	 * 
 	 * @param preferredComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param text
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiButton(String preferredComp, String text) {
 		super(text);
 		preferredComponent = preferredComp;
 	}
-
+	
 	/**
 	 * Creates a new GraffitiButton object.
 	 * 
 	 * @param preferredComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param i
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiButton(String preferredComp, Icon i) {
 		super(i);
 		preferredComponent = preferredComp;
 	}
-
+	
 	/**
 	 * Creates a new GraffitiButton object.
 	 * 
 	 * @param preferredComp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param a
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public GraffitiButton(String preferredComp, Action a) {
 		super(a);
 		preferredComponent = preferredComp;
 	}
-
+	
 	/**
 	 * Constructs a new <code>GraffitiButton</code>.
 	 */
 	protected GraffitiButton() {
 		super();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see org.graffiti.plugin.gui.GraffitiComponent#setMainFrame(org.graffiti.editor.MainFrame)
 	 */
 	public void setMainFrame(MainFrame mf) {
 	}
-
+	
 	/**
 	 * Returns the id of the component the button prefers to be inserted in.
 	 * 

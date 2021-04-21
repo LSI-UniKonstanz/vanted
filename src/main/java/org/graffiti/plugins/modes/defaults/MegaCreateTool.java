@@ -72,84 +72,84 @@ import org.graffiti.undo.GraphElementsDeletionEdit;
  */
 public class MegaCreateTool extends MegaTools {
 	// ~ Instance fields ========================================================
-
+	
 	/** DOCUMENT ME! */
 	protected CoordinateAttribute sourceCA = new CoordinateAttribute(GraphicAttributeConstants.COORDINATE);
-
+	
 	/** DOCUMENT ME! */
 	protected CoordinateAttribute targetCA = new CoordinateAttribute(GraphicAttributeConstants.COORDINATE);
-
+	
 	/** DOCUMENT ME! */
 	protected Edge dummyEdge = null;
-
+	
 	/** DOCUMENT ME! */
 	protected EdgeGraphicAttribute dummyEdgeGraphAttr;
-
+	
 	/**
 	 * Component used to associate the key binding for deleting graph elements with.
 	 */
 	protected JComponent keyComponent;
-
+	
 	/** DOCUMENT ME! */
 	protected Node dummyNode = null;
-
+	
 	/** Contains the first selected node when adding an edge. */
 	protected Node first;
-
+	
 	/** DOCUMENT ME! */
 	protected SortedCollectionAttribute bends;
-
+	
 	/** DOCUMENT ME! */
 	protected SortedCollectionAttribute dummyBends;
-
+	
 	/** DOCUMENT ME! */
 	protected boolean creatingEdge = false;
-
+	
 	/** DOCUMENT ME! */
 	protected boolean dragged = false;
-
+	
 	/** DOCUMENT ME! */
 	protected int numOfBends = 0;
-
+	
 	/** Removes last bend while creating edges. */
 	private final Action backAction;
-
+	
 	/** Deletes all selected items (incl. undo support). */
 	private final Action deleteAction;
-
+	
 	/** Aborts creation of edges. */
 	private final Action escapeAction;
-
+	
 	// private boolean ctrlDown = false;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for this tool. Registers a key used to delete graph elements.
 	 */
 	public MegaCreateTool() {
 		super();
-
+		
 		if (!knownTools.contains(this))
 			knownTools.add(this);
-
+		
 		normCursor = new Cursor(Cursor.HAND_CURSOR);
 		// protected Cursor edgeCursor = new Cursor(Cursor.HAND_CURSOR);
 		nodeCursor = new Cursor(Cursor.CROSSHAIR_CURSOR);
-
+		
 		escapeAction = new AbstractAction() {
 			private static final long serialVersionUID = 3905528206759900217L;
-
+			
 			public void actionPerformed(ActionEvent e) {
 				reset();
 				unmarkAll();
 				fireSelectionChanged();
 			}
 		};
-
+		
 		backAction = new AbstractAction() {
 			private static final long serialVersionUID = 3257567308653081396L;
-
+			
 			public void actionPerformed(ActionEvent e) {
 				if (numOfBends == 0) {
 					// no bends, just do the same as does escapeAction
@@ -158,7 +158,7 @@ public class MegaCreateTool extends MegaTools {
 					dummyEdgeGraphAttr.getBends().remove("bend" + numOfBends);
 					bends.remove("bend" + numOfBends);
 					numOfBends--;
-
+					
 					for (View view : session.getViews()) {
 						GraphElementComponent gec = view.getComponentForElement(dummyEdge);
 						try {
@@ -169,12 +169,16 @@ public class MegaCreateTool extends MegaTools {
 				}
 			}
 		};
-
+		
 		bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
-
+		
 		deleteAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2822915969413737718L;
+			
 			public void actionPerformed(ActionEvent e) {
 				// useful to check if the selection isn't empty
 				// before an edit is build.
@@ -194,9 +198,9 @@ public class MegaCreateTool extends MegaTools {
 			}
 		};
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	@Override
 	public Cursor getNormCursor() {
 		if (creatingEdge)
@@ -204,7 +208,7 @@ public class MegaCreateTool extends MegaTools {
 		else
 			return normCursor;
 	}
-
+	
 	@Override
 	public Cursor getEdgeCursor() {
 		if (creatingEdge)
@@ -212,12 +216,12 @@ public class MegaCreateTool extends MegaTools {
 		else
 			return edgeCursor;
 	}
-
+	
 	@Override
 	public Cursor getNodeCursor() {
 		return nodeCursor;
 	}
-
+	
 	/**
 	 * The method additionally registers a key used to delete graph elements.
 	 * 
@@ -229,10 +233,10 @@ public class MegaCreateTool extends MegaTools {
 			return;
 		}
 		super.activate();
-
+		
 		try {
 			JComponent view = session.getActiveView().getViewComponent();
-
+			
 			while (!((view instanceof GraffitiInternalFrame))) {
 				if (view.getParent() == null || !(view.getParent() instanceof JComponent)) {
 					break;
@@ -240,19 +244,19 @@ public class MegaCreateTool extends MegaTools {
 					view = (JComponent) view.getParent();
 				}
 			}
-
+			
 			keyComponent = view;
-
+			
 			String deleteName = "delete";
 			view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 					.put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0), deleteName);
 			view.getActionMap().put(deleteName, deleteAction);
-
+			
 			String escName = "escape";
 			view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 					.put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), escName);
 			view.getActionMap().put(escName, escapeAction);
-
+			
 			String backName = "back";
 			view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 					.put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0), backName);
@@ -269,7 +273,7 @@ public class MegaCreateTool extends MegaTools {
 			System.err.println("Failed to register a key for some action in " + getClass().getName() + ", activate()");
 		}
 	}
-
+	
 	/**
 	 * This method additionaly unregisters the key used for deleting graph elements.
 	 * 
@@ -278,11 +282,11 @@ public class MegaCreateTool extends MegaTools {
 	@Override
 	public void deactivate() {
 		super.deactivate();
-
+		
 		// System.out.println("Deactivating MegaCreateTool");
-
+		
 		reset();
-
+		
 		if (keyComponent != null) {
 			keyComponent.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 					.remove(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
@@ -292,75 +296,75 @@ public class MegaCreateTool extends MegaTools {
 					.remove(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
 		}
 	}
-
+	
 	/**
 	 * Invoked when the mouse button has been pressed inside the editor panel and
 	 * handles what has to happen. Is actually empty since all functionality is put
 	 * into mousePressed etc.
 	 * 
 	 * @param e
-	 *            the mouse event
+	 *           the mouse event
 	 */
 	@Override
 	public void mousePressed(final MouseEvent e) {
 		if (lastMouseEventTime >= e.getWhen())
 			return;
 		lastMouseEventTime = e.getWhen();
-
+		
 		if (!SwingUtilities.isLeftMouseButton(e)) {
 			// reset();
 			return;
 		}
-
+		
 		Component src = getFoundComponent();
 		if (e.isShiftDown() && e.isControlDown())
 			src = src.getParent();
-
+		
 		boolean doubleClickOK = false; // disable double click editing
-
+		
 		if (e.getClickCount() > 1 && (MegaTools.getLastMouseSrc() instanceof GraphElementComponent) && doubleClickOK) {
 			AdvancedLabelTool.processLabelEdit((GraphElementComponentInterface) MegaTools.getLastMouseSrc());
 			reset();
 			return;
 		}
 		mouseMoved(e);
-
+		
 		dragged = false;
-
+		
 		if (creatingEdge) {
 			// assure that no dummyXXX is hit
 			Component tempEdgeComp = null;
-
+			
 			JComponent compSrc = (JComponent) e.getSource();
-
+			
 			if ((src instanceof EdgeComponent && ((EdgeComponent) src).getGraphElement().equals(dummyEdge))) {
 				tempEdgeComp = src;
 				tempEdgeComp.setVisible(false);
 				src = getFoundComponent();
 				tempEdgeComp.setVisible(true);
 			}
-
+			
 			if (src instanceof NodeComponent && ((NodeComponent) src).getGraphElement().equals(dummyNode)) {
 				src.setVisible(false);
 				src = getFoundComponent();
 				// src = getCorrectComp(src, (View) e.getComponent(), e);
 			}
-
+			
 			if (src instanceof EdgeComponent && ((EdgeComponent) src).getGraphElement().equals(dummyEdge)) {
 				tempEdgeComp = src;
 				tempEdgeComp.setVisible(false);
-
+				
 				src = compSrc.findComponentAt((e.getPoint()));
 				src = getCorrectComp(src, (View) e.getComponent(), e);
 				tempEdgeComp.setVisible(true);
 			}
 		}
-
+		
 		if (src instanceof NodeComponent && !getIsCtrlDown(e) && !getIsShiftDown(e)) {
 			Node clickedNode = (Node) ((NodeComponent) src).getGraphElement();
-
+			
 			unmarkAll();
-
+			
 			if (!creatingEdge) {
 				startAddEdge(e, clickedNode);
 			} else if ((this.first != clickedNode) || ((bends != null) && !bends.isEmpty()))
@@ -377,7 +381,7 @@ public class MegaCreateTool extends MegaTools {
 			} else {
 				if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR && src instanceof EdgeComponent) {
 					Edge edge = (Edge) ((EdgeComponent) src).getGraphElement();
-
+					
 					Node newNode = breakEdge(e, edge);
 					if (newNode != null)
 						startAddEdge(e, newNode);
@@ -389,37 +393,37 @@ public class MegaCreateTool extends MegaTools {
 			}
 		}
 	}
-
+	
 	private static boolean getIsCtrlDown(MouseEvent e) {
 		return (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0;
 	}
-
+	
 	private static boolean getIsShiftDown(MouseEvent e) {
 		return (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
 	}
-
+	
 	/**
 	 * Invoked when the mouse button has been pressed and dragged inside the editor
 	 * panel and handles what has to happen.
 	 * 
 	 * @param e
-	 *            the mouse event
+	 *           the mouse event
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (!SwingUtilities.isLeftMouseButton(e)) {
 			return;
 		}
-
+		
 		dragged = true;
 		mouseMoved(e);
 	}
-
+	
 	/**
 	 * Temporarily marks the component under cursor.
 	 * 
 	 * @param e
-	 *            the mouse event
+	 *           the mouse event
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
@@ -427,68 +431,68 @@ public class MegaCreateTool extends MegaTools {
 		// MessageType.PERMANENT_INFO);
 		super.mouseMoved(e);
 		Component src = getFoundComponent();
-
+		
 		// ctrlDown = getIsCtrlDown(e);
-
+		
 		if (creatingEdge) {
 			// assure that no dummyXXX is hit
 			Component tempEdgeComp = null;
-
+			
 			JComponent compSrc = (JComponent) e.getSource();
-
+			
 			if (src instanceof EdgeComponent && ((EdgeComponent) src).getGraphElement().equals(dummyEdge)) {
 				tempEdgeComp = src;
 				tempEdgeComp.setVisible(false);
-
+				
 				src = compSrc.findComponentAt((e.getPoint()));
-
+				
 				src = getCorrectComp(src, (View) e.getComponent(), e);
 				tempEdgeComp.setVisible(true);
 			}
-
+			
 			if (src instanceof NodeComponent && ((NodeComponent) src).getGraphElement().equals(dummyNode)) {
 				src.setVisible(false);
-
+				
 				src = compSrc.findComponentAt((e.getPoint()));
 				src = getCorrectComp(src, (View) e.getComponent(), e);
 			}
-
+			
 			if (src instanceof EdgeComponent && ((EdgeComponent) src).getGraphElement().equals(dummyEdge)) {
 				tempEdgeComp = src;
 				tempEdgeComp.setVisible(false);
-
+				
 				src = compSrc.findComponentAt((e.getPoint()));
-
+				
 				src = getCorrectComp(src, (View) e.getComponent(), e);
 				tempEdgeComp.setVisible(true);
 			}
 		}
-
+		
 		if (lastSelectedComp != src) {
 			if (lastSelectedComp != null && !selectedContain(lastSelectedComp)) {
 				unDisplayAsMarked((GraphElementComponent) lastSelectedComp);
 				src.getParent().repaint();
 			}
-
+			
 			if (src instanceof NodeComponent && (((NodeComponent) src).getGraphElement() != dummyNode)) {
 				if (!selectedContain(src)) {
 					highlight(src, e);
 					src.getParent().repaint();
 				}
-
+				
 				lastSelectedComp = src;
 			}
 		}
-
+		
 		if (src instanceof View) {
 			lastSelectedComp = null;
 		}
-
+		
 		if (dummyNode != null) {
 			((NodeGraphicAttribute) dummyNode.getAttribute(GraphicAttributeConstants.GRAPHICS)).getCoordinate()
 					.setCoordinate(e.getPoint());
 		}
-
+		
 		if (creatingEdge) {
 			// update view scrolling
 			for (View view : session.getViews()) {
@@ -497,24 +501,24 @@ public class MegaCreateTool extends MegaTools {
 			}
 		}
 	}
-
+	
 	private long lastMouseEventTime = Long.MIN_VALUE;
-
+	
 	/**
 	 * Invoked when the mouse button has been clicked (pressed and released) inside
 	 * the editor panel and handles what has to happen.
 	 * 
 	 * @param e
-	 *            the mouse event
+	 *           the mouse event
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// ctrlDown = getIsCtrlDown(e);
 		super.mousePressed(e);
 	}
-
+	
 	private static String dummyNodeID = "temporary";
-
+	
 	public static boolean isTemporaryNode(Node n) {
 		try {
 			if (n.getBoolean(dummyNodeID)) {
@@ -526,11 +530,11 @@ public class MegaCreateTool extends MegaTools {
 			return false;
 		}
 	}
-
+	
 	public boolean isCreatingEdge() {
 		return creatingEdge;
 	}
-
+	
 	private void startAddEdge(MouseEvent e, Node clickedNode) {
 		NodeGraphicAttribute dummyGraphics;
 		// start adding edge
@@ -544,10 +548,10 @@ public class MegaCreateTool extends MegaTools {
 		dummyGraphics.getCoordinate().setCoordinate(e.getPoint());
 		dummyCol.add(dummyGraphics, false);
 		dummyCol.add(new BooleanAttribute(dummyNodeID, true), false);
-
+		
 		Graph graph = clickedNode.getGraph();
 		dummyNode = graph.addNode(dummyCol);
-
+		
 		CollectionAttribute dummyEdgeCol = new HashMapAttribute("");
 		dummyEdgeGraphAttr = new EdgeGraphicAttribute();
 		dummyEdgeGraphAttr.setShape("org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
@@ -559,15 +563,15 @@ public class MegaCreateTool extends MegaTools {
 		this.first = clickedNode;
 		sourceCA.setCoordinate(e.getPoint());
 	}
-
+	
 	private Node addNode(MouseEvent e, boolean copyStyle) {
 		return addNode(e, copyStyle, true);
 	}
-
+	
 	private Node addNode(MouseEvent e, boolean copyStyle, boolean processGrid) {
 		return addNode(e, copyStyle, processGrid, true);
 	}
-
+	
 	private Node addNode(MouseEvent e, boolean copyStyle, boolean processGrid, boolean makeundo) {
 		// add new node
 		Object o = e.getSource();
@@ -581,9 +585,9 @@ public class MegaCreateTool extends MegaTools {
 			MainFrame.showMessage("Operation not supported for this view type", MessageType.INFO);
 			return null;
 		}
-
+		
 		Node node;
-
+		
 		int x = e.getX();
 		int y = e.getY();
 		if (!e.isShiftDown() && processGrid) {
@@ -594,7 +598,7 @@ public class MegaCreateTool extends MegaTools {
 			x = x - (x % 10);
 			y = y - (y % 10);
 		}
-
+		
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 			node = getGraph().addNode(AttributeHelper.getDefaultGraphicsAttributeForKeggNode(x, y));
 			AttributeHelper.setLabel(node, "?");
@@ -602,7 +606,7 @@ public class MegaCreateTool extends MegaTools {
 		} else {
 			try {
 				Node nn = selection.getNodes().iterator().next();
-
+				
 				boolean visible = false;
 				if (session.getActiveView() instanceof GraffitiView) {
 					GraffitiView view = (GraffitiView) session.getActiveView();
@@ -629,7 +633,7 @@ public class MegaCreateTool extends MegaTools {
 		// getSelectedComps().add(tempGeComp);
 		mark(tempGeComp, false, false, this, false);
 		fireSelectionChanged();
-
+		
 		if (tempGeComp != null && tempGeComp.getParent() != null) {
 			tempGeComp.getParent().repaint();
 		}
@@ -641,13 +645,13 @@ public class MegaCreateTool extends MegaTools {
 		}
 		return node;
 	}
-
+	
 	private void addBend(MouseEvent e) {
 		// add a bend ... to edge that is being created
 		if (bends == null) {
 			bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
 		}
-
+		
 		int x = e.getX();
 		int y = e.getY();
 		if (!e.isShiftDown()) {
@@ -658,14 +662,14 @@ public class MegaCreateTool extends MegaTools {
 			x = x - (x % 10);
 			y = y - (y % 10);
 		}
-
+		
 		numOfBends++;
 		bends.add(new CoordinateAttribute("bend" + numOfBends, x, y));
 		// add a bend ... to dummy edge
 		if (dummyBends == null) {
 			dummyBends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
 			dummyEdgeGraphAttr.setBends(dummyBends);
-
+			
 			// dummyBends = dummyEdgeGraphAttr.getBends();
 		}
 		dummyEdgeGraphAttr.getBends().add(new CoordinateAttribute("bend" + numOfBends, e.getPoint()), true);
@@ -676,7 +680,7 @@ public class MegaCreateTool extends MegaTools {
 		((NodeGraphicAttribute) dummyNode.getAttribute(GraphicAttributeConstants.GRAPHICS)).getCoordinate()
 				.setCoordinate(pt);
 	}
-
+	
 	private void processEdgeCreation(MouseEvent e, Node clickedNode) {
 		// end edge here and create the edge
 		// remove all temporary things
@@ -727,11 +731,11 @@ public class MegaCreateTool extends MegaTools {
 			graphics.getLineMode().setDashArray(null);
 		} else {
 			float[] newDA = new float[daEntries.length];
-
+			
 			for (int i = daEntries.length - 1; i >= 0; i--) {
 				newDA[i] = da.getFloat(daEntries[i], 10);
 			}
-
+			
 			graphics.getLineMode().setDashArray(newDA);
 		}
 		graphics.getLineMode().setDashPhase(prefs.getFloat("dashPhase", 0.0f));
@@ -742,11 +746,11 @@ public class MegaCreateTool extends MegaTools {
 		}
 		final Edge edge = clickedNode.getGraph().addEdge(this.first, clickedNode, clickedNode.getGraph().isDirected(),
 				col);
-
+		
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 			AttributeHelper.setLabel(edge, "?");
 		}
-
+		
 		this.first = null;
 		View v = ((View) e.getComponent());
 		GraphElementComponent tempGeComp = v.getComponentForElement(edge);
@@ -762,7 +766,7 @@ public class MegaCreateTool extends MegaTools {
 		fireSelectionChanged();
 		if (!invisibleEdge)
 			tempGeComp.getParent().repaint();
-
+		
 		AddEdgeEdit edit = new AddEdgeEdit(edge, clickedNode.getGraph(), geMap);
 		undoSupport.postEdit(edit);
 		creatingEdge = false;
@@ -774,13 +778,13 @@ public class MegaCreateTool extends MegaTools {
 			});
 		}
 	}
-
+	
 	/**
 	 * Invoked when the mouse button has been released inside the editor panel and
 	 * handles what has to happen.
 	 * 
 	 * @param e
-	 *            the mouse event
+	 *           the mouse event
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -788,23 +792,23 @@ public class MegaCreateTool extends MegaTools {
 			reset();
 			return;
 		}
-
+		
 		// ctrlDown = getIsCtrlDown(e);
-
+		
 		super.mouseReleased(e);
-
+		
 		if (creatingEdge && dragged && ((bends == null) || bends.isEmpty())) {
 			mousePressed(e);
 		}
-
+		
 		ToolButton.requestToolButtonFocus();
-
+		
 	}
-
+	
 	/**
 	 * Resets the tool to initial values.
 	 */
-
+	
 	public void reset() {
 		if (dummyNode != null) {
 			try {
@@ -812,21 +816,21 @@ public class MegaCreateTool extends MegaTools {
 			} catch (GraphElementNotFoundException genfe) {
 			}
 		}
-
+		
 		// dummyEdge should have been removed automatically after
 		// removal of dummyNode
 		dummyNode = null;
 		dummyEdge = null;
-
+		
 		// lastSelectedComp = null;
 		if (creatingEdge) {
 			creatingEdge = false;
 			numOfBends = 0;
 			bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the component on which the user clicked (using the information
 	 * contained in the <code>MouseEvent</code>. This is used to get the
@@ -834,11 +838,11 @@ public class MegaCreateTool extends MegaTools {
 	 * <code>LabelComponent</code> (associated with <code>ge</code>), for instance.
 	 * 
 	 * @param src
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param view
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param me
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected Component getCorrectComp(Component src, View view, MouseEvent me) {
@@ -847,7 +851,7 @@ public class MegaCreateTool extends MegaTools {
 		} else if (src instanceof AttributeComponent) {
 			Component comp = view
 					.getComponentForElement((GraphElement) ((AttributeComponent) src).getAttribute().getAttributable());
-
+			
 			if (comp == null) {
 				return (Component) me.getSource();
 			} else {
@@ -861,47 +865,50 @@ public class MegaCreateTool extends MegaTools {
 			}
 		}
 	}
-
+	
 	public String getToolName() {
 		return "MegaCreateTool";
 	}
-
+	
 	private Node breakEdge(final MouseEvent e, final Edge edgeToBeBroken) {
-
+		
 		final Graph graph = edgeToBeBroken.getGraph();
-
+		
 		final ObjectRef result = new ObjectRef();
-
+		
 		AbstractUndoableEdit updateCmd = new AbstractUndoableEdit() {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 223013535622328428L;
 			Node newNode = null;
 			private Edge newEdge1 = null, newEdge2 = null;
 			private Node oldSource = null, oldTarget = null;
-
+			
 			private Edge oldEdge;
-
+			
 			@Override
 			public String getPresentationName() {
 				return "Edge Breaking";
 			}
-
+			
 			@Override
 			public String getRedoPresentationName() {
 				return "Redo Edge Breaking";
 			}
-
+			
 			@Override
 			public String getUndoPresentationName() {
 				return "Undo Edge Breaking";
 			}
-
+			
 			@Override
 			public void die() {
 				super.die();
-
+				
 			}
-
+			
 			@Override
 			public void redo() throws CannotRedoException {
 				if (!graph.containsEdge(edgeToBeBroken)) {
@@ -918,7 +925,7 @@ public class MegaCreateTool extends MegaTools {
 					newEdge1 = graph.addEdgeCopy(oldEdge, oldEdge.getSource(), oldEdge.getTarget());
 					graph.deleteEdge(oldEdge);
 					String docking;
-
+					
 					if (creatingEdge) {
 						// change new node attributes
 						AttributeHelper.setSize(newNode, 1, 1);
@@ -935,7 +942,7 @@ public class MegaCreateTool extends MegaTools {
 									GraphicAttributeConstants.LABELGRAPHICS + String.valueOf(k)))
 								newNode.removeAttribute(GraphicAttributeConstants.LABELGRAPHICS + String.valueOf(k));
 					}
-
+					
 					// set new node position to a position on the old not broken edge
 					Vector2d pos1 = AttributeHelper.getPositionVec2d(newEdge1.getSource());
 					// has old edge a docking at source node?
@@ -1065,13 +1072,13 @@ public class MegaCreateTool extends MegaTools {
 						xs = m * (pos3.y - ys) + pos3.x;
 					}
 					AttributeHelper.setPosition(newNode, xs, ys);
-
+					
 					// add edge
 					oldTarget = newEdge1.getTarget();
 					oldSource = newEdge1.getSource();
 					newEdge1.setTarget(newNode);
 					newEdge2 = getGraph().addEdgeCopy(newEdge1, newNode, oldTarget);
-
+					
 					// change edge attributes
 					AttributeHelper.setArrowhead(newEdge1, false);
 					AttributeHelper.setArrowtail(newEdge2, false);
@@ -1123,7 +1130,7 @@ public class MegaCreateTool extends MegaTools {
 					graph.getListenerManager().transactionFinished(this);
 				}
 			}
-
+			
 			@Override
 			public void undo() throws CannotUndoException {
 				graph.getListenerManager().transactionStarted(this);
@@ -1132,23 +1139,23 @@ public class MegaCreateTool extends MegaTools {
 					graph.deleteEdge(newEdge2);
 					oldEdge = graph.addEdgeCopy(oldEdge, oldSource, oldTarget);
 					graph.deleteNode(newNode);
-
+					
 					// newNode = null;
 					// newEdge1 = null;
 					// newEdge2 = null;
 					// oldEdge = null;
 					// oldSource = null;
 					// oldTarget = null;
-
+					
 				} finally {
 					graph.getListenerManager().transactionFinished(this);
 				}
 			}
-
+			
 		};
-
+		
 		updateCmd.redo();
-
+		
 		if (graph == MainFrame.getInstance().getActiveSession().getGraph()) {
 			undoSupport.beginUpdate();
 			undoSupport.postEdit(updateCmd);
@@ -1159,7 +1166,7 @@ public class MegaCreateTool extends MegaTools {
 		else
 			return null;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

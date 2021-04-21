@@ -48,46 +48,46 @@ import org.jfree.data.XYDataset;
  * your own datasets.
  */
 public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, DomainInfo, RangeInfo {
-
+	
 	/** The series count. */
 	private static final int DEFAULT_SERIES_COUNT = 4;
-
+	
 	/** The item count. */
 	private static final int DEFAULT_ITEM_COUNT = 100;
-
+	
 	/** The range. */
 	private static final double DEFAULT_RANGE = 200;
-
+	
 	/** The x values. */
 	private Double[][] xValues;
-
+	
 	/** The y values. */
 	private Double[][] yValues;
-
+	
 	/** The number of series. */
 	private int seriesCount;
-
+	
 	/** The number of items. */
 	private int itemCount;
-
+	
 	/** The minimum domain value. */
 	private Number domainMin;
-
+	
 	/** The maximum domain value. */
 	private Number domainMax;
-
+	
 	/** The minimum range value. */
 	private Number rangeMin;
-
+	
 	/** The maximum range value. */
 	private Number rangeMax;
-
+	
 	/** The range of the domain. */
 	private Range domainRange;
-
+	
 	/** The range. */
 	private Range range;
-
+	
 	/**
 	 * Creates a sample dataset using default settings (4 series, 100 data items per
 	 * series, random data in the range 0 - 200).
@@ -95,30 +95,30 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 	public SampleXYDataset2() {
 		this(DEFAULT_SERIES_COUNT, DEFAULT_ITEM_COUNT);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @param seriesCount
-	 *            the number of series.
+	 *           the number of series.
 	 * @param itemCount
-	 *            the number of items.
+	 *           the number of items.
 	 */
 	public SampleXYDataset2(final int seriesCount, final int itemCount) {
-
+		
 		this.xValues = new Double[seriesCount][itemCount];
 		this.yValues = new Double[seriesCount][itemCount];
 		this.seriesCount = seriesCount;
 		this.itemCount = itemCount;
-
+		
 		double minX = Double.POSITIVE_INFINITY;
 		double maxX = Double.NEGATIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY;
 		double maxY = Double.NEGATIVE_INFINITY;
-
+		
 		for (int series = 0; series < seriesCount; series++) {
 			for (int item = 0; item < itemCount; item++) {
-
+				
 				final double x = (Math.random() - 0.5) * DEFAULT_RANGE;
 				this.xValues[series][item] = Double.valueOf(x);
 				if (x < minX) {
@@ -127,7 +127,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 				if (x > maxX) {
 					maxX = x;
 				}
-
+				
 				final double y = (Math.random() + 0.5) * 6 * x + x;
 				this.yValues[series][item] = Double.valueOf(y);
 				if (y < minY) {
@@ -136,48 +136,48 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 				if (y > maxY) {
 					maxY = y;
 				}
-
+				
 			}
 		}
-
+		
 		this.domainMin = Double.valueOf(minX);
 		this.domainMax = Double.valueOf(maxX);
 		this.domainRange = new Range(minX, maxX);
-
+		
 		this.rangeMin = Double.valueOf(minY);
 		this.rangeMax = Double.valueOf(maxY);
 		this.range = new Range(minY, maxY);
-
+		
 	}
-
+	
 	/**
 	 * Returns the x-value for the specified series and item. Series are numbered 0,
 	 * 1, ...
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @param item
-	 *            the index (zero-based) of the required item.
+	 *           the index (zero-based) of the required item.
 	 * @return the x-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
 		return this.xValues[series][item];
 	}
-
+	
 	/**
 	 * Returns the y-value for the specified series and item. Series are numbered 0,
 	 * 1, ...
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @param item
-	 *            the index (zero-based) of the required item.
+	 *           the index (zero-based) of the required item.
 	 * @return the y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int item) {
 		return this.yValues[series][item];
 	}
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
@@ -186,29 +186,29 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 	public int getSeriesCount() {
 		return this.seriesCount;
 	}
-
+	
 	/**
 	 * Returns the name of the series.
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(final int series) {
 		return "Sample " + series;
 	}
-
+	
 	/**
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *            the index (zero-based) of the series.
+	 *           the index (zero-based) of the series.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
 		return this.itemCount;
 	}
-
+	
 	/**
 	 * Returns the minimum domain value.
 	 * 
@@ -217,7 +217,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 	public Number getMinimumDomainValue() {
 		return this.domainMin;
 	}
-
+	
 	/**
 	 * Returns the maximum domain value.
 	 * 
@@ -226,7 +226,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 	public Number getMaximumDomainValue() {
 		return this.domainMax;
 	}
-
+	
 	/**
 	 * Returns the range of values in the domain.
 	 * 
@@ -235,7 +235,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 	public Range getDomainRange() {
 		return this.domainRange;
 	}
-
+	
 	/**
 	 * Returns the minimum range value.
 	 * 
@@ -244,7 +244,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 	public Number getMinimumRangeValue() {
 		return this.rangeMin;
 	}
-
+	
 	/**
 	 * Returns the maximum range value.
 	 * 
@@ -253,7 +253,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 	public Number getMaximumRangeValue() {
 		return this.rangeMax;
 	}
-
+	
 	/**
 	 * Returns the range of values in the range (y-values).
 	 * 
@@ -262,5 +262,5 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 	public Range getValueRange() {
 		return this.range;
 	}
-
+	
 }

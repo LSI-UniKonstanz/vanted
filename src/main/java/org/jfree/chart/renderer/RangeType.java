@@ -36,37 +36,37 @@ package org.jfree.chart.renderer;
  * directly (STANDARD) or stacks them (STACKED).
  */
 public final class RangeType {
-
+	
 	/**
 	 * The overall range is determined by looking at the individual values.
 	 */
 	public static final RangeType STANDARD = new RangeType("RangeType.STANDARD");
-
+	
 	/**
 	 * The overall range is determined by looking at the sums of the values within
 	 * each category.
 	 */
 	public static final RangeType STACKED = new RangeType("RangeType.STACKED");
-
+	
 	/**
 	 * The overall range is determined by looking at the running total within each
 	 * series.
 	 */
 	public static final RangeType SERIES_CUMULATIVE = new RangeType("RangeType.SERIES_CUMULATIVE");
-
+	
 	/** The name. */
 	private String name;
-
+	
 	/**
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *            the name.
+	 *           the name.
 	 */
 	private RangeType(String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * Returns a string representing the object.
 	 * 
@@ -75,31 +75,31 @@ public final class RangeType {
 	public String toString() {
 		return this.name;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if this object is equal to the specified object,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (this == o) {
 			return true;
 		}
 		if (!(o instanceof RangeType)) {
 			return false;
 		}
-
+		
 		final RangeType order = (RangeType) o;
 		if (!this.name.equals(order.toString())) {
 			return false;
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 }

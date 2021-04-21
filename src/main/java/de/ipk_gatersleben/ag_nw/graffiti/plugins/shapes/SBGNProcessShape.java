@@ -23,20 +23,20 @@ import org.graffiti.plugins.views.defaults.RectangleNodeShape;
  * @author Tobias Czauderna
  */
 public class SBGNProcessShape extends RectangleNodeShape implements ProvidesAdditonalDrawingShapes {
-
+	
 	@Override
 	public void buildShape(NodeGraphicAttribute nodeGraphicAttribute) {
-
+		
 		this.nodeAttr = nodeGraphicAttribute;
-
+		
 		DimensionAttribute dimensionAttribute = nodeGraphicAttribute.getDimension();
 		// width and height include the sticks left - right / top - bottom
 		double width = dimensionAttribute.getWidth();
 		double height = dimensionAttribute.getHeight();
-
+		
 		double frameThickness = Math.floor(nodeGraphicAttribute.getFrameThickness());
 		double offset = frameThickness / 2d;
-
+		
 		double offsetX = offset;
 		double offsetY = offset;
 		// set size of the square according to min(width, height)
@@ -46,7 +46,7 @@ public class SBGNProcessShape extends RectangleNodeShape implements ProvidesAddi
 			this.rect2D.setFrame(offsetX + this.offX, (height - width) / 2d + offsetY + this.offY, width, width);
 		else
 			this.rect2D.setFrame(offsetX + this.offX, offsetY + this.offY, width, height); // sticks not visible
-
+			
 		double correctedWidth = width + frameThickness;
 		double correctedHeight = height + frameThickness;
 		if (Double.compare(Math.floor(offset), offset) == 0) {
@@ -55,12 +55,12 @@ public class SBGNProcessShape extends RectangleNodeShape implements ProvidesAddi
 		}
 		// set shape size including sticks
 		((RectangularShape) this.thickShape).setFrame(0, 0, correctedWidth + this.addSx, correctedHeight + this.addSy);
-
+		
 	}
-
+	
 	@Override
 	public Point2D getIntersection(Line2D line) {
-
+		
 		Rectangle2D rectangle = getRealBounds2D();
 		double x = rectangle.getX();
 		double y = rectangle.getY();
@@ -74,23 +74,23 @@ public class SBGNProcessShape extends RectangleNodeShape implements ProvidesAddi
 		else
 			rectangle = new Rectangle2D.Double(x, (height - width) / 2d + y, width, width);
 		return getIntersectionOfRoundRectangleAndLine(line, rectangle, rounding);
-
+		
 	}
-
+	
 	@Override
 	public Collection<Shape> getPreBorderShapes() {
-
+		
 		return null;
-
+		
 	}
-
+	
 	@Override
 	public Collection<Shape> getPostBorderShapes() {
-
+		
 		Rectangle2D bounds2D = getBounds2D();
 		double width = bounds2D.getWidth();
 		double height = bounds2D.getHeight();
-
+		
 		ArrayList<Shape> stickShapes = new ArrayList<>();
 		if (width > height) { // horizontal sticks
 			double length = (width - height) / 2d;
@@ -107,14 +107,14 @@ public class SBGNProcessShape extends RectangleNodeShape implements ProvidesAddi
 		} else
 			return null; // sticks not visible
 		return stickShapes;
-
+		
 	}
-
+	
 	@Override
 	protected double getRounding() {
-
+		
 		return 0;
-
+		
 	}
-
+	
 }

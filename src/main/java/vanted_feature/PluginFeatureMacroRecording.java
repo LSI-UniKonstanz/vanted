@@ -15,12 +15,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Christian Klukas
  */
 public class PluginFeatureMacroRecording extends IPK_PluginAdapter {
-
+	
 	public PluginFeatureMacroRecording() {
 		if (new SettingsHelperDefaultIsFalse().isEnabled("Macro recorder (in development)"))
 			ReleaseInfo.enableFeature(FeatureSet.MacroRecorder);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

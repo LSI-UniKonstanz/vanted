@@ -21,24 +21,24 @@ import javax.swing.filechooser.FileFilter;
  */
 public class GenericFileFilter extends FileFilter {
 	// ~ Instance fields ========================================================
-
+	
 	/** The extension for filtering */
 	private String extension;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for GenericFileFilter.
 	 * 
 	 * @param extension
-	 *            a extension for which the filter will be built.
+	 *           a extension for which the filter will be built.
 	 */
 	public GenericFileFilter(String extension) {
 		this.extension = extension;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * The description of this filter. For example: ".gml"
 	 * 
@@ -48,7 +48,7 @@ public class GenericFileFilter extends FileFilter {
 	public String getDescription() {
 		return "*" + extension;
 	}
-
+	
 	/**
 	 * Return the extension string for files that this filter allows.
 	 * 
@@ -57,44 +57,44 @@ public class GenericFileFilter extends FileFilter {
 	public String getExtension() {
 		return extension;
 	}
-
+	
 	/**
 	 * Whether the given file is accepted by this filter.
 	 * 
 	 * @param f
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	@Override
 	public boolean accept(File f) {
 		boolean accept = f.isDirectory();
-
+		
 		if (!accept) {
 			String suffix = getExtension(f);
-
+			
 			if (suffix != null)
 				accept = suffix.equals(extension);
 		}
-
+		
 		return accept;
 	}
-
+	
 	/**
 	 * Get the extension of a file.
 	 * 
 	 * @param f
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	private String getExtension(File f) {
 		String ext = null;
 		String s = f.getPath();
 		int i = s.lastIndexOf('.');
-
+		
 		if ((i > 0) && (i < (s.length() - 1))) {
 			ext = s.substring(i).toLowerCase();
 		}
-
+		
 		return ext;
 	}
 }

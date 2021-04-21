@@ -50,46 +50,46 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.35.6.1 $
  */
 public abstract class MegaTools extends AbstractUndoableTool {
-
+	
 	static final Logger logger = Logger.getLogger(MegaTools.class);
 	static {
 		logger.setLevel(Level.INFO);
 	}
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	// protected EditorSession session;
-
+	
 	/** DOCUMENT ME! */
 	protected SelectionModel selectionModel;
-
+	
 	/** DOCUMENT ME! */
 	protected final String ACTIVE = "active";
-
+	
 	protected Cursor normCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 	protected Cursor edgeCursor = new Cursor(Cursor.HAND_CURSOR);
 	protected Cursor nodeCursor = new Cursor(Cursor.HAND_CURSOR);
-
+	
 	protected Cursor myMoveCursor = new Cursor(Cursor.MOVE_CURSOR);
-
+	
 	/** DOCUMENT ME! */
 	protected Component lastSelectedComp;
 	protected Component selectedView;
 	static boolean scrollpanemovement;
-
+	
 	Component foundComponent;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	// protected Component lastSelectedComp;
 	// protected List selectedComps;
 	public MegaTools() {
 		super();
 		// //// MegaTools.selection = new Selection(ACTIVE);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * DOCUMENT ME!
 	 */
@@ -99,11 +99,11 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		else
 			logger.debug("SEL MODEL NULL");
 	}
-
+	
 	private static String desiredStatusMessage = null;
 	private static long desiredSince = Integer.MIN_VALUE;
 	private static final long delayStatus = 200;
-
+	
 	private static Timer statusCallTimer = new Timer(100, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (desiredSince != Integer.MAX_VALUE && System.currentTimeMillis() - desiredSince > delayStatus) {
@@ -112,48 +112,48 @@ public abstract class MegaTools extends AbstractUndoableTool {
 			}
 		}
 	});
-
+	
 	private static MouseEvent lastMouseE = null;
 	private static Component lastMouseSrc = null;
-
+	
 	public static boolean MouseWheelZoomEnabled = true;
-
+	
 	public Component getFoundComponent() {
 		return foundComponent;
 	}
-
+	
 	public void setFoundComponent(Component foundComponent) {
 		this.foundComponent = foundComponent;
 	}
-
+	
 	/**
 	 * Temporarily marks the component under cursor.
 	 * 
 	 * @param e
-	 *            the mouse event
+	 *           the mouse event
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// MainFrame.showMesssage(e.getX()+" - "+e.getY(), MessageType.PERMANENT_INFO);
 		// System.out.println(e.getSource().toString());
 		setFoundComponent(findComponentAt(e, e.getX(), e.getY()));
-
+		
 		if (getFoundComponent() != null && getFoundComponent() instanceof GraphElementComponent && AttributeHelper
 				.isHiddenGraphElement(((GraphElementComponent) getFoundComponent()).getGraphElement())) {
 			setFoundComponent(getLastMouseSrc());
 		}
-
+		
 		setLastMouseComponent(e, foundComponent);
 		informAttributeComponentsAboutMouseEvents(e, foundComponent);
-
+		
 		boolean useNodeCursor = foundComponent instanceof NodeComponent;
 		boolean useEdgeCursor = foundComponent instanceof EdgeComponent;
-
+		
 		if (!statusCallTimer.isRunning()) {
 			statusCallTimer.setRepeats(true);
 			statusCallTimer.start();
 		}
-
+		
 		boolean selectedContain = selectedContain(lastSelectedComp);
 		// System.out.println("SRC: "+src.toString());
 		if (foundComponent != null && !foundComponent.equals(lastSelectedComp)) {
@@ -176,12 +176,12 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				desiredStatusMessage = null;
 				desiredSince = Integer.MIN_VALUE;
 			}
-
+			
 			if (foundComponent instanceof View) {
 				lastSelectedComp = null;
 			} else {
 				lastSelectedComp = foundComponent;
-
+				
 				if (!selectedContain(lastSelectedComp)) {
 					for (Component c : getCompsForElem(((GraphElementComponent) lastSelectedComp).getGraphElement())) {
 						highlight(c, e);
@@ -229,7 +229,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 					if (gf != null)
 						gf.setCursor(getEdgeCursor());
 				}
-
+				
 				// Component src2 = getComponentAt(e);
 				// src2.setCursor(getEdgeCursor());
 			} else {
@@ -243,13 +243,13 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				// src2.setCursor(getNormCursor());
 			}
 		}
-
+		
 		// move the screen if no component is selected
 		if (foundComponent == null) {
 			GraffitiView view = (GraffitiView) session.getActiveView();
 		}
 	}
-
+	
 	private void informAttributeComponentsAboutMouseEvents(MouseEvent e, Component src) {
 		if (src != null && !(src instanceof View))
 			if (src instanceof MouseMotionListener) {
@@ -270,38 +270,38 @@ public abstract class MegaTools extends AbstractUndoableTool {
 					}
 			}
 	}
-
+	
 	protected static void setLastMouseComponent(MouseEvent e, Component src) {
 		MegaTools.lastMouseE = e;
 		MegaTools.lastMouseSrc = src;
 	}
-
+	
 	protected Cursor getNormCursor() {
 		return normCursor;
 	}
-
+	
 	protected Cursor getEdgeCursor() {
 		return edgeCursor;
 	}
-
+	
 	protected Cursor getNodeCursor() {
 		return nodeCursor;
 	}
-
+	
 	/**
 	 * Called when the active session is changed.
 	 * 
 	 * @param s
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	@Override
 	public void sessionChanged(Session s) {
 		super.sessionChanged(s);
-
+		
 		lastMouseSrc = null;
-
+		
 		// this.session = (EditorSession) s;
-
+		
 		// there is a new active session. Change the selection
 		// model therefore
 		if (s != null) {
@@ -317,42 +317,42 @@ public abstract class MegaTools extends AbstractUndoableTool {
 			this.lastSelectedComp = null;
 		}
 	}
-
+	
 	/**
 	 * Called when the session data (not the session's graph data!) changed.
 	 * 
 	 * @param s
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	@Override
 	public void sessionDataChanged(Session s) {
 		super.sessionDataChanged(s);
 		this.sessionChanged(s);
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param me
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected boolean isControlDown(MouseEvent me) {
 		boolean result = me.isControlDown();
 		return result;
 	}
-
+	
 	protected boolean isAltDown(MouseEvent me) {
 		return me.isAltDown();
 	}
-
+	
 	/**
 	 * Returns Component found at position and in source indicated by the given
 	 * mouse event. Ignores everything but nodes, edges and the view. Will return
 	 * the containing ViewComponent, if Shift + CTRL is pressed
 	 * 
 	 * @param me
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected Component findComponentAt(MouseEvent me, int x, int y) {
@@ -361,7 +361,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		if (!(session.getActiveView() instanceof GraffitiView))
 			return null;
 		GraffitiView view = (GraffitiView) session.getActiveView();
-
+		
 		if (me.isControlDown() && me.isShiftDown()) {
 			return view.getViewComponent();
 		}
@@ -370,10 +370,10 @@ public abstract class MegaTools extends AbstractUndoableTool {
 			AttributeComponent ac = (AttributeComponent) c;
 			return view.getComponentForElement((GraphElement) ac.getAttribute().getAttributable());
 		}
-
+		
 		return c;
 	}
-
+	
 	protected Component getComponentAt(MouseEvent me) {
 		GraffitiView view = (GraffitiView) session.getActiveView();
 		Component c = view.getComponentAt(me.getX(), me.getY());
@@ -383,7 +383,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		}
 		return c;
 	}
-
+	
 	protected AttributeComponent getAttributeComponentAt(MouseEvent me) {
 		Session session = MainFrame.getInstance().getActiveSession();
 		GraffitiView view = (GraffitiView) session.getActiveView();
@@ -394,16 +394,16 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Add component to selection.
 	 * 
 	 * @param geComp
-	 *            the comp holding the element to add to the selection.
+	 *           the comp holding the element to add to the selection.
 	 * @param ctrlPressed
-	 *            true if the ctrl-key has been pressed
+	 *           true if the ctrl-key has been pressed
 	 * @param caller
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param issueSelectionEventIfSelectionChanged
 	 */
 	protected void mark(GraphElementComponent geComp, boolean findContainingNodes, boolean ctrlPressed,
@@ -452,7 +452,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 					// selectionModel.setActiveSelection(ACTIVE);
 					selection.clear();
 				}
-
+				
 				// add graphelement to selection
 				// selectedComps.add(geComp);
 				if (!AttributeHelper.isHiddenGraphElement(ge))
@@ -477,7 +477,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		} else
 			System.out.println("Can't highlight selection!");
 	}
-
+	
 	private ArrayList<Node> findContainingNodes(Node n) {
 		ArrayList<Node> result = new ArrayList<Node>();
 		if (n != null && n.getGraph() != null) {
@@ -502,7 +502,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		}
 		return result;
 	}
-
+	
 	protected ArrayList<Node> findContainingParentNodes(Node n) {
 		ArrayList<Node> result = new ArrayList<Node>();
 		if (n != null && n.getGraph() != null) {
@@ -527,29 +527,29 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns true if the current selection contains the given
 	 * <code>GraphElement</code>.
 	 * 
 	 * @param ge
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected boolean selectedContain(GraphElement ge) {
 		if (selection.getNodes().contains(ge) || selection.getEdges().contains(ge)) {
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * Returns true if the current selection contains the given
 	 * <code>GraphElementComponent</code>.
 	 * 
 	 * @param gec
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected boolean selectedContain(Component gec) {
@@ -564,29 +564,29 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				return false;
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * Removes the graphelement from the selection.
 	 * 
 	 * @param geComp
-	 *            the comp holding the element to add to the selection.
+	 *           the comp holding the element to add to the selection.
 	 */
 	protected void unmark(GraphElementComponent geComp) {
 		if (geComp != null) {
 			GraphElement ge = geComp.getGraphElement();
-
+			
 			// assert selectedComps.contains(ge);
 			selection.remove(ge);
-
+			
 			// selectedComps.remove(geComp);
 			unDisplayAsMarked(geComp);
 			selectionModel.selectionChanged();
 		}
 	}
-
+	
 	/**
 	 * Clears the selection. Does not fire a selectionChanged event.
 	 */
@@ -597,23 +597,23 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		if (selection != null) {
 			selection.clear();
 		}
-
+		
 	}
-
+	
 	public static MouseEvent getLastMouseE() {
 		return lastMouseE;
 	}
-
+	
 	public static boolean wasScrollPaneMovement() {
 		boolean ret = scrollpanemovement;
 		scrollpanemovement = false; // reset
 		return ret;
 	}
-
+	
 	public static Component getLastMouseSrc() {
 		return lastMouseSrc;
 	}
-
+	
 	public void preProcessImageCreation() {
 		avoidHighlight = true;
 		if (lastSelectedComp != null && !selectedContain(lastSelectedComp)) {
@@ -621,7 +621,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		}
 		unDisplayAsMarked(getAllMarkedComps());
 	}
-
+	
 	public void postProcessImageCreation() {
 		avoidHighlight = false;
 		if (lastSelectedComp != null && !selectedContain(lastSelectedComp)) {

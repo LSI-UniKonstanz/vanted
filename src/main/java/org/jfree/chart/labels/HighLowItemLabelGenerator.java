@@ -52,27 +52,27 @@ import org.jfree.util.PublicCloneable;
  */
 public class HighLowItemLabelGenerator
 		implements XYLabelGenerator, XYToolTipGenerator, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The date formatter. */
 	private DateFormat dateFormatter;
-
+	
 	/** The number formatter. */
 	private NumberFormat numberFormatter;
-
+	
 	/**
 	 * Creates an item label generator using the default date and number formats.
 	 */
 	public HighLowItemLabelGenerator() {
 		this(DateFormat.getInstance(), NumberFormat.getInstance());
 	}
-
+	
 	/**
 	 * Creates a tool tip generator using the supplied date formatter.
 	 * 
 	 * @param dateFormatter
-	 *            the date formatter (<code>null</code> not permitted).
+	 *           the date formatter (<code>null</code> not permitted).
 	 * @param numberFormatter
-	 *            the number formatter (<code>null</code> not permitted).
+	 *           the number formatter (<code>null</code> not permitted).
 	 */
 	public HighLowItemLabelGenerator(DateFormat dateFormatter, NumberFormat numberFormatter) {
 		if (dateFormatter == null) {
@@ -84,22 +84,22 @@ public class HighLowItemLabelGenerator
 		this.dateFormatter = dateFormatter;
 		this.numberFormatter = numberFormatter;
 	}
-
+	
 	/**
 	 * Generates a tooltip text item for a particular item within a series.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return the tooltip text.
 	 */
 	public String generateToolTip(XYDataset dataset, int series, int item) {
-
+		
 		String result = null;
-
+		
 		if (dataset instanceof HighLowDataset) {
 			HighLowDataset d = (HighLowDataset) dataset;
 			Number high = d.getHighValue(series, item);
@@ -107,9 +107,9 @@ public class HighLowItemLabelGenerator
 			Number open = d.getOpenValue(series, item);
 			Number close = d.getCloseValue(series, item);
 			Number x = d.getXValue(series, item);
-
+			
 			result = d.getSeriesName(series);
-
+			
 			if (x != null) {
 				Date date = new Date(x.longValue());
 				result = result + "--> Date=" + this.dateFormatter.format(date);
@@ -126,56 +126,56 @@ public class HighLowItemLabelGenerator
 					result = result + " Close=" + this.numberFormatter.format(close.doubleValue());
 				}
 			}
-
+			
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Generates a label for the specified item. The label is typically a formatted
 	 * version of the data value, but any text can be used.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param category
-	 *            the category index (zero-based).
+	 *           the category index (zero-based).
 	 * @return the label (possibly <code>null</code>).
 	 */
 	public String generateLabel(XYDataset dataset, int series, int category) {
 		return null; // TODO: implement this method properly
 	}
-
+	
 	/**
 	 * Returns an independent copy of the generator.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if cloning is not supported.
+	 *            if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		HighLowItemLabelGenerator clone = (HighLowItemLabelGenerator) super.clone();
-
+		
 		if (this.dateFormatter != null) {
 			clone.dateFormatter = (DateFormat) this.dateFormatter.clone();
 		}
 		if (this.numberFormatter != null) {
 			clone.numberFormatter = (NumberFormat) this.numberFormatter.clone();
 		}
-
+		
 		return clone;
-
+		
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -194,5 +194,5 @@ public class HighLowItemLabelGenerator
 		}
 		return false;
 	}
-
+	
 }

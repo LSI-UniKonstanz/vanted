@@ -14,11 +14,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.xml_dat
 public abstract class MergeSort extends Object {
 	protected Object toSort[];
 	protected Object swapSpace[];
-
+	
 	public void sort(Object array[]) {
 		if (array != null && array.length > 1) {
 			int maxLength;
-
+			
 			maxLength = array.length;
 			swapSpace = new Object[maxLength];
 			toSort = array;
@@ -27,23 +27,23 @@ public abstract class MergeSort extends Object {
 			toSort = null;
 		}
 	}
-
+	
 	public abstract int compareElementsAt(int beginLoc, int endLoc);
-
+	
 	protected void mergeSort(int begin, int end) {
 		if (begin != end) {
 			int mid;
-
+			
 			mid = (begin + end) / 2;
 			this.mergeSort(begin, mid);
 			this.mergeSort(mid + 1, end);
 			this.merge(begin, mid, end);
 		}
 	}
-
+	
 	protected void merge(int begin, int middle, int end) {
 		int firstHalf, secondHalf, count;
-
+		
 		firstHalf = count = begin;
 		secondHalf = middle + 1;
 		while ((firstHalf <= middle) && (secondHalf <= end)) {

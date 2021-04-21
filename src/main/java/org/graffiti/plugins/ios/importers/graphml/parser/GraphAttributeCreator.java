@@ -1,10 +1,10 @@
-//==============================================================================
+// ==============================================================================
 //
-//   GraphAttributeCreator.java
+// GraphAttributeCreator.java
 //
-//   Copyright (c) 2001-2004 Gravisto Team, University of Passau
+// Copyright (c) 2001-2004 Gravisto Team, University of Passau
 //
-//==============================================================================
+// ==============================================================================
 // $Id: GraphAttributeCreator.java,v 1.6 2011/01/16 16:39:59 klukas Exp $
 
 package org.graffiti.plugins.ios.importers.graphml.parser;
@@ -19,16 +19,16 @@ import org.graffiti.attributes.CollectionAttribute;
  */
 class GraphAttributeCreator extends AttributeCreator {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>GraphAttributeCreator</code>.
 	 */
 	public GraphAttributeCreator() {
 		super();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/*
 	 *
 	 */

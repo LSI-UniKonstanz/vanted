@@ -28,38 +28,38 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Gml2PathwayWarningInfo
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
 
 public class EvaluateKGML extends AbstractAlgorithm {
-
+	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Evaluate KGML/Update View";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke('K', SystemInfo.getAccelModifier());
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.window";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 	}
-
+	
 	public void execute() {
 		evaluateAndUpdateGraph(graph);
 	}
-
+	
 	public static void evaluateAndUpdateGraph(Graph graph) {
 		try {
 			graph.getListenerManager().transactionStarted(graph);
@@ -75,5 +75,5 @@ public class EvaluateKGML extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(graph);
 		}
 	}
-
+	
 }

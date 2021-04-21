@@ -80,27 +80,30 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
- * 
  * @deprecated Since 2.7.0, it contains outdated information and has been moved
  *             to vanted.org, where an updated version can be found at the
  *             tutorials section. There is also existing resize issue, connected
  *             with that.
  */
 public class WorkflowHelper extends InspectorTab implements ScenarioGui, ContainsTabbedPane, HelperClass {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -815145579438677541L;
+	
 	private static WorkflowHelper instance = null;
-
+	
 	public JTabbedPane hc = new JTabbedPane();
-
+	
 	private FolderPanel library;
-
+	
 	NewsHelper nh;
-
+	
 	private JLabel recordStatus;
-
+	
 	private JCheckBox keggEnabler;
-
+	
 	public WorkflowHelper() {
 		super();
 		instance = this;
@@ -111,15 +114,15 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		nh = new NewsHelper(this);
 		initComponents();
 	}
-
+	
 	private void initComponents() {
 		double[][] sizeM = { { TableLayoutConstants.FILL }, // Columns
 				{ TableLayoutConstants.FILL } }; // Rows
-
+		
 		setLayout(new TableLayout(sizeM));
 		setBackground(null);
 		setOpaque(false);
-
+		
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 			add(nh.getNews((JTabbedPane) getParent()), "0,0");
 		} else {
@@ -139,7 +142,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		}
 		validate();
 	}
-
+	
 	private JPanel getSettings() {
 		final JPanel res = new JPanel();
 		res.setBackground(null);
@@ -151,14 +154,14 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 						TableLayoutConstants.PREFERRED, 2 * border, TableLayoutConstants.PREFERRED, 5 * border,
 						TableLayoutConstants.PREFERRED, border } }; // Rows
 		res.setLayout(new TableLayout(size));
-
+		
 		JCheckBox helpEnabler = new JCheckBox("<html><font color='gray'>Help Functions (not yet available)");
-
+		
 		final JComboBox lookSelection = new JComboBox();
 		lookSelection.setOpaque(false);
 		final JMButton saveLook = new JMButton("Save");
 		saveLook.setEnabled(false);
-
+		
 		// // windows styles
 		// if (AttributeHelper.windowsRunning()) {
 		// String[] val = new String[] {
@@ -173,7 +176,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		// LookAndFeelInfo(desc[i], v)));
 		// i++;
 		// }
-
+		
 		try {
 			LookAndFeelWrapper avtiveLaF = null;
 			String sel = UIManager.getLookAndFeel().getClass().getCanonicalName();
@@ -196,7 +199,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 						LookAndFeelWrapper po = (LookAndFeelWrapper) lookSelection.getSelectedItem();
 						if (po == null)
 							return;
-
+						
 						try {
 							UIManager.setLookAndFeel(po.getClassName());
 							if (ReleaseInfo.isRunningAsApplet())
@@ -219,13 +222,13 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				});
 			}
 		});
-
+		
 		saveLook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LookAndFeelWrapper op = (LookAndFeelWrapper) lookSelection.getSelectedItem();
 				if (op == null)
 					return;
-
+				
 				try {
 					new File(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel").delete();
 					TextFile.write(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel",
@@ -238,14 +241,14 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				}
 			}
 		});
-
+		
 		helpEnabler.addActionListener(getHelpEnabledSettingActionListener(helpEnabler));
 		helpEnabler.setOpaque(false);
 		boolean auto = ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp);
 		helpEnabler.setSelected(auto);
 		res.add(TableLayout.get3Split(new JLabel("Look and feel: "), lookSelection, saveLook, TableLayout.PREFERRED,
 				TableLayout.FILL, TableLayout.PREFERRED), "1,1");
-
+		
 		keggEnabler = new JCheckBox("KEGG access");
 		keggEnabler.setOpaque(false);
 		try {
@@ -304,35 +307,35 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				}
 			}
 		});
-
+		
 		// helpEnabler
 		res.add(getPluginConfigurationPanel(null, keggEnabler), "1,3");
 		res.add(TableLayout.get3Split(getAddOnManagerButton(), null, getPreferencesFolderButton(), TableLayout.FILL, 4,
 				TableLayout.FILL, 0, 0), "1,5");
-
+		
 		res.add(TableLayout.getSplit(getGridSettingEditor(), null, TableLayout.FILL, TableLayout.PREFERRED), "1,7");
-
+		
 		res.add(TableLayout.getSplit(null, null, TableLayout.PREFERRED, TableLayout.FILL), "1,9");
-
+		
 		res.add(new JLabel("<html>"
 				+ "<font color='#BB22222'>After restarting the program the changed settings will be fully active."),
 				"1,11");
-
+		
 		// final JLabel memLabel = GravistoService.getMemoryInfoLabel(false);
 		// res.add(memLabel, "1,13");
 		return res;
 	}
-
+	
 	private JComponent getGridSettingEditor() {
 		FolderPanel settings = new FolderPanel("Graph-View Settings", false, false, false, null);
 		boolean enabled = new SettingsHelperDefaultIsTrue().isEnabled("graph_view_grid");
 		MegaMoveTool.gridEnabled = enabled;
-
+		
 		Runnable enableGrid = new Runnable() {
 			public void run() {
 				MegaMoveTool.gridEnabled = true;
 			}
-
+			
 		};
 		Runnable disableGrid = new Runnable() {
 			public void run() {
@@ -343,7 +346,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 			public void run() {
 				MegaTools.MouseWheelZoomEnabled = true;
 			}
-
+			
 		};
 		Runnable disableZoom = new Runnable() {
 			public void run() {
@@ -353,13 +356,13 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		JComponent gridCheckBox = new SettingsHelperDefaultIsTrue().getBooleanSettingsEditor("Enable Grid",
 				"graph_view_grid", enableGrid, disableGrid);
 		settings.addGuiComponentRow(null, gridCheckBox, false);
-
+		
 		JComponent databaseCheckBox = new SettingsHelperDefaultIsFalse().getBooleanSettingsEditor(
 				"Database-based node statusbar-infos", "grav_view_database_node_status", enableGrid, disableGrid);
 		settings.addGuiComponentRow(null, databaseCheckBox, false);
-
+		
 		// Database-based node statusbar-infos
-
+		
 		JComponent zoomCheckBox = new SettingsHelperDefaultIsTrue().getBooleanSettingsEditor(
 				"<html>Mouse Wheel Zoom<br>(disable to scroll instead)", "graph_view_wheel_zoom", enableZoom,
 				disableZoom);
@@ -375,7 +378,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		settings.layoutRows();
 		return settings;
 	}
-
+	
 	private JButton getAddOnManagerButton() {
 		final JButton result = new JMButton("<html>Install / Configure Add-ons");
 		result.setIcon(GenericPluginAdapter.getAddonIcon());
@@ -397,9 +400,9 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 					p.showManageAddonDialog();
 			}
 		});
-
+		
 		final String oldText = result.getText();
-
+		
 		FileDrop.Listener fdl = new FileDrop.Listener() {
 			public void filesDropped(File[] files) {
 				if (files != null && files.length > 0) {
@@ -421,13 +424,13 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				}
 			}
 		};
-
+		
 		Runnable dragdetected = new Runnable() {
 			public void run() {
 				result.setText("<html><br><b>Drop file to install Add-on<br><br>");
 			}
 		};
-
+		
 		Runnable dragenddetected = new Runnable() {
 			public void run() {
 				if (!result.getText().contains("!"))
@@ -435,13 +438,13 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 			}
 		};
 		new FileDrop(null, result, null, false, fdl, dragdetected, dragenddetected);
-
+		
 		return result;
 	}
-
+	
 	private JButton getPreferencesFolderButton() {
 		JButton result = new JMButton("<html>Show Preferences Folder");
-
+		
 		result.setOpaque(false);
 		result.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -450,10 +453,10 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		});
 		return result;
 	}
-
+	
 	private JComponent getPluginConfigurationPanel(final JComponent additionalSetting1,
 			final JComponent additionalSetting2) {
-
+		
 		JLabel button = new JLabel("Loading of optional program features (");
 		JLabel bt3 = new JLabel("):");
 		JLabelHTMLlink bt2 = new JLabelHTMLlink("Reset", "Resets all settings to their default state. Restart needed!",
@@ -471,7 +474,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 								new File(HomeFolder.getHomeFolder() + "/" + settingsFile).delete();
 					}
 				});
-
+		
 		final FolderPanel features = new FolderPanel(null, false, false, false, null);
 		features.setBackground(null);
 		features.setFrameColor(null, null, 0, 5);
@@ -491,7 +494,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		return TableLayout.getSplitVertical(TableLayout.get3Split(button, bt2, bt3, TableLayout.PREFERRED,
 				TableLayout.PREFERRED, TableLayout.PREFERRED), features, TableLayout.PREFERRED, TableLayout.PREFERRED);
 	}
-
+	
 	private Collection<JComponent> getOptionalSettingsPanels() {
 		Collection<JComponent> result = new ArrayList<JComponent>();
 		for (PluginEntry pe : MainFrame.getInstance().getPluginManager().getPluginEntries()) {
@@ -502,7 +505,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		}
 		return result;
 	}
-
+	
 	private JComponent getEnableDisableOption(final PluginEntry pe) {
 		JComponent setting;
 		if (pe.getDescription().isOptionalDefaultTrue())
@@ -519,7 +522,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		}
 		return setting;
 	}
-
+	
 	public static void setSettings(boolean enable) {
 		for (PluginEntry pe : MainFrame.getInstance().getPluginManager().getPluginEntries())
 			if (pe.getDescription().isOptional()) {
@@ -528,11 +531,11 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				else
 					new SettingsHelperDefaultIsFalse().setEnabled(pe.getDescription().getName(), enable);
 			}
-
+		
 		if (enable != instance.keggEnabler.isSelected())
 			instance.keggEnabler.doClick();
 	}
-
+	
 	private ActionListener getHelpEnabledSettingActionListener(final JCheckBox helpEnabler) {
 		ActionListener res = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -545,12 +548,12 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				} catch (IOException err) {
 					ErrorMsg.addErrorMessage(err);
 				}
-
+				
 			}
 		};
 		return res;
 	}
-
+	
 	public static JPanel getWorkFlowHelp() {
 		JPanel help1 = new JPanel();
 		help1.setOpaque(false);
@@ -562,7 +565,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 						TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED,
 						border } }; // Rows
 		help1.setLayout(new TableLayout(size));
-
+		
 		FolderPanel intro = new FolderPanel("Introduction", false, true, false, null);
 		intro.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
 		intro.addGuiComponentRow(getCustomizedLabel(new JLabel("<html><small>"
@@ -574,7 +577,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		intro.layoutRows();
 		intro.addCollapseListenerDialogSizeUpdate();
 		/* new JLabel() */
-
+		
 		FolderPanel step1 = new FolderPanel("1. Create / Load Input Form", true, true, false, null);
 		step1.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
 		step1.addGuiComponentRow(getCustomizedLabel(new JLabel("<html><small><ol>"
@@ -587,10 +590,10 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				+ "labels in the input forms.")),
 				FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("inputformats"), Color.WHITE), false,
 				5);
-
+		
 		// JLabelJavaHelpLink.getHelpActionListener("inputformats"),
 		// "inputformats"
-
+		
 		step1.layoutRows();
 		step1.addCollapseListenerDialogSizeUpdate();
 		FolderPanel step2 = new FolderPanel("2. Create / Load Pathway", true, true, false, null
@@ -627,7 +630,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				+ "derived from the data.")),
 				FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("editcommands"), Color.WHITE), false,
 				5);
-
+		
 		step2.layoutRows();
 		step2.addCollapseListenerDialogSizeUpdate();
 		FolderPanel step3 = new FolderPanel("3. Perform Data Mapping", true, true, false, null);
@@ -655,7 +658,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		step4.addCollapseListenerDialogSizeUpdate();
 		FolderPanel step5 = new FolderPanel("5. Statistic Analysis", true, true, false, null);
 		step5.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
-
+		
 		step5.addGuiComponentRow(getCustomizedLabel(new JLabel("<html>Identify outliers in the dataset"
 				+ "<small><ul style=\"list-style-type:none\"><li>&bull; The identification of outliers is a difficult task, which may only in some cases be performed automatically. "
 				+ "The more replikate measurements are done, the more easy it is to identify outliers. "
@@ -663,14 +666,14 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				+ "automatically identify or remove outliers in the experimental data." + "</ul>")),
 				FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("analysismenu_david"), Color.WHITE),
 				false, 6);
-
+		
 		step5.addGuiComponentRow(getCustomizedLabel(new JLabel("<html>Recognize the sample data distribution"
 				+ "<small><ul style=\"list-style-type:none\"><li>&bull; The assumption of normal distribution of data samples is important for several analysis tasks. "
 				+ "The so called &quot;David Quicktest&quot; may be used to identify not normally distributed data samples. "
 				+ "But with few replikates, a sample data distribution is difficult to recognize." + "</ul>")),
 				FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("analysismenu_david"), Color.WHITE),
 				false, 6);
-
+		
 		step5.addGuiComponentRow(
 				getCustomizedLabel(
 						new JLabel("<html>Use the &quot;Statistics&quot; side-panel to perform statistical analysis"
@@ -696,7 +699,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		step6.layoutRows();
 		step6.addCollapseListenerDialogSizeUpdate();
 		int b = 3;
-
+		
 		intro.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		step1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		step2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -704,7 +707,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		step4.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		step5.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		step6.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
+		
 		help1.add(intro.getBorderedComponent(0, 0, 2 * b, 0), "1,1");
 		help1.add(step1.getBorderedComponent(b, 0, b, 0), "1,2");
 		help1.add(step2.getBorderedComponent(b, 0, b, 0), "1,3");
@@ -715,9 +718,9 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		help1.validate();
 		return help1;
 	}
-
+	
 	private static FolderPanel workflowFolderPanel;
-
+	
 	public void postWorkflowStep(String title, final String[] imports, final String[] commands) {
 		final String name = title;
 		JButton jb = new JMButton(name);
@@ -741,7 +744,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		workflowFolderPanel.addFirstGuiComponentRow(jb, new JLabel("<html>"), true, 2);
 		updateStatus();
 	}
-
+	
 	public void postWorkflowStep(Action action) {
 		final String name = (String) action.getValue("name");
 		JButton jb = new JMButton(name);
@@ -753,11 +756,11 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		workflowFolderPanel.addFirstGuiComponentRow(jb, new JLabel("<html>"), true, 2);
 		updateStatus();
 	}
-
+	
 	public void postWorkflowStep(final Algorithm algorithm, final Parameter[] params) {
 		if (workflowFolderPanel != null) {
 			JButton jb = new JMButton(algorithm.getName());
-
+			
 			// StringBuilder sb = new StringBuilder("<html><pre>");
 			// sb.append("// Start algorithm: "+algorithm.getName()+"<br>");
 			// sb.append("// category: "+algorithm.getCategory()+"<br>");
@@ -769,10 +772,10 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 			//
 			// final String title = algorithm.getName();
 			// final String help = sb.toString();
-
+			
 			// final String algClass = algorithm.getClass().getCanonicalName();
 			final String algName = algorithm.getName();
-
+			
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
@@ -798,14 +801,14 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 			updateStatus();
 		}
 	}
-
+	
 	private void updateStatus() {
 		if (workflowFolderPanel.getRowCount() != 1)
 			recordStatus.setText("Recording (" + workflowFolderPanel.getRowCount() + " actions)");
 		else
 			recordStatus.setText("Recording (" + workflowFolderPanel.getRowCount() + " action)");
 	}
-
+	
 	private String getObjectList(Parameter[] params, String div) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < params.length; i++) {
@@ -831,7 +834,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		}
 		return sb.toString();
 	}
-
+	
 	private JPanel getScenarioControl() {
 		JPanel help1 = new JPanel();
 		help1.setOpaque(false);
@@ -841,9 +844,9 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED,
 						TableLayoutConstants.PREFERRED, border } }; // Rows
 		help1.setLayout(new TableLayout(size));
-
+		
 		recordStatus = new JLabel("No active recording");
-
+		
 		FolderPanel control = new FolderPanel("Control", false, true, false, null);
 		control.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
 		control.addGuiComponentRow(getCustomizedLabel(new JLabel("<html><small>"
@@ -858,15 +861,15 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 						TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.FILL, 5, 0),
 				null, false, 5);
 		control.layoutRows();
-
+		
 		/* new JLabel() */
-
+		
 		FolderPanel active = new FolderPanel("Active Recording", false, true, false, null);
 		workflowFolderPanel = active;
 		ScenarioService.setGUI(this);
-
+		
 		workflowFolderPanel.setMaximumRowCount(5);
-
+		
 		active.setColumnStyle(TableLayout.PREFERRED, TableLayout.FILL);
 		// active.addGuiComponentRow(new JButton("<html>Grid Layout"), null,
 		// false, 2);
@@ -876,12 +879,12 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		// false, 2);
 		// active.addGuiComponentRow(new JButton("<html>Colorize Nodes"), null,
 		// false, 2);
-
+		
 		// JLabelJavaHelpLink.getHelpActionListener("inputformats"),
 		// "inputformats"
-
+		
 		active.layoutRows();
-
+		
 		library = new FolderPanel("Library", false, true, false, null
 		// JLabelJavaHelpLink.getHelpActionListener("inputformats"),
 		// "inputformats"
@@ -889,11 +892,11 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		library.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
 		for (Scenario s : ScenarioService.getAvailableScnenarios())
 			library.addGuiComponentRow(new MyScenarioEditor(s), null, false, 2);
-
+		
 		library.setMaximumRowCount(5);
-
+		
 		library.layoutRows();
-
+		
 		int b = 3;
 		help1.add(control.getBorderedComponent(0, 0, 2 * b, 0), "1,1");
 		help1.add(active.getBorderedComponent(b, 0, b, 0), "1,2");
@@ -901,7 +904,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		help1.validate();
 		return help1;
 	}
-
+	
 	private JButton getSaveButton() {
 		JButton res = new JMButton("");
 		res.setToolTipText("Save workflow recording (create menu command)");
@@ -933,7 +936,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 									return;
 							}
 							tf.write(fileName);
-
+							
 							library.clearGuiComponentList();
 							for (Scenario s : ScenarioService.getAvailableScnenarios())
 								library.addGuiComponentRow(new MyScenarioEditor(s), null, false, 2);
@@ -949,7 +952,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		});
 		return res;
 	}
-
+	
 	private JButton getRecordButton() {
 		JButton result = new JMButton("");
 		result.setIcon(myGetIcon("images/record.png"));
@@ -960,14 +963,14 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				ScenarioService.setCurrentScenario(s);
 				workflowFolderPanel.clearGuiComponentList();
 				workflowFolderPanel.layoutRows();
-
+				
 				ScenarioService.recordStart();
 				recordStatus.setText("Recording");
 			}
 		});
 		return result;
 	}
-
+	
 	public Icon myGetIcon(String name) {
 		ClassLoader cl = WorkflowHelper.class.getClassLoader();
 		String path = WorkflowHelper.class.getPackage().getName().replace('.', '/');
@@ -979,7 +982,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 			return null;
 		}
 	}
-
+	
 	private JButton getWorkflowPauseButton() {
 		final JButton result = new JMButton("");
 		result.setToolTipText("Pause/continue workflow recording");
@@ -997,50 +1000,50 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		});
 		return result;
 	}
-
+	
 	public static JLabel getCustomizedLabel(JLabel label) {
 		new JLabelScaler(Toolbox.getDPIScalingRatio()).coscaleHTML(label);
 		label.setBackground(Color.WHITE);
 		return label;
 	}
-
+	
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void transactionFinished(TransactionEvent e) {
 	}
-
+	
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		return v == null || v instanceof GraphView;
 	}
-
+	
 	public static WorkflowHelper getInstance() {
 		return instance;
 	}
-
+	
 	public JTabbedPane getTabbedPane() {
 		return hc;
 	}
-
+	
 	public static void showPreferencesFolder() {
 		MainFrame.showMessageDialog("<html>" + "The application preferences folder will be opened in a moment.<br>"
 				+ "This folder contains downloaded database files, stored quick-searches,<br>"

@@ -32,12 +32,12 @@ import javax.swing.JInternalFrame;
  */
 public class MaximizeFrame extends JInternalFrame {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -415416830581555379L;
+	
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -47,7 +47,7 @@ public class MaximizeFrame extends JInternalFrame {
 		super();
 		init();
 	}
-
+	
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -57,7 +57,7 @@ public class MaximizeFrame extends JInternalFrame {
 		super(title);
 		init();
 	}
-
+	
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -67,7 +67,7 @@ public class MaximizeFrame extends JInternalFrame {
 		super(title, resizable);
 		init();
 	}
-
+	
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -77,7 +77,7 @@ public class MaximizeFrame extends JInternalFrame {
 		super(title, resizable, closable);
 		init();
 	}
-
+	
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -88,7 +88,7 @@ public class MaximizeFrame extends JInternalFrame {
 		super(title, resizable, closable, maximizable);
 		init();
 	}
-
+	
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -99,9 +99,9 @@ public class MaximizeFrame extends JInternalFrame {
 		super(title, resizable, closable, maximizable, iconifiable);
 		init();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Wrap the frame&quot;s layout into a {@link MaximizeLayout}.
 	 */

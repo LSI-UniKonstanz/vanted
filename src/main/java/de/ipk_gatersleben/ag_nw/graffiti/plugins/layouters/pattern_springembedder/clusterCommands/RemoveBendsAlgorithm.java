@@ -17,7 +17,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class RemoveBendsAlgorithm extends AbstractAlgorithm {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -26,17 +26,17 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Remove Bends";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Edges.Bends";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.EDGE, Category.VISUAL));
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		/*
@@ -46,7 +46,7 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 		 */
 		return null;
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		/*
@@ -55,7 +55,7 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 		 * params[i++]).getInteger().intValue();
 		 */
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -63,7 +63,7 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 		if (graph.getEdges().size() <= 0)
 			throw new PreconditionException("Graph contains no edges!");
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -77,10 +77,10 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 			workEdges.addAll(selection.getEdges());
 		GraphHelper.removeBends(graph, workEdges, true);
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 }

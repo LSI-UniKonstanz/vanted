@@ -13,20 +13,19 @@ package org.graffiti.session;
  * 
  * @author D. Garkov
  * @since 2.7.0
- *
  */
 public class SessionAdapterExt implements SessionListenerExt {
-
+	
 	@Override
 	public void sessionChanged(Session s) {
 	}
-
+	
 	@Override
 	public void sessionDataChanged(Session s) {
 	}
-
+	
 	@Override
 	public void sessionClosed(Session session) {
 	}
-
+	
 }

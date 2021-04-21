@@ -41,32 +41,32 @@ import org.jfree.data.DefaultPieDataset;
  * packages for JFreeChart.
  */
 public class First {
-
+	
 	/**
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		// create a dataset...
 		final DefaultPieDataset data = new DefaultPieDataset();
 		data.setValue("Category 1", 43.2);
 		data.setValue("Category 2", 27.9);
 		data.setValue("Category 3", 79.5);
-
+		
 		// create a chart...
 		final JFreeChart chart = ChartFactory.createPieChart("Sample Pie Chart", data, true, // legend?
 				true, // tooltips?
 				false // URLs?
 		);
-
+		
 		// create and display a frame...
 		final ChartFrame frame = new ChartFrame("First", chart);
 		frame.pack();
 		frame.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -41,15 +41,15 @@ public class UControl extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement edge, Graph g, Model model) {
 		Edge elem = (Edge) edge;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		if (!model.containsID(RDFID)) {
 			Control interaction = model.addNew(Control.class, RDFID);
-
+			
 			UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 			UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 			UtilitySuperClassFromGraph.getControlType(elem, interaction);
@@ -60,7 +60,7 @@ public class UControl extends UtilitySuperClassToGraph {
 			UtilitySuperClassFromGraph.getName(elem, interaction);
 			UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 			UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
-
+			
 			// iteriere �ber alle Kanten und finde alle mit der gleichen RDFId
 			// f�ge bei gleicher RDFId die Controller und die Processes in eine
 			// Menge
@@ -68,27 +68,27 @@ public class UControl extends UtilitySuperClassToGraph {
 				if (AttributeHelper.hasAttribute(e, Messages.getString("UtilitySuperClassToGraph.82"))) {
 					String currentEdgeRDFId = e.getAttribute(Messages.getString("UtilitySuperClassToGraph.82"))
 							.getValue().toString();
-
+					
 					if (currentEdgeRDFId.matches(RDFID)) {
 						Node controlNode = e.getSource();
 						Node processNode = e.getTarget();
-
+						
 						String controlNodeRDFId = getAttributeSecure(controlNode,
 								Messages.getString("UtilitySuperClassToGraph.82"));
 						String processNodeRDFId = getAttributeSecure(processNode,
 								Messages.getString("UtilitySuperClassToGraph.82"));
-
+						
 						Controller control = (Controller) model.getByID(controlNodeRDFId);
 						Process process = (Process) model.getByID(processNodeRDFId);
-
+						
 						interaction.addController(control);
 						interaction.addControlled(process);
 					}
 				}
 			}
-
+			
 		}
-
+		
 	}
-
+	
 }

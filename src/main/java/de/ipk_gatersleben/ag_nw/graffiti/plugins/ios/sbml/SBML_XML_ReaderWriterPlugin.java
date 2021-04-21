@@ -29,7 +29,7 @@ public class SBML_XML_ReaderWriterPlugin extends AddonAdapter {
 	 * GUI dialogs, etc.
 	 */
 	public static boolean isTestintMode = false;
-
+	
 	@Override
 	protected void initializeAddon() {
 		System.out.println("initializeAddon called!");
@@ -38,26 +38,26 @@ public class SBML_XML_ReaderWriterPlugin extends AddonAdapter {
 			SBML_XML_Reader reader = new SBML_XML_Reader();
 			this.inputSerializers = new InputSerializer[] { reader };
 			this.outputSerializers = new OutputSerializer[] { new SBML_XML_Writer() };
-
+			
 			System.out.println("SBML_XML_Reader Writer Plugin started");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
-
+	
 	public SBML_XML_ReaderWriterPlugin() {
 		super();
 		initializeAddon();
 	}
-
+	
 	private static Logger logger = Logger.getRootLogger();
-
+	
 	/**
 	 * For testing.
 	 * 
 	 * @throws IOException
-	 *             by the FileAppender
+	 *            by the FileAppender
 	 */
 	@SuppressWarnings("unused")
 	private void logOperation() throws IOException {

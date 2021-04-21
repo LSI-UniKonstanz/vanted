@@ -19,56 +19,56 @@ import org.graffiti.core.StringBundle;
  */
 public class PluginManagerException extends Exception {
 	// ~ Static fields/initializers =============================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 8995166117614010696L;
+	
 	/** The <code>StringBundle</code> of the exception. */
 	protected static StringBundle sBundle = StringBundle.getInstance();
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/** DOCUMENT ME! */
 	private Dependency dependency;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for PluginManagerException.
 	 * 
 	 * @param key
-	 *            the error message of this exception.
+	 *           the error message of this exception.
 	 */
 	public PluginManagerException(String key) {
 		super(sBundle.getString(key) != null ? sBundle.getString(key) : key);
 	}
-
+	
 	/**
 	 * Constructs a plugin manager exception from the given parameters.
 	 * 
 	 * @param key
-	 *            the property key in the plugin manager's resource bundle.
+	 *           the property key in the plugin manager's resource bundle.
 	 * @param message
-	 *            the additional message of the exception.
+	 *           the additional message of the exception.
 	 */
 	public PluginManagerException(String key, String message) {
 		super((sBundle.getString(key) != null ? sBundle.getString(key) : key) + message);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the dependency.
 	 * 
 	 * @param dependency
-	 *            The dependency to set
+	 *           The dependency to set
 	 */
 	public void setDependency(Dependency dependency) {
 		this.dependency = dependency;
 	}
-
+	
 	/**
 	 * Returns the dependency.
 	 * 

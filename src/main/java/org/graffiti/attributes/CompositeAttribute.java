@@ -18,36 +18,36 @@ package org.graffiti.attributes;
  */
 public abstract class CompositeAttribute extends AbstractAttribute {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new <code>CompositeAttribute</code> with the given id.
 	 * 
 	 * @param id
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public CompositeAttribute(String id) {
 		super(id);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the given attribute to the given value. The attribute that is already
 	 * location <code>path</code> is overwritten!
 	 * 
 	 * @param att
-	 *            the <code>Attribute</code> containing the new value for the value
-	 *            asociated with the given id.
+	 *           the <code>Attribute</code> containing the new value for the value
+	 *           asociated with the given id.
 	 * @param id
-	 *            the id of the attribute to be set.
+	 *           the id of the attribute to be set.
 	 * @exception AttributeNotFoundException
-	 *                if there is no value associated with the given id.
+	 *               if there is no value associated with the given id.
 	 * @exception IllegalArgumentException
-	 *                if <code>att</code> has not the appropriate type.
+	 *               if <code>att</code> has not the appropriate type.
 	 */
 	public abstract void setAttribute(String id, Attribute att)
 			throws AttributeNotFoundException, IllegalArgumentException;
-
+	
 	/**
 	 * Transforms the <code>CompositeAttribute</code> into the basehierarchy. Maps
 	 * relative paths to the apropriate 'standard attributes' (e.g.
@@ -59,7 +59,7 @@ public abstract class CompositeAttribute extends AbstractAttribute {
 	 * @return the values of the composite attribute in a CollectionAttribute.
 	 */
 	public abstract CollectionAttribute getAttributes();
-
+	
 	/**
 	 * Returns the attribute with the given id. Proper ids can be obtained by
 	 * calling <code>getAttributes()</code> and then traversing the contained
@@ -69,10 +69,10 @@ public abstract class CompositeAttribute extends AbstractAttribute {
 	 * <code>CompositeAttribute</code>.
 	 * 
 	 * @param id
-	 *            the id of the attribute searched for.
+	 *           the id of the attribute searched for.
 	 * @return the attribute with the given id.
 	 * @exception AttributeNotFoundException
-	 *                if the searched attribute is not found.
+	 *               if the searched attribute is not found.
 	 */
 	public Attribute getAttribute(String id) throws AttributeNotFoundException {
 		return getAttributes().getAttribute(id);

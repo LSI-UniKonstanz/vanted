@@ -27,47 +27,47 @@ import org.graffiti.attributes.StringAttribute;
  */
 public class DockingAttribute extends HashMapAttribute implements GraphicAttributeConstants {
 	// ~ Instance fields ========================================================
-
+	
 	/** Defines a port at source node */
 	private SourceDockingAttribute source;
-
+	
 	/** Defines a port at target node */
 	private TargetDockingAttribute target;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for Docking.
 	 * 
 	 * @param id
-	 *            the id of the attriubte.
+	 *           the id of the attriubte.
 	 */
 	public DockingAttribute(String id) {
 		this(id, "", "");
 	}
-
+	
 	/**
 	 * Constructor for Docking.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param source
-	 *            the source-value of the attribute.
+	 *           the source-value of the attribute.
 	 * @param target
-	 *            the target-value of the attribute.
+	 *           the target-value of the attribute.
 	 */
 	public DockingAttribute(String id, String source, String target) {
 		super(id);
 		this.source = new SourceDockingAttribute(SOURCE, source);// (SourceDockingAttribute)StringAttribute.getTypedStringAttribute(SOURCE,
-																	// source);
+		// source);
 		this.target = new TargetDockingAttribute(TARGET, target);// TargetDockingAttribute)StringAttribute.getTypedStringAttribute(TARGET,
-																	// target);
+		// target);
 		add(this.source, false);
 		add(this.target, false);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the collection of attributes contained within this
 	 * <tt>CollectionAttribute</tt>. The docking values are set, additional values
@@ -75,16 +75,16 @@ public class DockingAttribute extends HashMapAttribute implements GraphicAttribu
 	 * the same id, an exception will be thrown).
 	 * 
 	 * @param attrs
-	 *            the map that contains all attributes.
+	 *           the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
 		if (attrs.keySet().contains(SOURCE) || attrs.keySet().contains(TARGET)) {
 			for (Iterator<String> it = attrs.keySet().iterator(); it.hasNext();) {
 				String attrId = it.next();
-
+				
 				if (attrId.equals(SOURCE)) {
 					setSource(((StringAttribute) attrs.get(SOURCE)).getString());
 				} else if (attrId.equals(TARGET)) {
@@ -97,17 +97,17 @@ public class DockingAttribute extends HashMapAttribute implements GraphicAttribu
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-
+	
 	/**
 	 * Sets the 'source'-value.
 	 * 
 	 * @param s
-	 *            the 'source'-value to be set.
+	 *           the 'source'-value to be set.
 	 */
 	public void setSource(String s) {
 		this.source.setString(s);
 	}
-
+	
 	/**
 	 * Returns the 'source'-value of the encapsulated docking.
 	 * 
@@ -116,17 +116,17 @@ public class DockingAttribute extends HashMapAttribute implements GraphicAttribu
 	public String getSource() {
 		return this.source.getString();
 	}
-
+	
 	/**
 	 * Sets the 'target'-value.
 	 * 
 	 * @param t
-	 *            the 'target'-value to be set.
+	 *           the 'target'-value to be set.
 	 */
 	public void setTarget(String t) {
 		this.target.setString(t);
 	}
-
+	
 	/**
 	 * Returns the 'target'-value of the encapsulated docking.
 	 * 
@@ -135,7 +135,7 @@ public class DockingAttribute extends HashMapAttribute implements GraphicAttribu
 	public String getTarget() {
 		return this.target.getString();
 	}
-
+	
 	/**
 	 * Returns a deep copy of this object.
 	 * 
@@ -146,10 +146,10 @@ public class DockingAttribute extends HashMapAttribute implements GraphicAttribu
 		DockingAttribute copied = new DockingAttribute(this.getId());
 		copied.setSource(this.getSource());
 		copied.setTarget(this.getTarget());
-
+		
 		return copied;
 	}
-
+	
 	// /**
 	// * Sets the value of this <code>Attribute</code> to the given value without
 	// * informing the <code>ListenerManager</code>.

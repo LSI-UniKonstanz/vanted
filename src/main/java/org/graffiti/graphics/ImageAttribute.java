@@ -27,89 +27,89 @@ import org.graffiti.attributes.StringAttribute;
  */
 public class ImageAttribute extends HashMapAttribute implements GraphicAttributeConstants {
 	// ~ Instance fields ========================================================
-
+	
 	/** Contains the image. */
 	private AWTImageAttribute image;
-
+	
 	/**
 	 * Indicates whether the image has to maximize to the size of surrounding
 	 * rectangle
 	 */
 	private BooleanAttribute maximize;
-
+	
 	/**
 	 * Indicates whether the image has to be tiled if it is smaller than the
 	 * surrounding rectangle
 	 */
 	private BooleanAttribute tiled;
-
+	
 	/**
 	 * A reference to the image that is not specified by <code>java.awt.Image
 	 * </code>
 	 */
 	private StringAttribute reference;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for Image.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 */
 	public ImageAttribute(String id) {
 		this(id, false, false, new AWTImageAttribute(IMAGE), "");
 	}
-
+	
 	/**
 	 * Constructor for Image.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param t
-	 *            the tiled-value of the attribute.
+	 *           the tiled-value of the attribute.
 	 * @param m
-	 *            the maximize-value of the attribute.
+	 *           the maximize-value of the attribute.
 	 * @param i
-	 *            the image-value of the attribute.
+	 *           the image-value of the attribute.
 	 * @param r
-	 *            the reference-value of the attribute.
+	 *           the reference-value of the attribute.
 	 */
 	public ImageAttribute(String id, boolean t, boolean m, AWTImageAttribute i, String r) {
 		this(id, t, m, i.getImage(), r);
 	}
-
+	
 	/**
 	 * Constructor for Image.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param t
-	 *            the tiled-value of the attribute.
+	 *           the tiled-value of the attribute.
 	 * @param m
-	 *            the maximize-value of the attribute.
+	 *           the maximize-value of the attribute.
 	 * @param i
-	 *            the image-value of the attribute.
+	 *           the image-value of the attribute.
 	 * @param r
-	 *            the reference-value of the attribute.
+	 *           the reference-value of the attribute.
 	 */
 	public ImageAttribute(String id, BooleanAttribute t, BooleanAttribute m, AWTImageAttribute i, StringAttribute r) {
 		this(id, t.getBoolean(), m.getBoolean(), i.getImage(), r.getString());
 	}
-
+	
 	/**
 	 * Constructor for Image.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param t
-	 *            the tiled-value of the attribute.
+	 *           the tiled-value of the attribute.
 	 * @param m
-	 *            the maximize-value of the attribute.
+	 *           the maximize-value of the attribute.
 	 * @param i
-	 *            the java.awt.image-value of the attribute.
+	 *           the java.awt.image-value of the attribute.
 	 * @param r
-	 *            the reference-value of the attribute.
+	 *           the reference-value of the attribute.
 	 */
 	public ImageAttribute(String id, boolean t, boolean m, Image i, String r) {
 		super(id);
@@ -122,17 +122,17 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 		add(this.image, false);
 		add(this.reference, false);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the collection of attributes contained within this
 	 * <tt>CollectionAttribute</tt>
 	 * 
 	 * @param attrs
-	 *            the map that contains all attributes.
+	 *           the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
@@ -140,7 +140,7 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 				&& attrs.keySet().contains(REF)) {
 			for (Iterator<String> it = attrs.keySet().iterator(); it.hasNext();) {
 				String attrId = (String) it.next();
-
+				
 				if (attrId.equals(TILED)) {
 					setTiled(((BooleanAttribute) attrs.get(TILED)).getBoolean());
 				} else if (attrId.equals(MAXIMIZE)) {
@@ -157,17 +157,17 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-
+	
 	/**
 	 * Sets the 'image'-value.
 	 * 
 	 * @param i
-	 *            the 'image'-value to be set.
+	 *           the 'image'-value to be set.
 	 */
 	public void setImage(AWTImageAttribute i) {
 		this.image.setImage(i.getImage());
 	}
-
+	
 	/**
 	 * Returns the 'image'-value of the encapsulated image.
 	 * 
@@ -176,17 +176,17 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 	public AWTImageAttribute getImage() {
 		return this.image;
 	}
-
+	
 	/**
 	 * Sets the 'maximize'-value.
 	 * 
 	 * @param m
-	 *            the 'maximize'-value to be set.
+	 *           the 'maximize'-value to be set.
 	 */
 	public void setMaximize(boolean m) {
 		this.maximize.setBoolean(m);
 	}
-
+	
 	/**
 	 * Returns the 'maximize'-value of the encapsulated image.
 	 * 
@@ -195,17 +195,17 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 	public boolean getMaximize() {
 		return this.maximize.getBoolean();
 	}
-
+	
 	/**
 	 * Sets the 'reference'-value.
 	 * 
 	 * @param r
-	 *            the 'reference'-value to be set.
+	 *           the 'reference'-value to be set.
 	 */
 	public void setReference(String r) {
 		this.reference.setString(r);
 	}
-
+	
 	/**
 	 * Returns the 'reference'-value of the encapsulated image.
 	 * 
@@ -214,17 +214,17 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 	public String getReference() {
 		return this.reference.getString();
 	}
-
+	
 	/**
 	 * Sets the 'tiled'-value.
 	 * 
 	 * @param t
-	 *            the 'tiled'-value to be set.
+	 *           the 'tiled'-value to be set.
 	 */
 	public void setTiled(boolean t) {
 		this.tiled.setBoolean(t);
 	}
-
+	
 	/**
 	 * Returns the 'tiled'-value of the encapsulated image.
 	 * 
@@ -233,7 +233,7 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 	public boolean getTiled() {
 		return this.tiled.getBoolean();
 	}
-
+	
 	/**
 	 * Returns a deep copy of this object.
 	 * 
@@ -246,23 +246,23 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 		copied.setMaximize(this.getMaximize());
 		copied.setReference(this.getReference());
 		copied.setImage((AWTImageAttribute) this.getImage().copy());
-
+		
 		return copied;
 	}
-
+	
 	/**
 	 * Sets the value of this <code>Attribute</code> to the given value without
 	 * informing the <code>ListenerManager</code>.
 	 * 
 	 * @param v
-	 *            the new value.
+	 *           the new value.
 	 * @exception IllegalArgumentException
-	 *                if <code>v</code> is not of the apropriate type.
+	 *               if <code>v</code> is not of the apropriate type.
 	 */
 	@Override
 	protected void doSetValue(Object v) throws IllegalArgumentException {
 		ImageAttribute value;
-
+		
 		try {
 			value = (ImageAttribute) v;
 			this.tiled = new BooleanAttribute("tiled", value.getTiled());
@@ -283,7 +283,7 @@ public class ImageAttribute extends HashMapAttribute implements GraphicAttribute
 					maxAttr = new BooleanAttribute(maxAttr.getId(),
 							((IntegerAttribute) maxAttr).getInteger() == 0 ? false : true);
 				}
-
+				
 				this.tiled = (BooleanAttribute) tiledAttr;
 				this.maximize = (BooleanAttribute) maxAttr;
 				this.image = (AWTImageAttribute) map.get(IMAGE);

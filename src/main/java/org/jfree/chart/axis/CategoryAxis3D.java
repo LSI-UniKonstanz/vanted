@@ -52,57 +52,57 @@ import org.jfree.ui.RectangleEdge;
  * @author Klaus Rheinwald
  */
 public class CategoryAxis3D extends CategoryAxis implements Cloneable, Serializable {
-
+	
 	/**
 	 * Creates a new axis.
 	 */
 	public CategoryAxis3D() {
 		this(null);
 	}
-
+	
 	/**
 	 * Creates a new axis using default attribute values.
 	 * 
 	 * @param label
-	 *            the axis label (<code>null</code> permitted).
+	 *           the axis label (<code>null</code> permitted).
 	 */
 	public CategoryAxis3D(String label) {
 		super(label);
 	}
-
+	
 	/**
 	 * Draws the axis on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device (<code>null</code> not permitted).
+	 *           the graphics device (<code>null</code> not permitted).
 	 * @param cursor
-	 *            the cursor location.
+	 *           the cursor location.
 	 * @param plotArea
-	 *            the area within which the axis should be drawn (<code>null</code>
-	 *            not permitted).
+	 *           the area within which the axis should be drawn (<code>null</code>
+	 *           not permitted).
 	 * @param dataArea
-	 *            the area within which the plot is being drawn (<code>null</code>
-	 *            not permitted).
+	 *           the area within which the plot is being drawn (<code>null</code>
+	 *           not permitted).
 	 * @param edge
-	 *            the location of the axis (<code>null</code> not permitted).
+	 *           the location of the axis (<code>null</code> not permitted).
 	 * @param plotState
-	 *            collects information about the plot (<code>null</code> permitted).
+	 *           collects information about the plot (<code>null</code> permitted).
 	 * @return the axis state (never <code>null</code>).
 	 */
 	public AxisState draw(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea, RectangleEdge edge,
 			PlotRenderingInfo plotState) {
-
+		
 		// if the axis is not visible, don't draw it...
 		if (!isVisible()) {
 			return new AxisState(cursor);
 		}
-
+		
 		// calculate the adjusted data area taking into account the 3D effect...
 		// this assumes that there is a 3D renderer, all this 3D effect is a bit of an
 		// ugly hack...
 		CategoryPlot plot = (CategoryPlot) getPlot();
-
+		
 		Rectangle2D adjustedDataArea = new Rectangle2D.Double();
 		if (plot.getRenderer() instanceof Effect3D) {
 			Effect3D e3D = (Effect3D) plot.getRenderer();
@@ -110,7 +110,7 @@ public class CategoryAxis3D extends CategoryAxis implements Cloneable, Serializa
 			double adjustedY = dataArea.getMinY();
 			double adjustedW = dataArea.getWidth() - e3D.getXOffset();
 			double adjustedH = dataArea.getHeight() - e3D.getYOffset();
-
+			
 			if (edge == RectangleEdge.LEFT || edge == RectangleEdge.BOTTOM) {
 				adjustedY += e3D.getYOffset();
 			} else if (edge == RectangleEdge.RIGHT || edge == RectangleEdge.TOP) {
@@ -120,25 +120,25 @@ public class CategoryAxis3D extends CategoryAxis implements Cloneable, Serializa
 		} else {
 			adjustedDataArea.setRect(dataArea);
 		}
-
+		
 		// draw the category labels and axis label
 		AxisState state = new AxisState(cursor);
 		state = drawCategoryLabels(g2, plotArea, adjustedDataArea, edge, state, plotState);
 		state = drawLabel(getLabel(), g2, plotArea, dataArea, edge, state);
-
+		
 		return state;
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the axis.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             If the axis is not cloneable for some reason.
+	 *            If the axis is not cloneable for some reason.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

@@ -49,17 +49,17 @@ import org.jfree.util.Rotation;
  * A rotating 3D pie chart.
  */
 public class PieChart3DDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public PieChart3DDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		final DefaultPieDataset data = new DefaultPieDataset();
 		data.setValue("Java", Double.valueOf(43.2));
@@ -67,13 +67,13 @@ public class PieChart3DDemo2 extends ApplicationFrame {
 		data.setValue("C/C++", Double.valueOf(17.5));
 		data.setValue("PHP", Double.valueOf(32.5));
 		data.setValue("Perl", Double.valueOf(12.5));
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createPieChart3D("Pie Chart 3D Demo 2", // chart title
 				data, // data
 				true, // include legend
 				true, false);
-
+		
 		chart.setBackgroundPaint(Color.yellow);
 		final PiePlot3D plot = (PiePlot3D) chart.getPlot();
 		plot.setStartAngle(270);
@@ -84,27 +84,27 @@ public class PieChart3DDemo2 extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 		final Rotator rotator = new Rotator(plot);
 		rotator.start();
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final PieChart3DDemo2 demo = new PieChart3DDemo2("Pie Chart 3D Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }
 
 // ****************************************************************************
@@ -122,30 +122,30 @@ public class PieChart3DDemo2 extends ApplicationFrame {
  * The rotator.
  */
 class Rotator extends Timer implements ActionListener {
-
+	
 	/** The plot. */
 	private PiePlot3D plot;
-
+	
 	/** The angle. */
 	private int angle = 270;
-
+	
 	/**
 	 * Constructor.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 */
 	Rotator(final PiePlot3D plot) {
 		super(100, null);
 		this.plot = plot;
 		addActionListener(this);
 	}
-
+	
 	/**
 	 * Modifies the starting angle.
 	 * 
 	 * @param event
-	 *            the action event.
+	 *           the action event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		this.plot.setStartAngle(this.angle);
@@ -154,5 +154,5 @@ class Rotator extends Timer implements ActionListener {
 			this.angle = 0;
 		}
 	}
-
+	
 }

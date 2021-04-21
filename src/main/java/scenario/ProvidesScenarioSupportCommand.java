@@ -9,9 +9,9 @@ package scenario;
 import java.util.Collection;
 
 public interface ProvidesScenarioSupportCommand {
-
+	
 	Collection<String> getScenarioImports();
-
+	
 	String getScenarioCommand();
-
+	
 }

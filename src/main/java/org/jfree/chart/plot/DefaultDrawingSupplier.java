@@ -56,91 +56,91 @@ import org.jfree.util.PublicCloneable;
  * A default implementation of the {@link DrawingSupplier} interface.
  */
 public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The default fill paint sequence. */
 	public static final Paint[] DEFAULT_PAINT_SEQUENCE = ChartColor.createDefaultPaintArray();
-
+	
 	/** The default outline paint sequence. */
 	public static final Paint[] DEFAULT_OUTLINE_PAINT_SEQUENCE = new Paint[] { Color.BLACK // Color.lightGray
 	};
-
+	
 	/** The default stroke sequence. */
 	public static final Stroke[] DEFAULT_STROKE_SEQUENCE = new Stroke[] {
 			new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL) };
-
+	
 	/** The default outline stroke sequence. */
 	public static final Stroke[] DEFAULT_OUTLINE_STROKE_SEQUENCE = new Stroke[] {
 			new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL) };
-
+	
 	/** The default shape sequence. */
 	public static Shape[] DEFAULT_SHAPE_SEQUENCE = createStandardSeriesShapes(6);
-
+	
 	/** The paint sequence. */
 	private transient Paint[] paintSequence;
-
+	
 	/** The current paint index. */
 	private int paintIndex;
-
+	
 	/** The outline paint sequence. */
 	private transient Paint[] outlinePaintSequence;
-
+	
 	/** The current outline paint index. */
 	private int outlinePaintIndex;
-
+	
 	/** The stroke sequence. */
 	private transient Stroke[] strokeSequence;
-
+	
 	/** The current stroke index. */
 	private int strokeIndex;
-
+	
 	/** The outline stroke sequence. */
 	private transient Stroke[] outlineStrokeSequence;
-
+	
 	/** The current outline stroke index. */
 	private int outlineStrokeIndex;
-
+	
 	/** The shape sequence. */
 	private transient Shape[] shapeSequence;
-
+	
 	/** The current shape index. */
 	private int shapeIndex;
-
+	
 	/**
 	 * Creates a new supplier, with default sequences for fill paint, outline paint,
 	 * stroke and shapes.
 	 */
 	public DefaultDrawingSupplier() {
-
+		
 		this(DEFAULT_PAINT_SEQUENCE, DEFAULT_OUTLINE_PAINT_SEQUENCE, DEFAULT_STROKE_SEQUENCE,
 				DEFAULT_OUTLINE_STROKE_SEQUENCE, DEFAULT_SHAPE_SEQUENCE);
-
+		
 	}
-
+	
 	/**
 	 * Creates a new supplier.
 	 * 
 	 * @param paintSequence
-	 *            the fill paint sequence.
+	 *           the fill paint sequence.
 	 * @param outlinePaintSequence
-	 *            the outline paint sequence.
+	 *           the outline paint sequence.
 	 * @param strokeSequence
-	 *            the stroke sequence.
+	 *           the stroke sequence.
 	 * @param outlineStrokeSequence
-	 *            the outline stroke sequence.
+	 *           the outline stroke sequence.
 	 * @param shapeSequence
-	 *            the shape sequence.
+	 *           the shape sequence.
 	 */
 	public DefaultDrawingSupplier(Paint[] paintSequence, Paint[] outlinePaintSequence, Stroke[] strokeSequence,
 			Stroke[] outlineStrokeSequence, Shape[] shapeSequence) {
-
+		
 		this.paintSequence = paintSequence;
 		this.outlinePaintSequence = outlinePaintSequence;
 		this.strokeSequence = strokeSequence;
 		this.outlineStrokeSequence = outlineStrokeSequence;
 		this.shapeSequence = shapeSequence;
-
+		
 	}
-
+	
 	/**
 	 * Returns the next paint in the sequence.
 	 * 
@@ -151,7 +151,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable, Publi
 		this.paintIndex++;
 		return result;
 	}
-
+	
 	/**
 	 * Returns the next outline paint in the sequence.
 	 * 
@@ -162,7 +162,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable, Publi
 		this.outlinePaintIndex++;
 		return result;
 	}
-
+	
 	/**
 	 * Returns the next stroke in the sequence.
 	 * 
@@ -173,7 +173,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable, Publi
 		this.strokeIndex++;
 		return result;
 	}
-
+	
 	/**
 	 * Returns the next outline stroke in the sequence.
 	 * 
@@ -184,7 +184,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable, Publi
 		this.outlineStrokeIndex++;
 		return result;
 	}
-
+	
 	/**
 	 * Returns the next shape in the sequence.
 	 * 
@@ -195,7 +195,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable, Publi
 		this.shapeIndex++;
 		return result;
 	}
-
+	
 	/**
 	 * Creates an array of standard shapes to display for the items in series on
 	 * charts.
@@ -203,234 +203,234 @@ public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable, Publi
 	 * @return The array of shapes.
 	 */
 	public static Shape[] createStandardSeriesShapes(float shapeSize) {
-
+		
 		Shape[] result = new Shape[10];
-
+		
 		double size = shapeSize;
 		double delta = size / 2.0;
 		int[] xpoints = null;
 		int[] ypoints = null;
-
+		
 		// square
 		result[0] = new Rectangle2D.Double(-delta, -delta, size, size);
 		// circle
 		result[1] = new Ellipse2D.Double(-delta, -delta, size, size);
-
+		
 		// up-pointing triangle
 		xpoints = intArray(0.0, delta, -delta);
 		ypoints = intArray(-delta, delta, delta);
 		result[2] = new Polygon(xpoints, ypoints, 3);
-
+		
 		// diamond
 		xpoints = intArray(0.0, delta, 0.0, -delta);
 		ypoints = intArray(-delta, 0.0, delta, 0.0);
 		result[3] = new Polygon(xpoints, ypoints, 4);
-
+		
 		// horizontal rectangle
 		result[4] = new Rectangle2D.Double(-delta, -delta / 2, size, size / 2);
-
+		
 		// down-pointing triangle
 		xpoints = intArray(-delta, +delta, 0.0);
 		ypoints = intArray(-delta, -delta, delta);
 		result[5] = new Polygon(xpoints, ypoints, 3);
-
+		
 		// horizontal ellipse
 		result[6] = new Ellipse2D.Double(-delta, -delta / 2, size, size / 2);
-
+		
 		// right-pointing triangle
 		xpoints = intArray(-delta, delta, -delta);
 		ypoints = intArray(-delta, 0.0, delta);
 		result[7] = new Polygon(xpoints, ypoints, 3);
-
+		
 		// vertical rectangle
 		result[8] = new Rectangle2D.Double(-delta / 2, -delta, size / 2, size);
-
+		
 		// left-pointing triangle
 		xpoints = intArray(-delta, delta, delta);
 		ypoints = intArray(0.0, -delta, +delta);
 		result[9] = new Polygon(xpoints, ypoints, 3);
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Tests this object for equality with another object.
 	 * 
 	 * @param obj
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof DefaultDrawingSupplier) {
 			DefaultDrawingSupplier supplier = (DefaultDrawingSupplier) obj;
-
+			
 			boolean b0 = Arrays.equals(this.paintSequence, supplier.paintSequence);
-
+			
 			boolean b1 = (this.paintIndex == supplier.paintIndex);
-
+			
 			boolean b2 = Arrays.equals(this.outlinePaintSequence, supplier.outlinePaintSequence);
-
+			
 			boolean b3 = (this.outlinePaintIndex == supplier.outlinePaintIndex);
-
+			
 			boolean b4 = Arrays.equals(this.strokeSequence, supplier.strokeSequence);
-
+			
 			boolean b5 = (this.strokeIndex == supplier.strokeIndex);
-
+			
 			boolean b6 = Arrays.equals(this.outlineStrokeSequence, supplier.outlineStrokeSequence);
-
+			
 			boolean b7 = (this.outlineStrokeIndex == supplier.outlineStrokeIndex);
-
+			
 			boolean b8 = true; // something is going wrong here?
 			// Arrays.equals(this.shapeSequence, supplier.shapeSequence);
-
+			
 			boolean b9 = (this.shapeIndex == supplier.shapeIndex);
-
+			
 			return b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9;
-
+			
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Handles serialization.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O problem.
+	 *            if there is an I/O problem.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
-
+		
 		int paintCount = this.paintSequence.length;
 		stream.writeInt(paintCount);
 		for (int i = 0; i < paintCount; i++) {
 			SerialUtilities.writePaint(this.paintSequence[i], stream);
 		}
-
+		
 		int outlinePaintCount = this.outlinePaintSequence.length;
 		stream.writeInt(outlinePaintCount);
 		for (int i = 0; i < outlinePaintCount; i++) {
 			SerialUtilities.writePaint(this.outlinePaintSequence[i], stream);
 		}
-
+		
 		int strokeCount = this.strokeSequence.length;
 		stream.writeInt(strokeCount);
 		for (int i = 0; i < strokeCount; i++) {
 			SerialUtilities.writeStroke(this.strokeSequence[i], stream);
 		}
-
+		
 		int outlineStrokeCount = this.outlineStrokeSequence.length;
 		stream.writeInt(outlineStrokeCount);
 		for (int i = 0; i < outlineStrokeCount; i++) {
 			SerialUtilities.writeStroke(this.outlineStrokeSequence[i], stream);
 		}
-
+		
 		int shapeCount = this.shapeSequence.length;
 		stream.writeInt(shapeCount);
 		for (int i = 0; i < shapeCount; i++) {
 			SerialUtilities.writeShape(this.shapeSequence[i], stream);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Restores a serialized object.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O problem.
+	 *            if there is an I/O problem.
 	 * @throws ClassNotFoundException
-	 *             if there is a problem loading a class.
+	 *            if there is a problem loading a class.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
-
+		
 		int paintCount = stream.readInt();
 		this.paintSequence = new Paint[paintCount];
 		for (int i = 0; i < paintCount; i++) {
 			this.paintSequence[i] = SerialUtilities.readPaint(stream);
 		}
-
+		
 		int outlinePaintCount = stream.readInt();
 		this.outlinePaintSequence = new Paint[outlinePaintCount];
 		for (int i = 0; i < outlinePaintCount; i++) {
 			this.outlinePaintSequence[i] = SerialUtilities.readPaint(stream);
 		}
-
+		
 		int strokeCount = stream.readInt();
 		this.strokeSequence = new Stroke[strokeCount];
 		for (int i = 0; i < strokeCount; i++) {
 			this.strokeSequence[i] = SerialUtilities.readStroke(stream);
 		}
-
+		
 		int outlineStrokeCount = stream.readInt();
 		this.outlineStrokeSequence = new Stroke[outlineStrokeCount];
 		for (int i = 0; i < outlineStrokeCount; i++) {
 			this.outlineStrokeSequence[i] = SerialUtilities.readStroke(stream);
 		}
-
+		
 		int shapeCount = stream.readInt();
 		this.shapeSequence = new Shape[shapeCount];
 		for (int i = 0; i < shapeCount; i++) {
 			this.shapeSequence[i] = SerialUtilities.readShape(stream);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Helper method to avoid lots of explicit casts in getShape(). Returns an array
 	 * containing the provided doubles cast to ints.
 	 * 
 	 * @param a
-	 *            x
+	 *           x
 	 * @param b
-	 *            y
+	 *           y
 	 * @param c
-	 *            z
+	 *           z
 	 * @return int[3] with converted params.
 	 */
 	private static int[] intArray(double a, double b, double c) {
 		return new int[] { (int) a, (int) b, (int) c };
 	}
-
+	
 	/**
 	 * Helper method to avoid lots of explicit casts in getShape(). Returns an array
 	 * containing the provided doubles cast to ints.
 	 * 
 	 * @param a
-	 *            x
+	 *           x
 	 * @param b
-	 *            y
+	 *           y
 	 * @param c
-	 *            z
+	 *           z
 	 * @param d
-	 *            t
+	 *           t
 	 * @return int[3] with converted params.
 	 */
 	private static int[] intArray(double a, double b, double c, double d) {
 		return new int[] { (int) a, (int) b, (int) c, (int) d };
 	}
-
+	
 	/**
 	 * Returns a clone.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if a component of the supplier does not support cloning.
+	 *            if a component of the supplier does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		DefaultDrawingSupplier clone = (DefaultDrawingSupplier) super.clone();

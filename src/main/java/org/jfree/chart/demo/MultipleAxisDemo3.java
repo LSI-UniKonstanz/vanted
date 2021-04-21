@@ -52,36 +52,36 @@ import org.jfree.ui.Spacer;
  * An example of....
  */
 public class MultipleAxisDemo3 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to create a time series chart with
 	 * muliple axes.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MultipleAxisDemo3(final String title) {
-
+		
 		super(title);
 		final JFreeChart chart = createChart();
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(600, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates the demo chart.
 	 * 
 	 * @return The chart.
 	 */
 	private JFreeChart createChart() {
-
+		
 		final XYDataset dataset1 = createDataset("Series 1", 100.0, new Minute(), 200);
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Multiple Axis Demo 3", "Time of Day",
 				"Primary Range Axis", dataset1, true, true, false);
-
+		
 		chart.setBackgroundPaint(Color.white);
 		final XYPlot plot = chart.getXYPlot();
 		plot.setOrientation(PlotOrientation.VERTICAL);
@@ -89,36 +89,36 @@ public class MultipleAxisDemo3 extends ApplicationFrame {
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-
+		
 		final StandardXYItemRenderer renderer = (StandardXYItemRenderer) plot.getRenderer();
 		renderer.setPaint(Color.black);
-
+		
 		// DOMAIN AXIS 2
 		final NumberAxis xAxis2 = new NumberAxis("Domain Axis 2");
 		xAxis2.setAutoRangeIncludesZero(false);
 		plot.setDomainAxis(1, xAxis2);
 		plot.setDomainAxisLocation(1, AxisLocation.BOTTOM_OR_LEFT);
-
+		
 		// DOMAIN AXIS 3
 		final NumberAxis xAxis3 = new NumberAxis("Domain Axis 3");
 		xAxis2.setAutoRangeIncludesZero(false);
 		plot.setDomainAxis(2, xAxis3);
 		plot.setDomainAxisLocation(2, AxisLocation.BOTTOM_OR_LEFT);
-
+		
 		// RANGE AXIS 2
 		final NumberAxis yAxis2 = new NumberAxis("Range Axis 2");
 		plot.setRangeAxis(1, yAxis2);
 		plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
-
+		
 		final XYDataset dataset2 = createDataset("Series 2", 1000.0, new Minute(), 170);
 		plot.setDataset(1, dataset2);
 		plot.mapDatasetToDomainAxis(1, 1);
 		plot.mapDatasetToRangeAxis(1, 1);
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -129,23 +129,23 @@ public class MultipleAxisDemo3 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @param name
-	 *            the dataset name.
+	 *           the dataset name.
 	 * @param base
-	 *            the starting value.
+	 *           the starting value.
 	 * @param start
-	 *            the starting period.
+	 *           the starting period.
 	 * @param count
-	 *            the number of values to generate.
+	 *           the number of values to generate.
 	 * @return The dataset.
 	 */
 	private XYDataset createDataset(final String name, final double base, final RegularTimePeriod start,
 			final int count) {
-
+		
 		final TimeSeries series = new TimeSeries(name, start.getClass());
 		RegularTimePeriod period = start;
 		double value = base;
@@ -154,27 +154,27 @@ public class MultipleAxisDemo3 extends ApplicationFrame {
 			period = period.next();
 			value = value * (1 + (Math.random() - 0.495) / 10.0);
 		}
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(series);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final MultipleAxisDemo3 demo = new MultipleAxisDemo3("Multiple Axis Demo 3");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -14,12 +14,12 @@ import org.ErrorMsg;
 import org.HelperClass;
 
 public class ClipboardService implements HelperClass {
-
+	
 	public static void writeToClipboardAsText(CharSequence writeMe) {
 		StringSelection copy = new StringSelection(writeMe.toString());
 		getSystemClipboard().setContents(copy, copy);
 	}
-
+	
 	public static String readFromClipboardAsText() {
 		Transferable clipboardContents = null;
 		try {
@@ -39,7 +39,7 @@ public class ClipboardService implements HelperClass {
 			}
 		return null;
 	}
-
+	
 	private static java.awt.datatransfer.Clipboard getSystemClipboard() {
 		return Toolkit.getDefaultToolkit().getSystemClipboard();
 	}

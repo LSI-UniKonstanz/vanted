@@ -47,35 +47,35 @@ import org.jfree.ui.RefineryUtilities;
  * An example of...
  */
 public class SymbolicChartDemo1 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public SymbolicChartDemo1(final String title) {
-
+		
 		super(title);
-
+		
 		// create a title...
 		final XYDataset dataset = createDataset();
-
+		
 		final ValueAxis domainAxis = new NumberAxis("X");
 		final SymbolicAxis symbolicAxis = new SymbolicAxis("Y", ((YisSymbolic) dataset).getYSymbolicValues());
-
+		
 		final XYPlot plot = new XYPlot(dataset, domainAxis, symbolicAxis, null);
 		final XYItemRenderer renderer = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES,
 				new SymbolicXYItemLabelGenerator());
 		plot.setRenderer(renderer);
 		final JFreeChart chart = new JFreeChart(title, plot);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -86,34 +86,34 @@ public class SymbolicChartDemo1 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a dataset, consisting of two series of monthly data.
 	 * 
 	 * @return the dataset.
 	 */
 	public XYDataset createDataset() {
-
+		
 		final String[] sData = { "Giraffe", "Gazelle", "Zebra", "Gnu" };
 		final SampleYSymbolicDataset data = new SampleYSymbolicDataset("BY Sample", 40, sData, 4, 20,
 				new String[] { "B Fall", "B Spring", "B Summer", "B Winter" });
 		return data;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final SymbolicChartDemo1 demo = new SymbolicChartDemo1("Symbolic Chart Demo 1");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

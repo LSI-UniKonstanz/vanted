@@ -61,27 +61,27 @@ import org.jfree.ui.VerticalAlignment;
  * test for bug report 815817.
  */
 public class ImageMapDemo5 {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public ImageMapDemo5() {
 		super();
 	}
-
+	
 	/**
 	 * Saves the chart image and HTML.
 	 */
 	public void saveImageAndHTML() {
-
+		
 		// create a dataset
 		final double[][] data = new double[][] { { 56.0, -12.0, 34.0, 76.0, 56.0, 100.0, 67.0, 45.0 },
 				{ 37.0, 45.0, 67.0, 25.0, 34.0, 34.0, 100.0, 53.0 },
 				{ 43.0, 54.0, 34.0, 34.0, 87.0, 64.0, 73.0, 12.0 } };
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Type ", data);
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -92,13 +92,13 @@ public class ImageMapDemo5 {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// save it to an image
 		try {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File file1 = new File("areachart100.png");
 			ChartUtilities.saveChartAsPNG(file1, chart, 600, 400, info);
-
+			
 			// write an HTML page incorporating the image with an image map
 			final File file2 = new File("areachart100.html");
 			final OutputStream out = new BufferedOutputStream(new FileOutputStream(file2));
@@ -112,21 +112,21 @@ public class ImageMapDemo5 {
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();
-
+			
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createAreaChart("Area Chart", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
@@ -136,13 +136,13 @@ public class ImageMapDemo5 {
 				true, // tooltips
 				false // urls
 		);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
+		
 		// set the background color for the chart...
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setAnchor(StandardLegend.SOUTH);
-
+		
 		chart.setBackgroundPaint(Color.white);
 		final TextTitle subtitle = new TextTitle("An area chart demonstration.  We use this subtitle "
 				+ " as an example of what happens when you get a really long title or subtitle.");
@@ -151,40 +151,40 @@ public class ImageMapDemo5 {
 		subtitle.setSpacer(new Spacer(Spacer.RELATIVE, 0.05, 0.05, 0.05, 0.05));
 		subtitle.setVerticalAlignment(VerticalAlignment.BOTTOM);
 		chart.addSubtitle(subtitle);
-
+		
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setForegroundAlpha(0.5f);
-
+		
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinesVisible(true);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinesVisible(true);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		final CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		domainAxis.setLowerMargin(0.0);
 		domainAxis.setUpperMargin(0.0);
-
+		
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		rangeAxis.setLabelAngle(0 * Math.PI / 2.0);
 		// OPTIONAL CUSTOMISATION COMPLETED.
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final ImageMapDemo5 demo = new ImageMapDemo5();
 		demo.saveImageAndHTML();
 	}
-
+	
 }

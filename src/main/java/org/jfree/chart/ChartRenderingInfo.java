@@ -60,16 +60,16 @@ import org.jfree.util.ObjectUtils;
  * <code>ChartRenderingInfo</code> class.
  */
 public class ChartRenderingInfo implements Cloneable, Serializable {
-
+	
 	/** The area in which the chart is drawn. */
 	private transient Rectangle2D chartArea;
-
+	
 	/** Rendering info for the chart's plot (and subplots, if any). */
 	private PlotRenderingInfo plotInfo;
-
+	
 	/** The area in which the plot and axes are drawn. */
 	private transient Rectangle2D plotArea;
-
+	
 	/**
 	 * Storage for the chart entities. Since retaining entity information for charts
 	 * with a large number of data points consumes a lot of memory, it is intended
@@ -77,7 +77,7 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * collected.
 	 */
 	private EntityCollection entities;
-
+	
 	/**
 	 * Constructs a new ChartRenderingInfo structure that can be used to collect
 	 * information about the dimensions of a rendered chart.
@@ -85,7 +85,7 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	public ChartRenderingInfo() {
 		this(new StandardEntityCollection());
 	}
-
+	
 	/**
 	 * Constructs a new ChartRenderingInfo structure.
 	 * <P>
@@ -94,20 +94,20 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * (including tool tips) will be collected.
 	 * 
 	 * @param entities
-	 *            an entity collection (null permitted).
+	 *           an entity collection (null permitted).
 	 */
 	public ChartRenderingInfo(EntityCollection entities) {
-
+		
 		this.chartArea = new Rectangle2D.Double();
 		this.plotArea = new Rectangle2D.Double();
 		// this.dataArea = new Rectangle2D.Double();
-
+		
 		this.plotInfo = new PlotRenderingInfo(this);
-
+		
 		this.entities = entities;
-
+		
 	}
-
+	
 	/**
 	 * Returns the area in which the chart was drawn.
 	 * 
@@ -116,17 +116,17 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	public Rectangle2D getChartArea() {
 		return this.chartArea;
 	}
-
+	
 	/**
 	 * Sets the area in which the chart was drawn.
 	 * 
 	 * @param area
-	 *            the chart area.
+	 *           the chart area.
 	 */
 	public void setChartArea(Rectangle2D area) {
 		this.chartArea.setRect(area);
 	}
-
+	
 	/**
 	 * Returns the area in which the plot (and axes, if any) were drawn.
 	 * 
@@ -135,17 +135,17 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	public Rectangle2D getPlotArea() {
 		return this.plotArea;
 	}
-
+	
 	/**
 	 * Sets the area in which the plot and axes were drawn.
 	 * 
 	 * @param area
-	 *            the plot area.
+	 *           the plot area.
 	 */
 	public void setPlotArea(Rectangle2D area) {
 		this.plotArea.setRect(area);
 	}
-
+	
 	/**
 	 * Returns the collection of entities maintained by this instance.
 	 * 
@@ -154,31 +154,31 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	public EntityCollection getEntityCollection() {
 		return this.entities;
 	}
-
+	
 	/**
 	 * Sets the entity collection.
 	 * 
 	 * @param entities
-	 *            the entity collection (<code>null</code> permitted).
+	 *           the entity collection (<code>null</code> permitted).
 	 */
 	public void setEntityCollection(EntityCollection entities) {
 		this.entities = entities;
 	}
-
+	
 	/**
 	 * Clears the information recorded by this object.
 	 */
 	public void clear() {
-
+		
 		this.chartArea.setRect(0.0, 0.0, 0.0, 0.0);
 		this.plotArea.setRect(0.0, 0.0, 0.0, 0.0);
 		this.plotInfo = new PlotRenderingInfo(this);
 		if (this.entities != null) {
 			this.entities.clear();
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the rendering info for the chart's plot.
 	 * 
@@ -187,12 +187,12 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	public PlotRenderingInfo getPlotInfo() {
 		return this.plotInfo;
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test against (<code>null</code> permitted).
+	 *           the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -208,46 +208,46 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone of this object.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the object cannot be cloned.
+	 *            if the object cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 		SerialUtilities.writeShape(this.chartArea, stream);
 		SerialUtilities.writeShape(this.plotArea, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.chartArea = (Rectangle2D) SerialUtilities.readShape(stream);
 		this.plotArea = (Rectangle2D) SerialUtilities.readShape(stream);
 	}
-
+	
 }

@@ -53,22 +53,22 @@ import org.jfree.data.DefaultPieDataset;
  * A demo showing how to create an HTML image map for a pie chart.
  */
 public class ImageMapDemo2 {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public ImageMapDemo2() {
 		super();
 	}
-
+	
 	/**
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		// create a chart
 		final DefaultPieDataset data = new DefaultPieDataset();
 		data.setValue("One", Double.valueOf(43.2));
@@ -77,10 +77,10 @@ public class ImageMapDemo2 {
 		data.setValue("Four", Double.valueOf(17.5));
 		data.setValue("Five", Double.valueOf(11.0));
 		data.setValue("Six", Double.valueOf(19.4));
-
+		
 		JFreeChart chart = null;
 		final boolean drilldown = true;
-
+		
 		// create the chart...
 		if (drilldown) {
 			final PiePlot plot = new PiePlot(data);
@@ -95,7 +95,7 @@ public class ImageMapDemo2 {
 					true, false);
 		}
 		chart.setBackgroundPaint(java.awt.Color.white);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -106,13 +106,13 @@ public class ImageMapDemo2 {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// save it to an image
 		try {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File file1 = new File("piechart100.png");
 			ChartUtilities.saveChartAsPNG(file1, chart, 600, 400, info);
-
+			
 			// write an HTML page incorporating the image with an image map
 			final File file2 = new File("piechart100.html");
 			final OutputStream out = new BufferedOutputStream(new FileOutputStream(file2));
@@ -126,11 +126,11 @@ public class ImageMapDemo2 {
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();
-
+			
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
-
+		
 	}
-
+	
 }

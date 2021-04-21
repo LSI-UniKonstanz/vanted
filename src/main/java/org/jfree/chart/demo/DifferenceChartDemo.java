@@ -50,17 +50,17 @@ import org.jfree.ui.Spacer;
  * A simple demonstration of the XYDifferenceRenderer.
  */
 public class DifferenceChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public DifferenceChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final TimeSeries series1 = new TimeSeries("Random 1");
 		final TimeSeries series2 = new TimeSeries("Random 2");
 		double value1 = 0.0;
@@ -73,24 +73,24 @@ public class DifferenceChartDemo extends ApplicationFrame {
 			series2.add(day, value2);
 			day = (Day) day.next();
 		}
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(series1);
 		dataset.addSeries(series2);
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
@@ -100,14 +100,14 @@ public class DifferenceChartDemo extends ApplicationFrame {
 				false // URLs
 		);
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		plot.setRenderer(new XYDifferenceRenderer(Color.green, Color.red, false));
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-
+		
 		final ValueAxis domainAxis = new DateAxis("Time");
 		domainAxis.setLowerMargin(0.0);
 		domainAxis.setUpperMargin(0.0);
@@ -115,7 +115,7 @@ public class DifferenceChartDemo extends ApplicationFrame {
 		plot.setForegroundAlpha(0.5f);
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -126,20 +126,20 @@ public class DifferenceChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final DifferenceChartDemo demo = new DifferenceChartDemo("Difference Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

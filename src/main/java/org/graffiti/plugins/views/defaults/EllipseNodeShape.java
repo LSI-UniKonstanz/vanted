@@ -20,42 +20,42 @@ import java.awt.geom.Rectangle2D;
  */
 public class EllipseNodeShape extends CircularNodeShape {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Calculates the intersection between this ellipse and a line.
 	 * 
 	 * @param line
 	 * @return DOCUMENT ME!
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public Point2D getIntersection(Line2D line) {
 		Rectangle2D realRect = getRealBounds2D();
 		Point2D topleft = new Point2D.Double(realRect.getX(), realRect.getY());
 		Point2D size = new Point2D.Double(realRect.getWidth(), realRect.getHeight());
-
+		
 		// transform ellipse to circle
 		AffineTransform at = new AffineTransform();
 		at.setToScale(1d, realRect.getWidth() / realRect.getHeight());
-
+		
 		Point2D transTopleft = at.transform(topleft, null);
 		Point2D transSize = at.transform(size, null);
-
+		
 		// set size X and Y both to X to assure that both are the same
 		Ellipse2D circ2D = new Ellipse2D.Double(transTopleft.getX(), transTopleft.getY(), transSize.getX(),
 				transSize.getX());
-
+		
 		// do the same transform with line
 		Line2D transLine = new Line2D.Double(at.transform(line.getP1(), null), at.transform(line.getP2(), null));
-
+		
 		// Shape lineShape = at.createTransformedShape(line);
 		// Rectangle2D lineBounds = lineShape.getBounds2D();
 		// Line2D transLine = new Line2D.Double
 		// (lineBounds.getMinX(), lineBounds.getMinY(),
 		// lineBounds.getMaxX(), lineBounds.getMaxY());
 		Point2D point = getIntersectionWithCircle(circ2D, transLine);
-
+		
 		if (point != null) {
 			try {
 				return at.inverseTransform(point, null);
@@ -64,14 +64,14 @@ public class EllipseNodeShape extends CircularNodeShape {
 						"Could not invert transformation from ellipse to circle. " + "Very strange! " + nite);
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	public int shapeHeightCorrection() {
 		return 0;
 	}
-
+	
 	public int shapeWidthCorrection() {
 		return 0;
 	}

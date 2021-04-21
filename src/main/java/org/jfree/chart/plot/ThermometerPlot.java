@@ -107,178 +107,178 @@ import org.jfree.util.ObjectUtils;
  * @author Bryan Scott
  */
 public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, Serializable {
-
+	
 	/** A constant for unit type 'None'. */
 	public static final int UNITS_NONE = 0;
-
+	
 	/** A constant for unit type 'Fahrenheit'. */
 	public static final int UNITS_FAHRENHEIT = 1;
-
+	
 	/** A constant for unit type 'Celcius'. */
 	public static final int UNITS_CELCIUS = 2;
-
+	
 	/** A constant for unit type 'Kelvin'. */
 	public static final int UNITS_KELVIN = 3;
-
+	
 	/** A constant for the value label position (no label). */
 	public static final int NONE = 0;
-
+	
 	/** A constant for the value label position (right of the thermometer). */
 	public static final int RIGHT = 1;
-
+	
 	/** A constant for the value label position (left of the thermometer). */
 	public static final int LEFT = 2;
-
+	
 	/** A constant for the value label position (in the thermometer bulb). */
 	public static final int BULB = 3;
-
+	
 	/** A constant for the 'normal' range. */
 	public static final int NORMAL = 0;
-
+	
 	/** A constant for the 'warning' range. */
 	public static final int WARNING = 1;
-
+	
 	/** A constant for the 'critical' range. */
 	public static final int CRITICAL = 2;
-
+	
 	/** The bulb radius. */
 	protected static final int BULB_RADIUS = 40;
-
+	
 	/** The bulb diameter. */
 	protected static final int BULB_DIAMETER = BULB_RADIUS * 2;
-
+	
 	/** The column radius. */
 	protected static final int COLUMN_RADIUS = 20;
-
+	
 	/** The column diameter. */
 	protected static final int COLUMN_DIAMETER = COLUMN_RADIUS * 2;
-
+	
 	/** The gap radius. */
 	protected static final int GAP_RADIUS = 5;
-
+	
 	/** The gap diameter. */
 	protected static final int GAP_DIAMETER = GAP_RADIUS * 2;
-
+	
 	/** The axis gap. */
 	protected static final int AXIS_GAP = 10;
-
+	
 	/** The unit strings. */
 	protected static final String[] UNITS = { "", "\u00B0F", "\u00B0C", "\u00B0K" };
-
+	
 	/** Index for low value in subrangeInfo matrix. */
 	protected static final int RANGE_LOW = 0;
-
+	
 	/** Index for high value in subrangeInfo matrix. */
 	protected static final int RANGE_HIGH = 1;
-
+	
 	/** Index for display low value in subrangeInfo matrix. */
 	protected static final int DISPLAY_LOW = 2;
-
+	
 	/** Index for display high value in subrangeInfo matrix. */
 	protected static final int DISPLAY_HIGH = 3;
-
+	
 	/** The default lower bound. */
 	protected static final double DEFAULT_LOWER_BOUND = 0.0;
-
+	
 	/** The default upper bound. */
 	protected static final double DEFAULT_UPPER_BOUND = 100.0;
-
+	
 	/** The dataset for the plot. */
 	private ValueDataset dataset;
-
+	
 	/** The range axis. */
 	private ValueAxis rangeAxis;
-
+	
 	/** The lower bound for the thermometer. */
 	private double lowerBound = DEFAULT_LOWER_BOUND;
-
+	
 	/** The upper bound for the thermometer. */
 	private double upperBound = DEFAULT_UPPER_BOUND;
-
+	
 	/** Blank space inside the plot area around the outside of the thermometer. */
 	private Spacer padding;
-
+	
 	/** Stroke for drawing the thermometer */
 	private transient Stroke thermometerStroke = new BasicStroke(1.0f);
-
+	
 	/** Paint for drawing the thermometer */
 	private transient Paint thermometerPaint = Color.black;
-
+	
 	/** The display units */
 	private int units = UNITS_CELCIUS;
-
+	
 	/** The value label position. */
 	private int valueLocation = BULB;
-
+	
 	/** The position of the axis **/
 	private int axisLocation = LEFT;
-
+	
 	/** The font to write the value in */
 	private Font valueFont = new Font("SansSerif", Font.BOLD, 16);
-
+	
 	/** Colour that the value is written in */
 	private transient Paint valuePaint = Color.white;
-
+	
 	/** Number format for the value */
 	private NumberFormat valueFormat = new DecimalFormat();
-
+	
 	/** The default paint for the mercury in the thermometer. */
 	private transient Paint mercuryPaint = Color.lightGray;
-
+	
 	/** A flag that controls whether value lines are drawn. */
 	private boolean showValueLines = false;
-
+	
 	/** The display sub-range. */
 	private int subrange = -1;
-
+	
 	/** The start and end values for the subranges. */
 	private double[][] subrangeInfo = { { 0.0, 50.0, 0.0, 50.0 }, { 50.0, 75.0, 50.0, 75.0 },
 			{ 75.0, 100.0, 75.0, 100.0 } };
-
+	
 	/**
 	 * A flag that controls whether or not the axis range adjusts to the sub-ranges.
 	 */
 	private boolean followDataInSubranges = false;
-
+	
 	/**
 	 * A flag that controls whether or not the mercury paint changes with the
 	 * subranges.
 	 */
 	private boolean useSubrangePaint = true;
-
+	
 	/** Paint for each range */
 	private Paint[] subrangePaint = { Color.green, Color.orange, Color.red };
-
+	
 	/** A flag that controls whether the sub-range indicators are visible. */
 	private boolean subrangeIndicatorsVisible = true;
-
+	
 	/** The stroke for the sub-range indicators. */
 	private transient Stroke subrangeIndicatorStroke = new BasicStroke(2.0f);
-
+	
 	/** The range indicator stroke. */
 	private transient Stroke rangeIndicatorStroke = new BasicStroke(3.0f);
-
+	
 	/** The resourceBundle for the localization. */
 	protected static ResourceBundle localizationResources = ResourceBundle
 			.getBundle("org.jfree.chart.plot.LocalizationBundle");
-
+	
 	/**
 	 * Creates a new thermometer plot.
 	 */
 	public ThermometerPlot() {
 		this(new DefaultValueDataset());
 	}
-
+	
 	/**
 	 * Creates a new thermometer plot, using default attributes where necessary.
 	 * 
 	 * @param dataset
-	 *            the data set.
+	 *           the data set.
 	 */
 	public ThermometerPlot(ValueDataset dataset) {
-
+		
 		super();
-
+		
 		this.padding = new Spacer(Spacer.RELATIVE, 0.05, 0.05, 0.05, 0.05);
 		this.dataset = dataset;
 		if (dataset != null) {
@@ -287,11 +287,11 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 		NumberAxis axis = new NumberAxis(null);
 		axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		axis.setAxisLineVisible(false);
-
+		
 		setRangeAxis(axis);
 		setAxisRange();
 	}
-
+	
 	/**
 	 * Returns the primary dataset for the plot.
 	 * 
@@ -300,36 +300,36 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public ValueDataset getDataset() {
 		return this.dataset;
 	}
-
+	
 	/**
 	 * Sets the dataset for the plot, replacing the existing dataset if there is
 	 * one.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 */
 	public void setDataset(ValueDataset dataset) {
-
+		
 		// if there is an existing dataset, remove the plot from the list of change
 		// listeners...
 		ValueDataset existing = this.dataset;
 		if (existing != null) {
 			existing.removeChangeListener(this);
 		}
-
+		
 		// set the new dataset, and register the chart as a change listener...
 		this.dataset = dataset;
 		if (dataset != null) {
 			setDatasetGroup(dataset.getGroup());
 			dataset.addChangeListener(this);
 		}
-
+		
 		// send a dataset change event to self...
 		DatasetChangeEvent event = new DatasetChangeEvent(this, dataset);
 		datasetChanged(event);
-
+		
 	}
-
+	
 	/**
 	 * Returns the dataset cast to {@link ValueDataset} (provided for convenience).
 	 * 
@@ -339,7 +339,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public ValueDataset getData() {
 		return getDataset();
 	}
-
+	
 	/**
 	 * Sets the data for the chart, replacing any existing data.
 	 * <P>
@@ -347,13 +347,13 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	 * normally trigger a chart redraw).
 	 * 
 	 * @param dataset
-	 *            the new dataset.
+	 *           the new dataset.
 	 * @deprecated Use setDataset(...) instead.
 	 */
 	public void setData(ValueDataset dataset) {
 		setDataset(dataset);
 	}
-
+	
 	/**
 	 * Returns the range axis.
 	 * 
@@ -362,7 +362,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public ValueAxis getRangeAxis() {
 		return this.rangeAxis;
 	}
-
+	
 	/**
 	 * Sets the range axis for the plot.
 	 * <P>
@@ -370,24 +370,24 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	 * compatible.
 	 * 
 	 * @param axis
-	 *            the new axis.
+	 *           the new axis.
 	 */
 	public void setRangeAxis(ValueAxis axis) {
-
+		
 		if (axis != null) {
 			axis.setPlot(this);
 			axis.addChangeListener(this);
 		}
-
+		
 		// plot is likely registered as a listener with the existing axis...
 		if (this.rangeAxis != null) {
 			this.rangeAxis.removeChangeListener(this);
 		}
-
+		
 		this.rangeAxis = axis;
-
+		
 	}
-
+	
 	/**
 	 * Returns the lower bound for the thermometer.
 	 * <p>
@@ -399,18 +399,18 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public double getLowerBound() {
 		return this.lowerBound;
 	}
-
+	
 	/**
 	 * Sets the lower bound for the thermometer.
 	 * 
 	 * @param lower
-	 *            the lower bound.
+	 *           the lower bound.
 	 */
 	public void setLowerBound(double lower) {
 		this.lowerBound = lower;
 		setAxisRange();
 	}
-
+	
 	/**
 	 * Returns the upper bound for the thermometer.
 	 * <p>
@@ -422,32 +422,32 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public double getUpperBound() {
 		return this.upperBound;
 	}
-
+	
 	/**
 	 * Sets the upper bound for the thermometer.
 	 * 
 	 * @param upper
-	 *            the upper bound.
+	 *           the upper bound.
 	 */
 	public void setUpperBound(double upper) {
 		this.upperBound = upper;
 		setAxisRange();
 	}
-
+	
 	/**
 	 * Sets the lower and upper bounds for the thermometer.
 	 * 
 	 * @param lower
-	 *            the lower bound.
+	 *           the lower bound.
 	 * @param upper
-	 *            the upper bound.
+	 *           the upper bound.
 	 */
 	public void setRange(double lower, double upper) {
 		this.lowerBound = lower;
 		this.upperBound = upper;
 		setAxisRange();
 	}
-
+	
 	/**
 	 * Returns the padding for the thermometer. This is the space inside the plot
 	 * area.
@@ -457,18 +457,18 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public Spacer getPadding() {
 		return this.padding;
 	}
-
+	
 	/**
 	 * Sets the padding for the thermometer.
 	 * 
 	 * @param padding
-	 *            the padding.
+	 *           the padding.
 	 */
 	public void setPadding(Spacer padding) {
 		this.padding = padding;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the stroke used to draw the thermometer outline.
 	 * 
@@ -477,12 +477,12 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public Stroke getThermometerStroke() {
 		return this.thermometerStroke;
 	}
-
+	
 	/**
 	 * Sets the stroke used to draw the thermometer outline.
 	 * 
 	 * @param s
-	 *            the new stroke (null ignored).
+	 *           the new stroke (null ignored).
 	 */
 	public void setThermometerStroke(Stroke s) {
 		if (s != null) {
@@ -490,7 +490,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the paint used to draw the thermometer outline.
 	 * 
@@ -499,12 +499,12 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public Paint getThermometerPaint() {
 		return this.thermometerPaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to draw the thermometer outline.
 	 * 
 	 * @param paint
-	 *            the new paint (null ignored).
+	 *           the new paint (null ignored).
 	 */
 	public void setThermometerPaint(Paint paint) {
 		if (paint != null) {
@@ -512,7 +512,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the unit display type (none/Fahrenheit/Celcius/Kelvin).
 	 * 
@@ -521,7 +521,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public int getUnits() {
 		return this.units;
 	}
-
+	
 	/**
 	 * Sets the units to be displayed in the thermometer.
 	 * <p>
@@ -534,7 +534,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	 * </ul>
 	 * 
 	 * @param u
-	 *            the new unit type.
+	 *           the new unit type.
 	 */
 	public void setUnits(int u) {
 		if ((u >= 0) && (u < UNITS.length)) {
@@ -544,18 +544,18 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			}
 		}
 	}
-
+	
 	/**
 	 * Sets the unit type.
 	 * 
 	 * @param u
-	 *            the unit type (null ignored).
+	 *           the unit type (null ignored).
 	 */
 	public void setUnits(String u) {
 		if (u == null) {
 			return;
 		}
-
+		
 		u = u.toUpperCase().trim();
 		for (int i = 0; i < UNITS.length; ++i) {
 			if (u.equals(UNITS[i].toUpperCase().trim())) {
@@ -564,7 +564,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns the value location.
 	 * 
@@ -573,7 +573,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public int getValueLocation() {
 		return this.valueLocation;
 	}
-
+	
 	/**
 	 * Sets the location at which the current value is displayed.
 	 * <P>
@@ -581,7 +581,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	 * <code>RIGHT</code> <code>LEFT</code> and <code>BULB</code>.
 	 * 
 	 * @param location
-	 *            the location.
+	 *           the location.
 	 */
 	public void setValueLocation(int location) {
 		if ((location >= 0) && (location < 4)) {
@@ -591,7 +591,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			throw new IllegalArgumentException("ThermometerPlot.setDisplayLocation: location not recognised.");
 		}
 	}
-
+	
 	/**
 	 * Sets the location at which the axis is displayed with reference to the bulb.
 	 * <P>
@@ -599,7 +599,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	 * <code>RIGHT</code> and <code>LEFT</code>.
 	 * 
 	 * @param location
-	 *            the location.
+	 *           the location.
 	 */
 	public void setAxisLocation(int location) {
 		if ((location >= 0) && (location < 3)) {
@@ -609,7 +609,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			throw new IllegalArgumentException("ThermometerPlot.setAxisLocation: location not recognised.");
 		}
 	}
-
+	
 	/**
 	 * Returns the axis location.
 	 * 
@@ -618,7 +618,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public int getAxisocation() {
 		return this.axisLocation;
 	}
-
+	
 	/**
 	 * Gets the font used to display the current value.
 	 * 
@@ -627,12 +627,12 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public Font getValueFont() {
 		return this.valueFont;
 	}
-
+	
 	/**
 	 * Sets the font used to display the current value.
 	 * 
 	 * @param f
-	 *            the new font.
+	 *           the new font.
 	 */
 	public void setValueFont(Font f) {
 		if ((f != null) && (!this.valueFont.equals(f))) {
@@ -640,7 +640,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Gets the paint used to display the current value.
 	 * 
@@ -649,12 +649,12 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public Paint getValuePaint() {
 		return this.valuePaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to display the current value.
 	 * 
 	 * @param p
-	 *            the new paint.
+	 *           the new paint.
 	 */
 	public void setValuePaint(Paint p) {
 		if ((p != null) && (!this.valuePaint.equals(p))) {
@@ -662,12 +662,12 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Sets the formatter for the value label.
 	 * 
 	 * @param formatter
-	 *            the new formatter.
+	 *           the new formatter.
 	 */
 	public void setValueFormat(NumberFormat formatter) {
 		if (formatter != null) {
@@ -675,7 +675,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the default mercury paint.
 	 * 
@@ -684,18 +684,18 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public Paint getMercuryPaint() {
 		return this.mercuryPaint;
 	}
-
+	
 	/**
 	 * Sets the default mercury paint.
 	 * 
 	 * @param paint
-	 *            the new paint.
+	 *           the new paint.
 	 */
 	public void setMercuryPaint(Paint paint) {
 		this.mercuryPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the flag that controls whether not value lines are displayed.
 	 * 
@@ -704,66 +704,66 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public boolean getShowValueLines() {
 		return this.showValueLines;
 	}
-
+	
 	/**
 	 * Sets the display as to whether to show value lines in the output.
 	 * 
 	 * @param b
-	 *            Whether to show value lines in the thermometer
+	 *           Whether to show value lines in the thermometer
 	 */
 	public void setShowValueLines(boolean b) {
 		this.showValueLines = b;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Sets information for a particular range.
 	 * 
 	 * @param range
-	 *            the range to specify information about.
+	 *           the range to specify information about.
 	 * @param low
-	 *            the low value for the range
+	 *           the low value for the range
 	 * @param hi
-	 *            the high value for the range
+	 *           the high value for the range
 	 */
 	public void setSubrangeInfo(int range, double low, double hi) {
 		setSubrangeInfo(range, low, hi, low, hi);
 	}
-
+	
 	/**
 	 * Sets the subrangeInfo attribute of the ThermometerPlot object
 	 * 
 	 * @param range
-	 *            the new rangeInfo value.
+	 *           the new rangeInfo value.
 	 * @param rangeLow
-	 *            the new rangeInfo value
+	 *           the new rangeInfo value
 	 * @param rangeHigh
-	 *            the new rangeInfo value
+	 *           the new rangeInfo value
 	 * @param displayLow
-	 *            the new rangeInfo value
+	 *           the new rangeInfo value
 	 * @param displayHigh
-	 *            the new rangeInfo value
+	 *           the new rangeInfo value
 	 */
 	public void setSubrangeInfo(int range, double rangeLow, double rangeHigh, double displayLow, double displayHigh) {
-
+		
 		if ((range >= 0) && (range < 3)) {
 			setSubrange(range, rangeLow, rangeHigh);
 			setDisplayRange(range, displayLow, displayHigh);
 			setAxisRange();
 			notifyListeners(new PlotChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Sets the range.
 	 * 
 	 * @param range
-	 *            the range type.
+	 *           the range type.
 	 * @param low
-	 *            the low value.
+	 *           the low value.
 	 * @param high
-	 *            the high value.
+	 *           the high value.
 	 */
 	public void setSubrange(int range, double low, double high) {
 		if ((range >= 0) && (range < 3)) {
@@ -771,21 +771,21 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			this.subrangeInfo[range][RANGE_LOW] = low;
 		}
 	}
-
+	
 	/**
 	 * Sets the display range.
 	 * 
 	 * @param range
-	 *            the range type.
+	 *           the range type.
 	 * @param low
-	 *            the low value.
+	 *           the low value.
 	 * @param high
-	 *            the high value.
+	 *           the high value.
 	 */
 	public void setDisplayRange(int range, double low, double high) {
-
+		
 		if ((range >= 0) && (range < this.subrangeInfo.length) && isValidNumber(high) && isValidNumber(low)) {
-
+			
 			if (high > low) {
 				this.subrangeInfo[range][DISPLAY_HIGH] = high;
 				this.subrangeInfo[range][DISPLAY_LOW] = low;
@@ -793,35 +793,35 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 				this.subrangeInfo[range][DISPLAY_HIGH] = high;
 				this.subrangeInfo[range][DISPLAY_LOW] = low;
 			}
-
+			
 		}
-
+		
 	}
-
+	
 	/**
 	 * Gets the paint used for a particular subrange.
 	 * 
 	 * @param range
-	 *            the range.
+	 *           the range.
 	 * @return the paint.
 	 */
 	public Paint getSubrangePaint(int range) {
-
+		
 		if ((range >= 0) && (range < this.subrangePaint.length)) {
 			return this.subrangePaint[range];
 		} else {
 			return this.mercuryPaint;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Sets the paint to be used for a range.
 	 * 
 	 * @param range
-	 *            the range.
+	 *           the range.
 	 * @param paint
-	 *            the paint to be applied.
+	 *           the paint to be applied.
 	 */
 	public void setSubrangePaint(int range, Paint paint) {
 		if ((range >= 0) && (range < this.subrangePaint.length) && (paint != null)) {
@@ -829,7 +829,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not the thermometer axis zooms to
 	 * display the subrange within which the data value falls.
@@ -839,19 +839,19 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public boolean getFollowDataInSubranges() {
 		return this.followDataInSubranges;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether or not the thermometer axis zooms to
 	 * display the subrange within which the data value falls.
 	 * 
 	 * @param flag
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setFollowDataInSubranges(boolean flag) {
 		this.followDataInSubranges = flag;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not the mercury color changes for
 	 * each subrange.
@@ -861,33 +861,33 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public boolean getUseSubrangePaint() {
 		return this.useSubrangePaint;
 	}
-
+	
 	/**
 	 * Sets the range colour change option.
 	 * 
 	 * @param flag
-	 *            The new range colour change option
+	 *           The new range colour change option
 	 */
 	public void setUseSubrangePaint(boolean flag) {
 		this.useSubrangePaint = flag;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Draws the plot on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the area within which the plot should be drawn.
+	 *           the area within which the plot should be drawn.
 	 * @param parentState
-	 *            the state from the parent plot, if there is one.
+	 *           the state from the parent plot, if there is one.
 	 * @param info
-	 *            collects info about the drawing.
+	 *           collects info about the drawing.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState, PlotRenderingInfo info) {
-
+		
 		RoundRectangle2D outerStem = new RoundRectangle2D.Double();
 		RoundRectangle2D innerStem = new RoundRectangle2D.Double();
 		RoundRectangle2D mercuryStem = new RoundRectangle2D.Double();
@@ -898,7 +898,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 		if (info != null) {
 			info.setPlotArea(plotArea);
 		}
-
+		
 		// adjust for insets...
 		Insets insets = getInsets();
 		if (insets != null) {
@@ -907,7 +907,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 					plotArea.getHeight() - insets.top - insets.bottom);
 		}
 		drawBackground(g2, plotArea);
-
+		
 		// adjust for padding...
 		// this.padding.trim(plotArea);
 		int midX = (int) (plotArea.getX() + (plotArea.getWidth() / 2));
@@ -916,31 +916,31 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 		int stemBottom = (int) (plotArea.getMaxY() - BULB_DIAMETER);
 		Rectangle2D dataArea = new Rectangle2D.Double(midX - COLUMN_RADIUS, stemTop, COLUMN_RADIUS,
 				stemBottom - stemTop);
-
+		
 		outerBulb.setFrame(midX - BULB_RADIUS, stemBottom, BULB_DIAMETER, BULB_DIAMETER);
-
+		
 		outerStem.setRoundRect(midX - COLUMN_RADIUS, plotArea.getMinY(), COLUMN_DIAMETER,
 				stemBottom + BULB_DIAMETER - stemTop, COLUMN_DIAMETER, COLUMN_DIAMETER);
-
+		
 		Area outerThermometer = new Area(outerBulb);
 		Area tempArea = new Area(outerStem);
 		outerThermometer.add(tempArea);
-
+		
 		innerBulb.setFrame(midX - BULB_RADIUS + GAP_RADIUS, stemBottom + GAP_RADIUS, BULB_DIAMETER - GAP_DIAMETER,
 				BULB_DIAMETER - GAP_DIAMETER);
-
+		
 		innerStem.setRoundRect(midX - COLUMN_RADIUS + GAP_RADIUS, plotArea.getMinY() + GAP_RADIUS,
 				COLUMN_DIAMETER - GAP_DIAMETER, stemBottom + BULB_DIAMETER - GAP_DIAMETER - stemTop,
 				COLUMN_DIAMETER - GAP_DIAMETER, COLUMN_DIAMETER - GAP_DIAMETER);
-
+		
 		Area innerThermometer = new Area(innerBulb);
 		tempArea = new Area(innerStem);
 		innerThermometer.add(tempArea);
-
+		
 		if ((this.dataset != null) && (this.dataset.getValue() != null)) {
 			double current = this.dataset.getValue().doubleValue();
 			double ds = this.rangeAxis.valueToJava2D(current, dataArea, RectangleEdge.LEFT);
-
+			
 			int i = COLUMN_DIAMETER - GAP_DIAMETER; // already calculated
 			int j = COLUMN_RADIUS - GAP_RADIUS; // already calculated
 			int l = (i / 2);
@@ -949,23 +949,23 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 				k = (int) (GAP_RADIUS + plotArea.getMinY());
 				l = BULB_RADIUS;
 			}
-
+			
 			Area mercury = new Area(innerBulb);
-
+			
 			if (k < (stemBottom + BULB_RADIUS)) {
 				mercuryStem.setRoundRect(midX - j, k, i, (stemBottom + BULB_RADIUS) - k, l, l);
 				tempArea = new Area(mercuryStem);
 				mercury.add(tempArea);
 			}
-
+			
 			g2.setPaint(getCurrentPaint());
 			g2.fill(mercury);
-
+			
 			// draw range indicators...
 			if (this.subrangeIndicatorsVisible) {
 				g2.setStroke(this.subrangeIndicatorStroke);
 				Range range = this.rangeAxis.getRange();
-
+				
 				// draw start of normal range
 				double value = this.subrangeInfo[NORMAL][RANGE_LOW];
 				if (range.contains(value)) {
@@ -975,7 +975,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 					g2.setPaint(this.subrangePaint[NORMAL]);
 					g2.draw(line);
 				}
-
+				
 				// draw start of warning range
 				value = this.subrangeInfo[WARNING][RANGE_LOW];
 				if (range.contains(value)) {
@@ -985,7 +985,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 					g2.setPaint(this.subrangePaint[WARNING]);
 					g2.draw(line);
 				}
-
+				
 				// draw start of critical range
 				value = this.subrangeInfo[CRITICAL][RANGE_LOW];
 				if (range.contains(value)) {
@@ -996,7 +996,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 					g2.draw(line);
 				}
 			}
-
+			
 			// draw the axis...
 			if ((this.rangeAxis != null) && (this.axisLocation != NONE)) {
 				int drawWidth = AXIS_GAP;
@@ -1005,78 +1005,78 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 				}
 				Rectangle2D drawArea;
 				double cursor = 0;
-
+				
 				switch (this.axisLocation) {
-				case RIGHT:
-					cursor = midX + COLUMN_RADIUS;
-					drawArea = new Rectangle2D.Double(cursor, stemTop, drawWidth, (stemBottom - stemTop + 1));
-					this.rangeAxis.draw(g2, cursor, plotArea, drawArea, RectangleEdge.RIGHT, null);
-					break;
-
-				case LEFT:
-				default:
-					// cursor = midX - COLUMN_RADIUS - AXIS_GAP;
-					cursor = midX - COLUMN_RADIUS;
-					drawArea = new Rectangle2D.Double(cursor, stemTop, drawWidth, (stemBottom - stemTop + 1));
-					this.rangeAxis.draw(g2, cursor, plotArea, drawArea, RectangleEdge.LEFT, null);
-					break;
+					case RIGHT:
+						cursor = midX + COLUMN_RADIUS;
+						drawArea = new Rectangle2D.Double(cursor, stemTop, drawWidth, (stemBottom - stemTop + 1));
+						this.rangeAxis.draw(g2, cursor, plotArea, drawArea, RectangleEdge.RIGHT, null);
+						break;
+					
+					case LEFT:
+					default:
+						// cursor = midX - COLUMN_RADIUS - AXIS_GAP;
+						cursor = midX - COLUMN_RADIUS;
+						drawArea = new Rectangle2D.Double(cursor, stemTop, drawWidth, (stemBottom - stemTop + 1));
+						this.rangeAxis.draw(g2, cursor, plotArea, drawArea, RectangleEdge.LEFT, null);
+						break;
 				}
 				// cursor = state.getCursor();
 			}
-
+			
 			// draw text value on screen
 			g2.setFont(this.valueFont);
 			g2.setPaint(this.valuePaint);
 			metrics = g2.getFontMetrics();
 			switch (this.valueLocation) {
-			case RIGHT:
-				g2.drawString(this.valueFormat.format(current), midX + COLUMN_RADIUS + GAP_RADIUS, midY);
-				break;
-			case LEFT:
-				String valueString = this.valueFormat.format(current);
-				int stringWidth = metrics.stringWidth(valueString);
-				g2.drawString(valueString, midX - COLUMN_RADIUS - GAP_RADIUS - stringWidth, midY);
-				break;
-			case BULB:
-				temp = this.valueFormat.format(current);
-				i = metrics.stringWidth(temp) / 2;
-				g2.drawString(temp, midX - i, stemBottom + BULB_RADIUS + GAP_RADIUS);
-				break;
-			default:
+				case RIGHT:
+					g2.drawString(this.valueFormat.format(current), midX + COLUMN_RADIUS + GAP_RADIUS, midY);
+					break;
+				case LEFT:
+					String valueString = this.valueFormat.format(current);
+					int stringWidth = metrics.stringWidth(valueString);
+					g2.drawString(valueString, midX - COLUMN_RADIUS - GAP_RADIUS - stringWidth, midY);
+					break;
+				case BULB:
+					temp = this.valueFormat.format(current);
+					i = metrics.stringWidth(temp) / 2;
+					g2.drawString(temp, midX - i, stemBottom + BULB_RADIUS + GAP_RADIUS);
+					break;
+				default:
 			}
 			/***/
 		}
-
+		
 		g2.setPaint(this.thermometerPaint);
 		g2.setFont(this.valueFont);
-
+		
 		// draw units indicator
 		metrics = g2.getFontMetrics();
 		int tickX1 = midX - COLUMN_RADIUS - GAP_DIAMETER - metrics.stringWidth(UNITS[this.units]);
 		if (tickX1 > plotArea.getMinX()) {
 			g2.drawString(UNITS[this.units], tickX1, (int) (plotArea.getMinY() + 20));
 		}
-
+		
 		// draw thermometer outline
 		g2.setStroke(this.thermometerStroke);
 		g2.draw(outerThermometer);
 		g2.draw(innerThermometer);
-
+		
 		drawOutline(g2, plotArea);
 	}
-
+	
 	/**
 	 * A zoom method that does nothing. Plots are required to support the zoom
 	 * operation. In the case of a thermometer chart, it doesn't make sense to zoom
 	 * in or out, so the method is empty.
 	 * 
 	 * @param percent
-	 *            the zoom percentage.
+	 *           the zoom percentage.
 	 */
 	public void zoom(double percent) {
 		// intentionally blank
 	}
-
+	
 	/**
 	 * Returns a short string describing the type of plot.
 	 * 
@@ -1085,15 +1085,15 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public String getPlotType() {
 		return localizationResources.getString("Thermometer_Plot");
 	}
-
+	
 	/**
 	 * Checks to see if a new value means the axis range needs adjusting.
 	 * 
 	 * @param event
-	 *            the dataset change event.
+	 *           the dataset change event.
 	 */
 	public void datasetChanged(DatasetChangeEvent event) {
-
+		
 		Number vn = this.dataset.getValue();
 		if (vn != null) {
 			double value = vn.doubleValue();
@@ -1110,7 +1110,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 		}
 		super.datasetChanged(event);
 	}
-
+	
 	/**
 	 * Returns the minimum value in either the domain or the range, whichever is
 	 * displayed against the vertical axis for the particular type of plot
@@ -1121,7 +1121,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public Number getMinimumVerticalDataValue() {
 		return Double.valueOf(this.lowerBound);
 	}
-
+	
 	/**
 	 * Returns the maximum value in either the domain or the range, whichever is
 	 * displayed against the vertical axis for the particular type of plot
@@ -1132,18 +1132,18 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public Number getMaximumVerticalDataValue() {
 		return Double.valueOf(this.upperBound);
 	}
-
+	
 	/**
 	 * Returns the data range.
 	 * 
 	 * @param axis
-	 *            the axis.
+	 *           the axis.
 	 * @return The range of data displayed.
 	 */
 	public Range getDataRange(ValueAxis axis) {
 		return new Range(this.lowerBound, this.upperBound);
 	}
-
+	
 	/**
 	 * Sets the axis range to the current values in the rangeInfo array.
 	 */
@@ -1155,7 +1155,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 			this.rangeAxis.setRange(this.lowerBound, this.upperBound);
 		}
 	}
-
+	
 	/**
 	 * Returns null, since the thermometer plot won't require a legend.
 	 * 
@@ -1165,7 +1165,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public List getLegendItemLabels() {
 		return null;
 	}
-
+	
 	/**
 	 * Returns the legend items for the plot.
 	 * 
@@ -1174,7 +1174,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public LegendItemCollection getLegendItems() {
 		return null;
 	}
-
+	
 	/**
 	 * Returns the vertical value axis.
 	 * <p>
@@ -1186,38 +1186,38 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	public ValueAxis getVerticalValueAxis() {
 		return this.rangeAxis;
 	}
-
+	
 	/**
 	 * Determine whether a number is valid and finite.
 	 * 
 	 * @param d
-	 *            the number to be tested.
+	 *           the number to be tested.
 	 * @return true if the number is valid and finite, and false otherwise.
 	 */
 	protected static boolean isValidNumber(double d) {
 		return (!(Double.isNaN(d) || Double.isInfinite(d)));
 	}
-
+	
 	/**
 	 * Returns true if the value is in the specified range, and false otherwise.
 	 * 
 	 * @param subrange
-	 *            the subrange.
+	 *           the subrange.
 	 * @param value
-	 *            the value to check.
+	 *           the value to check.
 	 * @return true or false.
 	 */
 	private boolean inSubrange(int subrange, double value) {
 		return (value > this.subrangeInfo[subrange][RANGE_LOW] && value <= this.subrangeInfo[subrange][RANGE_HIGH]);
 	}
-
+	
 	/**
 	 * Returns the mercury paint corresponding to the current data value.
 	 * 
 	 * @return the paint.
 	 */
 	private Paint getCurrentPaint() {
-
+		
 		Paint result = this.mercuryPaint;
 		if (this.useSubrangePaint) {
 			double value = this.dataset.getValue().doubleValue();
@@ -1231,24 +1231,24 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Tests this plot for equality with another object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (obj instanceof ThermometerPlot) {
 			ThermometerPlot p = (ThermometerPlot) obj;
 			if (super.equals(obj)) {
@@ -1272,25 +1272,25 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 				boolean b17 = (this.useSubrangePaint == p.useSubrangePaint);
 				return b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && b10 && b11 && b12 && b13 && b14
 						&& b15 && b16 && b17;
-
+				
 			}
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the plot.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the plot cannot be cloned.
+	 *            if the plot cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		ThermometerPlot clone = (ThermometerPlot) super.clone();
-
+		
 		// private ValueDataset dataset <-- don't clone the dataset
 		if (clone.dataset != null) {
 			clone.dataset.addChangeListener(clone);
@@ -1320,18 +1320,18 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 		// private boolean subrangeIndicatorsVisible <-- primitive
 		// private transient Stroke subrangeIndicatorStroke <-- immutable
 		// private transient Stroke rangeIndicatorStroke <-- immutable
-
+		
 		return clone;
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -1342,16 +1342,16 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 		SerialUtilities.writeStroke(this.subrangeIndicatorStroke, stream);
 		SerialUtilities.writeStroke(this.rangeIndicatorStroke, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -1361,55 +1361,55 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 		this.mercuryPaint = SerialUtilities.readPaint(stream);
 		this.subrangeIndicatorStroke = SerialUtilities.readStroke(stream);
 		this.rangeIndicatorStroke = SerialUtilities.readStroke(stream);
-
+		
 		if (this.rangeAxis != null) {
 			this.rangeAxis.addChangeListener(this);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Multiplies the range on the horizontal axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *            the zoom factor.
+	 *           the zoom factor.
 	 */
 	public void zoomHorizontalAxes(double factor) {
 		// do nothing
 	}
-
+	
 	/**
 	 * Multiplies the range on the vertical axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *            the zoom factor.
+	 *           the zoom factor.
 	 */
 	public void zoomVerticalAxes(double factor) {
 		// zoom the range axis
 	}
-
+	
 	/**
 	 * Zooms the horizontal axes.
 	 * 
 	 * @param lowerPercent
-	 *            the lower percent.
+	 *           the lower percent.
 	 * @param upperPercent
-	 *            the upper percent.
+	 *           the upper percent.
 	 */
 	public void zoomHorizontalAxes(double lowerPercent, double upperPercent) {
 		// zoom the domain axis
 	}
-
+	
 	/**
 	 * Zooms the vertical axes.
 	 * 
 	 * @param lowerPercent
-	 *            the lower percent.
+	 *           the lower percent.
 	 * @param upperPercent
-	 *            the upper percent.
+	 *           the upper percent.
 	 */
 	public void zoomVerticalAxes(double lowerPercent, double upperPercent) {
 		// zoom the domain axis
 	}
-
+	
 }

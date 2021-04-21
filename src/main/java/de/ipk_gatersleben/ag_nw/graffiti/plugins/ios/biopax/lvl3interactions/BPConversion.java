@@ -16,22 +16,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityClassSelectorToGraph;
 
 public class BPConversion extends BPInteraction {
-
+	
 	public BPConversion(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super(Graph, Nodes);
 	}
-
+	
 	public void read(Interaction i) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Conversion con = (Conversion) i;
-
+		
 		Set<PhysicalEntity> left = con.getLeft();
 		Set<PhysicalEntity> right = con.getRight();
-
+		
 		// set center node of the reaction
 		Node center = graph.addNode(centerAttribute);
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, con);
 		nodes.put(con, center);
-
+		
 		for (PhysicalEntity l : left) {
 			Node node = findORcreateNode(l);
 			Edge e = addEdge(node, center);
@@ -39,7 +39,7 @@ public class BPConversion extends BPInteraction {
 					Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$
 			sW.writeParticipantStoichiometry(node, center, e, con.getParticipantStoichiometry());
 		}
-
+		
 		for (PhysicalEntity r : right) {
 			Node node = findORcreateNode(r);
 			Edge e = addEdge(center, node);

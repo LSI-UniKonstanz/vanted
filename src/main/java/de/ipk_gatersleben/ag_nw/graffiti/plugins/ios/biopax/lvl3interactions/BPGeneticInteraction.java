@@ -17,16 +17,16 @@ public class BPGeneticInteraction extends BPInteraction {
 	public BPGeneticInteraction(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super(Graph, Nodes);
 	}
-
+	
 	public void read(Interaction i) {
 		GeneticInteraction gi = (GeneticInteraction) i;
 		Set<Entity> parts = gi.getParticipant();
-
+		
 		// set center node of the reaction
 		Node center = graph.addNode(centerAttribute);
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, gi);
 		nodes.put(gi, center);
-
+		
 		for (Entity p : parts) {
 			Node node = findORcreateNode(p);
 			Edge e = addEdge(center, node);

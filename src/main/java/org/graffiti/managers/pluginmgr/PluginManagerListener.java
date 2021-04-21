@@ -19,14 +19,14 @@ import org.graffiti.plugin.GenericPlugin;
  */
 public interface PluginManagerListener {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
 	 * 
 	 * @param plugin
-	 *            the added plugin.
+	 *           the added plugin.
 	 * @param desc
-	 *            the description of the new plugin.
+	 *           the description of the new plugin.
 	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc);
 }

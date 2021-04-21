@@ -48,21 +48,21 @@ import org.jfree.ui.RectangleEdge;
  * on the axis.
  */
 public class ExtendedCategoryAxis extends CategoryAxis {
-
+	
 	/** Storage for the sublabels. */
 	private Map sublabels;
-
+	
 	/** The sublabel font. */
 	private Font sublabelFont;
-
+	
 	/** The sublabel paint. */
 	private Paint sublabelPaint;
-
+	
 	/**
 	 * Creates a new axis.
 	 * 
 	 * @param label
-	 *            the axis label.
+	 *           the axis label.
 	 */
 	public ExtendedCategoryAxis(String label) {
 		super(label);
@@ -70,7 +70,7 @@ public class ExtendedCategoryAxis extends CategoryAxis {
 		this.sublabelFont = new Font("SansSerif", Font.PLAIN, 10);
 		this.sublabelPaint = Color.black;
 	}
-
+	
 	/**
 	 * Returns the font for the sublabels.
 	 * 
@@ -79,17 +79,17 @@ public class ExtendedCategoryAxis extends CategoryAxis {
 	public Font getSubLabelFont() {
 		return this.sublabelFont;
 	}
-
+	
 	/**
 	 * Sets the font for the sublabels.
 	 * 
 	 * @param font
-	 *            the font.
+	 *           the font.
 	 */
 	public void setSubLabelFont(Font font) {
 		this.sublabelFont = font;
 	}
-
+	
 	/**
 	 * Returns the paint for the sublabels.
 	 * 
@@ -98,41 +98,41 @@ public class ExtendedCategoryAxis extends CategoryAxis {
 	public Paint getSubLabelPaint() {
 		return this.sublabelPaint;
 	}
-
+	
 	/**
 	 * Sets the paint for the sublabels.
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setSubLabelPaint(Paint paint) {
 		this.sublabelPaint = paint;
 	}
-
+	
 	/**
 	 * Adds a sublabel for a category.
 	 * 
 	 * @param category
-	 *            the category.
+	 *           the category.
 	 * @param label
-	 *            the label.
+	 *           the label.
 	 */
 	public void addSubLabel(Comparable category, String label) {
 		this.sublabels.put(category, label);
 	}
-
+	
 	/**
 	 * Overrides the default behaviour by adding the sublabel to the text block that
 	 * is used for the category label.
 	 * 
 	 * @param category
-	 *            the category.
+	 *           the category.
 	 * @param width
-	 *            the width (not used yet).
+	 *           the width (not used yet).
 	 * @param edge
-	 *            the location of the axis.
+	 *           the location of the axis.
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @return a label.
 	 */
 	protected TextBlock createLabel(Comparable category, float width, RectangleEdge edge, Graphics2D g2) {
@@ -151,5 +151,5 @@ public class ExtendedCategoryAxis extends CategoryAxis {
 		}
 		return label;
 	}
-
+	
 }

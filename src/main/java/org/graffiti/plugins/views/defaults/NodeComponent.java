@@ -50,32 +50,32 @@ import org.graffiti.util.InstanceLoader;
 public class NodeComponent extends AbstractGraphElementComponent implements NodeComponentInterface {
 	// ~ Constructors ===========================================================
 	private static final long serialVersionUID = -303544019220632035L;
-
+	
 	private static final Logger logger = Logger.getLogger(NodeComponent.class);
-
+	
 	static {
 		logger.setLevel(Level.INFO);
 	}
-
+	
 	private Stroke stroke = null;
-
+	
 	private NodeGraphicAttribute nodeAttr = null;
 	private float lastStrokeWidth = Float.MIN_VALUE;
-
+	
 	private Paint rgp = null;
-
+	
 	private String currentShapeClass;
-
+	
 	private Paint fillPaint;
-
+	
 	private Paint framePaint;
-
+	
 	private boolean drawFrame;
-
+	
 	Zoomable zommableView = null;
-
+	
 	private double zoomfactor = 1.0d;
-
+	
 	/**
 	 * Constructor for NodeComponent.
 	 * 
@@ -83,23 +83,23 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 	 */
 	public NodeComponent(GraphElement ge) {
 		super(ge);
-
+		
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Creates a standard NodeShape (in this case a rectangle) and draws it.
 	 * 
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void createStandardShape() {
 		NodeShape newShape = new RectangleNodeShape();
 		NodeGraphicAttribute nodeAttr;
 		nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
-
+		
 		try {
 			newShape.buildShape(nodeAttr);
 			shape = newShape;
@@ -110,15 +110,15 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 					"this should never happen since the " + "standard node shape should always " + "exist." + e);
 		}
 	}
-
+	
 	/**
 	 * Called when a graphic attribute of the node represented by this component has
 	 * changed.
 	 * 
 	 * @param attr
-	 *            the graphic attribute that has triggered the event.
+	 *           the graphic attribute that has triggered the event.
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public synchronized void graphicAttributeChanged(Attribute attr) throws ShapeNotFoundException {
@@ -129,13 +129,13 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 			if (!id.equals(COORDINATE)) {
 				if (id.equals(LINEMODE)) {
 					updateStroke();
-
+					
 				} else {
 					createNewShape(coordinateSystem);
 				}
 				updateGraphicsFields();
 			} else {
-
+				
 				adjustComponentSizeAndPosition();
 			}
 			// update attribute components like labels:
@@ -147,7 +147,7 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 				attrComp.attributeChanged(attr);
 				attrComp.setHidden(hidden);
 			}
-
+			
 			/*
 			 * only update dependend component if we're not finishing a transaction Because
 			 * during a transaction it happens, that each node will update its dep.
@@ -160,13 +160,13 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 				boolean isFinishingTransacation = ((GraffitiView) getParent()).isFinishingTransacation;
 				if (!isFinishingTransacation)
 					updateRelatedEdgeComponents();
-
+				
 			} else {
 				updateRelatedEdgeComponents();
 			}
 		}
 	}
-
+	
 	@Override
 	public synchronized void nonGraphicAttributeChanged(Attribute attr) throws ShapeNotFoundException {
 		// TODO Auto-generated method stub
@@ -177,33 +177,33 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 			attrComp.attributeChanged(attr);
 		}
 	}
-
+	
 	private void updateGraphicsFields() {
 		logger.debug("updateGraphicsFields for node id:" + getGraphElement().getID());
-
+		
 		if (nodeAttr == null)
 			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
-
+		
 		ColorAttribute color = nodeAttr.getFillcolor();
 		fillPaint = color.getColor();
-
+		
 		double epsilon = 0.0001;
 		if (rgp != null && Math.abs(nodeAttr.getUseGradient()) > epsilon) {
 			fillPaint = rgp;
 		}
-
+		
 		drawFrame = (nodeAttr.getFrameThickness() > epsilon);
-
+		
 		framePaint = nodeAttr.getFramecolor().getColor();
-
+		
 	}
-
+	
 	/**
 	 * Draws the shape of the node contained in this component according to the
 	 * graphic attributes of the node.
 	 * 
 	 * @param g
-	 *            the graphics context in which to draw.
+	 *           the graphics context in which to draw.
 	 */
 	@Override
 	protected void drawShape(Graphics g) {
@@ -219,28 +219,28 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 		int width = getWidth();
 		int height = getHeight();
 		if (width * zoomfactor < 5 || height * zoomfactor < 5) {
-
+			
 			if (drawFrame) {
 				drawArea.setPaint(framePaint);
 				drawArea.fillRect(0, 0, width, height);
 			}
-
+			
 			drawArea.setPaint(fillPaint);
 			drawArea.drawRect(0, 0, width, height);
-
+			
 			return;
 		}
-
+		
 		drawArea.translate(shape.getXexcess(), shape.getYexcess());
-
+		
 		// set method of drawing according to attributes of node
-
+		
 		if (stroke != null)
 			drawArea.setStroke(stroke);
-
+		
 		// draw background image
 		// fill the shape
-
+		
 		if (shape instanceof ProvidesAdditonalDrawingShapes) {
 			Collection<Shape> preShapes = ((ProvidesAdditonalDrawingShapes) shape).getPreBorderShapes();
 			if (preShapes != null)
@@ -264,12 +264,12 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 		 * must not be transparent because otherwise would lead to problems with
 		 * overlapping fill and frame
 		 */
-
+		
 		if (drawFrame) {
 			drawArea.setPaint(framePaint);
 			drawArea.draw(shape);
 		}
-
+		
 		if (getViewDrawMode() == DrawMode.NORMAL) {
 			if (shape instanceof PolygonalNodeShape) {
 				PolygonalNodeShape pp = (PolygonalNodeShape) shape;
@@ -278,7 +278,7 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 					drawArea.fillPolygon(pp.getIgnorePolygon());
 				}
 			}
-
+			
 		}
 		if (shape instanceof ProvidesAdditonalDrawingShapes) {
 			Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
@@ -294,17 +294,17 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 		}
 		// drawArea.translate(-1 - shape.getXexcess(), -1 - shape.getYexcess());
 	}
-
+	
 	/**
 	 * Used when the shape changed in the datastructure.
 	 * 
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	protected void recreate() throws ShapeNotFoundException {
 		logger.debug("recreate for node id:" + getGraphElement().getID());
-
+		
 		if (!this.graphElement.getAttributes().getCollection().containsKey(GRAPHICS)
 				|| !(graphElement.getAttribute(GRAPHICS) instanceof NodeGraphicAttribute)) {
 			Node n = (Node) graphElement;
@@ -312,20 +312,20 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 			AttributeHelper.setDefaultGraphicsAttribute(n, 100, 100);
 		}
 		Object obj = graphElement.getAttribute(GRAPHICS);
-
+		
 		NodeGraphicAttribute geAttr = (NodeGraphicAttribute) obj;
-
+		
 		if (nodeAttr == null)
 			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
-
+		
 		// get classname of the shape to use and instantiate this
 		String newShapeClass = geAttr.getShape();
 		if (!newShapeClass.equals(currentShapeClass)) {
 			currentShapeClass = AttributeHelper.getShapeClassFromShapeName(newShapeClass);
 			NodeShape newShape = null;
-
+			
 			try {
-
+				
 				newShape = (NodeShape) InstanceLoader.createInstance(currentShapeClass);
 			} catch (InstanceCreationException ie) {
 				throw new ShapeNotFoundException(ie.toString());
@@ -335,12 +335,12 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 		// get graphic attribute and pass it to the shape
 		this.shape.setCoordinateSystem(coordinateSystem);
 		((NodeShape) this.shape).buildShape(geAttr);
-
+		
 		this.adjustComponentSizeAndPosition();
-
+		
 		int maxR = getHeight() > getWidth() ? getHeight() : getWidth();
 		// maxR = maxR / 2;
-
+		
 		double epsilon = 0.0001;
 		if (nodeAttr.getUseGradient() > epsilon)
 			rgp = new RoundGradientPaint(nodeAttr.getDimension().getWidth() * nodeAttr.getUseGradient(),
@@ -362,11 +362,11 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 			rgp = new GradientPaint(p1, c1, p2, c2);
 		} else
 			rgp = null;
-
+		
 		updateStroke();
 		updateGraphicsFields();
 	}
-
+	
 	private void updateStroke() {
 		float frameThickness = (float) nodeAttr.getFrameThickness();
 		if (frameThickness > 0) {
@@ -375,13 +375,13 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 					nodeAttr.getLineMode().getDashArray(), nodeAttr.getLineMode().getDashPhase());
 		}
 	}
-
+	
 	/**
 	 * Called whenever the size of the shape within this component has changed.
 	 */
 	protected void adjustComponentSizeAndPosition() {
 		logger.debug("adjustComponentSizeAndPosition for node id:" + getGraphElement().getID());
-
+		
 		DimensionAttribute dim = nodeAttr.getDimension();
 		// hidden graph element check
 		if (dim.getWidth() < 0 || dim.getHeight() < 0)
@@ -392,32 +392,32 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 			double offB = 1;// 2d;
 			double xE = shape.getXexcess();
 			double yE = shape.getYexcess();
-
+			
 			// catch after decimal node sizes.
 			// we need to increase the bounds, to make sure, we display the whole shape
 			// (double to int problem)
 			if (Math.floor(bounds.getWidth()) != bounds.getWidth()
 					|| Math.floor(bounds.getHeight()) != bounds.getHeight())
 				offB++;
-
+			
 			setBounds((int) (bounds.getX() + offA - xE), (int) (bounds.getY() + offA - yE),
 					(int) (bounds.getWidth() + offB + xE * 2d), (int) (bounds.getHeight() + offB + yE * 2d));
 		}
 	}
-
+	
 	/**
 	 * Calls <code>updateShape</code> on all dependent (edge) components.
 	 * 
 	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	protected void updateRelatedEdgeComponents() {
 		logger.debug("updateRelatedEdgeComponents for node id:" + getGraphElement().getID());
-
+		
 		synchronized (dependentComponents) {
 			for (Iterator<?> it = dependentComponents.iterator(); it.hasNext();) {
 				EdgeComponent ec = null;
-
+				
 				try {
 					ec = (EdgeComponent) it.next();
 					ec.updateShape();
@@ -427,9 +427,9 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 				}
 			}
 		}
-
+		
 	}
-
+	
 	@Override
 	public String getToolTipText() {
 		try {

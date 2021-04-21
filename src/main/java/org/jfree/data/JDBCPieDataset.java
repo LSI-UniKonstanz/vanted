@@ -59,40 +59,40 @@ import java.sql.Types;
  * @author Bryan Scott.
  */
 public class JDBCPieDataset extends DefaultPieDataset {
-
+	
 	/** The database connection. */
 	private Connection connection;
-
+	
 	/**
 	 * Creates a new JDBCPieDataset and establishes a new database connection.
 	 * 
 	 * @param url
-	 *            the URL of the database connection.
+	 *           the URL of the database connection.
 	 * @param driverName
-	 *            the database driver class name.
+	 *           the database driver class name.
 	 * @param user
-	 *            the database user.
+	 *           the database user.
 	 * @param password
-	 *            the database users password.
+	 *           the database users password.
 	 * @throws ClassNotFoundException
-	 *             if the driver cannot be found.
+	 *            if the driver cannot be found.
 	 * @throws SQLException
-	 *             if there is a problem obtaining a database connection.
+	 *            if there is a problem obtaining a database connection.
 	 */
 	public JDBCPieDataset(final String url, final String driverName, final String user, final String password)
 			throws SQLException, ClassNotFoundException {
-
+		
 		Class.forName(driverName);
 		this.connection = DriverManager.getConnection(url, user, password);
 	}
-
+	
 	/**
 	 * Creates a new JDBCPieDataset using a pre-existing database connection.
 	 * <P>
 	 * The dataset is initially empty, since no query has been supplied yet.
 	 * 
 	 * @param con
-	 *            the database connection.
+	 *           the database connection.
 	 */
 	public JDBCPieDataset(final Connection con) {
 		if (con == null) {
@@ -100,24 +100,24 @@ public class JDBCPieDataset extends DefaultPieDataset {
 		}
 		this.connection = con;
 	}
-
+	
 	/**
 	 * Creates a new JDBCPieDataset using a pre-existing database connection.
 	 * <P>
 	 * The dataset is initialised with the supplied query.
 	 * 
 	 * @param con
-	 *            the database connection.
+	 *           the database connection.
 	 * @param query
-	 *            the database connection.
+	 *           the database connection.
 	 * @throws SQLException
-	 *             if there is a problem executing the query.
+	 *            if there is a problem executing the query.
 	 */
 	public JDBCPieDataset(final Connection con, final String query) throws SQLException {
 		this(con);
 		executeQuery(query);
 	}
-
+	
 	/**
 	 * ExecuteQuery will attempt execute the query passed to it against the existing
 	 * database connection. If no connection exists then no action is taken. The
@@ -125,14 +125,14 @@ public class JDBCPieDataset extends DefaultPieDataset {
 	 * upper limit on how many rows can be retrieved successfully.
 	 * 
 	 * @param query
-	 *            the query to be executed.
+	 *           the query to be executed.
 	 * @throws SQLException
-	 *             if there is a problem executing the query.
+	 *            if there is a problem executing the query.
 	 */
 	public void executeQuery(final String query) throws SQLException {
 		executeQuery(this.connection, query);
 	}
-
+	
 	/**
 	 * ExecuteQuery will attempt execute the query passed to it against the existing
 	 * database connection. If no connection exists then no action is taken. The
@@ -140,59 +140,59 @@ public class JDBCPieDataset extends DefaultPieDataset {
 	 * upper limit on how many rows can be retrieved successfully.
 	 * 
 	 * @param query
-	 *            the query to be executed
+	 *           the query to be executed
 	 * @param con
-	 *            the connection the query is to be executed against
+	 *           the connection the query is to be executed against
 	 * @throws SQLException
-	 *             if there is a problem executing the query.
+	 *            if there is a problem executing the query.
 	 */
 	public void executeQuery(final Connection con, final String query) throws SQLException {
-
+		
 		Statement statement = null;
 		ResultSet resultSet = null;
-
+		
 		try {
 			statement = con.createStatement();
 			resultSet = statement.executeQuery(query);
 			final ResultSetMetaData metaData = resultSet.getMetaData();
-
+			
 			final int columnCount = metaData.getColumnCount();
 			if (columnCount != 2) {
 				throw new SQLException("Invalid sql generated.  PieDataSet requires 2 columns only");
 			}
-
+			
 			final int columnType = metaData.getColumnType(2);
 			double value = Double.NaN;
 			while (resultSet.next()) {
 				final Comparable key = resultSet.getString(1);
 				switch (columnType) {
-				case Types.NUMERIC:
-				case Types.REAL:
-				case Types.INTEGER:
-				case Types.DOUBLE:
-				case Types.FLOAT:
-				case Types.DECIMAL:
-				case Types.BIGINT:
-					value = resultSet.getDouble(2);
-					setValue(key, value);
-					break;
-
-				case Types.DATE:
-				case Types.TIME:
-				case Types.TIMESTAMP:
-					final Timestamp date = resultSet.getTimestamp(2);
-					value = date.getTime();
-					setValue(key, value);
-					break;
-
-				default:
-					System.err.println("JDBCPieDataset - unknown data type");
-					break;
+					case Types.NUMERIC:
+					case Types.REAL:
+					case Types.INTEGER:
+					case Types.DOUBLE:
+					case Types.FLOAT:
+					case Types.DECIMAL:
+					case Types.BIGINT:
+						value = resultSet.getDouble(2);
+						setValue(key, value);
+						break;
+					
+					case Types.DATE:
+					case Types.TIME:
+					case Types.TIMESTAMP:
+						final Timestamp date = resultSet.getTimestamp(2);
+						value = date.getTime();
+						setValue(key, value);
+						break;
+					
+					default:
+						System.err.println("JDBCPieDataset - unknown data type");
+						break;
 				}
 			}
-
+			
 			fireDatasetChanged();
-
+			
 		} finally {
 			if (resultSet != null) {
 				try {
@@ -210,12 +210,12 @@ public class JDBCPieDataset extends DefaultPieDataset {
 			}
 		}
 	}
-
+	
 	/**
 	 * Close the database connection
 	 */
 	public void close() {
-
+		
 		try {
 			this.connection.close();
 		} catch (Exception e) {

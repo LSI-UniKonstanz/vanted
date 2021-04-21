@@ -48,38 +48,38 @@ import javax.swing.ListCellRenderer;
  * @author David M. O'Donnell
  */
 public class PaletteSample extends JComponent implements ListCellRenderer {
-
+	
 	/** The palette being displayed. */
 	private ColorPalette palette;
-
+	
 	/** The preferred size of the component; */
 	private Dimension preferredSize;
-
+	
 	/**
 	 * Creates a new sample.
 	 * 
 	 * @param palette
-	 *            the palette.
+	 *           the palette.
 	 */
 	public PaletteSample(ColorPalette palette) {
 		this.palette = palette;
 		this.preferredSize = new Dimension(80, 18);
 	}
-
+	
 	/**
 	 * Returns a list cell renderer for the stroke, so the sample can be displayed
 	 * in a list or combo.
 	 * 
 	 * @param list
-	 *            the list component.
+	 *           the list component.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @param isSelected
-	 *            a flag that indicates whether or not the item is selected.
+	 *           a flag that indicates whether or not the item is selected.
 	 * @param cellHasFocus
-	 *            a flag that indicates whether or not the cell has the focus.
+	 *           a flag that indicates whether or not the cell has the focus.
 	 * @return The renderer.
 	 */
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
@@ -90,7 +90,7 @@ public class PaletteSample extends JComponent implements ListCellRenderer {
 		}
 		return this;
 	}
-
+	
 	/**
 	 * Returns the current palette object being displayed.
 	 * 
@@ -99,7 +99,7 @@ public class PaletteSample extends JComponent implements ListCellRenderer {
 	public ColorPalette getPalette() {
 		return this.palette;
 	}
-
+	
 	/**
 	 * Returns the preferred size of the component.
 	 * 
@@ -108,24 +108,24 @@ public class PaletteSample extends JComponent implements ListCellRenderer {
 	public Dimension getPreferredSize() {
 		return this.preferredSize;
 	}
-
+	
 	/**
 	 * Draws the sample.
 	 * 
 	 * @param g
-	 *            the graphics device.
+	 *           the graphics device.
 	 */
 	public void paintComponent(Graphics g) {
-
+		
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		Dimension size = getSize();
 		Insets insets = getInsets();
 		double ww = size.getWidth() - insets.left - insets.right;
 		double hh = size.getHeight() - insets.top - insets.bottom;
-
+		
 		g2.setStroke(new BasicStroke(1.0f));
-
+		
 		double y1 = insets.top;
 		double y2 = y1 + hh;
 		double xx = insets.left;
@@ -139,16 +139,16 @@ public class PaletteSample extends JComponent implements ListCellRenderer {
 			xx += 1;
 		}
 	}
-
+	
 	/**
 	 * Sets the palette object being displayed.
 	 * 
 	 * @param palette
-	 *            the palette.
+	 *           the palette.
 	 */
 	public void setPalette(ColorPalette palette) {
 		this.palette = palette;
 		this.repaint();
 	}
-
+	
 }

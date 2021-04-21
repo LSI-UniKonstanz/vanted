@@ -19,7 +19,7 @@ public class NaivePatternFinderPlugin extends GenericPluginAdapter {
 	/*************************************************************/
 	/* Declarations of methods */
 	/*************************************************************/
-
+	
 	/**
 	 * Constructor for the Plugin.
 	 */

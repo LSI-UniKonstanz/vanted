@@ -13,7 +13,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
 @Deprecated
 public class ChangeLabelsAlgorithm extends LaunchGui {
-
+	
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -25,12 +25,12 @@ public class ChangeLabelsAlgorithm extends LaunchGui {
 		res.add(new RemoveHiddenLabelsAlgorithm());
 		return res;
 	}
-
+	
 	@Override
 	public String getName() {
 		return "Change Labels";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -38,14 +38,14 @@ public class ChangeLabelsAlgorithm extends LaunchGui {
 		else
 			return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return null;
 	}
-
+	
 	@Override
 	public ButtonSize getButtonSize() {
 		return ButtonSize.SMALL;
-	}	
+	}
 }

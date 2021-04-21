@@ -55,32 +55,35 @@ import org.vanted.VantedPreferences;
  */
 public abstract class AbstractGraphElementComponent extends GraphElementComponent
 		implements GraffitiViewComponent, GraphicAttributeConstants {
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2365123393058727688L;
+	
 	/**
 	 * 
 	 */
 	private static final BasicStroke BASIC_STROKE = new BasicStroke();
-
+	
 	private static Logger logger = Logger.getLogger(AbstractGraphElementComponent.class);
-
+	
 	private static boolean isDebuggingLevel = Logger.getRootLogger().getLevel() == Level.DEBUG;
-
+	
 	// ~ Instance fields ========================================================
-	private static final long serialVersionUID = 1L;
-
 	/** The <code>GraphElement</code> that is represented by this component. */
 	protected GraphElement graphElement;
-
+	
 	/** The <code>shape</code> that is drawn onto that component. */
 	protected GraphElementShape shape;
-
+	
 	/**
 	 * A list of components whose position is dependent on the position of this
 	 * shape. This is only meant for edges that depend on the position (and other
 	 * graphics attributes) of nodes.
 	 */
 	protected List<GraphElementComponent> dependentComponents;
-
+	
 	/**
 	 * A mapping between attribute classnames and attributeComponent classnames that
 	 * this <code>GraphElement</code> has. These attributes are therefore attribute
@@ -88,26 +91,26 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	 * GraphElement. (this applies mainly to nodes)
 	 */
 	protected Map<Attribute, GraffitiViewComponent> attributeComponents;
-
+	
 	protected CoordinateSystem coordinateSystem;
-
+	
 	/**
 	 * To support transparency through alpha value, every graph component will have
 	 * a composite field, which defines the transparency
 	 */
 	protected Composite composite;
-
+	
 	protected float alpha;
-
+	
 	// protected BufferedImage opacityRenderImage;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for GraphElementComponent.
 	 * 
 	 * @param ge
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	protected AbstractGraphElementComponent(GraphElement ge) {
 		super();
@@ -115,7 +118,7 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 		attributeComponents = new LinkedHashMap<Attribute, GraffitiViewComponent>();
 		dependentComponents = new ArrayList<GraphElementComponent>();
 		this.setOpaque(false);
-
+		
 		/*
 		 * new graphelement transparency attribute
 		 */
@@ -123,9 +126,9 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 				GraphicAttributeConstants.OPAC, 1.0, Double.valueOf(1));
 		setupOpacity(opacity);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns GraphElementShape object
 	 * 
@@ -134,7 +137,7 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	public GraphElementShape getShape() {
 		return this.shape;
 	}
-
+	
 	/**
 	 * Adds an <code>Attribute</code> and its <code>GraffitiViewComponent</code> to
 	 * the list of registered attributes that can be displayed. This attribute is
@@ -142,14 +145,14 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	 * <code>GraphElement</code>.
 	 * 
 	 * @param attr
-	 *            the attribute that is registered as being able to be displayed.
+	 *           the attribute that is registered as being able to be displayed.
 	 * @param ac
-	 *            the component that will be used to display the attribute.
+	 *           the component that will be used to display the attribute.
 	 */
 	public synchronized void addAttributeComponent(Attribute attr, GraffitiViewComponent ac) {
 		attributeComponents.put(attr, ac);
 	}
-
+	
 	/**
 	 * Adds a <code>GraphElementComponent</code> to the list of dependent
 	 * <code>GraphElementComponent</code>s. These will nearly always be
@@ -157,28 +160,28 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	 * nodes.
 	 * 
 	 * @param comp
-	 *            the <code>GraphElementComponent</code> that is added to the list
-	 *            of dependent components.
+	 *           the <code>GraphElementComponent</code> that is added to the list
+	 *           of dependent components.
 	 */
 	public void addDependentComponent(GraphElementComponent comp) {
 		this.dependentComponents.add(comp);
 	}
-
+	
 	public List<GraphElementComponent> getDependentGraphElementComponents() {
 		return dependentComponents;
 	}
-
+	
 	/**
 	 * Called when an attribute of the GraphElement represented by this component
 	 * has changed.
 	 * 
 	 * @param attr
-	 *            the attribute that has triggered the event.
+	 *           the attribute that has triggered the event.
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void attributeChanged(Attribute attr) throws ShapeNotFoundException {
-
+		
 		/*
 		 * check if attribute is for opacity AND double because for color transparency
 		 * it's also called opacity but integer
@@ -187,14 +190,14 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 			double opacity = ((DoubleAttribute) attr).value;
 			setupOpacity(opacity);
 		}
-
+		
 		if (attr.getPath().equals(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS)) {
 			Attribute attribute = ((GraphElementGraphicAttribute) attr).getAttribute(OPAC);
 			double opacity = ((DoubleAttribute) attribute).value;
 			setupOpacity(opacity);
 		}
 		if (attr.getPath().startsWith(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS)
-
+		
 		) {
 			if (!attr.getId().equals("cluster")) {
 				graphicAttributeChanged(attr);
@@ -208,9 +211,9 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 			graphicAttributeChanged(attr);
 		} else
 			nonGraphicAttributeChanged(attr);
-
+		
 	}
-
+	
 	/**
 	 * Removes a <code>GraphElementComponent</code> from the list of dependent
 	 * <code>GraphElementComponent</code>s.
@@ -218,25 +221,25 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	public void clearDependentComponentList() {
 		this.dependentComponents = new ArrayList<GraphElementComponent>();
 	}
-
+	
 	/**
 	 * Called to initialize the shape of the NodeComponent correctly. Also calls
 	 * <code>repaint()</code>.
 	 * 
 	 * @exception ShapeNotFoundException
-	 *                thrown when the shape class couldn't be resolved.
+	 *               thrown when the shape class couldn't be resolved.
 	 */
 	public void createNewShape(CoordinateSystem coordSys) throws ShapeNotFoundException {
 		this.coordinateSystem = coordSys;
 		recreate();
 	}
-
+	
 	/**
 	 * Called to initialize and draw a standard shape, if the specified shape class
 	 * could not be found.
 	 */
 	public abstract void createStandardShape();
-
+	
 	/**
 	 * Returns the attributeComponents of given attribute.
 	 * 
@@ -246,7 +249,7 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	public synchronized AttributeComponent getAttributeComponent(Attribute attr) {
 		return (AttributeComponent) attributeComponents.get(attr);
 	}
-
+	
 	/**
 	 * Returns the attributeComponents of given attribute.
 	 * 
@@ -255,11 +258,11 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	public synchronized Iterator<GraffitiViewComponent> getAttributeComponentIterator() {
 		return attributeComponents.values().iterator();
 	}
-
+	
 	public synchronized Collection<GraffitiViewComponent> getAttributeComponents() {
 		return attributeComponents.values();
 	}
-
+	
 	/**
 	 * Returns the graphElement.
 	 * 
@@ -268,14 +271,14 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	public GraphElement getGraphElement() {
 		return graphElement;
 	}
-
+	
 	/**
 	 * Removes all entries in the attributeComponent list.
 	 */
 	public synchronized void clearAttributeComponentList() {
 		attributeComponents = new HashMap<Attribute, GraffitiViewComponent>();
 	}
-
+	
 	/**
 	 * Returns whether the given coordinates lie within this component and within
 	 * its encapsulated shape. The coordinates are assumed to be relative to the
@@ -294,15 +297,15 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 		 * this.shape.contains(x, y));
 		 */
 	}
-
+	
 	/**
 	 * Called when a graphic attribute of the GraphElement represented by this
 	 * component has changed.
 	 * 
 	 * @param attr
-	 *            the graphic attribute that has triggered the event.
+	 *           the graphic attribute that has triggered the event.
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public synchronized void graphicAttributeChanged(Attribute attr) throws ShapeNotFoundException {
 		/*
@@ -313,20 +316,20 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 			for (Iterator<GraffitiViewComponent> it = attributeComponents.values().iterator(); it.hasNext();) {
 				((AttributeComponent) it.next()).recreate();
 			}
-
+			
 			createNewShape(CoordinateSystem.XY);
 		} else { // if another graphic attribute changed only repaint is needed
-
+			
 			for (Iterator<GraffitiViewComponent> it = attributeComponents.values().iterator(); it.hasNext();) {
 				((JComponent) it.next()).repaint();
 			}
-
+			
 			repaint();
 		}
 	}
-
+	
 	protected void setupOpacity(double opacity) {
-
+		
 		if (opacity > 1.0)
 			opacity = 1.0;
 		if (opacity < 0)
@@ -336,7 +339,7 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 			setOpaque(false);
 			composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 		} else {
-
+			
 			composite = null;
 			setOpaque(true);
 		}
@@ -345,46 +348,46 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 				((AbstractAttributeComponent) viewComp).setAlpha(alpha);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Called when a non-graphic attribute of the GraphElement represented by this
 	 * component has changed.
 	 * 
 	 * @param attr
-	 *            the attribute that has triggered the event.
+	 *           the attribute that has triggered the event.
 	 * @throws ShapeNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public synchronized void nonGraphicAttributeChanged(Attribute attr) throws ShapeNotFoundException {
 		Attribute runAttr = attr;
-
+		
 		while (!(attr == null) && !runAttr.getPath().equals("")) {
 			if (attributeComponents.containsKey(runAttr)) {
 				(attributeComponents.get(runAttr)).attributeChanged(attr);
 				break;
 			}
-
+			
 			// "else":
 			runAttr = runAttr.getParent();
 		}
 	}
-
+	
 	/**
 	 * Paints the graph element contained in this component.
 	 * 
 	 * @param g
-	 *            the graphics context in which to paint.
+	 *           the graphics context in which to paint.
 	 * @see javax.swing.JComponent#paintComponent(Graphics)
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		// super.paintComponent(g);
-
+		
 		if (composite != null && ((GraffitiView) getParent()).getDrawMode() != DrawMode.FAST)
 			((Graphics2D) g).setComposite(composite);
-
+		
 		/*
 		 * Only for debugging
 		 */
@@ -394,10 +397,10 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 			// false);
 			boolean drawFrames = VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE;
 			// draw frame, indicating the panel-bounds
-
+			
 			// draw original shape
 			drawShape(g);
-
+			
 			if (drawFrames) {
 				((Graphics2D) g).setStroke(BASIC_STROKE);
 				g.setColor(Color.GRAY);
@@ -407,9 +410,9 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 				 * be drawn with zoom level 100%
 				 */
 				((Graphics2D) g).draw(new Rectangle2D.Double(0, 0, getWidth() - 0.5, getHeight() - 0.5));
-
+				
 			}
-
+			
 			// overlap shape with position info
 			if (drawFrames) {
 				g.setFont(new Font(g.getFont().getFontName(), 0, 3));
@@ -427,30 +430,30 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 		} else
 			drawShape(g);
 	}
-
+	
 	/**
 	 * Removes a <code>GraffitiViewComponent</code> of an <code>Attribute</code>
 	 * from collection of attribute components.
 	 * 
 	 * @param attr
-	 *            the attribute that has to be removed
+	 *           the attribute that has to be removed
 	 */
 	public synchronized void removeAttributeComponent(Attribute attr) {
 		attributeComponents.remove(attr);
 	}
-
+	
 	/**
 	 * Removes a <code>GraphElementComponent</code> from the list of dependent
 	 * <code>GraphElementComponent</code>s.
 	 * 
 	 * @param comp
-	 *            the <code>GraphElementComponent</code> that is removed from the
-	 *            list of dependent components.
+	 *           the <code>GraphElementComponent</code> that is removed from the
+	 *           list of dependent components.
 	 */
 	public void removeDependentComponent(GraphElementComponent comp) {
 		this.dependentComponents.remove(comp);
 	}
-
+	
 	/**
 	 * Retrieve the zoom value from the view this component is displayed in.
 	 * 
@@ -458,36 +461,36 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	 */
 	protected AffineTransform getZoom() {
 		Container parent = getParent();
-
+		
 		if (parent instanceof Zoomable) {
 			AffineTransform zoom = ((Zoomable) parent).getZoom();
-
+			
 			return zoom;
 		} else
 			return View.NO_ZOOM;
 	}
-
+	
 	/**
 	 * Draws the shape of the graph element contained in this component according to
 	 * its graphic attributes.
 	 * 
 	 * @param g
-	 *            the graphics context in which to draw.
+	 *           the graphics context in which to draw.
 	 */
 	protected abstract void drawShape(Graphics g);
-
+	
 	/**
 	 * Used when the shape changed in the datastructure. Makes the painter create a
 	 * new shape.
 	 */
 	protected abstract void recreate() throws ShapeNotFoundException;
-
+	
 	protected DrawMode getViewDrawMode() {
 		if (getParent() instanceof GraffitiView)
 			return ((GraffitiView) getParent()).getDrawMode();
 		return DrawMode.NORMAL;
 	}
-
+	
 	/**
 	 * Overrides the original method to deal with zoomable containers It will not
 	 * call the original repaint, which will call the repaintmanager with unzoomed
@@ -500,7 +503,7 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 	 */
 	@Override
 	public void repaint(long tm, int x, int y, int width, int height) {
-
+		
 		Container parent = getParent();
 		if (parent != null && parent instanceof Zoomable) {
 			double zoomx = getZoom().getScaleX();

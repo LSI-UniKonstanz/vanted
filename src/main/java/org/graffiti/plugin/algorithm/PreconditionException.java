@@ -22,34 +22,36 @@ import java.util.List;
  * @vanted.revision 2.6.5
  */
 public class PreconditionException extends Exception {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4160776037182505133L;
 	// ~ Instance fields ========================================================
-
-	private static final long serialVersionUID = 1L;
 	/** List of error entries. */
 	private List<Entry> errors;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new PreconditionException object.
 	 * 
 	 * @param msg
-	 *            error entry describing the cause
+	 *           error entry describing the cause
 	 */
 	public PreconditionException(String msg) {
 		this();
 		add(msg);
 	}
-
+	
 	/**
 	 * Creates a new PreconditionException object.
 	 */
 	public PreconditionException() {
 		this.errors = new LinkedList<Entry>();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Checks, if this PreconditionException contains any error entries.
 	 * 
@@ -58,44 +60,44 @@ public class PreconditionException extends Exception {
 	public boolean isEmpty() {
 		return errors.isEmpty();
 	}
-
+	
 	@Override
 	public String getMessage() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("The following preconditions are not satisfied:<br><ul>");
-
+		
 		for (Iterator<Entry> i = errors.iterator(); i.hasNext();) {
 			Entry error = (Entry) i.next();
 			sb.append("<li>");
 			sb.append(error.cause);
 			sb.append("");
 		}
-
+		
 		return sb.toString();
 	}
-
+	
 	/**
 	 * Adds a new cause message, together with the responsible source.
 	 * 
 	 * @param cause
-	 *            message about the reason
+	 *           message about the reason
 	 * @param source
-	 *            an Object from which it originated the exception
+	 *           an Object from which it originated the exception
 	 */
 	public void add(String cause, Object source) {
 		errors.add(new Entry(cause, source));
 	}
-
+	
 	/**
 	 * Adds a new cause message without a source.
 	 * 
 	 * @param cause
-	 *            message about the reason
+	 *           message about the reason
 	 */
 	public void add(String cause) {
 		errors.add(new Entry(cause, null));
 	}
-
+	
 	/**
 	 * Returns an iterator over all <code>Error</code>s.
 	 * 
@@ -104,9 +106,9 @@ public class PreconditionException extends Exception {
 	public Iterator<Entry> iterator() {
 		return errors.iterator();
 	}
-
+	
 	// ~ Inner Classes ==========================================================
-
+	
 	/**
 	 * Contains a cause and the source object (i.e.: a Graph, Node or Edge).
 	 * 
@@ -116,17 +118,17 @@ public class PreconditionException extends Exception {
 	class Entry {
 		/** The source of the exception */
 		public Object source;
-
+		
 		/** String message about the reason. */
 		public String cause;
-
+		
 		/**
 		 * Creates a new Entry object.
 		 * 
 		 * @param cause
-		 *            message about the reason
+		 *           message about the reason
 		 * @param source
-		 *            an Object from which it originated the exception
+		 *           an Object from which it originated the exception
 		 */
 		public Entry(String cause, Object source) {
 			this.cause = cause;

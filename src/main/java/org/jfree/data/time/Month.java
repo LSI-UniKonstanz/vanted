@@ -57,84 +57,84 @@ import org.jfree.date.SerialDate;
  * {@link RegularTimePeriod} subclasses.
  */
 public class Month extends RegularTimePeriod implements Serializable {
-
+	
 	/** The month (1-12). */
 	private int month;
-
+	
 	/** The year in which the month falls. */
 	private Year year;
-
+	
 	/**
 	 * Constructs a new Month, based on the current system time.
 	 */
 	public Month() {
-
+		
 		this(new Date());
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new month instance.
 	 * 
 	 * @param month
-	 *            the month (in the range 1 to 12).
+	 *           the month (in the range 1 to 12).
 	 * @param year
-	 *            the year.
+	 *           the year.
 	 */
 	public Month(final int month, final int year) {
-
+		
 		this(month, new Year(year));
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new month instance.
 	 * 
 	 * @param month
-	 *            the month (in the range 1 to 12).
+	 *           the month (in the range 1 to 12).
 	 * @param year
-	 *            the year.
+	 *           the year.
 	 */
 	public Month(final int month, final Year year) {
-
+		
 		if ((month < 1) && (month > 12)) {
 			throw new IllegalArgumentException("Month(...): month outside valid range.");
 		}
-
+		
 		this.month = month;
 		this.year = year;
-
+		
 	}
-
+	
 	/**
 	 * Constructs a Month, based on a date/time and the default time zone.
 	 * 
 	 * @param time
-	 *            the date/time.
+	 *           the date/time.
 	 */
 	public Month(final Date time) {
-
+		
 		this(time, RegularTimePeriod.DEFAULT_TIME_ZONE);
-
+		
 	}
-
+	
 	/**
 	 * Constructs a Month, based on a date/time and a time zone.
 	 * 
 	 * @param time
-	 *            the date/time.
+	 *           the date/time.
 	 * @param zone
-	 *            the time zone.
+	 *           the time zone.
 	 */
 	public Month(final Date time, final TimeZone zone) {
-
+		
 		final Calendar calendar = Calendar.getInstance(zone);
 		calendar.setTime(time);
 		this.month = calendar.get(Calendar.MONTH) + 1;
 		this.year = new Year(calendar.get(Calendar.YEAR));
-
+		
 	}
-
+	
 	/**
 	 * Returns the year in which the month falls.
 	 * 
@@ -143,7 +143,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 	public Year getYear() {
 		return this.year;
 	}
-
+	
 	/**
 	 * Returns the year in which the month falls.
 	 * 
@@ -152,7 +152,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 	public int getYearValue() {
 		return this.year.getYear();
 	}
-
+	
 	/**
 	 * Returns the month. Note that 1=JAN, 2=FEB, ...
 	 * 
@@ -161,14 +161,14 @@ public class Month extends RegularTimePeriod implements Serializable {
 	public int getMonth() {
 		return this.month;
 	}
-
+	
 	/**
 	 * Returns the month preceding this one.
 	 * 
 	 * @return the month preceding this one.
 	 */
 	public RegularTimePeriod previous() {
-
+		
 		final Month result;
 		if (this.month != SerialDate.JANUARY) {
 			result = new Month(this.month - 1, this.year);
@@ -181,9 +181,9 @@ public class Month extends RegularTimePeriod implements Serializable {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the month following this one.
 	 * 
@@ -203,7 +203,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns a serial index number for the month.
 	 * 
@@ -212,7 +212,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 	public long getSerialIndex() {
 		return this.year.getYear() * 12L + this.month;
 	}
-
+	
 	/**
 	 * Returns a string representing the month (e.g. "January 2002").
 	 * <P>
@@ -223,18 +223,18 @@ public class Month extends RegularTimePeriod implements Serializable {
 	public String toString() {
 		return SerialDate.monthCodeToString(this.month) + " " + this.year;
 	}
-
+	
 	/**
 	 * Tests the equality of this Month object to an arbitrary object. Returns true
 	 * if the target is a Month instance representing the same month as this object.
 	 * In all other cases, returns false.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> if month and year of this and object are the same.
 	 */
 	public boolean equals(final Object obj) {
-
+		
 		if (obj != null) {
 			if (obj instanceof Month) {
 				final Month target = (Month) obj;
@@ -245,9 +245,9 @@ public class Month extends RegularTimePeriod implements Serializable {
 		} else {
 			return false;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
@@ -264,19 +264,19 @@ public class Month extends RegularTimePeriod implements Serializable {
 		result = 37 * result + this.year.hashCode();
 		return result;
 	}
-
+	
 	/**
 	 * Returns an integer indicating the order of this Month object relative to the
 	 * specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *            the object to compare.
+	 *           the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
-
+		
 		int result;
-
+		
 		// CASE 1 : Comparing to another Month object
 		// --------------------------------------------
 		if (o1 instanceof Month) {
@@ -286,56 +286,56 @@ public class Month extends RegularTimePeriod implements Serializable {
 				result = this.month - m.getMonth();
 			}
 		}
-
+		
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
 		else if (o1 instanceof RegularTimePeriod) {
 			// more difficult case - evaluate later...
 			result = 0;
 		}
-
+		
 		// CASE 3 : Comparing to a non-TimePeriod object
 		// ---------------------------------------------
 		else {
 			// consider time periods to be ordered after general objects
 			result = 1;
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the first millisecond of the month, evaluated using the supplied
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the first millisecond of the month.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
-
+		
 		final Day first = new Day(1, this.month, this.year.getYear());
 		return first.getFirstMillisecond(calendar);
-
+		
 	}
-
+	
 	/**
 	 * Returns the last millisecond of the month, evaluated using the supplied
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the last millisecond of the month.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
-
+		
 		final int eom = SerialDate.lastDayOfMonth(this.month, this.year.getYear());
 		final Day last = new Day(eom, this.month, this.year.getYear());
 		return last.getLastMillisecond(calendar);
-
+		
 	}
-
+	
 	/**
 	 * Parses the string argument as a month.
 	 * <P>
@@ -343,23 +343,23 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * "MM-YYYY". Anything else, at the moment, is a bonus.
 	 * 
 	 * @param s
-	 *            the string to parse.
+	 *           the string to parse.
 	 * @return <code>null</code> if the string is not parseable, the month
 	 *         otherwise.
 	 */
 	public static Month parseMonth(String s) {
-
+		
 		Month result = null;
 		if (s != null) {
-
+			
 			// trim whitespace from either end of the string
 			s = s.trim();
-
+			
 			final int i = Month.findSeparator(s);
 			if (i != -1) {
 				final String s1 = s.substring(0, i).trim();
 				final String s2 = s.substring(i + 1, s.length()).trim();
-
+				
 				Year year = Month.evaluateAsYear(s1);
 				final int month;
 				if (year != null) {
@@ -380,26 +380,26 @@ public class Month extends RegularTimePeriod implements Serializable {
 						throw new TimePeriodFormatException("Month.parseMonth(String): can't evaluate the year.");
 					}
 				}
-
+				
 			} else {
 				throw new TimePeriodFormatException("Month.parseMonth(String): could not find separator.");
 			}
-
+			
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Finds the first occurrence of ' ', '-', ',' or '.'
 	 * 
 	 * @param s
-	 *            the string to parse.
+	 *           the string to parse.
 	 * @return <code>-1</code> if none of the characters where found, the position
 	 *         of the first occurence otherwise.
 	 */
 	private static int findSeparator(final String s) {
-
+		
 		int result = s.indexOf('-');
 		if (result == -1) {
 			result = s.indexOf(',');
@@ -412,16 +412,16 @@ public class Month extends RegularTimePeriod implements Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Creates a year from a string, or returns null (format exceptions suppressed).
 	 * 
 	 * @param s
-	 *            the string to parse.
+	 *           the string to parse.
 	 * @return <code>nukl</code> if the string is not parseable, the year otherwise.
 	 */
 	private static Year evaluateAsYear(final String s) {
-
+		
 		Year result = null;
 		try {
 			result = Year.parseYear(s);
@@ -429,7 +429,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 			// suppress
 		}
 		return result;
-
+		
 	}
-
+	
 }

@@ -67,19 +67,19 @@ import org.jfree.util.PublicCloneable;
  * {@link CategoryPlot} class.
  */
 public class WaterfallBarRenderer extends BarRenderer implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The paint used to draw the first bar. */
 	private transient Paint firstBarPaint;
-
+	
 	/** The paint used to draw the last bar. */
 	private transient Paint lastBarPaint;
-
+	
 	/** The paint used to draw bars having positive values. */
 	private transient Paint positiveBarPaint;
-
+	
 	/** The paint used to draw bars having negative values. */
 	private transient Paint negativeBarPaint;
-
+	
 	/**
 	 * Constructs a new renderer with default values for the bar colors.
 	 */
@@ -89,18 +89,18 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 				new GradientPaint(0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x66, 0x66)),
 				new GradientPaint(0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 0.0f, 0.0f, new Color(0xFF, 0xFF, 0x66)));
 	}
-
+	
 	/**
 	 * Constructs a new waterfall renderer.
 	 * 
 	 * @param firstBarPaint
-	 *            the color of the first bar.
+	 *           the color of the first bar.
 	 * @param positiveBarPaint
-	 *            the color for bars with positive values.
+	 *           the color for bars with positive values.
 	 * @param negativeBarPaint
-	 *            the color for bars with negative values.
+	 *           the color for bars with negative values.
 	 * @param lastBarPaint
-	 *            the color of the last bar.
+	 *           the color of the last bar.
 	 */
 	public WaterfallBarRenderer(Paint firstBarPaint, Paint positiveBarPaint, Paint negativeBarPaint,
 			Paint lastBarPaint) {
@@ -112,20 +112,20 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 		setGradientPaintTransformer(new StandardGradientPaintTransformer(GradientPaintTransformType.CENTER_VERTICAL));
 		setMinimumBarLength(1.0);
 	}
-
+	
 	/**
 	 * Returns the range of values the renderer requires to display all the items
 	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
 	 *         or empty).
 	 */
 	public Range getRangeExtent(CategoryDataset dataset) {
 		return DatasetUtilities.getCumulativeRangeExtent(dataset);
 	}
-
+	
 	/**
 	 * Returns the paint used to draw the first bar.
 	 * 
@@ -134,17 +134,17 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 	public Paint getFirstBarPaint() {
 		return this.firstBarPaint;
 	}
-
+	
 	/**
 	 * Sets the paint that will be used to draw the first bar.
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setFirstBarPaint(Paint paint) {
 		this.firstBarPaint = paint;
 	}
-
+	
 	/**
 	 * Returns the paint used to draw the last bar.
 	 * 
@@ -153,17 +153,17 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 	public Paint getLastBarPaint() {
 		return this.lastBarPaint;
 	}
-
+	
 	/**
 	 * Sets the paint that will be used to draw the last bar.
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setLastBarPaint(Paint paint) {
 		this.lastBarPaint = paint;
 	}
-
+	
 	/**
 	 * Returns the paint used to draw bars with positive values.
 	 * 
@@ -172,17 +172,17 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 	public Paint getPositiveBarPaint() {
 		return this.positiveBarPaint;
 	}
-
+	
 	/**
 	 * Sets the paint that will be used to draw bars having positive values.
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setPositiveBarPaint(Paint paint) {
 		this.positiveBarPaint = paint;
 	}
-
+	
 	/**
 	 * Returns the paint used to draw bars with negative values.
 	 * 
@@ -191,42 +191,42 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 	public Paint getNegativeBarPaint() {
 		return this.negativeBarPaint;
 	}
-
+	
 	/**
 	 * Sets the paint that will be used to draw bars having negative values.
 	 * 
 	 * @param paint
-	 *            the paint.
+	 *           the paint.
 	 */
 	public void setNegativeBarPaint(Paint paint) {
 		this.negativeBarPaint = paint;
 	}
-
+	
 	/**
 	 * Draws the bar for a single (series, category) data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
-
+		
 		double previous = state.getSeriesRunningTotal();
 		if (column == dataset.getColumnCount() - 1) {
 			previous = 0.0;
@@ -237,36 +237,36 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 			current = previous + n.doubleValue();
 		}
 		state.setSeriesRunningTotal(current);
-
+		
 		int seriesCount = getRowCount();
 		int categoryCount = getColumnCount();
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		double rectX = 0.0;
 		double rectY = 0.0;
-
+		
 		RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
 		RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
-
+		
 		// Y0
 		double j2dy0 = rangeAxis.valueToJava2D(previous, dataArea, rangeAxisLocation);
-
+		
 		// Y1
 		double j2dy1 = rangeAxis.valueToJava2D(current, dataArea, rangeAxisLocation);
-
+		
 		double valDiff = current - previous;
 		if (j2dy1 < j2dy0) {
 			double temp = j2dy1;
 			j2dy1 = j2dy0;
 			j2dy0 = temp;
 		}
-
+		
 		// BAR WIDTH
 		double rectWidth = state.getBarWidth();
-
+		
 		// BAR HEIGHT
 		double rectHeight = Math.max(getMinimumBarLength(), Math.abs(j2dy1 - j2dy0));
-
+		
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			// BAR Y
 			rectY = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, domainAxisLocation);
@@ -276,22 +276,22 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 			} else {
 				rectY = rectY + row * state.getBarWidth();
 			}
-
+			
 			rectX = j2dy0;
 			rectHeight = state.getBarWidth();
 			rectWidth = Math.max(getMinimumBarLength(), Math.abs(j2dy1 - j2dy0));
-
+			
 		} else if (orientation == PlotOrientation.VERTICAL) {
 			// BAR X
 			rectX = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, domainAxisLocation);
-
+			
 			if (seriesCount > 1) {
 				double seriesGap = dataArea.getWidth() * getItemMargin() / (categoryCount * (seriesCount - 1));
 				rectX = rectX + row * (state.getBarWidth() + seriesGap);
 			} else {
 				rectX = rectX + row * state.getBarWidth();
 			}
-
+			
 			rectY = j2dy0;
 		}
 		Rectangle2D bar = new Rectangle2D.Double(rectX, rectY, rectWidth, rectHeight);
@@ -315,7 +315,7 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 		}
 		g2.setPaint(seriesPaint);
 		g2.fill(bar);
-
+		
 		// draw the outline...
 		if (isDrawBarOutline() && state.getBarWidth() > BAR_OUTLINE_WIDTH_THRESHOLD) {
 			Stroke stroke = getItemOutlineStroke(row, column);
@@ -326,12 +326,12 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 				g2.draw(bar);
 			}
 		}
-
+		
 		CategoryLabelGenerator generator = getLabelGenerator(row, column);
 		if (generator != null && isItemLabelVisible(row, column)) {
 			drawItemLabel(g2, dataset, row, column, plot, generator, bar, (valDiff < 0.0));
 		}
-
+		
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -350,28 +350,28 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 				entities.addEntity(entity);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Tests an object for equality with this instance.
 	 * 
 	 * @param object
-	 *            the object.
+	 *           the object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
-
+		
 		if (object == null) {
 			return false;
 		}
-
+		
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (super.equals(object) && (object instanceof WaterfallBarRenderer)) {
-
+			
 			WaterfallBarRenderer r = (WaterfallBarRenderer) object;
 			boolean b0 = PaintUtils.equal(this.firstBarPaint, r.firstBarPaint);
 			boolean b1 = PaintUtils.equal(this.lastBarPaint, r.lastBarPaint);
@@ -379,47 +379,47 @@ public class WaterfallBarRenderer extends BarRenderer implements Cloneable, Publ
 			boolean b3 = PaintUtils.equal(this.negativeBarPaint, r.negativeBarPaint);
 			return b0 && b1 && b2 && b3;
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
-
+		
 		stream.defaultWriteObject();
 		SerialUtilities.writePaint(this.firstBarPaint, stream);
 		SerialUtilities.writePaint(this.lastBarPaint, stream);
 		SerialUtilities.writePaint(this.positiveBarPaint, stream);
 		SerialUtilities.writePaint(this.negativeBarPaint, stream);
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-
+		
 		stream.defaultReadObject();
 		this.firstBarPaint = SerialUtilities.readPaint(stream);
 		this.lastBarPaint = SerialUtilities.readPaint(stream);
 		this.positiveBarPaint = SerialUtilities.readPaint(stream);
 		this.negativeBarPaint = SerialUtilities.readPaint(stream);
-
+		
 	}
-
+	
 }

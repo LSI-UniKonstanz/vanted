@@ -6,16 +6,16 @@ package org.vanted.animation;
  * (-1).<br>
  * 
  * @author - Patrick Shaw
- *
  */
 public enum NumberOfLoops {
 	INFINITY(-1), ONE(1), TWO(2), THREE(3);
+	
 	int noLoops;
-
+	
 	NumberOfLoops(int noLoops) {
 		this.noLoops = noLoops;
 	}
-
+	
 	public int getValue() {
 		return noLoops;
 	}

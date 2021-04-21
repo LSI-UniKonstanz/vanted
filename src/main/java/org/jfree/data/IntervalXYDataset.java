@@ -41,95 +41,95 @@ package org.jfree.data;
  * @author Mark Watson
  */
 public interface IntervalXYDataset extends XYDataset {
-
+	
 	/**
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the starting X value for the specified series and item.
 	 */
 	public Number getStartXValue(int series, int item);
-
+	
 	/**
 	 * Returns the start x-value (as a double primitive) for an item within a
 	 * series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The start x-value.
 	 */
 	public double getStartX(int series, int item);
-
+	
 	/**
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the ending X value for the specified series and item.
 	 */
 	public Number getEndXValue(int series, int item);
-
+	
 	/**
 	 * Returns the end x-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The end x-value.
 	 */
 	public double getEndX(int series, int item);
-
+	
 	/**
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return starting Y value for the specified series and item.
 	 */
 	public Number getStartYValue(int series, int item);
-
+	
 	/**
 	 * Returns the start y-value (as a double primitive) for an item within a
 	 * series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The start y-value.
 	 */
 	public double getStartY(int series, int item);
-
+	
 	/**
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the ending Y value for the specified series and item.
 	 */
 	public Number getEndYValue(int series, int item);
-
+	
 	/**
 	 * Returns the end y-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The end y-value.
 	 */
 	public double getEndY(int series, int item);
-
+	
 }

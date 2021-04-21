@@ -33,9 +33,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInf
  */
 public class KgmlEdMain {
 	// ~ Static fields/initializers =============================================
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * Constructs a new instance of the editor.
 	 */
@@ -55,7 +55,7 @@ public class KgmlEdMain {
 					ImageIcon icon = new ImageIcon(cl.getResource(path + "/ipklogo16x16_5.png"));
 					final MainFrame mainFrame = MainFrame.getInstance();
 					mainFrame.setIconImage(icon.getImage());
-
+					
 					Thread t = new Thread(new Runnable() {
 						public void run() {
 							long waitTime = 0;
@@ -76,23 +76,23 @@ public class KgmlEdMain {
 					}, "wait for add-on initialization");
 					t.start();
 				}
-
+				
 			}
 		});
 		tso.setParam(0, splashScreen);
-
+		
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		ImageIcon icon = new ImageIcon(cl.getResource(path + "/ipklogo16x16_5.png"));
 		((DBEsplashScreen) splashScreen).setIconImage(icon.getImage());
-
+		
 		splashScreen.setVisible(true);
 		GravistoMainHelper.createApplicationSettingsFolder(splashScreen);
 		if (!(new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted")).exists()
 				&& !(new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected")).exists()) {
-
+			
 			ReleaseInfo.setIsFirstRun(true);
-
+			
 			splashScreen.setVisible(false);
 			splashScreen.setText("Request KEGG License Status");
 			JOptionPane.showMessageDialog(null, "<html><h3>KEGG License Status Evaluation</h3>" + "While "
@@ -109,12 +109,12 @@ public class KgmlEdMain {
 					+ "all other features of this application are still available and fully working.",
 					DBEgravistoHelper.DBE_GRAVISTO_VERSION + " Program Features Initialization",
 					JOptionPane.INFORMATION_MESSAGE);
-
+			
 			JOptionPane.showMessageDialog(null,
 					"<html><h3>KEGG License Status Evaluation</h3>" + MenuItemInfoDialog.getKEGGlibText(),
 					DBEgravistoHelper.DBE_GRAVISTO_VERSION + " Program Features Initialization",
 					JOptionPane.INFORMATION_MESSAGE);
-
+			
 			int result = JOptionPane.showConfirmDialog(null, "<html><h3>Enable KEGG functions?",
 					DBEgravistoHelper.DBE_GRAVISTO_VERSION + " Program Features Initialization",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -140,48 +140,48 @@ public class KgmlEdMain {
 			}
 			splashScreen.setVisible(true);
 		}
-
+		
 		GravistoMainHelper.initApplicationExt(args, splashScreen, cl, null, null);
-
+		
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * The editor's main method.
 	 * 
 	 * @param args
-	 *            the command line arguments.
+	 *           the command line arguments.
 	 */
 	public static void main(String[] args) {
-
+		
 		GravistoMainHelper.setLookAndFeel();
-
+		
 		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
 		// System.setProperty("java.net.useSystemProxies","true");
 		ReleaseInfo.setRunningReleaseStatus(Release.KGML_EDITOR);
-
+		
 		String stS = "<font><b>"; // "<font color=\"#9500C0\"><b>";
 		String stE = "</b></font>";
 		String name = stS + "KGML Pathway Editor" + stE + " - " + "Edit, process and visualize KGML"
 				+ DBEgravistoHelper.kgmlFileVersionHint + " pathway files!";
 		JComponent result = new JPanel();
 		result.setLayout(TableLayout.getLayout(TableLayoutConstants.FILL, TableLayoutConstants.FILL));
-
+		
 		String s = "" + "<html><small><br>&nbsp;&nbsp;&nbsp;</small>Welcome to " + name + "<br>" + "<small>"
 				+ "&nbsp;&nbsp;&nbsp;If you experience problems or would like to suggest enhancements, feel free to use the <b>Send feedback command</b> in the Help menu!<br>&nbsp;";
-
+		
 		ReleaseInfo.setHelpIntroductionText(s);
-
+		
 		DBEgravistoHelper.DBE_GRAVISTO_VERSION = "KGML Pathway Editor V" + DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE;
 		DBEgravistoHelper.DBE_GRAVISTO_NAME = stS + "KGML Pathway Editor" + stE + " - "
 				+ "Edit, process, <br>and visualize KGML" + DBEgravistoHelper.kgmlFileVersionHint
 				+ " Pathway files!<br>";
 		DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT = "KGML Pathway Editor";
 		DBEgravistoHelper.DBE_INFORMATIONSYSTEM_NAME = "";
-
+		
 		AttributeHelper.setMacOSsettings(DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT);
-
+		
 		KgmlEdMain e = new KgmlEdMain(true, DBEgravistoHelper.DBE_GRAVISTO_VERSION, args);
 		if (e == null)
 			System.err.println("MainFrame not created.");

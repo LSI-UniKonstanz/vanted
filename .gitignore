@@ -1,6 +1,13 @@
 /target/
-/.classpath
+.classpath
 .idea/
 vanted.iml
 .DS_Store
-/bin/
+bin/
+
+# latex side products
+**/*.aux
+**/*.log
+**/*.dvi
+**/*.out
+**/*.synctex.gz

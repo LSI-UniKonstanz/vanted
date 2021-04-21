@@ -14,18 +14,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLInitialAssignment;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLInitialAssignmentHelper;
 
 public class SBML_InitialAssignment_Writer extends SBML_SBase_Writer {
-
+	
 	/**
 	 * Adds an initial assignment and its variables to the model
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param model
-	 *            the initial assignments will be added to this model
+	 *           the initial assignments will be added to this model
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param internHeadline
-	 *            intern representation of headline
+	 *           intern representation of headline
 	 */
 	public void addInitialAssignment(Graph g, Model model, String internHeadline,
 			SBMLInitialAssignmentHelper iaHelperObject) {

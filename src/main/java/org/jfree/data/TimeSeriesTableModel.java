@@ -42,51 +42,51 @@ import org.jfree.data.time.TimeSeries;
  * JTable.
  */
 public class TimeSeriesTableModel extends AbstractTableModel implements SeriesChangeListener {
-
+	
 	/** The series. */
 	private TimeSeries series;
-
+	
 	/** A flag that controls whether the series is editable. */
 	private boolean editable;
-
+	
 	/** The new time period. */
 	private RegularTimePeriod newTimePeriod;
-
+	
 	/** The new value. */
 	private Number newValue;
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public TimeSeriesTableModel() {
 		this(new TimeSeries("Untitled"));
 	}
-
+	
 	/**
 	 * Constructs a table model for a time series.
 	 * 
 	 * @param series
-	 *            the time series.
+	 *           the time series.
 	 */
 	public TimeSeriesTableModel(final TimeSeries series) {
 		this(series, false);
 	}
-
+	
 	/**
 	 * Creates a table model based on a time series.
 	 * 
 	 * @param series
-	 *            the time series.
+	 *           the time series.
 	 * @param editable
-	 *            if <ocde>true</code>, the table is editable.
+	 *           if <ocde>true</code>, the table is editable.
 	 */
 	public TimeSeriesTableModel(final TimeSeries series, final boolean editable) {
-
+		
 		this.series = series;
 		this.series.addChangeListener(this);
 		this.editable = editable;
 	}
-
+	
 	/**
 	 * Returns the number of columns in the table model. For this particular model,
 	 * the column count is fixed at 2.
@@ -96,16 +96,16 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	public int getColumnCount() {
 		return 2;
 	}
-
+	
 	/**
 	 * Returns the column class in the table model.
 	 * 
 	 * @param column
-	 *            The column index.
+	 *           The column index.
 	 * @return the column class in the table model.
 	 */
 	public Class getColumnClass(final int column) {
-
+		
 		if (column == 0) {
 			return String.class;
 		} else {
@@ -115,18 +115,18 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 				return null;
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the name of a column
 	 * 
 	 * @param column
-	 *            the column index.
+	 *           the column index.
 	 * @return the name of a column.
 	 */
 	public String getColumnName(final int column) {
-
+		
 		if (column == 0) {
 			return "Period:";
 		} else {
@@ -136,9 +136,9 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 				return null;
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the number of rows in the table model.
 	 * 
@@ -147,18 +147,18 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	public int getRowCount() {
 		return this.series.getItemCount();
 	}
-
+	
 	/**
 	 * Returns the data value for a cell in the table model.
 	 * 
 	 * @param row
-	 *            The row number.
+	 *           The row number.
 	 * @param column
-	 *            The column number.
+	 *           The column number.
 	 * @return the data value for a cell in the table model.
 	 */
 	public Object getValueAt(final int row, final int column) {
-
+		
 		if (row < this.series.getItemCount()) {
 			if (column == 0) {
 				return this.series.getTimePeriod(row);
@@ -180,20 +180,20 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 				}
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a flag indicating whether or not the specified cell is editable.
 	 * 
 	 * @param row
-	 *            the row number.
+	 *           the row number.
 	 * @param column
-	 *            the column number.
+	 *           the column number.
 	 * @return <code>true</code> if the specified cell is editable.
 	 */
 	public boolean isCellEditable(final int row, final int column) {
-
+		
 		if (this.editable) {
 			if ((column == 0) || (column == 1)) {
 				return true;
@@ -203,29 +203,29 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 		} else {
 			return false;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Updates the time series.
 	 * 
 	 * @param value
-	 *            the new value.
+	 *           the new value.
 	 * @param row
-	 *            the row.
+	 *           the row.
 	 * @param column
-	 *            the column.
+	 *           the column.
 	 */
 	public void setValueAt(final Object value, final int row, final int column) {
-
+		
 		if (row < this.series.getItemCount()) {
-
+			
 			// update the time series appropriately
 			if (column == 1) {
 				try {
 					final Double v = Double.valueOf(value.toString());
 					this.series.update(row, v);
-
+					
 				} catch (NumberFormatException nfe) {
 					System.err.println("Number format exception");
 				}
@@ -239,16 +239,16 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 			}
 		}
 	}
-
+	
 	/**
 	 * Receives notification that the time series has been changed. Responds by
 	 * firing a table data change event.
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void seriesChanged(final SeriesChangeEvent event) {
 		fireTableDataChanged();
 	}
-
+	
 }

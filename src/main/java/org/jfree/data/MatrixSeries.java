@@ -41,10 +41,10 @@ import java.io.Serializable;
  * @author Barak Naveh
  */
 public class MatrixSeries extends Series implements Serializable {
-
+	
 	/** Series matrix values */
 	protected double[][] data;
-
+	
 	/**
 	 * Constructs a new matrix series.
 	 * <p>
@@ -52,18 +52,18 @@ public class MatrixSeries extends Series implements Serializable {
 	 * </p>
 	 * 
 	 * @param name
-	 *            series name (<code>null</code> not permitted).
+	 *           series name (<code>null</code> not permitted).
 	 * @param rows
-	 *            the number of rows.
+	 *           the number of rows.
 	 * @param columns
-	 *            the number of columns.
+	 *           the number of columns.
 	 */
 	public MatrixSeries(final String name, final int rows, final int columns) {
 		super(name);
 		this.data = new double[rows][columns];
 		zeroAll();
 	}
-
+	
 	/**
 	 * Returns the number of columns in this matrix series.
 	 * 
@@ -72,35 +72,35 @@ public class MatrixSeries extends Series implements Serializable {
 	public int getColumnsCount() {
 		return this.data[0].length;
 	}
-
+	
 	/**
 	 * Return the matrix item at the specified index.
 	 * 
 	 * @param itemIndex
-	 *            item index.
+	 *           item index.
 	 * @return matrix item at the specified index.
 	 */
 	public Number getItem(final int itemIndex) {
 		final int i = getItemRow(itemIndex);
 		final int j = getItemColumn(itemIndex);
-
+		
 		final Number n = Double.valueOf(get(i, j));
-
+		
 		return n;
 	}
-
+	
 	/**
 	 * Returns the column of the specified item.
 	 * 
 	 * @param itemIndex
-	 *            the index of the item.
+	 *           the index of the item.
 	 * @return the column of the specified item.
 	 */
 	public int getItemColumn(final int itemIndex) {
 		// assert itemIndex >= 0 && itemIndex < getItemCount();
 		return itemIndex % getColumnsCount();
 	}
-
+	
 	/**
 	 * Returns the number of items in the series.
 	 * 
@@ -109,19 +109,19 @@ public class MatrixSeries extends Series implements Serializable {
 	public int getItemCount() {
 		return getRowCount() * getColumnsCount();
 	}
-
+	
 	/**
 	 * Returns the row of the specified item.
 	 * 
 	 * @param itemIndex
-	 *            the index of the item.
+	 *           the index of the item.
 	 * @return the row of the specified item.
 	 */
 	public int getItemRow(final int itemIndex) {
 		// assert itemIndex >= 0 && itemIndex < getItemCount();
 		return itemIndex / getColumnsCount();
 	}
-
+	
 	/**
 	 * Returns the number of rows in this matrix series.
 	 * 
@@ -130,35 +130,35 @@ public class MatrixSeries extends Series implements Serializable {
 	public int getRowCount() {
 		return this.data.length;
 	}
-
+	
 	/**
 	 * Returns the value of the specified item in this matrix series.
 	 * 
 	 * @param i
-	 *            the row of the item.
+	 *           the row of the item.
 	 * @param j
-	 *            the column of the item.
+	 *           the column of the item.
 	 * @return the value of the specified item in this matrix series.
 	 */
 	public double get(final int i, final int j) {
 		return this.data[i][j];
 	}
-
+	
 	/**
 	 * Updates the value of the specified item in this matrix series.
 	 * 
 	 * @param i
-	 *            the row of the item.
+	 *           the row of the item.
 	 * @param j
-	 *            the column of the item.
+	 *           the column of the item.
 	 * @param mij
-	 *            the new value for the item.
+	 *           the new value for the item.
 	 */
 	public void update(final int i, final int j, final double mij) {
 		this.data[i][j] = mij;
 		fireSeriesChanged();
 	}
-
+	
 	/**
 	 * Sets all matrix values to zero and sends a
 	 * {@link org.jfree.data.SeriesChangeEvent} to all registered listeners.
@@ -166,7 +166,7 @@ public class MatrixSeries extends Series implements Serializable {
 	public void zeroAll() {
 		final int rows = getRowCount();
 		final int columns = getColumnsCount();
-
+		
 		for (int row = 0; row < rows; row++) {
 			for (int column = 0; column < columns; column++) {
 				this.data[row][column] = 0.0;
@@ -174,12 +174,12 @@ public class MatrixSeries extends Series implements Serializable {
 		}
 		fireSeriesChanged();
 	}
-
+	
 	/**
 	 * Tests this object instance for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -198,5 +198,5 @@ public class MatrixSeries extends Series implements Serializable {
 		}
 		return false;
 	}
-
+	
 }

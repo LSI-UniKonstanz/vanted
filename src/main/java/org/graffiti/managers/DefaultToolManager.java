@@ -25,15 +25,15 @@ import org.graffiti.plugin.tool.Tool;
  */
 public class DefaultToolManager implements ToolManager {
 	// ~ Instance fields ========================================================
-
+	
 	/** List of all available tools. */
 	private Set<Tool> tools;
-
+	
 	/** mode manager */
 	private ModeManager modeManager;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new tool manager.
 	 */
@@ -41,16 +41,16 @@ public class DefaultToolManager implements ToolManager {
 		tools = new HashSet<Tool>();
 		this.modeManager = modeManager;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/*
 	 * @see org.graffiti.managers.ToolManager#addTool(org.graffiti.plugin.tool.Tool)
 	 */
 	public void addTool(Tool tool) {
 		tools.add(tool);
 	}
-
+	
 	/*
 	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.
 	 * graffiti.plugin.GenericPlugin,
@@ -60,11 +60,11 @@ public class DefaultToolManager implements ToolManager {
 		if (!(plugin instanceof EditorPlugin))
 			return;
 		Tool[] theTools = ((EditorPlugin) plugin).getTools();
-
+		
 		if (theTools != null) {
 			for (int i = theTools.length; --i >= 0;) {
 				this.tools.add(theTools[i]);
-
+				
 				Mode mm = this.modeManager.getMode("org.graffiti.plugins.modes.defaultEditMode");
 				if (mm != null) {
 					mm.addTool(theTools[i]);

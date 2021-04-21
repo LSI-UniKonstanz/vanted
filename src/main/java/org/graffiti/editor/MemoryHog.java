@@ -22,13 +22,12 @@ import javax.swing.Timer;
  * a service, which has to perform some pooling on a given time interval.
  * </p>
  * 
- * 
  * @author Klukas, D. Garkov
  * @vanted.revision 2.7.0
  * @version v2.0: refactored as interface.
  */
 public interface MemoryHog {
-
+	
 	/**
 	 * To enable free-up on application clear memory event, when the user requests
 	 * such, the hog has to be registered beforehand.
@@ -36,12 +35,12 @@ public interface MemoryHog {
 	public default void registerMemoryHog() {
 		GravistoService.addKnownMemoryHog(this);
 	}
-
+	
 	/**
 	 * It sets up a Timer that would free memory after 1 minute passes by
 	 * continuously during the life of the application. The Timer's delay shouldn't
 	 * be too small, as it could lead to excessive reallocation and memory
-	 * overheads. 
+	 * overheads.
 	 */
 	default void enablePeriodicFreeMemory() {
 		Timer t = new Timer(60000, new ActionListener() {
@@ -54,21 +53,21 @@ public interface MemoryHog {
 		t.setRepeats(true);
 		t.start();
 	}
-
+	
 	/**
 	 * We use an array as wrapper to access the static value in a non-static method.
 	 * Do not set explicitly, use {@link MemoryHog#noteRequest()} to set.
 	 */
 	static long[] lastUsageTime = new long[] { 0 };
-
+	
 	default boolean doFreeMemory() {
 		return System.currentTimeMillis() - lastUsageTime[0] > 2000;
 	}
-
+	
 	default void noteRequest() {
 		lastUsageTime[0] = System.currentTimeMillis();
 	}
-
+	
 	/**
 	 * <p>
 	 * To release a data structure, just re-instantiate it, and GC would collect the

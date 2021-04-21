@@ -30,7 +30,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.compound_image.C
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class ShowOrHideImageAttributesAlgorithm extends AbstractAlgorithm {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -40,17 +40,17 @@ public class ShowOrHideImageAttributesAlgorithm extends AbstractAlgorithm {
 		return null;
 		// return "Process Compound Images";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Nodes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.VISUAL));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

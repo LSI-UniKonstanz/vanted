@@ -38,12 +38,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableDat
  *         Analysis
  */
 public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean ignoreFirstRow = true;
 	private boolean left2right = true;
 	private boolean saveLabel = true;
 	private ArrayList<IOurl> urls = new ArrayList<IOurl>();
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -52,7 +52,7 @@ public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Replace labels using file tables...";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command reads (multiple) mapping tables<br>"
@@ -60,22 +60,22 @@ public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
 				+ "[Label in Graph | New Label]<br>" + "Graph label 1| new label<br>" + "Graph label 2| new label<br>"
 				+ "Graph label 3| new label<br>" + "</code><br><br>";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return null;// "Elements";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION));
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return "edit.Change Label";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -92,7 +92,7 @@ public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
 						OpenExcelFileDialogService.EXCELFILE_EXTENSIONS,
 						OpenExcelFileDialogService.SPREADSHEET_DESCRIPTION, true) };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -101,7 +101,7 @@ public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
 		saveLabel = ((BooleanParameter) params[i++]).getBoolean();
 		urls = ((MultiFileSelectionParameter) params[i++]).getFileList();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -113,12 +113,12 @@ public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
 			excelFiles.add(FileSystemHandler.getFile(u));
 		if (excelFiles != null && excelFiles.size() > 0) {
 			HashMap<String, String> id2alternatives = new HashMap<String, String>();
-
+			
 			for (File excelFile : excelFiles) {
 				TableData myData = ExperimentDataFileReader.getExcelTableData(excelFile);
-
+				
 				int startRow = (ignoreFirstRow ? 2 : 1);
-
+				
 				for (int row = startRow; row <= myData.getMaximumRow(); row++) {
 					String currentName;
 					String newName;
@@ -145,7 +145,7 @@ public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
 						idCnt++;
 						break fuzzy;
 					}
-
+					
 				}
 			}
 			MainFrame.showMessageDialog(
@@ -154,17 +154,17 @@ public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
 					"Information");
 		}
 	}
-
+	
 	/**
 	 * @deprecated Use {@link AttributeHelper#getFuzzyLabels(String)} instead
 	 */
 	public static HashSet<String> getFuzzyLabels(String label) {
 		return AttributeHelper.getFuzzyLabels(label);
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 }

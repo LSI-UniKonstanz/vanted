@@ -23,52 +23,55 @@ import org.graffiti.options.AbstractOptionPane;
  * @version $Revision: 1.7 $
  */
 public class ShortcutsOptionPane extends AbstractOptionPane {
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6449091056036042475L;
+	
 	/**
 	 * Constructor for ShortcutsOptionPane.
 	 */
 	public ShortcutsOptionPane() {
 		super("shortcuts");
 	}
-
+	
 	@Override
 	protected void initDefault() {
 		// TODO
 	}
-
+	
 	@Override
 	protected void saveDefault() {
 		// TODO
 	}
-
+	
 	// ~ Inner Classes ==========================================================
-
+	
 	/**
 	 * The table of shortcuts.
 	 */
 	protected class ShortcutsModel extends AbstractTableModel {
+		
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
-
+		private static final long serialVersionUID = -6780864845253368682L;
 		/** Contains a list of key bindings. */
 		private List<?> bindings;
-
+		
 		/**
 		 * Constructs a new shortcuts model.
 		 * 
 		 * @param name
-		 *            the name of the model.
+		 *           the name of the model.
 		 * @param bindings
-		 *            list of keybindings.
+		 *           list of keybindings.
 		 */
 		ShortcutsModel(String name, List<?> bindings) {
 			// TODO
 		}
-
+		
 		/**
 		 * Return the number of columns for this table (3).
 		 * 
@@ -77,7 +80,7 @@ public class ShortcutsOptionPane extends AbstractOptionPane {
 		public int getColumnCount() {
 			return 3;
 		}
-
+		
 		/**
 		 * Returns the number of rows of this table.
 		 * 
@@ -87,35 +90,35 @@ public class ShortcutsOptionPane extends AbstractOptionPane {
 			return 0;
 			// return bindings.size();
 		}
-
+		
 		/**
 		 * DOCUMENT ME!
 		 * 
 		 * @param row
-		 *            DOCUMENT ME!
+		 *           DOCUMENT ME!
 		 * @param col
-		 *            DOCUMENT ME!
+		 *           DOCUMENT ME!
 		 * @return DOCUMENT ME!
 		 */
 		public Object getValueAt(int row, int col) {
 			return null; // TODO
 		}
 	}
-
+	
 	public String getCategory() {
 		//
 		return null;
 	}
-
+	
 	public String getOptionName() {
 		//
 		return null;
 	}
-
+	
 	public void init(JComponent options) {
 		//
 	}
-
+	
 	public void save(JComponent options) {
 		//
 	}

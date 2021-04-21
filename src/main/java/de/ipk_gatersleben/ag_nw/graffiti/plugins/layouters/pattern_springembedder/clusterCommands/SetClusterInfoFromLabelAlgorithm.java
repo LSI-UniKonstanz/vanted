@@ -21,24 +21,23 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 /**
- * 
  * @vanted.revision 2.7.0
  */
 public class SetClusterInfoFromLabelAlgorithm extends AbstractAlgorithm {
-
+	
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
-
+		
 		return "Copy Cluster ID from Label";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -46,20 +45,20 @@ public class SetClusterInfoFromLabelAlgorithm extends AbstractAlgorithm {
 		if (graph.getNumberOfNodes() < 1)
 			throw new PreconditionException("Graph contains no graph elements!");
 	}
-
+	
 	public void execute() {
 		HashMap<GraphElement, String> ge2newClusterID = new HashMap<>();
 		getSelectedOrAllGraphElements().forEach(ge -> ge2newClusterID.put(ge, AttributeHelper.getLabel(ge, "")));
 		GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newClusterID, getName(), true);
-
+		
 		MainFrame.showMessage(
 				"<html><b>Hint:</b> Commands dealing with alternative substance IDs from"
 						+ " the Mapping menu may be useful to temporarily modify labels, before using this command.",
 				MessageType.INFO, 15000);
 	}
-
+	
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 }

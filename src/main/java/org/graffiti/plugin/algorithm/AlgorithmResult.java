@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public interface AlgorithmResult {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the <code>Map</code>. This function is intended to be used by other
 	 * components that want to display the results.
@@ -32,14 +32,14 @@ public interface AlgorithmResult {
 	 * @return DOCUMENT ME!
 	 */
 	public Map<?, ?> getResult();
-
+	
 	/**
 	 * Adds a key-value pair to the <code>Map</code>.
 	 * 
 	 * @param key
-	 *            the key for the result.
+	 *           the key for the result.
 	 * @param value
-	 *            the value of the result.
+	 *           the value of the result.
 	 */
 	public void addToResult(String key, Object value);
 }

@@ -36,35 +36,35 @@ import java.io.Serializable;
  * An enumeration of the 'end types' for an area renderer.
  */
 public final class AreaRendererEndType implements Serializable {
-
+	
 	/**
 	 * The area tapers from the first or last value down to zero.
 	 */
 	public static final AreaRendererEndType TAPER = new AreaRendererEndType("AreaRendererEndType.TAPER");
-
+	
 	/**
 	 * The area is truncated at the first or last value.
 	 */
 	public static final AreaRendererEndType TRUNCATE = new AreaRendererEndType("AreaRendererEndType.TRUNCATE");
-
+	
 	/**
 	 * The area is levelled at the first or last value.
 	 */
 	public static final AreaRendererEndType LEVEL = new AreaRendererEndType("AreaRendererEndType.LEVEL");
-
+	
 	/** The name. */
 	private String name;
-
+	
 	/**
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *            the name.
+	 *           the name.
 	 */
 	private AreaRendererEndType(String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * Returns a string representing the object.
 	 * 
@@ -73,39 +73,39 @@ public final class AreaRendererEndType implements Serializable {
 	public String toString() {
 		return this.name;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if this object is equal to the specified object,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
-
+		
 		if (this == o) {
 			return true;
 		}
 		if (!(o instanceof AreaRendererEndType)) {
 			return false;
 		}
-
+		
 		final AreaRendererEndType t = (AreaRendererEndType) o;
 		if (!this.name.equals(t.toString())) {
 			return false;
 		}
-
+		
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Ensures that serialization returns the unique instances.
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *             if there is a problem.
+	 *            if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		Object result = null;
@@ -118,5 +118,5 @@ public final class AreaRendererEndType implements Serializable {
 		}
 		return result;
 	}
-
+	
 }

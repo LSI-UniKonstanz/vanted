@@ -33,7 +33,7 @@ package org.jfree.data;
  * An interface for a dataset that returns a single value.
  */
 public interface ValueDataset extends Value, Dataset {
-
+	
 	// no additional methods required
-
+	
 }

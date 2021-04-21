@@ -34,71 +34,71 @@ package org.jfree.data;
  * to be defined for any of the X values, the Y values, and the Z values.
  */
 public interface IntervalXYZDataset extends XYZDataset {
-
+	
 	/**
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the starting X value for the specified series and item.
 	 */
 	public Number getStartXValue(int series, int item);
-
+	
 	/**
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the ending X value for the specified series and item.
 	 */
 	public Number getEndXValue(int series, int item);
-
+	
 	/**
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the starting Y value for the specified series and item.
 	 */
 	public Number getStartYValue(int series, int item);
-
+	
 	/**
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the ending Y value for the specified series and item.
 	 */
 	public Number getEndYValue(int series, int item);
-
+	
 	/**
 	 * Returns the starting Z value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the starting Z value for the specified series and item.
 	 */
 	public Number getStartZValue(int series, int item);
-
+	
 	/**
 	 * Returns the ending Z value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return the ending Z value for the specified series and item.
 	 */
 	public Number getEndZValue(int series, int item);
-
+	
 }

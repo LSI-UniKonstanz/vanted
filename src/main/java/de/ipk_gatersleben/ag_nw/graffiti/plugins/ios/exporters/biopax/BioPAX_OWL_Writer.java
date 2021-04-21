@@ -25,22 +25,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3interactions.LVL
  * @author ricardo
  */
 public class BioPAX_OWL_Writer extends HelperClass implements OutputSerializer {
-
+	
 	@Override
 	public String[] getExtensions() {
 		return new String[] { ".owl" };
 	}
-
+	
 	@Override
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "BioPax" };
 	}
-
+	
 	@Override
 	public boolean validFor(Graph g) {
 		return AttributeHelper.hasAttribute(g, Messages.getString("UtilitySuperClassToGraph.114"));
 	}
-
+	
 	@Override
 	public void write(OutputStream stream, Graph g) throws IOException {
 		// build a default factory and model
@@ -50,19 +50,19 @@ public class BioPAX_OWL_Writer extends HelperClass implements OutputSerializer {
 		if (g.getAttribute(Messages.getString("UtilitySuperClassToGraph.114")).getValue().toString()
 				.matches(BioPAXLevel.L2.name())) {
 			g = translateToThree(g);
-
+			
 		}
 		// converts a given graph into a BioPax Level 3 model
 		// hand-written function
 		LVL3ModelConverter converter = new LVL3ModelConverter();
 		converter.readGraph(model, g);
-
+		
 		// handler converts a model to a stream
 		// built-in function
 		BioPAXIOHandler handler = new SimpleIOHandler();
 		handler.convertToOWL(model, stream);
 	}
-
+	
 	/**
 	 * matches NodeTypes of level 2 to level 3 so that only one exporter for Level 3
 	 * is needed, which actually can also export level 2 models
@@ -75,10 +75,10 @@ public class BioPAX_OWL_Writer extends HelperClass implements OutputSerializer {
 			String nodeType = n.getAttribute(Messages.getString("UtilitySuperClassToGraph.126")).getValue().toString();
 			if (nodeType.matches("org.biopax.paxtools.impl.level2.biochemicalReactionImpl")) {
 				nodeType = Messages.getString("UtilityClassSelectorFromGraph.166");
-
+				
 			} else if (nodeType.matches("org.biopax.paxtools.impl.level2.conversionImpl")) {
 				nodeType = Messages.getString("UtilityClassSelectorFromGraph.177");
-
+				
 			} else if (nodeType.matches("org.biopax.paxtools.impl.level2.controlImpl")) {
 				nodeType = Messages.getString("UtilityClassSelectorFromGraph.178");
 			} else if (nodeType.matches("org.biopax.paxtools.impl.level2.transportImpl")) {
@@ -116,5 +116,5 @@ public class BioPAX_OWL_Writer extends HelperClass implements OutputSerializer {
 		}
 		return g;
 	}
-
+	
 }

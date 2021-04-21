@@ -22,31 +22,31 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
 public class SetToolTipAlgorithm extends AbstractAlgorithm implements Algorithm {
-
+	
 	private String tooltip;
-
+	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TOOLTIPS))
 			return "Set Tooltip";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION));
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -54,14 +54,14 @@ public class SetToolTipAlgorithm extends AbstractAlgorithm implements Algorithm 
 		if (graph.getNumberOfNodes() <= 0)
 			throw new PreconditionException("No graph nodes!");
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "Please enter the tooltip information, displayed in the status-bar<br>"
 				+ "or as a mouse tooltip in exported HTML image maps when hovering the mouse<br>"
 				+ "over network node elements.";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		String currentTooltip = "";
@@ -76,13 +76,13 @@ public class SetToolTipAlgorithm extends AbstractAlgorithm implements Algorithm 
 		}
 		return new Parameter[] { new StringParameter(currentTooltip, "Tooltip Text", null) };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		this.tooltip = ((StringParameter) params[i++]).getString();
 	}
-
+	
 	public void execute() {
 		if (tooltip == null)
 			return;

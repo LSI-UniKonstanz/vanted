@@ -43,17 +43,17 @@ import org.jfree.ui.RefineryUtilities;
  * A demo showing a time series with per minute data.
  */
 public class TimeSeriesDemo10 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo10(final String title) {
-
+		
 		super(title);
-
+		
 		final TimeSeries series = new TimeSeries("Per Minute Data", Minute.class);
 		final Hour hour = new Hour();
 		series.add(new Minute(1, hour), 10.2);
@@ -68,9 +68,9 @@ public class TimeSeriesDemo10 extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -81,20 +81,20 @@ public class TimeSeriesDemo10 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimeSeriesDemo10 demo = new TimeSeriesDemo10("Time Series Demo 10");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

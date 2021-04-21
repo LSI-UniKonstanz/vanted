@@ -62,31 +62,38 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
 public class SearchDialog extends JDialog {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8184468198821429691L;
+	
 	private final Collection<AttributePathNameSearchType> possibleAttributes;
-
+	
 	private final boolean isFindReplaceDialog;
-
+	
 	public SearchDialog(Frame owner, Collection<AttributePathNameSearchType> possibleAttributes,
 			boolean isFindReplaceDialog) {
 		super(owner);
 		this.possibleAttributes = possibleAttributes;
 		this.isFindReplaceDialog = isFindReplaceDialog;
 		myDialogInit();
-
+		
 		getRootPane().getActionMap().put("escapeAction", new AbstractAction() {
-			private static final long serialVersionUID = 1L;
-
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8936924143134313282L;
+			
 			public void actionPerformed(ActionEvent event) {
 				SearchDialog.this.dispose();
 			}
 		});
 		getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "escapeAction");
-
+		
 	}
-
+	
 	protected void myDialogInit() {
 		super.dialogInit();
 		setResizable(false);
@@ -101,10 +108,10 @@ public class SearchDialog extends JDialog {
 			okDesc = "<html>Add matches<br>to selection";
 		else
 			okDesc = "Replace Text";
-
+		
 		final FolderPanel replaceOption = new FolderPanel("Search (and replace) the following text...", false, false,
 				false, null);
-
+		
 		final JTextField searchText = new JTextField();
 		final JTextField replaceText = new JTextField();
 		final JCheckBox doRegularExpr = new JCheckBox("Use regular expressions", false);
@@ -112,13 +119,13 @@ public class SearchDialog extends JDialog {
 		replaceOption.addGuiComponentRow(new JLabel("<html>Find&nbsp;&nbsp;&nbsp;"), searchText, false);
 		replaceOption.addGuiComponentRow(new JLabel("<html>Replace With&nbsp;&nbsp;&nbsp;"), replaceText, false);
 		replaceOption.addGuiComponentRow(new JLabel(), doRegularExpr, false);
-
+		
 		replaceOption.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
 		replaceOption.layoutRows();
-
+		
 		JComponent replaceTextPanel = TableLayout.getSplitVertical(new JLabel(), replaceOption, TableLayout.PREFERRED,
 				TableLayoutConstants.PREFERRED);
-
+		
 		final JButton searchButton = new JButton("Search Text");
 		if (isFindReplaceDialog) {
 			searchText.addActionListener(new ActionListener() {
@@ -128,7 +135,7 @@ public class SearchDialog extends JDialog {
 				}
 			});
 		}
-
+		
 		final JButton okButton = new JButton(okDesc);
 		if (isFindReplaceDialog) {
 			replaceText.addActionListener(new ActionListener() {
@@ -138,10 +145,10 @@ public class SearchDialog extends JDialog {
 				}
 			});
 		}
-
+		
 		final JButton extSearchButton = new JButton("<html>Extended<br/>Search");
 		extSearchButton.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchDialog.this.dispose();
@@ -157,7 +164,7 @@ public class SearchDialog extends JDialog {
 		});
 		final JButton simpleSearchButton = new JButton("<html>Simple<br/>Search");
 		simpleSearchButton.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchDialog.this.dispose();
@@ -171,7 +178,7 @@ public class SearchDialog extends JDialog {
 				});
 			}
 		});
-
+		
 		String description;
 		if (isFindReplaceDialog)
 			description = "Search text in the following attribute...";
@@ -179,7 +186,7 @@ public class SearchDialog extends JDialog {
 			description = "Modify search attributes...";
 		final FolderPanel options = new FolderPanel(description, false, false, false,
 				isFindReplaceDialog ? null : JLabelJavaHelpLink.getHelpActionListener("editmenu_searchandselect"));
-
+		
 		JButton removeFromSelButton = new JButton("<html>Remove matches<br>from selection");
 		removeFromSelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -192,7 +199,7 @@ public class SearchDialog extends JDialog {
 							searchOptions.add(((SearchOptionEditorGUI) gr.right).getSearchOption());
 					}
 					doSearch(searchOptions.toArray(new SearchOption[] {}), false);
-
+					
 					if (ScenarioService.isRecording()) {
 						postSearchScriptCommands(searchOptions, false);
 					}
@@ -201,9 +208,9 @@ public class SearchDialog extends JDialog {
 				}
 			}
 		});
-
+		
 		okButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ArrayList<SearchOption> searchOptions = new ArrayList<SearchOption>();
@@ -216,18 +223,18 @@ public class SearchDialog extends JDialog {
 					if (!isFindReplaceDialog) {
 						// complex search dialog
 						doSearch(searchOptions.toArray(new SearchOption[] {}));
-
+						
 						if (ScenarioService.isRecording()) {
 							postSearchScriptCommands(searchOptions, true);
 						}
-
+						
 					} else {
 						// replace text ind find/replace dialog
 						// we allow to search for empty strings, but we don't want to replace empty
 						// strings...
 						if (searchText.getText() == null || searchText.getText().length() <= 0)
 							return;
-
+						
 						SearchOption so = searchOptions.get(0);
 						String path = so.getSearchAttributePath();
 						String id = so.getSearchAttributeName();
@@ -237,17 +244,17 @@ public class SearchDialog extends JDialog {
 						if (so.getSearchNodeOrEdge() == NodeOrEdge.Edges
 								|| so.getSearchNodeOrEdge() == NodeOrEdge.NodesAndEdges)
 							searchReplaceEdgeText(searchText, replaceText, doRegularExpr, path, id);
-
+						
 					}
 				} catch (Exception err) {
 					ErrorMsg.addErrorMessage(err);
 				}
 			}
-
+			
 		});
-
+		
 		searchButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent e) {
 				try {
 					// find text
@@ -261,13 +268,13 @@ public class SearchDialog extends JDialog {
 					SearchOption so = searchOptions.get(0);
 					String path = so.getSearchAttributePath();
 					String id = so.getSearchAttributeName();
-
+					
 					MainFrame.getInstance().getActiveEditorSession().getSelectionModel()
 							.setActiveSelection(new Selection("empty"));
 					MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
-
+					
 					ArrayList<GraphElement> foundElements = new ArrayList<GraphElement>();
-
+					
 					String findtext = searchText.getText();
 					if (findtext != null && findtext.length() >= 0) {
 						if (so.getSearchNodeOrEdge() == NodeOrEdge.Nodes
@@ -276,11 +283,11 @@ public class SearchDialog extends JDialog {
 						if (so.getSearchNodeOrEdge() == NodeOrEdge.Edges
 								|| so.getSearchNodeOrEdge() == NodeOrEdge.NodesAndEdges)
 							foundElements.addAll(searchEdgeText(findtext, path, id));
-
+						
 						MainFrame.getInstance().getActiveEditorSession().getSelectionModel()
 								.setActiveSelection(new Selection("search " + searchText.getText(), foundElements));
 						MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
-
+						
 						if (isFindReplaceDialog && foundElements.size() > 0)
 							if (foundElements.size() == 1)
 								ZoomFitChangeComponent.zoomRegion(true,
@@ -290,9 +297,9 @@ public class SearchDialog extends JDialog {
 								ZoomFitChangeComponent.zoomRegion(true,
 										MainFrame.getInstance().getActiveEditorSession().getActiveView(),
 										foundElements);
-
+							
 						MainFrame.showMessage(foundElements.size() + " nodes and edges selected", MessageType.INFO);
-
+						
 					}
 				} catch (Exception err) {
 					ErrorMsg.addErrorMessage(err);
@@ -328,7 +335,7 @@ public class SearchDialog extends JDialog {
 				pack();
 			}
 		});
-
+		
 		options.layoutRows();
 		JButton cancelButton = new JButton("Close");
 		cancelButton.addActionListener(new ActionListener() {
@@ -337,7 +344,7 @@ public class SearchDialog extends JDialog {
 				dispose();
 			}
 		});
-
+		
 		JButton clearSelectionButton = new JButton("Clear selection");
 		clearSelectionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -348,7 +355,7 @@ public class SearchDialog extends JDialog {
 				MainFrame.showMessage("Graph-Elements unselected", MessageType.INFO);
 			}
 		});
-
+		
 		JComponent buttonPanel = TableLayout.get4Split(
 				isFindReplaceDialog
 						? TableLayout.get3Split(searchButton, null, okButton, TableLayout.PREFERRED, 5,
@@ -358,7 +365,7 @@ public class SearchDialog extends JDialog {
 				TableLayout.getSplit(isFindReplaceDialog ? extSearchButton : simpleSearchButton, cancelButton,
 						TableLayout.PREFERRED, TableLayout.PREFERRED),
 				TableLayout.PREFERRED, 5, 2);
-
+		
 		JButton saveButton = new JButton("<html><small>Create new<br>menu command");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -376,13 +383,13 @@ public class SearchDialog extends JDialog {
 		});
 		if (!ReleaseInfo.getIsAllowedFeature(FeatureSet.SCRIPT_ACCESS) || isFindReplaceDialog)
 			saveButton.setVisible(false);
-
+		
 		JComponent buttonBar = TableLayout.get3Split(buttonPanel, new JLabel(), saveButton, TableLayout.PREFERRED,
 				TableLayout.FILL, TableLayout.PREFERRED);
-
+		
 		JComponent topPanel = TableLayout.getSplitVertical(helpText, options, TableLayout.PREFERRED,
 				TableLayout.PREFERRED);
-
+		
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.PREFERRED, border }, // Columns
 				{ border, TableLayout.PREFERRED, border } }; // Rows
@@ -390,17 +397,17 @@ public class SearchDialog extends JDialog {
 		add(TableLayout.get3SplitVertical(topPanel, isFindReplaceDialog ? replaceTextPanel : null, buttonBar,
 				TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED), "1,1");
 		pack();
-
+		
 		if (isFindReplaceDialog)
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					searchText.requestFocusInWindow();
 				}
 			});
-
+		
 		validate();
 	}
-
+	
 	private List<GraphElement> searchNodeText(String find, String path, String id) {
 		List<Node> nodes = GraphHelper.getSelectedOrAllNodes();
 		List<GraphElement> foundnodes = new ArrayList<GraphElement>();
@@ -412,7 +419,7 @@ public class SearchDialog extends JDialog {
 						foundnodes.add(nd);
 						continue allnodes;
 					}
-
+					
 					// search all attributes with the same path, but ending with a different number
 					// (eg labelgraphics3 -> search also in labelgraphics1, ...)
 					for (String newpath : getAlternativePaths(nd, path)) {
@@ -430,17 +437,17 @@ public class SearchDialog extends JDialog {
 		}
 		return new ArrayList<GraphElement>();
 	}
-
+	
 	public static ArrayList<String> getAlternativePaths(Node nd, String path) {
 		if (path.length() <= 0)
 			return new ArrayList<String>();
-
+		
 		int index = path.length() - 1;
 		while (Character.isDigit(path.charAt(index)))
 			index--;
-
+		
 		ArrayList<String> ap = new ArrayList<String>();
-
+		
 		if (index != path.length() - 1) {
 			String shortPath = path.substring(0, index + 1);
 			int actualNumber = Integer.parseInt(path.substring(index + 1));
@@ -454,7 +461,7 @@ public class SearchDialog extends JDialog {
 		}
 		return ap;
 	}
-
+	
 	private List<GraphElement> searchEdgeText(String find, String path, String id) {
 		Collection<Edge> edges = GraphHelper.getSelectedOrAllEdges();
 		List<GraphElement> foundedges = new ArrayList<GraphElement>();
@@ -474,7 +481,7 @@ public class SearchDialog extends JDialog {
 		}
 		return new ArrayList<GraphElement>();
 	}
-
+	
 	private void searchReplaceNodeText(final JTextField searchText, final JTextField replaceText,
 			final JCheckBox doRegularExpr, String path, String id) {
 		List<NodeHelper> nodes = GraphHelper
@@ -511,7 +518,7 @@ public class SearchDialog extends JDialog {
 			MainFrame.showMessage("Found and replaced " + replaced + " strings", MessageType.INFO);
 		}
 	}
-
+	
 	private void searchReplaceEdgeText(final JTextField searchText, final JTextField replaceText,
 			final JCheckBox doRegularExpr, String path, String id) {
 		Collection<Edge> edges = GraphHelper.getSelectedOrAllEdges(MainFrame.getInstance().getActiveEditorSession());
@@ -544,7 +551,7 @@ public class SearchDialog extends JDialog {
 			MainFrame.showMessage("Found and replaced " + replaced + " strings", MessageType.INFO);
 		}
 	}
-
+	
 	private void saveSearch(ArrayList<SearchOption> searchOptions) {
 		Object[] input = MyInputHelper
 				.getInput(
@@ -624,7 +631,7 @@ public class SearchDialog extends JDialog {
 			}
 		});
 	}
-
+	
 	private boolean containsChars(String check, String... invalid) {
 		boolean result = false;
 		for (String i : invalid) {
@@ -633,7 +640,7 @@ public class SearchDialog extends JDialog {
 		}
 		return result;
 	}
-
+	
 	private void postSearchScriptCommands(ArrayList<SearchOption> searchOptions, boolean addIsTrue) {
 		ArrayList<String> cmds = new ArrayList<String>();
 		cmds.add("if (useStoredParameters) {");
@@ -643,11 +650,11 @@ public class SearchDialog extends JDialog {
 		ScenarioService.postWorkflowStep("Search graph elements - " + cmdDesc + " selection",
 				new String[] { SearchOption.getImportStatements() }, cmds.toArray(new String[] {}));
 	}
-
+	
 	public static void doSearch(final SearchOption[] searchOptions) {
 		doSearch(searchOptions, true);
 	}
-
+	
 	public static void doSearch(final SearchOption[] searchOptions, boolean trueAddfalseRemove) {
 		final ArrayList<GraphElement> validGraphElements = new ArrayList<GraphElement>();
 		final EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
@@ -659,7 +666,7 @@ public class SearchDialog extends JDialog {
 			return;
 		}
 		final ArrayList<GraphElement> graphElements = gel;
-
+		
 		final HashMap<SearchOption, HashMap<GraphElement, Integer>> searchOption2positionMemory = new HashMap<SearchOption, HashMap<GraphElement, Integer>>();
 		for (SearchOption so : searchOptions) {
 			if (so.getSearchOperation() == SearchOperation.topN || so.getSearchOperation() == SearchOperation.bottomN) {
@@ -732,5 +739,5 @@ public class SearchDialog extends JDialog {
 		MainFrame.showMessage(ndCnt + " node(s) and " + edCnt + " edges "
 				+ (trueAddfalseRemove ? "added to" : "removed from") + " selection", MessageType.INFO);
 	}
-
+	
 }

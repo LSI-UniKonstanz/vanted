@@ -80,25 +80,25 @@ import org.jfree.util.PublicCloneable;
  */
 public class XYBarRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/**
 	 * The state class used by this renderer.
 	 */
 	class XYBarRendererState extends XYItemRendererState {
-
+		
 		/** Zero on the range axis in Java 2D space. */
 		private double g2Zero;
-
+		
 		/**
 		 * Creates a new state object.
 		 * 
 		 * @param info
-		 *            the plot rendering info.
+		 *           the plot rendering info.
 		 */
 		public XYBarRendererState(PlotRenderingInfo info) {
 			super(info);
 		}
-
+		
 		/**
 		 * Returns the range axis zero in Java 2D space.
 		 * 
@@ -107,45 +107,45 @@ public class XYBarRenderer extends AbstractXYItemRenderer
 		public double getG2Zero() {
 			return this.g2Zero;
 		}
-
+		
 		/**
 		 * Sets the range axis zero in Java2D space.
 		 * 
 		 * @param value
-		 *            the value.
+		 *           the value.
 		 */
 		public void setG2Zero(double value) {
 			this.g2Zero = value;
 		}
 	}
-
+	
 	/** Percentage margin (to reduce the width of bars). */
 	private double margin;
-
+	
 	/**
 	 * An optional class used to transform gradient paint objects to fit each bar.
 	 */
 	private GradientPaintTransformer gradientPaintTransformer;
-
+	
 	/**
 	 * The default constructor.
 	 */
 	public XYBarRenderer() {
 		this(0.0);
 	}
-
+	
 	/**
 	 * Constructs a new renderer.
 	 * 
 	 * @param margin
-	 *            the percentage amount to trim from the width of each bar.
+	 *           the percentage amount to trim from the width of each bar.
 	 */
 	public XYBarRenderer(double margin) {
 		super();
 		this.margin = margin;
 		this.gradientPaintTransformer = new StandardGradientPaintTransformer();
 	}
-
+	
 	/**
 	 * Returns the margin which is a percentage amount by which the bars are
 	 * trimmed.
@@ -155,19 +155,19 @@ public class XYBarRenderer extends AbstractXYItemRenderer
 	public double getMargin() {
 		return this.margin;
 	}
-
+	
 	/**
 	 * Sets the percentage amount by which the bars are trimmed and sends a
 	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param margin
-	 *            the new margin.
+	 *           the new margin.
 	 */
 	public void setMargin(double margin) {
 		this.margin = margin;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the gradient paint transformer (an object used to transform gradient
 	 * paint objects to fit each bar.
@@ -177,114 +177,114 @@ public class XYBarRenderer extends AbstractXYItemRenderer
 	public GradientPaintTransformer getGradientPaintTransformer() {
 		return this.gradientPaintTransformer;
 	}
-
+	
 	/**
 	 * Sets the gradient paint transformer and sends a {@link RendererChangeEvent}
 	 * to all registered listeners.
 	 * 
 	 * @param transformer
-	 *            the transformer (<code>null</code> permitted).
+	 *           the transformer (<code>null</code> permitted).
 	 */
 	public void setGradientPaintTransformer(GradientPaintTransformer transformer) {
 		this.gradientPaintTransformer = transformer;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Initialises the renderer and returns a state object that should be passed to
 	 * all subsequent calls to the drawItem() method. Here we calculate the Java2D
 	 * y-coordinate for zero, since all the bars have their bases fixed at zero.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area inside the axes.
+	 *           the area inside the axes.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataset
-	 *            the data.
+	 *           the data.
 	 * @param info
-	 *            an optional info collection object to return data back to the
-	 *            caller.
+	 *           an optional info collection object to return data back to the
+	 *           caller.
 	 * @return A state object.
 	 */
 	public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, XYPlot plot, XYDataset dataset,
 			PlotRenderingInfo info) {
-
+		
 		XYBarRendererState state = new XYBarRendererState(info);
 		ValueAxis rangeAxis = plot.getRangeAxisForDataset(plot.indexOf(dataset));
 		state.setG2Zero(rangeAxis.valueToJava2D(0.0, dataArea, plot.getRangeAxisEdge()));
 		return state;
-
+		
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the plot is being drawn.
+	 *           the area within which the plot is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		IntervalXYDataset intervalDataset = (IntervalXYDataset) dataset;
-
+		
 		Paint seriesOutlinePaint = getItemOutlinePaint(series, item);
-
+		
 		Number valueNumber = intervalDataset.getYValue(series, item);
 		if (valueNumber == null) {
 			return;
 		}
-
+		
 		double translatedValue = rangeAxis.valueToJava2D(valueNumber.doubleValue(), dataArea, plot.getRangeAxisEdge());
-
+		
 		RectangleEdge location = plot.getDomainAxisEdge();
 		Number startXNumber = intervalDataset.getStartXValue(series, item);
 		if (startXNumber == null) {
 			return;
 		}
 		double translatedStartX = domainAxis.valueToJava2D(startXNumber.doubleValue(), dataArea, location);
-
+		
 		Number endXNumber = intervalDataset.getEndXValue(series, item);
 		if (endXNumber == null) {
 			return;
 		}
 		double translatedEndX = domainAxis.valueToJava2D(endXNumber.doubleValue(), dataArea, location);
-
+		
 		XYBarRendererState s = (XYBarRendererState) state;
 		double g2Zero = s.getG2Zero();
 		double translatedWidth = Math.max(1, Math.abs(translatedEndX - translatedStartX));
 		double translatedHeight = Math.abs(translatedValue - g2Zero);
-
+		
 		if (getMargin() > 0.0) {
 			double cut = translatedWidth * getMargin();
 			translatedWidth = translatedWidth - cut;
 			translatedStartX = translatedStartX + cut / 2;
 		}
-
+		
 		Rectangle2D bar = null;
 		PlotOrientation orientation = plot.getOrientation();
 		if (orientation == PlotOrientation.HORIZONTAL) {
@@ -294,7 +294,7 @@ public class XYBarRenderer extends AbstractXYItemRenderer
 			bar = new Rectangle2D.Double(translatedStartX, Math.min(g2Zero, translatedValue), translatedWidth,
 					translatedHeight);
 		}
-
+		
 		Paint itemPaint = getItemPaint(series, item);
 		if (getGradientPaintTransformer() != null && itemPaint instanceof GradientPaint) {
 			GradientPaint gp = (GradientPaint) itemPaint;
@@ -307,7 +307,7 @@ public class XYBarRenderer extends AbstractXYItemRenderer
 			g2.setPaint(seriesOutlinePaint);
 			g2.draw(bar);
 		}
-
+		
 		// add an entity for the item...
 		if (info != null) {
 			EntityCollection entities = info.getOwner().getEntityCollection();
@@ -325,18 +325,18 @@ public class XYBarRenderer extends AbstractXYItemRenderer
 				entities.addEntity(entity);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

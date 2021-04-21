@@ -12,15 +12,15 @@ import java.io.ByteArrayInputStream;
  * @author klukas
  */
 public class MyByteArrayInputStream extends ByteArrayInputStream {
-
+	
 	public MyByteArrayInputStream(byte[] buf) {
 		super(buf);
 	}
-
+	
 	public MyByteArrayInputStream() {
 		super(new byte[] {});
 	}
-
+	
 	public byte[] getBuff() {
 		return buf;
 	}

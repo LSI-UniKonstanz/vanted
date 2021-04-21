@@ -5,17 +5,17 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics;
 
 public class StatisticTable {
 	// t-Verteilung
-
+	
 	public static double teinseitig(int df, double t) {
 		double p = Tvertp(t, df);
 		return p / 2;
 	}
-
+	
 	public static double tzweiseitig(int df, double t) {
 		double p = Tvertp(t, df);
 		return p;
 	}
-
+	
 	public static double Tvertp(double t, int df) {
 		// Returns two-tail probability level given t and df.
 		double abst = Math.abs(t);
@@ -38,13 +38,13 @@ public class StatisticTable {
 		}
 		return p;
 	}
-
+	
 	public static double Tvertz(double t, int df) {
 		double A9 = df - 0.5;
 		double B9 = 48 * A9 * A9;
 		double T9 = t * t / df;
 		double Z8, P7, B7, z;
-
+		
 		if (T9 >= 0.04)
 			Z8 = A9 * Math.log(1 + T9);
 		else
@@ -54,7 +54,7 @@ public class StatisticTable {
 		z = (1 + (-P7 / B7 + Z8 + 3) / B9) * Math.sqrt(Z8);
 		return z;
 	}
-
+	
 	public static double tinvers(double p, int df) {
 		double a, b, c, d, t, x, y;
 		if (df == 1)
@@ -89,7 +89,7 @@ public class StatisticTable {
 		}
 		return t;
 	}
-
+	
 	public static double backwardT(double p, int df) {
 		if (p <= 0 || p >= 1 || df < 1) {
 			return Double.NaN;
@@ -106,31 +106,31 @@ public class StatisticTable {
 		}
 		return PosV(t);
 	}
-
+	
 	public static double PosV(double x) {
 		if (x < 0)
 			x = -x;
 		return x;
 	}
-
+	
 	// Normalverteilung
-
+	
 	public static double NormalP(double z) {
 		double d1 = 0.0498673470, d2 = 0.0211410061, d3 = 0.0032776263, d4 = 0.0000380036, d5 = 0.0000488906,
 				d6 = 0.0000053830;
-
+		
 		double a = Math.abs(z);
 		double p = 1.0 + a * (d1 + a * (d2 + a * (d3 + a * (d4 + a * (d5 + a * d6)))));
-
+		
 		p = Math.pow(p, -16);
 		return p;
 	}
-
+	
 	public static double Normz(double p) {
 		double a0 = 2.5066282, a1 = -18.6150006, a2 = 41.3911977, a3 = -25.4410605, b1 = -8.4735109, b2 = 23.0833674,
 				b3 = -21.0622410, b4 = 3.1308291, c0 = -2.7871893, c1 = -2.2979648, c2 = 4.8501413, c3 = 2.3212128,
 				d1 = 3.5438892, d2 = 1.6370678, r, z;
-
+		
 		if (p > 0.42) {
 			r = Math.sqrt(-Math.log(0.5 - p));
 			z = (((c3 * r + c2) * r + c1) * r + c0) / ((d2 * r + d1) * r + 1);
@@ -140,5 +140,5 @@ public class StatisticTable {
 		}
 		return z;
 	}
-
+	
 }

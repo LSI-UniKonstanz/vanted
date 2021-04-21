@@ -18,22 +18,18 @@ import org.graffiti.util.Pair;
 /**
  * Calculates all MD5 sums for all the jars found on the classpath of the
  * ClassLoader for VANTED, as provided by the bootstrap.
- * 
  * This is used for the update mechanism to compare the MD5s of remote libraries
  * and copy them if they differ in their MD5s.
  * 
  * @author matthiak, Dimitar Garkov
  * @vanted.revision 2.7.1
- *
  */
 public class CalcClassPathJarsMd5 {
-
+	
 	List<Pair<String, String>> listJarMd5Pairs;
-
+	
 	/**
-	 * 
 	 * @return a list with pairs of jar paths and MD5s.
-	 * 
 	 * @vanted.revision 2.7.1 Fix regression w.r.t. ClassLoder <s>2.7.0 Update File
 	 *                  API</s>
 	 */
@@ -55,7 +51,7 @@ public class CalcClassPathJarsMd5 {
 			// loaded, so do not check for updates
 			listJarMd5Pairs = null;
 		}
-
+		
 		return listJarMd5Pairs;
 	}
 }

@@ -15,7 +15,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author Falk Schreiber
  */
 public class HammingDistancePlugin extends GenericPluginAdapter {
-
+	
 	/**
 	 * Creates a new HammingDistancePlugin object.
 	 */

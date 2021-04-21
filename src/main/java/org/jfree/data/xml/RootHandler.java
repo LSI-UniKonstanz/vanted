@@ -38,17 +38,17 @@ import org.xml.sax.helpers.DefaultHandler;
  * A SAX handler that delegates work to sub-handlers.
  */
 public class RootHandler extends DefaultHandler implements DatasetTags {
-
+	
 	/** The sub-handlers. */
 	private Stack subHandlers;
-
+	
 	/**
 	 * Creates a new handler.
 	 */
 	public RootHandler() {
 		this.subHandlers = new Stack();
 	}
-
+	
 	/**
 	 * Returns the stack of sub handlers.
 	 * 
@@ -57,37 +57,37 @@ public class RootHandler extends DefaultHandler implements DatasetTags {
 	public Stack getSubHandlers() {
 		return this.subHandlers;
 	}
-
+	
 	/**
 	 * Receives some (or all) of the text in the current element.
 	 * 
 	 * @param ch
-	 *            character buffer.
+	 *           character buffer.
 	 * @param start
-	 *            the start index.
+	 *           the start index.
 	 * @param length
-	 *            the length of the valid character data.
+	 *           the length of the valid character data.
 	 * @throws SAXException
-	 *             for errors.
+	 *            for errors.
 	 */
 	public void characters(final char[] ch, final int start, final int length) throws SAXException {
-
+		
 		final DefaultHandler handler = getCurrentHandler();
 		if (handler != this) {
 			handler.characters(ch, start, length);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the handler at the top of the stack.
 	 * 
 	 * @return the handler.
 	 */
 	public DefaultHandler getCurrentHandler() {
-
+		
 		DefaultHandler result = this;
-
+		
 		if (this.subHandlers != null) {
 			if (this.subHandlers.size() > 0) {
 				final Object top = this.subHandlers.peek();
@@ -96,21 +96,21 @@ public class RootHandler extends DefaultHandler implements DatasetTags {
 				}
 			}
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Pushes a sub-handler onto the stack.
 	 * 
 	 * @param subhandler
-	 *            the sub-handler.
+	 *           the sub-handler.
 	 */
 	public void pushSubHandler(final DefaultHandler subhandler) {
 		this.subHandlers.push(subhandler);
 	}
-
+	
 	/**
 	 * Pops a sub-handler from the stack.
 	 * 
@@ -119,5 +119,5 @@ public class RootHandler extends DefaultHandler implements DatasetTags {
 	public DefaultHandler popSubHandler() {
 		return (DefaultHandler) this.subHandlers.pop();
 	}
-
+	
 }

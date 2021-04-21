@@ -40,27 +40,27 @@ import org.jfree.util.TableOrder;
  * column of a {@link CategoryDataset}.
  */
 public class CategoryToPieDataset extends AbstractDataset implements PieDataset, DatasetChangeListener {
-
+	
 	/** The source. */
 	private CategoryDataset source;
-
+	
 	/** The extract type. */
 	private TableOrder extract;
-
+	
 	/** The row or column index. */
 	private int index;
-
+	
 	/**
 	 * An adaptor class that converts any {@link CategoryDataset} into a
 	 * {@link PieDataset}, by taking the values from a single row or column.
 	 * 
 	 * @param source
-	 *            the source dataset (<code>null</code> permitted).
+	 *           the source dataset (<code>null</code> permitted).
 	 * @param extract
-	 *            extract data from rows or columns? (<code>null</code> not
-	 *            permitted).
+	 *           extract data from rows or columns? (<code>null</code> not
+	 *           permitted).
 	 * @param index
-	 *            the row or column index.
+	 *           the row or column index.
 	 */
 	public CategoryToPieDataset(final CategoryDataset source, final TableOrder extract, final int index) {
 		if (extract == null) {
@@ -71,7 +71,7 @@ public class CategoryToPieDataset extends AbstractDataset implements PieDataset,
 		this.extract = extract;
 		this.index = index;
 	}
-
+	
 	/**
 	 * Returns the number of items (values) in the collection. If the underlying
 	 * dataset is <code>null</code>, this method returns zero.
@@ -89,12 +89,12 @@ public class CategoryToPieDataset extends AbstractDataset implements PieDataset,
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns a value.
 	 * 
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The value (possibly <code>null</code>).
 	 */
 	public Number getValue(final int item) {
@@ -108,12 +108,12 @@ public class CategoryToPieDataset extends AbstractDataset implements PieDataset,
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns a key.
 	 * 
 	 * @param index
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return The key.
 	 */
 	public Comparable getKey(final int index) {
@@ -125,12 +125,12 @@ public class CategoryToPieDataset extends AbstractDataset implements PieDataset,
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the index for a given key.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return The index.
 	 */
 	public int getIndex(final Comparable key) {
@@ -142,7 +142,7 @@ public class CategoryToPieDataset extends AbstractDataset implements PieDataset,
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the keys.
 	 * 
@@ -157,14 +157,14 @@ public class CategoryToPieDataset extends AbstractDataset implements PieDataset,
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the value for a given key. If the key is not recognised, the method
 	 * should return <code>null</code> (but note that <code>null</code> can be
 	 * associated with a valid key also).
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return The value (possibly <code>null</code>).
 	 */
 	public Number getValue(final Comparable key) {
@@ -177,44 +177,44 @@ public class CategoryToPieDataset extends AbstractDataset implements PieDataset,
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Passes the {@link DatasetChangeEvent} through.
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void datasetChanged(final DatasetChangeEvent event) {
 		fireDatasetChanged();
 	}
-
+	
 	// // DEPRECATED CODE
 	// ////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * A constant indicating that data should be extracted from a row.
 	 * 
 	 * @deprecated Use the TableOrder class.
 	 */
 	public static final int ROW = 0;
-
+	
 	/**
 	 * A constant indicating that data should be extracted from a column.
 	 * 
 	 * @deprecated Use the TableOrder class.
 	 */
 	public static final int COLUMN = 1;
-
+	
 	/**
 	 * An adaptor class that converts any {@link CategoryDataset} into a
 	 * {@link PieDataset}, by taking the values from a single row or column.
 	 * 
 	 * @param source
-	 *            the source dataset.
+	 *           the source dataset.
 	 * @param extract
-	 *            ROW or COLUMN.
+	 *           ROW or COLUMN.
 	 * @param index
-	 *            the row or column index.
+	 *           the row or column index.
 	 * @deprecated Use the other constructor.
 	 */
 	public CategoryToPieDataset(final CategoryDataset source, final int extract, final int index) {
@@ -226,5 +226,5 @@ public class CategoryToPieDataset extends AbstractDataset implements PieDataset,
 		}
 		this.index = index;
 	}
-
+	
 }

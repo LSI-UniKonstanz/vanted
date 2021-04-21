@@ -59,54 +59,54 @@ import org.jfree.ui.TextAnchor;
  * sunset times for this demo were obtained from: http://www.sunrisesunset.com/
  */
 public class DifferenceChartDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public DifferenceChartDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		final TimeSeries series1 = createSunriseSeries();
 		final TimeSeries series2 = createSunsetSeries();
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(series1);
 		dataset.addSeries(series2);
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * A utility method for creating a value based on a time.
 	 * 
 	 * @param hour
-	 *            the hour.
+	 *           the hour.
 	 * @param min
-	 *            the minute.
+	 *           the minute.
 	 * @return a value.
 	 */
 	private Long time(final int hour, final int min) {
 		final Minute m = new Minute(min, hour, 1, 1, 1970);
 		return Long.valueOf(m.getFirstMillisecond());
 	}
-
+	
 	/**
 	 * Creates a time series containing sunrise times for London in 2004.
 	 * 
 	 * @return a time series containing sunrise times.
 	 */
 	public TimeSeries createSunriseSeries() {
-
+		
 		final TimeSeries series = new TimeSeries("Sunrise");
-
+		
 		series.add(new Day(1, 1, 2004), time(8, 5));
 		series.add(new Day(2, 1, 2004), time(8, 5));
 		series.add(new Day(3, 1, 2004), time(8, 5));
@@ -138,7 +138,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 1, 2004), time(7, 44));
 		series.add(new Day(30, 1, 2004), time(7, 42));
 		series.add(new Day(31, 1, 2004), time(7, 41));
-
+		
 		series.add(new Day(1, 2, 2004), time(7, 39));
 		series.add(new Day(2, 2, 2004), time(7, 38));
 		series.add(new Day(3, 2, 2004), time(7, 36));
@@ -168,7 +168,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(27, 2, 2004), time(6, 51));
 		series.add(new Day(28, 2, 2004), time(6, 49));
 		series.add(new Day(29, 2, 2004), time(6, 47));
-
+		
 		series.add(new Day(1, 3, 2004), time(6, 45));
 		series.add(new Day(2, 3, 2004), time(6, 43));
 		series.add(new Day(3, 3, 2004), time(6, 40));
@@ -200,7 +200,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 3, 2004), time(6, 42));
 		series.add(new Day(30, 3, 2004), time(6, 39));
 		series.add(new Day(31, 3, 2004), time(6, 37));
-
+		
 		series.add(new Day(1, 4, 2004), time(6, 35));
 		series.add(new Day(2, 4, 2004), time(6, 33));
 		series.add(new Day(3, 4, 2004), time(6, 30));
@@ -231,7 +231,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(28, 4, 2004), time(5, 37));
 		series.add(new Day(29, 4, 2004), time(5, 35));
 		series.add(new Day(30, 4, 2004), time(5, 33));
-
+		
 		series.add(new Day(1, 5, 2004), time(5, 31));
 		series.add(new Day(2, 5, 2004), time(5, 29));
 		series.add(new Day(3, 5, 2004), time(5, 28));
@@ -263,7 +263,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 5, 2004), time(4, 50));
 		series.add(new Day(30, 5, 2004), time(4, 50));
 		series.add(new Day(31, 5, 2004), time(4, 49));
-
+		
 		series.add(new Day(1, 6, 2004), time(4, 48));
 		series.add(new Day(2, 6, 2004), time(4, 47));
 		series.add(new Day(3, 6, 2004), time(4, 46));
@@ -294,7 +294,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(28, 6, 2004), time(4, 45));
 		series.add(new Day(29, 6, 2004), time(4, 45));
 		series.add(new Day(30, 6, 2004), time(4, 46));
-
+		
 		series.add(new Day(1, 7, 2004), time(4, 47));
 		series.add(new Day(2, 7, 2004), time(4, 47));
 		series.add(new Day(3, 7, 2004), time(4, 48));
@@ -326,7 +326,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 7, 2004), time(5, 19));
 		series.add(new Day(30, 7, 2004), time(5, 20));
 		series.add(new Day(31, 7, 2004), time(5, 22));
-
+		
 		series.add(new Day(1, 8, 2004), time(5, 23));
 		series.add(new Day(2, 8, 2004), time(5, 25));
 		series.add(new Day(3, 8, 2004), time(5, 26));
@@ -358,7 +358,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 8, 2004), time(6, 7));
 		series.add(new Day(30, 8, 2004), time(6, 9));
 		series.add(new Day(31, 8, 2004), time(6, 10));
-
+		
 		series.add(new Day(1, 9, 2004), time(6, 12));
 		series.add(new Day(2, 9, 2004), time(6, 14));
 		series.add(new Day(3, 9, 2004), time(6, 15));
@@ -389,7 +389,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(28, 9, 2004), time(6, 55));
 		series.add(new Day(29, 9, 2004), time(6, 57));
 		series.add(new Day(30, 9, 2004), time(6, 58));
-
+		
 		series.add(new Day(1, 10, 2004), time(7, 0));
 		series.add(new Day(2, 10, 2004), time(7, 2));
 		series.add(new Day(3, 10, 2004), time(7, 3));
@@ -421,7 +421,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 10, 2004), time(7, 48));
 		series.add(new Day(30, 10, 2004), time(7, 49));
 		series.add(new Day(31, 10, 2004), time(6, 51));
-
+		
 		series.add(new Day(1, 11, 2004), time(6, 53));
 		series.add(new Day(2, 11, 2004), time(6, 55));
 		series.add(new Day(3, 11, 2004), time(6, 57));
@@ -452,7 +452,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(28, 11, 2004), time(7, 38));
 		series.add(new Day(29, 11, 2004), time(7, 40));
 		series.add(new Day(30, 11, 2004), time(7, 41));
-
+		
 		series.add(new Day(1, 12, 2004), time(7, 43));
 		series.add(new Day(2, 12, 2004), time(7, 44));
 		series.add(new Day(3, 12, 2004), time(7, 45));
@@ -484,10 +484,10 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 12, 2004), time(8, 5));
 		series.add(new Day(30, 12, 2004), time(8, 5));
 		series.add(new Day(31, 12, 2004), time(8, 5));
-
+		
 		return series;
 	}
-
+	
 	/**
 	 * Creates a time series containing sunset times for London in 2004.
 	 * 
@@ -495,7 +495,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 	 */
 	public TimeSeries createSunsetSeries() {
 		final TimeSeries series = new TimeSeries("Sunset");
-
+		
 		series.add(new Day(1, 1, 2004), time(16, 0));
 		series.add(new Day(2, 1, 2004), time(16, 1));
 		series.add(new Day(3, 1, 2004), time(16, 2));
@@ -527,7 +527,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 1, 2004), time(16, 41));
 		series.add(new Day(30, 1, 2004), time(16, 43));
 		series.add(new Day(31, 1, 2004), time(16, 45));
-
+		
 		series.add(new Day(1, 2, 2004), time(16, 47));
 		series.add(new Day(2, 2, 2004), time(16, 48));
 		series.add(new Day(3, 2, 2004), time(16, 50));
@@ -557,7 +557,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(27, 2, 2004), time(17, 34));
 		series.add(new Day(28, 2, 2004), time(17, 35));
 		series.add(new Day(29, 2, 2004), time(17, 37));
-
+		
 		series.add(new Day(1, 3, 2004), time(17, 39));
 		series.add(new Day(2, 3, 2004), time(17, 41));
 		series.add(new Day(3, 3, 2004), time(17, 43));
@@ -589,7 +589,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 3, 2004), time(19, 27));
 		series.add(new Day(30, 3, 2004), time(19, 29));
 		series.add(new Day(31, 3, 2004), time(19, 30));
-
+		
 		series.add(new Day(1, 4, 2004), time(19, 32));
 		series.add(new Day(2, 4, 2004), time(19, 34));
 		series.add(new Day(3, 4, 2004), time(19, 35));
@@ -620,7 +620,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(28, 4, 2004), time(20, 17));
 		series.add(new Day(29, 4, 2004), time(20, 19));
 		series.add(new Day(30, 4, 2004), time(20, 20));
-
+		
 		series.add(new Day(1, 5, 2004), time(20, 22));
 		series.add(new Day(2, 5, 2004), time(20, 24));
 		series.add(new Day(3, 5, 2004), time(20, 25));
@@ -652,7 +652,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 5, 2004), time(21, 3));
 		series.add(new Day(30, 5, 2004), time(21, 4));
 		series.add(new Day(31, 5, 2004), time(21, 6));
-
+		
 		series.add(new Day(1, 6, 2004), time(21, 7));
 		series.add(new Day(2, 6, 2004), time(21, 8));
 		series.add(new Day(3, 6, 2004), time(21, 9));
@@ -683,7 +683,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(28, 6, 2004), time(21, 21));
 		series.add(new Day(29, 6, 2004), time(21, 21));
 		series.add(new Day(30, 6, 2004), time(21, 21));
-
+		
 		series.add(new Day(1, 7, 2004), time(21, 20));
 		series.add(new Day(2, 7, 2004), time(21, 20));
 		series.add(new Day(3, 7, 2004), time(21, 19));
@@ -715,7 +715,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 7, 2004), time(20, 53));
 		series.add(new Day(30, 7, 2004), time(20, 52));
 		series.add(new Day(31, 7, 2004), time(20, 50));
-
+		
 		series.add(new Day(1, 8, 2004), time(20, 48));
 		series.add(new Day(2, 8, 2004), time(20, 47));
 		series.add(new Day(3, 8, 2004), time(20, 45));
@@ -747,7 +747,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 8, 2004), time(19, 54));
 		series.add(new Day(30, 8, 2004), time(19, 51));
 		series.add(new Day(31, 8, 2004), time(19, 49));
-
+		
 		series.add(new Day(1, 9, 2004), time(19, 47));
 		series.add(new Day(2, 9, 2004), time(19, 45));
 		series.add(new Day(3, 9, 2004), time(19, 42));
@@ -778,7 +778,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(28, 9, 2004), time(18, 45));
 		series.add(new Day(29, 9, 2004), time(18, 43));
 		series.add(new Day(30, 9, 2004), time(18, 41));
-
+		
 		series.add(new Day(1, 10, 2004), time(18, 38));
 		series.add(new Day(2, 10, 2004), time(18, 36));
 		series.add(new Day(3, 10, 2004), time(18, 34));
@@ -810,7 +810,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 10, 2004), time(17, 39));
 		series.add(new Day(30, 10, 2004), time(17, 37));
 		series.add(new Day(31, 10, 2004), time(16, 35));
-
+		
 		series.add(new Day(1, 11, 2004), time(16, 33));
 		series.add(new Day(2, 11, 2004), time(16, 31));
 		series.add(new Day(3, 11, 2004), time(16, 30));
@@ -841,7 +841,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(28, 11, 2004), time(15, 56));
 		series.add(new Day(29, 11, 2004), time(15, 56));
 		series.add(new Day(30, 11, 2004), time(15, 55));
-
+		
 		series.add(new Day(1, 12, 2004), time(15, 54));
 		series.add(new Day(2, 12, 2004), time(15, 54));
 		series.add(new Day(3, 12, 2004), time(15, 53));
@@ -873,16 +873,16 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		series.add(new Day(29, 12, 2004), time(15, 58));
 		series.add(new Day(30, 12, 2004), time(15, 59));
 		series.add(new Day(31, 12, 2004), time(16, 0));
-
+		
 		return series;
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
@@ -892,7 +892,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 				false // URLs
 		);
 		chart.setBackgroundPaint(Color.white);
-
+		
 		final XYDifferenceRenderer renderer = new XYDifferenceRenderer(Color.blue, Color.blue, false);
 		renderer.setStroke(new BasicStroke(2.0f));
 		renderer.setSeriesPaint(0, Color.yellow);
@@ -903,14 +903,14 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-
+		
 		final DateAxis domainAxis = new DateAxis("Time");
 		domainAxis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
 		domainAxis.setLowerMargin(0.0);
 		domainAxis.setUpperMargin(0.0);
 		plot.setDomainAxis(domainAxis);
 		plot.setForegroundAlpha(0.5f);
-
+		
 		final Color c = new Color(255, 60, 24, 63);
 		final Marker bst = new IntervalMarker(new Day(28, 3, 2004).getFirstMillisecond(),
 				new Day(30, 10, 2004).getFirstMillisecond(), c, new BasicStroke(2.0f), null, null, 1.0f);
@@ -919,14 +919,14 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		bst.setLabelFont(new Font("SansSerif", Font.ITALIC + Font.BOLD, 10));
 		bst.setLabelTextAnchor(TextAnchor.BASELINE_RIGHT);
 		plot.addDomainMarker(bst, Layer.BACKGROUND);
-
+		
 		final DateAxis rangeAxis = new DateAxis("Time");
 		rangeAxis.setLowerMargin(0.15);
 		rangeAxis.setUpperMargin(0.15);
 		plot.setRangeAxis(rangeAxis);
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -937,20 +937,20 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final DifferenceChartDemo2 demo = new DifferenceChartDemo2("Difference Chart Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -37,20 +37,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_SBML_Writer extends SBML_SBase_Writer {
 	private Model _model;
-
+	
 	Logger logger = Logger.getLogger(SBML_SBML_Writer.class);
-
+	
 	/**
 	 * Processes the reading in an model
 	 * 
 	 * @param stream
-	 *            the data will be written into this stream
+	 *           the data will be written into this stream
 	 * @param g
-	 *            contains the data
+	 *           contains the data
 	 */
 	public void addSBML(OutputStream stream, Graph g) {
 		SBML_Constants.init();
-
+		
 		SBMLWriter writer = new SBMLWriter();
 		int level = 0;
 		int version = 1;
@@ -68,18 +68,18 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 		}
 		SBMLDocument doc = new SBMLDocument(level, version);
 		addSBaseAttributes(doc, g);
-
+		
 		_model = null;
-
+		
 		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML, SBML_Constants.MODEL_ID)) {
 			_model = doc.createModel((String) getAttribute(g, SBML_Constants.SBML, SBML_Constants.MODEL_ID));
 		} else {
 			_model = doc.createModel();
 		}
-
+		
 		SBML_Model_Writer writeModel = new SBML_Model_Writer();
 		writeModel.addModel(_model, g);
-
+		
 		ArrayList<String> functionDefinitions = headlineHelper(g, SBML_Constants.SBML_FUNCTION_DEFINITION);
 		if (functionDefinitions.size() > 0) {
 			Iterator<String> itFunctionDefinitions = functionDefinitions.iterator();
@@ -93,7 +93,7 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-
+		
 		ArrayList<String> unitDefinitions = headlineHelper(g, SBML_Constants.SBML_UNIT_DEFINITION);
 		if (unitDefinitions.size() > 0) {
 			Iterator<String> itUnitDefinition = unitDefinitions.iterator();
@@ -107,7 +107,7 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-
+		
 		ArrayList<String> compartments = headlineHelper(g, SBML_Constants.SBML_COMPARTMENT);
 		if (compartments.size() > 0) {
 			SBMLCompartmentHelper compartmentHelperObject = new SBMLCompartmentHelper();
@@ -120,12 +120,12 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-
+		
 		SBML_Species_Writer writeSpeciesDefinition = new SBML_Species_Writer();
 		writeSpeciesDefinition.addSpecies(_model, g);
 		createExtendedLayoutModel(g);
 		writeSpeciesDefinition.addSpeciesGlyph(_model, g);
-
+		
 		ArrayList<String> parameters = headlineHelper(g, SBML_Constants.SBML_PARAMETER);
 		if (parameters.size() > 0) {
 			Iterator<String> itParameters = parameters.iterator();
@@ -139,7 +139,7 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-
+		
 		ArrayList<String> initialAssignments = headlineHelper(g, SBML_Constants.SBML_INITIAL_ASSIGNMENT);
 		if (initialAssignments.size() > 0) {
 			Iterator<String> itInitialAssignments = initialAssignments.iterator();
@@ -153,10 +153,10 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-
+		
 		SBML_Rule_Writer writeRuleDefinition = new SBML_Rule_Writer();
 		writeRuleDefinition.addRules(g, _model);
-
+		
 		ArrayList<String> constraints = headlineHelper(g, SBML_Constants.SBML_CONSTRAINT);
 		if (constraints.size() > 0) {
 			Iterator<String> itConstraints = constraints.iterator();
@@ -170,10 +170,10 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-
+		
 		SBML_Reaction_Writer writeReaction = new SBML_Reaction_Writer();
 		writeReaction.addReactions(g, _model);
-
+		
 		ArrayList<String> events = headlineHelper(g, SBML_Constants.SBML_EVENT);
 		if (events.size() > 0) {
 			Iterator<String> itEvents = events.iterator();
@@ -186,13 +186,13 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-
+		
 		int eventCount = _model.getNumEvents();
-
+		
 		/*
 		 * temporarily removed validation when writing sbml files
 		 */
-
+		
 		// boolean write = false;
 		// try {
 		// URL url = new URL("http://sbml.org/Facilities/Validator/");
@@ -276,9 +276,9 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 			
 			e1.printStackTrace();
 		}
-
+		
 	}
-
+	
 	private void createExtendedLayoutModel(Graph g) {
 		LayoutModelPlugin extendedLayoutModel = new LayoutModelPlugin(_model);
 		_model.addExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE, extendedLayoutModel);
@@ -297,6 +297,6 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				logger.debug("in create extended layout model: " + layoutID);
 			}
 		}
-
+		
 	}
 }

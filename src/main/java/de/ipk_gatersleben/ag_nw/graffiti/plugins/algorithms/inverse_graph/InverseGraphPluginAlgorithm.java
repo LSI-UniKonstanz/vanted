@@ -20,7 +20,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @author Christian Klukas
  */
 public class InverseGraphPluginAlgorithm extends AbstractAlgorithm {
-
+	
 	public void execute() {
 		Collection<GraphElement> ws = getSelectedOrAllGraphElements();
 		Collection<Edge> edges = new ArrayList<Edge>();
@@ -29,24 +29,24 @@ public class InverseGraphPluginAlgorithm extends AbstractAlgorithm {
 				edges.add((Edge) ge);
 		GraphHelper.applyUndoableEdgeReversal(graph, edges, getName());
 	}
-
+	
 	public String getName() {
 		return "Reverse Edge Direction";
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Edges";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.EDGE, Category.VISUAL));
 	}
-
+	
 }

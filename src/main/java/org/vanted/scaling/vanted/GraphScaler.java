@@ -33,7 +33,7 @@ import org.vanted.scaling.scalers.component.WindowScaler;
  * @author D. Garkov
  */
 public class GraphScaler extends SessionAdapter implements ChangeListener {
-
+	
 	private static HashSet<Integer> scaledSessions = new HashSet<>();
 	private static HashSet<Integer> scaledDetachedFrames = new HashSet<>();
 	private static int oldValueZooming;
@@ -41,17 +41,17 @@ public class GraphScaler extends SessionAdapter implements ChangeListener {
 	private BasicScaler scaler = new BasicScaler(Toolbox.getDPIScalingRatio());
 	private static float oldValueDPI = DPIHelper
 			.processEmulatedDPIValue(DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET));
-
+	
 	public GraphScaler() {
 		instance = this;
-
+		
 		// Add scaling of current active graph elements through zooming.
 		ScalingSlider.registerChangeListeners(new ChangeListener[] { this });
-
+		
 		// default value
 		scaledDetachedFrames.add(0);
 	}
-
+	
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		if (!((JSlider) e.getSource()).getValueIsAdjusting()) {
@@ -60,7 +60,7 @@ public class GraphScaler extends SessionAdapter implements ChangeListener {
 			oldValueDPI = DPIHelper.processEmulatedDPIValue(ScalingSlider.getSliderValue());
 		}
 	}
-
+	
 	@Override
 	public void sessionChanged(final Session s) {
 		int dfCode = 0;
@@ -69,53 +69,53 @@ public class GraphScaler extends SessionAdapter implements ChangeListener {
 		} catch (NullPointerException e) {
 			//null-pointer occurs on graph creation, but part of the flow
 		}
-
+		
 		if (s == null || scaledSessions.contains(s.hashCode()))
 			if (scaledDetachedFrames.contains(dfCode))
 				return; // already scaled (zoomed)
-
+				
 		if (dfCode != 0) {
 			if (scaledDetachedFrames.contains(dfCode))
 				return;
-
+			
 			scaledDetachedFrames.add(dfCode);
 			scaledSessions.remove(s.hashCode());
 		} else
 			scaledSessions.add(s.hashCode());
-
+		
 		new Thread(new Runnable() {
-
+			
 			@Override
 			public void run() {
 				scaleGraphFrame(s);
 			}
 		}).start();
-
+		
 	}
-
+	
 	private void processZooming() {
 		int newValue = ScalingSlider.getSliderValue();
 		if (newValue == oldValueZooming)
 			return; // no scaling change!
-
+			
 		Session active = MainFrame.getInstance().getActiveSession();
 		if (active == null) {
 			oldValueZooming = newValue;
 			return;
 		}
-
+		
 		scaleGraphFrame(null);
-
+		
 		oldValueZooming = newValue;
 	}
-
+	
 	public static void registerSessionListener() {
 		MainFrame.getInstance().addSessionListener(instance);
 	}
-
+	
 	public static void registerSessionListenerPostponed() {
 		new Thread(new Runnable() {
-
+			
 			@Override
 			public void run() {
 				try {
@@ -123,7 +123,7 @@ public class GraphScaler extends SessionAdapter implements ChangeListener {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
+				
 				try {
 					registerSessionListener();
 				} catch (NullPointerException e) {
@@ -132,20 +132,20 @@ public class GraphScaler extends SessionAdapter implements ChangeListener {
 			}
 		}).start();
 	}
-
+	
 	public static int getOldValueZooming() {
 		return oldValueZooming;
 	}
-
+	
 	public static void setOldValueZooming(int oldValue) {
 		GraphScaler.oldValueZooming = oldValue;
 	}
-
+	
 	private void scaleGraphFrame(Session session) {
 		float ratio = Toolbox.getDPIScalingRatio();
 		if (ratio == 1f && WindowScaler.getPreviousRatio() == -1f)
 			return;
-
+		
 		JInternalFrame[] frames = MainFrame.getInstance().getDesktop().getAllFrames();
 		BasicScaler s2 = new BasicScaler(Toolbox.getDPIScalingRatio());
 		if (session != null) { // we have new view only
@@ -154,21 +154,21 @@ public class GraphScaler extends SessionAdapter implements ChangeListener {
 					f.setFrameIcon(scaler.modifyIcon(null, f.getFrameIcon()));
 					WindowScaler.resizeWindow(f, true);
 				}
-
+			
 			if (MainFrame.getInstance().getActiveDetachedFrame() != null)
 				JFrame.setDefaultLookAndFeelDecorated(true);
-
+			
 		} else { // scale all, we have new DPI
 			for (JInternalFrame f : frames) {
 				// reset and scale icon
 				f.setFrameIcon(s2.modifyIcon(null, scaler.modifyIcon(null, f.getFrameIcon())));
 				WindowScaler.resizeWindow(f, true);
 			}
-
+			
 			scaler = s2;
 		}
 	}
-
+	
 	/**
 	 * To subsequent new ScalingSlider instance.
 	 */

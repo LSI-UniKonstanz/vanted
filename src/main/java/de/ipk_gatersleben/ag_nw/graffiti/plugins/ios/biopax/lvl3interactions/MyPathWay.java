@@ -11,7 +11,6 @@ import org.biopax.paxtools.model.level3.Process;
  * data structure
  * 
  * @author ricardo
- * 
  */
 public class MyPathWay {
 	private String RDFId;
@@ -19,7 +18,7 @@ public class MyPathWay {
 	private boolean superPathWay;
 	private Set<MyPathWay> subPathWays;
 	private Set<Process> components;
-
+	
 	public MyPathWay(Pathway p) {
 		this.RDFId = p.getRDFId();
 		if (p.getDisplayName() != null) {
@@ -41,25 +40,25 @@ public class MyPathWay {
 			}
 		}
 	}
-
+	
 	public Set<MyPathWay> getSubPathWays() {
 		return subPathWays;
 	}
-
+	
 	public boolean isSuperPathWay() {
 		return superPathWay;
 	}
-
+	
 	public String getRDFId() {
 		return RDFId;
 	}
-
+	
 	public String getDisplayName() {
 		return Name;
 	}
-
+	
 	public Set<Process> getPathwayComponents() {
 		return components;
 	}
-
+	
 }

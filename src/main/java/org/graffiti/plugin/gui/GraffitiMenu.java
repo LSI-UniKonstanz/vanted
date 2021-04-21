@@ -17,19 +17,18 @@ import org.graffiti.editor.MainFrame;
  * DOCUMENT ME!
  */
 public class GraffitiMenu extends JMenu implements GraffitiComponent {
-	// ~ Methods ================================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -2448420434844225820L;
+	
+	// ~ Methods ================================================================
 	/**
 	 * @see org.graffiti.plugin.gui.GraffitiComponent#setMainFrame(org.graffiti.editor.MainFrame)
 	 */
 	public void setMainFrame(MainFrame mf) {
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.gui.GraffitiComponent#getPreferredComponent()
 	 */

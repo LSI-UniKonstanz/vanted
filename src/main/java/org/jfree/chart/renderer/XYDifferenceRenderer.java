@@ -74,34 +74,34 @@ import org.jfree.util.PublicCloneable;
  */
 public class XYDifferenceRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/** The paint used to highlight positive differences (y(0) > y(1)). */
 	private transient Paint positivePaint;
-
+	
 	/** The paint used to highlight negative differences (y(0) < y(1)). */
 	private transient Paint negativePaint;
-
+	
 	/** Display shapes at each point? */
 	private boolean plotShapes = true;
-
+	
 	/**
 	 * Creates a new renderer with default attributes.
 	 */
 	public XYDifferenceRenderer() {
 		this(Color.green, Color.red, false);
 	}
-
+	
 	/**
 	 * Creates a new renderer.
 	 * 
 	 * @param positivePaint
-	 *            the highlight color for positive differences (<code>null</code>
-	 *            not permitted).
+	 *           the highlight color for positive differences (<code>null</code>
+	 *           not permitted).
 	 * @param negativePaint
-	 *            the highlight color for negative differences (<code>null</code>
-	 *            not permitted).
+	 *           the highlight color for negative differences (<code>null</code>
+	 *           not permitted).
 	 * @param shapes
-	 *            draw shapes?
+	 *           draw shapes?
 	 */
 	public XYDifferenceRenderer(Paint positivePaint, Paint negativePaint, boolean shapes) {
 		if (positivePaint == null) {
@@ -114,7 +114,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 		this.negativePaint = negativePaint;
 		this.plotShapes = shapes;
 	}
-
+	
 	/**
 	 * Returns the paint used to highlight positive differences.
 	 * 
@@ -123,12 +123,12 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 	public Paint getPositivePaint() {
 		return this.positivePaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to highlight positive differences.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setPositivePaint(Paint paint) {
 		if (paint == null) {
@@ -137,7 +137,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 		this.positivePaint = paint;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint used to highlight negative differences.
 	 * 
@@ -146,12 +146,12 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 	public Paint getNegativePaint() {
 		return this.negativePaint;
 	}
-
+	
 	/**
 	 * Sets the paint used to highlight negative differences.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 */
 	public void setNegativePaint(Paint paint) {
 		if (paint == null) {
@@ -160,7 +160,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 		this.negativePaint = paint;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not shapes are drawn for each data
 	 * value.
@@ -170,19 +170,19 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 	public boolean getPlotShapes() {
 		return this.plotShapes;
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether or not shapes are drawn for each data
 	 * value.
 	 * 
 	 * @param flag
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setPlotShapes(boolean flag) {
 		this.plotShapes = flag;
 		notifyListeners(new RendererChangeEvent(this));
 	}
-
+	
 	/**
 	 * Initialises the renderer and returns a state object that should be passed to
 	 * subsequent calls to the drawItem() method. This method will be called before
@@ -191,25 +191,25 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 	 * chooses.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area inside the axes.
+	 *           the area inside the axes.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param info
-	 *            an optional info collection object to return data back to the
-	 *            caller.
+	 *           an optional info collection object to return data back to the
+	 *           caller.
 	 * @return a state object.
 	 */
 	public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, XYPlot plot, XYDataset data,
 			PlotRenderingInfo info) {
-
+		
 		return super.initialise(g2, dataArea, plot, data, info);
-
+		
 	}
-
+	
 	/**
 	 * Returns <code>2</code>, the number of passes required by the renderer. The
 	 * {@link XYPlot} will run through the dataset this number of times.
@@ -219,206 +219,206 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 	public int getPassCount() {
 		return 2;
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the data is being drawn.
+	 *           the area within which the data is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain (horizontal) axis.
+	 *           the domain (horizontal) axis.
 	 * @param rangeAxis
-	 *            the range (vertical) axis.
+	 *           the range (vertical) axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		if (pass == 0) {
 			drawItemPass0(g2, dataArea, info, plot, domainAxis, rangeAxis, dataset, series, item, crosshairState);
 		} else if (pass == 1) {
 			drawItemPass1(g2, dataArea, info, plot, domainAxis, rangeAxis, dataset, series, item, crosshairState);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item, first pass.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area within which the data is being drawn.
+	 *           the area within which the data is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain (horizontal) axis.
+	 *           the domain (horizontal) axis.
 	 * @param rangeAxis
-	 *            the range (vertical) axis.
+	 *           the range (vertical) axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 */
 	protected void drawItemPass0(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, XYPlot plot,
 			ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState) {
-
+		
 		if (series == 0) {
-
+			
 			// get the data points...
 			Number y0n = dataset.getYValue(0, item);
 			Number x1n = dataset.getXValue(1, item);
 			Number y1n = dataset.getYValue(1, item);
-
+			
 			PlotOrientation orientation = plot.getOrientation();
 			RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
 			RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
-
+			
 			double y0 = y0n.doubleValue();
 			double transY0 = rangeAxis.valueToJava2D(y0, dataArea, rangeAxisLocation);
-
+			
 			double x1 = x1n.doubleValue();
 			double y1 = y1n.doubleValue();
 			double transX1 = domainAxis.valueToJava2D(x1, dataArea, domainAxisLocation);
 			double transY1 = rangeAxis.valueToJava2D(y1, dataArea, rangeAxisLocation);
-
+			
 			if (item > 0) {
 				// get the previous data points...
 				// get the data points...
 				Number prevx0n = dataset.getXValue(0, item - 1);
 				Number prevy0n = dataset.getYValue(0, item - 1);
 				Number prevy1n = dataset.getYValue(1, item - 1);
-
+				
 				double prevx0 = prevx0n.doubleValue();
 				double prevy0 = prevy0n.doubleValue();
 				double prevtransX0 = domainAxis.valueToJava2D(prevx0, dataArea, domainAxisLocation);
 				double prevtransY0 = rangeAxis.valueToJava2D(prevy0, dataArea, rangeAxisLocation);
-
+				
 				double prevy1 = prevy1n.doubleValue();
 				double prevtransY1 = rangeAxis.valueToJava2D(prevy1, dataArea, rangeAxisLocation);
-
+				
 				Shape positive = getPositiveArea((float) prevtransX0, (float) prevtransY0, (float) prevtransY1,
 						(float) transX1, (float) transY0, (float) transY1, orientation);
 				if (positive != null) {
 					g2.setPaint(getPositivePaint());
 					g2.fill(positive);
 				}
-
+				
 				Shape negative = getNegativeArea((float) prevtransX0, (float) prevtransY0, (float) prevtransY1,
 						(float) transX1, (float) transY0, (float) transY1, orientation);
-
+				
 				if (negative != null) {
 					g2.setPaint(getNegativePaint());
 					g2.fill(negative);
 				}
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item, second pass. In the
 	 * second pass, the renderer draws the lines and shapes for the individual
 	 * points in the two series.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area within which the data is being drawn.
+	 *           the area within which the data is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain (horizontal) axis.
+	 *           the domain (horizontal) axis.
 	 * @param rangeAxis
-	 *            the range (vertical) axis.
+	 *           the range (vertical) axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 */
 	protected void drawItemPass1(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, XYPlot plot,
 			ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState) {
-
+		
 		Shape entityArea = null;
 		EntityCollection entities = null;
 		if (info != null) {
 			entities = info.getOwner().getEntityCollection();
 		}
-
+		
 		Paint seriesPaint = getItemPaint(series, item);
 		Stroke seriesStroke = getItemStroke(series, item);
 		g2.setPaint(seriesPaint);
 		g2.setStroke(seriesStroke);
-
+		
 		if (series == 0) {
 			Number x0n = dataset.getXValue(0, item);
 			Number y0n = dataset.getYValue(0, item);
 			Number x1n = dataset.getXValue(1, item);
 			Number y1n = dataset.getYValue(1, item);
-
+			
 			PlotOrientation orientation = plot.getOrientation();
 			RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
 			RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
-
+			
 			double x0 = x0n.doubleValue();
 			double y0 = y0n.doubleValue();
 			double transX0 = domainAxis.valueToJava2D(x0, dataArea, domainAxisLocation);
 			double transY0 = rangeAxis.valueToJava2D(y0, dataArea, rangeAxisLocation);
-
+			
 			double x1 = x1n.doubleValue();
 			double y1 = y1n.doubleValue();
 			double transX1 = domainAxis.valueToJava2D(x1, dataArea, domainAxisLocation);
 			double transY1 = rangeAxis.valueToJava2D(y1, dataArea, rangeAxisLocation);
-
+			
 			if (item > 0) {
 				// get the previous data points...
 				Number prevx0n = dataset.getXValue(0, item - 1);
 				Number prevy0n = dataset.getYValue(0, item - 1);
 				Number prevx1n = dataset.getXValue(1, item - 1);
 				Number prevy1n = dataset.getYValue(1, item - 1);
-
+				
 				double prevx0 = prevx0n.doubleValue();
 				double prevy0 = prevy0n.doubleValue();
 				double prevtransX0 = domainAxis.valueToJava2D(prevx0, dataArea, domainAxisLocation);
 				double prevtransY0 = rangeAxis.valueToJava2D(prevy0, dataArea, rangeAxisLocation);
-
+				
 				double prevx1 = prevx1n.doubleValue();
 				double prevy1 = prevy1n.doubleValue();
 				double prevtransX1 = domainAxis.valueToJava2D(prevx1, dataArea, domainAxisLocation);
 				double prevtransY1 = rangeAxis.valueToJava2D(prevy1, dataArea, rangeAxisLocation);
-
+				
 				Line2D line0 = null;
 				Line2D line1 = null;
 				if (orientation == PlotOrientation.HORIZONTAL) {
@@ -437,7 +437,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 					g2.draw(line1);
 				}
 			}
-
+			
 			if (getPlotShapes()) {
 				Shape shape0 = getItemShape(series, item);
 				if (orientation == PlotOrientation.HORIZONTAL) {
@@ -450,7 +450,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 					g2.fill(shape0);
 				}
 				entityArea = shape0;
-
+				
 				// add an entity for the item...
 				if (entities != null) {
 					if (entityArea == null) {
@@ -468,7 +468,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 					XYItemEntity entity = new XYItemEntity(entityArea, dataset, series, item, tip, url);
 					entities.addEntity(entity);
 				}
-
+				
 				Shape shape1 = getItemShape(series + 1, item);
 				shape1 = createTransformedShape(shape1, transX1, transY1);
 				if (shape1.intersects(dataArea)) {
@@ -476,7 +476,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 					g2.fill(shape1);
 				}
 				entityArea = shape1;
-
+				
 				// add an entity for the item...
 				if (entities != null) {
 					if (entityArea == null) {
@@ -495,42 +495,42 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 					entities.addEntity(entity);
 				}
 			}
-
+			
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the positive area for a crossover point.
 	 * 
 	 * @param x0
-	 *            x coordinate.
+	 *           x coordinate.
 	 * @param y0A
-	 *            y coordinate A.
+	 *           y coordinate A.
 	 * @param y0B
-	 *            y coordinate B.
+	 *           y coordinate B.
 	 * @param x1
-	 *            x coordinate.
+	 *           x coordinate.
 	 * @param y1A
-	 *            y coordinate A.
+	 *           y coordinate A.
 	 * @param y1B
-	 *            y coordinate B.
+	 *           y coordinate B.
 	 * @param orientation
-	 *            the plot orientation.
+	 *           the plot orientation.
 	 * @return The positive area.
 	 */
 	protected Shape getPositiveArea(float x0, float y0A, float y0B, float x1, float y1A, float y1B,
 			PlotOrientation orientation) {
-
+		
 		Shape result = null;
-
+		
 		boolean startsNegative = (y0A >= y0B);
 		boolean endsNegative = (y1A >= y1B);
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			startsNegative = (y0B >= y0A);
 			endsNegative = (y1B >= y1A);
 		}
-
+		
 		if (startsNegative) { // starts negative
 			if (endsNegative) {
 				// all negative - return null
@@ -568,7 +568,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 					area.closePath();
 				}
 				result = area;
-
+				
 			} else {
 				GeneralPath area = new GeneralPath();
 				if (orientation == PlotOrientation.HORIZONTAL) {
@@ -586,37 +586,37 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 				}
 				result = area;
 			}
-
+			
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the negative area for a cross-over section.
 	 * 
 	 * @param x0
-	 *            x coordinate.
+	 *           x coordinate.
 	 * @param y0A
-	 *            y coordinate A.
+	 *           y coordinate A.
 	 * @param y0B
-	 *            y coordinate B.
+	 *           y coordinate B.
 	 * @param x1
-	 *            x coordinate.
+	 *           x coordinate.
 	 * @param y1A
-	 *            y coordinate A.
+	 *           y coordinate A.
 	 * @param y1B
-	 *            y coordinate B.
+	 *           y coordinate B.
 	 * @param orientation
-	 *            the plot orientation.
+	 *           the plot orientation.
 	 * @return The negative area.
 	 */
 	protected Shape getNegativeArea(float x0, float y0A, float y0B, float x1, float y1A, float y1B,
 			PlotOrientation orientation) {
-
+		
 		Shape result = null;
-
+		
 		boolean startsNegative = (y0A >= y0B);
 		boolean endsNegative = (y1A >= y1B);
 		if (orientation == PlotOrientation.HORIZONTAL) {
@@ -676,86 +676,86 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
 			} else {
 				// all negative - return null
 			}
-
+			
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the intersection point of two lines.
 	 * 
 	 * @param x1
-	 *            x1
+	 *           x1
 	 * @param y1
-	 *            y1
+	 *           y1
 	 * @param x2
-	 *            x2
+	 *           x2
 	 * @param y2
-	 *            y2
+	 *           y2
 	 * @param x3
-	 *            x3
+	 *           x3
 	 * @param y3
-	 *            y3
+	 *           y3
 	 * @param x4
-	 *            x4
+	 *           x4
 	 * @param y4
-	 *            y4
+	 *           y4
 	 * @return The intersection point.
 	 */
 	private float[] getIntersection(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-
+		
 		float n = (x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3);
 		float d = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
 		float u = n / d;
-
+		
 		float[] result = new float[2];
 		result[0] = x1 + u * (x2 - x1);
 		result[1] = y1 + u * (y2 - y1);
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 		SerialUtilities.writePaint(this.positivePaint, stream);
 		SerialUtilities.writePaint(this.negativePaint, stream);
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.positivePaint = SerialUtilities.readPaint(stream);
 		this.negativePaint = SerialUtilities.readPaint(stream);
 	}
-
+	
 }

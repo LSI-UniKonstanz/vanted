@@ -27,33 +27,32 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.network.BroadCastService;
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
- * 
  * @vanted.revision 2.7.0
  */
 public class BroadCastTask extends TimerTask {
-
+	
 	private static int timeOffline = 31000;
 	public static int timeDefaultBeatTime = 15000;
-
+	
 	BroadCastService broadCastService;
-
+	
 	private static String chatPass = "CHATSTATICENCRYPTION";
-
+	
 	// Create encrypter/decrypter class
 	private static DesEncrypter encrypter = new DesEncrypter(chatPass);
-
+	
 	/**
 	 * Contains byte[] arrays of data that was received.
 	 */
 	ArrayList<byte[]> inMessages = new ArrayList<byte[]>();
-
+	
 	HashMap<InetAddress, Long> knownHostsAndTime = new HashMap<>();
-
+	
 	/**
 	 * Contains byte[] arrays of data to be sent.
 	 */
 	private ArrayList<byte[]> outMessages = new ArrayList<byte[]>();
-
+	
 	BroadCastTask(final BroadCastService broadCastService, final Runnable receiver) {
 		this.broadCastService = broadCastService;
 		Thread receiveTask = new Thread(new Runnable() {
@@ -111,7 +110,7 @@ public class BroadCastTask extends TimerTask {
 				}
 				System.err.println("Aglet Receiver has ended.");
 			}
-
+			
 			private String ensure00(int value) {
 				String result = Integer.valueOf(value).toString();
 				if (result.length() < 2)
@@ -121,11 +120,11 @@ public class BroadCastTask extends TimerTask {
 		}, "Aglet Broadcast Receiver");
 		receiveTask.start();
 	}
-
+	
 	public void addMessageToBeSent(String message) {
 		// Encrypt
 		message = encrypter.encrypt(message);
-
+		
 		synchronized (outMessages) {
 			try {
 				outMessages.add(new String("MSG:" + message + "§§§").getBytes("UTF-8"));
@@ -135,7 +134,7 @@ public class BroadCastTask extends TimerTask {
 		}
 		sendOutMessages();
 	}
-
+	
 	private void sendOutMessages() {
 		try {
 			synchronized (outMessages) {
@@ -149,7 +148,7 @@ public class BroadCastTask extends TimerTask {
 			ErrorMsg.addErrorMessage("Broadcast failed: " + e.getLocalizedMessage());
 		}
 	}
-
+	
 	@Override
 	public void run() {
 		String defaultOutMsg = "SYSTEM: AGLET CLIENT SEARCH FOR SERVERS";
@@ -160,7 +159,7 @@ public class BroadCastTask extends TimerTask {
 			ErrorMsg.addErrorMessage("Broadcast failed: " + e.getLocalizedMessage());
 		}
 	}
-
+	
 	public ArrayList<byte[]> getInMessages() {
 		synchronized (inMessages) {
 			ArrayList<byte[]> result = new ArrayList<>(inMessages);
@@ -168,7 +167,7 @@ public class BroadCastTask extends TimerTask {
 			return result;
 		}
 	}
-
+	
 	public List<InetAddress> getActiveHosts() {
 		synchronized (knownHostsAndTime) {
 			ArrayList<InetAddress> result = new ArrayList<>(knownHostsAndTime.keySet());

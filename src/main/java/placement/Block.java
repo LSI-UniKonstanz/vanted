@@ -17,36 +17,36 @@ import java.util.logging.Logger;
 
 public class Block {
 	static Logger logger = ActiveSetPlacement.logger;
-
+	
 	double position = 0;
-
+	
 	double weight = 0;
-
+	
 	double weightedPosition;
-
+	
 	/**
 	 * Pointers used in linked list managed by Blocks.
 	 */
 	Block nextRight, nextLeft;
-
+	
 	Constraints activeConstraints = new Constraints();
-
+	
 	Variables variables = new Variables();
-
+	
 	/**
 	 * Priority queues for managing external constraints. Lazily instantiated as
 	 * needed by merge operations.
 	 */
 	MaxPriorityQueue<Constraint> inConstraintsPriorityQueue = null;
-
+	
 	MaxPriorityQueue<Constraint> outConstraintsPriorityQueue = null;
-
+	
 	/**
 	 * empty block constructor used for split.
 	 */
 	Block() {
 	}
-
+	
 	/**
 	 * Initially each variable is assigned its own block with position set to the
 	 * desired position of the variable
@@ -59,7 +59,7 @@ public class Block {
 		weightedPosition = v.weight * position;
 		v.offset = 0;
 	}
-
+	
 	void merge(Block b, Constraint c, double distance) {
 		weightedPosition += b.weightedPosition - distance * b.weight;
 		weight += b.weight;
@@ -83,7 +83,7 @@ public class Block {
 		outConstraintsPriorityQueue.merge(b.outConstraintsPriorityQueue);
 		variables.addAll(b.variables);
 	}
-
+	
 	/**
 	 * Computes lagrange multipliers across active constraints. Traverses the active
 	 * set of constraints in this block with a depth first traversal, computing the
@@ -96,7 +96,7 @@ public class Block {
 		}
 		compute_dfdv(variables.get(0), null);
 	}
-
+	
 	private double compute_dfdv(Variable v, Variable u) {
 		// how much v wants to go right (negative if v wants to go left)
 		double dfdv = v.weight * (v.getPosition() - v.desiredPosition);
@@ -118,7 +118,7 @@ public class Block {
 		}
 		return dfdv;
 	}
-
+	
 	/**
 	 * @return ideal position of block in order to minimise distances of vars to
 	 *         their desired positions
@@ -130,7 +130,7 @@ public class Block {
 		}
 		return wp / weight;
 	}
-
+	
 	/**
 	 * if the block can be split across the constraint and two resultant blocks
 	 * moved (without violating the constraint) to better satisfy desired positions
@@ -146,7 +146,7 @@ public class Block {
 		if (logger.isLoggable(Level.FINER))
 			logger.finer("Splitting on: " + this + splitConstraint);
 	}
-
+	
 	void populateSplitBlock(Block b, Variable v, Variable u) {
 		b.addVariable(v);
 		for (Constraint c : v.inConstraints) {
@@ -162,7 +162,7 @@ public class Block {
 			}
 		}
 	}
-
+	
 	private void addVariable(Variable v) {
 		variables.add(v);
 		weight += v.weight;
@@ -170,7 +170,7 @@ public class Block {
 		position = weightedPosition / weight;
 		v.container = this;
 	}
-
+	
 	public void setUpInConstraints() {
 		inConstraintsPriorityQueue = new MaxPairingHeap<Constraint>();
 		for (Variable v : variables) {
@@ -181,7 +181,7 @@ public class Block {
 			}
 		}
 	}
-
+	
 	public void setUpOutConstraints() {
 		outConstraintsPriorityQueue = new MaxPairingHeap<Constraint>();
 		for (Variable v : variables) {
@@ -192,7 +192,7 @@ public class Block {
 			}
 		}
 	}
-
+	
 	@Override
 	public String toString() {
 		String s = "Block:";
@@ -201,7 +201,7 @@ public class Block {
 		}
 		return s;
 	}
-
+	
 	public double cost() {
 		double c = 0;
 		for (Variable v : variables) {
@@ -210,7 +210,7 @@ public class Block {
 		}
 		return c;
 	}
-
+	
 	Constraint findMaxInConstraint() {
 		Constraint v = inConstraintsPriorityQueue.findMax();
 		while (v != null && v.left.container == v.right.container) {
@@ -219,7 +219,7 @@ public class Block {
 		}
 		return v;
 	}
-
+	
 	Constraint findMaxOutConstraint() {
 		Constraint v = outConstraintsPriorityQueue.findMax();
 		while (v != null && v.left.container == v.right.container) {

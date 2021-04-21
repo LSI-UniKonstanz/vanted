@@ -38,12 +38,12 @@ package org.jfree.data;
  * A change event that encapsulates information about a change to a dataset.
  */
 public class DatasetChangeEvent extends java.util.EventObject {
-
+	
 	/**
 	 * The dataset that generated the change event.
 	 */
 	private Dataset data;
-
+	
 	/**
 	 * Constructs a new event.
 	 * <P>
@@ -51,15 +51,15 @@ public class DatasetChangeEvent extends java.util.EventObject {
 	 * (in this case the source will be the Plot class).
 	 * 
 	 * @param source
-	 *            the source of the event.
+	 *           the source of the event.
 	 * @param data
-	 *            the dataset that generated the event.
+	 *           the dataset that generated the event.
 	 */
 	public DatasetChangeEvent(final Object source, final Dataset data) {
 		super(source);
 		this.data = data;
 	}
-
+	
 	/**
 	 * Returns the dataset that generated the event.
 	 * 
@@ -68,5 +68,5 @@ public class DatasetChangeEvent extends java.util.EventObject {
 	public Dataset getDataset() {
 		return this.data;
 	}
-
+	
 }

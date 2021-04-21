@@ -14,27 +14,25 @@ import org.vanted.animation.Animation;
 import org.vanted.animation.Animator;
 
 /**
- * 
  * @author - Patrick Shaw
- * 
  */
 public class VantedSentenceTest extends AbstractEditorAlgorithm {
-
+	
 	@Override
 	public boolean activeForView(View v) {
 		return true;
 	}
-
+	
 	@Override
 	public String getName() {
 		return "Vanted Presentation";
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return "Network";
 	}
-
+	
 	@Override
 	public void execute() {
 		Animator animator = new Animator(graph);
@@ -50,5 +48,5 @@ public class VantedSentenceTest extends AbstractEditorAlgorithm {
 		}
 		animator.start();
 	}
-
+	
 }

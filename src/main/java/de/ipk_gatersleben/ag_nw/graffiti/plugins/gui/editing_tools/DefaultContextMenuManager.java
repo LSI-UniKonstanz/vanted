@@ -87,43 +87,43 @@ import bsh.Interpreter;
  * @author Christian Klukas
  */
 public class DefaultContextMenuManager extends ContextMenuManager {
-
+	
 	protected static Ruby ruby = null;
 	private static PrintStream out;
 	private static ArrayList<String> ignoreFiles = new ArrayList<String>();
-
+	
 	ImageBundle iBundle = ImageBundle.getInstance();
-
+	
 	public JPopupMenu getContextMenu(MouseEvent e) {
 		PluginManager pm = GravistoService.getInstance().getMainFrame().getPluginManager();
 		Collection<PluginEntry> plugins = pm.getPluginEntries();
 		Iterator<PluginEntry> iter = plugins.iterator();
-
+		
 		JPopupMenu result = new JPopupMenu();
-
+		
 		JMenu pluginEntries = new JMenu("Network");
 		JMenu scriptEntries = new JMenu("Script");
 		JMenu windowEntries = new JMenu("Window");
 		JSeparator lineEntry = new JSeparator();
 		JMenu nodeEntries = new JMenu("Nodes");
 		JMenu edgeEntries = new JMenu("Edges");
-
+		
 		final EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 		Selection selection = null;
 		if (session != null)
 			selection = session.getSelectionModel().getActiveSelection();
-
+		
 		Graph graph = null;
 		if (session != null)
 			graph = session.getGraph();
-
+		
 		Collection<Node> nodes = null;
 		Collection<Edge> edges = null;
-
+		
 		if (selection != null && selection.isEmpty()) {
 			nodes = new ArrayList<Node>(); // graph.getNodes();
 			edges = new ArrayList<Edge>(); // graph.getEdges();
-
+			
 			// if you right-click on a node or edge (and nothing else is selected)
 			// select this element
 			Component lastMouseSrc = MegaTools.getLastMouseSrc();
@@ -157,19 +157,19 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		}
 		if (added > 0)
 			result.add(new JSeparator());
-
+		
 		getPluginMenuItems(iter, pluginEntries, nodeEntries, edgeEntries, nodes, edges);
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.SCRIPT_ACCESS))
 			returnScriptMenu(scriptEntries);
-
+		
 		if (pluginEntries.getItemCount() > 0)
 			result.add(pluginEntries);
-
+		
 		windowEntries.add(getDetachWindowCommand());
 		windowEntries.add(getDetachedWindowSnapMode(e));
 		result.add(windowEntries);
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.SCRIPT_ACCESS))
 			if (scriptEntries.getItemCount() > 0)
 				result.add(scriptEntries);
@@ -179,10 +179,10 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			result.add(nodeEntries);
 		if (edgeEntries.getItemCount() > 0)
 			result.add(edgeEntries);
-
+		
 		return result;
 	}
-
+	
 	/**
 	 * This option enables convenient use of detached windows by regulating the
 	 * focus of the window. It should be intuitive, since it resides in the same
@@ -192,7 +192,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 	 * <p>
 	 * 
 	 * @param mouseEvent
-	 *            to determine exact position
+	 *           to determine exact position
 	 * @return new JMenuItem
 	 */
 	private static JMenuItem getDetachedWindowSnapMode(MouseEvent mouseEvent) {
@@ -200,34 +200,34 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		GraffitiFrame frame = null; // the detached source-frame
 		final Object _IPKgraffitiView = mouseEvent.getSource();
 		GraffitiFrame[] gframes = MainFrame.getInstance().getDetachedFrames();
-
+		
 		// There could be multiple detached frames at a time
 		for (GraffitiFrame gf : gframes) {
 			if (gf.getView().equals(_IPKgraffitiView))
 				frame = gf;
 		}
-
+		
 		if (frame == null || !frame.isAlwaysOnTop()) // lazy evaluation
 			mItem = new JMenuItem("Snap window to front");
 		else
 			mItem = new JMenuItem("Exit window snap mode");
-
+		
 		final GraffitiFrame gf = frame;
 		mItem.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gf.setAlwaysOnTop(!gf.isAlwaysOnTop());
 			}
 		});
-
+		
 		// all frames attached
 		if (gframes.length < 1)
 			mItem.setVisible(false);
-
+		
 		return mItem;
 	}
-
+	
 	private static JMenuItem getDetachWindowCommand() {
 		JMenuItem menu = new JMenuItem("Detach/Attach");
 		menu.addActionListener(new ActionListener() {
@@ -237,7 +237,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		});
 		return menu;
 	}
-
+	
 	private static Collection<JMenuItem> getDirectMouseClickContextCommands(MouseEvent lastMouseE, Component lastMouseSrc,
 			Graph graph, Collection<PluginEntry> pluginEntries) {
 		Collection<JMenuItem> result = new ArrayList<JMenuItem>();
@@ -254,9 +254,9 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		}
 		return result;
 	}
-
+	
 	private static ArrayList<String> pathList = getScriptHomes();
-
+	
 	public static void returnScriptMenu(JMenu scriptEntries) {
 		// read Scripts
 		synchronized (pathList) {
@@ -267,19 +267,19 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 				} catch (Exception e) {
 					// empty
 				}
-
+				
 				// pathList.add("." + sep + "build" + sep + "classes" + sep +
 				// "commands");
 			}
-
+			
 			for (String pathName : pathList) {
 				File path = new File(pathName);
-
+				
 				String[] list;
-
+				
 				list = path.list(new FilenameFilter() {
 					private final Pattern pattern = Pattern.compile("(.*\\.bsh|.*\\.rb)");
-
+					
 					public boolean accept(File dir, String name) {
 						name = name.toLowerCase();
 						return pattern.matcher(new File(name).getName()).matches();
@@ -294,9 +294,9 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 					}
 			}
 		}
-
+		
 	}
-
+	
 	private static void addBSHentry(JMenu scriptEntries, File path, String[] list, int i) {
 		String fileName = path + "/" + list[i];
 		if (ignoreFiles.contains(fileName))
@@ -304,8 +304,12 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		BSHinfo info = new BSHinfo(FileSystemHandler.getURL(new File(fileName)));
 		BSHscriptMenuEntry newMenu = new BSHscriptMenuEntry(info.firstLine, fileName, info.nodeCommand);
 		newMenu.setAction(new GraffitiAction("scriptcommand", MainFrame.getInstance(), "beanshell") {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3928274183735299646L;
+			
 			@Override
 			public boolean isEnabled() {
 				try {
@@ -316,7 +320,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 					return false;
 				}
 			}
-
+			
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
@@ -339,7 +343,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			scriptEntries.add(newMenu);
 		}
 	}
-
+	
 	private static void addRBentry(JMenu scriptEntries, File path, String[] list, int i) {
 		String fileName = path + "/" + list[i];
 		String firstLine = null;
@@ -350,23 +354,23 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 					+ "Example:<br>" + "[Line 1] # Test Command 1");
 			firstLine = "# Unnamed Ruby Script Command (" + list[i] + ")";
 		}
-
+		
 		if (firstLine.startsWith("#"))
 			firstLine = firstLine.replaceFirst("#", "");
 		else
 			firstLine = fileName + " (no #desc in first line)";
-
+		
 		RubyScriptMenuEntry newMenu = new RubyScriptMenuEntry(firstLine, fileName);
-
+		
 		initMenuItemExecCode(newMenu);
 		scriptEntries.add(newMenu);
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param cmdExec
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	private static void initMenuItemExecCode(JMenuItem cmdExec) {
 		ClassLoader cl = DefaultContextMenuManager.class.getClassLoader();
@@ -393,12 +397,12 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			}
 		});
 	}
-
+	
 	/**
 	 * evaluate a string and returns the standard output.
 	 * 
 	 * @param script
-	 *            the String to eval as a String
+	 *           the String to eval as a String
 	 * @return the value printed out on stdout and stderr by
 	 **/
 	protected static String eval(String script) {
@@ -408,7 +412,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		ruby.getGlobalVariables().set("$stdout", lStream);
 		ruby.getGlobalVariables().set("$>", lStream);
 		ruby.getGlobalVariables().set("$stderr", lStream);
-
+		
 		ruby.loadScript("test", new StringReader(script), false);
 		StringBuffer sb = new StringBuffer(new String(result.toByteArray()));
 		// for (int idx = sb.indexOf("\n"); idx != -1; idx = sb.indexOf("\n")) {
@@ -417,23 +421,23 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		out.flush();
 		return sb.toString();
 	}
-
+	
 	private static Interpreter i = new Interpreter();
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param pathList
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	private static ArrayList<String> getScriptHomes() {
 		ArrayList<String> pathList = new ArrayList<String>();
 		try {
 			i.source(ReleaseInfo.getAppFolderWithFinalSep() + ".bshrc");
-
+			
 			if (i.eval("scriptHomes") != null) {
 				String[] pathes = i.eval("scriptHomes").toString().split(";");
-
+				
 				for (int i2 = 0; i2 < pathes.length; i2++) {
 					if (!pathList.contains(pathes[i2])) {
 						pathList.add(pathes[i2]);
@@ -447,14 +451,14 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		}
 		return pathList;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param iter
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param pluginEntries
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	private static void getPluginMenuItems(Iterator<PluginEntry> iter, JMenu pluginEntries, JMenu nodeEntries,
 			JMenu edgeEntries, Collection<Node> selectedNodes, Collection<Edge> selectedEdges) {
@@ -468,7 +472,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			processExtensions(pluginEntries, nodeEntries, edgeEntries, selectedNodes, selectedEdges, plugin);
 		}
 	}
-
+	
 	// /**
 	// * This method is called by the editing tools in order to pre-process a
 	// * mouse click. Depending on the result of the call the mouse click
@@ -511,7 +515,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 	//
 	// return false;
 	// }
-
+	
 	private static void processPlugins(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
 			Collection<Node> selectedNodes, Collection<Edge> selectedEdges, GenericPlugin plugin) {
 		if ((plugin instanceof ProvidesGeneralContextMenu) || (plugin instanceof ProvidesNodeContextMenu)
@@ -519,7 +523,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			processContextMenuInterfaces(pluginEntries, nodeEntries, edgeEntries, selectedNodes, selectedEdges, plugin);
 		}
 	}
-
+	
 	private static void processAlgorithms(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
 			Collection<Node> selectedNodes, Collection<Edge> selectedEdges, GenericPlugin plugin) {
 		if (plugin.getAlgorithms() != null) {
@@ -532,7 +536,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			}
 		}
 	}
-
+	
 	private static void processExtensions(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
 			Collection<Node> selectedNodes, Collection<Edge> selectedEdges, GenericPlugin plugin) {
 		if (plugin.getExtensions() != null) {
@@ -545,7 +549,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			}
 		}
 	}
-
+	
 	/**
 	 * @param pluginEntries
 	 * @param nodeEntries
@@ -589,18 +593,18 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			}
 		}
 	}
-
+	
 	/**
 	 * This method reads and returns the first line of a text file. It returns the
 	 * second line if the first line does not contain a "(at)" character.
 	 * 
 	 * @param url
-	 *            Name of the text-file to be read.
+	 *           Name of the text-file to be read.
 	 * @return First line of text.
 	 */
 	static String getFirstOrSecondLine(IOurl url, String matchFirst) {
 		BufferedReader in;
-
+		
 		try {
 			in = new BufferedReader(new InputStreamReader(url.getInputStream(), "UTF-8"));
 			String result = in.readLine();
@@ -621,7 +625,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			return null;
 		}
 	}
-
+	
 	public static String getContent(String fileName) {
 		BufferedReader in;
 		try {
@@ -644,7 +648,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			return "";
 		}
 	}
-
+	
 	public static String getContent(IOurl url) {
 		try {
 			StringBuilder allLines = new StringBuilder();
@@ -660,7 +664,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			return "";
 		}
 	}
-
+	
 	public void ensureActiveSession(MouseEvent e) {
 		View targetView = (View) e.getComponent();
 		if (targetView == null)
@@ -684,5 +688,5 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			}
 		}
 	}
-
+	
 }

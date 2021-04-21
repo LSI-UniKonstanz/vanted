@@ -49,50 +49,50 @@ import org.jfree.ui.RefineryUtilities;
  * renderer prevents the bars from getting too wide.
  */
 public class BarChartDemo4 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public BarChartDemo4(final String title) {
-
+		
 		super(title);
-
+		
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Returns a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private CategoryDataset createDataset() {
-
+		
 		// row keys...
 		final String series1 = "First";
 		final String series2 = "Second";
-
+		
 		// column keys...
 		final String category1 = "Category 1";
-
+		
 		// create the dataset...
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(1.0, series1, category1);
 		dataset.addValue(5.0, series2, category1);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -103,16 +103,16 @@ public class BarChartDemo4 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart Demo", // chart title
 				"Category", // domain axis label
@@ -122,49 +122,49 @@ public class BarChartDemo4 extends ApplicationFrame {
 				true, // tooltips?
 				false // URLs?
 		);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
+		
 		// set the background color for the chart...
 		chart.setBackgroundPaint(new Color(0xBBBBDD));
-
+		
 		// get a reference to the plot for further customisation...
 		final CategoryPlot plot = chart.getCategoryPlot();
-
+		
 		// set the range axis to display integers only...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+		
 		// disable bar outlines...
 		final BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
 		renderer.setMaxBarWidth(0.10);
-
+		
 		// set up gradient paints for series...
 		final GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, Color.lightGray);
 		final GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);
 		renderer.setSeriesPaint(0, gp0);
 		renderer.setSeriesPaint(1, gp1);
-
+		
 		// OPTIONAL CUSTOMISATION COMPLETED.
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final BarChartDemo4 demo = new BarChartDemo4("Bar Chart Demo 4");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

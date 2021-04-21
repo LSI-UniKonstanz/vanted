@@ -6,7 +6,7 @@ import org.graffiti.graph.GraphElement;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class Upathway extends UtilitySuperClassToGraph {
-
+	
 	public static void addAttributesToNode(GraphElement elem, pathway i) {
 		// first set label to node
 		setLabels(elem, i);
@@ -21,8 +21,8 @@ public class Upathway extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setSynonyms(elem, i.getSYNONYMS());
 		setXRef(elem, i.getXREF());
-
+		
 		setOrganism(elem, i.getORGANISM());
 	}
-
+	
 }

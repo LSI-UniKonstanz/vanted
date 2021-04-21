@@ -37,10 +37,10 @@ public class ContextMenuHelper implements HelperClass {
 		for (int i = 0; i < cmd.length; i++)
 			jp.add(cmd[i]);
 		View v = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getActiveView();
-
+		
 		jp.show(v.getViewComponent(), 0, 0);
 	}
-
+	
 	/**
 	 * @return All nodes of current view, if no node is selected. If nodes are
 	 *         selected, a List with that Nodes is returned.
@@ -55,7 +55,7 @@ public class ContextMenuHelper implements HelperClass {
 			return GraphHelper.getSelectedOrAllNodes(selection, session.getGraph());
 		}
 	}
-
+	
 	public static Collection<GraphElement> getActiveSelection() {
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 		if (session == null) {

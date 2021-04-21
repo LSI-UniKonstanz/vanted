@@ -21,9 +21,9 @@ import org.graffiti.selection.SelectionListener;
  * @vanted.revision 2.7.0
  */
 public class SwitchSelectionsPlugin extends EditorPluginAdapter implements SelectionListener {
-
+	
 	private final SelectionMenu selMenu = new SelectionMenu();
-
+	
 	/**
 	 * Creates a new TrivialGridRestrictedPlugin object.
 	 */
@@ -31,16 +31,16 @@ public class SwitchSelectionsPlugin extends EditorPluginAdapter implements Selec
 		this.guiComponents = new GraffitiComponent[1];
 		this.guiComponents[0] = selMenu;
 	}
-
+	
 	@Override
 	public boolean isSelectionListener() {
 		return true;
 	}
-
+	
 	public void selectionChanged(SelectionEvent e) {
 		((SelectionListener) selMenu).selectionChanged(e);
 	}
-
+	
 	public void selectionListChanged(SelectionEvent e) {
 		((SelectionListener) selMenu).selectionListChanged(e);
 	}

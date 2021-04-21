@@ -23,17 +23,17 @@ import org.graffiti.plugin.Displayable;
  */
 public class StandardValueEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-
+	
 	/** DOCUMENT ME! */
 	private JTextField textField;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Standard constructor.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public StandardValueEditComponent(Displayable disp) {
 		super(disp);
@@ -42,14 +42,15 @@ public class StandardValueEditComponent extends AbstractValueEditComponent {
 		if (displayable.getValue() != null)
 			textField.setText(displayable.getValue().toString());
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Return the component used to display the displayable.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
+	@Override
 	public JComponent getComponent() {
 		// textField = new JTextField(displayable.getValue().toString());
 		// textField.setEditable(false);
@@ -58,14 +59,15 @@ public class StandardValueEditComponent extends AbstractValueEditComponent {
 		textField.setMinimumSize(new Dimension(0, 20));
 		textField.setPreferredSize(new Dimension(50, 30));
 		textField.setMaximumSize(new Dimension(2000, 40));
-
+		
 		// textField.setSize(100, 30);
 		return textField;
 	}
-
+	
 	/**
 	 * Updates this component with the value from the displayable.
 	 */
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			this.textField.setText(EMPTY_STRING);
@@ -75,10 +77,11 @@ public class StandardValueEditComponent extends AbstractValueEditComponent {
 			}
 		}
 	}
-
+	
 	/**
 	 * Standard edit component is not editable.
 	 */
+	@Override
 	public void setValue() {
 	}
 }

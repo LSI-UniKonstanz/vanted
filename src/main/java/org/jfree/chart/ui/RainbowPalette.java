@@ -40,7 +40,7 @@ import java.io.Serializable;
  * @author David M. O'Donnell
  */
 public class RainbowPalette extends ColorPalette implements Serializable {
-
+	
 	/** The red values. */
 	private int[] red = { 255, 0, 120, 115, 111, 106, 102, 97, 93, 88, 84, 79, 75, 70, 66, 61, 57, 52, 48, 43, 39, 34,
 			30, 25, 21, 16, 12, 7, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -52,7 +52,7 @@ public class RainbowPalette extends ColorPalette implements Serializable {
 			255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 			255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 			255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 };
-
+	
 	/** The green values. */
 	private int[] green = { 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 			6, 11, 15, 20, 24, 29, 33, 38, 42, 47, 51, 56, 60, 65, 69, 74, 78, 83, 87, 92, 96, 101, 105, 110, 114, 119,
@@ -66,7 +66,7 @@ public class RainbowPalette extends ColorPalette implements Serializable {
 			234, 230, 225, 221, 216, 212, 207, 203, 198, 194, 189, 185, 180, 176, 171, 167, 162, 158, 153, 149, 144,
 			140, 135, 131, 126, 122, 117, 113, 108, 104, 99, 95, 90, 86, 81, 77, 72, 68, 63, 59, 54, 50, 45, 41, 36, 32,
 			27, 23, 18, 14, 9, 5, 0 };
-
+	
 	/** The blue values. */
 	private int[] blue = { 255, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 			255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
@@ -78,7 +78,7 @@ public class RainbowPalette extends ColorPalette implements Serializable {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
+	
 	/**
 	 * Default constructor.
 	 */
@@ -86,21 +86,21 @@ public class RainbowPalette extends ColorPalette implements Serializable {
 		super();
 		initialize();
 	}
-
+	
 	/**
 	 * Intializes the palettes indexes
 	 */
 	public void initialize() {
-
+		
 		setPaletteName("Rainbow");
-
+		
 		this.r = new int[this.red.length];
 		this.g = new int[this.green.length];
 		this.b = new int[this.blue.length];
 		System.arraycopy(this.red, 0, this.r, 0, this.red.length);
 		System.arraycopy(this.green, 0, this.g, 0, this.green.length);
 		System.arraycopy(this.blue, 0, this.b, 0, this.blue.length);
-
+		
 	}
-
+	
 }

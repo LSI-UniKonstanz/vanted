@@ -22,34 +22,34 @@ import org.graffiti.plugin.Displayable;
  */
 public interface Attribute extends Displayable, DeepCopy {
 	// ~ Static fields/initializers =============================================
-
+	
 	/** The path seperator for the attributes hierarchy. */
 	public static final String SEPARATOR = ".";
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the attributable the <code>Attribute</code> belongs to.
 	 * 
 	 * @return the <code>Attribute</code>'s attributable.
 	 */
 	public Attributable getAttributable();
-
+	
 	/**
 	 * The attribute's value is set so that its <code>getValue()</code> method will
 	 * not return <code>null</code>.
 	 */
 	public void setDefaultValue();
-
+	
 	/**
 	 * Returns the <code>Attribute</code>'s identifier.
 	 * 
 	 * @return the <code>Attribute</code>'s identifier.
 	 */
 	public String getId();
-
+	
 	public void setId(String id);
-
+	
 	/**
 	 * Sets the <code>Attribute</code>'s parent. <b>Implementation Note:</b> This
 	 * function should only work if the <code>Attribute</code>'s parent is
@@ -57,12 +57,12 @@ public interface Attribute extends Displayable, DeepCopy {
 	 * should call it.
 	 * 
 	 * @param parent
-	 *            the <code>Attribute</code>'s parent.
+	 *           the <code>Attribute</code>'s parent.
 	 * @exception FieldAlreadySetException
-	 *                if the parent was already set before
+	 *               if the parent was already set before
 	 */
 	public void setParent(CollectionAttribute parent) throws FieldAlreadySetException;
-
+	
 	/**
 	 * Returns the <code>Attribute</code>'s parent. If <code>this</code> is already
 	 * the root <code>Attribute</code>, <code>null</code> is returned.
@@ -70,14 +70,14 @@ public interface Attribute extends Displayable, DeepCopy {
 	 * @return the <code>Attribute</code>'s parent.
 	 */
 	public CollectionAttribute getParent();
-
+	
 	/**
 	 * Returns the <code>Attribute</code>'s path.
 	 * 
 	 * @return the <code>Attribute</code>'s path.
 	 */
 	public String getPath();
-
+	
 	/**
 	 * Sets the value of this <code>Attribute</code> to the given value. If the
 	 * value is set via <code>att.setValue(x)</code> and then retrieved via
@@ -86,12 +86,12 @@ public interface Attribute extends Displayable, DeepCopy {
 	 * behaviour is not general, in contrast x.equals(y) must be always guaranteed.
 	 * 
 	 * @param v
-	 *            the new value.
+	 *           the new value.
 	 * @exception IllegalArgumentException
-	 *                if v is not of the apropriate type.
+	 *               if v is not of the apropriate type.
 	 */
 	public void setValue(Object v) throws IllegalArgumentException;
-
+	
 	/**
 	 * Returns the value of this <code>Attribute</code>. If the value is set via
 	 * <code>att.setValue(x)</code> and then retrieved via <code>y =
@@ -104,7 +104,7 @@ public interface Attribute extends Displayable, DeepCopy {
 	 * @return the value of this <code>Attribute</code>.
 	 */
 	public Object getValue();
-
+	
 	/**
 	 * Returns a string representation prepended by <code>n</code> spaces of this
 	 * attribute.
@@ -112,9 +112,9 @@ public interface Attribute extends Displayable, DeepCopy {
 	 * @return DOCUMENT ME!
 	 */
 	public String toString(int n);
-
+	
 	public boolean isDeleted();
-
+	
 	public void setDeleted(boolean deleted);
 }
 

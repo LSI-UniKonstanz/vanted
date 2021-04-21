@@ -49,13 +49,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeCompon
  * @vanted.revision 2.6.5
  */
 public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener {
-
+	
 	RotateAlgorithm ra = new RotateAlgorithm();
-
+	
 	public IPK_MegaMoveTool() {
 		super();
 		final Tool thisTool = this;
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				thisTool.deactivateAll();
@@ -64,7 +64,7 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			}
 		});
 	}
-
+	
 	/**
 	 * override this method, which is already implemented in the superclass This
 	 * must be done to clear the parameter list again, because this class would have
@@ -75,7 +75,7 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 	public List<Parameter> getDefaultParameters() {
 		return null;
 	}
-
+	
 	@Override
 	protected void postProcessVisibilityChange(GraphElement sourceElementGUIinteraction) {
 		super.postProcessVisibilityChange(sourceElementGUIinteraction);
@@ -83,22 +83,22 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			return;
 		if (PreferencesDialog.activeStartLayoutButton != null
 				&& PreferencesDialog.activeStartLayoutButton.isEnabled()) {
-
+			
 			Vector2d oldPosition = null;
 			if (sourceElementGUIinteraction instanceof Node)
 				oldPosition = AttributeHelper.getPositionVec2d((Node) sourceElementGUIinteraction);
-
+			
 			MainFrame.getInstance().getActiveEditorSession().getSelectionModel()
 					.setActiveSelection(new Selection("empty"));
 			PreferencesDialog.activeStartLayoutButton.doClick(100);
-
+			
 			Vector2d newPosition = null;
 			if (sourceElementGUIinteraction instanceof Node) {
 				newPosition = AttributeHelper.getPositionVec2d((Node) sourceElementGUIinteraction);
 				GraphHelper.moveGraph(sourceElementGUIinteraction.getGraph(), oldPosition.x - newPosition.x,
 						oldPosition.y - newPosition.y);
 			}
-
+			
 			Selection ss = new Selection("selection");
 			ss.add(sourceElementGUIinteraction);
 			MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(ss);
@@ -106,11 +106,11 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			MainFrame.showMessage("Layout has been updated, select the Null-Layout to disable automatic re-layout",
 					MessageType.INFO);
 		}
-
+		
 	}
-
+	
 	private long lastClick_ipk = Long.MIN_VALUE;
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getWhen() <= lastClick_ipk)
@@ -122,9 +122,9 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			super.mousePressed(e);
 		}
 	}
-
+	
 	JComponent mouseWheelComponent = null;
-
+	
 	@Override
 	public void activate() {
 		if (session == null || session.getActiveView() == null || session.getActiveView().getViewComponent() == null
@@ -146,14 +146,14 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			}
 		}
 	}
-
+	
 	@Override
 	public void deactivate() {
 		super.deactivate();
 		if (mouseWheelComponent != null)
 			mouseWheelComponent.removeMouseWheelListener(this);
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		synchronized (GravistoService.getInstance().selectionSyncObject) {
@@ -161,13 +161,13 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			super.mouseReleased(e);
 		}
 	}
-
+	
 	public long lastMove = Integer.MIN_VALUE;
-
+	
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (e.getWhen() <= lastMove)
 			return;
-
+		
 		lastMove = e.getWhen();
 		if (!MegaTools.MouseWheelZoomEnabled) {
 			processMouseWheelScrolling(e);
@@ -192,7 +192,7 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			}
 		}
 	}
-
+	
 	public static void processMouseWheelScrolling(MouseWheelEvent e) {
 		Object o = e.getSource();
 		if (o != null && o instanceof JComponent) {
@@ -214,7 +214,7 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			}
 		}
 	}
-
+	
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		super.mouseMoved(e);
@@ -235,15 +235,15 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 					nodeCursor = myResize_BL_Cursor;
 			}
 		}
-
+		
 	}
-
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		super.mouseClicked(e);
 		if (!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e)) {
 			View activeView = MainFrame.getInstance().getActiveEditorSession().getActiveView();
-
+			
 			if (activeView instanceof IPKGraffitiView) {
 				JPopupMenu popupmenu = new DefaultContextMenuManager().getContextMenu(MegaTools.getLastMouseE());
 				popupmenu.show(activeView.getViewComponent(), (int) (e.getX() * activeView.getZoom().getScaleX()),
@@ -251,7 +251,7 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			}
 		}
 	}
-
+	
 	@Override
 	public String getToolName() {
 		return "IPK_MegaMoveTool";

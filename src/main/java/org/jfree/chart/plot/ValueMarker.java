@@ -36,43 +36,43 @@ import java.awt.Stroke;
  * A marker that represents a single fixed value.
  */
 public class ValueMarker extends Marker {
-
+	
 	/** The constant value. */
 	private double value;
-
+	
 	/**
 	 * Creates a new marker.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public ValueMarker(double value) {
 		super();
 		this.value = value;
 	}
-
+	
 	/**
 	 * Creates a new value marker.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @param paint
-	 *            the paint (<code>null</code> not permitted).
+	 *           the paint (<code>null</code> not permitted).
 	 * @param stroke
-	 *            the stroke (<code>null</code> not permitted).
+	 *           the stroke (<code>null</code> not permitted).
 	 * @param outlinePaint
-	 *            the outline paint (<code>null</code> permitted).
+	 *           the outline paint (<code>null</code> permitted).
 	 * @param outlineStroke
-	 *            the outline stroke (<code>null</code> permitted).
+	 *           the outline stroke (<code>null</code> permitted).
 	 * @param alpha
-	 *            the alpha transparency.
+	 *           the alpha transparency.
 	 */
 	public ValueMarker(double value, Paint paint, Stroke stroke, Paint outlinePaint, Stroke outlineStroke,
 			float alpha) {
 		super(paint, stroke, paint, stroke, alpha);
 		this.value = value;
 	}
-
+	
 	/**
 	 * Returns the value.
 	 * 
@@ -81,5 +81,5 @@ public class ValueMarker extends Marker {
 	public double getValue() {
 		return this.value;
 	}
-
+	
 }

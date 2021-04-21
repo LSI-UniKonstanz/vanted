@@ -26,13 +26,13 @@ import bsh.Interpreter;
  * @author Christian Klukas
  */
 public class BeanShellDesktopAlgorithm extends AbstractAlgorithm {
-
+	
 	/**
 	 * Creates a new BeanShellDesktopAlgorithm object.
 	 */
 	public BeanShellDesktopAlgorithm() {
 	}
-
+	
 	/**
 	 * Returns the algorithms name.
 	 * 
@@ -41,18 +41,18 @@ public class BeanShellDesktopAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Show BeanShell";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.window";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(
 				Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.DATA, Category.ANNOTATION));
 	}
-
+	
 	/**
 	 * No special checks implemented.
 	 */
@@ -60,29 +60,29 @@ public class BeanShellDesktopAlgorithm extends AbstractAlgorithm {
 	public void check() throws PreconditionException {
 		super.check();
 	}
-
+	
 	/**
 	 * Starts the Bean Shell Desktop.
 	 */
 	public void execute() {
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
-
+		
 		Selection selection = session.getSelectionModel().getActiveSelection();
-
+		
 		Interpreter interpreter = new Interpreter();
-
+		
 		try {
 			interpreter.set("graph", graph);
 			interpreter.set("selection", selection);
 			interpreter.set("session", session);
 			interpreter.eval("importCommands(\"commands\")");
 			interpreter.eval("graffitiDesktop();");
-
+			
 		} catch (EvalError e) {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	/**
 	 * No special reset implemented.
 	 */

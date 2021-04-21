@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE plugin
+  PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN"
+ "http://www.vanted.org/dtd/1.0/plugin.dtd">
+
+<plugin>
+    <author>David Boetius, Benjamin Halbritter, Thomas Komander, Silvan Reiner, Josua Sattler, Jakob Wietstock, Benjamin
+        Moser
+    </author>
+    <description>Graph layouting by stress minimization (full or landmark-based).</description>
+    <plugindesc>
+        <name>Stress Minimization</name>
+        <main>org.vanted.plugins.layout.stressminimization.StressMinimizationPlugin</main>
+        <version>1.0</version>
+        <available></available>
+    </plugindesc>
+</plugin>

@@ -51,24 +51,24 @@ import org.jfree.util.TableOrder;
  * of multiple pie charts.
  */
 public class MultiplePieChartDemo4 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MultiplePieChartDemo4(final String title) {
-
+		
 		super(title);
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart, true, true, true, false, true);
 		chartPanel.setPreferredSize(new java.awt.Dimension(600, 380));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -81,57 +81,57 @@ public class MultiplePieChartDemo4 extends ApplicationFrame {
 		dataset.addValue(1.8, "Row 0", "Column 2");
 		dataset.addValue(0.2, "Row 0", "Column 3");
 		dataset.addValue(4.1, "Row 0", "Column 4");
-
+		
 		dataset.addValue(9.8, "Row 1", "Column 0");
 		dataset.addValue(6.3, "Row 1", "Column 1");
 		dataset.addValue(0.1, "Row 1", "Column 2");
 		dataset.addValue(1.9, "Row 1", "Column 3");
 		dataset.addValue(9.6, "Row 1", "Column 4");
-
+		
 		dataset.addValue(7.0, "Row 2", "Column 0");
 		dataset.addValue(5.2, "Row 2", "Column 1");
 		dataset.addValue(2.8, "Row 2", "Column 2");
 		dataset.addValue(8.8, "Row 2", "Column 3");
 		dataset.addValue(7.2, "Row 2", "Column 4");
-
+		
 		dataset.addValue(9.5, "Row 3", "Column 0");
 		dataset.addValue(1.2, "Row 3", "Column 1");
 		dataset.addValue(4.5, "Row 3", "Column 2");
 		dataset.addValue(4.4, "Row 3", "Column 3");
 		dataset.addValue(0.2, "Row 3", "Column 4");
-
+		
 		dataset.addValue(3.5, "Row 4", "Column 0");
 		dataset.addValue(6.7, "Row 4", "Column 1");
 		dataset.addValue(9.0, "Row 4", "Column 2");
 		dataset.addValue(1.0, "Row 4", "Column 3");
 		dataset.addValue(5.2, "Row 4", "Column 4");
-
+		
 		dataset.addValue(5.1, "Row 5", "Column 0");
 		dataset.addValue(6.7, "Row 5", "Column 1");
 		dataset.addValue(0.9, "Row 5", "Column 2");
 		dataset.addValue(3.3, "Row 5", "Column 3");
 		dataset.addValue(3.9, "Row 5", "Column 4");
-
+		
 		dataset.addValue(5.6, "Row 6", "Column 0");
 		dataset.addValue(5.6, "Row 6", "Column 1");
 		dataset.addValue(5.6, "Row 6", "Column 2");
 		dataset.addValue(5.6, "Row 6", "Column 3");
 		dataset.addValue(5.6, "Row 6", "Column 4");
-
+		
 		dataset.addValue(7.5, "Row 7", "Column 0");
 		dataset.addValue(9.0, "Row 7", "Column 1");
 		dataset.addValue(3.4, "Row 7", "Column 2");
 		dataset.addValue(4.1, "Row 7", "Column 3");
 		dataset.addValue(0.5, "Row 7", "Column 4");
-
+		
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample chart for the given dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
@@ -149,10 +149,10 @@ public class MultiplePieChartDemo4 extends ApplicationFrame {
 		p.setLabelGenerator(new StandardPieItemLabelGenerator("{0}"));
 		p.setLabelFont(new Font("SansSerif", Font.PLAIN, 8));
 		p.setInteriorGap(0.30);
-
+		
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -163,20 +163,20 @@ public class MultiplePieChartDemo4 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final MultiplePieChartDemo4 demo = new MultiplePieChartDemo4("Multiple Pie Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

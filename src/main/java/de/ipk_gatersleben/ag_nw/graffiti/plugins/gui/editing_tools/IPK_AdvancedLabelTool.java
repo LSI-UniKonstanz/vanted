@@ -15,16 +15,16 @@ import org.graffiti.plugins.modes.defaults.AdvancedLabelTool;
  * @version $Revision$
  */
 public class IPK_AdvancedLabelTool extends AdvancedLabelTool {
-
+	
 	public IPK_AdvancedLabelTool() {
 		super();
 	}
-
+	
 	/**
 	 * instance of DefaultContextMenuManager
 	 */
 	DefaultContextMenuManager cmm = new DefaultContextMenuManager();
-
+	
 	//
 	// /**
 	// * Override the mouseClicked Method in order to provide a context menu.
@@ -44,13 +44,13 @@ public class IPK_AdvancedLabelTool extends AdvancedLabelTool {
 	// // cmm.ensureActiveSession(arg0);
 	// super.mouseEntered(arg0);
 	// }
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// cmm.ensureActiveSession(e);
 		super.mousePressed(e);
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

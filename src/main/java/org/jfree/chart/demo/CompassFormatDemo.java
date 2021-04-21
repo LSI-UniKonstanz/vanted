@@ -54,12 +54,12 @@ import org.jfree.ui.RefineryUtilities;
  * A demo of the {@link CompassFormat} class.
  */
 public class CompassFormatDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public CompassFormatDemo(final String title) {
 		super(title);
@@ -68,7 +68,7 @@ public class CompassFormatDemo extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -79,12 +79,12 @@ public class CompassFormatDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @param count
-	 *            the item count.
+	 *           the item count.
 	 * @return the dataset.
 	 */
 	private XYDataset createDirectionDataset(final int count) {
@@ -105,12 +105,12 @@ public class CompassFormatDemo extends ApplicationFrame {
 		dataset.addSeries(s1);
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @param count
-	 *            the item count.
+	 *           the item count.
 	 * @return the dataset.
 	 */
 	private XYDataset createForceDataset(final int count) {
@@ -126,7 +126,7 @@ public class CompassFormatDemo extends ApplicationFrame {
 		dataset.addSeries(s1);
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
@@ -136,11 +136,11 @@ public class CompassFormatDemo extends ApplicationFrame {
 		final XYDataset direction = createDirectionDataset(600);
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Time", "Date", "Direction", direction, true, true,
 				false);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		plot.getDomainAxis().setLowerMargin(0.0);
 		plot.getDomainAxis().setUpperMargin(0.0);
-
+		
 		// configure the range axis to display directions...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setAutoRangeIncludesZero(false);
@@ -150,7 +150,7 @@ public class CompassFormatDemo extends ApplicationFrame {
 		units.add(new NumberTickUnit(45.0, new CompassFormat()));
 		units.add(new NumberTickUnit(22.5, new CompassFormat()));
 		rangeAxis.setStandardTickUnits(units);
-
+		
 		// add the wind force with a secondary dataset/renderer/axis
 		plot.setRangeAxis(rangeAxis);
 		final XYItemRenderer renderer2 = new XYAreaRenderer();
@@ -161,15 +161,15 @@ public class CompassFormatDemo extends ApplicationFrame {
 		plot.setRenderer(1, renderer2);
 		plot.setRangeAxis(1, axis2);
 		plot.mapDatasetToRangeAxis(1, 1);
-
+		
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final CompassFormatDemo demo = new CompassFormatDemo("Compass Format Demo");
@@ -177,5 +177,5 @@ public class CompassFormatDemo extends ApplicationFrame {
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 	}
-
+	
 }

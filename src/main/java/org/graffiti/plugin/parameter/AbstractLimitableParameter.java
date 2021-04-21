@@ -18,36 +18,34 @@ package org.graffiti.plugin.parameter;
  * @vanted.revision 2.6.5
  */
 public abstract class AbstractLimitableParameter extends AbstractSingleParameter implements LimitableParameter {
-
+	
 	/**
 	 * Constructs a new abstract limitable parameter.
 	 * 
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public AbstractLimitableParameter(String name, String description) {
 		super(name, description);
 	}
-
+	
 	@Override
 	public String toXMLString() {
 		return getStandardXML(getValue().toString());
 	}
-
+	
 	/**
 	 * The closed ball diameter exclusive for the current parameter value, such that<br/>
 	 * <br/>
-	 * 
 	 * v(t) = val<br/>
 	 * v(t+1) = (val +|- ballDiameter)<br/>
 	 * </br/>
-	 *
 	 * whereas <i>t</i> stands for time point.
 	 * 
 	 * @return a Number instance
 	 */
 	abstract public Number getValuesBall();
-
+	
 }

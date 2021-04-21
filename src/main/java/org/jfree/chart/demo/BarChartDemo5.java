@@ -51,24 +51,24 @@ import org.jfree.ui.RefineryUtilities;
  * chart.
  */
 public class BarChartDemo5 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public BarChartDemo5(final String title) {
-
+		
 		super(title);
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -80,12 +80,12 @@ public class BarChartDemo5 extends ApplicationFrame {
 				{ 41.0, 33.0, 22.0, 34.0, 62.0, 32.0, 42.0, 34.0 } };
 		return DatasetUtilities.createCategoryDataset("Series ", "Factor ", data);
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
@@ -97,27 +97,27 @@ public class BarChartDemo5 extends ApplicationFrame {
 				PlotOrientation.HORIZONTAL, // orientation
 				true, // include legend
 				true, false);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
+		
 		chart.setBackgroundPaint(Color.lightGray);
-
+		
 		// get a reference to the plot for further customisation...
 		final CategoryPlot plot = chart.getCategoryPlot();
-
+		
 		plot.getRenderer().setSeriesPaint(0, new Color(0, 0, 255));
 		plot.getRenderer().setSeriesPaint(1, new Color(75, 75, 255));
 		plot.getRenderer().setSeriesPaint(2, new Color(150, 150, 255));
-
+		
 		// change the auto tick unit selection to integer units only...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setRange(0.0, 100.0);
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+		
 		// NumberAxis hna = rangeAxis;
 		// MarkerAxisBand band = new MarkerAxisBand(hna, 2.0, 2.0, 2.0, 2.0,
 		// new Font("SansSerif", Font.PLAIN, 9));
-
+		
 		// IntervalMarker m1 = new IntervalMarker(0.0, 33.0, "Low", Color.gray,
 		// new BasicStroke(0.5f), Color.green, 0.75f);
 		// IntervalMarker m2 = new IntervalMarker(33.0, 66.0, "Medium", Color.gray,
@@ -131,7 +131,7 @@ public class BarChartDemo5 extends ApplicationFrame {
 		// OPTIONAL CUSTOMISATION COMPLETED.
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -142,20 +142,20 @@ public class BarChartDemo5 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final BarChartDemo5 demo = new BarChartDemo5("Bar Chart Demo 5");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

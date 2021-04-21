@@ -79,78 +79,78 @@ import org.jfree.util.PublicCloneable;
  */
 public class XYAreaRenderer extends AbstractXYItemRenderer
 		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
-
+	
 	/**
 	 * A state object used by this renderer.
 	 */
 	static class XYAreaRendererState extends XYItemRendererState {
-
+		
 		/** Working storage for the area under one series. */
 		public Polygon area;
-
+		
 		/** Working line that can be recycled. */
 		public Line2D line;
-
+		
 		/**
 		 * Creates a new state.
 		 * 
 		 * @param info
-		 *            the plot rendering info.
+		 *           the plot rendering info.
 		 */
 		public XYAreaRendererState(PlotRenderingInfo info) {
 			super(info);
 			this.area = new Polygon();
 			this.line = new Line2D.Double();
 		}
-
+		
 	}
-
+	
 	/** Useful constant for specifying the type of rendering (shapes only). */
 	public static final int SHAPES = 1;
-
+	
 	/** Useful constant for specifying the type of rendering (lines only). */
 	public static final int LINES = 2;
-
+	
 	/** Useful constant for specifying the type of rendering (shapes and lines). */
 	public static final int SHAPES_AND_LINES = 3;
-
+	
 	/** Useful constant for specifying the type of rendering (area only). */
 	public static final int AREA = 4;
-
+	
 	/** Useful constant for specifying the type of rendering (area and shapes). */
 	public static final int AREA_AND_SHAPES = 5;
-
+	
 	/** A flag indicating whether or not shapes are drawn at each XY point. */
 	private boolean plotShapes;
-
+	
 	/** A flag indicating whether or not lines are drawn between XY points. */
 	private boolean plotLines;
-
+	
 	/** A flag indicating whether or not Area are drawn at each XY point. */
 	private boolean plotArea;
-
+	
 	/** A flag that controls whether or not the outline is shown. */
 	private boolean showOutline;
-
+	
 	/**
 	 * Constructs a new renderer.
 	 */
 	public XYAreaRenderer() {
-
+		
 		this(AREA);
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new renderer.
 	 * 
 	 * @param type
-	 *            the type of the renderer.
+	 *           the type of the renderer.
 	 */
 	public XYAreaRenderer(int type) {
 		this(type, null, null);
 	}
-
+	
 	/**
 	 * Constructs a new renderer.
 	 * <p>
@@ -158,18 +158,18 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 	 * SHAPES_AND_LINES, AREA or AREA_AND_SHAPES.
 	 * 
 	 * @param type
-	 *            the type of renderer.
+	 *           the type of renderer.
 	 * @param labelGenerator
-	 *            the tool tip generator to use. <code>null</code> is none.
+	 *           the tool tip generator to use. <code>null</code> is none.
 	 * @param urlGenerator
-	 *            the URL generator (null permitted).
+	 *           the URL generator (null permitted).
 	 */
 	public XYAreaRenderer(int type, XYToolTipGenerator labelGenerator, XYURLGenerator urlGenerator) {
-
+		
 		super();
 		setToolTipGenerator(labelGenerator);
 		setURLGenerator(urlGenerator);
-
+		
 		if (type == SHAPES) {
 			this.plotShapes = true;
 		}
@@ -188,9 +188,9 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 			this.plotShapes = true;
 		}
 		this.showOutline = false;
-
+		
 	}
-
+	
 	/**
 	 * Returns a flag that controls whether or not outlines of the areas are drawn.
 	 * 
@@ -199,17 +199,17 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 	public boolean isOutline() {
 		return this.showOutline;
 	}
-
+	
 	/**
 	 * Sets a flag that controls whether or not outlines of the areas are drawn.
 	 * 
 	 * @param show
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setOutline(boolean show) {
 		this.showOutline = show;
 	}
-
+	
 	/**
 	 * Returns true if shapes are being plotted by the renderer.
 	 * 
@@ -218,7 +218,7 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 	public boolean getPlotShapes() {
 		return this.plotShapes;
 	}
-
+	
 	/**
 	 * Returns true if lines are being plotted by the renderer.
 	 * 
@@ -227,7 +227,7 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 	public boolean getPlotLines() {
 		return this.plotLines;
 	}
-
+	
 	/**
 	 * Returns true if Area is being plotted by the renderer.
 	 * 
@@ -236,22 +236,22 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 	public boolean getPlotArea() {
 		return this.plotArea;
 	}
-
+	
 	/**
 	 * Initialises the renderer and returns a state object that should be passed to
 	 * all subsequent calls to the drawItem(...) method.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the area inside the axes.
+	 *           the area inside the axes.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 * @param info
-	 *            an optional info collection object to return data back to the
-	 *            caller.
+	 *           an optional info collection object to return data back to the
+	 *           caller.
 	 * @return a state object for use by the renderer.
 	 */
 	public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, XYPlot plot, XYDataset data,
@@ -259,53 +259,53 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 		XYAreaRendererState state = new XYAreaRendererState(info);
 		return state;
 	}
-
+	
 	/**
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the area within which the data is being drawn.
+	 *           the area within which the data is being drawn.
 	 * @param info
-	 *            collects information about the drawing.
+	 *           collects information about the drawing.
 	 * @param plot
-	 *            the plot (can be used to obtain standard color information etc).
+	 *           the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param series
-	 *            the series index (zero-based).
+	 *           the series index (zero-based).
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @param crosshairState
-	 *            crosshair information for the plot (<code>null</code> permitted).
+	 *           crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *            the pass index.
+	 *           the pass index.
 	 */
 	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
 			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
 			CrosshairState crosshairState, int pass) {
-
+		
 		XYAreaRendererState areaState = (XYAreaRendererState) state;
-
+		
 		// get the data point...
 		Number x1n = dataset.getXValue(series, item);
 		Number y1n = dataset.getYValue(series, item);
 		if (y1n == null) {
 			y1n = AbstractRenderer.ZERO;
 		}
-
+		
 		double x1 = x1n.doubleValue();
 		double y1 = y1n.doubleValue();
 		double transX1 = domainAxis.valueToJava2D(x1, dataArea, plot.getDomainAxisEdge());
 		double transY1 = rangeAxis.valueToJava2D(y1, dataArea, plot.getRangeAxisEdge());
-
+		
 		// get the previous point and the next point so we can calculate a "hot spot"
 		// for the area (used by the chart entity)...
 		int itemCount = dataset.getItemCount(series);
@@ -316,7 +316,7 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 		}
 		double transX0 = domainAxis.valueToJava2D(x0.doubleValue(), dataArea, plot.getDomainAxisEdge());
 		double transY0 = rangeAxis.valueToJava2D(y0.doubleValue(), dataArea, plot.getRangeAxisEdge());
-
+		
 		Number x2 = dataset.getXValue(series, Math.min(item + 1, itemCount - 1));
 		Number y2 = dataset.getYValue(series, Math.min(item + 1, itemCount - 1));
 		if (y2 == null) {
@@ -324,7 +324,7 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 		}
 		double transX2 = domainAxis.valueToJava2D(x2.doubleValue(), dataArea, plot.getDomainAxisEdge());
 		double transY2 = rangeAxis.valueToJava2D(y2.doubleValue(), dataArea, plot.getRangeAxisEdge());
-
+		
 		double transZero = rangeAxis.valueToJava2D(0.0, dataArea, plot.getRangeAxisEdge());
 		Polygon hotspot = null;
 		if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
@@ -342,7 +342,7 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 			hotspot.addPoint((int) ((transX1 + transX2) / 2.0), (int) ((transY1 + transY2) / 2.0));
 			hotspot.addPoint((int) ((transX1 + transX2) / 2.0), (int) transZero);
 		}
-
+		
 		if (item == 0) { // create a new area polygon for the series
 			areaState.area = new Polygon();
 			// the first point is (x, 0)
@@ -353,20 +353,20 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 				areaState.area.addPoint((int) zero, (int) transX1);
 			}
 		}
-
+		
 		// Add each point to Area (x, y)
 		if (plot.getOrientation() == PlotOrientation.VERTICAL) {
 			areaState.area.addPoint((int) transX1, (int) transY1);
 		} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
 			areaState.area.addPoint((int) transY1, (int) transX1);
 		}
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		Paint paint = getItemPaint(series, item);
 		Stroke stroke = getItemStroke(series, item);
 		g2.setPaint(paint);
 		g2.setStroke(stroke);
-
+		
 		Shape shape = null;
 		if (getPlotShapes()) {
 			shape = getItemShape(series, item);
@@ -377,7 +377,7 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 			}
 			g2.draw(shape);
 		}
-
+		
 		if (getPlotLines()) {
 			if (item > 0) {
 				if (plot.getOrientation() == PlotOrientation.VERTICAL) {
@@ -388,11 +388,11 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 				g2.draw(areaState.line);
 			}
 		}
-
+		
 		// Check if the item is the last item for the series.
 		// and number of items > 0. We can't draw an area for a single point.
 		if (getPlotArea() && item > 0 && item == (itemCount - 1)) {
-
+			
 			if (orientation == PlotOrientation.VERTICAL) {
 				// Add the last point (x,0)
 				areaState.area.addPoint((int) transX1, (int) transZero);
@@ -400,9 +400,9 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 				// Add the last point (x,0)
 				areaState.area.addPoint((int) transZero, (int) transX1);
 			}
-
+			
 			g2.fill(areaState.area);
-
+			
 			// draw an outline around the Area.
 			if (isOutline()) {
 				g2.setStroke(plot.getOutlineStroke());
@@ -410,9 +410,9 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 				g2.draw(areaState.area);
 			}
 		}
-
+		
 		updateCrosshairValues(crosshairState, x1, y1, transX1, transY1, orientation);
-
+		
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -430,18 +430,18 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
 				entities.addEntity(entity);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the renderer.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the renderer cannot be cloned.
+	 *            if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

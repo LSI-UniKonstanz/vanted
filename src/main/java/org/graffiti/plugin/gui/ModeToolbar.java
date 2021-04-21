@@ -27,13 +27,12 @@ import org.graffiti.plugin.tool.Tool;
  * @see org.graffiti.plugin.mode.Mode
  */
 public class ModeToolbar extends GraffitiToolbar {
-	// ~ Constructors ===========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 8235173296551689681L;
+	
+	// ~ Constructors ===========================================================
 	/**
 	 * Constructor that sets the id of this toolbar. The id is set to the name of
 	 * the mode. Tools can be added to the mode represented by this toolbar by
@@ -41,29 +40,29 @@ public class ModeToolbar extends GraffitiToolbar {
 	 * by default.
 	 * 
 	 * @param m
-	 *            the mode this toolbar represents.
+	 *           the mode this toolbar represents.
 	 */
 	public ModeToolbar(Mode m) {
 		super(m.getId());
 		this.setOrientation(SwingConstants.VERTICAL);
 	}
-
+	
 	/**
 	 * Constructor that sets the id of this toolbar to the name of the given mode
 	 * and the orientation to the given value.
 	 * 
 	 * @param m
-	 *            the mode this toolbar represents.
+	 *           the mode this toolbar represents.
 	 * @param orientation
-	 *            the orientation of this toolbar.
+	 *           the orientation of this toolbar.
 	 */
 	public ModeToolbar(Mode m, int orientation) {
 		super(m.getId());
 		this.setOrientation(orientation);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the tool that is selected in this ModeToolbar's button group.
 	 * 
@@ -72,7 +71,7 @@ public class ModeToolbar extends GraffitiToolbar {
 	public Tool getActiveTool() {
 		return AbstractTool.getActiveTool();
 	}
-
+	
 	/**
 	 * Returns the tools that are represented by buttons in this toolbar.
 	 * 
@@ -89,7 +88,7 @@ public class ModeToolbar extends GraffitiToolbar {
 		}
 		return (Tool[]) ll.toArray(new Tool[ll.size()]);
 	}
-
+	
 	/**
 	 * This function add the specified component to this toolbar. Additionaly, if
 	 * the component is of type <code>ToolButton</code> it is also added to the
@@ -98,7 +97,7 @@ public class ModeToolbar extends GraffitiToolbar {
 	 * of the <code>ToolButtons</code> already added.
 	 * 
 	 * @param comp
-	 *            the component to be added.
+	 *           the component to be added.
 	 * @return the component <code>comp</code>.
 	 * @see java.awt.Container#add(Component)
 	 */
@@ -111,7 +110,7 @@ public class ModeToolbar extends GraffitiToolbar {
 			return super.add(comp);
 		}
 	}
-
+	
 	// /////////////////////////////////////////////////
 	// // TODO: overwriting the other add() methods ////
 	// /////////////////////////////////////////////////

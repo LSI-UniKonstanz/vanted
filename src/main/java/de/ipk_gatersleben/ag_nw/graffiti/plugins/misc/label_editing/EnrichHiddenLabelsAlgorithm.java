@@ -38,17 +38,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableDat
  *         Analysis
  */
 public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean ignoreFirstRow = true;
 	private boolean removeallhiddenlabels;
 	private boolean considerHiddenLabels;
 	private boolean ignoreCase;
 	private ArrayList<IOurl> urls = new ArrayList<IOurl>();
-
+	
 	public String getName() {
 		return "Add hidden labels using file tables...";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command reads (multiple) mapping table files<br>"
@@ -58,22 +58,22 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 				+ "Graph label 1| hidden label| ...<br>" + "Graph label 2| hidden label| ...<br>"
 				+ "Graph label 3| hidden label| ...<br>" + "</code><br><br>";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return null;// "Elements";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION));
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return "edit.Change Label";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		urls.clear();
@@ -94,7 +94,7 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 						OpenExcelFileDialogService.EXCELFILE_EXTENSIONS,
 						OpenExcelFileDialogService.SPREADSHEET_DESCRIPTION, true) };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -102,10 +102,10 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 		removeallhiddenlabels = ((BooleanParameter) params[i++]).getBoolean();
 		considerHiddenLabels = ((BooleanParameter) params[i++]).getBoolean();
 		ignoreCase = ((BooleanParameter) params[i++]).getBoolean();
-
+		
 		urls = ((MultiFileSelectionParameter) params[i++]).getFileList();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -117,12 +117,12 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 			excelFiles.add(FileSystemHandler.getFile(u));
 		if (excelFiles != null && excelFiles.size() > 0) {
 			HashMap<String, ArrayList<String>> id2alternatives = new HashMap<String, ArrayList<String>>();
-
+			
 			for (File excelFile : excelFiles) {
 				TableData myData = ExperimentDataFileReader.getExcelTableData(excelFile);
-
+				
 				int startRow = (ignoreFirstRow ? 2 : 1);
-
+				
 				for (int row = startRow; row <= myData.getMaximumRow(); row++) {
 					String currentName = myData.getUnicodeStringCellData(1, row);
 					if (ignoreCase)
@@ -134,14 +134,14 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 							id2alternatives.put(currentName, new ArrayList<String>());
 						id2alternatives.get(currentName).add(cell);
 						cell = myData.getUnicodeStringCellData(++cntCols, row);
-
+						
 					}
 				}
 			}
 			boolean tooManyAnnotations = false;
 			int addedCnt = 0, deletedCnt = 0, graphelementcnt = 0;
 			for (GraphElement ge : getSelectedOrAllGraphElements()) {
-
+				
 				boolean match = false;
 				// boolean doBreakFuzzy = false;
 				// get fuzzy label, which contains a set of the original label + label without
@@ -150,7 +150,7 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 				if (ignoreCase)
 					label2 = label2.toUpperCase();
 				HashSet<String> fuzzyLabels = AttributeHelper.getFuzzyLabels(label2);
-
+				
 				// add all the alternative identifiers, if selected as parameter, but without
 				// fuzz.
 				if (considerHiddenLabels) {
@@ -179,7 +179,7 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 						while (AttributeHelper.hasAttribute(ge,
 								GraphicAttributeConstants.LABELGRAPHICS + String.valueOf(k)))
 							k++;
-
+						
 						if (ge instanceof Edge) {
 							AttributeHelper.setLabel(ge, id2alternatives.get(label).get(0));
 							break fuzzy;
@@ -201,7 +201,7 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 				}
 				if (match)
 					graphelementcnt++;
-
+				
 			}
 			if (tooManyAnnotations)
 				MainFrame.showMessageDialog("<html>Some labels were skipped, as it is not allowed to<br>"
@@ -215,10 +215,10 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 					"Information");
 		}
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-
+	
 }

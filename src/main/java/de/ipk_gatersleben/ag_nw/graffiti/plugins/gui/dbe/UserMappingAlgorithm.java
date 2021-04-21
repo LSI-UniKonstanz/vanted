@@ -28,8 +28,8 @@ import org.graffiti.plugin.algorithm.Category;
 
 import com.wcohen.secondstring.Levenstein;
 
-//import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundEntry;
-//import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
+// import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundEntry;
+// import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.IdAndGraphNode;
@@ -38,9 +38,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class UserMappingAlgorithm extends AbstractAlgorithm {
-
+	
 	private static Levenstein jw = new Levenstein(); // new JaroWinklerTFIDF();
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -52,17 +52,17 @@ public class UserMappingAlgorithm extends AbstractAlgorithm {
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Analysis";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.DATA));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -70,9 +70,9 @@ public class UserMappingAlgorithm extends AbstractAlgorithm {
 	 */
 	public void execute() {
 	}
-
+	
 	// private static JFrame mappingDialog = new JFrame();
-
+	
 	/**
 	 * @return False, if user mapping should be stopped ("abort all" was selected)
 	 *         True, if all is allright
@@ -89,7 +89,7 @@ public class UserMappingAlgorithm extends AbstractAlgorithm {
 				String desc = "";
 				EnzymeEntry eze = EnzymeService.getEnzymeInformation(nodeName, false);
 				double highestScore = jw.score(substanceName.toUpperCase(), ign.id.toUpperCase());
-
+				
 				if (eze != null) {
 					desc = eze.getDE();
 					double score = jw.score(substanceName.toUpperCase(), eze.getDE());
@@ -98,7 +98,7 @@ public class UserMappingAlgorithm extends AbstractAlgorithm {
 						nameWithHighestScore = eze.getDE();
 						desc = eze.getID();
 					}
-
+					
 					for (String anno : eze.getAN()) {
 						score = jw.score(substanceName.toUpperCase(), anno);
 						if (score > highestScore) {
@@ -163,29 +163,29 @@ class DoubleSortString implements Comparable<Object> {
 	private String s;
 	private String desc;
 	IdAndGraphNode ign;
-
+	
 	public DoubleSortString(double sortVal, String s, IdAndGraphNode ign, String desc) {
 		this.val = sortVal;
 		this.s = s;
 		this.ign = ign;
 		this.desc = desc;
 	}
-
+	
 	public Double getVal() {
 		return val;
 	}
-
+	
 	public IdAndGraphNode getIdAndGraphNode() {
 		return ign;
 	}
-
+	
 	public int compareTo(Object o) {
 		if (val > ((DoubleSortString) o).getVal())
 			return -1;
 		else
 			return 1;
 	}
-
+	
 	@Override
 	public String toString() {
 		if (desc != null && desc.length() > 0)

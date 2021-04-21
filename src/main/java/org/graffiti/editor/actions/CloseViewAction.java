@@ -19,21 +19,21 @@ import org.graffiti.plugin.actions.GraffitiAction;
  */
 public class CloseViewAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 5290117426629523465L;
+	
 	/**
 	 * Constructs a new close view action.
 	 */
 	public CloseViewAction() {
 		super("action.view.close", null, "filemenu_close"); // TODO
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -41,7 +41,7 @@ public class CloseViewAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return false;
 	}
-
+	
 	/**
 	 * Returns the help context for this action.
 	 * 
@@ -51,7 +51,7 @@ public class CloseViewAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * Returns the name of this action.
 	 * 
@@ -61,12 +61,12 @@ public class CloseViewAction extends GraffitiAction {
 	public String getName() {
 		return null;
 	}
-
+	
 	/**
 	 * Executes this action.
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 	}

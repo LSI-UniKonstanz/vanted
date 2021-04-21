@@ -18,21 +18,21 @@ package org.graffiti.core;
  */
 public class StringBundle extends GenericBundle {
 	// ~ Static fields/initializers =============================================
-
+	
 	/** The only instance which will be created and returned. */
 	private static StringBundle instance = null;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>StringBundle</code>.
 	 */
 	protected StringBundle() {
 		super();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the only instance of this class.
 	 * 
@@ -42,10 +42,10 @@ public class StringBundle extends GenericBundle {
 		if (instance == null) {
 			instance = new StringBundle();
 		}
-
+		
 		return instance;
 	}
-
+	
 	/**
 	 * Returns the location of this <code>Bundle</code>.
 	 * 

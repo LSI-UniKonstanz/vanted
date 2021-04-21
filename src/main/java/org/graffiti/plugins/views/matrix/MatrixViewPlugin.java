@@ -18,7 +18,7 @@ import org.graffiti.plugin.EditorPluginAdapter;
  */
 public class MatrixViewPlugin extends EditorPluginAdapter {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new matrix view plugin.
 	 */

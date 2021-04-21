@@ -18,7 +18,7 @@ public class HTMLErrorMsg {
 			System.out.println("<tr><td><hr>Java-Error Message:<br><code>" + errmsg + "</code><hr></td></tr>");
 		}
 		System.out.println("</table>");
-
+		
 		try {
 			if (conn != null && !conn.isClosed()) {
 				conn.rollback();
@@ -41,7 +41,7 @@ public class HTMLErrorMsg {
 		} else
 			System.exit(1);
 	}
-
+	
 	public static void printSuccess(String msg) {
 		System.out.println("<table class=\"ok\"><tr><th class=\"ok\">Import successfull: " + msg + "</th</tr>");
 		System.out.println("<tr><td>No errors where detected while importing the Excel File and its data.</td</tr>");

@@ -17,7 +17,7 @@ import javax.swing.ListCellRenderer;
  * @author Christian Klukas (c) 2008 IPK-Gatersleben
  */
 public class ArrowShapeCellRenderer implements ListCellRenderer {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -27,11 +27,11 @@ public class ArrowShapeCellRenderer implements ListCellRenderer {
 	 */
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
 			boolean cellHasFocus) {
-
+		
 		JLabel result = new JLabel();
-
+		
 		result.setText((String) value);
-
+		
 		if (isSelected)
 			result.setBackground(list.getSelectionBackground());
 		else {
@@ -40,7 +40,7 @@ public class ArrowShapeCellRenderer implements ListCellRenderer {
 			else
 				result.setBackground(list.getBackground());
 		}
-
+		
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/') + "/images";
 		ImageIcon icon = null;
@@ -104,11 +104,11 @@ public class ArrowShapeCellRenderer implements ListCellRenderer {
 			icon = new ImageIcon(cl.getResource(path + "/NoArrowShape.png"));
 			result.setText("");
 		}
-
+		
 		if (icon != null)
 			result.setIcon(icon);
-
+		
 		return result;
 	}
-
+	
 }

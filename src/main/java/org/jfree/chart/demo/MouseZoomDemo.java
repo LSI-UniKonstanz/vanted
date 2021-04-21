@@ -53,29 +53,29 @@ import org.jfree.util.PrintStreamLogTarget;
  * @author Viktor Rajewski
  */
 public class MouseZoomDemo extends ApplicationFrame {
-
+	
 	/** The chart panel. */
 	private ChartPanel chartPanel;
-
+	
 	/** X zoom. */
 	private JCheckBox xzoom;
-
+	
 	/** Y zoom. */
 	private JCheckBox yzoom;
-
+	
 	/**
 	 * A demonstration of mouse zooming.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MouseZoomDemo(final String title) {
-
+		
 		super(title);
 		final SampleXYDataset data = new SampleXYDataset();
 		final JFreeChart chart = ChartFactory.createXYLineChart("Mouse Zoom Demo", "X", "Y", data,
 				PlotOrientation.VERTICAL, true, true, false);
-
+		
 		this.chartPanel = new ChartPanel(chart);
 		this.chartPanel.setHorizontalZoom(false);
 		this.chartPanel.setVerticalZoom(false);
@@ -83,7 +83,7 @@ public class MouseZoomDemo extends ApplicationFrame {
 		this.chartPanel.setVerticalAxisTrace(false);
 		this.chartPanel.setFillZoomRectangle(true);
 		this.chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-
+		
 		final JPanel main = new JPanel(new BorderLayout());
 		final JPanel checkpanel = new JPanel();
 		this.xzoom = new JCheckBox("Horizontal Mouse Zooming");
@@ -98,9 +98,9 @@ public class MouseZoomDemo extends ApplicationFrame {
 		main.add(checkpanel, BorderLayout.SOUTH);
 		main.add(this.chartPanel);
 		setContentPane(main);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -111,35 +111,35 @@ public class MouseZoomDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		Log.getInstance().addTarget(new PrintStreamLogTarget(System.out));
 		final MouseZoomDemo demo = new MouseZoomDemo("Mouse Zoom Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 	/**
 	 * An item listener.
 	 * 
 	 * @author VR
 	 */
 	class CheckListener implements ItemListener {
-
+		
 		/**
 		 * Receives change events.
 		 * 
 		 * @param e
-		 *            the event.
+		 *           the event.
 		 */
 		public void itemStateChanged(final ItemEvent e) {
 			final Object source = e.getItemSelectable();
@@ -164,5 +164,5 @@ public class MouseZoomDemo extends ApplicationFrame {
 			}
 		}
 	}
-
+	
 }

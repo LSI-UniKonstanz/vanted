@@ -23,7 +23,7 @@ import org.graffiti.graph.Node;
  */
 public interface ProvidesNodeContextMenu {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * This method should be implemented, as that it returns the desired
 	 * Context-MenuItem for the Plugin. It will be added on the fly to a newly

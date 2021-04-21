@@ -64,7 +64,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 	protected JLabel keggReactionIdEditor = new JLabel();
 	protected JButton selectOfThisType = new JButton("Select");
 	protected JButton editThisReaction = new JButton("Edit");
-
+	
 	public KeggReactionIdAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggReactionIdAttribute) getDisplayable()).getString();
@@ -76,7 +76,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		keggReactionIdEditor.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 		keggReactionIdEditor.setPreferredSize(new Dimension(20, keggReactionIdEditor.getPreferredSize().height));
 	}
-
+	
 	public JComponent getComponent() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return TableLayout.getSplit(
@@ -87,7 +87,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 			return TableLayout.getSplit(keggReactionIdEditor, selectOfThisType, TableLayoutConstants.FILL,
 					TableLayoutConstants.PREFERRED);
 	}
-
+	
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -100,12 +100,12 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 			keggReactionIdEditor.setText(curVal);
 		}
 	}
-
+	
 	public void setValue() {
 		if (!keggReactionIdEditor.getText().equals(EMPTY_STRING))
 			((KeggReactionIdAttribute) displayable).setString(keggReactionIdEditor.getText());
 	}
-
+	
 	public void actionPerformed(ActionEvent arg0) {
 		String currentReactionId = keggReactionIdEditor.getText();
 		if (currentReactionId == null)
@@ -140,7 +140,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 			editReactions(null, currentReactionId, graph, selection);
 		}
 	}
-
+	
 	public static void editReactions(GraphElement ge, String currentReactionId, Graph graph, Selection selection) {
 		Collection<Gml2PathwayWarningInformation> warnings = new ArrayList<Gml2PathwayWarningInformation>();
 		Collection<Gml2PathwayErrorInformation> errors = new ArrayList<Gml2PathwayErrorInformation>();
@@ -180,22 +180,22 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 			}
 			rl = p.findReaction(findReacIds);
 		}
-
+		
 		Reaction currReaction = null;
 		if (rl != null && rl.size() > 0)
 			rl.iterator().next();
-
+		
 		ReactionIdEditor reactionIdEditor = new ReactionIdEditor(currReaction, p);
 		ReactionTypeSelection reactionTypeSelection = new ReactionTypeSelection(currReaction);
 		CompoundListEditor l1 = new CompoundListEditor(currReaction, p, true, false, false, entry2graphNode);
 		CompoundListEditor l2 = new CompoundListEditor(currReaction, p, false, true, false, entry2graphNode);
 		CompoundListEditor l3 = new CompoundListEditor(currReaction, p, false, false, true, entry2graphNode);
-
+		
 		JLabel reacDesc = new JLabel("");
-
+		
 		MyReactionList reacList = new MyReactionList(rl.toArray(new Reaction[0]), reacDesc, reactionIdEditor, reactionTypeSelection,
 				l1, l2, l3);
-
+		
 		Object[] input = MyInputHelper.getInput(
 				getReactionSelection(currReaction, null, null, reacList, entry2graphNode, p), "Edit Reaction",
 				new Object[] { "Description", reacDesc, "Reaction ID", reactionIdEditor, "Reaction Type",
@@ -211,13 +211,13 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 			p2.getGraph(graph);
 		}
 	}
-
+	
 	private static JComponent getReactionSelection(final Reaction initialReaction, final Entry defaultNewSourceEntry,
 			final Entry defaultNewTargetEntry, final MyReactionList reacSel, final HashMap<Entry, Node> entry2graphNode,
 			final Pathway pathway) {
-
+		
 		reacSel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+		
 		reacSel.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				Reaction r = (Reaction) reacSel.getSelectedValue();
@@ -230,7 +230,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 						nodes.add(entry2graphNode.get(enz));
 					for (Entry p : r.getProducts())
 						nodes.add(entry2graphNode.get(p));
-
+					
 					if (nodes.size() > 0) {
 						Graph graph = nodes.iterator().next().getGraph();
 						EditorSession es = MainFrame.getInstance().getActiveEditorSession();
@@ -245,7 +245,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 				}
 			}
 		});
-
+		
 		final JButton add = new JButton("add");
 		JButton del = new JButton("del");
 		add.addActionListener(getAddReactionListner(reacSel, pathway, defaultNewSourceEntry, defaultNewTargetEntry));
@@ -254,10 +254,10 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		del.setOpaque(false);
 		JComponent addDel = TableLayout.get3Split(new JLabel("Reactions "), add, del, TableLayoutConstants.FILL,
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
-
+		
 		JComponent result = TableLayout.getSplitVertical(addDel, new JScrollPane(reacSel),
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				DefaultListModel<Reaction> model = (DefaultListModel<Reaction>) reacSel.getModel();
@@ -275,7 +275,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		});
 		return result;
 	}
-
+	
 	private static ActionListener getDeleteReactionListner(final MyReactionList reacSel, final Pathway pathway) {
 		ActionListener al = new ActionListener() {
 			@SuppressWarnings("rawtypes")
@@ -301,7 +301,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		};
 		return al;
 	}
-
+	
 	private static ActionListener getAddReactionListner(final MyReactionList reacSel, final Pathway pathway,
 			final Entry defaultNewSourceEntry, final Entry defaultNewTargetEntry) {
 		ActionListener al = new ActionListener() {
@@ -309,13 +309,13 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<Entry> sl = new ArrayList<Entry>();
 				ArrayList<Entry> pl = new ArrayList<Entry>();
-
+				
 				if (defaultNewSourceEntry != null)
 					sl.add(defaultNewSourceEntry);
-
+				
 				if (defaultNewTargetEntry != null)
 					pl.add(defaultNewTargetEntry);
-
+				
 				final Reaction newReaction = new Reaction("R00000", ReactionType.reversible, sl, pl);
 				pathway.getReactions().add(newReaction);
 				((DefaultListModel) reacSel.getModel()).addElement(newReaction);
@@ -330,7 +330,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		};
 		return al;
 	}
-
+	
 	private static void selectReactions(String currentReactionId, Graph graph, Selection selection) {
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
@@ -372,7 +372,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		MainFrame.showMessage(nodes.size() + " nodes and " + edges.size() + "edges do match this criteria",
 				MessageType.INFO);
 	}
-
+	
 	public static void editReactions(Reaction r, Pathway p, Collection<Gml2PathwayWarningInformation> warnings,
 			Collection<Gml2PathwayErrorInformation> errors, HashMap<Entry, Node> entry2graphNode, Graph graph) {
 		ReactionIdEditor reactionIdEditor = new ReactionIdEditor(r, p);
@@ -380,13 +380,13 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		CompoundListEditor l1 = new CompoundListEditor(r, p, true, false, false, entry2graphNode);
 		CompoundListEditor l2 = new CompoundListEditor(r, p, false, true, false, entry2graphNode);
 		CompoundListEditor l3 = new CompoundListEditor(r, p, false, false, true, entry2graphNode);
-
+		
 		JLabel reacDesc = new JLabel("");
-
+		
 		MyReactionList reacList = new MyReactionList(
 				(p.getReactions() != null ? p.getReactions().toArray(new Reaction[0]) : new Reaction[] {}), reacDesc, reactionIdEditor,
 				reactionTypeSelection, l1, l2, l3);
-
+		
 		Object[] input = MyInputHelper.getInput(getReactionSelection(r, null, null, reacList, entry2graphNode, p),
 				"Edit Reaction",
 				new Object[] { "Description", reacDesc, "Reaction ID", reactionIdEditor, "Reaction Type",

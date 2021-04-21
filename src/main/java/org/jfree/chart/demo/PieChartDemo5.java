@@ -42,12 +42,12 @@ import org.jfree.ui.RefineryUtilities;
  * A pie chart with no section labels.
  */
 public class PieChartDemo5 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public PieChartDemo5(final String title) {
 		super(title);
@@ -57,7 +57,7 @@ public class PieChartDemo5 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -73,7 +73,7 @@ public class PieChartDemo5 extends ApplicationFrame {
 		dataset.setValue("Six", Double.valueOf(19.4));
 		return dataset;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -84,41 +84,41 @@ public class PieChartDemo5 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 5", // chart title
 				dataset, // data
 				false, // include legend
 				true, false);
-
+		
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setInteriorGap(0.0);
 		plot.setLabelGenerator(null);
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final PieChartDemo5 demo = new PieChartDemo5("Pie Chart Demo 5");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -22,7 +22,7 @@ import org.ErrorMsg;
 public class ExperimentData {
 	private Set<String> knownSubstanceNames = new LinkedHashSet<String>();
 	private Set<String> knownPlantOrLineNames = new LinkedHashSet<String>();
-
+	
 	/**
 	 * Initialize list of known Substance Names; use the data from the given column.
 	 */
@@ -33,7 +33,7 @@ public class ExperimentData {
 				knownSubstanceNames.add((String) data);
 		}
 	}
-
+	
 	/**
 	 * Search possible line names out of the data column headers. (00per_2, 02per_3,
 	 * 00emb_1, 02emb_2, ... ==> "per", "emb")
@@ -45,11 +45,11 @@ public class ExperimentData {
 				knownPlantOrLineNames.add(dch.getPlant());
 		}
 	}
-
+	
 	public Iterator<String> getPlantOrLineIterator(TableData myData, int row, int check_datarow) {
 		return knownPlantOrLineNames.iterator();
 	}
-
+	
 	public Iterator<TimeAndPlantName> getSampleTimeIterator(TableData myData, String plantOrLine, int data_start_col,
 			int row, int check_datarow) {
 		SortedSet<TimeAndPlantName> result = new TreeSet<TimeAndPlantName>(new Comparator<Object>() {
@@ -70,10 +70,10 @@ public class ExperimentData {
 		}
 		return result.iterator();
 	}
-
+	
 	public ArrayList<DataColumnHeader> getReplicateColumns(TableData myData, TimeAndPlantName timeAndPlantName,
 			int data_start_col, int row, int check_datarow) {
-
+		
 		ArrayList<DataColumnHeader> result = new ArrayList<DataColumnHeader>();
 		for (int col = data_start_col; col <= myData.getMaximumCol(); col++) {
 			DataColumnHeader dch = new DataColumnHeader(myData.getUnicodeStringCellData(col, row), col);
@@ -85,7 +85,7 @@ public class ExperimentData {
 		}
 		return result;
 	}
-
+	
 	public ArrayList<ReplicateDouble> getMeasurementValues(TableData myData, ArrayList<DataColumnHeader> replicates,
 			int row) {
 		ArrayList<ReplicateDouble> result = new ArrayList<ReplicateDouble>();
@@ -99,7 +99,7 @@ public class ExperimentData {
 			if (mes_val != null && mes_val instanceof String) {
 				String mes_val_s = myData.getUnicodeStringCellData(dch.getColumn(), row);
 				if (mes_val_s != null && mes_val_s.length() > 0) {
-
+					
 					if ((mes_val_s.equalsIgnoreCase("-") || mes_val_s.equalsIgnoreCase("n/a")
 							|| mes_val_s.equalsIgnoreCase("na"))) {
 						ReplicateDouble rd = new ReplicateDouble(Double.NaN,
@@ -126,7 +126,7 @@ public class ExperimentData {
 		}
 		return result;
 	}
-
+	
 	public static double getMinimum(ArrayList<ReplicateDouble> measurements) {
 		int n = measurements.size();
 		if (n == 0)
@@ -135,13 +135,13 @@ public class ExperimentData {
 		for (ReplicateDouble curVal : measurements)
 			if (curVal.doubleValue() < min)
 				min = curVal.doubleValue();
-
+			
 		if (min < Double.POSITIVE_INFINITY)
 			return min;
 		else
 			return Double.NaN;
 	}
-
+	
 	public static double getMaximum(ArrayList<ReplicateDouble> measurements) {
 		int n = measurements.size();
 		if (n == 0)
@@ -150,29 +150,29 @@ public class ExperimentData {
 		for (ReplicateDouble curVal : measurements)
 			if (curVal.doubleValue() > max)
 				max = curVal.doubleValue();
-
+			
 		if (max > Double.NEGATIVE_INFINITY)
 			return max;
 		else
 			return Double.NaN;
 	}
-
+	
 	// http://coe.sdsu.edu/eet/Articles/standarddev/index.htm
 	public static double getStddev(ArrayList<ReplicateDouble> measurements) {
 		int n = measurements.size();
 		if (n <= 1)
 			return Double.NaN;
 		double avg = getAverage(measurements);
-
+		
 		n = 0;
-
+		
 		double t = 0d;
 		for (ReplicateDouble curVal : measurements) {
 			double x = curVal.doubleValue();
-
+			
 			if (Double.isNaN(x))
 				continue;
-
+			
 			n++;
 			t += (x - avg) * (x - avg);
 		}
@@ -180,21 +180,21 @@ public class ExperimentData {
 			return Double.NaN;
 		return Math.sqrt(t / (n - 1));
 	}
-
+	
 	public static double getAverage(ArrayList<ReplicateDouble> measurements) {
 		int n = measurements.size();
 		if (n == 0)
 			return Double.NaN;
 		double sum = 0d;
-
+		
 		n = 0;
-
+		
 		for (ReplicateDouble curVal : measurements) {
 			double val = curVal.doubleValue();
-
+			
 			if (Double.isNaN(val))
 				continue;
-
+			
 			n++;
 			sum += val;
 		}

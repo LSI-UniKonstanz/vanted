@@ -44,43 +44,43 @@ import org.jfree.data.Series;
  * class that can be used to construct basic Gantt charts.
  */
 public class TaskSeries extends Series {
-
+	
 	/** Storage for the tasks in the series. */
 	private List tasks;
-
+	
 	/**
 	 * Constructs a new series with the specified name.
 	 * 
 	 * @param name
-	 *            the series name.
+	 *           the series name.
 	 */
 	public TaskSeries(final String name) {
 		super(name);
 		this.tasks = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Adds a task to the series.
 	 * 
 	 * @param task
-	 *            the task.
+	 *           the task.
 	 */
 	public void add(final Task task) {
 		this.tasks.add(task);
 		fireSeriesChanged();
 	}
-
+	
 	/**
 	 * Removes a task from the series.
 	 * 
 	 * @param task
-	 *            the task.
+	 *           the task.
 	 */
 	public void remove(final Task task) {
 		this.tasks.remove(task);
 		fireSeriesChanged();
 	}
-
+	
 	/**
 	 * Removes all tasks.
 	 */
@@ -88,7 +88,7 @@ public class TaskSeries extends Series {
 		this.tasks.clear();
 		fireSeriesChanged();
 	}
-
+	
 	/**
 	 * Returns the tasks.
 	 * 
@@ -97,18 +97,18 @@ public class TaskSeries extends Series {
 	public List getTasks() {
 		return Collections.unmodifiableList(this.tasks);
 	}
-
+	
 	/**
 	 * Returns a task from the series.
 	 * 
 	 * @param index
-	 *            the task index (zero-based).
+	 *           the task index (zero-based).
 	 * @return the task.
 	 */
 	public Task get(final int index) {
 		return (Task) this.tasks.get(index);
 	}
-
+	
 	/**
 	 * Returns the number of items in the series.
 	 * 
@@ -117,5 +117,5 @@ public class TaskSeries extends Series {
 	public int getItemCount() {
 		return this.tasks.size();
 	}
-
+	
 }

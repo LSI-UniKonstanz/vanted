@@ -57,98 +57,98 @@ import org.jfree.date.SerialDate;
  * {@link RegularTimePeriod} subclasses.
  */
 public class Quarter extends RegularTimePeriod implements Serializable {
-
+	
 	/** Constant for quarter 1. */
 	public static final int FIRST_QUARTER = 1;
-
+	
 	/** Constant for quarter 4. */
 	public static final int LAST_QUARTER = 4;
-
+	
 	/** The first month in each quarter. */
 	public static final int[] FIRST_MONTH_IN_QUARTER = { 0, SerialDate.JANUARY, SerialDate.APRIL, SerialDate.JULY,
 			SerialDate.OCTOBER };
-
+	
 	/** The last month in each quarter. */
 	public static final int[] LAST_MONTH_IN_QUARTER = { 0, SerialDate.MARCH, SerialDate.JUNE, SerialDate.SEPTEMBER,
 			SerialDate.DECEMBER };
-
+	
 	/** The year in which the quarter falls. */
 	private Year year;
-
+	
 	/** The quarter (1-4). */
 	private int quarter;
-
+	
 	/**
 	 * Constructs a new Quarter, based on the current system date/time.
 	 */
 	public Quarter() {
-
+		
 		this(new Date());
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new quarter.
 	 * 
 	 * @param year
-	 *            the year (1900 to 9999).
+	 *           the year (1900 to 9999).
 	 * @param quarter
-	 *            the quarter (1 to 4).
+	 *           the quarter (1 to 4).
 	 */
 	public Quarter(final int quarter, final int year) {
-
+		
 		this(quarter, new Year(year));
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new quarter.
 	 * 
 	 * @param quarter
-	 *            the quarter (1 to 4).
+	 *           the quarter (1 to 4).
 	 * @param year
-	 *            the year (1900 to 9999).
+	 *           the year (1900 to 9999).
 	 */
 	public Quarter(final int quarter, final Year year) {
-
+		
 		if ((quarter < FIRST_QUARTER) && (quarter > LAST_QUARTER)) {
 			throw new IllegalArgumentException("Quarter(int, Year): quarter outside valid range.");
 		}
-
+		
 		this.year = year;
 		this.quarter = quarter;
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new Quarter, based on a date/time and the default time zone.
 	 * 
 	 * @param time
-	 *            the date/time.
+	 *           the date/time.
 	 */
 	public Quarter(final Date time) {
-
+		
 		this(time, RegularTimePeriod.DEFAULT_TIME_ZONE);
 	}
-
+	
 	/**
 	 * Constructs a Quarter, based on a date/time and time zone.
 	 * 
 	 * @param time
-	 *            the date/time.
+	 *           the date/time.
 	 * @param zone
-	 *            the zone.
+	 *           the zone.
 	 */
 	public Quarter(final Date time, final TimeZone zone) {
-
+		
 		final Calendar calendar = Calendar.getInstance(zone);
 		calendar.setTime(time);
 		final int month = calendar.get(Calendar.MONTH) + 1;
 		this.quarter = SerialDate.monthCodeToQuarter(month);
 		this.year = new Year(calendar.get(Calendar.YEAR));
-
+		
 	}
-
+	
 	/**
 	 * Returns the quarter.
 	 * 
@@ -157,7 +157,7 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 	public int getQuarter() {
 		return this.quarter;
 	}
-
+	
 	/**
 	 * Returns the year.
 	 * 
@@ -166,14 +166,14 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 	public Year getYear() {
 		return this.year;
 	}
-
+	
 	/**
 	 * Returns the quarter preceding this one.
 	 * 
 	 * @return The quarter preceding this one (or null if this is Q1 1900).
 	 */
 	public RegularTimePeriod previous() {
-
+		
 		final Quarter result;
 		if (this.quarter > FIRST_QUARTER) {
 			result = new Quarter(this.quarter - 1, this.year);
@@ -186,16 +186,16 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the quarter following this one.
 	 * 
 	 * @return The quarter following this one (or null if this is Q4 9999).
 	 */
 	public RegularTimePeriod next() {
-
+		
 		final Quarter result;
 		if (this.quarter < LAST_QUARTER) {
 			result = new Quarter(this.quarter + 1, this.year);
@@ -208,9 +208,9 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a serial index number for the quarter.
 	 * 
@@ -219,19 +219,19 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 	public long getSerialIndex() {
 		return this.year.getYear() * 4L + this.quarter;
 	}
-
+	
 	/**
 	 * Tests the equality of this Quarter object to an arbitrary object. Returns
 	 * true if the target is a Quarter instance representing the same quarter as
 	 * this object. In all other cases, returns false.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> if quarter and year of this and the object are the
 	 *         same.
 	 */
 	public boolean equals(final Object obj) {
-
+		
 		if (obj != null) {
 			if (obj instanceof Quarter) {
 				final Quarter target = (Quarter) obj;
@@ -242,9 +242,9 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 		} else {
 			return false;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
@@ -261,19 +261,19 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 		result = 37 * result + this.year.hashCode();
 		return result;
 	}
-
+	
 	/**
 	 * Returns an integer indicating the order of this Quarter object relative to
 	 * the specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *            the object to compare
+	 *           the object to compare
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
-
+		
 		int result;
-
+		
 		// CASE 1 : Comparing to another Quarter object
 		// --------------------------------------------
 		if (o1 instanceof Quarter) {
@@ -283,25 +283,25 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 				result = this.quarter - q.getQuarter();
 			}
 		}
-
+		
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
 		else if (o1 instanceof RegularTimePeriod) {
 			// more difficult case - evaluate later...
 			result = 0;
 		}
-
+		
 		// CASE 3 : Comparing to a non-TimePeriod object
 		// ---------------------------------------------
 		else {
 			// consider time periods to be ordered after general objects
 			result = 1;
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a string representing the quarter (e.g. "Q1/2002").
 	 * 
@@ -310,40 +310,40 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 	public String toString() {
 		return "Q" + this.quarter + "/" + this.year;
 	}
-
+	
 	/**
 	 * Returns the first millisecond in the Quarter, evaluated using the supplied
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the first millisecond in the Quarter.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
-
+		
 		final int month = Quarter.FIRST_MONTH_IN_QUARTER[this.quarter];
 		final Day first = new Day(1, month, this.year.getYear());
 		return first.getFirstMillisecond(calendar);
-
+		
 	}
-
+	
 	/**
 	 * Returns the last millisecond of the Quarter, evaluated using the supplied
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the last millisecond of the Quarter.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
-
+		
 		final int month = Quarter.LAST_MONTH_IN_QUARTER[this.quarter];
 		final int eom = SerialDate.lastDayOfMonth(month, this.year.getYear());
 		final Day last = new Day(eom, month, this.year.getYear());
 		return last.getLastMillisecond(calendar);
-
+		
 	}
-
+	
 	/**
 	 * Parses the string argument as a quarter.
 	 * <P>
@@ -351,36 +351,36 @@ public class Quarter extends RegularTimePeriod implements Serializable {
 	 * where the "-" can be a space, a forward-slash (/), comma or a dash (-).
 	 * 
 	 * @param s
-	 *            A string representing the quarter.
+	 *           A string representing the quarter.
 	 * @return the quarter.
 	 */
 	public static Quarter parseQuarter(final String s) {
-
+		
 		// find the Q and the integer following it (remove both from the
 		// string)...
 		final int i = s.indexOf("Q");
 		if (i == -1) {
 			throw new TimePeriodFormatException("Quarter.parseQuarter(string): missing Q.");
 		}
-
+		
 		if (i == s.length() - 1) {
 			throw new TimePeriodFormatException("Quarter.parseQuarter(string): Q found at end of string.");
 		}
-
+		
 		final String qstr = s.substring(i + 1, i + 2);
 		final int quarter = Integer.parseInt(qstr);
 		String remaining = s.substring(0, i) + s.substring(i + 2, s.length());
-
+		
 		// replace any / , or - with a space
 		remaining = remaining.replace('/', ' ');
 		remaining = remaining.replace(',', ' ');
 		remaining = remaining.replace('-', ' ');
-
+		
 		// parse the string...
 		final Year year = Year.parseYear(remaining.trim());
 		final Quarter result = new Quarter(quarter, year);
 		return result;
-
+		
 	}
-
+	
 }

@@ -12,7 +12,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Christian Klukas
  */
 public class GridPlacementPlugin extends IPK_PluginAdapter {
-
+	
 	public GridPlacementPlugin() {
 		this.algorithms = new Algorithm[] { new GridPlacementAlgorithm(), new IterateGridPlacementLayout() };
 	}

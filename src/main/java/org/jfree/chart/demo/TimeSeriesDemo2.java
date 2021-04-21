@@ -45,18 +45,18 @@ import org.jfree.ui.RefineryUtilities;
  * points.
  */
 public class TimeSeriesDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing a quarterly time series containing a null
 	 * value.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		final TimeSeries series = new TimeSeries("Quarterly Data", Quarter.class);
 		series.add(new Quarter(1, 2001), 500.2);
 		series.add(new Quarter(2, 2001), 694.1);
@@ -75,9 +75,9 @@ public class TimeSeriesDemo2 extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -88,20 +88,20 @@ public class TimeSeriesDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimeSeriesDemo2 demo = new TimeSeriesDemo2("Time Series Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

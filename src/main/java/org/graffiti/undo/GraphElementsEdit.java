@@ -22,24 +22,23 @@ import org.graffiti.graph.GraphElement;
  * @version $Revision: 1.4 $ $Date: 2010/12/22 13:05:35 $
  */
 public abstract class GraphElementsEdit extends GraffitiAbstractUndoableEdit {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7103160764993932741L;
+	// ~ Instance fields ========================================================
 	/** Necessary graph reference */
 	protected Graph graph;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Create a nes <code>GraphElementsEdit</code>.
 	 * 
 	 * @param graph
-	 *            a graph reference
+	 *           a graph reference
 	 * @param geMap
-	 *            reference to the map supports the undo operations.
+	 *           reference to the map supports the undo operations.
 	 */
 	public GraphElementsEdit(Graph graph, Map<GraphElement, GraphElement> geMap) {
 		super(geMap);

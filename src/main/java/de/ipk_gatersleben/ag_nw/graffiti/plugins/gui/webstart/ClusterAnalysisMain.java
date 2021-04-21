@@ -42,24 +42,24 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
  */
 public class ClusterAnalysisMain {
 	// ~ Static fields/initializers =============================================
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/** The editor's attribute types manager. */
 	private final AttributeTypesManager attributeTypesManager;
-
+	
 	/** The editor's main frame. */
 	MainFrame mainFrame;
-
+	
 	/** The editor's plugin manager. */
 	private final PluginManager pluginManager;
-
+	
 	public static boolean isClusterAnalysisRunning() {
 		return ReleaseInfo.getRunningReleaseStatus() == Release.RELEASE_CLUSTERVIS;
 	}
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new instance of the editor.
 	 */
@@ -67,16 +67,16 @@ public class ClusterAnalysisMain {
 		// URL config,
 		SplashScreenInterface splashScreen = new ClusterSplashScreen(DBEgravistoHelper.CLUSTER_ANALYSIS_VERSION, "");
 		splashScreen.setVisible(true);
-
+		
 		Preferences prefs = PreferenceManager.getPreferenceForClass(ClusterAnalysisMain.class);
 		pluginManager = new DefaultPluginManager(prefs);
-
+		
 		// create an instance of the attribute types manager ...
 		attributeTypesManager = new AttributeTypesManager();
-
+		
 		// ... and register this instance at the plugin manager
 		pluginManager.addPluginManagerListener(attributeTypesManager);
-
+		
 		// construct and open the editor's main frame
 		Preferences uiPrefs = PreferenceManager.getPreferenceCategoryForClass(ClusterAnalysisMain.class, "ui");
 		uiPrefs.put("showPluginManagerMenuOptions", "false");
@@ -84,15 +84,15 @@ public class ClusterAnalysisMain {
 		JPanel statusPanel = new JPanel();
 		// statusPanel.
 		mainFrame = new MainFrame(pluginManager, uiPrefs, statusPanel, false);
-
+		
 		ClassLoader cl = ClusterAnalysisMain.class.getClassLoader();
 		URL r1 = cl.getResource("plugins_cluster.txt");
-
+		
 		ArrayList<String> locations = new ArrayList<String>();
 		try {
 			locations.addAll(new TextFile(r1));
 			locations.remove("");
-
+			
 			splashScreen.setMaximum(locations.size() - 1);
 		} catch (IOException e) {
 			ErrorMsg.addErrorMessage(e.getLocalizedMessage());
@@ -109,7 +109,7 @@ public class ClusterAnalysisMain {
 			System.err.println("EXIT");
 			System.exit(1);
 		}
-
+		
 		try {
 			// for (String s : locations)
 			// System.out.println("Load "+s);
@@ -117,25 +117,25 @@ public class ClusterAnalysisMain {
 		} catch (PluginManagerException pme) {
 			ErrorMsg.addErrorMessage(pme.getLocalizedMessage());
 		}
-
+		
 		// add an empty editor session.
 		// mainFrame.addSession(new EditorSession());
-
+		
 		splashScreen.setVisible(false);
 		mainFrame.setVisible(true);
 	}
-
+	
 	private void myLoadPlugins(Collection<String> pluginLocations, ProgressViewer progressViewer)
 			throws PluginManagerException {
 		// load the user's standard plugins
 		int numberOfPlugins = pluginLocations.size();
-
+		
 		List<String> messages = new LinkedList<String>(); // <String>
-
+		
 		PluginEntry[] pluginEntries = new PluginEntry[numberOfPlugins];
-
+		
 		int cnt = 0;
-
+		
 		for (String pluginLocation : pluginLocations) {
 			if (pluginLocation.length() > 0) {
 				pluginLocation = pluginLocation.substring(2);
@@ -175,7 +175,7 @@ public class ClusterAnalysisMain {
 				i2++;
 			}
 		}
-
+		
 		try {
 			((DefaultPluginManager) pluginManager).loadPlugins(loadedPlugins, progressViewer, true);
 		} catch (PluginManagerException pme) {
@@ -183,26 +183,26 @@ public class ClusterAnalysisMain {
 			ErrorMsg.addErrorMessage("PluginManagerException: " + pme.getLocalizedMessage());
 			messages.add(pme.getMessage());
 		}
-
+		
 		// collect info of all exceptions into one exception
 		if (!messages.isEmpty()) {
 			String msg = "";
-
+			
 			for (Iterator<String> itr = messages.iterator(); itr.hasNext();) {
 				msg += (itr.next() + "\n");
 			}
-
+			
 			throw new PluginManagerException("exception.loadStartup\n", msg.trim());
 		}
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * The editor's main method.
 	 * 
 	 * @param args
-	 *            the command line arguments.
+	 *           the command line arguments.
 	 */
 	public static void main(String[] args) {
 		ReleaseInfo.setRunningReleaseStatus(Release.RELEASE_CLUSTERVIS);
@@ -214,7 +214,7 @@ public class ClusterAnalysisMain {
 		// .println("Info: could not activate system windows and button style");
 		// //$NON-NLS-1$
 		// }
-
+		
 		Properties p = System.getProperties();
 		String os = (String) p.get("os.name");
 		if (os != null && !os.toUpperCase().contains("LINUX")) {
@@ -228,9 +228,9 @@ public class ClusterAnalysisMain {
 				System.out.println("Info: could not activate system windows and button style"); //$NON-NLS-1$
 			}
 		}
-
+		
 		ClusterAnalysisMain.class.getClassLoader();
-
+		
 		// URL r1 = cl.getResource(path+"/jarprefs.xml");
 		// URL r2 = cl.getResource(path + "/default.gml");
 		// if (r2 == null)

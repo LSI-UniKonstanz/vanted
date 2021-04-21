@@ -9,11 +9,11 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes;
 
 public enum EntryType {
-
+	
 	ortholog, enzyme, reaction, gene, genes, group, compound, map, unspecified, undefined, hiddenCompound, other;
-
+	
 	public static EntryType getEntryType(String entryType) {
-
+		
 		if (entryType.equals("ortholog"))
 			return EntryType.ortholog;
 		if (entryType.equals("enzyme"))
@@ -46,31 +46,31 @@ public enum EntryType {
 			if (et.getDescription().equals(entryType))
 				return et;
 		return null;
-
+		
 	}
-
+	
 	@Override
 	public String toString() {
-
+		
 		switch (this) {
-		case hiddenCompound:
-			return "hidden compound";
-		case unspecified:
-			return "";
+			case hiddenCompound:
+				return "hidden compound";
+			case unspecified:
+				return "";
 		}
 		return super.toString();
-
+		
 	}
-
+	
 	public String getDescription() {
-
+		
 		switch (this) {
-		case unspecified:
-			return "- unspecified -";
-		case genes:
-			return "genes (obsolete)";
+			case unspecified:
+				return "- unspecified -";
+			case genes:
+				return "genes (obsolete)";
 		}
 		return toString();
 	}
-
+	
 }

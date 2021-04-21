@@ -18,24 +18,23 @@ import javax.swing.plaf.FontUIResource;
  * with marks, so we return them unchanged.
  * 
  * @author D. Garkov
- *
  */
 public class NimbusScaler extends BasicScaler {
-
+	
 	public NimbusScaler(float scaleFactor) {
 		super(scaleFactor);
 	}
-
+	
 	@Override
 	public void initialScaling() {
-
+		
 		Font font = uiDefaults.getFont("defaultFont");
-
+		
 		if (font != null)
 			uiDefaults.put("defaultFont",
 					new FontUIResource(font.getName(), font.getStyle(), Math.round(font.getSize() * scaleFactor)));
 	}
-
+	
 	/**
 	 * Nimbus scales the rest internally based on the above change.
 	 */
@@ -43,7 +42,7 @@ public class NimbusScaler extends BasicScaler {
 	public Font modifyFont(Object key, Font original) {
 		return original;
 	}
-
+	
 	/**
 	 * Distortions & marks are visible, ergo no modifications.
 	 */

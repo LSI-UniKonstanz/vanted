@@ -16,12 +16,12 @@ import org.StringManipulationTools;
 public class DrawingGroup {
 	public String group;
 	public ArrayList<Boolean> draw;
-
+	
 	DrawingGroup(String group, ArrayList<Boolean> draw) {
 		this.group = pretifyPathwayName(group);
 		this.draw = draw;
 	}
-
+	
 	private String pretifyPathwayName(String pathwayName) {
 		pathwayName = StringManipulationTools.stringReplace(pathwayName, "filepath|", "");
 		pathwayName = StringManipulationTools.stringReplace(pathwayName, "%32", " ");

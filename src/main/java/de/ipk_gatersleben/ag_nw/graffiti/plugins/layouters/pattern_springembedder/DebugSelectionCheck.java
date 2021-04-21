@@ -18,9 +18,9 @@ import org.graffiti.selection.Selection;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class DebugSelectionCheck implements ActionListener {
-
+	
 	private static ThreadSafeOptions tso = null;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -50,9 +50,9 @@ public class DebugSelectionCheck implements ActionListener {
 			}
 		}
 	}
-
+	
 	public static void setCheckThis(ThreadSafeOptions options) {
 		tso = options;
 	}
-
+	
 }

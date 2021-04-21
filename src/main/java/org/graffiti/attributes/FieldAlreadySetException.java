@@ -18,16 +18,19 @@ package org.graffiti.attributes;
  */
 public class FieldAlreadySetException extends RuntimeException {
 	// ~ Constructors ===========================================================
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2963639038743420158L;
+	
 	/**
 	 * Constructs an <code>FieldAlreadySetException</code> with the specified detail
 	 * message.
 	 * 
 	 * @param msg
-	 *            The detail message which is saved for later retrieval by the
-	 *            <code>getMessage()</code> method.
+	 *           The detail message which is saved for later retrieval by the
+	 *           <code>getMessage()</code> method.
 	 */
 	public FieldAlreadySetException(String msg) {
 		super(msg);

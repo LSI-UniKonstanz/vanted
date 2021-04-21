@@ -58,19 +58,19 @@ import org.jfree.ui.TextAnchor;
  * negative totals at the top and bottom of the stacked bars.
  */
 public class ExtendedStackedBarRenderer extends StackedBarRenderer {
-
+	
 	/** Show positive label? */
 	private boolean showPositiveTotal = true;
-
+	
 	/** Show negative label? */
 	private boolean showNegativeTotal = true;
-
+	
 	/** Font for labels. */
 	private Font totalLabelFont = new Font("SansSerif", Font.PLAIN, 10);
-
+	
 	/** Formatter for total. */
 	private NumberFormat totalFormatter;
-
+	
 	/**
 	 * Creates a new renderer.
 	 */
@@ -78,7 +78,7 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 		super();
 		this.totalFormatter = NumberFormat.getInstance();
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -89,7 +89,7 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Returns the total formatter.
 	 * 
@@ -98,12 +98,12 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 	public NumberFormat getTotalFormatter() {
 		return this.totalFormatter;
 	}
-
+	
 	/**
 	 * Sets the total formatter.
 	 * 
 	 * @param format
-	 *            the formatter (<code>null</code> not permitted).
+	 *           the formatter (<code>null</code> not permitted).
 	 */
 	public void setTotalFormatter(final NumberFormat format) {
 		if (format == null) {
@@ -111,48 +111,48 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 		}
 		this.totalFormatter = format;
 	}
-
+	
 	/**
 	 * Draws a stacked bar for a specific item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain (category) axis.
+	 *           the domain (category) axis.
 	 * @param rangeAxis
-	 *            the range (value) axis.
+	 *           the range (value) axis.
 	 * @param dataset
-	 *            the data.
+	 *           the data.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(final Graphics2D g2, final CategoryItemRendererState state, final Rectangle2D dataArea,
 			final CategoryPlot plot, final CategoryAxis domainAxis, final ValueAxis rangeAxis,
 			final CategoryDataset dataset, final int row, final int column) {
-
+		
 		// nothing is drawn for null values...
 		final Number dataValue = dataset.getValue(row, column);
 		if (dataValue == null) {
 			return;
 		}
-
+		
 		final double value = dataValue.doubleValue();
-
+		
 		final PlotOrientation orientation = plot.getOrientation();
 		final double barW0 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge())
 				- state.getBarWidth() / 2.0;
-
+		
 		double positiveBase = 0.0;
 		double negativeBase = 0.0;
-
+		
 		for (int i = 0; i < row; i++) {
 			final Number v = dataset.getValue(i, column);
 			if (v != null) {
@@ -164,7 +164,7 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 				}
 			}
 		}
-
+		
 		final double translatedBase;
 		final double translatedValue;
 		final RectangleEdge location = plot.getRangeAxisEdge();
@@ -177,7 +177,7 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 		}
 		final double barL0 = Math.min(translatedBase, translatedValue);
 		final double barLength = Math.max(Math.abs(translatedValue - translatedBase), getMinimumBarLength());
-
+		
 		Rectangle2D bar = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			bar = new Rectangle2D.Double(barL0, barW0, barLength, state.getBarWidth());
@@ -192,12 +192,12 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 			g2.setPaint(getItemOutlinePaint(row, column));
 			g2.draw(bar);
 		}
-
+		
 		final CategoryLabelGenerator generator = getLabelGenerator(row, column);
 		if (generator != null && isItemLabelVisible(row, column)) {
 			drawItemLabel(g2, dataset, row, column, plot, generator, bar, (value < 0.0));
 		}
-
+		
 		if (value > 0.0) {
 			if (this.showPositiveTotal) {
 				if (isLastPositiveItem(dataset, row, column)) {
@@ -219,7 +219,7 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 				}
 			}
 		}
-
+		
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
 			final EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -238,19 +238,19 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 				entities.addEntity(entity);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns true if the specified item is the last positive value for that
 	 * category.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row (series).
+	 *           the row (series).
 	 * @param column
-	 *            the column (category).
+	 *           the column (category).
 	 * @return a boolean.
 	 */
 	private boolean isLastPositiveItem(final CategoryDataset dataset, final int row, final int column) {
@@ -267,17 +267,17 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns true if the specified item is the last negative value for that
 	 * category.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param row
-	 *            the row (series).
+	 *           the row (series).
 	 * @param column
-	 *            the column (category).
+	 *           the column (category).
 	 * @return a boolean.
 	 */
 	private boolean isLastNegativeItem(final CategoryDataset dataset, final int row, final int column) {
@@ -294,14 +294,14 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Calculates the sum of the positive values within a category.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param column
-	 *            the column (category).
+	 *           the column (category).
 	 * @return the sum of the positive values.
 	 */
 	private double calculateSumOfPositiveValuesForCategory(final CategoryDataset dataset, final int column) {
@@ -317,14 +317,14 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Calculates the sum of the negative values within a category.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @param column
-	 *            the column (category).
+	 *           the column (category).
 	 * @return the sum of the negative values.
 	 */
 	private double calculateSumOfNegativeValuesForCategory(final CategoryDataset dataset, final int column) {
@@ -340,5 +340,5 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 		}
 		return result;
 	}
-
+	
 }

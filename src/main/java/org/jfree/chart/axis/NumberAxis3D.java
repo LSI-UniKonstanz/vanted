@@ -67,46 +67,46 @@ import org.jfree.ui.RectangleEdge;
  * @author Serge V. Grachov
  */
 public class NumberAxis3D extends NumberAxis implements Serializable {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public NumberAxis3D() {
 		this(null);
 	}
-
+	
 	/**
 	 * Constructs a new axis.
 	 * 
 	 * @param label
-	 *            the axis label (<code>null</code> permitted).
+	 *           the axis label (<code>null</code> permitted).
 	 */
 	public NumberAxis3D(String label) {
 		super(label);
 		setAxisLineVisible(false);
 	}
-
+	
 	/**
 	 * Draws the axis on a Java 2D graphics device (such as the screen or a
 	 * printer).
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param cursor
-	 *            the cursor.
+	 *           the cursor.
 	 * @param plotArea
-	 *            the area for drawing the axes and data.
+	 *           the area for drawing the axes and data.
 	 * @param dataArea
-	 *            the area for drawing the data (a subset of the plotArea).
+	 *           the area for drawing the data (a subset of the plotArea).
 	 * @param edge
-	 *            the axis location.
+	 *           the axis location.
 	 * @param plotState
-	 *            collects information about the plot (<code>null</code> permitted).
+	 *           collects information about the plot (<code>null</code> permitted).
 	 * @return The updated cursor value.
 	 */
 	public AxisState draw(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea, RectangleEdge edge,
 			PlotRenderingInfo plotState) {
-
+		
 		// if the axis is not visible, don't draw it...
 		if (!isVisible()) {
 			AxisState state = new AxisState(cursor);
@@ -115,31 +115,31 @@ public class NumberAxis3D extends NumberAxis implements Serializable {
 			state.setTicks(ticks);
 			return state;
 		}
-
+		
 		// calculate the adjusted data area taking into account the 3D effect...
 		CategoryPlot plot = (CategoryPlot) getPlot();
-
+		
 		Effect3D e3D = (Effect3D) plot.getRenderer();
 		double adjustedX = dataArea.getMinX();
 		double adjustedY = dataArea.getMinY();
 		double adjustedW = dataArea.getWidth() - e3D.getXOffset();
 		double adjustedH = dataArea.getHeight() - e3D.getYOffset();
-
+		
 		if (edge == RectangleEdge.LEFT || edge == RectangleEdge.BOTTOM) {
 			adjustedY += e3D.getYOffset();
 		} else if (edge == RectangleEdge.RIGHT || edge == RectangleEdge.TOP) {
 			adjustedX += e3D.getXOffset();
 		}
 		Rectangle2D adjustedDataArea = new Rectangle2D.Double(adjustedX, adjustedY, adjustedW, adjustedH);
-
+		
 		// draw the tick marks and labels...
 		AxisState info = drawTickMarksAndLabels(g2, cursor, plotArea, adjustedDataArea, edge);
-
+		
 		// draw the axis label...
 		info = drawLabel(getLabel(), g2, plotArea, dataArea, edge, info);
-
+		
 		return info;
-
+		
 	}
-
+	
 }

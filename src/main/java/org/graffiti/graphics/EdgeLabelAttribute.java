@@ -20,7 +20,7 @@ import org.graffiti.attributes.HashMapAttribute;
 public class EdgeLabelAttribute extends LabelAttribute {
 	/** Position of a label within this node. */
 	// private EdgeLabelPositionAttribute position;
-
+	
 	/**
 	 * Constructor for EdgeLabelAttribute.
 	 * 
@@ -30,7 +30,7 @@ public class EdgeLabelAttribute extends LabelAttribute {
 		super(id);
 		add(new EdgeLabelPositionAttribute(POSITION), false);
 	}
-
+	
 	/**
 	 * Constructor for EdgeLabelAttribute.
 	 * 
@@ -40,7 +40,7 @@ public class EdgeLabelAttribute extends LabelAttribute {
 		super(id, l);
 		this.add(new EdgeLabelPositionAttribute(POSITION), false);
 	}
-
+	
 	//
 	// /**
 	// * Constructor for EdgeLabelAttribute.
@@ -96,7 +96,7 @@ public class EdgeLabelAttribute extends LabelAttribute {
 	// this.position = new EdgeLabelPositionAttribute(POSITION);
 	// this.add(this.position, false);
 	// }
-
+	
 	// /**
 	// * Sets the collection of attributes contained within this
 	// <tt>CollectionAttribute</tt>
@@ -150,18 +150,18 @@ public class EdgeLabelAttribute extends LabelAttribute {
 	// // throw new IllegalArgumentException("Invalid value type.");
 	// // }
 	// }
-
+	
 	/**
 	 * Sets the 'position'-value.
 	 * 
 	 * @param p
-	 *            the 'position'-value to be set.
+	 *           the 'position'-value to be set.
 	 */
 	public void setPosition(EdgeLabelPositionAttribute p) {
 		remove(POSITION);
 		add(p, false);
 	}
-
+	
 	/**
 	 * Returns the NodeLabelPositionAttribute specifying the position of the
 	 * encapsulated label.

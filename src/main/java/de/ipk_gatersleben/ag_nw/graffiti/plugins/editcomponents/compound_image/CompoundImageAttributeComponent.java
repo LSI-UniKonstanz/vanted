@@ -27,23 +27,27 @@ import org.graffiti.plugins.attributecomponents.simplelabel.LabelComponent;
 import org.graffiti.plugins.views.defaults.RectangleNodeShape;
 
 public class CompoundImageAttributeComponent extends AbstractAttributeComponent implements GraphicAttributeConstants {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8628783023165297003L;
+	
 	protected JLabel imageComponent;
-
+	
 	double imgWidth = 0;
 	double imgHeight = 0;
-
+	
 	double offX = 0;
 	double offY = 0;
-
+	
 	@Override
 	public void attributeChanged(Attribute attr) throws ShapeNotFoundException {
 		// attr is often a CollectionAttribute,
 		// e.g. after pressing apply in the inspector.
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
 		// (GraphElement) attr.getAttributable();
-
+		
 		if (ge instanceof Node) {
 			Node n = (Node) ge;
 			// if (attr instanceof CollectionAttribute) {
@@ -72,24 +76,24 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 			}
 		}
 	}
-
+	
 	@Override
 	public void recreate() throws ShapeNotFoundException {
 		// System.out.print("recreate.");
-
+		
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
-
+		
 		setOpaque(false);
 		setBackground(null);
-
+		
 		if (ge instanceof Node) {
 			Node n = (Node) ge;
-
+			
 			String position = (String) AttributeHelper.getAttributeValue(n, "image", "image_position",
 					GraphicAttributeConstants.AUTO_OUTSIDE, "", true);
-
+			
 			Double border = (Double) AttributeHelper.getAttributeValue(n, "image", "image_border", 5d, 5d);
-
+			
 			setLayout(new SingleFiledLayout());
 			attr.getAttributable();
 			imageComponent = CompoundImageAttributeEditor.getCompoundImageComponent(imageComponent,
@@ -146,12 +150,12 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 				setSize(0, 0);
 			} else
 				setSize(imageComponent.getPreferredSize());
-
+			
 			updatePosition();
-
+			
 			validate();
 			repaint();
-
+			
 			Vector2d ns = AttributeHelper.getSize(n);
 			final Node nn = n;
 			boolean centerfitresize = (Double.compare(ns.x, imgWidth + 2) != 0
@@ -164,19 +168,19 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 					public void run() {
 						AttributeHelper.setSize(nn, imgWidth + 2, imgHeight + 2);
 						AttributeHelper.setShape(nn, RectangleNodeShape.class.getCanonicalName());
-
+						
 					}
 				});
 			}
 		}
 	}
-
+	
 	@Override
 	public void paint(Graphics g) {
 		if (checkVisibility(10))
 			super.paint(g);
 	}
-
+	
 	public static String checkAndChangePath(String imgName, Attribute a) {
 		File imgfile = new File(imgName);
 		if (!imgfile.exists()) {
@@ -192,7 +196,7 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 		}
 		return imgName;
 	}
-
+	
 	protected void updatePosition() {
 		if (imageComponent != null)
 			setLocation(shift.x + (int) offX, shift.y + (int) offY);
@@ -201,22 +205,22 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 		// Double(shift.x+AttributeHelper.getWidth((Node)getAttribute().getAttributable())).intValue()+5,
 		// Double.valueOf(shift.y-imgHeight/2).intValue());
 	}
-
+	
 	private void changeParameters(Object graphicsAttr, Node n) throws ShapeNotFoundException {
 		if ((graphicsAttr != null) && (graphicsAttr instanceof CollectionAttribute)) {
 			CollectionAttribute cAttr = (CollectionAttribute) graphicsAttr;
 			Object annotationObject = cAttr.getCollection().get("component");
-
+			
 			if ((annotationObject != null) && (annotationObject instanceof CompoundAttribute)) {
 				System.out.println("annotation changed");
-
+				
 				// ChartAttribute testAttr = (ChartAttribute) annotationObject;
 				recreate();
 			}
-
+			
 			Object coordinateObject = cAttr.getCollection().get(COORDINATE);
 			Object dimensionObject = cAttr.getCollection().get(DIMENSION);
-
+			
 			if (((coordinateObject != null) && (coordinateObject instanceof CoordinateAttribute))
 					|| ((dimensionObject != null) && (dimensionObject instanceof DimensionAttribute))) {
 				System.out.println("coordinates or dimension changed");
@@ -226,13 +230,13 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 			// recreate();
 		}
 	}
-
+	
 	@Override
 	public void setShift(Point shift) {
 		super.setShift(shift);
 		updatePosition();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -241,5 +245,5 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 	@Override
 	public void adjustComponentSize() {
 	}
-
+	
 }

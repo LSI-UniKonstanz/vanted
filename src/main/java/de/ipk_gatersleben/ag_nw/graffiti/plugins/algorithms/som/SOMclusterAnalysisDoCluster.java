@@ -32,7 +32,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -41,7 +41,7 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 	public String getName() {
 		return "Step 2: Use trained SOM to classify data";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -51,12 +51,12 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Analysis";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.CLUSTER));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -65,7 +65,7 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 		if (SOMplugin.getColumns() == null)
 			throw new PreconditionException("SOM has not yet been trained!");
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "With this command, the trained SOM weight matrix is used for the<br>"
@@ -76,7 +76,7 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 				+ "attributes). You may make the node cluster distribution visible with the menu<br>"
 				+ "command Elements/Visualize Clusters";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -85,12 +85,12 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 				// from the corresponding clusters.")
 		};
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		super.setParameters(params);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -98,7 +98,7 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 	 */
 	public void execute() {
 		SOMclusterService mcs = new SOMclusterService(getSelectedOrAllGraphElements());
-
+		
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(mcs, mcs, "Clustering with trained SOM",
 				"Clustering with trained SOM", false, false);
 		bth.startWork(this);
@@ -107,17 +107,17 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 
 class SOMclusterService
 		implements BackgroundTaskStatusProvider, BackgroundTaskStatusProviderSupportingExternalCall, Runnable {
-
+	
 	double statusDouble = -1d;
 	boolean pleaseStop = false;
 	String status1, status2;
-
+	
 	Collection<GraphElement> selection;
-
+	
 	SOMclusterService(Collection<GraphElement> selection) {
 		this.selection = selection;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -127,7 +127,7 @@ class SOMclusterService
 	public int getCurrentStatusValue() {
 		return (int) statusDouble;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -137,7 +137,7 @@ class SOMclusterService
 	public double getCurrentStatusValueFine() {
 		return statusDouble;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -147,7 +147,7 @@ class SOMclusterService
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -157,7 +157,7 @@ class SOMclusterService
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -167,7 +167,7 @@ class SOMclusterService
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -240,7 +240,7 @@ class SOMclusterService
 		if (checkStop())
 			return;
 	}
-
+	
 	private boolean checkStop() {
 		if (pleaseStop) {
 			status1 = "SOM-Analysis not complete: aborted";
@@ -249,7 +249,7 @@ class SOMclusterService
 		}
 		return pleaseStop;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -260,7 +260,7 @@ class SOMclusterService
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -271,27 +271,27 @@ class SOMclusterService
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		statusDouble = value;
 	}
-
+	
 	public void setCurrentStatusValueFine(double value) {
 		statusDouble = value;
 	}
-
+	
 	public boolean wantsToStop() {
 		return checkStop();
 	}
-
+	
 	public void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
-
+	
 	public void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

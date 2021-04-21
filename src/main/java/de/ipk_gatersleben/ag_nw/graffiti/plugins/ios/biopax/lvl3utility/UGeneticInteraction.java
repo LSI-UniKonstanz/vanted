@@ -40,14 +40,14 @@ public class UGeneticInteraction extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		GeneticInteraction interaction = model.addNew(GeneticInteraction.class, RDFID);
-
+		
 		UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 		UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 		UtilitySuperClassFromGraph.getComment(elem, interaction);
@@ -59,13 +59,13 @@ public class UGeneticInteraction extends UtilitySuperClassToGraph {
 		UtilitySuperClassFromGraph.getPhenotype(elem, interaction, model);
 		UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
-
+		
 		for (Edge outgoing : elem.getAllOutEdges()) {
-
+			
 			Node out = outgoing.getTarget();
-
+			
 			String outRDFId = getAttributeSecure(out, Messages.getString("UtilitySuperClassToGraph.82"));
-
+			
 			Entity p = (Entity) model.getByID(outRDFId);
 			interaction.addParticipant(p);
 		}

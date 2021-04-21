@@ -38,7 +38,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * @author Christian Klukas
  */
 public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread, BackgroundTaskStatusProvider {
-
+	
 	private int currentProgressStatusValue = -1;
 	private String currentStatus1;
 	private String currentStatus2;
@@ -46,7 +46,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	private boolean userBreak = false;
 	private static int border = 0;
 	private static String filename;
-
+	
 	/**
 	 * Empty contructor.
 	 */
@@ -54,12 +54,12 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 		// Do nothing than calling inherit contructor.
 		super();
 	}
-
+	
 	public PDFAlgorithm(int border) {
 		this();
 		PDFAlgorithm.border = border;
 	}
-
+	
 	/**
 	 * Returns the display name (in menu area) for this plugin.
 	 * <p>
@@ -72,17 +72,17 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public String getName() {
 		return "Create PDF image";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.file";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.EXPORT, Category.IMAGING));
 	}
-
+	
 	/**
 	 * Unused for this plugin.
 	 * 
@@ -93,19 +93,19 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public void check() throws PreconditionException {
 		SVGAlgorithm.checkZoom();
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int idx = 0;
 		border = ((IntegerParameter) params[idx++]).getInteger();
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new IntegerParameter(border, "Add image border (pixel)",
 				"<html>Adds free space to the right and lower border of the image.") };
 	}
-
+	
 	/**
 	 * This method is called by the plugin environment to start the action this
 	 * plugin is for.
@@ -136,7 +136,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 		}
 		PDFAlgorithm.filename = fileName;
 		final String newFileName = StringManipulationTools.stringReplace(fileName, ".pdf", "_temp.svg");
-
+		
 		MainFrame.showMessage("", MessageType.INFO, 10000);
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(new Runnable() {
 			public void run() {
@@ -145,7 +145,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 		}, this, "Create PDF...", "Create PDF Task", false, false);
 		bth.startWork(this);
 	}
-
+	
 	/**
 	 * @param svgAlgo
 	 * @param fileName
@@ -166,7 +166,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 			// userBreak = false;
 			// }
 			// }
-
+			
 			if (pleaseStop) {
 				currentStatus1 = "SVG and PDF not created.";
 				currentStatus2 = "Processing stopped.";
@@ -174,11 +174,11 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 				return;
 			}
 		}
-
+		
 		currentProgressStatusValue = -1;
 		currentStatus1 = "Step 1/2: Create SVG file...";
 		currentStatus2 = "Please wait. The app will be unresponsive now.";
-
+		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -186,14 +186,14 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 		}
 		svgAlgo.attach(g, selection);
 		svgAlgo.execute(fileName);
-
+		
 		if (pleaseStop) {
 			currentStatus1 = "Temporary SVG file created. PDF not is created.";
 			currentStatus2 = "Processing stopped.";
 			currentProgressStatusValue = 100;
 			return;
 		}
-
+		
 		currentStatus1 = "Step 2/2: SVG file created (" + (new File(fileName).length() / 1024)
 				+ " KB). Convert to PDF...";
 		currentStatus2 = "This task may take a few moments...";
@@ -231,9 +231,9 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 		 * org.apache.batik.apps.rasterizer.Main.main(new String[] { fileName,
 		 * "-scriptSecurityOff", "-m", "application/pdf" });
 		 */
-
+		
 	}
-
+	
 	private void myMain(String fileName) {
 		SVGConverter c = new SVGConverter();
 		try {
@@ -246,7 +246,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -256,7 +256,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public int getCurrentStatusValue() {
 		return currentProgressStatusValue;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -266,7 +266,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public String getCurrentStatusMessage1() {
 		return currentStatus1;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -276,7 +276,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public String getCurrentStatusMessage2() {
 		return currentStatus2;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -286,7 +286,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -296,7 +296,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -307,7 +307,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public boolean pluginWaitsForUser() {
 		return userBreak;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -318,7 +318,7 @@ public class PDFAlgorithm extends AbstractAlgorithm implements NeedsSwingThread,
 	public void pleaseContinueRun() {
 		userBreak = false;
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		currentProgressStatusValue = value;
 	}

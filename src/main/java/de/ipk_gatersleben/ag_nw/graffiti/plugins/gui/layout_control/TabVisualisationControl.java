@@ -24,9 +24,12 @@ import org.graffiti.session.Session;
  * @vanted.revision 2.7.0 Deprecate class.
  */
 public class TabVisualisationControl extends InspectorTab {
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1822597920551426964L;
+	
 	/**
 	 * DOCUMENT ME!
 	 */
@@ -34,7 +37,7 @@ public class TabVisualisationControl extends InspectorTab {
 		// initOldDialog();
 		initNewDialog();
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -46,7 +49,7 @@ public class TabVisualisationControl extends InspectorTab {
 		this.add(new JLabel("ToDo"), "1,1");
 		this.revalidate();
 	}
-
+	
 	/**
 	 * Constructs a <code>PatternTab</code> and sets the title.
 	 */
@@ -55,40 +58,40 @@ public class TabVisualisationControl extends InspectorTab {
 		this.title = "Node Drawing";
 		initComponents();
 	}
-
+	
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-
+	
 	public void transactionFinished(TransactionEvent e) {
 	}
-
+	
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 	public void sessionChanged(Session s) {
 	}
-
+	
 	public void sessionDataChanged(Session s) {
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		return v != null;
 	}
-
+	
 }

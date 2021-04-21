@@ -24,27 +24,27 @@ import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
 public class HideOrShowChildNodes extends AbstractAlgorithm implements ProvidesNodeContextMenu {
-
+	
 	public enum HideOrShowOperation {
 		showAllChildren, showDirectChildren, hideAllChildren;
-
+		
 		@Override
 		public String toString() {
 			switch (this) {
-			case showAllChildren:
-				return "Show all child nodes";
-			case hideAllChildren:
-				return "Hide all child nodes";
-			case showDirectChildren:
-				return "Show direct child nodes";
-			default:
-				return "unknown enum constant!";
+				case showAllChildren:
+					return "Show all child nodes";
+				case hideAllChildren:
+					return "Hide all child nodes";
+				case showDirectChildren:
+					return "Show direct child nodes";
+				default:
+					return "unknown enum constant!";
 			}
 		}
 	}
-
+	
 	private HideOrShowOperation modeOfOperation;
-
+	
 	public JMenuItem[] getCurrentNodeContextMenuItem(Collection<Node> selectedNodes) {
 		if (selectedNodes == null || selectedNodes.size() < 1) {
 			return null;
@@ -53,35 +53,39 @@ public class HideOrShowChildNodes extends AbstractAlgorithm implements ProvidesN
 			showAllChildren = new JMenuItem(getShowAllChildrenAction());
 			showDirectChildren = new JMenuItem(getShowDirectChildrenAction());
 			hideAllChildren = new JMenuItem(getHideAllChildrenAction());
-
+			
 			showAllChildren.setText(HideOrShowOperation.showAllChildren.toString());
 			showDirectChildren.setText(HideOrShowOperation.showDirectChildren.toString());
 			hideAllChildren.setText(HideOrShowOperation.hideAllChildren.toString());
-
+			
 			return new JMenuItem[] { showAllChildren, showDirectChildren, hideAllChildren };
 		}
 	}
-
+	
 	private Action getHideAllChildrenAction() {
 		return new AbstractAction() {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5418673992589571517L;
+			
 			@Override
 			public String toString() {
 				return HideOrShowOperation.hideAllChildren.toString();
 			}
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				execute(HideOrShowOperation.hideAllChildren);
 			}
 		};
 	}
-
+	
 	protected void execute(HideOrShowOperation modeOfOperation) {
 		this.modeOfOperation = modeOfOperation;
 		startAlgorithm();
 	}
-
+	
 	private void startAlgorithm() {
 		GravistoService.getInstance().algorithmAttachData(this);
 		try {
@@ -92,93 +96,101 @@ public class HideOrShowChildNodes extends AbstractAlgorithm implements ProvidesN
 		}
 		this.reset();
 	}
-
+	
 	private Action getShowDirectChildrenAction() {
 		return new AbstractAction() {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4782498941899246045L;
+			
 			@Override
 			public String toString() {
 				return HideOrShowOperation.showDirectChildren.toString();
 			}
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				execute(HideOrShowOperation.showDirectChildren);
 			}
 		};
 	}
-
+	
 	private Action getShowAllChildrenAction() {
 		return new AbstractAction() {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 550148004331321446L;
+			
 			@Override
 			public String toString() {
 				return HideOrShowOperation.showAllChildren.toString();
 			}
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				execute(HideOrShowOperation.showAllChildren);
 			}
 		};
 	}
-
+	
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
 			switch (modeOfOperation) {
-			case showAllChildren:
-				AttributeHelper.setVisibilityOfChildElements(selection.getNodes(), false);
-				break;
-
-			case showDirectChildren:
-				HashSet<GraphElement> childElements = new HashSet<GraphElement>();
-				HashSet<Node> nodes = new HashSet<Node>();
-				nodes.addAll(selection.getNodes());
-				for (Node n : selection.getNodes()) {
-					for (Edge e : n.getDirectedOutEdges()) {
-						if (nodes.contains(e.getTarget()) && nodes.contains(e.getSource()))
-							continue;
-						childElements.add(e);
-						childElements.add(e.getTarget());
+				case showAllChildren:
+					AttributeHelper.setVisibilityOfChildElements(selection.getNodes(), false);
+					break;
+				
+				case showDirectChildren:
+					HashSet<GraphElement> childElements = new HashSet<GraphElement>();
+					HashSet<Node> nodes = new HashSet<Node>();
+					nodes.addAll(selection.getNodes());
+					for (Node n : selection.getNodes()) {
+						for (Edge e : n.getDirectedOutEdges()) {
+							if (nodes.contains(e.getTarget()) && nodes.contains(e.getSource()))
+								continue;
+							childElements.add(e);
+							childElements.add(e.getTarget());
+						}
+						for (Edge e : n.getUndirectedEdges()) {
+							if (nodes.contains(e.getTarget()) && nodes.contains(e.getSource()))
+								continue;
+							childElements.add(e);
+							childElements.add(e.getSource());
+							childElements.add(e.getTarget());
+						}
 					}
-					for (Edge e : n.getUndirectedEdges()) {
-						if (nodes.contains(e.getTarget()) && nodes.contains(e.getSource()))
-							continue;
-						childElements.add(e);
-						childElements.add(e.getSource());
-						childElements.add(e.getTarget());
-					}
-				}
-				childElements.removeAll(selection.getNodes());
-				AttributeHelper.setHidden(childElements, false);
-				break;
-
-			case hideAllChildren:
-				AttributeHelper.setVisibilityOfChildElements(selection.getNodes(), true);
-				break;
+					childElements.removeAll(selection.getNodes());
+					AttributeHelper.setHidden(childElements, false);
+					break;
+				
+				case hideAllChildren:
+					AttributeHelper.setVisibilityOfChildElements(selection.getNodes(), true);
+					break;
 			}
 		} finally {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	public String getName() {
 		return "Change Visibility of Child-Nodes";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy";
-
+		
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(
 				Arrays.asList(Category.GRAPH, Category.HIDDEN, Category.HIERARCHY, Category.VISUAL));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "With this command you may change the visibility of<br>"
@@ -187,23 +199,23 @@ public class HideOrShowChildNodes extends AbstractAlgorithm implements ProvidesN
 				+ "should re-apply the desired layout. Previously hidden<br>"
 				+ "nodes may be shown initially in inappropriate positions.<br><br>";
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (selection == null || selection.getNodes().size() < 1)
 			throw new PreconditionException("Please select at least one graph node!");
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new ObjectListParameter(HideOrShowOperation.hideAllChildren, "Mode of operation",
 				"Select the desired mode of operation", HideOrShowOperation.values()) };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		this.modeOfOperation = (HideOrShowOperation) ((ObjectListParameter) params[i++]).getValue();
 	}
-
+	
 }

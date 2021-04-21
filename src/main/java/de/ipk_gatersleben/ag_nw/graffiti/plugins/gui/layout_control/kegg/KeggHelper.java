@@ -40,16 +40,16 @@ import org.graffiti.graph.Node;
  * @version $Revision$
  */
 public class KeggHelper implements HelperClass {
-
+	
 	private static String kgmlVersion = "0.7.0";
-
+	
 	/**
 	 * @return True, if the pathways for this version are provided by KEGG via FTP.
 	 */
 	private static boolean isKEGGftpDownloadVersion(String kgmlVersion) {
 		return kgmlVersion.equals("0.7.0");
 	}
-
+	
 	public static PathwayElement[] getKeggElmentsOfMap(String pathwayId) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -63,7 +63,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String[] getKeggEnzymesOfMap(String pathwayId) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -77,7 +77,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String[] getKeggKOsOfMap(String pathwayId) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -91,7 +91,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String[] getKeggEnzymesByReactionId(String reactionId) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -105,7 +105,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String[] getKeggReactionsOfMap(String pathwayId) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -119,7 +119,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String callKeggDBGETbfind(String search) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -132,7 +132,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String callKeggDBGETbget(String search) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -145,7 +145,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String callKeggDBGETbtit(String search) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -158,7 +158,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String callKeggDBGETbinfo(String search) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -171,7 +171,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String[] getKeggCompoundsOfMap(String pathwayId) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -185,7 +185,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	public static String[] getKeggGenesOfMap(String pathwayId) {
 		KEGGLocator locator = new KEGGLocator();
 		try {
@@ -199,7 +199,7 @@ public class KeggHelper implements HelperClass {
 		}
 		return null;
 	}
-
+	
 	// public static String[] getGroupFromMapName(String mapName) {
 	// if (mapName.contains("-"))
 	// mapName = mapName.substring(0, mapName.indexOf("-"));
@@ -238,7 +238,7 @@ public class KeggHelper implements HelperClass {
 	// }
 	// return new String[] { "KO not available", "(non-specific)"};
 	// }
-
+	
 	@SuppressWarnings("unused")
 	private static String getDigits(String mapNumber) {
 		String result = "";
@@ -248,9 +248,9 @@ public class KeggHelper implements HelperClass {
 		}
 		return result;
 	}
-
+	
 	private static List<OrganismEntry> cachedOrganismList = new ArrayList<OrganismEntry>();
-
+	
 	public synchronized List<OrganismEntry> getOrganisms() throws IOException, ServiceException {
 		if (cachedOrganismList.size() > 1) {
 			return cachedOrganismList;
@@ -277,7 +277,7 @@ public class KeggHelper implements HelperClass {
 		cachedOrganismList.addAll(result);
 		return result;
 	}
-
+	
 	public Collection<String> getLinkedPathwayIDs(String pathway_id) throws IOException, ServiceException {
 		ArrayList<String> result = new ArrayList<String>();
 		KEGGLocator locator = new KEGGLocator();
@@ -293,36 +293,36 @@ public class KeggHelper implements HelperClass {
 		}
 		return result;
 	}
-
+	
 	public static boolean isEnzymeNode(Node n) {
 		String type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", "", "");
 		return type.equalsIgnoreCase("enzyme");
 	}
-
+	
 	public static boolean isMapNode(Node n) {
 		String type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", "", "");
 		return type.equalsIgnoreCase("map");
 	}
-
+	
 	public static String getKeggId(Node n) {
 		return (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_name", "", "");
 	}
-
+	
 	public static boolean isMapTitleNode(Node n) {
 		String type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", "", "");
 		return type.equalsIgnoreCase("map") && AttributeHelper.getLabel(n, "").startsWith("TITLE:");
 	}
-
+	
 	public static void setKgmlVersion(String kgmlVersion) {
 		KeggHelper.kgmlVersion = kgmlVersion;
 	}
-
+	
 	public static String getKgmlVersion() {
 		return kgmlVersion;
 	}
-
+	
 	private static ArrayList<JComboBox> knownLists = new ArrayList<JComboBox>();
-
+	
 	public static JComponent getKGMLversionSelectionCombobox() {
 		final JComboBox result = new JComboBox(
 				new String[] { "0.7.0", "0.6.1", "0.6", "0.5", "0.4", "0.3", "0.2", "0.1" });
@@ -340,7 +340,7 @@ public class KeggHelper implements HelperClass {
 		JLabel lbl = new JLabel(" v");
 		lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		return TableLayout.getSplit(lbl, result, // new JLabel("<html><small>&nbsp;(in case of problems,<br>&nbsp;select
-													// 0.6 instead of 0.6.1)"),
+				// 0.6 instead of 0.6.1)"),
 				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED); // , TableLayout.PREFERRED);
 	}
 }

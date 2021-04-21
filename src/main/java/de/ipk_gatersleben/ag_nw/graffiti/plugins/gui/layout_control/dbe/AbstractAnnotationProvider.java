@@ -23,7 +23,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  * @author klukas
  */
 public abstract class AbstractAnnotationProvider implements AnnotationProvider {
-
+	
 	public JButton getButton(final ExperimentInterface md, final ExperimentDataInfoPane resultPane) {
 		JButton r = new JMButton(getTitle());
 		r.setOpaque(false);
@@ -31,18 +31,18 @@ public abstract class AbstractAnnotationProvider implements AnnotationProvider {
 			public void actionPerformed(ActionEvent e) {
 				final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 						"Request", "In Process. Please wait.");
-
+				
 				if (requestUserData(md)) {
 					BackgroundTaskHelper.issueSimpleTask(getTitle(), "Please wait",
 							getAnnotations(md, status, resultPane), null, status, 0);
 				}
-
+				
 			}
 		});
 		return r;
 	}
-
+	
 	protected abstract Runnable getAnnotations(ExperimentInterface md,
 			BackgroundTaskStatusProviderSupportingExternalCall status, ExperimentDataInfoPane resultPane);
-
+	
 }

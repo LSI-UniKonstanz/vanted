@@ -51,28 +51,28 @@ import org.jfree.ui.RefineryUtilities;
  * An example of a time series chart.
  */
 public class TimeSeriesDemo9 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to create a simple time series chart.
 	 * This example uses monthly data.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo9(final String title) {
-
+		
 		super(title);
-
+		
 		// create a title...
 		final String chartTitle = "Test";
 		final XYDataset dataset = createDataset();
-
+		
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Date", "Price Per Unit", dataset, true,
 				true, false);
-
+		
 		final StandardLegend sl = (StandardLegend) chart.getLegend();
 		sl.setDisplaySeriesShapes(true);
-
+		
 		final XYPlot plot = chart.getXYPlot();
 		final XYItemRenderer r = plot.getRenderer();
 		if (r instanceof StandardXYItemRenderer) {
@@ -103,15 +103,15 @@ public class TimeSeriesDemo9 extends ApplicationFrame {
 			s3.closePath();
 			renderer.setSeriesShape(3, s3);
 		}
-
+		
 		plot.getDomainAxis().setVisible(false);
 		plot.getRangeAxis().setVisible(false);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -122,58 +122,58 @@ public class TimeSeriesDemo9 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	public XYDataset createDataset() {
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		for (int i = 0; i < 4; i++) {
 			dataset.addSeries(createTimeSeries(i, 10));
 		}
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a time series containing random daily data.
 	 * 
 	 * @param series
-	 *            the series index.
+	 *           the series index.
 	 * @param count
-	 *            the number of items for the series.
+	 *           the number of items for the series.
 	 * @return the dataset.
 	 */
 	public TimeSeries createTimeSeries(final int series, final int count) {
-
+		
 		final TimeSeries result = new TimeSeries("Series " + series, Day.class);
-
+		
 		Day start = new Day();
 		for (int i = 0; i < count; i++) {
 			result.add(start, Math.random());
 			start = (Day) start.next();
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimeSeriesDemo9 demo = new TimeSeriesDemo9("Time Series Demo 9");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

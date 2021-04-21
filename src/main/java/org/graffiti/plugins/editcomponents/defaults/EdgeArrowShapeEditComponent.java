@@ -29,7 +29,7 @@ public class EdgeArrowShapeEditComponent extends ComboBoxEditComponent {
 	public static String absoluteInhibitorArrow = "org.graffiti.plugins.views.defaults.AbsoluteInhibitorArrowShape";
 	public static String absoluteStimulationArrow = "org.graffiti.plugins.views.defaults.ThinAbsoluteStimulationArrowShape";
 	public static String assignmentArrow = "org.graffiti.plugins.views.defaults.AssignmentArrowShape";
-
+	
 	public EdgeArrowShapeEditComponent(Displayable disp) {
 		super(disp);
 		this.comboText = new String[] { "-->", "--l>", "--r>", "-+>", "-<+>", "--<>", "--(+)", "--o", "-o|", "--|",
@@ -37,16 +37,20 @@ public class EdgeArrowShapeEditComponent extends ComboBoxEditComponent {
 		this.comboValue = new String[] { standardArrow, standardArrowLeft, standardArrowRight, thinStandardArrow,
 				thinDiamondArrow, diamondArrow, thinCircleArrow, circleArrow, circleConnectArrow, inhibitorArrow,
 				absoluteInhibitorArrow, absoluteStimulationArrow, assignmentArrow, triggerArrow, "" };
-		this.comboBox = new JComboBox(this.comboText) {
-			private static final long serialVersionUID = 1L;
-
+		this.comboBox = new JComboBox<Object>(this.comboText) {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6651563354845975614L;
+			
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-
+			
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();

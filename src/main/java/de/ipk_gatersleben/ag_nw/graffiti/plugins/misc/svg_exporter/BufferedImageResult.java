@@ -18,29 +18,29 @@ public class BufferedImageResult {
 	double scale;
 	View view;
 	String filename;
-
+	
 	public BufferedImageResult(BufferedImage b, double s, View v) {
 		this.bi = b;
 		this.scale = s;
 		this.view = v;
 	}
-
+	
 	public BufferedImage getBufferedImage() {
 		return bi;
 	}
-
+	
 	public double getScale() {
 		return scale;
 	}
-
+	
 	public View getView() {
 		return view;
 	}
-
+	
 	public void setFileName(String filename) {
 		this.filename = filename;
 	}
-
+	
 	public String getFileName() {
 		return filename;
 	}

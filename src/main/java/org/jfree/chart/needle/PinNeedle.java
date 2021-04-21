@@ -45,24 +45,24 @@ import java.io.Serializable;
  * @author Bryan Scott
  */
 public class PinNeedle extends MeterNeedle implements Serializable {
-
+	
 	/**
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param rotate
-	 *            the rotation point.
+	 *           the rotation point.
 	 * @param angle
-	 *            the angle.
+	 *           the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
-
+		
 		Area shape;
 		GeneralPath pointer = new GeneralPath();
-
+		
 		int minY = (int) (plotArea.getMinY());
 		// int maxX = (int) (plotArea.getMaxX());
 		int maxY = (int) (plotArea.getMaxY());
@@ -72,15 +72,15 @@ public class PinNeedle extends MeterNeedle implements Serializable {
 		if (lenX < 2) {
 			lenX = 2;
 		}
-
+		
 		pointer.moveTo(midX - lenX, maxY - lenX);
 		pointer.lineTo(midX + lenX, maxY - lenX);
 		pointer.lineTo(midX, minY + lenX);
 		pointer.closePath();
-
+		
 		lenX = 4 * lenX;
 		Ellipse2D circle = new Ellipse2D.Double(midX - lenX / 2, plotArea.getMaxY() - lenX, lenX, lenX);
-
+		
 		shape = new Area(circle);
 		shape.add(new Area(pointer));
 		if ((rotate != null) && (angle != 0)) {
@@ -88,16 +88,16 @@ public class PinNeedle extends MeterNeedle implements Serializable {
 			getTransform().setToRotation(angle, rotate.getX(), rotate.getY());
 			shape.transform(getTransform());
 		}
-
+		
 		defaultDisplay(g2, shape);
-
+		
 	}
-
+	
 	/**
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *            the object to test.
+	 *           the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -112,5 +112,5 @@ public class PinNeedle extends MeterNeedle implements Serializable {
 		}
 		return false;
 	}
-
+	
 }

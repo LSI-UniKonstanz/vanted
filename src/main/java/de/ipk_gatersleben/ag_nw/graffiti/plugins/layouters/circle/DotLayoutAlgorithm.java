@@ -47,29 +47,29 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
  * @author Christian Klukas
  */
 public class DotLayoutAlgorithm extends AbstractAlgorithm {
-
+	
 	private String layoutCommand;
 	private boolean layoutEdges = false;
 	private int increaseSize = 0;
 	private String dotOrientation = "Left-Right";
 	private boolean sortChildren = false;
 	private boolean considerSameNodes = false;
-
+	
 	private String installPath = getInstallPath();
 	private boolean movetopleft;
-
+	
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
 	 */
 	public DotLayoutAlgorithm() {
 		super();
 	}
-
+	
 	public static boolean isInstalled() {
 		String path = getInstallPath();
 		return path != null && !path.equals("") && new File(path).exists();
 	}
-
+	
 	public static String getInstallPath() {
 		try {
 			if (!SystemInfo.isLinux() && !SystemInfo.isMac()) {
@@ -105,7 +105,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		}
 		return "";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -127,7 +127,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				new BooleanParameter(true, "Move Network to Top-Left",
 						"<html>If set, the network will be moved to top-left,<br>after layouting has been completed") };
 	}
-
+	
 	private Collection<String> getLayouts() {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(getDOT());
@@ -137,27 +137,27 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		res.add(getFDP());
 		return res;
 	}
-
+	
 	private String getDOT() {
 		return "dot";
 	}
-
+	
 	private String getNeato() {
 		return "neato";
 	}
-
+	
 	private String getTWOPI() {
 		return "twopi";
 	}
-
+	
 	private String getCIRCO() {
 		return "circo";
 	}
-
+	
 	private String getFDP() {
 		return "fdp";
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -171,24 +171,24 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		movetopleft = ((BooleanParameter) params[i++]).getBoolean();
 		super.setParameters(params);
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null) {
 			errors.add("No graph available!");
 		}
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
-
+		
 		if (graph.getNumberOfNodes() <= 0) {
 			throw new PreconditionException("The graph is empty. Cannot run layouter.");
 		}
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This layout command requires the following Graphviz "
@@ -203,12 +203,12 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				+ "Use the network tab and temporarily change the 'directed edges' setting before layouting "
 				+ "the network." + "</small>";
 	}
-
+	
 	@Override
 	public void reset() {
 		super.reset();
 	}
-
+	
 	/**
 	 * Returns the name of the algorithm.
 	 * 
@@ -217,7 +217,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "External Graphviz Layout";
 	}
-
+	
 	public void execute() {
 		try {
 			String fileName = ReleaseInfo.getAppFolderWithFinalSep() + "temp.dot";
@@ -226,11 +226,11 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				new File(fileName).delete();
 			if (new File(fileName2).exists())
 				new File(fileName2).delete();
-
+			
 			if (considerSameNodes) {
 				createUnifiedGraph();
 			}
-
+			
 			HashMap<Node, String> node2oldLabel = new HashMap<Node, String>();
 			try {
 				int lblIdx = 1;
@@ -246,9 +246,9 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 					}
 					lblIdx++;
 				}
-
+				
 				DOTSerializer.setNextOrientationTopBottom(dotOrientation.contains("Top"));
-
+				
 				Vector2d center = null;
 				if (!movetopleft)
 					center = NodeTools.getCenter(getSelectedOrAllNodes(true));
@@ -321,27 +321,27 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 						size.y -= increaseSize;
 						AttributeHelper.setSize(n, size);
 					}
-
+					
 				}
 				if (considerSameNodes) {
 					moveGraphsToUnifiedGraph();
 				}
 				if (movetopleft)
 					CenterLayouterAlgorithm.moveGraph(graph, getName(), true, 50, 50);
-
+				
 			}
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 	private void saveGraphAsDot(Graph g, String fileName) throws Exception {
 		DOTSerializer ser = new DOTSerializer();
 		ser.write(g, fileName);
 	}
-
+	
 	double maxWidth, maxHeight;
-
+	
 	@SuppressWarnings("unchecked")
 	private void moveGraphsToUnifiedGraph() {
 		HashMap<String, Node> lbl2uniNode = new HashMap<String, Node>();
@@ -392,7 +392,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				AttributeHelper.setLabel(n, ll);
 		}
 	}
-
+	
 	private String extractNumericDataFromStoredParenthesisData(Node n) {
 		String storedLabel = (String) AttributeHelper.getAttributeValue(n, "", "oldlabel", "", "");
 		if (storedLabel.indexOf("(") >= 0) {
@@ -407,11 +407,11 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		} else
 			return "";
 	}
-
+	
 	private void createUnifiedGraph() {
 		maxWidth = 0;
 		maxHeight = 0;
-
+		
 		Set<String> clusters = new TreeSet<String>();
 		HashMap<String, ArrayList<Node>> cluster2nodes = new HashMap<String, ArrayList<Node>>();
 		for (Node ge : getSelectedOrAllNodes(true)) {
@@ -427,7 +427,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 			if (size.y > maxHeight)
 				maxHeight = size.y;
 		}
-
+		
 		HashSet<String> edgeList = new HashSet<String>();
 		for (Edge e : graph.getEdges()) {
 			if (!AttributeHelper.isHiddenGraphElement(e.getSource())
@@ -439,13 +439,13 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				}
 			}
 		}
-
+		
 		maxWidth += 20;
 		maxHeight += 20;
-
+		
 		double targetWidth = clusters.size() * maxWidth;
 		double targetHeight = maxHeight;
-
+		
 		HashMap<String, Node> newNodes = new HashMap<String, Node>();
 		for (String edge : edgeList) {
 			String lA = edge.substring(0, edge.indexOf(">"));
@@ -473,14 +473,14 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				newNode = true;
 			}
 			Node nB = newNodes.get(lB);
-
+			
 			if (newNode || !nA.getOutNeighbors().contains(nB)) {
 				graph.addEdge(nA, nB, true,
 						AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 			}
 		}
 	}
-
+	
 	private String upLabel(Node source) {
 		String label = AttributeHelper.getLabel(source, "");
 		if (source.getInDegree() == 1) {
@@ -488,7 +488,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		} else
 			return "/" + label;
 	}
-
+	
 	private String processUpLabelRevert(Node n) {
 		String label = AttributeHelper.getLabel(n, "");
 		if (label.indexOf("/") >= 0)
@@ -496,7 +496,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		else
 			return label;
 	}
-
+	
 	private Collection<Node> getSelectedOrAllNodes(boolean filterNonVisible) {
 		if (!filterNonVisible)
 			return getSelectedOrAllNodes();
@@ -508,7 +508,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 			return result;
 		}
 	}
-
+	
 	private Collection<Node> getSelectedOrAllNodes(boolean filterNonVisible, boolean sortByLabel) {
 		if (sortByLabel) {
 			ArrayList<Node> result = new ArrayList<Node>(getSelectedOrAllNodes(filterNonVisible));
@@ -538,15 +538,15 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 						}
 					}
 				}
-
+				
 			});
-
+			
 			return result;
 		} else {
 			return getSelectedOrAllNodes(filterNonVisible);
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -556,15 +556,15 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Layout";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-
+	
 }

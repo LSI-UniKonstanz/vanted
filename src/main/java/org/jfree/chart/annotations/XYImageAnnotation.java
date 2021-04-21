@@ -50,25 +50,25 @@ import org.jfree.util.ObjectUtils;
  * serializable).
  */
 public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable {
-
+	
 	/** The x-coordinate (in data space). */
 	private double x;
-
+	
 	/** The y-coordinate (in data space). */
 	private double y;
-
+	
 	/** The image. */
 	private Image image;
-
+	
 	/**
 	 * Creates a new annotation to be displayed at the specified (x, y) location.
 	 * 
 	 * @param x
-	 *            the x-coordinate (in data space).
+	 *           the x-coordinate (in data space).
 	 * @param y
-	 *            the y-coordinate (in data space).
+	 *           the y-coordinate (in data space).
 	 * @param image
-	 *            the image (<code>null</code> not permitted).
+	 *           the image (<code>null</code> not permitted).
 	 */
 	public XYImageAnnotation(double x, double y, Image image) {
 		if (image == null) {
@@ -78,24 +78,24 @@ public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable 
 		this.y = y;
 		this.image = image;
 	}
-
+	
 	/**
 	 * Draws the annotation. This method is called by the drawing code in the
 	 * {@link XYPlot} class, you don't normally need to call this method directly.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param domainAxis
-	 *            the domain axis.
+	 *           the domain axis.
 	 * @param rangeAxis
-	 *            the range axis.
+	 *           the range axis.
 	 */
 	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea, ValueAxis domainAxis, ValueAxis rangeAxis) {
-
+		
 		PlotOrientation orientation = plot.getOrientation();
 		AxisLocation domainAxisLocation = plot.getDomainAxisLocation();
 		AxisLocation rangeAxisLocation = plot.getRangeAxisLocation();
@@ -115,14 +115,14 @@ public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable 
 		xx = xx - this.image.getWidth(null) / 2.0f;
 		yy = yy - this.image.getHeight(null) / 2.0f;
 		g2.drawImage(this.image, (int) xx, (int) yy, null);
-
+		
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -138,16 +138,16 @@ public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable 
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone of the annotation.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the annotation can't be cloned.
+	 *            if the annotation can't be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

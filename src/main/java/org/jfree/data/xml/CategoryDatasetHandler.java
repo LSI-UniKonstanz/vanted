@@ -39,17 +39,17 @@ import org.xml.sax.helpers.DefaultHandler;
  * A SAX handler for reading a {@link CategoryDataset} from an XML file.
  */
 public class CategoryDatasetHandler extends RootHandler implements DatasetTags {
-
+	
 	/** The dataset under construction. */
 	private DefaultCategoryDataset dataset;
-
+	
 	/**
 	 * Creates a new handler.
 	 */
 	public CategoryDatasetHandler() {
 		this.dataset = null;
 	}
-
+	
 	/**
 	 * Returns the dataset.
 	 * 
@@ -58,38 +58,38 @@ public class CategoryDatasetHandler extends RootHandler implements DatasetTags {
 	public CategoryDataset getDataset() {
 		return this.dataset;
 	}
-
+	
 	/**
 	 * Adds an item to the dataset.
 	 * 
 	 * @param rowKey
-	 *            the row key.
+	 *           the row key.
 	 * @param columnKey
-	 *            the column key.
+	 *           the column key.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void addItem(final Comparable rowKey, final Comparable columnKey, final Number value) {
 		this.dataset.addValue(value, rowKey, columnKey);
 	}
-
+	
 	/**
 	 * The start of an element.
 	 * 
 	 * @param namespaceURI
-	 *            the namespace.
+	 *           the namespace.
 	 * @param localName
-	 *            the element name.
+	 *           the element name.
 	 * @param qName
-	 *            the element name.
+	 *           the element name.
 	 * @param atts
-	 *            the element attributes.
+	 *           the element attributes.
 	 * @throws SAXException
-	 *             for errors.
+	 *            for errors.
 	 */
 	public void startElement(final String namespaceURI, final String localName, final String qName,
 			final Attributes atts) throws SAXException {
-
+		
 		final DefaultHandler current = getCurrentHandler();
 		if (current != this) {
 			current.startElement(namespaceURI, localName, qName, atts);
@@ -102,28 +102,28 @@ public class CategoryDatasetHandler extends RootHandler implements DatasetTags {
 		} else {
 			throw new SAXException("Element not recognised: " + qName);
 		}
-
+		
 	}
-
+	
 	/**
 	 * The end of an element.
 	 * 
 	 * @param namespaceURI
-	 *            the namespace.
+	 *           the namespace.
 	 * @param localName
-	 *            the element name.
+	 *           the element name.
 	 * @param qName
-	 *            the element name.
+	 *           the element name.
 	 * @throws SAXException
-	 *             for errors.
+	 *            for errors.
 	 */
 	public void endElement(final String namespaceURI, final String localName, final String qName) throws SAXException {
-
+		
 		final DefaultHandler current = getCurrentHandler();
 		if (current != this) {
 			current.endElement(namespaceURI, localName, qName);
 		}
-
+		
 	}
-
+	
 }

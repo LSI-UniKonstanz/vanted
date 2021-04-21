@@ -21,12 +21,12 @@ import org.graffiti.session.UnsatisfiedConstraintException;
  */
 public interface GraphConstraint {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Checks whether the specified graph satisfies the defined constraint.
 	 * 
 	 * @throws UnsatisfiedConstraintException
-	 *             if the graph does not satisfy the defined constraint.
+	 *            if the graph does not satisfy the defined constraint.
 	 */
 	public void validate(Graph g) throws UnsatisfiedConstraintException;
 }

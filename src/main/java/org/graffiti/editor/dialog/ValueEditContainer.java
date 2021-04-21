@@ -23,7 +23,7 @@ import org.graffiti.plugin.editcomponent.ValueEditComponent;
  */
 public interface ValueEditContainer {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns a <code>java.util.List</code> containing all the edit components of
 	 * this <code>ValueEditContainer</code>.
@@ -32,12 +32,12 @@ public interface ValueEditContainer {
 	 *         this <code>ValueEditContainer</code>.
 	 */
 	public List<?> getEditComponents();
-
+	
 	/**
 	 * Adds another <code>ValueEditComponent</code> to the dialog.
 	 * 
 	 * @param vec
-	 *            the <code>ValueEditComponent</code> to be added to the dialog.
+	 *           the <code>ValueEditComponent</code> to be added to the dialog.
 	 */
 	public void addValueEditComponent(ValueEditComponent vec);
 }

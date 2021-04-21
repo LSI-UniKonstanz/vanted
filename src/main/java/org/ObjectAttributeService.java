@@ -21,9 +21,9 @@ import java.util.List;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class ObjectAttributeService implements HelperClass {
-
+	
 	public static String objectToStringMappingPossible_StringPrefix = "$STRINGOBJECT$";
-
+	
 	public static String getStringRepresentationFor(Object myInstance) throws IOException {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		// ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -42,7 +42,7 @@ public class ObjectAttributeService implements HelperClass {
 		}
 		return objectToStringMappingPossible_StringPrefix + sb.toString();
 	}
-
+	
 	/**
 	 * @param string
 	 * @return
@@ -73,12 +73,12 @@ public class ObjectAttributeService implements HelperClass {
 		} else
 			throw new InvalidClassException("The given String is not a valid serialized StringObjectAttribute!");
 	}
-
+	
 	public static void main(String[] args) {
 		System.out.println("Serialization - Test (IPK, CK)");
-
+		
 	}
-
+	
 	/**
 	 * @param list
 	 * @return
@@ -86,7 +86,7 @@ public class ObjectAttributeService implements HelperClass {
 	public static String getStringPrefix(Object instance) {
 		return objectToStringMappingPossible_StringPrefix + instance.getClass().getCanonicalName() + "$";
 	}
-
+	
 	/**
 	 * @param string
 	 * @return

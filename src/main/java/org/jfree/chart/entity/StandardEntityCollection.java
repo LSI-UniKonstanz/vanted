@@ -43,57 +43,57 @@ import org.jfree.util.ObjectUtils;
  * A standard implementation of the {@link EntityCollection} interface.
  */
 public class StandardEntityCollection implements EntityCollection, Cloneable, Serializable {
-
+	
 	/** Storage for the entities. */
 	private Collection entities;
-
+	
 	/**
 	 * Constructs a new entity collection (initially empty).
 	 */
 	public StandardEntityCollection() {
 		this.entities = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Clears the entities.
 	 */
 	public void clear() {
 		this.entities.clear();
 	}
-
+	
 	/**
 	 * Adds an entity.
 	 * 
 	 * @param entity
-	 *            the entity.
+	 *           the entity.
 	 */
 	public void addEntity(ChartEntity entity) {
 		this.entities.add(entity);
 	}
-
+	
 	/**
 	 * Adds all the entities from the specified collection.
 	 * 
 	 * @param collection
-	 *            the collection of entities.
+	 *           the collection of entities.
 	 */
 	public void addEntities(EntityCollection collection) {
 		this.entities.addAll(collection.getEntities());
 	}
-
+	
 	/**
 	 * Returns an entity for the specified coordinates.
 	 * 
 	 * @param x
-	 *            the x coordinate.
+	 *           the x coordinate.
 	 * @param y
-	 *            the y coordinate.
+	 *           the y coordinate.
 	 * @return the entity.
 	 */
 	public ChartEntity getEntity(double x, double y) {
-
+		
 		ChartEntity result = null;
-
+		
 		Iterator iterator = this.entities.iterator();
 		while (iterator.hasNext()) {
 			ChartEntity entity = (ChartEntity) iterator.next();
@@ -101,10 +101,10 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 				result = entity;
 			}
 		}
-
+		
 		return result;
 	}
-
+	
 	/**
 	 * Returns the entities in an unmodifiable collection.
 	 * 
@@ -113,7 +113,7 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 	public Collection getEntities() {
 		return Collections.unmodifiableCollection(this.entities);
 	}
-
+	
 	/**
 	 * Returns an iterator for the entities in the collection.
 	 * 
@@ -122,12 +122,12 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 	public Iterator iterator() {
 		return this.entities.iterator();
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *            the object to test against (<code>null</code> permitted).
+	 *           the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -140,13 +140,13 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a clone.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             if the object cannot be cloned.
+	 *            if the object cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

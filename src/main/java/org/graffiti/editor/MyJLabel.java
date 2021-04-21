@@ -14,18 +14,25 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
 public class MyJLabel extends JLabel {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4894501748005777132L;
 	private String fullText = "";
-
+	
 	public MyJLabel(String text) {
 		super();
 		setText(text);
-
+		
 		KeyStroke statusHotkey = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0, false);
 		String STATUS_KEY = "MyStatus";
 		Action uirobot = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -283574413943306038L;
+			
 			public void actionPerformed(ActionEvent e) {
 				setEnabled(false); // stop any other events from interfering
 				if (fullText != null && fullText.trim().length() > 0)
@@ -33,40 +40,40 @@ public class MyJLabel extends JLabel {
 				setEnabled(true);
 			}
 		};
-
+		
 		GlobalHotkeyManager hotkeyManager = GlobalHotkeyManager.getInstance();
 		hotkeyManager.getInputMap().put(statusHotkey, STATUS_KEY);
 		hotkeyManager.getActionMap().put(STATUS_KEY, uirobot);
-
+		
 		this.addMouseListener(new MouseListener() {
-
+			
 			public void mouseClicked(MouseEvent e) {
 				if (fullText != null && fullText.trim().length() > 0)
 					MainFrame.showMessageDialogWithScrollBars(fullText, "Status Message");
 			}
-
+			
 			public void mousePressed(MouseEvent e) {
 				//
-
+				
 			}
-
+			
 			public void mouseReleased(MouseEvent e) {
 				//
-
+				
 			}
-
+			
 			public void mouseEntered(MouseEvent e) {
 				//
-
+				
 			}
-
+			
 			public void mouseExited(MouseEvent e) {
 				//
-
+				
 			}
 		});
 	}
-
+	
 	@Override
 	public void setText(String text) {
 		fullText = text;
@@ -77,7 +84,7 @@ public class MyJLabel extends JLabel {
 			super.setText(text);
 		}
 	}
-
+	
 	private String getTrimmText(String text, String t1, String t2) {
 		int a = text.indexOf(t1);
 		int b = text.indexOf(t2);
@@ -86,5 +93,5 @@ public class MyJLabel extends JLabel {
 		} else
 			return text;
 	}
-
+	
 }

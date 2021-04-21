@@ -14,14 +14,14 @@ public class ProgressManager {
 	String cacheFileName = null;
 	String directory = null;
 	String cacheFileNameWithoutPath = null;
-
+	
 	public synchronized void init(String cacheFileName, String directory, String cacheFileNameWithoutPath) {
 		this.cacheFileName = cacheFileName;
 		this.directory = directory;
 		this.cacheFileNameWithoutPath = cacheFileNameWithoutPath;
 		progressFile = new File(cacheFileName + ".progress.INIT");
 	}
-
+	
 	public synchronized String getCurrentStatus() {
 		if (progressFile == null)
 			return "ERROR";
@@ -42,7 +42,7 @@ public class ProgressManager {
 		result = StringManipulationTools.htmlToUnicode(result);
 		return result;
 	}
-
+	
 	public synchronized void setStatus(int progress, String activity) {
 		if (!progressFile.exists()) {
 			try {
@@ -61,5 +61,5 @@ public class ProgressManager {
 			progressFile = nf;
 		}
 	}
-
+	
 }

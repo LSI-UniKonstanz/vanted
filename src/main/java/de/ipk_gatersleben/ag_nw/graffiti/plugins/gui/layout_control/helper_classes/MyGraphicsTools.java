@@ -24,19 +24,19 @@ public class MyGraphicsTools {
 	 * result: "1-2----3------4"<br>
 	 * 
 	 * @param s
-	 *            String to be modified.
+	 *           String to be modified.
 	 * @param find
-	 *            String to find.
+	 *           String to find.
 	 * @param replace
-	 *            String to replace.
+	 *           String to replace.
 	 * @return a string with all the occurrences of the string to find replaced.
 	 * @throws NullPointerException
-	 *             if s is null.
+	 *            if s is null.
 	 */
 	public static String stringReplace(String s, String find, String replace) {
 		return StringManipulationTools.stringReplace(s, find, replace);
 	}
-
+	
 	/**
 	 * @param g
 	 * @param color
@@ -54,7 +54,7 @@ public class MyGraphicsTools {
 		g.drawLine(x1, y1, x1 + w, y1);
 		g.drawLine(x1, y1, x1, y1 + h);
 	}
-
+	
 	public static void drawBarChartVarianceLine(Graphics g, int height, int borderNode, int barWidth, double maxValue,
 			Double curVariance, int x1, int y1, int w) {
 		int topX = x1 + w / 2;

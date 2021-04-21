@@ -38,15 +38,15 @@ import java.util.Locale;
  * {@link TickUnit}.
  */
 public class StandardTickUnitSource implements TickUnitSource {
-
+	
 	/** Constant for log(10.0). */
 	private static final double LOG_10_VALUE = Math.log(10.0);
-
+	
 	/**
 	 * Returns a tick unit that is larger than the supplied unit.
 	 * 
 	 * @param unit
-	 *            the unit.
+	 *           the unit.
 	 * @return A tick unit that is larger than the supplied unit.
 	 */
 	public TickUnit getLargerTickUnit(TickUnit unit) {
@@ -55,7 +55,7 @@ public class StandardTickUnitSource implements TickUnitSource {
 		double higher = Math.ceil(log);
 		return new NumberTickUnit(Math.pow(10, higher), getDecimalFormat("0.0E0"));
 	}
-
+	
 	/**
 	 * Replace occurrences of a substring.
 	 * http://ostermiller.org/utils/StringHelper.html StringHelper.replace("1-2-3",
@@ -71,14 +71,14 @@ public class StandardTickUnitSource implements TickUnitSource {
 	 * result: "1-2----3------4"<br>
 	 * 
 	 * @param s
-	 *            String to be modified.
+	 *           String to be modified.
 	 * @param find
-	 *            String to find.
+	 *           String to find.
 	 * @param replace
-	 *            String to replace.
+	 *           String to replace.
 	 * @return a string with all the occurrences of the string to find replaced.
 	 * @throws NullPointerException
-	 *             if s is null.
+	 *            if s is null.
 	 */
 	public static String stringReplace(String s, String find, String replace) {
 		int findLength;
@@ -95,7 +95,7 @@ public class StandardTickUnitSource implements TickUnitSource {
 			replace = ""; //$NON-NLS-1$
 		}
 		int replaceLength = replace.length();
-
+		
 		// We need to figure out how long our resulting string will be.
 		// This is required because without it, the possible resizing
 		// and copying of memory structures could lead to an unacceptable runtime.
@@ -110,7 +110,7 @@ public class StandardTickUnitSource implements TickUnitSource {
 			int count;
 			int start;
 			int end;
-
+			
 			// Scan s and count the number of times we find our target.
 			count = 0;
 			start = 0;
@@ -125,7 +125,7 @@ public class StandardTickUnitSource implements TickUnitSource {
 			}
 			length = stringLength - (count * (findLength - replaceLength));
 		}
-
+		
 		int start = 0;
 		int end = s.indexOf(find, start);
 		if (end == -1) {
@@ -138,7 +138,7 @@ public class StandardTickUnitSource implements TickUnitSource {
 		// it looks like we actually have something to replace
 		// *sigh* allocate memory for it.
 		StringBuffer sb = new StringBuffer(length);
-
+		
 		// Scan s and do the replacements
 		while (end != -1) {
 			sb.append(s.substring(start, end).toString());
@@ -148,10 +148,10 @@ public class StandardTickUnitSource implements TickUnitSource {
 		}
 		end = stringLength;
 		sb.append(s.substring(start, end).toString());
-
+		
 		return (sb.toString());
 	}
-
+	
 	public static DecimalFormat getDecimalFormat(String pattern) {
 		pattern = stringReplace(pattern, ",", "");
 		NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
@@ -159,25 +159,25 @@ public class StandardTickUnitSource implements TickUnitSource {
 		df.applyPattern(pattern);
 		return df;
 	}
-
+	
 	/**
 	 * Returns the tick unit in the collection that is greater than or equal to (in
 	 * size) the specified unit.
 	 * 
 	 * @param unit
-	 *            the unit.
+	 *           the unit.
 	 * @return A unit from the collection.
 	 */
 	public TickUnit getCeilingTickUnit(TickUnit unit) {
 		return getLargerTickUnit(unit);
 	}
-
+	
 	/**
 	 * Returns the tick unit in the collection that is greater than or equal to the
 	 * specified size.
 	 * 
 	 * @param size
-	 *            the size.
+	 *           the size.
 	 * @return A unit from the collection.
 	 */
 	public TickUnit getCeilingTickUnit(double size) {
@@ -185,5 +185,5 @@ public class StandardTickUnitSource implements TickUnitSource {
 		double higher = Math.ceil(log);
 		return new NumberTickUnit(Math.pow(10, higher), getDecimalFormat("0.0E0"));
 	}
-
+	
 }

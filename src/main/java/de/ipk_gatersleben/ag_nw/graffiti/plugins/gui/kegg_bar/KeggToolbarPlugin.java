@@ -20,7 +20,7 @@ public class KeggToolbarPlugin extends IPK_EditorPluginAdapter {
 				// toolbarPanel
 				// new ClusterHelperToolbarComponent("defaultToolbar")
 		};
-
+				
 		algorithms = new Algorithm[] { new MergeWindowsAlgorithm(), new SelectWindowsAlgorithm(),
 				new ColorizeSuperGraphAlgorithm(), new CreateOrgSpecificSuperGraphsAlgorithm() };
 	}

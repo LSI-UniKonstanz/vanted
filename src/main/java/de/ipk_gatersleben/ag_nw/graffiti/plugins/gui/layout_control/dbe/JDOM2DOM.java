@@ -18,7 +18,7 @@ import org.jdom2.output.DOMOutputter;
 
 public class JDOM2DOM {
 	private static DOMOutputter domOut = new DOMOutputter();
-
+	
 	public static org.w3c.dom.Element getNodeForJDOMElement(Element e) throws JDOMException {
 		Element clone = (Element) e.clone();
 		Document jdomDoc = new Document();
@@ -26,7 +26,7 @@ public class JDOM2DOM {
 		org.w3c.dom.Document domDoc = domOut.output(jdomDoc);
 		return domDoc.getDocumentElement();
 	}
-
+	
 	public static org.w3c.dom.Document getDOMfromJDOM(org.jdom2.Document doc) throws JDOMException {
 		Element e = doc.getRootElement();
 		Element clone = (Element) e.clone();
@@ -34,9 +34,9 @@ public class JDOM2DOM {
 		jdomDoc.setRootElement(clone);
 		org.w3c.dom.Document domDoc = domOut.output(jdomDoc);
 		return domDoc;
-
+		
 	}
-
+	
 	public static org.jdom2.Document getJDOMfromDOM(org.w3c.dom.Document doc) {
 		return XMLHelper.getJDOMfromDOM(doc);
 	}

@@ -184,222 +184,222 @@ import org.jfree.util.PublicCloneable;
  * creating pre-configured charts.
  */
 public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListener, Cloneable, Serializable {
-
+	
 	private static final long serialVersionUID = 8566850564310187010L;
-
+	
 	/** The default grid line stroke. */
 	public static final Stroke DEFAULT_GRIDLINE_STROKE = new BasicStroke(0.5f, BasicStroke.CAP_BUTT,
 			BasicStroke.JOIN_BEVEL, 0.0f, new float[] { 2.0f, 2.0f }, 0.0f);
-
+	
 	/** The default grid line paint. */
 	public static final Paint DEFAULT_GRIDLINE_PAINT = Color.lightGray;
-
+	
 	/** The default crosshair visibility. */
 	public static final boolean DEFAULT_CROSSHAIR_VISIBLE = false;
-
+	
 	/** The default crosshair stroke. */
 	public static final Stroke DEFAULT_CROSSHAIR_STROKE = DEFAULT_GRIDLINE_STROKE;
-
+	
 	/** The default crosshair paint. */
 	public static final Paint DEFAULT_CROSSHAIR_PAINT = Color.blue;
-
+	
 	/** The resourceBundle for the localization. */
 	protected static ResourceBundle localizationResources = ResourceBundle
 			.getBundle("org.jfree.chart.plot.LocalizationBundle");
-
+	
 	/** The plot orientation. */
 	private PlotOrientation orientation;
-
+	
 	/** The offset between the data area and the axes. */
 	private Spacer axisOffset;
-
+	
 	/** The domain axis / axes (used for the x-values). */
 	private ObjectList domainAxes;
-
+	
 	/** The domain axis locations. */
 	private ObjectList domainAxisLocations;
-
+	
 	/** The range axis (used for the y-values). */
 	private ObjectList rangeAxes;
-
+	
 	/** The range axis location. */
 	private ObjectList rangeAxisLocations;
-
+	
 	/** Storage for the datasets. */
 	private ObjectList datasets;
-
+	
 	/** Storage for the renderers. */
 	private ObjectList renderers;
-
+	
 	/** Storage for keys that map datasets/renderers to domain axes. */
 	private ObjectList domainAxisMap;
-
+	
 	/** Storage for keys that map datasets/renderers to range axes. */
 	private ObjectList rangeAxisMap;
-
+	
 	/** The origin point for the quadrants (if drawn). */
 	private transient Point2D quadrantOrigin = new Point2D.Double(0.0, 0.0);
-
+	
 	/** The paint used for each quadrant. */
 	private transient Paint[] quadrantPaint = new Paint[] { null, null, null, null };
-
+	
 	/** A flag that controls whether the domain grid-lines are visible. */
 	private boolean domainGridlinesVisible;
-
+	
 	/** The stroke used to draw the domain grid-lines. */
 	private transient Stroke domainGridlineStroke;
-
+	
 	/** The paint used to draw the domain grid-lines. */
 	private transient Paint domainGridlinePaint;
-
+	
 	/** A flag that controls whether the range grid-lines are visible. */
 	private boolean rangeGridlinesVisible;
-
+	
 	/** The stroke used to draw the range grid-lines. */
 	private transient Stroke rangeGridlineStroke;
-
+	
 	/** The paint used to draw the range grid-lines. */
 	private transient Paint rangeGridlinePaint;
-
+	
 	/** A flag that controls whether or not a domain crosshair is drawn.. */
 	private boolean domainCrosshairVisible;
-
+	
 	/** The domain crosshair value. */
 	private double domainCrosshairValue;
-
+	
 	/** The pen/brush used to draw the crosshair (if any). */
 	private transient Stroke domainCrosshairStroke;
-
+	
 	/** The color used to draw the crosshair (if any). */
 	private transient Paint domainCrosshairPaint;
-
+	
 	/**
 	 * A flag that controls whether or not the crosshair locks onto actual data
 	 * points.
 	 */
 	private boolean domainCrosshairLockedOnData = true;
-
+	
 	/** A flag that controls whether or not a range crosshair is drawn.. */
 	private boolean rangeCrosshairVisible;
-
+	
 	/** The range crosshair value. */
 	private double rangeCrosshairValue;
-
+	
 	/** The pen/brush used to draw the crosshair (if any). */
 	private transient Stroke rangeCrosshairStroke;
-
+	
 	/** The color used to draw the crosshair (if any). */
 	private transient Paint rangeCrosshairPaint;
-
+	
 	/**
 	 * A flag that controls whether or not the crosshair locks onto actual data
 	 * points.
 	 */
 	private boolean rangeCrosshairLockedOnData = true;
-
+	
 	/** A map of lists of foreground markers (optional) for the domain axes. */
 	private transient Map<Integer, Collection<Marker>> foregroundDomainMarkers;
-
+	
 	/** A map of lists of background markers (optional) for the domain axes. */
 	private transient Map<Integer, Collection<Marker>> backgroundDomainMarkers;
-
+	
 	/** A map of lists of foreground markers (optional) for the range axes. */
 	private transient Map<Integer, Collection<Marker>> foregroundRangeMarkers;
-
+	
 	/** A map of lists of background markers (optional) for the range axes. */
 	private transient Map<Integer, Collection<Marker>> backgroundRangeMarkers;
-
+	
 	/** A list of annotations (optional) for the plot. */
 	private List<XYAnnotation> annotations;
-
+	
 	/** The paint used for the domain tick bands (if any). */
 	private transient Paint domainTickBandPaint;
-
+	
 	/** The paint used for the range tick bands (if any). */
 	private transient Paint rangeTickBandPaint;
-
+	
 	/** The fixed domain axis space. */
 	private AxisSpace fixedDomainAxisSpace;
-
+	
 	/** The fixed range axis space. */
 	private AxisSpace fixedRangeAxisSpace;
-
+	
 	/**
 	 * The order of the dataset rendering (REVERSE draws the primary dataset last so
 	 * that it appears to be on top).
 	 */
 	private DatasetRenderingOrder renderingOrder = DatasetRenderingOrder.REVERSE;
-
+	
 	/**
 	 * The weight for this plot (only relevant if this is a subplot in a combined
 	 * plot).
 	 */
 	private int weight;
-
+	
 	/**
 	 * An optional collection of legend items that can be returned by the
 	 * getLegendItems() method.
 	 */
 	private LegendItemCollection fixedLegendItems;
-
+	
 	/** Access to logging facilities. */
 	private static final LogContext LOGGER = Log.createContext(XYPlot.class);
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public XYPlot() {
 		this(null, null, null, null);
 	}
-
+	
 	/**
 	 * Creates a new plot.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @param domainAxis
-	 *            the domain axis (<code>null</code> permitted).
+	 *           the domain axis (<code>null</code> permitted).
 	 * @param rangeAxis
-	 *            the range axis (<code>null</code> permitted).
+	 *           the range axis (<code>null</code> permitted).
 	 * @param renderer
-	 *            the renderer (<code>null</code> permitted).
+	 *           the renderer (<code>null</code> permitted).
 	 */
 	public XYPlot(XYDataset dataset, ValueAxis domainAxis, ValueAxis rangeAxis, XYItemRenderer renderer) {
-
+		
 		super();
-
+		
 		this.orientation = PlotOrientation.VERTICAL;
 		this.weight = 1; // only relevant when this is a subplot
 		this.axisOffset = new Spacer(Spacer.ABSOLUTE, 0.0, 0.0, 0.0, 0.0);
-
+		
 		// allocate storage for datasets, axes and renderers (all optional)
 		this.domainAxes = new ObjectList();
 		this.domainAxisLocations = new ObjectList();
 		this.foregroundDomainMarkers = new HashMap<>();
 		this.backgroundDomainMarkers = new HashMap<>();
-
+		
 		this.rangeAxes = new ObjectList();
 		this.rangeAxisLocations = new ObjectList();
 		this.foregroundRangeMarkers = new HashMap<>();
 		this.backgroundRangeMarkers = new HashMap<>();
-
+		
 		this.datasets = new ObjectList();
 		this.renderers = new ObjectList();
-
+		
 		this.domainAxisMap = new ObjectList();
 		this.rangeAxisMap = new ObjectList();
-
+		
 		this.datasets.set(0, dataset);
 		if (dataset != null) {
 			dataset.addChangeListener(this);
 		}
-
+		
 		this.renderers.set(0, renderer);
 		if (renderer != null) {
 			renderer.setPlot(this);
 			renderer.addChangeListener(this);
 		}
-
+		
 		this.domainAxes.set(0, domainAxis);
 		this.mapDatasetToDomainAxis(0, 0);
 		if (domainAxis != null) {
@@ -407,7 +407,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			domainAxis.addChangeListener(this);
 		}
 		this.domainAxisLocations.set(0, AxisLocation.BOTTOM_OR_LEFT);
-
+		
 		this.rangeAxes.set(0, rangeAxis);
 		this.mapDatasetToRangeAxis(0, 0);
 		if (rangeAxis != null) {
@@ -415,30 +415,30 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			rangeAxis.addChangeListener(this);
 		}
 		this.rangeAxisLocations.set(0, AxisLocation.BOTTOM_OR_LEFT);
-
+		
 		configureDomainAxes();
 		configureRangeAxes();
-
+		
 		this.domainGridlinesVisible = true;
 		this.domainGridlineStroke = DEFAULT_GRIDLINE_STROKE;
 		this.domainGridlinePaint = DEFAULT_GRIDLINE_PAINT;
-
+		
 		this.rangeGridlinesVisible = true;
 		this.rangeGridlineStroke = DEFAULT_GRIDLINE_STROKE;
 		this.rangeGridlinePaint = DEFAULT_GRIDLINE_PAINT;
-
+		
 		this.domainCrosshairVisible = false;
 		this.domainCrosshairValue = 0.0;
 		this.domainCrosshairStroke = DEFAULT_CROSSHAIR_STROKE;
 		this.domainCrosshairPaint = DEFAULT_CROSSHAIR_PAINT;
-
+		
 		this.rangeCrosshairVisible = false;
 		this.rangeCrosshairValue = 0.0;
 		this.rangeCrosshairStroke = DEFAULT_CROSSHAIR_STROKE;
 		this.rangeCrosshairPaint = DEFAULT_CROSSHAIR_PAINT;
-
+		
 	}
-
+	
 	/**
 	 * Returns the plot type as a string.
 	 * 
@@ -447,7 +447,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public String getPlotType() {
 		return localizationResources.getString("XY_Plot");
 	}
-
+	
 	/**
 	 * Returns the orientation of the plot.
 	 * 
@@ -456,12 +456,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public PlotOrientation getOrientation() {
 		return this.orientation;
 	}
-
+	
 	/**
 	 * Sets the orientation for the plot.
 	 * 
 	 * @param orientation
-	 *            the orientation (<code>null</code> not allowed).
+	 *           the orientation (<code>null</code> not allowed).
 	 */
 	public void setOrientation(PlotOrientation orientation) {
 		if (orientation == null) {
@@ -472,7 +472,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the axis offset.
 	 * 
@@ -481,18 +481,18 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Spacer getAxisOffset() {
 		return this.axisOffset;
 	}
-
+	
 	/**
 	 * Sets the axis offsets (gap between the data area and the axes).
 	 * 
 	 * @param offset
-	 *            the offset.
+	 *           the offset.
 	 */
 	public void setAxisOffset(Spacer offset) {
 		this.axisOffset = offset;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the domain axis for the plot. If the domain axis for this plot is
 	 * null, then the method will return the parent plot's domain axis (if there is
@@ -503,12 +503,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public ValueAxis getDomainAxis() {
 		return getDomainAxis(0);
 	}
-
+	
 	/**
 	 * Returns a domain axis.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @return The axis (<code>null</code> possible).
 	 */
 	public ValueAxis getDomainAxis(int index) {
@@ -525,47 +525,47 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Sets the domain axis for the plot and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param axis
-	 *            the new axis (<code>null</code> permitted).
+	 *           the new axis (<code>null</code> permitted).
 	 */
 	public void setDomainAxis(ValueAxis axis) {
 		setDomainAxis(0, axis);
 	}
-
+	
 	/**
 	 * Sets a domain axis and sends a {@link PlotChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @param axis
-	 *            the axis.
+	 *           the axis.
 	 */
 	public void setDomainAxis(int index, ValueAxis axis) {
-
+		
 		ValueAxis existing = getDomainAxis(index);
 		if (existing != null) {
 			existing.removeChangeListener(this);
 		}
-
+		
 		if (axis != null) {
 			axis.setPlot(this);
 		}
-
+		
 		this.domainAxes.set(index, axis);
 		if (axis != null) {
 			axis.configure();
 			axis.addChangeListener(this);
 		}
 		notifyListeners(new PlotChangeEvent(this));
-
+		
 	}
-
+	
 	/**
 	 * Returns the location of the primary domain axis.
 	 * 
@@ -574,27 +574,27 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public AxisLocation getDomainAxisLocation() {
 		return (AxisLocation) this.domainAxisLocations.get(0);
 	}
-
+	
 	/**
 	 * Sets the location of the domain axis and sends a {@link PlotChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param location
-	 *            the location (<code>null</code> not permitted).
+	 *           the location (<code>null</code> not permitted).
 	 */
 	public void setDomainAxisLocation(AxisLocation location) {
 		// defer argument checking...
 		setDomainAxisLocation(location, true);
 	}
-
+	
 	/**
 	 * Sets the location of the domain axis and, if requested, sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param location
-	 *            the location (<code>null</code> not permitted).
+	 *           the location (<code>null</code> not permitted).
 	 * @param notify
-	 *            notify listeners?
+	 *           notify listeners?
 	 */
 	public void setDomainAxisLocation(AxisLocation location, boolean notify) {
 		if (location == null) {
@@ -605,7 +605,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the edge for the primary domain axis (taking into account the plot's
 	 * orientation.
@@ -615,7 +615,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public RectangleEdge getDomainAxisEdge() {
 		return Plot.resolveDomainAxisLocation(getDomainAxisLocation(), this.orientation);
 	}
-
+	
 	/**
 	 * Returns the number of domain axes.
 	 * 
@@ -624,7 +624,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public int getDomainAxisCount() {
 		return this.domainAxes.size();
 	}
-
+	
 	/**
 	 * Clears the domain axes from the plot and sends a {@link PlotChangeEvent} to
 	 * all registered listeners.
@@ -639,7 +639,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		this.domainAxes.clear();
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Configures the domain axes.
 	 */
@@ -651,14 +651,14 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns the location for a domain axis. If this hasn't been set explicitly,
 	 * the method returns the location that is opposite to the primary domain axis
 	 * location.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @return The location (never <code>null</code>).
 	 */
 	public AxisLocation getDomainAxisLocation(int index) {
@@ -671,26 +671,26 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Sets the location for a domain axis and sends a {@link PlotChangeEvent} to
 	 * all registered listeners.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @param location
-	 *            the location (<code>null</code> permitted).
+	 *           the location (<code>null</code> permitted).
 	 */
 	public void setDomainAxisLocation(int index, AxisLocation location) {
 		this.domainAxisLocations.set(index, location);
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the edge for a domain axis.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @return The edge.
 	 */
 	public RectangleEdge getDomainAxisEdge(int index) {
@@ -701,7 +701,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the range axis for the plot. If the range axis for this plot is null,
 	 * then the method will return the parent plot's range axis (if there is a
@@ -712,35 +712,35 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public ValueAxis getRangeAxis() {
 		return getRangeAxis(0);
 	}
-
+	
 	/**
 	 * Sets the range axis for the plot and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param axis
-	 *            the axis (<code>null</code> permitted).
+	 *           the axis (<code>null</code> permitted).
 	 */
 	public void setRangeAxis(ValueAxis axis) {
-
+		
 		if (axis != null) {
 			axis.setPlot(this);
 		}
-
+		
 		// plot is likely registered as a listener with the existing axis...
 		ValueAxis existing = getRangeAxis();
 		if (existing != null) {
 			existing.removeChangeListener(this);
 		}
-
+		
 		this.rangeAxes.set(0, axis);
 		if (axis != null) {
 			axis.configure();
 			axis.addChangeListener(this);
 		}
 		notifyListeners(new PlotChangeEvent(this));
-
+		
 	}
-
+	
 	/**
 	 * Returns the location of the primary range axis.
 	 * 
@@ -749,27 +749,27 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public AxisLocation getRangeAxisLocation() {
 		return (AxisLocation) this.rangeAxisLocations.get(0);
 	}
-
+	
 	/**
 	 * Sets the location of the primary range axis and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param location
-	 *            the location (<code>null</code> not permitted).
+	 *           the location (<code>null</code> not permitted).
 	 */
 	public void setRangeAxisLocation(AxisLocation location) {
 		// defer argument checking...
 		setRangeAxisLocation(location, true);
 	}
-
+	
 	/**
 	 * Sets the location of the primary range axis and, if requested, sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param location
-	 *            the location (<code>null</code> not permitted).
+	 *           the location (<code>null</code> not permitted).
 	 * @param notify
-	 *            notify listeners?
+	 *           notify listeners?
 	 */
 	public void setRangeAxisLocation(AxisLocation location, boolean notify) {
 		if (location == null) {
@@ -779,9 +779,9 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		if (notify) {
 			notifyListeners(new PlotChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the edge for the primary range axis.
 	 * 
@@ -790,12 +790,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public RectangleEdge getRangeAxisEdge() {
 		return Plot.resolveRangeAxisLocation(getRangeAxisLocation(), this.orientation);
 	}
-
+	
 	/**
 	 * Returns a range axis.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @return The axis (<code>null</code> possible).
 	 */
 	public ValueAxis getRangeAxis(int index) {
@@ -812,36 +812,36 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Sets a range axis and sends a {@link PlotChangeEvent} to all registered
 	 * listeners.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @param axis
-	 *            the axis (<code>null</code> permitted).
+	 *           the axis (<code>null</code> permitted).
 	 */
 	public void setRangeAxis(int index, ValueAxis axis) {
-
+		
 		ValueAxis existing = getRangeAxis(index);
 		if (existing != null) {
 			existing.removeChangeListener(this);
 		}
-
+		
 		if (axis != null) {
 			axis.setPlot(this);
 		}
-
+		
 		this.rangeAxes.set(index, axis);
 		if (axis != null) {
 			axis.configure();
 			axis.addChangeListener(this);
 		}
 		notifyListeners(new PlotChangeEvent(this));
-
+		
 	}
-
+	
 	/**
 	 * Returns the number of range axes.
 	 * 
@@ -850,7 +850,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public int getRangeAxisCount() {
 		return this.rangeAxes.size();
 	}
-
+	
 	/**
 	 * Clears the range axes from the plot and sends a {@link PlotChangeEvent} to
 	 * all registered listeners.
@@ -865,7 +865,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		this.rangeAxes.clear();
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Configures the range axes.
 	 */
@@ -877,14 +877,14 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns the location for a range axis. If this hasn't been set explicitly,
 	 * the method returns the location that is opposite to the primary range axis
 	 * location.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @return The location (never <code>null</code>).
 	 */
 	public AxisLocation getRangeAxisLocation(int index) {
@@ -897,26 +897,26 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Sets the location for a range axis and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @param location
-	 *            the location (<code>null</code> permitted).
+	 *           the location (<code>null</code> permitted).
 	 */
 	public void setRangeAxisLocation(int index, AxisLocation location) {
 		this.rangeAxisLocations.set(index, location);
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the edge for a range axis.
 	 * 
 	 * @param index
-	 *            the axis index.
+	 *           the axis index.
 	 * @return The edge.
 	 */
 	public RectangleEdge getRangeAxisEdge(int index) {
@@ -927,7 +927,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the primary dataset for the plot.
 	 * 
@@ -936,12 +936,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public XYDataset getDataset() {
 		return getDataset(0);
 	}
-
+	
 	/**
 	 * Returns a dataset.
 	 * 
 	 * @param index
-	 *            the dataset index.
+	 *           the dataset index.
 	 * @return The dataset (possibly <code>null</code>).
 	 */
 	public XYDataset getDataset(int index) {
@@ -951,25 +951,25 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Sets the primary dataset for the plot, replacing the existing dataset if
 	 * there is one.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 */
 	public void setDataset(XYDataset dataset) {
 		setDataset(0, dataset);
 	}
-
+	
 	/**
 	 * Sets a dataset for the plot.
 	 * 
 	 * @param index
-	 *            the dataset index.
+	 *           the dataset index.
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 */
 	public void setDataset(int index, XYDataset dataset) {
 		XYDataset existing = getDataset(index);
@@ -980,7 +980,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		if (dataset != null) {
 			dataset.addChangeListener(this);
 		}
-
+		
 		// map dataset to main axis by default
 		if (index >= this.domainAxisMap.size()) {
 			this.domainAxisMap.set(index, Integer.valueOf(0));
@@ -988,12 +988,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		if (index >= this.rangeAxisMap.size()) {
 			this.rangeAxisMap.set(index, Integer.valueOf(0));
 		}
-
+		
 		// send a dataset change event to self...
 		DatasetChangeEvent event = new DatasetChangeEvent(this, dataset);
 		datasetChanged(event);
 	}
-
+	
 	/**
 	 * Returns the number of datasets.
 	 * 
@@ -1002,13 +1002,13 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public int getDatasetCount() {
 		return this.datasets.size();
 	}
-
+	
 	/**
 	 * Returns the index of the specified dataset, or <code>-1</code> if the dataset
 	 * does not belong to the plot.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> not permitted).
+	 *           the dataset (<code>null</code> not permitted).
 	 * @return The index.
 	 */
 	public int indexOf(XYDataset dataset) {
@@ -1021,35 +1021,35 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Maps a dataset to a particular domain axis.
 	 * 
 	 * @param index
-	 *            the dataset index (zero-based).
+	 *           the dataset index (zero-based).
 	 * @param axisIndex
-	 *            the axis index.
+	 *           the axis index.
 	 */
 	public void mapDatasetToDomainAxis(int index, int axisIndex) {
 		this.domainAxisMap.set(index, Integer.valueOf(axisIndex));
 		// fake a dataset change event to update axes...
 		datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
 	}
-
+	
 	/**
 	 * Maps a dataset to a particular range axis.
 	 * 
 	 * @param index
-	 *            the dataset index (zero-based).
+	 *           the dataset index (zero-based).
 	 * @param axisIndex
-	 *            the axis index.
+	 *           the axis index.
 	 */
 	public void mapDatasetToRangeAxis(int index, int axisIndex) {
 		this.rangeAxisMap.set(index, Integer.valueOf(axisIndex));
 		// fake a dataset change event to update axes...
 		datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
 	}
-
+	
 	/**
 	 * Returns the renderer for the primary dataset.
 	 * 
@@ -1058,12 +1058,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public XYItemRenderer getRenderer() {
 		return getRenderer(0);
 	}
-
+	
 	/**
 	 * Returns the renderer for a dataset, or <code>null</code>.
 	 * 
 	 * @param index
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @return The renderer (possibly <code>null</code>).
 	 */
 	public XYItemRenderer getRenderer(int index) {
@@ -1072,29 +1072,29 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			result = (XYItemRenderer) this.renderers.get(index);
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Sets the renderer for the primary dataset and sends a {@link PlotChangeEvent}
 	 * to all registered listeners. If the renderer is set to <code>null</code>, no
 	 * data will be displayed.
 	 * 
 	 * @param renderer
-	 *            the renderer (<code>null</code> permitted).
+	 *           the renderer (<code>null</code> permitted).
 	 */
 	public void setRenderer(XYItemRenderer renderer) {
 		setRenderer(0, renderer);
 	}
-
+	
 	/**
 	 * Sets a renderer and sends a {@link PlotChangeEvent} is sent to all registered
 	 * listeners.
 	 * 
 	 * @param index
-	 *            the index.
+	 *           the index.
 	 * @param renderer
-	 *            the renderer.
+	 *           the renderer.
 	 */
 	public void setRenderer(int index, XYItemRenderer renderer) {
 		XYItemRenderer existing = getRenderer(index);
@@ -1107,7 +1107,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the dataset rendering order.
 	 * 
@@ -1116,7 +1116,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public DatasetRenderingOrder getDatasetRenderingOrder() {
 		return this.renderingOrder;
 	}
-
+	
 	/**
 	 * Sets the rendering order and sends a {@link PlotChangeEvent} to all
 	 * registered listeners. By default, the plot renders the primary dataset last
@@ -1124,7 +1124,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * reverse this if you want to.
 	 * 
 	 * @param order
-	 *            the rendering order (<code>null</code> not permitted).
+	 *           the rendering order (<code>null</code> not permitted).
 	 */
 	public void setDatasetRenderingOrder(DatasetRenderingOrder order) {
 		if (order == null) {
@@ -1133,12 +1133,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		this.renderingOrder = order;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the renderer for the specified dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return The renderer (possibly <code>null</code>).
 	 */
 	public XYItemRenderer getRendererForDataset(XYDataset dataset) {
@@ -1151,7 +1151,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the weight for this plot when it is used as a subplot within a
 	 * combined plot.
@@ -1161,28 +1161,28 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public int getWeight() {
 		return this.weight;
 	}
-
+	
 	/**
 	 * Sets the weight for the plot.
 	 * 
 	 * @param weight
-	 *            the weight.
+	 *           the weight.
 	 */
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the domain gridlines are visible, and
 	 * <code>false<code>
 	 * otherwise.
 	 * 
-	 * @return <code>true</code> or <code>false</code>.
+	 * &#64;return <code>true</code> or <code>false</code>.
 	 */
 	public boolean isDomainGridlinesVisible() {
 		return this.domainGridlinesVisible;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether or not the domain grid-lines are visible.
 	 * <p>
@@ -1190,7 +1190,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * registered listeners.
 	 * 
 	 * @param visible
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 */
 	public void setDomainGridlinesVisible(boolean visible) {
 		if (this.domainGridlinesVisible != visible) {
@@ -1198,7 +1198,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the stroke for the grid-lines (if any) plotted against the domain
 	 * axis.
@@ -1208,20 +1208,20 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Stroke getDomainGridlineStroke() {
 		return this.domainGridlineStroke;
 	}
-
+	
 	/**
 	 * Sets the stroke for the grid lines plotted against the domain axis.
 	 * <p>
 	 * If you set this to <code>null</code>, no grid lines will be drawn.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setDomainGridlineStroke(Stroke stroke) {
 		this.domainGridlineStroke = stroke;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint for the grid lines (if any) plotted against the domain
 	 * axis.
@@ -1231,31 +1231,31 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Paint getDomainGridlinePaint() {
 		return this.domainGridlinePaint;
 	}
-
+	
 	/**
 	 * Sets the paint for the grid lines plotted against the domain axis.
 	 * <p>
 	 * If you set this to <code>null</code>, no grid lines will be drawn.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setDomainGridlinePaint(Paint paint) {
 		this.domainGridlinePaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the range axis grid is visible, and
 	 * <code>false<code>
 	 * otherwise.
 	 * 
-	 * @return <code>true</code> or <code>false</code>.
+	 * &#64;return <code>true</code> or <code>false</code>.
 	 */
 	public boolean isRangeGridlinesVisible() {
 		return this.rangeGridlinesVisible;
 	}
-
+	
 	/**
 	 * Sets the flag that controls whether or not the range axis grid lines are
 	 * visible.
@@ -1264,7 +1264,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * registered listeners.
 	 * 
 	 * @param visible
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 */
 	public void setRangeGridlinesVisible(boolean visible) {
 		if (this.rangeGridlinesVisible != visible) {
@@ -1272,7 +1272,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the stroke for the grid lines (if any) plotted against the range
 	 * axis.
@@ -1282,20 +1282,20 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Stroke getRangeGridlineStroke() {
 		return this.rangeGridlineStroke;
 	}
-
+	
 	/**
 	 * Sets the stroke for the grid lines plotted against the range axis.
 	 * <p>
 	 * If you set this to <code>null</code>, no grid lines will be drawn.
 	 * 
 	 * @param stroke
-	 *            the stroke (<code>null</code> permitted).
+	 *           the stroke (<code>null</code> permitted).
 	 */
 	public void setRangeGridlineStroke(Stroke stroke) {
 		this.rangeGridlineStroke = stroke;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint for the grid lines (if any) plotted against the range axis.
 	 * 
@@ -1304,20 +1304,20 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Paint getRangeGridlinePaint() {
 		return this.rangeGridlinePaint;
 	}
-
+	
 	/**
 	 * Sets the paint for the grid lines plotted against the range axis.
 	 * <p>
 	 * If you set this to <code>null</code>, no grid lines will be drawn.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setRangeGridlinePaint(Paint paint) {
 		this.rangeGridlinePaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint used for the domain tick bands. If this is
 	 * <code>null</code>, no tick bands will be drawn.
@@ -1327,18 +1327,18 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Paint getDomainTickBandPaint() {
 		return this.domainTickBandPaint;
 	}
-
+	
 	/**
 	 * Sets the paint for the domain tick bands.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setDomainTickBandPaint(Paint paint) {
 		this.domainTickBandPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint used for the range tick bands. If this is
 	 * <code>null</code>, no tick bands will be drawn.
@@ -1348,18 +1348,18 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Paint getRangeTickBandPaint() {
 		return this.rangeTickBandPaint;
 	}
-
+	
 	/**
 	 * Sets the paint for the range tick bands.
 	 * 
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setRangeTickBandPaint(Paint paint) {
 		this.rangeTickBandPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the origin for the quadrants that can be displayed on the plot. This
 	 * defaults to (0, 0).
@@ -1369,13 +1369,13 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Point2D getQuadrantOrigin() {
 		return this.quadrantOrigin;
 	}
-
+	
 	/**
 	 * Sets the quadrant origin and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param origin
-	 *            the origin (<code>null</code> not permitted).
+	 *           the origin (<code>null</code> not permitted).
 	 */
 	public void setQuadrantOrigin(Point2D origin) {
 		if (origin == null) {
@@ -1384,12 +1384,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		this.quadrantOrigin = origin;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the paint used for the specified quadrant.
 	 * 
 	 * @param index
-	 *            the quadrant index (0-3).
+	 *           the quadrant index (0-3).
 	 * @return The paint (possibly <code>null</code>).
 	 */
 	public Paint getQuadrantPaint(int index) {
@@ -1398,15 +1398,15 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return this.quadrantPaint[index];
 	}
-
+	
 	/**
 	 * Sets the paint used for the specified quadrant and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param index
-	 *            the quadrant index (0-3).
+	 *           the quadrant index (0-3).
 	 * @param paint
-	 *            the paint (<code>null</code> permitted).
+	 *           the paint (<code>null</code> permitted).
 	 */
 	public void setQuadrantPaint(int index, Paint paint) {
 		if (index < 0 || index > 3) {
@@ -1415,7 +1415,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		this.quadrantPaint[index] = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Adds a marker for the domain axis and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
@@ -1424,13 +1424,13 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * the range axis, however this is entirely up to the renderer.
 	 * 
 	 * @param marker
-	 *            the marker (<code>null</code> not permitted).
+	 *           the marker (<code>null</code> not permitted).
 	 */
 	public void addDomainMarker(Marker marker) {
 		// defer argument checking...
 		addDomainMarker(marker, Layer.FOREGROUND);
 	}
-
+	
 	/**
 	 * Adds a marker for the domain axis in the specified layer and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
@@ -1439,14 +1439,14 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * the range axis, however this is entirely up to the renderer.
 	 * 
 	 * @param marker
-	 *            the marker (<code>null</code> not permitted).
+	 *           the marker (<code>null</code> not permitted).
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 */
 	public void addDomainMarker(Marker marker, Layer layer) {
 		addDomainMarker(0, marker, layer);
 	}
-
+	
 	/**
 	 * Clears all the (foreground and background) domain markers and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
@@ -1460,7 +1460,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Adds a marker for a renderer and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
@@ -1470,11 +1470,11 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * to the renderer.
 	 * 
 	 * @param index
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param marker
-	 *            the marker.
+	 *           the marker.
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 */
 	public void addDomainMarker(int index, Marker marker, Layer layer) {
 		Collection<Marker> markers;
@@ -1495,7 +1495,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Adds a marker for the range axis and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
@@ -1504,12 +1504,12 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * the range axis, however this is entirely up to the renderer.
 	 * 
 	 * @param marker
-	 *            the marker (<code>null</code> not permitted).
+	 *           the marker (<code>null</code> not permitted).
 	 */
 	public void addRangeMarker(Marker marker) {
 		addRangeMarker(marker, Layer.FOREGROUND);
 	}
-
+	
 	/**
 	 * Adds a marker for the range axis in the specified layer and sends a
 	 * {@link PlotChangeEvent} to all registered listeners.
@@ -1518,14 +1518,14 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * the range axis, however this is entirely up to the renderer.
 	 * 
 	 * @param marker
-	 *            the marker (<code>null</code> not permitted).
+	 *           the marker (<code>null</code> not permitted).
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 */
 	public void addRangeMarker(Marker marker, Layer layer) {
 		addRangeMarker(0, marker, layer);
 	}
-
+	
 	/**
 	 * Clears all the range markers and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
@@ -1539,7 +1539,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Adds a marker for a renderer and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
@@ -1548,11 +1548,11 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * the range axis, however this is entirely up to the renderer.
 	 * 
 	 * @param index
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param marker
-	 *            the marker.
+	 *           the marker.
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 */
 	public void addRangeMarker(int index, Marker marker, Layer layer) {
 		Collection<Marker> markers;
@@ -1573,13 +1573,13 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Clears the (foreground and background) range markers for a particular
 	 * renderer.
 	 * 
 	 * @param index
-	 *            the renderer index.
+	 *           the renderer index.
 	 */
 	public void clearRangeMarkers(int index) {
 		Integer key = Integer.valueOf(index);
@@ -1597,13 +1597,13 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Adds an annotation to the plot and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
 	 * 
 	 * @param annotation
-	 *            the annotation (<code>null</code> not permitted).
+	 *           the annotation (<code>null</code> not permitted).
 	 */
 	public void addAnnotation(XYAnnotation annotation) {
 		if (annotation == null) {
@@ -1614,9 +1614,9 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		this.annotations.add(annotation);
 		notifyListeners(new PlotChangeEvent(this));
-
+		
 	}
-
+	
 	/**
 	 * Clears all the annotations and sends a {@link PlotChangeEvent} to all
 	 * registered listeners.
@@ -1627,14 +1627,14 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Calculates the space required for all the axes in the plot.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @return The required space.
 	 */
 	protected AxisSpace calculateAxisSpace(Graphics2D g2, Rectangle2D plotArea) {
@@ -1643,24 +1643,24 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		space = calculateRangeAxisSpace(g2, plotArea, space);
 		return space;
 	}
-
+	
 	/**
 	 * Calculates the space required for the domain axis/axes.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param space
-	 *            a carrier for the result (<code>null</code> permitted).
+	 *           a carrier for the result (<code>null</code> permitted).
 	 * @return The required space.
 	 */
 	protected AxisSpace calculateDomainAxisSpace(Graphics2D g2, Rectangle2D plotArea, AxisSpace space) {
-
+		
 		if (space == null) {
 			space = new AxisSpace();
 		}
-
+		
 		// reserve some space for the domain axis...
 		if (this.fixedDomainAxisSpace != null) {
 			if (this.orientation == PlotOrientation.HORIZONTAL) {
@@ -1680,28 +1680,28 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				}
 			}
 		}
-
+		
 		return space;
-
+		
 	}
-
+	
 	/**
 	 * Calculates the space required for the range axis/axes.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param plotArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param space
-	 *            a carrier for the result (<code>null</code> permitted).
+	 *           a carrier for the result (<code>null</code> permitted).
 	 * @return The required space.
 	 */
 	protected AxisSpace calculateRangeAxisSpace(Graphics2D g2, Rectangle2D plotArea, AxisSpace space) {
-
+		
 		if (space == null) {
 			space = new AxisSpace();
 		}
-
+		
 		// reserve some space for the range axis...
 		if (this.fixedRangeAxisSpace != null) {
 			if (this.orientation == PlotOrientation.HORIZONTAL) {
@@ -1722,9 +1722,9 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 		return space;
-
+		
 	}
-
+	
 	/**
 	 * Draws the plot on a Java 2D graphics device (such as the screen or a
 	 * printer).
@@ -1737,77 +1737,77 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * you do not need this information.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area within which the plot (including axes and labels) should
-	 *            be drawn.
+	 *           the area within which the plot (including axes and labels) should
+	 *           be drawn.
 	 * @param parentState
-	 *            the state from the parent plot, if there is one.
+	 *           the state from the parent plot, if there is one.
 	 * @param state
-	 *            collects chart drawing information (<code>null</code> permitted).
+	 *           collects chart drawing information (<code>null</code> permitted).
 	 */
 	public void draw(Graphics2D g2, Rectangle2D area, PlotState parentState, PlotRenderingInfo state) {
 		draw(g2, area, null, parentState, state);
 	}
-
+	
 	/**
 	 * Draws the plot within the specified area on a graphics device.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the plot area (in Java2D space).
+	 *           the plot area (in Java2D space).
 	 * @param anchor
-	 *            an anchor point in Java2D space (<code>null</code> permitted).
+	 *           an anchor point in Java2D space (<code>null</code> permitted).
 	 * @param parentState
-	 *            the state from the parent plot, if there is one (<code>null</code>
-	 *            permitted).
+	 *           the state from the parent plot, if there is one (<code>null</code>
+	 *           permitted).
 	 * @param info
-	 *            collects chart drawing information (<code>null</code> permitted).
+	 *           collects chart drawing information (<code>null</code> permitted).
 	 */
 	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor, PlotState parentState, PlotRenderingInfo info) {
-
+		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Entering draw() method, plot area = " + area.toString());
 		}
-
+		
 		// if the plot area is too small, just return...
 		boolean b1 = (area.getWidth() <= MINIMUM_WIDTH_TO_DRAW);
 		boolean b2 = (area.getHeight() <= MINIMUM_HEIGHT_TO_DRAW);
 		if (b1 || b2) {
 			return;
 		}
-
+		
 		// record the plot area...
 		if (info != null) {
 			info.setPlotArea(area);
 		}
-
+		
 		// adjust the drawing area for the plot insets (if any)...
 		Insets insets = getInsets();
 		if (insets != null) {
 			area.setRect(area.getX() + insets.left, area.getY() + insets.top,
 					area.getWidth() - insets.left - insets.right, area.getHeight() - insets.top - insets.bottom);
 		}
-
+		
 		AxisSpace space = calculateAxisSpace(g2, area);
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Calculated axis space = " + space.toString());
 		}
 		Rectangle2D dataArea = space.shrink(area, null);
 		this.axisOffset.trim(dataArea);
-
+		
 		if (info != null) {
 			info.setDataArea(dataArea);
 		}
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Data area = " + dataArea.toString());
 		}
-
+		
 		// draw the plot background and axes...
 		drawBackground(g2, dataArea);
 		Map axisStateMap = drawAxes(g2, area, dataArea, info);
-
+		
 		if (anchor != null && !dataArea.contains(anchor)) {
 			anchor = null;
 		}
@@ -1816,13 +1816,13 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		crosshairState.setAnchor(anchor);
 		crosshairState.setCrosshairX(getDomainCrosshairValue());
 		crosshairState.setCrosshairY(getRangeCrosshairValue());
-
+		
 		Shape originalClip = g2.getClip();
 		Composite originalComposite = g2.getComposite();
-
+		
 		g2.clip(dataArea);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getForegroundAlpha()));
-
+		
 		AxisState domainAxisState = (AxisState) axisStateMap.get(getDomainAxis());
 		if (domainAxisState == null) {
 			if (parentState != null) {
@@ -1833,7 +1833,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			drawDomainTickBands(g2, dataArea, domainAxisState.getTicks());
 			drawDomainGridlines(g2, dataArea, domainAxisState.getTicks());
 		}
-
+		
 		AxisState rangeAxisState = (AxisState) axisStateMap.get(getRangeAxis());
 		if (rangeAxisState == null) {
 			if (parentState != null) {
@@ -1844,7 +1844,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			drawRangeTickBands(g2, dataArea, rangeAxisState.getTicks());
 			drawRangeGridlines(g2, dataArea, rangeAxisState.getTicks());
 		}
-
+		
 		// draw the markers...
 		for (int i = 0; i < this.renderers.size(); i++) {
 			drawDomainMarkers(g2, dataArea, i, Layer.BACKGROUND);
@@ -1854,7 +1854,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		drawDomainMarkers(g2, dataArea, Layer.BACKGROUND);
 		drawRangeMarkers(g2, dataArea, Layer.BACKGROUND);
-
+		
 		// now render data items...
 		boolean foundData = false;
 		DatasetRenderingOrder order = getDatasetRenderingOrder();
@@ -1867,9 +1867,9 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				foundData = render(g2, dataArea, i, info, crosshairState) || foundData;
 			}
 		}
-
+		
 		PlotOrientation orient = getOrientation();
-
+		
 		// draw domain crosshair if required...
 		setDomainCrosshairValue(crosshairState.getCrosshairX(), false);
 		if (isDomainCrosshairVisible()) {
@@ -1882,7 +1882,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				drawVerticalLine(g2, dataArea, x, stroke, paint);
 			}
 		}
-
+		
 		// draw range crosshair if required...
 		setRangeCrosshairValue(crosshairState.getCrosshairY(), false);
 		if (isRangeCrosshairVisible() && getRangeAxis().getRange().contains(getRangeCrosshairValue())) {
@@ -1895,81 +1895,81 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				drawHorizontalLine(g2, dataArea, y, stroke, paint);
 			}
 		}
-
+		
 		if (!foundData) {
 			drawNoDataMessage(g2, dataArea);
 		}
-
+		
 		for (int i = 0; i < this.renderers.size(); i++) {
 			drawDomainMarkers(g2, dataArea, i, Layer.FOREGROUND);
 		}
 		for (int i = 0; i < this.renderers.size(); i++) {
 			drawRangeMarkers(g2, dataArea, i, Layer.FOREGROUND);
 		}
-
+		
 		drawDomainMarkers(g2, dataArea, Layer.FOREGROUND);
 		drawRangeMarkers(g2, dataArea, Layer.FOREGROUND);
-
+		
 		drawAnnotations(g2, dataArea, info);
 		g2.setClip(originalClip);
 		g2.setComposite(originalComposite);
-
+		
 		drawOutline(g2, dataArea);
-
+		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Leaving draw() method.");
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the background for the plot.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 */
 	public void drawBackground(Graphics2D g2, Rectangle2D area) {
 		fillBackground(g2, area);
 		drawQuadrants(g2, area);
 		drawBackgroundImage(g2, area);
 	}
-
+	
 	/**
 	 * Draws the quadrants.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param area
-	 *            the area.
+	 *           the area.
 	 */
 	protected void drawQuadrants(Graphics2D g2, Rectangle2D area) {
 		// 0 | 1
 		// --+--
 		// 2 | 3
 		boolean somethingToDraw = false;
-
+		
 		ValueAxis xAxis = getDomainAxis();
 		double x = this.quadrantOrigin.getX();
 		double xx = xAxis.valueToJava2D(x, area, getDomainAxisEdge());
-
+		
 		ValueAxis yAxis = getRangeAxis();
 		double y = this.quadrantOrigin.getY();
 		double yy = yAxis.valueToJava2D(y, area, getRangeAxisEdge());
-
+		
 		double xmin = xAxis.getLowerBound();
 		double xxmin = xAxis.valueToJava2D(xmin, area, getDomainAxisEdge());
-
+		
 		double xmax = xAxis.getUpperBound();
 		double xxmax = xAxis.valueToJava2D(xmax, area, getDomainAxisEdge());
-
+		
 		double ymin = yAxis.getLowerBound();
 		double yymin = yAxis.valueToJava2D(ymin, area, getRangeAxisEdge());
-
+		
 		double ymax = yAxis.getUpperBound();
 		double yymax = yAxis.valueToJava2D(ymax, area, getRangeAxisEdge());
-
+		
 		Rectangle2D[] r = new Rectangle2D[] { null, null, null, null };
 		if (this.quadrantPaint[0] != null) {
 			if (x > xmin && y < ymax) {
@@ -2031,16 +2031,16 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			g2.setComposite(originalComposite);
 		}
 	}
-
+	
 	/**
 	 * Draws the domain tick bands, if any.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 */
 	public void drawDomainTickBands(Graphics2D g2, Rectangle2D dataArea, List<ValueTick> ticks) {
 		// draw the domain tick bands, if any...
@@ -2065,19 +2065,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Draws the range tick bands, if any.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 */
 	public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List<ValueTick> ticks) {
-
+		
 		// draw the range tick bands, if any...
 		Paint bandPaint = getRangeTickBandPaint();
 		if (bandPaint != null) {
@@ -2100,24 +2100,24 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * A utility method for drawing the axes.
 	 * 
 	 * @param g2
-	 *            the graphics device (<code>null</code> not permitted).
+	 *           the graphics device (<code>null</code> not permitted).
 	 * @param plotArea
-	 *            the plot area (<code>null</code> not permitted).
+	 *           the plot area (<code>null</code> not permitted).
 	 * @param dataArea
-	 *            the data area (<code>null</code> not permitted).
+	 *           the data area (<code>null</code> not permitted).
 	 * @param plotState
-	 *            collects information about the plot (<code>null</code> permitted).
+	 *           collects information about the plot (<code>null</code> permitted).
 	 * @return A map containing the state for each axis drawn.
 	 */
 	protected Map drawAxes(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea, PlotRenderingInfo plotState) {
-
+		
 		AxisCollection axisCollection = new AxisCollection();
-
+		
 		// add domain axes to lists...
 		for (int index = 0; index < this.domainAxes.size(); index++) {
 			ValueAxis axis = (ValueAxis) this.domainAxes.get(index);
@@ -2125,7 +2125,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				axisCollection.add(axis, getDomainAxisEdge(index));
 			}
 		}
-
+		
 		// add range axes to lists...
 		for (int index = 0; index < this.rangeAxes.size(); index++) {
 			ValueAxis yAxis = (ValueAxis) this.rangeAxes.get(index);
@@ -2133,9 +2133,9 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				axisCollection.add(yAxis, getRangeAxisEdge(index));
 			}
 		}
-
+		
 		Map axisStateMap = new HashMap();
-
+		
 		// draw the top axes
 		double cursor = dataArea.getMinY() - this.axisOffset.getTopSpace(dataArea.getHeight());
 		Iterator<Axis> iterator = axisCollection.getAxesAtTop().iterator();
@@ -2145,7 +2145,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			cursor = info.getCursor();
 			axisStateMap.put(axis, info);
 		}
-
+		
 		// draw the bottom axes
 		cursor = dataArea.getMaxY() + this.axisOffset.getBottomSpace(dataArea.getHeight());
 		iterator = axisCollection.getAxesAtBottom().iterator();
@@ -2155,7 +2155,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			cursor = info.getCursor();
 			axisStateMap.put(axis, info);
 		}
-
+		
 		// draw the left axes
 		cursor = dataArea.getMinX() - this.axisOffset.getLeftSpace(dataArea.getWidth());
 		iterator = axisCollection.getAxesAtLeft().iterator();
@@ -2165,7 +2165,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			cursor = info.getCursor();
 			axisStateMap.put(axis, info);
 		}
-
+		
 		// draw the right axes
 		cursor = dataArea.getMaxX() + this.axisOffset.getRightSpace(dataArea.getWidth());
 		iterator = axisCollection.getAxesAtRight().iterator();
@@ -2175,10 +2175,10 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			cursor = info.getCursor();
 			axisStateMap.put(axis, info);
 		}
-
+		
 		return axisStateMap;
 	}
-
+	
 	/**
 	 * Draws a representation of the data within the dataArea region, using the
 	 * current renderer.
@@ -2187,20 +2187,20 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * <code>null</code>.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the region in which the data is to be drawn.
+	 *           the region in which the data is to be drawn.
 	 * @param index
-	 *            the dataset index.
+	 *           the dataset index.
 	 * @param info
-	 *            an optional object for collection dimension information.
+	 *           an optional object for collection dimension information.
 	 * @param crosshairState
-	 *            collects crosshair information (<code>null</code> permitted).
+	 *           collects crosshair information (<code>null</code> permitted).
 	 * @return A flag that indicates whether any data was actually rendered.
 	 */
 	public boolean render(Graphics2D g2, Rectangle2D dataArea, int index, PlotRenderingInfo info,
 			CrosshairState crosshairState) {
-
+		
 		boolean foundData = false;
 		XYDataset dataset = getDataset(index);
 		if (!DatasetUtilities.isEmptyOrNull(dataset)) {
@@ -2213,7 +2213,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 					xAxis = axis;
 				}
 			}
-
+			
 			ValueAxis yAxis = getRangeAxis();
 			Integer yAxisIndex = (Integer) this.rangeAxisMap.get(index);
 			if (yAxisIndex != null) {
@@ -2222,15 +2222,15 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 					yAxis = axis;
 				}
 			}
-
+			
 			XYItemRenderer renderer = getRenderer(index);
 			if (renderer == null) {
 				renderer = getRenderer();
 			}
-
+			
 			XYItemRendererState state = renderer.initialise(g2, dataArea, this, dataset, info);
 			int passCount = renderer.getPassCount();
-
+			
 			for (int pass = 0; pass < passCount; pass++) {
 				int seriesCount = dataset.getSeriesCount();
 				for (int series = 0; series < seriesCount; series++) {
@@ -2244,64 +2244,64 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return foundData;
 	}
-
+	
 	/**
 	 * Returns the domain axis for a dataset.
 	 * 
 	 * @param index
-	 *            the dataset index.
+	 *           the dataset index.
 	 * @return the axis
 	 */
 	public ValueAxis getDomainAxisForDataset(int index) {
-
+		
 		if (index >= this.getDatasetCount()) {
 			throw new IllegalArgumentException();
 		}
-
+		
 		ValueAxis valueAxis = null;
 		Integer axisIndex = (Integer) this.domainAxisMap.get(index);
 		valueAxis = getDomainAxis(axisIndex.intValue());
 		return valueAxis;
-
+		
 	}
-
+	
 	/**
 	 * Returns the range axis for a dataset.
 	 * 
 	 * @param index
-	 *            the dataset index.
+	 *           the dataset index.
 	 * @return The axis
 	 */
 	public ValueAxis getRangeAxisForDataset(int index) {
-
+		
 		if (index >= getDatasetCount()) {
 			throw new IllegalArgumentException();
 		}
-
+		
 		ValueAxis valueAxis = null;
 		Integer axisIndex = (Integer) this.rangeAxisMap.get(index);
 		valueAxis = getRangeAxis(axisIndex.intValue());
 		return valueAxis;
-
+		
 	}
-
+	
 	/**
 	 * Draws the gridlines for the plot, if they are visible.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 */
 	protected void drawDomainGridlines(Graphics2D g2, Rectangle2D dataArea, List ticks) {
-
+		
 		// no renderer, no gridlines...
 		if (getRenderer() == null) {
 			return;
 		}
-
+		
 		// draw the domain grid lines, if any...
 		if (isDomainGridlinesVisible()) {
 			Stroke gridStroke = getDomainGridlineStroke();
@@ -2315,19 +2315,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Draws the gridlines for the plot, if they are visible.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param ticks
-	 *            the ticks.
+	 *           the ticks.
 	 */
 	protected void drawRangeGridlines(Graphics2D g2, Rectangle2D dataArea, List ticks) {
-
+		
 		// draw the range grid lines, if any...
 		if (isRangeGridlinesVisible()) {
 			Stroke gridStroke = getRangeGridlineStroke();
@@ -2343,21 +2343,21 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				}
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the annotations for the plot.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param info
-	 *            the chart rendering info.
+	 *           the chart rendering info.
 	 */
 	public void drawAnnotations(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info) {
-
+		
 		// draw the annotations...
 		if (this.annotations != null) {
 			Iterator iterator = this.annotations.iterator();
@@ -2366,19 +2366,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				annotation.draw(g2, this, dataArea, getDomainAxis(), getRangeAxis());
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the domain markers (if any) for the specified layer. This method is
 	 * typically called from within the draw(...) method.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 */
 	protected void drawDomainMarkers(Graphics2D g2, Rectangle2D dataArea, Layer layer) {
 		XYItemRenderer r = getRenderer();
@@ -2391,17 +2391,17 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Draws the range markers (if any) for the specified layer. This method is
 	 * typically called from within the draw(...) method.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 */
 	protected void drawRangeMarkers(Graphics2D g2, Rectangle2D dataArea, Layer layer) {
 		XYItemRenderer r = getRenderer();
@@ -2414,27 +2414,27 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Draws the domain markers (if any) for an axis and layer. This method is
 	 * typically called from within the draw(...) method.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param index
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 */
 	protected void drawDomainMarkers(Graphics2D g2, Rectangle2D dataArea, int index, Layer layer) {
-
+		
 		XYItemRenderer r = getRenderer(index);
 		if (r == null) {
 			return;
 		}
-
+		
 		Collection markers = getDomainMarkers(index, layer);
 		ValueAxis axis = getDomainAxis(index);
 		// TODO: get the axis that the renderer maps to
@@ -2445,29 +2445,29 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				r.drawDomainMarker(g2, this, axis, marker, dataArea);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws the range markers (if any) for a renderer and layer. This method is
 	 * typically called from within the draw() method.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param index
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 */
 	protected void drawRangeMarkers(Graphics2D g2, Rectangle2D dataArea, int index, Layer layer) {
-
+		
 		XYItemRenderer r = getRenderer(index);
 		if (r == null) {
 			return;
 		}
-
+		
 		Collection<Marker> markers = getRangeMarkers(index, layer);
 		ValueAxis axis = getRangeAxis(index);
 		// TODO: get the axis that the renderer maps to
@@ -2478,38 +2478,38 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				r.drawRangeMarker(g2, this, axis, marker, dataArea);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the list of domain markers (read only) for the specified layer.
 	 * 
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 * @return The list of domain markers.
 	 */
 	public Collection getDomainMarkers(Layer layer) {
 		return getDomainMarkers(0, layer);
 	}
-
+	
 	/**
 	 * Returns the list of range markers (read only) for the specified layer.
 	 * 
 	 * @param layer
-	 *            the layer (foreground or background).
+	 *           the layer (foreground or background).
 	 * @return The list of range markers.
 	 */
 	public Collection getRangeMarkers(Layer layer) {
 		return getRangeMarkers(0, layer);
 	}
-
+	
 	/**
 	 * Returns a collection of domain markers for a particular renderer and layer.
 	 * 
 	 * @param index
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param layer
-	 *            the layer.
+	 *           the layer.
 	 * @return A collection of markers (possibly <code>null</code>).
 	 */
 	public Collection getDomainMarkers(int index, Layer layer) {
@@ -2525,14 +2525,14 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns a collection of range markers for a particular renderer and layer.
 	 * 
 	 * @param index
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param layer
-	 *            the layer.
+	 *           the layer.
 	 * @return A collection of markers (possibly <code>null</code>).
 	 */
 	public Collection<Marker> getRangeMarkers(int index, Layer layer) {
@@ -2548,24 +2548,24 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Utility method for drawing a horizontal line across the data area of the
 	 * plot.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param value
-	 *            the coordinate, where to draw the line.
+	 *           the coordinate, where to draw the line.
 	 * @param stroke
-	 *            the stroke to use.
+	 *           the stroke to use.
 	 * @param paint
-	 *            the paint to use.
+	 *           the paint to use.
 	 */
 	protected void drawHorizontalLine(Graphics2D g2, Rectangle2D dataArea, double value, Stroke stroke, Paint paint) {
-
+		
 		ValueAxis axis = getRangeAxis();
 		if (getOrientation() == PlotOrientation.HORIZONTAL) {
 			axis = getDomainAxis();
@@ -2577,25 +2577,25 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			g2.setPaint(paint);
 			g2.draw(line);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Utility method for drawing a vertical line on the data area of the plot.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param value
-	 *            the coordinate, where to draw the line.
+	 *           the coordinate, where to draw the line.
 	 * @param stroke
-	 *            the stroke to use.
+	 *           the stroke to use.
 	 * @param paint
-	 *            the paint to use.
+	 *           the paint to use.
 	 */
 	protected void drawVerticalLine(Graphics2D g2, Rectangle2D dataArea, double value, Stroke stroke, Paint paint) {
-
+		
 		ValueAxis axis = getDomainAxis();
 		if (getOrientation() == PlotOrientation.HORIZONTAL) {
 			axis = getRangeAxis();
@@ -2607,31 +2607,31 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			g2.setPaint(paint);
 			g2.draw(line);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Handles a 'click' on the plot by updating the anchor values...
 	 * 
 	 * @param x
-	 *            the x-coordinate, where the click occurred, in Java2D space.
+	 *           the x-coordinate, where the click occurred, in Java2D space.
 	 * @param y
-	 *            the y-coordinate, where the click occurred, in Java2D space.
+	 *           the y-coordinate, where the click occurred, in Java2D space.
 	 * @param info
-	 *            object containing information about the plot dimensions.
+	 *           object containing information about the plot dimensions.
 	 */
 	public void handleClick(int x, int y, PlotRenderingInfo info) {
-
+		
 		Rectangle2D dataArea = info.getDataArea();
 		if (dataArea.contains(x, y)) {
 			// set the anchor value for the horizontal axis...
 			ValueAxis da = getDomainAxis();
 			if (da != null) {
 				double hvalue = da.java2DToValue(x, info.getDataArea(), getDomainAxisEdge());
-
+				
 				setDomainCrosshairValue(hvalue);
 			}
-
+			
 			// set the anchor value for the vertical axis...
 			ValueAxis ra = getRangeAxis();
 			if (ra != null) {
@@ -2640,15 +2640,15 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Zooms the axis ranges by the specified percentage about the anchor point.
 	 * 
 	 * @param percent
-	 *            the amount of the zoom.
+	 *           the amount of the zoom.
 	 */
 	public void zoom(double percent) {
-
+		
 		if (percent > 0.0) {
 			ValueAxis domainAxis1 = getDomainAxis();
 			Range range = domainAxis1.getRange();
@@ -2656,7 +2656,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			double length = range.getLength();
 			double scaledRange = length * percent;
 			domainAxis1.setRange(center - scaledRange / 2.0, center + scaledRange / 2.0);
-
+			
 			ValueAxis rangeAxis1 = getRangeAxis();
 			range = rangeAxis1.getRange();
 			center = range.getCentralValue();
@@ -2667,15 +2667,15 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			getRangeAxis().setAutoRange(true);
 			getDomainAxis().setAutoRange(true);
 		}
-
+		
 	}
-
+	
 	/**
 	 * A utility method that returns a list of datasets that are mapped to a
 	 * particular axis.
 	 * 
 	 * @param axisIndex
-	 *            the axis index.
+	 *           the axis index.
 	 * @return A list of datasets.
 	 */
 	private List getDatasetsMappedToDomainAxis(Integer axisIndex) {
@@ -2691,17 +2691,17 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 					result.add(this.datasets.get(i));
 				}
 			}
-
+			
 		}
 		return result;
 	}
-
+	
 	/**
 	 * A utility method that returns a list of datasets that are mapped to a
 	 * particular axis.
 	 * 
 	 * @param index
-	 *            the axis index (<code>null</code> for primary axis).
+	 *           the axis index (<code>null</code> for primary axis).
 	 * @return A list of datasets.
 	 */
 	private List getDatasetsMappedToRangeAxis(Integer index) {
@@ -2717,24 +2717,24 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 					result.add(this.datasets.get(i));
 				}
 			}
-
+			
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the range for the specified axis.
 	 * 
 	 * @param axis
-	 *            the axis.
+	 *           the axis.
 	 * @return The range.
 	 */
 	public Range getDataRange(ValueAxis axis) {
-
+		
 		Range result = null;
 		List mappedDatasets = new ArrayList();
 		boolean isDomainAxis = true;
-
+		
 		// is it a domain axis?
 		int domainIndex = this.domainAxes.indexOf(axis);
 		if (domainIndex >= 0) {
@@ -2744,7 +2744,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			isDomainAxis = true;
 			mappedDatasets.addAll(getDatasetsMappedToDomainAxis(Integer.valueOf(0)));
 		}
-
+		
 		// or is it a range axis?
 		int rangeIndex = this.rangeAxes.indexOf(axis);
 		if (rangeIndex >= 0) {
@@ -2754,7 +2754,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			isDomainAxis = false;
 			mappedDatasets.addAll(getDatasetsMappedToRangeAxis(Integer.valueOf(0)));
 		}
-
+		
 		// iterate through the datasets that map to the axis and get the union of the
 		// ranges.
 		Iterator iterator = mappedDatasets.iterator();
@@ -2772,41 +2772,41 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Receives notification of a change to the plot's dataset.
 	 * <P>
 	 * The axis ranges are updated if necessary.
 	 * 
 	 * @param event
-	 *            information about the event (not used here).
+	 *           information about the event (not used here).
 	 */
 	public void datasetChanged(DatasetChangeEvent event) {
-
+		
 		configureDomainAxes();
 		configureRangeAxes();
-
+		
 		if (getParent() != null) {
 			getParent().datasetChanged(event);
 		} else {
 			PlotChangeEvent e = new PlotChangeEvent(this);
 			notifyListeners(e);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Receives notification of a renderer change event.
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void rendererChanged(RendererChangeEvent event) {
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns a flag indicating whether or not the domain crosshair is visible.
 	 * 
@@ -2815,22 +2815,22 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public boolean isDomainCrosshairVisible() {
 		return this.domainCrosshairVisible;
 	}
-
+	
 	/**
 	 * Sets the flag indicating whether or not the domain crosshair is visible.
 	 * 
 	 * @param flag
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 */
 	public void setDomainCrosshairVisible(boolean flag) {
-
+		
 		if (this.domainCrosshairVisible != flag) {
 			this.domainCrosshairVisible = flag;
 			notifyListeners(new PlotChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a flag indicating whether or not the crosshair should "lock-on" to
 	 * actual data values.
@@ -2840,23 +2840,23 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public boolean isDomainCrosshairLockedOnData() {
 		return this.domainCrosshairLockedOnData;
 	}
-
+	
 	/**
 	 * Sets the flag indicating whether or not the domain crosshair should "lock-on"
 	 * to actual data values.
 	 * 
 	 * @param flag
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setDomainCrosshairLockedOnData(boolean flag) {
-
+		
 		if (this.domainCrosshairLockedOnData != flag) {
 			this.domainCrosshairLockedOnData = flag;
 			notifyListeners(new PlotChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the domain crosshair value.
 	 * 
@@ -2865,27 +2865,27 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public double getDomainCrosshairValue() {
 		return this.domainCrosshairValue;
 	}
-
+	
 	/**
 	 * Sets the domain crosshair value and sends a {@link PlotChangeEvent} to all
 	 * registered listeners (provided that the domain crosshair is visible).
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void setDomainCrosshairValue(double value) {
 		setDomainCrosshairValue(value, true);
 	}
-
+	
 	/**
 	 * Sets the domain crosshair value and, if requested, sends a
 	 * {@link PlotChangeEvent} to all registered listeners (provided that the domain
 	 * crosshair is visible).
 	 * 
 	 * @param value
-	 *            the new value.
+	 *           the new value.
 	 * @param notify
-	 *            notify listeners?
+	 *           notify listeners?
 	 */
 	public void setDomainCrosshairValue(double value, boolean notify) {
 		this.domainCrosshairValue = value;
@@ -2893,7 +2893,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			notifyListeners(new PlotChangeEvent(this));
 		}
 	}
-
+	
 	/**
 	 * Returns the {@link Stroke} used to draw the crosshair (if visible).
 	 * 
@@ -2902,19 +2902,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Stroke getDomainCrosshairStroke() {
 		return this.domainCrosshairStroke;
 	}
-
+	
 	/**
 	 * Sets the Stroke used to draw the crosshairs (if visible) and notifies
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param stroke
-	 *            the new crosshair stroke.
+	 *           the new crosshair stroke.
 	 */
 	public void setDomainCrosshairStroke(Stroke stroke) {
 		this.domainCrosshairStroke = stroke;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the domain crosshair color.
 	 * 
@@ -2923,19 +2923,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Paint getDomainCrosshairPaint() {
 		return this.domainCrosshairPaint;
 	}
-
+	
 	/**
 	 * Sets the Paint used to color the crosshairs (if visible) and notifies
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param paint
-	 *            the new crosshair paint.
+	 *           the new crosshair paint.
 	 */
 	public void setDomainCrosshairPaint(Paint paint) {
 		this.domainCrosshairPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns a flag indicating whether or not the range crosshair is visible.
 	 * 
@@ -2944,22 +2944,22 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public boolean isRangeCrosshairVisible() {
 		return this.rangeCrosshairVisible;
 	}
-
+	
 	/**
 	 * Sets the flag indicating whether or not the range crosshair is visible.
 	 * 
 	 * @param flag
-	 *            the new value of the flag.
+	 *           the new value of the flag.
 	 */
 	public void setRangeCrosshairVisible(boolean flag) {
-
+		
 		if (this.rangeCrosshairVisible != flag) {
 			this.rangeCrosshairVisible = flag;
 			notifyListeners(new PlotChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a flag indicating whether or not the crosshair should "lock-on" to
 	 * actual data values.
@@ -2969,23 +2969,23 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public boolean isRangeCrosshairLockedOnData() {
 		return this.rangeCrosshairLockedOnData;
 	}
-
+	
 	/**
 	 * Sets the flag indicating whether or not the range crosshair should "lock-on"
 	 * to actual data values.
 	 * 
 	 * @param flag
-	 *            the flag.
+	 *           the flag.
 	 */
 	public void setRangeCrosshairLockedOnData(boolean flag) {
-
+		
 		if (this.rangeCrosshairLockedOnData != flag) {
 			this.rangeCrosshairLockedOnData = flag;
 			notifyListeners(new PlotChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the range crosshair value.
 	 * 
@@ -2994,7 +2994,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public double getRangeCrosshairValue() {
 		return this.rangeCrosshairValue;
 	}
-
+	
 	/**
 	 * Sets the domain crosshair value.
 	 * <P>
@@ -3002,14 +3002,14 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * if the crosshair is visible.
 	 * 
 	 * @param value
-	 *            the new value.
+	 *           the new value.
 	 */
 	public void setRangeCrosshairValue(double value) {
-
+		
 		setRangeCrosshairValue(value, true);
-
+		
 	}
-
+	
 	/**
 	 * Sets the range crosshair value.
 	 * <P>
@@ -3017,19 +3017,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	 * if the crosshair is visible.
 	 * 
 	 * @param value
-	 *            the new value.
+	 *           the new value.
 	 * @param notify
-	 *            a flag that controls whether or not listeners are notified.
+	 *           a flag that controls whether or not listeners are notified.
 	 */
 	public void setRangeCrosshairValue(double value, boolean notify) {
-
+		
 		this.rangeCrosshairValue = value;
 		if (isRangeCrosshairVisible() && notify) {
 			notifyListeners(new PlotChangeEvent(this));
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the Stroke used to draw the crosshair (if visible).
 	 * 
@@ -3038,19 +3038,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Stroke getRangeCrosshairStroke() {
 		return this.rangeCrosshairStroke;
 	}
-
+	
 	/**
 	 * Sets the Stroke used to draw the crosshairs (if visible) and notifies
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param stroke
-	 *            the new crosshair stroke.
+	 *           the new crosshair stroke.
 	 */
 	public void setRangeCrosshairStroke(Stroke stroke) {
 		this.rangeCrosshairStroke = stroke;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the range crosshair color.
 	 * 
@@ -3059,19 +3059,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public Paint getRangeCrosshairPaint() {
 		return this.rangeCrosshairPaint;
 	}
-
+	
 	/**
 	 * Sets the Paint used to color the crosshairs (if visible) and notifies
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param paint
-	 *            the new crosshair paint.
+	 *           the new crosshair paint.
 	 */
 	public void setRangeCrosshairPaint(Paint paint) {
 		this.rangeCrosshairPaint = paint;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the fixed domain axis space.
 	 * 
@@ -3080,17 +3080,17 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public AxisSpace getFixedDomainAxisSpace() {
 		return this.fixedDomainAxisSpace;
 	}
-
+	
 	/**
 	 * Sets the fixed domain axis space.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 */
 	public void setFixedDomainAxisSpace(AxisSpace space) {
 		this.fixedDomainAxisSpace = space;
 	}
-
+	
 	/**
 	 * Returns the fixed range axis space.
 	 * 
@@ -3099,25 +3099,25 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public AxisSpace getFixedRangeAxisSpace() {
 		return this.fixedRangeAxisSpace;
 	}
-
+	
 	/**
 	 * Sets the fixed range axis space.
 	 * 
 	 * @param space
-	 *            the space.
+	 *           the space.
 	 */
 	public void setFixedRangeAxisSpace(AxisSpace space) {
 		this.fixedRangeAxisSpace = space;
 	}
-
+	
 	/**
 	 * Multiplies the range on the horizontal axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *            the zoom factor.
+	 *           the zoom factor.
 	 */
 	public void zoomHorizontalAxes(double factor) {
-
+		
 		PlotOrientation orient = getOrientation();
 		if (orient == PlotOrientation.HORIZONTAL) {
 			for (int i = 0; i < this.rangeAxes.size(); i++) {
@@ -3135,21 +3135,21 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Zooms in on the horizontal axis/axes. The new lower and upper bounds are
 	 * specified as percentages of the current axis range, where 0 percent is the
 	 * current lower bound and 100 percent is the current upper bound.
 	 * 
 	 * @param lowerPercent
-	 *            a percentage that determines the new lower bound for the axis
-	 *            (e.g. 0.20 is twenty percent).
+	 *           a percentage that determines the new lower bound for the axis
+	 *           (e.g. 0.20 is twenty percent).
 	 * @param upperPercent
-	 *            a percentage that determines the new upper bound for the axis
-	 *            (e.g. 0.80 is eighty percent).
+	 *           a percentage that determines the new upper bound for the axis
+	 *           (e.g. 0.80 is eighty percent).
 	 */
 	public void zoomHorizontalAxes(double lowerPercent, double upperPercent) {
-
+		
 		PlotOrientation orient = getOrientation();
 		if (orient == PlotOrientation.HORIZONTAL) {
 			for (int i = 0; i < this.rangeAxes.size(); i++) {
@@ -3167,17 +3167,17 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Multiplies the range on the vertical axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *            the zoom factor.
+	 *           the zoom factor.
 	 */
 	public void zoomVerticalAxes(double factor) {
-
+		
 		PlotOrientation orient = getOrientation();
-
+		
 		if (orient == PlotOrientation.HORIZONTAL) {
 			for (int i = 0; i < this.domainAxes.size(); i++) {
 				ValueAxis domainAxis = (ValueAxis) this.domainAxes.get(i);
@@ -3193,19 +3193,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				}
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Zooms in on the vertical axes.
 	 * 
 	 * @param lowerPercent
-	 *            the lower bound.
+	 *           the lower bound.
 	 * @param upperPercent
-	 *            the upper bound.
+	 *           the upper bound.
 	 */
 	public void zoomVerticalAxes(double lowerPercent, double upperPercent) {
-
+		
 		PlotOrientation orient = getOrientation();
 		if (orient == PlotOrientation.VERTICAL) {
 			for (int i = 0; i < this.rangeAxes.size(); i++) {
@@ -3223,7 +3223,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns the number of series in the primary dataset for this plot. If the
 	 * dataset is <code>null</code>, the method returns 0.
@@ -3238,7 +3238,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the fixed legend items, if any.
 	 * 
@@ -3247,19 +3247,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 	public LegendItemCollection getFixedLegendItems() {
 		return this.fixedLegendItems;
 	}
-
+	
 	/**
 	 * Sets the fixed legend items for the plot. Leave this set to <code>null</code>
 	 * if you prefer the legend items to be created automatically.
 	 * 
 	 * @param items
-	 *            the legend items (<code>null</code> permitted).
+	 *           the legend items (<code>null</code> permitted).
 	 */
 	public void setFixedLegendItems(LegendItemCollection items) {
 		this.fixedLegendItems = items;
 		notifyListeners(new PlotChangeEvent(this));
 	}
-
+	
 	/**
 	 * Returns the legend items for the plot. Each legend item is generated by the
 	 * plot's renderer, since the renderer is responsible for the visual
@@ -3290,28 +3290,28 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Tests this plot for equality with another object.
 	 * 
 	 * @param obj
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
-
+		
 		if (obj == null) {
 			return false;
 		}
-
+		
 		if (obj == this) {
 			return true;
 		}
-
+		
 		if (!(obj instanceof XYPlot)) {
 			return false;
 		}
-
+		
 		if (!super.equals(obj)) {
 			return false;
 		}
@@ -3422,18 +3422,18 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			return false;
 		}
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Returns a clone of the plot.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             this can occur if some component of the plot cannot be cloned.
+	 *            this can occur if some component of the plot cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
-
+		
 		XYPlot clone = (XYPlot) super.clone();
 		// private PlotOrientation orientation <-- immutable
 		// private Spacer axisOffset <-- immutable
@@ -3449,7 +3449,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 		clone.domainAxisLocations = (ObjectList) this.domainAxisLocations.clone();
-
+		
 		// private AxisLocation rangeAxisLocation <-- immutable
 		clone.rangeAxes = (ObjectList) ObjectUtils.clone(this.rangeAxes);
 		for (int i = 0; i < this.rangeAxes.size(); i++) {
@@ -3462,7 +3462,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			}
 		}
 		clone.rangeAxisLocations = (ObjectList) ObjectUtils.clone(this.rangeAxisLocations);
-
+		
 		// the datasets are not cloned, but listeners need to be added...
 		clone.datasets = (ObjectList) ObjectUtils.clone(this.datasets);
 		for (int i = 0; i < clone.datasets.size(); ++i) {
@@ -3471,7 +3471,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 				d.addChangeListener(clone);
 			}
 		}
-
+		
 		clone.domainAxisMap = (ObjectList) ObjectUtils.clone(this.domainAxisMap);
 		clone.rangeAxisMap = (ObjectList) ObjectUtils.clone(this.rangeAxisMap);
 		clone.renderers = (ObjectList) ObjectUtils.clone(this.renderers);
@@ -3510,18 +3510,18 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		// private int weight <-- primitive
 		// private double anchorX <-- primitive
 		// private double anchorY <-- primitive
-
+		
 		return clone;
-
+		
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the output stream.
+	 *           the output stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -3540,19 +3540,19 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			SerialUtilities.writePaint(this.quadrantPaint[i], stream);
 		}
 	}
-
+	
 	/**
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *            the input stream.
+	 *           the input stream.
 	 * @throws IOException
-	 *             if there is an I/O error.
+	 *            if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *             if there is a classpath problem.
+	 *            if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-
+		
 		stream.defaultReadObject();
 		this.domainGridlineStroke = SerialUtilities.readStroke(stream);
 		this.domainGridlinePaint = SerialUtilities.readPaint(stream);
@@ -3573,7 +3573,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 		this.backgroundDomainMarkers = new HashMap();
 		this.foregroundRangeMarkers = new HashMap();
 		this.backgroundRangeMarkers = new HashMap();
-
+		
 	}
-
+	
 }

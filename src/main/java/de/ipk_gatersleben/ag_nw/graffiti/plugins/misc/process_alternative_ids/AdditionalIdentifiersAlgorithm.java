@@ -37,14 +37,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  *         Analysis
  */
 public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
-
+	
 	private boolean ignoreFirstRow = false;
-
+	
 	@Override
 	public String getName() {
 		return "Add Alternative Data Identifiers";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>"
@@ -63,30 +63,30 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 				+ "[Column A | Column B | [Column C] | ...]<br>" + "Main ID 1| alt ID 1 | alt ID 2 ...<br>"
 				+ "Main ID 2| alt ID 1<br>" + "Main ID 1| alt ID 3<br>" + "</code><br><br>";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Mapping.Alternative Identifiers";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION));
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(ignoreFirstRow, "Skip first row",
 				"<html>" + "If enabled, the first row is not processed.<br>"
 						+ "Useful in case the first row contains column headers.") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		ignoreFirstRow = ((BooleanParameter) params[i++]).getBoolean();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -104,12 +104,12 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 				Collection<File> excelFiles = OpenExcelFileDialogService.getExcelFiles();
 				if (excelFiles != null && excelFiles.size() > 0) {
 					HashMap<String, Set<String>> id2alternatives = new HashMap<String, Set<String>>();
-
+					
 					for (File excelFile : excelFiles) {
 						TableData myData = ExperimentDataFileReader.getExcelTableData(excelFile);
-
+						
 						int startRow = (ignoreFirstRow ? 2 : 1);
-
+						
 						for (int row = startRow; row <= myData.getMaximumRow(); row++) {
 							String mainID = myData.getUnicodeStringCellData(1, row);
 							for (int col = 2; col <= myData.getMaximumCol(); col++) {
@@ -123,7 +123,7 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 							}
 						}
 					}
-
+					
 					ArrayList<SubstanceInterface> documents = new ArrayList<SubstanceInterface>();
 					for (Node n : getSelectedOrAllNodes()) {
 						try {
@@ -139,7 +139,7 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 							// empty
 						}
 					}
-
+					
 					int idCnt = 0;
 					for (SubstanceInterface xmlSubstanceNode : documents) {
 						String name = xmlSubstanceNode.getName();

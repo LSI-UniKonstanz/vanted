@@ -12,28 +12,28 @@ public class TableDataTest extends javax.swing.table.AbstractTableModel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6270498356797408179L;
 	protected qmwi.kseg.som.DataSet dataSet;
-
+	
 	/**
 	 * LeftWindowTableData constructor comment.
 	 */
 	public TableDataTest() {
 		super();
 	}
-
+	
 	/**
 	 * Insert the method's description here. Creation date: (12.12.2001 15:03:23)
 	 * 
 	 * @param dataSet
-	 *            quantitative.klukas.DataSet
+	 *           quantitative.klukas.DataSet
 	 */
 	public TableDataTest(qmwi.kseg.som.DataSet dataSetTemp) {
-
+		
 		dataSet = dataSetTemp;
-
+		
 	}
-
+	
 	/**
 	 * getColumnCount method comment.
 	 */
@@ -41,12 +41,12 @@ public class TableDataTest extends javax.swing.table.AbstractTableModel {
 		// return dataSet.groups.size();
 		return 20;
 	}
-
+	
 	/**
 	 * Insert the method's description here. Creation date: (12.12.2001 15:06:52)
 	 * 
 	 * @param c
-	 *            int
+	 *           int
 	 */
 	@Override
 	public String getColumnName(int c) {
@@ -56,7 +56,7 @@ public class TableDataTest extends javax.swing.table.AbstractTableModel {
 		 */
 		return new String("Test" + c);
 	}
-
+	
 	/**
 	 * getRowCount method comment.
 	 */
@@ -64,17 +64,17 @@ public class TableDataTest extends javax.swing.table.AbstractTableModel {
 		// return dataSet.data.size();
 		return 10;
 	}
-
+	
 	/**
 	 * getValueAt method comment.
 	 */
 	public Object getValueAt(int row, int column) {
-
+		
 		// quantitative.klukas.DataEntry dataEntry = (quantitative.klukas.DataEntry)
 		// dataSet.data.elementAt(row);
-
+		
 		// return dataEntry.eingaben[column];
-
+		
 		return new String("TestString" + row + " " + column);
 	}
 }

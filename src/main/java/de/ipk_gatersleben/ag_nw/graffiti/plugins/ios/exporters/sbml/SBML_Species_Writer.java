@@ -24,19 +24,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLSpeciesHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_Species_Writer extends SBML_SBase_Writer {
-
+	
 	/**
 	 * Provides helpful methods
 	 */
 	SBMLSpeciesHelper speciesHelper;
-
+	
 	/**
 	 * Adds a species and its variables to the model
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param model
-	 *            the species will be added to this model
+	 *           the species will be added to this model
 	 */
 	public void addSpecies(Model model, Graph g) {
 		speciesHelper = new SBMLSpeciesHelper(g);
@@ -54,7 +54,7 @@ public class SBML_Species_Writer extends SBML_SBase_Writer {
 					if (Species.isValidId(id, species.getLevel(), species.getVersion())) {
 						species.setId(id);
 					}
-
+					
 					if (speciesHelper.isSetName(speciesNode)) {
 						species.setName(speciesHelper.getName(speciesNode));
 					}
@@ -93,7 +93,7 @@ public class SBML_Species_Writer extends SBML_SBase_Writer {
 			 */
 		}
 	}
-
+	
 	public void addSpeciesGlyph(Model model, Graph g) {
 		speciesHelper = new SBMLSpeciesHelper(g);
 		List<Node> nodeList = speciesHelper.getSpeciesNodes();

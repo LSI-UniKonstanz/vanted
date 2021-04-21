@@ -38,34 +38,34 @@ import javax.swing.JScrollPane;
  * A frame for displaying a chart.
  */
 public class ChartFrame extends JFrame {
-
+	
 	/** The chart panel. */
 	private ChartPanel chartPanel;
-
+	
 	/**
 	 * Constructs a frame for a chart.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 * @param chart
-	 *            the chart.
+	 *           the chart.
 	 */
 	public ChartFrame(String title, JFreeChart chart) {
 		this(title, chart, false);
 	}
-
+	
 	/**
 	 * Constructs a frame for a chart.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 * @param chart
-	 *            the chart.
+	 *           the chart.
 	 * @param scrollPane
-	 *            iIf <code>true</code>, put the Chart(Panel) into a JScrollPane.
+	 *           iIf <code>true</code>, put the Chart(Panel) into a JScrollPane.
 	 */
 	public ChartFrame(String title, JFreeChart chart, boolean scrollPane) {
-
+		
 		super(title);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.chartPanel = new ChartPanel(chart);
@@ -74,9 +74,9 @@ public class ChartFrame extends JFrame {
 		} else {
 			setContentPane(this.chartPanel);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the chart panel for the frame.
 	 * 
@@ -85,5 +85,5 @@ public class ChartFrame extends JFrame {
 	public ChartPanel getChartPanel() {
 		return this.chartPanel;
 	}
-
+	
 }

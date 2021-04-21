@@ -12,16 +12,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLFunctionDefinition
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLFunctionDefinitionHelper;
 
 public class SBML_FunctionDefinition_Writer extends SBML_SBase_Writer {
-
+	
 	/**
 	 * Adds a function definition and its variables to the model
 	 * 
 	 * @param model
-	 *            the function definition will be added to this model
+	 *           the function definition will be added to this model
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 */
 	public void addFunctionDefinition(Model model, Graph g, String internHeadline,
 			SBMLFunctionDefinitionHelper functionDefinitionHelperObject) {

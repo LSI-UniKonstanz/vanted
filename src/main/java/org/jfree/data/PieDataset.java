@@ -39,7 +39,7 @@ package org.jfree.data;
  * As the name suggests, you can use this dataset to supply data for pie charts.
  */
 public interface PieDataset extends KeyedValues, Dataset {
-
+	
 	// no new methods added.
-
+	
 }

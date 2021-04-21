@@ -43,50 +43,50 @@ import java.awt.geom.Rectangle2D;
  * @author Jeremy Bowman
  */
 public class DefaultShapeFactory implements ShapeFactory {
-
+	
 	/**
 	 * Returns a Shape that can be used in plotting data. Used in XYPlots.
 	 * 
 	 * @param series
-	 *            number of series.
+	 *           number of series.
 	 * @param item
-	 *            index of the item. <i>Not used, i.e. redundant.</i>.
+	 *           index of the item. <i>Not used, i.e. redundant.</i>.
 	 * @param x
-	 *            the centered x position of the shape.
+	 *           the centered x position of the shape.
 	 * @param y
-	 *            the centered y position of the shape.
+	 *           the centered y position of the shape.
 	 * @param scale
-	 *            the size of the shape (width and height, radius).
+	 *           the size of the shape (width and height, radius).
 	 * @return a square for series == 0, a circle otherwise.
 	 */
 	public Shape getShape(int series, int item, double x, double y, double scale) {
-
+		
 		if (series == 0) {
 			return new Rectangle2D.Double(x - 0.5 * scale, y - 0.5 * scale, scale, scale);
 		} else {
 			return new Ellipse2D.Double(x - 0.5 * scale, y - 0.5 * scale, scale, scale);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a Shape that can be used in plotting data. Used in CategoryPlots.
 	 * 
 	 * @param series
-	 *            number of series. <i>Not used, i.e. redundant</i>.
+	 *           number of series. <i>Not used, i.e. redundant</i>.
 	 * @param category
-	 *            the category. <i>Not used, i.e. redundant</i>.
+	 *           the category. <i>Not used, i.e. redundant</i>.
 	 * @param x
-	 *            the centered x position of the shape.
+	 *           the centered x position of the shape.
 	 * @param y
-	 *            the centered y position of the shape.
+	 *           the centered y position of the shape.
 	 * @param scale
-	 *            the size of the shape (width and height, radius).
+	 *           the size of the shape (width and height, radius).
 	 * @return a circle with the radius <code>scale</code> centered at (x,y).
 	 */
 	public Shape getShape(int series, Object category, double x, double y, double scale) {
-
+		
 		return new Ellipse2D.Double(x - 0.5 * scale, y - 0.5 * scale, scale, scale);
-
+		
 	}
 }

@@ -33,35 +33,35 @@ package org.jfree.data;
  * A function in the form y = a + bx.
  */
 public class LineFunction2D implements Function2D {
-
+	
 	/** The intercept. */
 	private double a;
-
+	
 	/** The slope of the line. */
 	private double b;
-
+	
 	/**
 	 * Constructs a new line function.
 	 * 
 	 * @param a
-	 *            the intercept.
+	 *           the intercept.
 	 * @param b
-	 *            the slope.
+	 *           the slope.
 	 */
 	public LineFunction2D(final double a, final double b) {
 		this.a = a;
 		this.b = b;
 	}
-
+	
 	/**
 	 * Returns the function value.
 	 * 
 	 * @param x
-	 *            the x-value.
+	 *           the x-value.
 	 * @return the value.
 	 */
 	public double getValue(final double x) {
 		return this.a + this.b * x;
 	}
-
+	
 }

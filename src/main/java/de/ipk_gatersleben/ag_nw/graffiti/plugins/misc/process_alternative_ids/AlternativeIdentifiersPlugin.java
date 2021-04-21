@@ -12,7 +12,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.ReplaceDiagramTitleFromAlternativeSubstanceNames;
 
 public class AlternativeIdentifiersPlugin extends IPK_PluginAdapter {
-
+	
 	public AlternativeIdentifiersPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			this.algorithms = new Algorithm[] { new AdditionalIdentifiersAlgorithm(),

@@ -34,7 +34,7 @@ package org.jfree.data;
  * A default implementation of the {@link KeyedValuesDataset} interface.
  */
 public class DefaultKeyedValuesDataset extends DefaultPieDataset implements KeyedValuesDataset {
-
+	
 	// all code inherited
-
+	
 }

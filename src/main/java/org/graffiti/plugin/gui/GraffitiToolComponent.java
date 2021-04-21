@@ -18,27 +18,27 @@ import org.graffiti.plugin.tool.Tool;
  */
 public interface GraffitiToolComponent extends GraffitiContainer {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the tool this button is identified with.
 	 * 
 	 * @return the tool this button is identified with.
 	 */
 	public Tool getTool();
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param al
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void addActionListener(ActionListener al);
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param al
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void removeActionListener(ActionListener al);
 }

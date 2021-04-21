@@ -59,44 +59,44 @@ import scenario.ScenarioService;
  */
 public abstract class AbstractTool extends MouseInputAdapter implements Tool, SessionListener, SelectionListener {
 	// ~ Instance fields ========================================================
-
+	
 	static final Logger logger = Logger.getLogger(AbstractTool.class);
 	static {
 		logger.setLevel(Level.INFO);
 	}
-
+	
 	protected JComponent mouseComp = null;
-
+	
 	/** DOCUMENT ME! */
 	/** DOCUMENT ME! */
 	protected AffineTransform zoom = View.NO_ZOOM;
-
+	
 	/** The current session that this tool should work on / with. */
 	protected EditorSession session;
-
+	
 	/** The graph this tool works on. */
 	// private Graph graph;
-
+	
 	/** The preferences of this tool. */
 	protected Preferences prefs;
-
+	
 	/** The current selection that this tool should work on / with. */
 	protected Selection selection;
-
+	
 	protected static Tool lastActiveTool = null;
-
+	
 	/** Flag set by <code>activate</code> and <code>deactivate</code>. */
 	protected boolean isActive;
-
+	
 	/** Used to display marked nodes. */
 	/** Size of bullets used to display marked edges. */
 	protected static final int BORDERSIZE = 10;
-
+	
 	// private final LineBorder border = new LineBorder(java.awt.Color.RED, 4);
-
+	
 	/** DOCUMENT ME! */
 	private static final Border border = new NodeBorder(Color.RED.brighter().brighter(), BORDERSIZE);
-
+	
 	private static Timer checkActivationTimer = new Timer(500, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			boolean isOneActive = false;
@@ -112,25 +112,25 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			}
 		}
 	});
-
+	
 	private static final Border edgeBorder = new EdgeBorder(java.awt.Color.RED, BORDERSIZE, true);
-
+	
 	// private final Border border = new NodeBorder(java.awt.Color.RED, 8);
 	// private final Border border = new TitledBorder("Node");
-
+	
 	/** Used to temporarily highlight nodes. */
 	private static final Border tempBorder = new NodeBorder(java.awt.Color.ORANGE, BORDERSIZE);
 	private static final Border tempBorderLINK = new NodeBorder(java.awt.Color.BLUE, BORDERSIZE);
 	// private static final Border tempBorderEdge = new
 	// EdgeBorder(java.awt.Color.ORANGE, BORDERSIZE, true);
-
+	
 	/** Border for unmarked graph elements. */
 	private static final EmptyBorder empty = new EmptyBorder(0, 0, 0, 0); // 3, 3, 3, 3 ?
-
+	
 	protected static List<Tool> knownTools = new LinkedList<Tool>();
-
+	
 	// ~ Methods ================================================================
-
+	
 	public AbstractTool() {
 		synchronized (checkActivationTimer) {
 			if (!checkActivationTimer.isRunning()) {
@@ -139,11 +139,11 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			}
 		}
 	}
-
+	
 	protected Graph getGraph() {
 		return MainFrame.getInstance().getActiveEditorSession().getGraph();
 	}
-
+	
 	public static Tool getActiveTool() {
 		for (Tool at : knownTools) {
 			if (at.isActive())
@@ -151,7 +151,7 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Returns true if this tool has been activated and since then not been
 	 * deactivated.
@@ -161,17 +161,17 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 	public boolean isActive() {
 		return this.isActive;
 	}
-
+	
 	/**
 	 * Sets the graph of this tool.
 	 * 
 	 * @param graph
-	 *            the graph of this tool.
+	 *           the graph of this tool.
 	 */
 	public void setGraph(Graph graph) {
 		// empty
 	}
-
+	
 	/**
 	 * States whether this class wants to be registered as a
 	 * <code>SelectionListener</code>.
@@ -181,7 +181,7 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 	public boolean isSelectionListener() {
 		return true;
 	}
-
+	
 	/**
 	 * States whether this class wants to be registered as a
 	 * <code>SessionListener</code>.
@@ -191,7 +191,7 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 	public boolean isSessionListener() {
 		return true;
 	}
-
+	
 	/**
 	 * States whether this class wants to be registered as a
 	 * <code>ViewListener</code>, i.e. if it wants to get informed when another view
@@ -204,7 +204,7 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 	public boolean isViewListener() {
 		return false;
 	}
-
+	
 	public static boolean activateTool(String id) {
 		for (Tool t : knownTools) {
 			if (t.getToolName().equals(id)) {
@@ -214,20 +214,20 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Classes that overwrite this method should call super.active first.
 	 * 
 	 * @see org.graffiti.plugin.tool.Tool#activate()
 	 */
 	public void activate() {
-
+		
 		ScenarioService.postWorkflowStep("Activate " + getToolName(),
 				new String[] { "import org.graffiti.plugin.tool.AbstractTool;" },
 				new String[] { "AbstractTool.activateTool(\"" + getToolName() + "\");" });
-
+		
 		// System.out.println("Activate "+toString());
-
+		
 		deactivateAll();
 		//
 		// Zoomable myView = MainFrame.getInstance().getActiveSession().getActiveView();
@@ -236,7 +236,7 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 		// AffineTransform at = new AffineTransform();
 		// at.setToScale(1, 1);
 		// zoomView.zoomChanged(at);
-
+		
 		try {
 			mouseComp = MainFrame.getInstance().getActiveSession().getActiveView().getViewComponent();
 			this.isActive = true;
@@ -249,7 +249,7 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			isActive = false;
 		}
 	}
-
+	
 	public void deactivateAll() {
 		for (Iterator<Tool> it = knownTools.iterator(); it.hasNext();) {
 			Tool t = (Tool) it.next();
@@ -261,7 +261,7 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			}
 		});
 	}
-
+	
 	/**
 	 * Classes that overwrite this method should call super.deactive first.
 	 * 
@@ -276,16 +276,16 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 		if (this.selection != null) {
 			unDisplayAsMarked(getCompsForElems(this.selection.getElements()));
 		}
-
+		
 		this.isActive = false;
 		// logger.entering(this.toString(), "deactivate");
 	}
-
+	
 	/**
 	 * Show a graph element component as marked.
 	 * 
 	 * @param comp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void displayAsMarked(GraphElementComponent comp) {
 		if (comp instanceof NodeComponentInterface) {
@@ -294,31 +294,31 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			displayAsMarked((EdgeComponentInterface) comp);
 		}
 	}
-
+	
 	/**
 	 * Show a node component as marked.
 	 * 
 	 * @param comp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void displayAsMarked(NodeComponentInterface comp) {
-
+		
 		// if(session != null && selection != null)
 		// logger.debug("displayAsMarked- Session: " + session.getGraph().getName() +
 		// "SelectionHash: " + selection.hashCode() + " node " +
 		// comp.getGraphElement().getID());
-
+		
 		if (comp != null) {
 			((JComponent) comp).setBorder(border);
 			((JComponent) comp).repaint();
 		}
 	}
-
+	
 	/**
 	 * Show an edge component as marked.
 	 * 
 	 * @param comp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void displayAsMarked(EdgeComponentInterface comp) {
 		if (comp != null) {
@@ -326,28 +326,28 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			((JComponent) comp).repaint();
 		}
 	}
-
+	
 	/**
 	 * Display a list of graph element components
 	 * 
 	 * @param comps
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void displayAsMarked(List<GraphElementComponent> comps) {
 		for (Iterator<GraphElementComponent> it = comps.iterator(); it.hasNext();) {
 			displayAsMarked((GraphElementComponent) (it.next()));
 		}
 	}
-
+	
 	protected boolean avoidHighlight = false;
-
+	
 	/**
 	 * Display a component in a special way distinguished from the way
 	 * <code>displayAsMarked</code> does it. Used for temporarily highlighting a
 	 * component, e.g. for a mouseMoved action.
 	 * 
 	 * @param comp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void highlight(Component comp, MouseEvent e) {
 		if (avoidHighlight)
@@ -369,7 +369,7 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 					((JComponent) comp).setBorder(tempBorderLINK);
 				else
 					((JComponent) comp).setBorder(tempBorder);
-
+				
 				List<AttributeComponent> acc = getAttributeCompsForElem(n);
 				for (AttributeComponent ac : acc) {
 					ac.highlight(true, e);
@@ -389,52 +389,52 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			}
 		}
 	}
-
+	
 	/**
 	 * Called when the selection has changed.
 	 * 
 	 * @param e
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void selectionChanged(SelectionEvent e) {
 		Selection sel = e.getSelection();
-
+		
 		if (session == null || session.getSelectionModel() == null
 				|| session.getSelectionModel().getActiveSelection() == null
 				|| sel.hashCode() != (session.getSelectionModel().getActiveSelection().hashCode()))
 			return;
 		if (this.isActive()) {
-
+			
 			// if(session != null && selection != null)
 			// logger.debug("selectionChanged- Session: " + session.getGraph().getName() +
 			// "SessionSelectionHash: " +
 			// session.getSelectionModel().getActiveSelection().hashCode() + "
 			// selectionEventHash: " + sel.hashCode());
-
+			
 			if (!sel.equals(this.selection) || (sel.getNewUnmarked().isEmpty() && sel.getNewMarked().isEmpty())) {
 				// must completely renew selection
 				if (selection != null) {
 					unDisplayAsMarked(getAllMarkedComps());
 				}
-
+				
 				displayAsMarked(getCompsForElems(sel.getElements()));
 			} else {
 				List<GraphElementComponent> list = new LinkedList<GraphElementComponent>();
-
+				
 				for (Iterator<?> it = sel.getNewUnmarked().keySet().iterator(); it.hasNext();) {
 					list.addAll(getCompsForElem((GraphElement) it.next()));
 				}
-
+				
 				unDisplayAsMarked(list);
 				list = new LinkedList<GraphElementComponent>();
-
+				
 				for (Iterator<?> it = sel.getNewMarked().keySet().iterator(); it.hasNext();) {
 					list.addAll(getCompsForElem((GraphElement) it.next()));
 				}
-
+				
 				displayAsMarked(list);
 			}
-
+			
 			// for(Iterator viewIt = session.getViews().iterator();
 			// viewIt.hasNext();)
 			// {
@@ -442,31 +442,31 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			// view.repaint();
 			// }
 		}
-
+		
 		this.selection = sel;
 		// logger.debug("selectionChanged: Tool selection is now: " +
 		// selection.hashCode());
 	}
-
+	
 	/**
 	 * @see org.graffiti.selection.SelectionListener#selectionListChanged(org.graffiti.selection.SelectionEvent)
 	 */
 	public void selectionListChanged(SelectionEvent e) {
 	}
-
+	
 	/**
 	 * @see org.graffiti.session.SessionListener#sessionChanged(Session)
 	 */
 	public void sessionChanged(Session s) {
 		session = (EditorSession) s;
-
+		
 	}
-
+	
 	/**
 	 * Remove anything that specifies a graph element component as being marked.
 	 * 
 	 * @param comp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void unDisplayAsMarked(GraphElementComponent comp) {
 		if (comp instanceof NodeComponentInterface) {
@@ -485,31 +485,31 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			}
 		}
 	}
-
+	
 	/**
 	 * Remove anything that specifies a node component as being marked.
 	 * 
 	 * @param comp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	private void unDisplayAsMarked(NodeComponentInterface comp) {
 		// if(session != null && selection != null)
 		// logger.debug("unDisplayAsMarked- Session: " + session.getGraph().getName() +
 		// "SelectionHash: " + selection.hashCode() + " node " +
 		// comp.getGraphElement().getID());
-
+		
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
 			((JComponent) comp).setBorder(empty);
 			// if (((JComponent) comp).getParent() != null)
 			// ((JComponent) comp).getParent().repaint();
 		}
 	}
-
+	
 	/**
 	 * Remove anything that specifies an edge component as being marked.
 	 * 
 	 * @param comp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	private void unDisplayAsMarked(EdgeComponentInterface comp) {
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
@@ -518,20 +518,20 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 			// ((JComponent) comp).getParent().repaint();
 		}
 	}
-
+	
 	/**
 	 * Call <code>unDisplayAsMarked(GraphElementComponent geComp)</code> on every
 	 * element of the provided list.
 	 * 
 	 * @param comps
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void unDisplayAsMarked(List comps) {
 		for (Iterator it = comps.iterator(); it.hasNext();) {
 			unDisplayAsMarked((GraphElementComponent) (it.next()));
 		}
 	}
-
+	
 	/**
 	 * Returns a list of all <code>GraphElementComponents</code> contained in this
 	 * selection.
@@ -541,89 +541,89 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 	@SuppressWarnings("unchecked")
 	protected List<GraphElementComponent> getAllMarkedComps() {
 		List<GraphElementComponent> geComps = new LinkedList<GraphElementComponent>();
-
+		
 		if (selection == null) {
 			return geComps;
 		}
-
+		
 		geComps.addAll(getCompsForElems((Collection) selection.getNodes()));
 		geComps.addAll(getCompsForElems((Collection) selection.getEdges()));
-
+		
 		return geComps;
 	}
-
+	
 	/**
 	 * Used method <code>getComponentForElement</code> from the views of the current
 	 * session to get the <code>GraphElementComponent</code>s for the provided
 	 * <code>GraphElement</code>.
 	 * 
 	 * @param ge
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected List<GraphElementComponent> getCompsForElem(GraphElement ge) {
 		if (session != null) {
 			List<View> views = session.getViews();
-
+			
 			List<GraphElementComponent> comps = new LinkedList<GraphElementComponent>();
-
+			
 			for (View view : views) {
 				GraphElementComponent v = view.getComponentForElement(ge);
 				if (v != null)
 					comps.add(v);
 			}
-
+			
 			return comps;
 		} else
 			return new LinkedList<GraphElementComponent>();
 	}
-
+	
 	protected List<AttributeComponent> getAttributeCompsForElem(GraphElement ge) {
 		if (session != null) {
 			List<View> views = session.getViews();
-
+			
 			List<AttributeComponent> comps = new LinkedList<AttributeComponent>();
-
+			
 			for (View view : views) {
 				Set<AttributeComponent> acc = view.getAttributeComponentsForElement(ge);
 				if (acc != null)
 					comps.addAll(acc);
 			}
-
+			
 			return comps;
 		} else
 			return new LinkedList<AttributeComponent>();
 	}
-
+	
 	/**
 	 * Used method <code>getComponentForElement</code> from the views of the current
 	 * session to convert the provided list of <code>GraphElement</code> elements to
 	 * a list of <code>GraphElementComponent</code>s.
 	 * 
 	 * @param elems
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected List<GraphElementComponent> getCompsForElems(Collection<GraphElement> elems) {
 		if (session != null) {
 			List<View> views = session.getViews();
-
+			
 			// View view = session.getActiveView();
 			List<GraphElementComponent> comps = new LinkedList<GraphElementComponent>();
-
+			
 			for (GraphElement ge : elems) {
 				for (View view : views) {
 					if (view.getComponentForElement(ge) != null)
 						comps.add(view.getComponentForElement(ge));
 				}
 			}
-
+			
 			return comps;
 		} else
-
+			
 			return new LinkedList<GraphElementComponent>();
 	}
-
+	
 	public void setPrefs(Preferences p) {
 		prefs = p;
 	}

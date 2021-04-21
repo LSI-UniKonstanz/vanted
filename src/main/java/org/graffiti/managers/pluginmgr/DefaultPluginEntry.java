@@ -19,39 +19,39 @@ import org.graffiti.plugin.GenericPlugin;
  */
 public class DefaultPluginEntry implements PluginEntry {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * <code>true</code> if the plugin should be loaded on startup,
 	 * <code>false</code> otherwise.
 	 */
 	private Boolean loadOnStartup;
-
+	
 	/** The plugin itself. */
 	private GenericPlugin plugin;
-
+	
 	/** The description of the plugin */
 	private PluginDescription description;
-
+	
 	/** The file name of the plugin. */
 	private String fileName;
-
+	
 	/** The location of the plugin. */
 	private URL pluginLocation;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new plugin entry.
 	 * 
 	 * @param description
-	 *            the description of this plugin
+	 *           the description of this plugin
 	 * @param plugin
-	 *            the plugin.
+	 *           the plugin.
 	 * @param loadOnStartup
-	 *            <code>true</code> if the plugin should be loaded at the startup of
-	 *            the plugin manager.
+	 *           <code>true</code> if the plugin should be loaded at the startup of
+	 *           the plugin manager.
 	 * @param pluginLocation
-	 *            the location of the plugin.
+	 *           the location of the plugin.
 	 */
 	public DefaultPluginEntry(PluginDescription description, GenericPlugin plugin, Boolean loadOnStartup,
 			URL pluginLocation) {
@@ -60,32 +60,32 @@ public class DefaultPluginEntry implements PluginEntry {
 		this.pluginLocation = pluginLocation;
 		this.loadOnStartup = loadOnStartup;
 	}
-
+	
 	/**
 	 * Constructs a new plugin entry.
 	 * 
 	 * @param fileName
-	 *            the file name of the plugin
+	 *           the file name of the plugin
 	 * @param description
-	 *            the description of this plugin
+	 *           the description of this plugin
 	 */
 	public DefaultPluginEntry(String fileName, PluginDescription description) {
 		this.fileName = fileName;
 		this.description = description;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the description.
 	 * 
 	 * @param description
-	 *            the description to be set.
+	 *           the description to be set.
 	 */
 	public void setDescription(PluginDescription description) {
 		this.description = description;
 	}
-
+	
 	/**
 	 * Returns the description of the plugin.
 	 * 
@@ -94,7 +94,7 @@ public class DefaultPluginEntry implements PluginEntry {
 	public PluginDescription getDescription() {
 		return description;
 	}
-
+	
 	/**
 	 * Returns the file name of the plugin.
 	 * 
@@ -103,19 +103,19 @@ public class DefaultPluginEntry implements PluginEntry {
 	public String getFileName() {
 		return fileName;
 	}
-
+	
 	/**
 	 * Sets the flag indicating whether a plugin should be loaded on the startup of
 	 * the editor.
 	 * 
 	 * @param loadOnStartup
-	 *            flag indicating whether a plugin should be loaded on the startup
-	 *            of the editor.
+	 *           flag indicating whether a plugin should be loaded on the startup
+	 *           of the editor.
 	 */
 	public void setLoadOnStartup(Boolean loadOnStartup) {
 		this.loadOnStartup = loadOnStartup;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the plugin shall be loaded on the startup of the
 	 * editor, <code>false</code> otherwise.
@@ -126,17 +126,17 @@ public class DefaultPluginEntry implements PluginEntry {
 	public Boolean getLoadOnStartup() {
 		return loadOnStartup;
 	}
-
+	
 	/**
 	 * Sets the plugin.
 	 * 
 	 * @param plugin
-	 *            the plugin to be set.
+	 *           the plugin to be set.
 	 */
 	public void setPlugin(GenericPlugin plugin) {
 		this.plugin = plugin;
 	}
-
+	
 	/**
 	 * Returns the plugin.
 	 * 
@@ -145,17 +145,17 @@ public class DefaultPluginEntry implements PluginEntry {
 	public GenericPlugin getPlugin() {
 		return plugin;
 	}
-
+	
 	/**
 	 * Sets the plugin location.
 	 * 
 	 * @param pluginLocation
-	 *            plugin location to be set.
+	 *           plugin location to be set.
 	 */
 	public void setPluginLocation(URL pluginLocation) {
 		this.pluginLocation = pluginLocation;
 	}
-
+	
 	/**
 	 * Returns the plugin location.
 	 * 
@@ -164,7 +164,7 @@ public class DefaultPluginEntry implements PluginEntry {
 	public URL getPluginLocation() {
 		return pluginLocation;
 	}
-
+	
 	public URL getPluginUrl() throws MalformedURLException {
 		return new URL(getFileName());
 	}

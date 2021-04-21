@@ -43,16 +43,16 @@ import org.graffiti.plugin.io.resources.ResourceIOManager;
  * @vanted.revision 2.7.0 Standard save format
  */
 public class DefaultIOManager implements IOManager {
-
+	
 	private class GravistoFileOpenFilter extends GenericFileFilter {
-
+		
 		/**
 		 * @param extension
 		 */
 		public GravistoFileOpenFilter(String extension) {
 			super(extension);
 		}
-
+		
 		@Override
 		public boolean accept(File file) {
 			if (file.isDirectory())
@@ -74,34 +74,34 @@ public class DefaultIOManager implements IOManager {
 			}
 			return false;
 		}
-
+		
 		@Override
 		public String getDescription() {
 			// return "Graph Files (" + getSupported("*", "; ") + ")";
 			return "Supported Graph Files";
 		}
 	}
-
+	
 	// ~ Static fields/initializers =============================================
-
+	
 	// ~ Instance fields ========================================================
-
+	
 	/** The set of input serializers. */
 	private final List<InputSerializer> inputSerializer;
-
+	
 	/** The set of output serializers. */
 	private final List<OutputSerializer> outputSerializer;
-
+	
 	/** The file chooser used to open and save graphs. */
 	private JFileChooser fc;
-
+	
 	/** The list of listeners. */
 	private final List<IOManagerListener> listeners;
-
+	
 	protected static final String STANDARD_SAVE_FORMAT = ".gml";
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new io manager.
 	 */
@@ -122,41 +122,41 @@ public class DefaultIOManager implements IOManager {
 			// ErrorMsg.addErrorMessage(ace);
 		}
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	public JFileChooser getFileChooser() {
 		if (fc == null)
 			fc = new JFileChooser();
-
+		
 		return fc;
 	}
-
+	
 	@Override
 	public void addInputSerializer(InputSerializer is) {
 		// String[] inExtensions = is.getExtensions();
-
+		
 		// for (int j = 0; j < inExtensions.length; j++) {
 		inputSerializer.add(is);
 		// }
 		fireInputSerializerAdded(is);
 	}
-
+	
 	@Override
 	public void addListener(IOManagerListener ioManagerListener) {
 		listeners.add(ioManagerListener);
 	}
-
+	
 	@Override
 	public void addOutputSerializer(OutputSerializer os) {
 		// String[] outExtensions = os.getExtensions();
 		//
 		// for (int j = 0; j < outExtensions.length; j++)
 		outputSerializer.add(os);
-
+		
 		fireOutputSerializerAdded(os);
 	}
-
+	
 	@Override
 	public InputSerializer createInputSerializer(InputStream in, String extSearch) throws FileNotFoundException {
 		ArrayList<InputSerializer> ins = new ArrayList<InputSerializer>();
@@ -181,7 +181,7 @@ public class DefaultIOManager implements IOManager {
 						inps.close();
 						return is;
 					}
-
+					
 					inps.close();
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
@@ -192,7 +192,7 @@ public class DefaultIOManager implements IOManager {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public Set<String> getGraphFileExtensions() {
 		Set<String> knownExt = new TreeSet<String>((String s1, String s2) -> {
@@ -200,7 +200,7 @@ public class DefaultIOManager implements IOManager {
 				return -1;
 			else if (s2.equals(STANDARD_SAVE_FORMAT))
 				return 1;
-
+			
 			return s1.compareTo(s2);
 		});
 		for (Iterator<InputSerializer> itr = inputSerializer.iterator(); itr.hasNext();) {
@@ -210,10 +210,10 @@ public class DefaultIOManager implements IOManager {
 				knownExt.add(ext[i]);
 			}
 		}
-
+		
 		return knownExt;
 	}
-
+	
 	@Override
 	public JFileChooser createOpenFileChooser() {
 		fc = getFileChooser();
@@ -240,19 +240,19 @@ public class DefaultIOManager implements IOManager {
 				fc.addChoosableFileFilter(gff);
 			}
 		}
-
+		
 		fc.addChoosableFileFilter(new GravistoFileOpenFilter(null));
-
+		
 		return fc;
 	}
-
+	
 	@Override
 	public OutputSerializer createOutputSerializer(String extSearch) {
-
+		
 		return createOutputSerializer(extSearch, null);
-
+		
 	}
-
+	
 	@Override
 	public OutputSerializer createOutputSerializer(String extSearch, String fileTypeDescription) {
 		for (Iterator<OutputSerializer> itr = outputSerializer.iterator(); itr.hasNext();) {
@@ -276,12 +276,12 @@ public class DefaultIOManager implements IOManager {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public JFileChooser createSaveFileChooser() {
 		return createSaveFileChooser(null);
 	}
-
+	
 	@Override
 	public JFileChooser createSaveFileChooser(Graph g) {
 		fc = getFileChooser();
@@ -299,7 +299,7 @@ public class DefaultIOManager implements IOManager {
 			 */
 			if (g != null && !os.validFor(g))
 				continue;
-
+			
 			String[] ext = os.getExtensions();
 			String[] desc = os.getFileTypeDescriptions();
 			if (ext.length != desc.length) {
@@ -314,7 +314,7 @@ public class DefaultIOManager implements IOManager {
 				// + os.toString());
 				// knownExt.add(ext[i]);
 				GravistoFileFilter gff = new GravistoFileFilter(ext[i], desc[i]);
-
+				
 				if (defaultFileFilter == null && gff.getExtension().equalsIgnoreCase(defaultExt)) {
 					defaultFileFilter = gff;
 				} else {
@@ -326,39 +326,39 @@ public class DefaultIOManager implements IOManager {
 			fc.addChoosableFileFilter(defaultFileFilter);
 		return fc;
 	}
-
+	
 	@Override
 	public boolean hasInputSerializer() {
 		return !inputSerializer.isEmpty();
 	}
-
+	
 	@Override
 	public boolean hasOutputSerializer() {
 		return !outputSerializer.isEmpty();
 	}
-
+	
 	@Override
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		// register add input serializers
 		InputSerializer[] is = plugin.getInputSerializers();
-
+		
 		for (int i = 0; i < is.length; i++) {
 			addInputSerializer(is[i]);
 		}
-
+		
 		// register all output serializers
 		OutputSerializer[] os = plugin.getOutputSerializers();
-
+		
 		for (int i = 0; i < os.length; i++) {
 			addOutputSerializer(os[i]);
 		}
 	}
-
+	
 	@Override
 	public boolean removeListener(IOManagerListener l) {
 		return listeners.remove(l);
 	}
-
+	
 	/**
 	 * Returns a string representation of the io manager. Useful for debugging.
 	 * 
@@ -368,31 +368,33 @@ public class DefaultIOManager implements IOManager {
 	public String toString() {
 		return "inputSerializer: " + inputSerializer + " outputSerializer: " + outputSerializer;
 	}
-
+	
 	/**
 	 * Informs every registered io manager listener about the addition of the given
 	 * input serializer.
 	 * 
-	 * @param is the input serializer, which was added.
+	 * @param is
+	 *           the input serializer, which was added.
 	 */
 	private void fireInputSerializerAdded(InputSerializer is) {
 		for (Iterator<IOManagerListener> i = listeners.iterator(); i.hasNext();) {
 			IOManager.IOManagerListener l = i.next();
-
+			
 			l.inputSerializerAdded(is);
 		}
 	}
-
+	
 	/**
 	 * Informs every output serializer about the addition of the given output
 	 * serializer.
 	 * 
-	 * @param os the output serializer, which was added.
+	 * @param os
+	 *           the output serializer, which was added.
 	 */
 	private void fireOutputSerializerAdded(OutputSerializer os) {
 		for (Iterator<IOManagerListener> i = listeners.iterator(); i.hasNext();) {
 			IOManager.IOManagerListener l = i.next();
-
+			
 			l.outputSerializerAdded(os);
 		}
 	}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="vanted javadoc" default="beautify">
 
-	<property name="title" value="Vanted 2.7.2"/>
+	<property name="title" value="Vanted 2.8.0"/>
 	<property name="java.compatibility" value="1.8"/>
 	<property name="java.api" value="https://docs.oracle.com/javase/8/docs/api/"/>
 
@@ -30,7 +30,7 @@
 			version="true">
 			<link href="${java.api}"/>
 			<tag file="${tags.file}"/>
-			<footer><![CDATA[<br/>Copyright &#169; 2016-2020 Chair for Life Science Informatics, University of Konstanz, Germany]]></footer>
+			<footer><![CDATA[<br/>Copyright &#169; 2016-2021 Chair for Life Science Informatics, University of Konstanz, Germany]]></footer>
 		</javadoc>
 	</target>
 

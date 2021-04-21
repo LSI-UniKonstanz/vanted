@@ -29,7 +29,7 @@ import org.graffiti.util.GraphicHelper;
  */
 public class RectangleNodeShape extends RectangularNodeShape {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * The <code>Rectangle2D</code> that is represented by this
 	 * <code>NodeShape</code>.
@@ -39,9 +39,9 @@ public class RectangleNodeShape extends RectangularNodeShape {
 	protected int offY = 0;
 	protected int addSx = 0;
 	protected int addSy = 0;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * The constructor creates a rectangle using default values.
 	 */
@@ -51,41 +51,41 @@ public class RectangleNodeShape extends RectangularNodeShape {
 		((RectangularShape) this.thickShape).setFrame(rect2D.getX(), rect2D.getY(), rect2D.getWidth(),
 				rect2D.getHeight());
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	public Point2D getIntersection(Line2D line) {
 		Rectangle2D rect = getRealBounds2D();
-
+		
 		double rounding = getRounding() / 2;
-
+		
 		return getIntersectionOfRoundRectangleAndLine(line, rect, rounding);
 	}
-
+	
 	protected double getRounding() {
 		return nodeAttr.getRoundedEdges();
 	}
-
+	
 	public static Point2D getIntersectionOfRoundRectangleAndLine(Line2D line, Rectangle2D rect, double rounding) {
-
+		
 		rounding = Math.abs(rounding);
-
+		
 		double width = rect.getWidth();
 		double height = rect.getHeight();
-
+		
 		// the four corners of the encapsulated rectangle
 		Point2D upperLeft = new Point2D.Double(rect.getX(), rect.getY());
 		Point2D lowerLeft = new Point2D.Double(rect.getX(), upperLeft.getY() + height);
 		Point2D upperRight = new Point2D.Double(upperLeft.getX() + width, rect.getY());
 		Point2D lowerRight = new Point2D.Double(upperLeft.getX() + width, upperLeft.getY() + height);
-
+		
 		// turn the rectangle into 4 lines
 		// and test which one intersects with the given line
 		Line2D left = new Line2D.Double(upperLeft, lowerLeft);
 		Line2D bottom = new Line2D.Double(lowerLeft, lowerRight);
 		Line2D right = new Line2D.Double(upperRight, lowerRight);
 		Line2D top = new Line2D.Double(upperLeft, upperRight);
-
+		
 		// testing with which side of the rectangle the given line intersects
 		// and then computing the intersection point
 		if (left.intersectsLine(line) && (left.getX1() != line.getX1())) {
@@ -103,14 +103,14 @@ public class RectangleNodeShape extends RectangularNodeShape {
 			return null;
 		}
 	}
-
+	
 	private static Point2D checkEllipsesIntersections(Point2D intersection, Line2D line, Line position,
 			Rectangle2D rect, double rounding) {
 		// identify ellipse (tl, tr, bl, br)
 		double ix, iy;
 		ix = intersection.getX();
 		iy = intersection.getY();
-
+		
 		if (ix >= rect.getMinX() + rounding && ix <= rect.getMaxX() - rounding)
 			return intersection;
 		if (iy >= rect.getMinY() + rounding && iy <= rect.getMaxY() - rounding)
@@ -172,28 +172,28 @@ public class RectangleNodeShape extends RectangularNodeShape {
 			}
 		}
 	}
-
+	
 	private static Point2D getEllipseIntersection(Point2D intersection, Line2D line, Corner corner, Rectangle2D rect,
 			double rounding) {
 		double xp = Double.NaN;
 		double yp = Double.NaN;
 		switch (corner) {
-		case TOP_LEFT:
-			xp = rect.getMinX() + rounding;
-			yp = rect.getMinY() + rounding;
-			break;
-		case TOP_RIGHT:
-			xp = rect.getMaxX() - rounding;
-			yp = rect.getMinY() + rounding;
-			break;
-		case BOTTOM_LEFT:
-			xp = rect.getMinX() + rounding;
-			yp = rect.getMaxY() - rounding;
-			break;
-		case BOTTOM_RIGHT:
-			xp = rect.getMaxX() - rounding;
-			yp = rect.getMaxY() - rounding;
-			break;
+			case TOP_LEFT:
+				xp = rect.getMinX() + rounding;
+				yp = rect.getMinY() + rounding;
+				break;
+			case TOP_RIGHT:
+				xp = rect.getMaxX() - rounding;
+				yp = rect.getMinY() + rounding;
+				break;
+			case BOTTOM_LEFT:
+				xp = rect.getMinX() + rounding;
+				yp = rect.getMaxY() - rounding;
+				break;
+			case BOTTOM_RIGHT:
+				xp = rect.getMaxX() - rounding;
+				yp = rect.getMaxY() - rounding;
+				break;
 		}
 		Ellipse2D e = new Ellipse2D.Double(xp - rounding, yp - rounding, rounding * 2, rounding * 2);
 		Point2D[] points = CircularNodeShape.getIntersectionsWithCircle(e, line);
@@ -213,32 +213,32 @@ public class RectangleNodeShape extends RectangularNodeShape {
 		}
 		return intersection;
 	}
-
+	
 	@Override
 	public PathIterator getPathIterator(AffineTransform t, double d) {
 		return this.rect2D.getPathIterator(t, d);
 	}
-
+	
 	@Override
 	public PathIterator getPathIterator(AffineTransform t) {
 		return this.rect2D.getPathIterator(t);
 	}
-
+	
 	/**
 	 * This method sets all necessary properties using the values contained within
 	 * the <code>CollectionAttribute</code>. This includes
 	 * 
 	 * @param graphics
-	 *            The attribute that contains all necessary information to construct
-	 *            a rectangle.
+	 *           The attribute that contains all necessary information to construct
+	 *           a rectangle.
 	 */
 	public void buildShape(NodeGraphicAttribute graphics) {
 		this.nodeAttr = graphics;
-
+		
 		DimensionAttribute dim = graphics.getDimension();
 		double w = dim.getWidth();
 		double h = dim.getHeight();
-
+		
 		double ft = Math.floor(graphics.getFrameThickness());
 		double offset = ft / 2d;
 		// double x = Math.floor(offset);
@@ -246,7 +246,7 @@ public class RectangleNodeShape extends RectangularNodeShape {
 		// for a frame thickness of 1 it seems to be better to not floor the offset
 		double x = offset;
 		double y = offset;
-
+		
 		double rounding = getRounding();
 		if (Math.abs(rounding) > 0.0001 && !(rect2D instanceof RoundRectangle2D)) {
 			rect2D = new RoundRectangle2D.Double(x, y, w, h, rounding, rounding);
@@ -256,34 +256,34 @@ public class RectangleNodeShape extends RectangularNodeShape {
 			((RoundRectangle2D) rect2D).setRoundRect(x, y, w, h, rounding, rounding);
 		else
 			rect2D.setFrame(x, y, w, h);
-
+		
 		rect2D.setFrame(rect2D.getX() + offX, rect2D.getY() + offY, rect2D.getWidth(), rect2D.getHeight());
-
+		
 		double corwidth = w + ft;
 		double corheight = h + ft;
-
+		
 		if (Double.compare(Math.floor(offset), offset) == 0) {
 			corwidth = w + ft + 1;
 			corheight = h + ft + 1;
 		}
-
+		
 		((RectangularShape) this.thickShape).setFrame(0, 0, corwidth + addSx, corheight + addSy);
 	}
-
+	
 	@Override
 	public boolean contains(double a, double b, double c, double d) {
 		return this.thickShape.contains(a, b, c, d);
 	}
-
+	
 	@Override
 	public boolean contains(double a, double b) {
 		return this.thickShape.contains(a, b);
 	}
-
+	
 	public int shapeHeightCorrection() {
 		return 0;
 	}
-
+	
 	public int shapeWidthCorrection() {
 		return 0;
 	}

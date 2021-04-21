@@ -25,23 +25,23 @@ import org.graffiti.attributes.StringAttribute;
  */
 public class PortAttribute extends HashMapAttribute implements GraphicAttributeConstants {
 	// ~ Instance fields ========================================================
-
+	
 	/** Holds the coordinate of the port. */
 	private CoordinateAttribute coordinate;
-
+	
 	/** The or a port representing the given name and coorinate. */
 	private Port port = null;
-
+	
 	/** Holds the name of the port. */
 	private StringAttribute name;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for Port.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 */
 	public PortAttribute(String id) {
 		super(id);
@@ -50,7 +50,7 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 		add(this.name, false);
 		add(this.coordinate, false);
 	}
-
+	
 	/**
 	 * Constructor with an ID and a <code>Port</code> object.
 	 * 
@@ -61,90 +61,90 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 		this(id, port.getName(), port.getX(), port.getY());
 		this.port = port;
 	}
-
+	
 	/**
 	 * Constructor for Port.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param n
-	 *            the name-value of the attribute.
+	 *           the name-value of the attribute.
 	 * @param c
-	 *            the coordinate-value of the attribute.
+	 *           the coordinate-value of the attribute.
 	 */
 	public PortAttribute(String id, String n, CoordinateAttribute c) {
 		this(id, n, c.getX(), c.getY());
 	}
-
+	
 	/**
 	 * Constructor for Port.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param n
-	 *            the name-value of the attribute.
+	 *           the name-value of the attribute.
 	 * @param c
-	 *            the coordinate-value of the attribute.
+	 *           the coordinate-value of the attribute.
 	 */
 	public PortAttribute(String id, String n, Point2D c) {
 		this(id, n, c.getX(), c.getY());
 	}
-
+	
 	/**
 	 * Constructor for Port.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param n
-	 *            the name-value of the attribute.
+	 *           the name-value of the attribute.
 	 * @param x
-	 *            the x-coordinate-value of the attribute.
+	 *           the x-coordinate-value of the attribute.
 	 * @param y
-	 *            the y-coordinate-value of the attribute.
+	 *           the y-coordinate-value of the attribute.
 	 */
 	public PortAttribute(String id, StringAttribute n, double x, double y) {
 		this(id, n.getString(), x, y);
 	}
-
+	
 	/**
 	 * Constructor for Port.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param n
-	 *            the name-value of the attribute.
+	 *           the name-value of the attribute.
 	 * @param c
-	 *            the coordinate-value of the attribute.
+	 *           the coordinate-value of the attribute.
 	 */
 	public PortAttribute(String id, StringAttribute n, CoordinateAttribute c) {
 		this(id, n.getString(), c.getX(), c.getY());
 	}
-
+	
 	/**
 	 * Constructor for Port.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param n
-	 *            the name-value of the attribute.
+	 *           the name-value of the attribute.
 	 * @param c
-	 *            the coordinate-value of the attribute.
+	 *           the coordinate-value of the attribute.
 	 */
 	public PortAttribute(String id, StringAttribute n, Point2D c) {
 		this(id, n.getString(), c.getX(), c.getY());
 	}
-
+	
 	/**
 	 * Constructor for Port.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param n
-	 *            the name-value of the attribute.
+	 *           the name-value of the attribute.
 	 * @param x
-	 *            the x-coordinate-value of the attribute.
+	 *           the x-coordinate-value of the attribute.
 	 * @param y
-	 *            the y-coordinate-value of the attribute.
+	 *           the y-coordinate-value of the attribute.
 	 */
 	public PortAttribute(String id, String n, double x, double y) {
 		super(id);
@@ -153,24 +153,24 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 		add(this.name, false);
 		add(this.coordinate, false);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the collection of attributes contained within this
 	 * <tt>CollectionAttribute</tt>
 	 * 
 	 * @param attrs
-	 *            the map that contains all attributes.
+	 *           the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
 		if (attrs.keySet().contains(NAME) && attrs.keySet().contains(COORDINATE)) {
 			for (Iterator<String> it = attrs.keySet().iterator(); it.hasNext();) {
 				String attrId = (String) it.next();
-
+				
 				if (attrId.equals(NAME)) {
 					setName(((StringAttribute) attrs.get(NAME)).getString());
 				} else if (attrId.equals(COORDINATE)) {
@@ -183,17 +183,17 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-
+	
 	/**
 	 * Sets the 'port'-value.
 	 * 
 	 * @param c
-	 *            the 'port'-value to be set.
+	 *           the 'port'-value to be set.
 	 */
 	public void setCoordinate(CoordinateAttribute c) {
 		coordinate.setCoordinate(c.getCoordinate());
 	}
-
+	
 	/**
 	 * Returns the 'port'-value of the encapsulated port.
 	 * 
@@ -202,17 +202,17 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 	public CoordinateAttribute getCoordinate() {
 		return this.coordinate;
 	}
-
+	
 	/**
 	 * Sets the 'name'-value.
 	 * 
 	 * @param n
-	 *            the 'name'-value to be set.
+	 *           the 'name'-value to be set.
 	 */
 	public void setName(String n) {
 		this.name.setString(n);
 	}
-
+	
 	/**
 	 * Returns the 'name'-value of the encapsulated port.
 	 * 
@@ -222,7 +222,7 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 	public String getName() {
 		return this.name.getString();
 	}
-
+	
 	/**
 	 * Returns the encapsulated port.
 	 * 
@@ -235,7 +235,7 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 			return this.port;
 		}
 	}
-
+	
 	/**
 	 * Returns a deep copy of this object.
 	 * 
@@ -246,10 +246,10 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 		PortAttribute copied = new PortAttribute(this.getId());
 		copied.setName(this.getName());
 		copied.setCoordinate((CoordinateAttribute) (this.getCoordinate().copy()));
-
+		
 		return copied;
 	}
-
+	
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -258,26 +258,26 @@ public class PortAttribute extends HashMapAttribute implements GraphicAttributeC
 		if (this == obj) {
 			return true;
 		}
-
+		
 		if (!(obj instanceof PortAttribute)) {
 			return false;
 		}
-
+		
 		PortAttribute pa = (PortAttribute) obj;
-
+		
 		if (!name.getString().equals(pa.getName())) {
 			return false;
 		}
-
+		
 		if (port != null) {
 			return port.equals(pa.getPort());
 		} else {
 			Port paport = pa.getPort();
-
+			
 			return (coordinate.getX() == paport.getX()) && (coordinate.getY() == paport.getY());
 		}
 	}
-
+	
 	// /**
 	// * Sets the value of this <code>Attribute</code> to the given value without
 	// * informing the <code>ListenerManager</code>.

@@ -56,20 +56,20 @@ import org.jfree.ui.RefineryUtilities;
  * An example of....
  */
 public class TimePeriodValuesDemo extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to....
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimePeriodValuesDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final XYDataset data1 = createDataset1();
 		final XYItemRenderer renderer1 = new XYBarRenderer();
-
+		
 		final DateAxis domainAxis = new DateAxis("Date");
 		domainAxis.setVerticalTickLabels(true);
 		domainAxis.setTickUnit(new DateTickUnit(DateTickUnit.HOUR, 1));
@@ -77,24 +77,24 @@ public class TimePeriodValuesDemo extends ApplicationFrame {
 		domainAxis.setLowerMargin(0.01);
 		domainAxis.setUpperMargin(0.01);
 		final ValueAxis rangeAxis = new NumberAxis("Value");
-
+		
 		final XYPlot plot = new XYPlot(data1, domainAxis, rangeAxis, renderer1);
-
+		
 		final XYDataset data2 = createDataset2();
 		final StandardXYItemRenderer renderer2 = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES_AND_LINES);
 		renderer2.setShapesFilled(true);
-
+		
 		plot.setDataset(1, data2);
 		plot.setRenderer(1, renderer2);
-
+		
 		final JFreeChart chart = new JFreeChart("Supply and Demand", plot);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel.setMouseZoomable(true, false);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -105,14 +105,14 @@ public class TimePeriodValuesDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a dataset, consisting of two series of monthly data.
 	 * 
 	 * @return the dataset.
 	 */
 	public XYDataset createDataset1() {
-
+		
 		final TimePeriodValues s1 = new TimePeriodValues("Supply");
 		final TimePeriodValues s2 = new TimePeriodValues("Demand");
 		final Day today = new Day();
@@ -127,22 +127,22 @@ public class TimePeriodValuesDemo extends ApplicationFrame {
 			s1.add(new SimpleTimePeriod(m2.getStart(), m3.getStart()), Math.random());
 			s2.add(new SimpleTimePeriod(m3.getStart(), m4.getStart()), Math.random());
 		}
-
+		
 		final TimePeriodValuesCollection dataset = new TimePeriodValuesCollection();
 		dataset.addSeries(s1);
 		dataset.addSeries(s2);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a dataset, consisting of two series of monthly data.
 	 * 
 	 * @return the dataset.
 	 */
 	public XYDataset createDataset2() {
-
+		
 		final TimePeriodValues s1 = new TimePeriodValues("WebCOINS");
 		final Day today = new Day();
 		for (int i = 0; i < 24; i++) {
@@ -152,27 +152,27 @@ public class TimePeriodValuesDemo extends ApplicationFrame {
 			s1.add(new SimpleTimePeriod(m0.getStart(), m1.getStart()), Math.random() * 2.0);
 			s1.add(new SimpleTimePeriod(m1.getStart(), m2.getStart()), Math.random() * 2.0);
 		}
-
+		
 		final TimePeriodValuesCollection dataset = new TimePeriodValuesCollection();
 		dataset.addSeries(s1);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimePeriodValuesDemo demo = new TimePeriodValuesDemo("Time Period Values Demo 1");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

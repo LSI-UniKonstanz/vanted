@@ -29,25 +29,28 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar.SelectWindowsAlgor
  */
 public class RunAlgorithm extends GraffitiAction {
 	// ~ Instance fields ========================================================
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6118584661754407756L;
+	
 	/** The class name of the algorithm to run. */
 	private final String algorithmClassName;
-
+	
 	private final Algorithm algorithm;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor for RunAlgorithm.
 	 * 
 	 * @param algorithmClassName
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param name
 	 * @param mainFrame
 	 * @param editComponentManager
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public RunAlgorithm(String algorithmClassName, String name, MainFrame mainFrame,
 			EditComponentManager editComponentManager, Algorithm instance) {
@@ -55,9 +58,9 @@ public class RunAlgorithm extends GraffitiAction {
 		this.algorithmClassName = algorithmClassName;
 		this.algorithm = instance;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Get the name of the algorithm that this action will run.
 	 * 
@@ -66,7 +69,7 @@ public class RunAlgorithm extends GraffitiAction {
 	public String getAlgorithmClassName() {
 		return algorithmClassName;
 	}
-
+	
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -91,19 +94,19 @@ public class RunAlgorithm extends GraffitiAction {
 				 */
 				if (algorithm instanceof SelectWindowsAlgorithm && mainFrame.getDesktop().getAllFrames().length < 1)
 					return false;
-
+				
 				if (!mainFrame.isSessionActive())
 					return false;
 			}
 			return true;
-
+			
 		} else {
 			if (!mainFrame.isSessionActive())
 				return false;
 			return true;
 		}
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -111,7 +114,7 @@ public class RunAlgorithm extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-
+	
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
 	 */

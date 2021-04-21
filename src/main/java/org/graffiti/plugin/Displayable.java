@@ -18,44 +18,44 @@ import javax.swing.JComponent;
  */
 public interface Displayable {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets a short description of this object.
 	 * 
 	 * @param desc
 	 */
 	public void setDescription(String desc);
-
+	
 	/**
 	 * Returns the short description of this object.
 	 * 
 	 * @return String
 	 */
 	public String getDescription();
-
+	
 	/**
 	 * Returns the name of this object.
 	 * 
 	 * @return String
 	 */
 	public String getName();
-
+	
 	/**
 	 * Sets the encapsulated object.
 	 * 
 	 * @param val
 	 * @exception IllegalArgumentException
-	 *                thrown if val is not of the appropriate type.
+	 *               thrown if val is not of the appropriate type.
 	 */
 	public void setValue(Object val) throws IllegalArgumentException;
-
+	
 	/**
 	 * Returns the encapsulated object.
 	 * 
 	 * @return Object
 	 */
 	public Object getValue();
-
+	
 	/**
 	 * Returns a well-formed XML string representing the Displayable. The
 	 * Displayable should be reconstructable via this representation. Therefore it
@@ -67,7 +67,7 @@ public interface Displayable {
 	 * @return string holding an XML representation of this Displayable
 	 */
 	public String toXMLString();
-
+	
 	public JComponent getIcon();
 }
 

@@ -23,59 +23,59 @@ import org.graffiti.plugin.view.GraffitiShape;
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
 public class CompoundImageAttributePlugin extends IPK_PluginAdapter implements EditorPlugin {
-
+	
 	/**
 	 * Maps from an attribute class to an AttributeComponent class. old comment: A
 	 * <code>java.util.Map</code> from <code>Attribute</code> to the corresponding
 	 * <code>LabelValueRow</code>-instance.
 	 */
 	protected Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-
+	
 	/** The mapping between attribute classes and attributeComponent classes. */
 	protected HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
-
+	
 	public CompoundImageAttributePlugin() {
 		this.attributes = new Class[1];
 		this.attributes[0] = CompoundAttribute.class;
-
+		
 		this.algorithms = new Algorithm[] { new ImageAssignmentCommand() };
-
+		
 		StringAttribute.putAttributeType("image_url", CompoundAttribute.class);
 		StringAttribute.putAttributeType("image_position", CompoundPositionAttribute.class);
-
+		
 		valueEditComponents = new HashMap<>();
 		attributeComponents = new HashMap<>();
-
+		
 		valueEditComponents.put(CompoundAttribute.class, CompoundImageAttributeEditor.class);
 		valueEditComponents.put(CompoundPositionAttribute.class, CompoundImagePositionAttributeEditor.class);
-
+		
 		attributeComponents.put(CompoundAttribute.class, CompoundImageAttributeComponent.class);
-
+		
 		this.attributeDescriptions = new AttributeDescription[] { new AttributeDescription("image_border",
 				DoubleAttribute.class, "Image:<html>&nbsp;Border", true, false, null) };
-
+		
 	}
-
+	
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
-
+	
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-
+	
 	public Mode[] getModes() {
 		return null;
 	}
-
+	
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-
+	
 	public Tool[] getTools() {
 		return null;
 	}
-
+	
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}

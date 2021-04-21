@@ -56,22 +56,22 @@ import org.jfree.util.LogContext;
  * @author David Browning
  */
 public class BoxAndWhiskerDemo extends ApplicationFrame {
-
+	
 	/** Access to logging facilities. */
 	private static final LogContext LOGGER = Log.createContext(BoxAndWhiskerDemo.class);
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public BoxAndWhiskerDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final BoxAndWhiskerCategoryDataset dataset = createSampleDataset();
-
+		
 		final CategoryAxis xAxis = new CategoryAxis("Type");
 		final NumberAxis yAxis = new NumberAxis("Value");
 		yAxis.setAutoRangeIncludesZero(false);
@@ -79,26 +79,26 @@ public class BoxAndWhiskerDemo extends ApplicationFrame {
 		renderer.setFillBox(false);
 		renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
 		final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
-
+		
 		final JFreeChart chart = new JFreeChart("Box-and-Whisker Demo", new Font("SansSerif", Font.BOLD, 14), plot,
 				true);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(450, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
 	 * @return A sample dataset.
 	 */
 	private BoxAndWhiskerCategoryDataset createSampleDataset() {
-
+		
 		final int seriesCount = 3;
 		final int categoryCount = 4;
 		final int entityCount = 22;
-
+		
 		final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
 		for (int i = 0; i < seriesCount; i++) {
 			for (int j = 0; j < categoryCount; j++) {
@@ -114,12 +114,12 @@ public class BoxAndWhiskerDemo extends ApplicationFrame {
 				LOGGER.debug(list.toString());
 				dataset.add(list, "Series " + i, " Type " + j);
 			}
-
+			
 		}
-
+		
 		return dataset;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -130,21 +130,21 @@ public class BoxAndWhiskerDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * For testing from the command line.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		// Log.getInstance().addTarget(new PrintStreamLogTarget(System.out));
 		final BoxAndWhiskerDemo demo = new BoxAndWhiskerDemo("Box-and-Whisker Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -45,15 +45,15 @@ import org.jfree.ui.RefineryUtilities;
  * class.
  */
 public class XYSeriesDemo extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing an XY series containing a null value.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYSeriesDemo(final String title) {
-
+		
 		super(title);
 		final XYSeries series = new XYSeries("Random Data");
 		series.add(1.0, 500.2);
@@ -68,13 +68,13 @@ public class XYSeriesDemo extends ApplicationFrame {
 		final XYSeriesCollection data = new XYSeriesCollection(series);
 		final JFreeChart chart = ChartFactory.createXYLineChart("XY Series Demo", "X", "Y", data,
 				PlotOrientation.VERTICAL, true, true, false);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -85,20 +85,20 @@ public class XYSeriesDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYSeriesDemo demo = new XYSeriesDemo("XY Series Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

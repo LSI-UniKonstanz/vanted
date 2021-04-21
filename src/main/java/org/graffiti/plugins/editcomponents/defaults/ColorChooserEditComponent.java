@@ -38,57 +38,61 @@ import org.graffiti.plugin.parameter.ColorParameter;
  */
 public class ColorChooserEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-
+	
 	/** DOCUMENT ME! */
 	public Color emptyColor = Color.LIGHT_GRAY;
-
+	
 	/** DOCUMENT ME! */
 	public String buttonText = "<html>" + "Choose";
-
+	
 	/** DOCUMENT ME! */
 	JButton button;
-
+	
 	MarkComponent mc;
-
+	
 	/** The dialog that is displayed by the ColorChooser. */
 	JDialog dialog;
-
+	
 	/** DOCUMENT ME! */
 	private int opacity = 255;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new <code>ColorChooserEditComponent</code>.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ColorChooserEditComponent(final Displayable disp) {
 		super(disp);
 		buttonText = "";
 		// buttonText = buttonText+" "+disp.getName();
 		button = new JButton(buttonText) {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 8028031871505868138L;
+			
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-
+			
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-
+			
 		};
-
+		
 		mc = new MarkComponent(button, true, TableLayoutConstants.FILL, false);
-
+		
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				final JColorChooser colorChooser = new JColorChooser(button.getBackground());
@@ -100,7 +104,7 @@ public class ColorChooserEditComponent extends AbstractValueEditComponent {
 								button.setText(buttonText);
 								button.setBackground(col);
 								mc.setMarkColor(col, col);
-
+								
 								updateTooltip();
 								// button.setForeground(Colors.getOppositeColor(col));
 							}
@@ -109,9 +113,9 @@ public class ColorChooserEditComponent extends AbstractValueEditComponent {
 			}
 		});
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the <code>ValueEditComponent</code>'s <code>JComponent</code>.
 	 * 
@@ -120,7 +124,7 @@ public class ColorChooserEditComponent extends AbstractValueEditComponent {
 	public JComponent getComponent() {
 		return mc; // button;
 	}
-
+	
 	/**
 	 * Sets the current value of the <code>Attribute</code> in the corresponding
 	 * <code>JComponent</code>.
@@ -131,7 +135,7 @@ public class ColorChooserEditComponent extends AbstractValueEditComponent {
 			mc.setMarkColor(emptyColor, emptyColor);
 			// button.setForeground(Colors.getOppositeColor(emptyColor));
 			button.setText(EMPTY_STRING);
-
+			
 			updateTooltip();
 		} else {
 			Color attrColor;
@@ -139,30 +143,30 @@ public class ColorChooserEditComponent extends AbstractValueEditComponent {
 				attrColor = ((ColorParameter) displayable).getColor();
 			else
 				attrColor = ((ColorSetAndGetSupport) displayable).getColor();
-
+			
 			buttonText = "<html>" + AttributeHelper.getColorName(attrColor);
 			button.setText(buttonText);
-
+			
 			updateTooltip();
-
+			
 			// Color attrColor = (Color) this.displayable.getValue();
-
+			
 			// save opacity value
 			opacity = attrColor.getAlpha();
-
+			
 			// use opaque color for button
 			Color newColor = new Color(attrColor.getRed(), attrColor.getGreen(), attrColor.getBlue(), opacity);
-
+			
 			button.setBackground(newColor);
 			mc.setMarkColor(newColor, newColor);
 			// button.setForeground(Colors.getOppositeColor(newColor));
 		}
 	}
-
+	
 	private void updateTooltip() {
 		button.setToolTipText("<html>Click to change (" + button.getText() + "</b>)");
 	}
-
+	
 	/**
 	 * Sets the value of the displayable specified in the <code>JComponent</code>.
 	 * But only if it is different.
@@ -170,7 +174,7 @@ public class ColorChooserEditComponent extends AbstractValueEditComponent {
 	public void setValue() {
 		if (!button.getText().equals(EMPTY_STRING)) {
 			Color buttonColor = this.button.getBackground();
-
+			
 			Color displColor;
 			if (displayable instanceof ColorParameter)
 				displColor = ((ColorParameter) displayable).getColor();
@@ -180,7 +184,7 @@ public class ColorChooserEditComponent extends AbstractValueEditComponent {
 				int alpha = buttonColor.getAlpha();
 				// int transparency = buttonColor.getTransparency();
 				Color newColor = new Color(buttonColor.getRed(), buttonColor.getGreen(), buttonColor.getBlue(), alpha);
-
+				
 				// ((ColorAttribute)this.displayable)
 				// .setColor(this.button.getBackground());
 				// ((ColorAttribute)this.displayable).setOpacity(this.opacity);

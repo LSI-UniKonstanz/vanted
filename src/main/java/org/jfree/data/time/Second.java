@@ -54,33 +54,33 @@ import java.util.TimeZone;
  * {@link RegularTimePeriod} subclasses.
  */
 public class Second extends RegularTimePeriod implements Serializable {
-
+	
 	/** Useful constant for the first second in a minute. */
 	public static final int FIRST_SECOND_IN_MINUTE = 0;
-
+	
 	/** Useful constant for the last second in a minute. */
 	public static final int LAST_SECOND_IN_MINUTE = 59;
-
+	
 	/** The minute. */
 	private Minute minute;
-
+	
 	/** The second. */
 	private int second;
-
+	
 	/**
 	 * Constructs a new Second, based on the system date/time.
 	 */
 	public Second() {
 		this(new Date());
 	}
-
+	
 	/**
 	 * Constructs a new Second.
 	 * 
 	 * @param second
-	 *            the second (0 to 24*60*60-1).
+	 *           the second (0 to 24*60*60-1).
 	 * @param minute
-	 *            the minute (<code>null</code> not permitted).
+	 *           the minute (<code>null</code> not permitted).
 	 */
 	public Second(final int second, final Minute minute) {
 		if (minute == null) {
@@ -89,55 +89,55 @@ public class Second extends RegularTimePeriod implements Serializable {
 		this.minute = minute;
 		this.second = second;
 	}
-
+	
 	/**
 	 * Creates a new second.
 	 * 
 	 * @param second
-	 *            the second (0-59).
+	 *           the second (0-59).
 	 * @param minute
-	 *            the minute (0-59).
+	 *           the minute (0-59).
 	 * @param hour
-	 *            the hour (0-23).
+	 *           the hour (0-23).
 	 * @param day
-	 *            the day (1-31).
+	 *           the day (1-31).
 	 * @param month
-	 *            the month (1-12).
+	 *           the month (1-12).
 	 * @param year
-	 *            the year (1900-9999).
+	 *           the year (1900-9999).
 	 */
 	public Second(final int second, final int minute, final int hour, final int day, final int month, final int year) {
 		this(second, new Minute(minute, hour, day, month, year));
 	}
-
+	
 	/**
 	 * Constructs a second.
 	 * 
 	 * @param time
-	 *            the time.
+	 *           the time.
 	 */
 	public Second(final Date time) {
 		this(time, RegularTimePeriod.DEFAULT_TIME_ZONE);
 	}
-
+	
 	/**
 	 * Creates a new second based on the supplied time and time zone.
 	 * 
 	 * @param time
-	 *            the instant in time.
+	 *           the instant in time.
 	 * @param zone
-	 *            the time zone.
+	 *           the time zone.
 	 */
 	public Second(final Date time, final TimeZone zone) {
-
+		
 		this.minute = new Minute(time, zone);
-
+		
 		final Calendar calendar = Calendar.getInstance(zone);
 		calendar.setTime(time);
 		this.second = calendar.get(Calendar.SECOND);
-
+		
 	}
-
+	
 	/**
 	 * Returns the second within the minute.
 	 * 
@@ -146,7 +146,7 @@ public class Second extends RegularTimePeriod implements Serializable {
 	public int getSecond() {
 		return this.second;
 	}
-
+	
 	/**
 	 * Returns the minute.
 	 * 
@@ -155,14 +155,14 @@ public class Second extends RegularTimePeriod implements Serializable {
 	public Minute getMinute() {
 		return this.minute;
 	}
-
+	
 	/**
 	 * Returns the second preceding this one.
 	 * 
 	 * @return The second preceding this one.
 	 */
 	public RegularTimePeriod previous() {
-
+		
 		Second result = null;
 		if (this.second != FIRST_SECOND_IN_MINUTE) {
 			result = new Second(this.second - 1, this.minute);
@@ -173,16 +173,16 @@ public class Second extends RegularTimePeriod implements Serializable {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the second following this one.
 	 * 
 	 * @return The second following this one.
 	 */
 	public RegularTimePeriod next() {
-
+		
 		Second result = null;
 		if (this.second != LAST_SECOND_IN_MINUTE) {
 			result = new Second(this.second + 1, this.minute);
@@ -193,9 +193,9 @@ public class Second extends RegularTimePeriod implements Serializable {
 			}
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a serial index number for the minute.
 	 * 
@@ -204,29 +204,29 @@ public class Second extends RegularTimePeriod implements Serializable {
 	public long getSerialIndex() {
 		return this.minute.getSerialIndex() * 60L + this.second;
 	}
-
+	
 	/**
 	 * Returns the first millisecond of the minute.
 	 * 
 	 * @param calendar
-	 *            the calendar/timezone.
+	 *           the calendar/timezone.
 	 * @return The first millisecond.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
 		return this.minute.getFirstMillisecond(calendar) + this.second * 1000L;
 	}
-
+	
 	/**
 	 * Returns the last millisecond of the second.
 	 * 
 	 * @param calendar
-	 *            the calendar/timezone.
+	 *           the calendar/timezone.
 	 * @return The last millisecond.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
 		return this.minute.getFirstMillisecond(calendar) + this.second * 1000L + 999L;
 	}
-
+	
 	/**
 	 * Tests the equality of this object against an arbitrary Object.
 	 * <P>
@@ -234,7 +234,7 @@ public class Second extends RegularTimePeriod implements Serializable {
 	 * representing the same second as this instance.
 	 * 
 	 * @param object
-	 *            the object to compare.
+	 *           the object to compare.
 	 * @return <code>true</code> if second and minute of this and the object are the
 	 *         same.
 	 */
@@ -246,7 +246,7 @@ public class Second extends RegularTimePeriod implements Serializable {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
@@ -263,19 +263,19 @@ public class Second extends RegularTimePeriod implements Serializable {
 		result = 37 * result + this.minute.hashCode();
 		return result;
 	}
-
+	
 	/**
 	 * Returns an integer indicating the order of this Second object relative to the
 	 * specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *            the object to compare.
+	 *           the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
-
+		
 		int result;
-
+		
 		// CASE 1 : Comparing to another Second object
 		// -------------------------------------------
 		if (o1 instanceof Second) {
@@ -285,56 +285,56 @@ public class Second extends RegularTimePeriod implements Serializable {
 				result = this.second - s.second;
 			}
 		}
-
+		
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
 		else if (o1 instanceof RegularTimePeriod) {
 			// more difficult case - evaluate later...
 			result = 0;
 		}
-
+		
 		// CASE 3 : Comparing to a non-TimePeriod object
 		// ---------------------------------------------
 		else {
 			// consider time periods to be ordered after general objects
 			result = 1;
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Creates a new instance by parsing a string. The string is assumed to be in
 	 * the format "YYYY-MM-DD HH:MM:SS", perhaps with leading or trailing
 	 * whitespace.
 	 * 
 	 * @param s
-	 *            the string to parse.
+	 *           the string to parse.
 	 * @return The second, or <code>null</code> if the string is not parseable.
 	 */
 	public static Second parseSecond(String s) {
-
+		
 		Second result = null;
 		s = s.trim();
-
+		
 		final String daystr = s.substring(0, Math.min(10, s.length()));
 		final Day day = Day.parseDay(daystr);
 		if (day != null) {
 			String hmsstr = s.substring(Math.min(daystr.length() + 1, s.length()), s.length());
 			hmsstr = hmsstr.trim();
-
+			
 			final int l = hmsstr.length();
 			final String hourstr = hmsstr.substring(0, Math.min(2, l));
 			final String minstr = hmsstr.substring(Math.min(3, l), Math.min(5, l));
 			final String secstr = hmsstr.substring(Math.min(6, l), Math.min(8, l));
 			final int hour = Integer.parseInt(hourstr);
-
+			
 			if ((hour >= 0) && (hour <= 23)) {
-
+				
 				final int minute = Integer.parseInt(minstr);
 				if ((minute >= 0) && (minute <= 59)) {
-
+					
 					final Minute m = new Minute(minute, new Hour(hour, day));
 					final int second = Integer.parseInt(secstr);
 					if ((second >= 0) && (second <= 59)) {
@@ -343,9 +343,9 @@ public class Second extends RegularTimePeriod implements Serializable {
 				}
 			}
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 }

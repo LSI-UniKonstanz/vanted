@@ -19,7 +19,7 @@ import org.graffiti.plugin.io.InputSerializer;
  * @version $Revision$
  */
 public class XGMMLReaderPlugin extends GenericPluginAdapter {
-
+	
 	/**
 	 * Creates a new XGMMLReaderPlugin instance.
 	 */

@@ -10,7 +10,7 @@ import org.ErrorMsg;
 
 public enum SubtypeName {
 	compound, hiddenCompound, activation, inhibition, expression, repression, indirectEffect, stateChange, binding_association, dissociation, phosphorylation, dephosphorylation, glycosylation, ubiquination, methylation, demethylation, indirect, state, missing, missing_interaction;
-
+	
 	@Override
 	public String toString() {
 		if (this == hiddenCompound)
@@ -25,7 +25,7 @@ public enum SubtypeName {
 			return "missing interaction";
 		return super.toString();
 	}
-
+	
 	public static SubtypeName getSubtypeName(String value) {
 		for (SubtypeName sn : SubtypeName.values()) {
 			if (sn.toString().equals(value))

@@ -10,7 +10,7 @@ import java.util.HashSet;
 
 public enum SearchType {
 	searchString, searchInteger, searchDouble, searchBoolean, searchColor;
-
+	
 	@Override
 	public String toString() {
 		if (equals(SearchType.searchInteger))
@@ -25,7 +25,7 @@ public enum SearchType {
 			return "Color";
 		return "Unknown";
 	}
-
+	
 	public static HashSet<SearchType> getSetOfSearchTypes() {
 		HashSet<SearchType> result = new HashSet<SearchType>();
 		for (SearchType st : values()) {
@@ -34,14 +34,14 @@ public enum SearchType {
 		}
 		return result;
 	}
-
+	
 	public static HashSet<SearchType> getSetOfNumericSearchTypes() {
 		HashSet<SearchType> result = new HashSet<SearchType>();
 		result.add(searchInteger);
 		result.add(searchDouble);
 		return result;
 	}
-
+	
 	public static HashSet<SearchType> getSetOfColorSearchTypes() {
 		HashSet<SearchType> result = new HashSet<SearchType>();
 		result.add(searchColor);

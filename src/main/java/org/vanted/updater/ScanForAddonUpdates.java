@@ -26,25 +26,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskPanelEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class ScanForAddonUpdates {
-
+	
 	private boolean hasupdates = false;
-
+	
 	private boolean isFinished = false;
-
+	
 	private ArrayList<Object> res;
-
+	
 	public void doScan(boolean ignoreDate) {
-
+		
 		Date currentDate = new Date();
 		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
-
+		
 		if (!ignoreDate) {
 			// if there is preference entry for reminder time.. check
 			if (!CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
 				return;
 		}
 	}
-
+	
 	@SuppressWarnings("unused")
 	private boolean hasUpdates() {
 		/*
@@ -61,24 +61,24 @@ public class ScanForAddonUpdates {
 		}
 		return hasupdates;
 	}
-
+	
 	public boolean isFinished() {
 		return isFinished;
 	}
-
+	
 	public void setFinished(boolean isFinished) {
 		this.isFinished = isFinished;
 	}
-
+	
 	private void addonUpdatesAvailable() {
-
+		
 		final RSSFeedManager rfm = RSSFeedManager.getInstance();
 		rfm.loadRegisteredFeeds();
 		rfm.setWordWrap(60);
 		NewsHelper.refreshNews(rfm, new Runnable() {
-
+			
 			public void run() {
-
+				
 				res = new ArrayList<Object>();
 				boolean found = false;
 				for (JComponent jc : rfm.getNewsComponents()) {
@@ -107,7 +107,7 @@ public class ScanForAddonUpdates {
 				//
 				if (hasupdates) {
 					final BackgroundTaskPanelEntry backgroundTaskPanelEntry = new BackgroundTaskPanelEntry(false);
-
+					
 					final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 							"Updates for Addons found", "");
 					// <html><small>Goto Edit->Preferences->Addon Manager<br/>Click on 'Install
@@ -117,7 +117,7 @@ public class ScanForAddonUpdates {
 					backgroundTaskPanelEntry.setTaskFinished(false, 0);
 					JButton findAddonsUpdates = new JButton("Open Addons Manager");
 					findAddonsUpdates.addActionListener(new ActionListener() {
-
+						
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							backgroundTaskPanelEntry.removeStatusPanel();
@@ -125,12 +125,12 @@ public class ScanForAddonUpdates {
 						}
 					});
 					backgroundTaskPanelEntry.add(findAddonsUpdates, "1,5");
-
+					
 					MainFrame.getInstance().addStatusPanel(backgroundTaskPanelEntry);
 				}
 				setFinished(true);
 			}
-
+			
 			private SearchFilter getSearchFilter() {
 				return new SearchFilter() {
 					public boolean accept(GuiRow gr, String searchText) {

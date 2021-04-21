@@ -13,37 +13,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.exporters.sbml.SBML_SBase_W
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_SBase_Reader;
 
 public class SBMLAlgebraicRule {
-
+	
 	/**
 	 * Intern graph object
 	 */
 	Graph g;
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Writer attWriter;
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Reader attReader;
-
+	
 	/**
 	 * intern representation of the headline
 	 */
 	String internHeadline;
-
+	
 	/**
 	 * The user will see the headline this way
 	 */
 	String presentedHeadline;
-
+	
 	/**
 	 * The hidden algebraic rule attributes are stored here
 	 */
 	HashSet<String> discardedRowIDs;
-
+	
 	public SBMLAlgebraicRule(Graph g, String internHeadline, String presentedHeadline) {
 		this.g = g;
 		attWriter = new SBML_SBase_Writer();
@@ -51,61 +51,61 @@ public class SBMLAlgebraicRule {
 		this.presentedHeadline = presentedHeadline;
 		this.internHeadline = internHeadline;
 		initAlgebraicNiceIDs();
-
+		
 		Collection<String> colDiscardedRowIDs = DefaultEditPanel.getDiscardedRowIDs();
 		discardedRowIDs = new HashSet<String>(colDiscardedRowIDs);
 		DefaultEditPanel.setDiscardedRowIDs(discardedRowIDs);
 	}
-
+	
 	public SBMLAlgebraicRule(Graph g, String internHeadline) {
 		this.g = g;
 		attWriter = new SBML_SBase_Writer();
 		attReader = new SBML_SBase_Reader();
 		this.internHeadline = internHeadline;
 	}
-
+	
 	public void setMetaID(String metaID) {
 		if (!metaID.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.META_ID).toString(), metaID);
 		}
 	}
-
+	
 	public void setSBOTerm(String sboTerm) {
 		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(), sboTerm);
 		}
 	}
-
+	
 	public void setAnnotation(Annotation annotation) {
 		AttributeHelper.setAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.ANNOTATION).toString(), annotation);
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.ANNOTATION).toString());
 	}
-
+	
 	public void setNonRDFAnnotation(XMLNode xmlNode) {
 		AttributeHelper.setAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), xmlNode);
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION).toString());
 	}
-
+	
 	public void setNotes(String notes, XMLNode notesObj) {
 		if (!notes.equals(SBML_Constants.EMPTY)) {
 			attReader.addNotes(notesObj, notes, g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString());
 		}
-
+		
 		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString());
 	}
-
+	
 	public void setFunction(String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.ALGEBRAIC_FUNCTION).toString(), function);
 		}
 	}
-
+	
 	public Boolean isSetFunction() {
 		if (AttributeHelper.hasAttribute(g, internHeadline,
 				new StringBuffer(internHeadline).append(SBML_Constants.FUNCTION).toString())) {
@@ -114,7 +114,7 @@ public class SBMLAlgebraicRule {
 			return false;
 		}
 	}
-
+	
 	public String getFunction() {
 		if (isSetFunction()) {
 			return (String) attWriter.getAttribute(g, internHeadline,
@@ -123,7 +123,7 @@ public class SBMLAlgebraicRule {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	private void initAlgebraicNiceIDs() {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.ALGEBRAIC_FUNCTION).toString(),
 				presentedHeadline + ": Function");
@@ -133,6 +133,6 @@ public class SBMLAlgebraicRule {
 				presentedHeadline + ": Notes");
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
-
+		
 	}
 }

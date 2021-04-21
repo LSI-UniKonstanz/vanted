@@ -10,7 +10,7 @@ import org.graffiti.plugin.view.ProvidesAdditonalDrawingShapes;
 import org.graffiti.plugins.views.defaults.RectangleNodeShape;
 
 public class TransitionShape extends RectangleNodeShape implements ProvidesAdditonalDrawingShapes {
-
+	
 	public Collection<Shape> getPostBorderShapes() {
 		Rectangle2D r = getBounds2D();
 		Shape shapeA = null;
@@ -32,16 +32,16 @@ public class TransitionShape extends RectangleNodeShape implements ProvidesAddit
 		result.add(shapeB);
 		return result;
 	}
-
+	
 	public Collection<Shape> getPreBorderShapes() {
 		return null;
 	}
-
+	
 	@Override
 	protected double getRounding() {
 		return 0;
 	}
-
+	
 	@Override
 	public double getXexcess() {
 		double rounding = super.getRounding();
@@ -50,7 +50,7 @@ public class TransitionShape extends RectangleNodeShape implements ProvidesAddit
 		else
 			return 0;
 	}
-
+	
 	@Override
 	public double getYexcess() {
 		double rounding = super.getRounding();

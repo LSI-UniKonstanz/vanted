@@ -15,12 +15,11 @@ import uk.ac.ebi.biomodels.ws.SimpleModel;
 
 /**
  * @author matthiak
- *
  */
 public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> {
-
+	
 	JLabel entry;
-
+	
 	/**
 	 * 
 	 */
@@ -29,31 +28,31 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 		entry.setOpaque(true);
 		entry.setBorder(new EmptyBorder(4, 4, 4, 4));
 	}
-
+	
 	@Override
 	public Component getListCellRendererComponent(JList<? extends SimpleModel> list, SimpleModel value, int index,
 			boolean isSelected, boolean cellHasFocus) {
-
+		
 		if (cellHasFocus)
 			entry.setBackground(new Color(200, 200, 200));
 		else
 			entry.setBackground(Color.WHITE);
-
+		
 		if (isSelected)
 			entry.setBackground(new Color(200, 255, 200));
 		else
 			entry.setBackground(Color.WHITE);
-
+		
 		entry.setText(
 				"<html>" + "<strong>Model Name: " + value.getName() + "</strong><br/>" + "Model ID: " + value.getId());
 		entry.setToolTipText(getTooltipText(value));
-
+		
 		return entry;
 	}
-
+	
 	private static String getTooltipText(SimpleModel text) {
 		StringBuilder str = new StringBuilder();
-
+		
 		str.append("Identifier: " + text.getId() + "\n");
 		str.append("Name: " + text.getName() + "\n");
 		str.append("Publication: " + text.getPublicationId() + "\n");
@@ -62,7 +61,7 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 			str.append("\t- " + author + "\n");
 		}
 		str.append("Last modified: " + text.getLastModificationDateStr() + "\n");
-
+		
 		return str.toString();
 	}
 }

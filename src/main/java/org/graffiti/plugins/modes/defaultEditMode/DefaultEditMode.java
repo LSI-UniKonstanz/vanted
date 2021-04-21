@@ -17,7 +17,7 @@ import org.graffiti.plugin.tool.Tool;
  */
 public class DefaultEditMode extends AbstractMode {
 	public final static String sid = "org.graffiti.plugins.modes.defaultEditMode";
-
+	
 	public DefaultEditMode() {
 		this.id = sid;
 		this.constraints = new GraphConstraint[0];

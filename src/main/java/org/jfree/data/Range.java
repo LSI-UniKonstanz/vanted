@@ -51,20 +51,20 @@ import java.io.Serializable;
  * Represents an immutable range of values.
  */
 public strictfp class Range implements Serializable {
-
+	
 	/** The lower bound of the range. */
 	private double lower;
-
+	
 	/** The upper bound of the range. */
 	private double upper;
-
+	
 	/**
 	 * Creates a new range.
 	 * 
 	 * @param lower
-	 *            the lower bound (must be <= upper bound).
+	 *           the lower bound (must be <= upper bound).
 	 * @param upper
-	 *            the upper bound (must be >= lower bound).
+	 *           the upper bound (must be >= lower bound).
 	 */
 	public Range(final double lower, final double upper) {
 		if (lower > upper) {
@@ -73,7 +73,7 @@ public strictfp class Range implements Serializable {
 		this.lower = lower;
 		this.upper = upper;
 	}
-
+	
 	/**
 	 * Returns the lower bound for the range.
 	 * 
@@ -82,7 +82,7 @@ public strictfp class Range implements Serializable {
 	public double getLowerBound() {
 		return this.lower;
 	}
-
+	
 	/**
 	 * Returns the upper bound for the range.
 	 * 
@@ -91,7 +91,7 @@ public strictfp class Range implements Serializable {
 	public double getUpperBound() {
 		return this.upper;
 	}
-
+	
 	/**
 	 * Returns the length of the range.
 	 * 
@@ -100,7 +100,7 @@ public strictfp class Range implements Serializable {
 	public double getLength() {
 		return this.upper - this.lower;
 	}
-
+	
 	/**
 	 * Returns the central value for the range.
 	 * 
@@ -109,27 +109,27 @@ public strictfp class Range implements Serializable {
 	public double getCentralValue() {
 		return this.lower / 2.0 + this.upper / 2.0;
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the range contains the specified value and
 	 * <code>false</code> otherwise.
 	 * 
 	 * @param value
-	 *            the value to lookup.
+	 *           the value to lookup.
 	 * @return <code>true</code> if the range contains the specified value.
 	 */
 	public boolean contains(final double value) {
 		return (value >= this.lower && value <= this.upper);
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if the range intersects with the specified range,
 	 * and <code>false</code> otherwise.
 	 * 
 	 * @param b0
-	 *            the lower bound.
+	 *           the lower bound.
 	 * @param b1
-	 *            the upper bound.
+	 *           the upper bound.
 	 * @return A boolean.
 	 */
 	public boolean intersects(final double b0, final double b1) {
@@ -139,12 +139,12 @@ public strictfp class Range implements Serializable {
 			return (b0 < this.upper && b1 >= b0);
 		}
 	}
-
+	
 	/**
 	 * Returns the value within the range that is closest to the specified value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 * @return The constrained value.
 	 */
 	public double constrain(final double value) {
@@ -158,7 +158,7 @@ public strictfp class Range implements Serializable {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Creates a new range by combining two existing ranges.
 	 * <P>
@@ -171,9 +171,9 @@ public strictfp class Range implements Serializable {
 	 * </ul>
 	 * 
 	 * @param range1
-	 *            the first range (<code>null</code> permitted).
+	 *           the first range (<code>null</code> permitted).
 	 * @param range2
-	 *            the second range (<code>null</code> permitted).
+	 *           the second range (<code>null</code> permitted).
 	 * @return A new range (possibly <code>null</code>).
 	 */
 	public static Range combine(final Range range1, final Range range2) {
@@ -189,16 +189,16 @@ public strictfp class Range implements Serializable {
 			}
 		}
 	}
-
+	
 	/**
 	 * Creates a new range by adding margins to an existing range.
 	 * 
 	 * @param range
-	 *            the range (<code>null</code> not permitted).
+	 *           the range (<code>null</code> not permitted).
 	 * @param lowerMargin
-	 *            the lower margin (expressed as a percentage of the range length).
+	 *           the lower margin (expressed as a percentage of the range length).
 	 * @param upperMargin
-	 *            the upper margin (expressed as a percentage of the range length).
+	 *           the upper margin (expressed as a percentage of the range length).
 	 * @return The expanded range.
 	 */
 	public static Range expand(Range range, double lowerMargin, double upperMargin) {
@@ -210,12 +210,12 @@ public strictfp class Range implements Serializable {
 		double upper = length * upperMargin;
 		return new Range(range.getLowerBound() - lower, range.getUpperBound() + upper);
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *            the object to test against (<code>null</code> permitted).
+	 *           the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object object) {
@@ -231,7 +231,7 @@ public strictfp class Range implements Serializable {
 		}
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -246,7 +246,7 @@ public strictfp class Range implements Serializable {
 		result = 29 * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
-
+	
 	/**
 	 * Returns a string representation of this Range.
 	 * 
@@ -256,5 +256,5 @@ public strictfp class Range implements Serializable {
 	public String toString() {
 		return ("Range[" + this.lower + "," + this.upper + "]");
 	}
-
+	
 }

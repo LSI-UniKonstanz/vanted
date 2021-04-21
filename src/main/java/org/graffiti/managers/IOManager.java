@@ -27,32 +27,32 @@ import org.graffiti.plugin.io.OutputSerializer;
  */
 public interface IOManager extends PluginManagerListener {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Registers the given input serializer.
 	 * 
 	 * @param i
-	 *            the new serializer to add.
+	 *           the new serializer to add.
 	 */
 	void addInputSerializer(InputSerializer i);
-
+	
 	/**
 	 * Adds the given <code>IOManagerListener</code> to the list of io manager
 	 * listeners.
 	 * 
 	 * @param ioManagerListener
-	 *            the listener to add.
+	 *           the listener to add.
 	 */
 	void addListener(IOManagerListener ioManagerListener);
-
+	
 	/**
 	 * Registers the given output serializer.
 	 * 
 	 * @param o
-	 *            the new serializer to add.
+	 *           the new serializer to add.
 	 */
 	void addOutputSerializer(OutputSerializer o);
-
+	
 	/**
 	 * Creates an instance of an input serializer from the given extension.
 	 * 
@@ -61,7 +61,7 @@ public interface IOManager extends PluginManagerListener {
 	 */
 	InputSerializer createInputSerializer(InputStream is, String ext)
 			throws IllegalAccessException, InstantiationException, FileNotFoundException;
-
+	
 	/**
 	 * Modifies the given file chooser by registering file extensions from the input
 	 * serializers.
@@ -69,15 +69,15 @@ public interface IOManager extends PluginManagerListener {
 	 * @return DOCUMENT ME!
 	 */
 	JFileChooser createOpenFileChooser();
-
+	
 	/**
 	 * Creates an instance of an output serializer from the given extension.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
-
+	
 	OutputSerializer createOutputSerializer(String ext) throws IllegalAccessException, InstantiationException;
-
+	
 	/**
 	 * Creates an instance of an output serializer from the given extension and file
 	 * type description.
@@ -86,7 +86,7 @@ public interface IOManager extends PluginManagerListener {
 	 */
 	OutputSerializer createOutputSerializer(String ext, String fileTypeDescription)
 			throws IllegalAccessException, InstantiationException;
-
+	
 	/**
 	 * Creates and returns a file open chooser dialog with the registered file
 	 * extensions from the output serializers. Returns all available output
@@ -96,46 +96,46 @@ public interface IOManager extends PluginManagerListener {
 	 * @return DOCUMENT ME!
 	 */
 	JFileChooser createSaveFileChooser();
-
+	
 	/**
 	 * Creates and returns a file open chooser dialog with the registered file
 	 * extensions from the output serializers and checking, if output serializer is
 	 * capable of writing the graph.
 	 * 
 	 * @param g
-	 *            The graph to test for output serializer compatibility
+	 *           The graph to test for output serializer compatibility
 	 * @return the FilechooserDialog object
 	 */
 	JFileChooser createSaveFileChooser(Graph g);
-
+	
 	/**
 	 * Returns <code>true</code>, if the io manager has a registered input manager.
 	 * 
 	 * @return <code>true</code>, if the io manager has a registered input manager.
 	 */
 	boolean hasInputSerializer();
-
+	
 	/**
 	 * Returns <code>true</code>, if the io manager has a registered output manager.
 	 * 
 	 * @return <code>true</code>, if the io manager has a registered output manager.
 	 */
 	boolean hasOutputSerializer();
-
+	
 	/**
 	 * Returns <code>true</code>, if the given io manager listener was in the list
 	 * of listeners and could be removed.
 	 * 
 	 * @param l
-	 *            the io manager listener to remove.
+	 *           the io manager listener to remove.
 	 * @return DOCUMENT ME!
 	 */
 	boolean removeListener(IOManagerListener l);
-
+	
 	Set<String> getGraphFileExtensions();
-
+	
 	// ~ Inner Interfaces =======================================================
-
+	
 	/**
 	 * Interfaces an io manager listener.
 	 * 
@@ -146,15 +146,15 @@ public interface IOManager extends PluginManagerListener {
 		 * Called, if an input serializer is added to the io manager.
 		 * 
 		 * @param is
-		 *            the input serializer, which was added to the manager.
+		 *           the input serializer, which was added to the manager.
 		 */
 		void inputSerializerAdded(InputSerializer is);
-
+		
 		/**
 		 * Called, if an output serializer ist added to the io manager.
 		 * 
 		 * @param os
-		 *            the output serializer, which was added to the manager.
+		 *           the output serializer, which was added to the manager.
 		 */
 		void outputSerializerAdded(OutputSerializer os);
 	}

@@ -63,61 +63,61 @@ import org.jfree.ui.Spacer;
  * @author Matthias Rose
  */
 public class XYTickLabelDemo extends ApplicationFrame implements ActionListener {
-
+	
 	/** The default font size. */
 	private static final int DEFAULT_FONT_SIZE = 13; // causes some overlapping
-
+	
 	/** The chart */
 	private JFreeChart chart;
-
+	
 	/** Tick labels vertical? */
 	private JCheckBox verticalTickLabelsCheckBox;
-
+	
 	/** Plot horizontal? */
 	private JCheckBox horizontalPlotCheckBox;
-
+	
 	/** SymbolicAxes? */
 	private JCheckBox symbolicAxesCheckBox;
-
+	
 	/** Tick labels font size entry field */
 	private JTextField fontSizeTextField;
-
+	
 	/**
 	 * A demonstration application showing some bugs with tick labels in version
 	 * 0.9.13
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYTickLabelDemo(final String title) {
-
+		
 		super(title);
 		this.chart = createChart();
 		final ChartPanel chartPanel = new ChartPanel(this.chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(600, 270));
-
+		
 		final JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
 		mainPanel.add(chartPanel);
-
+		
 		final JPanel optionsPanel = new JPanel();
 		mainPanel.add(optionsPanel, BorderLayout.SOUTH);
-
+		
 		this.symbolicAxesCheckBox = new JCheckBox("Symbolic axes");
 		this.symbolicAxesCheckBox.addActionListener(this);
 		optionsPanel.add(this.symbolicAxesCheckBox);
-
+		
 		this.verticalTickLabelsCheckBox = new JCheckBox("Tick labels vertical");
 		this.verticalTickLabelsCheckBox.addActionListener(this);
 		optionsPanel.add(this.verticalTickLabelsCheckBox);
-
+		
 		this.fontSizeTextField = new JTextField(3);
 		this.fontSizeTextField.addActionListener(this);
 		optionsPanel.add(new JLabel("Font size:"));
 		optionsPanel.add(this.fontSizeTextField);
 		final ValueAxis axis = this.chart.getXYPlot().getDomainAxis();
 		this.fontSizeTextField.setText(DEFAULT_FONT_SIZE + "");
-
+		
 		final XYPlot plot = this.chart.getXYPlot();
 		Font ft = axis.getTickLabelFont();
 		ft = ft.deriveFont((float) DEFAULT_FONT_SIZE);
@@ -125,17 +125,17 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 		plot.getRangeAxis().setTickLabelFont(ft);
 		plot.getDomainAxis(1).setTickLabelFont(ft);
 		plot.getRangeAxis(1).setTickLabelFont(ft);
-
+		
 		this.horizontalPlotCheckBox = new JCheckBox("Plot horizontal");
 		this.horizontalPlotCheckBox.addActionListener(this);
 		optionsPanel.add(this.horizontalPlotCheckBox);
 	}
-
+	
 	/**
 	 * When a checkbox is changed ...
 	 * 
 	 * @param event
-	 *            the event.
+	 *           the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		final ValueAxis[] axes = new ValueAxis[4];
@@ -144,13 +144,13 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 		axes[1] = plot.getRangeAxis();
 		axes[2] = plot.getDomainAxis(1);
 		axes[3] = plot.getRangeAxis(1);
-
+		
 		final Object source = event.getSource();
-
+		
 		if (source == this.symbolicAxesCheckBox) {
-
+			
 			final boolean val = this.symbolicAxesCheckBox.isSelected();
-
+			
 			for (int i = 0; i < axes.length; i++) {
 				ValueAxis axis = axes[i];
 				final String label = axis.getLabel();
@@ -168,22 +168,22 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 			plot.setRangeAxis(axes[1]);
 			plot.setDomainAxis(1, axes[2]);
 			plot.setRangeAxis(1, axes[3]);
-
+			
 		}
-
+		
 		if (source == this.symbolicAxesCheckBox || source == this.verticalTickLabelsCheckBox) {
 			final boolean val = this.verticalTickLabelsCheckBox.isSelected();
-
+			
 			for (int i = 0; i < axes.length; i++) {
 				axes[i].setVerticalTickLabels(val);
 			}
-
+			
 		} else if (source == this.symbolicAxesCheckBox || source == this.horizontalPlotCheckBox) {
-
+			
 			final PlotOrientation val = this.horizontalPlotCheckBox.isSelected() ? PlotOrientation.HORIZONTAL
 					: PlotOrientation.VERTICAL;
 			this.chart.getXYPlot().setOrientation(val);
-
+			
 		} else if (source == this.symbolicAxesCheckBox || source == this.fontSizeTextField) {
 			final String s = this.fontSizeTextField.getText();
 			if (s.length() > 0) {
@@ -197,16 +197,16 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 			}
 		}
 	}
-
+	
 	/**
 	 * Creates the demo chart.
 	 * 
 	 * @return The chart.
 	 */
 	private JFreeChart createChart() {
-
+		
 		// create some sample data
-
+		
 		final XYSeries series1 = new XYSeries("Something");
 		series1.add(0.0, 30.0);
 		series1.add(1.0, 10.0);
@@ -217,25 +217,25 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 		series1.add(6.0, 70.0);
 		series1.add(7.0, 70.0);
 		series1.add(8.0, 80.0);
-
+		
 		final XYSeriesCollection dataset1 = new XYSeriesCollection();
 		dataset1.addSeries(series1);
-
+		
 		final XYSeries series2 = new XYSeries("Something else");
 		series2.add(0.0, 5.0);
 		series2.add(1.0, 4.0);
 		series2.add(2.0, 1.0);
 		series2.add(3.0, 5.0);
 		series2.add(4.0, 0.0);
-
+		
 		final XYSeriesCollection dataset2 = new XYSeriesCollection();
 		dataset2.addSeries(series2);
-
+		
 		// create the chart
-
+		
 		final JFreeChart result = ChartFactory.createXYLineChart("Tick Label Demo", "Domain Axis 1", "Range Axis 1",
 				dataset1, PlotOrientation.VERTICAL, false, true, false);
-
+		
 		result.setBackgroundPaint(Color.white);
 		final XYPlot plot = result.getXYPlot();
 		plot.setOrientation(PlotOrientation.VERTICAL);
@@ -243,42 +243,42 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-
+		
 		final StandardXYItemRenderer renderer = (StandardXYItemRenderer) plot.getRenderer();
 		renderer.setPaint(Color.black);
-
+		
 		// DOMAIN AXIS 2
 		final NumberAxis xAxis2 = new NumberAxis("Domain Axis 2");
 		xAxis2.setAutoRangeIncludesZero(false);
 		plot.setDomainAxis(1, xAxis2);
-
+		
 		// RANGE AXIS 2
 		final DateAxis yAxis1 = new DateAxis("Range Axis 1");
 		plot.setRangeAxis(yAxis1);
-
+		
 		final DateAxis yAxis2 = new DateAxis("Range Axis 2");
 		plot.setRangeAxis(1, yAxis2);
 		plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
-
+		
 		plot.setDataset(1, dataset2);
 		plot.mapDatasetToDomainAxis(1, 1);
 		plot.mapDatasetToRangeAxis(1, 1);
-
+		
 		return result;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYTickLabelDemo demo = new XYTickLabelDemo("Tick Label Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
 }

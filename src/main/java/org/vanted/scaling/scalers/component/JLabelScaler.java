@@ -15,14 +15,13 @@ import javax.swing.JLabel;
  * A {@linkplain JLabel}-specific extension of {@link ComponentScaler}.
  * 
  * @author D. Garkov
- *
  */
 public class JLabelScaler extends ComponentScaler implements HTMLScaler {
-
+	
 	public JLabelScaler(float scaleFactor) {
 		super(scaleFactor);
 	}
-
+	
 	/**
 	 * A method to be called when this {@linkplain JLabelScaler} has been dispatched
 	 * to some immediate Component to be scaled. This tackles the problem that after
@@ -31,35 +30,33 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 	 * a scaler and call this method upon initialization.
 	 * 
 	 * @param immediateComponent
-	 *            to be scaled
+	 *           to be scaled
 	 */
 	public void scaleComponent(JComponent immediateComponent) {
 		this.coscaleFont(immediateComponent);
 		coscaleInsets(immediateComponent);
 		this.coscaleIcon(immediateComponent);
 	}
-
+	
 	@Override
 	public void coscaleFont(JComponent component) {
 		super.coscaleFont(component);
-
+		
 		coscaleHTML(component);
 	}
-
+	
 	@Override
 	public void coscaleIcon(JComponent component) {
 		modifyIcon((JLabel) component);
 	}
-
+	
 	/**
 	 * Interface method for {@link JLabelScaler#modifyHTML(String, JLabel)}. Part of
 	 * the HTML-supporting interface contract.
 	 * <p>
-	 * 
 	 * Be careful to update the font too, because this is taken as basis and thus
 	 * the end HTML scaling depends on it.
 	 *
-	 * 
 	 * @param component
 	 */
 	@Override
@@ -72,40 +69,39 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 		/**
 		 * The order of the HTML texts is preserved and acts as second implicit key to
 		 * allow mapping of multiple texts to a single component.
-		 * 
 		 * Just implement and add your HTML-modification method below following the
 		 * template.
 		 */
 		modifyHTML(label.getText(), label);
 		modifyHTMLTooltip(label.getToolTipText(), label);
 	}
-
+	
 	/**
 	 * Scales the already set icon(s) and icon-related attributes of the given
 	 * JLabel.
 	 * 
 	 * @param label
-	 *            JLabel
+	 *           JLabel
 	 */
 	private void modifyIcon(JLabel label) {
 		Icon i = null; // any icon
 		Icon disabled = null;
-
+		
 		if ((i = label.getDisabledIcon()) != null && !i.equals(label.getIcon()))
 			// see above
 			disabled = i;
-
+		
 		if ((i = label.getIcon()) != null)
 			label.setIcon(modifyIcon(null, i));
-
+		
 		if (disabled != null)
 			label.setDisabledIcon(modifyIcon(null, disabled));
-
+		
 		label.setIconTextGap((int) (label.getIconTextGap() * scaleFactor));
-
+		
 		label.validate();
 	}
-
+	
 	/**
 	 * Worker method processing the text, given it is HTML-styled, see
 	 * {@link HTMLScaleSupport#isHTMLStyled(String)}, by performing parsing,
@@ -113,51 +109,51 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 	 * setting, if necessary.
 	 * 
 	 * @param t
-	 *            text
+	 *           text
 	 * @param text
-	 *            JTextComponent
+	 *           JTextComponent
 	 */
 	private static void modifyHTML(String t, JLabel label) {
 		if (!HTMLScaleSupport.isHTMLStyled(t))
 			return;
-
+		
 		// save the initial tags and their order for later
 		HTMLScaleSupport.storeTags(label, t);
 		// convert tags to font size tag
 		t = HTMLScaleSupport.parseHTMLtoFontSize(t, label);
-
+		
 		if (t.equals(label.getText()))
 			return;
-
+		
 		// remove listener to avoid looping
 		HTMLScaleSupport.handleTextListener(label, true);
-
+		
 		label.setText(t);
-
+		
 		// install listener for subsequent dynamic changes
 		HTMLScaleSupport.handleTextListener(label, false);
 	}
-
+	
 	/**
 	 * Similar to {@link JLabelScaler#modifyHTML(String, JLabel)}, but for Tooltip
 	 * texts.
 	 * 
 	 * @param tooltip
-	 *            text of the tooltip
+	 *           text of the tooltip
 	 * @param label
-	 *            JLabel
+	 *           JLabel
 	 */
 	private static void modifyHTMLTooltip(String tooltip, JLabel label) {
 		if (!HTMLScaleSupport.isHTMLStyled(tooltip))
 			return;
-
+		
 		HTMLScaleSupport.storeTags(label, tooltip);
-
+		
 		tooltip = HTMLScaleSupport.parseHTMLtoFontSize(tooltip, label);
-
+		
 		if (tooltip.equals(label.getToolTipText()))
 			return;
-
+		
 		HTMLScaleSupport.handleTextListener(label, true);
 		label.setToolTipText(tooltip);
 		HTMLScaleSupport.handleTextListener(label, false);

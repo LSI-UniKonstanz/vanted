@@ -50,22 +50,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.exporters.sbml.SBML_SBase_W
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_SBase_Reader;
 
 public class SBMLHelper {
-
+	
 	/**
 	 * Provides necessary methods
 	 */
 	public static SBML_SBase_Writer attWriter = new SBML_SBase_Writer();
-
+	
 	public static PositionGridGenerator _pgg = new PositionGridGenerator(100, 100, 1000);
-
+	
 	public static SBML_SBase_Reader attReader = new SBML_SBase_Reader();
-
+	
 	public static final String SBML_LAYOUT_EXTENSION_NAMESPACE = "http://www.sbml.org/sbml/level3/version1/layout/version1";
-
+	
 	private static boolean isInitializedReaction = false;
 	private static boolean isInitializedKineticLaw = false;
 	private static boolean isInitializedLocalParameter = false;
-
+	
 	private static int parameterCount = 1;
 	private static int initialAssignmentCount = 1;
 	private static int functionDefinitionCount = 1;
@@ -76,9 +76,9 @@ public class SBMLHelper {
 	private static int rateRuleCount = 1;
 	private static int algebraicRuleCount = 1;
 	private static int eventCount = 1;
-
+	
 	private static PositionGridGenerator pgg = new PositionGridGenerator(100, 100, 1000);
-
+	
 	public static FunctionDefinition createFunctionDefinition(Graph g, String id) {
 		String presentedHeadline = new StringBuffer("SBML Function Definition ").append(functionDefinitionCount)
 				.toString();
@@ -92,14 +92,14 @@ public class SBMLHelper {
 		++functionDefinitionCount;
 		return fd;
 	}
-
+	
 	public static void createFunctionDefinition(Graph g, FunctionDefinition fd) {
 		String presentedHeadline = new StringBuffer("SBML Function Definition ").append(functionDefinitionCount)
 				.toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_FUNCTION_DEFINITION)
 				.append(functionDefinitionCount).toString();
 		initFunctionDefinitionNiceIDs(internHeadline, presentedHeadline);
-
+		
 		fd.setLevel(3);
 		if (fd.isSetId()) {
 			setFunctionDefinitionID(g, internHeadline, fd.getId());
@@ -118,15 +118,15 @@ public class SBMLHelper {
 		}
 		++functionDefinitionCount;
 	}
-
+	
 	public static void addFunctionDefinitionName(Graph g, String id, String name) {
 		setFunctionDefinitionName(g, returnFunctionDefinitionWithID(g, id), name);
 	}
-
+	
 	public static void addFunctionDefinitionFunction(Graph g, String id, String function) {
 		setFunctionDefinitionFunction(g, returnFunctionDefinitionWithID(g, id), function);
 	}
-
+	
 	public static void deleteFunctionDefinitionID(Graph g, String id) {
 		String headline = returnFunctionDefinitionWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -135,7 +135,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.FUNCTION_DEFINITION_ID).toString());
 		}
 	}
-
+	
 	public static void deleteFunctionDefinitionName(Graph g, String id) {
 		String headline = returnFunctionDefinitionWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -144,7 +144,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.FUNCTION_DEFINITION_NAME).toString());
 		}
 	}
-
+	
 	public static void deleteFunctionDefinitionFunction(Graph g, String id) {
 		String headline = returnFunctionDefinitionWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -153,13 +153,13 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.FUNCTION_DEFINITION_FUNCTION).toString());
 		}
 	}
-
+	
 	public static void deleteFunctionDefinition(Graph g, String id) {
 		deleteFunctionDefinitionName(g, id);
 		deleteFunctionDefinitionFunction(g, id);
 		deleteFunctionDefinitionID(g, id);
 	}
-
+	
 	public static boolean isSetFunctionDefinitionName(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnFunctionDefinitionWithID(g, id),
 				new StringBuffer(returnFunctionDefinitionWithID(g, id)).append(SBML_Constants.FUNCTION_DEFINITION_NAME)
@@ -169,7 +169,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetFunctionDefinitionID(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnFunctionDefinitionWithID(g, id),
 				new StringBuffer(returnFunctionDefinitionWithID(g, id)).append(SBML_Constants.FUNCTION_DEFINITION_ID)
@@ -179,7 +179,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetFunctionDefinitionFunction(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnFunctionDefinitionWithID(g, id),
 				new StringBuffer(returnFunctionDefinitionWithID(g, id))
@@ -189,14 +189,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the id of a specific function definition is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @return true if the value is set.
 	 */
 	static private Boolean isFunctionDefinitionID(Graph g, String internHeadline) {
@@ -207,14 +207,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the name of a specific function definition is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @return true if the value is set.
 	 */
 	private static Boolean isFunctionDefinitionName(Graph g, String internHeadline) {
@@ -225,14 +225,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function of a specific function definition is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @return true if the value is set.
 	 */
 	private static Boolean isFunctionDefinitionFunction(Graph g, String internHeadline) {
@@ -243,14 +243,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Deletes the id of a specific function definition
 	 * 
 	 * @param g
-	 *            the graph where the information is deleted from
+	 *           the graph where the information is deleted from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 */
 	/*
 	 * public static void deleteFunctionDefinitionID(Graph g, String internHeadline)
@@ -259,14 +259,14 @@ public class SBMLHelper {
 	 * StringBuffer(internHeadline).append(
 	 * SBML_Constants.FUNCTION_DEFINITION_ID).toString()); } }
 	 */
-
+	
 	/**
 	 * Deletes the name of a specific function definition
 	 * 
 	 * @param g
-	 *            the graph where the information is deleted from
+	 *           the graph where the information is deleted from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 */
 	/*
 	 * public static void deleteFunctionDefinitionName(Graph g, String
@@ -275,14 +275,14 @@ public class SBMLHelper {
 	 * StringBuffer(internHeadline).append(
 	 * SBML_Constants.FUNCTION_DEFINITION_NAME).toString()); } }
 	 */
-
+	
 	/**
 	 * Deletes the function of a specific function definition
 	 * 
 	 * @param g
-	 *            the graph where the information is deleted from
+	 *           the graph where the information is deleted from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 */
 	/*
 	 * public static void deleteFunctionDefinitionFunction(Graph g, String
@@ -291,14 +291,14 @@ public class SBMLHelper {
 	 * StringBuffer(internHeadline).append(
 	 * SBML_Constants.FUNCTION_DEFINITION_FUNCTION).toString()); } }
 	 */
-
+	
 	/**
 	 * Returns the function definition id if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @return the id if it is set. Else the empty string
 	 */
 	private static String getFunctionDefinitionID(Graph g, String internHeadline) {
@@ -309,14 +309,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the function definition name if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @return the name if it is set. Else the empty string
 	 */
 	private static String getFunctionDefinitionName(Graph g, String internHeadline) {
@@ -327,14 +327,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the function if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @return the function if it is set. Else null
 	 */
 	private static ASTNode getFunctionDefinitionFunction(Graph g, String internHeadline) {
@@ -351,16 +351,16 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Sets the id of a function definition
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @param ID
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setFunctionDefinitionID(Graph g, String internHeadline, String ID) {
 		if (!ID.equals(SBML_Constants.EMPTY)) {
@@ -368,34 +368,34 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.FUNCTION_DEFINITION_ID).toString(), ID);
 		}
 	}
-
+	
 	/**
 	 * Sets the name of a function definition
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @param name
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setFunctionDefinitionName(Graph g, String internHeadline, String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline,
 					new StringBuffer(internHeadline).append(SBML_Constants.FUNCTION_DEFINITION_NAME).toString(), name);
-
+			
 		}
 	}
-
+	
 	/**
 	 * Sets the function of a function definition
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @param function
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setFunctionDefinitionFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -404,39 +404,39 @@ public class SBMLHelper {
 					function);
 		}
 	}
-
+	
 	/**
 	 * Returns all intern function definition headlines
 	 * 
 	 * @param g
-	 *            the headlines are stored in this graph
+	 *           the headlines are stored in this graph
 	 * @return a list of intern headlines
 	 */
 	private static ArrayList<String> getFunctionDefinitionHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_FUNCTION_DEFINITION);
 	}
-
+	
 	/**
 	 * Returns the number of function definitions in the graph
 	 * 
 	 * @param g
-	 *            where the information is read from
+	 *           where the information is read from
 	 * @return number of function definitios
 	 */
 	public static int countFunctionDefinitions(Graph g) {
 		return getFunctionDefinitionHeadlines(g).size();
 	}
-
+	
 	/**
 	 * Returns a filled JSBML FunctionDefinition object. The function writes the
 	 * attributes from a function definition in the graph into a JSBML function
 	 * definition.
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @return a filled FunctionDefinition object
 	 */
 	private static FunctionDefinition getFunctionDefinition(Graph g, String internHeadline) {
@@ -453,14 +453,14 @@ public class SBMLHelper {
 		}
 		return fd;
 	}
-
+	
 	/**
 	 * Returns a list of filled JSBML FunctionDefinition objects
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            contains the number of the current function definition
+	 *           contains the number of the current function definition
 	 * @return a filled list of function definitions
 	 */
 	@SuppressWarnings("unused")
@@ -473,12 +473,12 @@ public class SBMLHelper {
 		}
 		return functionDefinitionList;
 	}
-
+	
 	/**
 	 * Returns a list of filled JSBML FunctionDefinition objects
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @return a filled list of function definitions
 	 */
 	public static List<FunctionDefinition> getAllFunctionDefinitions(Graph g) {
@@ -491,7 +491,7 @@ public class SBMLHelper {
 		}
 		return functionDefinitionList;
 	}
-
+	
 	public static UnitDefinition createUnitDefinition(Graph g, String id) {
 		String presentedHeadline = new StringBuffer("SBML Unit Definition ").append(unitDefinitionCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_UNIT_DEFINITION).append(unitDefinitionCount)
@@ -503,12 +503,12 @@ public class SBMLHelper {
 		++unitDefinitionCount;
 		return ud;
 	}
-
+	
 	public static void createUnitDefinition(Graph g, UnitDefinition ud) {
 		String presentedHeadline = new StringBuffer("SBML Unit Definition ").append(unitDefinitionCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_UNIT_DEFINITION).append(unitDefinitionCount)
 				.toString();
-
+		
 		if (ud.isSetId()) {
 			ud.setLevel(3);
 			AttributeHelper.setAttribute(g, internHeadline,
@@ -519,7 +519,7 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.UNIT_DEFINITION_NAME).toString(),
 					ud.getName());
 		}
-
+		
 		List<String> ListOfSubUnits = new ArrayList<String>();
 		if (ud.isSetListOfUnits()) {
 			List<Unit> unitList = ud.getListOfUnits();
@@ -562,13 +562,13 @@ public class SBMLHelper {
 		subUnitCount = 1;
 		++unitDefinitionCount;
 	}
-
+	
 	public static void addUnitToUnitDefinition(Graph g, String id, Unit unit) {
 		String headline = returnUnitDefinitionWithID(g, id);
 		char index = headline.charAt(headline.length() - 1);
 		String presentedHeadline = new StringBuffer("SBML Unit Definition ").append(index).toString();
 		initSubUnitDefinitionNideIDs(headline, presentedHeadline, getSubUnitCount(g, headline) + 1);
-
+		
 		int scale = unit.getScale();
 		Double exponent = unit.getExponent();
 		if (Double.isNaN(exponent)) {
@@ -591,16 +591,16 @@ public class SBMLHelper {
 			nextComposedUnit = composedSubUnit;
 		}
 		setComposedUnit(g, headline, nextComposedUnit);
-
+		
 	}
-
+	
 	public static void addUnitToUnitDefinition(Graph g, String id, Unit.Kind kind, double exponent, double multiplier,
 			int scale) {
 		String headline = returnUnitDefinitionWithID(g, id);
 		char index = headline.charAt(headline.length() - 1);
 		String presentedHeadline = new StringBuffer("SBML Unit Definition ").append(index).toString();
 		initSubUnitDefinitionNideIDs(headline, presentedHeadline, getSubUnitCount(g, headline) + 1);
-
+		
 		String composedSubUnit = "(" + multiplier + " * 10^" + scale + " * " + kind + ")^" + exponent;
 		setComposedSubUnit(g, headline, composedSubUnit, getSubUnitCount(g, headline) + 1);
 		String composedUnit = getComposedUnit(g, headline);
@@ -611,17 +611,17 @@ public class SBMLHelper {
 			nextComposedUnit = composedSubUnit;
 		}
 		setComposedUnit(g, headline, nextComposedUnit);
-
+		
 	}
-
+	
 	public static void addUnitDefinitionName(Graph g, String id, String name) {
 		setUnitDefinitionName(g, returnUnitDefinitionWithID(g, id), name);
 	}
-
+	
 	public static void addUnitDefinitionID(Graph g, String oldID, String newID) {
 		setUnitDefinitionID(g, returnUnitDefinitionWithID(g, oldID), newID);
 	}
-
+	
 	public static void deleteUnitDefinitionID(Graph g, String id) {
 		String headline = returnUnitDefinitionWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -630,7 +630,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.UNIT_DEFINITION_ID).toString());
 		}
 	}
-
+	
 	public static void deleteUnitDefinitionName(Graph g, String id) {
 		String headline = returnUnitDefinitionWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -639,7 +639,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.UNIT_DEFINITION_NAME).toString());
 		}
 	}
-
+	
 	public static boolean isSetUnitDefinitionName(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnUnitDefinitionWithID(g, id),
 				new StringBuffer(returnUnitDefinitionWithID(g, id)).append(SBML_Constants.UNIT_DEFINITION_NAME)
@@ -649,7 +649,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetUnitDefinitionID(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnUnitDefinitionWithID(g, id),
 				new StringBuffer(returnUnitDefinitionWithID(g, id)).append(SBML_Constants.UNIT_DEFINITION_ID)
@@ -659,14 +659,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the unit definition id is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return true if the value is set.
 	 */
 	private static Boolean isUnitDefinitionID(Graph g, String internHeadline) {
@@ -677,14 +677,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the unit definition name is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return true if the value is set.
 	 */
 	private static Boolean isUnitDefinitionName(Graph g, String internHeadline) {
@@ -695,14 +695,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the unit definition id if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return the id if it is set. Else the empty string
 	 */
 	private static String getUnitDefinitionID(Graph g, String internHeadline) {
@@ -713,14 +713,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the unit definition name if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return the name if it is set. Else the empty string
 	 */
 	private static String getUnitDefinitionName(Graph g, String internHeadline) {
@@ -731,16 +731,16 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Sets the id of a unit definition
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @param ID
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setUnitDefinitionID(Graph g, String internHeadline, String ID) {
 		if (!ID.equals(SBML_Constants.EMPTY)) {
@@ -748,16 +748,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.UNIT_DEFINITION_ID).toString(), ID);
 		}
 	}
-
+	
 	/**
 	 * Sets the name of a unit definition
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @param name
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setUnitDefinitionName(Graph g, String internHeadline, String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
@@ -765,19 +765,19 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.UNIT_DEFINITION_NAME).toString(), name);
 		}
 	}
-
+	
 	/**
 	 * Sets a composed sub unit. All composed sub units will merge to a composed
 	 * unit
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @param composedSubUnit
-	 *            the information that will be read in
+	 *           the information that will be read in
 	 * @param subUnitCount
-	 *            the number of the current sub unit
+	 *           the number of the current sub unit
 	 */
 	private static void setComposedSubUnit(Graph g, String internHeadline, String composedSubUnit, int subUnitCount) {
 		if (!composedSubUnit.equals(SBML_Constants.EMPTY)) {
@@ -786,16 +786,16 @@ public class SBMLHelper {
 					.append(SBML_Constants.SUB_UNIT).append(subUnitCount).append("_").toString(), composedSubUnit);
 		}
 	}
-
+	
 	/**
 	 * Sets the composed unit which consists of the composed sub units
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @param composedUnit
-	 *            the information that will be set
+	 *           the information that will be set
 	 */
 	private static void setComposedUnit(Graph g, String internHeadline, String composedUnit) {
 		if (!composedUnit.equals(SBML_Constants.EMPTY)) {
@@ -803,16 +803,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.UNIT).toString(), composedUnit);
 		}
 	}
-
+	
 	/**
 	 * Indicates if a composed sub unit with a certain index is set
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @param unitCount
-	 *            the index of the sub unit
+	 *           the index of the sub unit
 	 * @return true if a sub unit with a certain index is set
 	 */
 	private static boolean isComposedSubUnit(Graph g, String internHeadline, int unitCount) {
@@ -823,14 +823,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if there is a composed unit
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return true if the value is set. Else false
 	 */
 	private static boolean isComposedUnit(Graph g, String internHeadline) {
@@ -841,16 +841,16 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Return the sub unit with a certain number
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @param unitCount
-	 *            the number of the sub unit
+	 *           the number of the sub unit
 	 * @return the sub unit if it is set. Else the empty string
 	 */
 	private static String getComposedSubUnit(Graph g, String internHeadline, int unitCount) {
@@ -861,14 +861,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the composed unit which consists of the composed sub units
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return the composed unit if it is set. Else the empty string
 	 */
 	private static String getComposedUnit(Graph g, String internHeadline) {
@@ -879,14 +879,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the amount of sub units of a certain unit definition
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return the amount of sub units
 	 */
 	private static int getSubUnitCount(Graph g, String internHeadline) {
@@ -896,14 +896,14 @@ public class SBMLHelper {
 		}
 		return suCount;
 	}
-
+	
 	/**
 	 * Returns a filled JSBML UnitDefinition object
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @param internHeadline
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return a filled UnitDefinition object
 	 */
 	private static UnitDefinition getUnitDefinition(Graph g, String internHeadline) {
@@ -934,14 +934,14 @@ public class SBMLHelper {
 		}
 		return ud;
 	}
-
+	
 	/**
 	 * Returns a filled list of UnitDefinition objects
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @param internHeadlines
-	 *            contains the number of the current unit definition
+	 *           contains the number of the current unit definition
 	 * @return a filled UnitDefinition list
 	 */
 	@SuppressWarnings("unused")
@@ -954,24 +954,24 @@ public class SBMLHelper {
 		}
 		return udList;
 	}
-
+	
 	/**
 	 * Returns a list of all unit definition headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	private static ArrayList<String> getUnitDefinitionHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_UNIT_DEFINITION);
 	}
-
+	
 	/**
 	 * Returns a filled list of UnitDefinition objects
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return a filled UnitDefinition list
 	 */
 	public static List<UnitDefinition> getAllUnitDefinitions(Graph g) {
@@ -984,7 +984,7 @@ public class SBMLHelper {
 		}
 		return udList;
 	}
-
+	
 	/**
 	 * Creates an compartment in the graph tab with an specific id
 	 * 
@@ -999,7 +999,7 @@ public class SBMLHelper {
 		initCompartmentNideIDs(internHeadline, presentedHeadline);
 		return comp;
 	}
-
+	
 	/**
 	 * @param compartment
 	 */
@@ -1015,7 +1015,7 @@ public class SBMLHelper {
 					.toString();
 		}
 		initCompartmentNideIDs(internHeadline, presentedHeadline);
-
+		
 		if (compartment.isSetId()
 				&& Compartment.isValidId(compartment.getId(), compartment.getLevel(), compartment.getVersion())) {
 			setCompartmentID(g, internHeadline, compartment.getId());
@@ -1036,7 +1036,7 @@ public class SBMLHelper {
 			setCompartmentConstant(g, internHeadline, compartment.getConstant());
 		}
 	}
-
+	
 	public static boolean isSetCompartmentName(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnCommpartmentHeadlineWithID(g, id),
 				new StringBuffer(returnCommpartmentHeadlineWithID(g, id)).append(SBML_Constants.COMPARTMENT_NAME)
@@ -1046,7 +1046,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetCompartmentID(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnCommpartmentHeadlineWithID(g, id),
 				new StringBuffer(returnCommpartmentHeadlineWithID(g, id)).append(SBML_Constants.COMPARTMENT_ID)
@@ -1056,7 +1056,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetCompartmentSpatialDimensions(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnCommpartmentHeadlineWithID(g, id),
 				new StringBuffer(returnCommpartmentHeadlineWithID(g, id)).append(SBML_Constants.SPATIAL_DIMENSIONS)
@@ -1066,7 +1066,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetCompartmentSize(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnCommpartmentHeadlineWithID(g, id),
 				new StringBuffer(returnCommpartmentHeadlineWithID(g, id)).append(SBML_Constants.SIZE).toString())) {
@@ -1075,7 +1075,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetCompartmentUnits(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnCommpartmentHeadlineWithID(g, id),
 				new StringBuffer(returnCommpartmentHeadlineWithID(g, id)).append(SBML_Constants.UNITS).toString())) {
@@ -1084,7 +1084,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetCompartmentConstants(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnCommpartmentHeadlineWithID(g, id),
 				new StringBuffer(returnCommpartmentHeadlineWithID(g, id)).append(SBML_Constants.CONSTANT).toString())) {
@@ -1093,27 +1093,27 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static void addCompartmentName(Graph g, String id, String name) {
 		setCompartmentName(g, returnCommpartmentHeadlineWithID(g, id), name);
 	}
-
+	
 	public static void addCompartmentSpatialDimensions(Graph g, String id, Double value) {
 		setCompartmentSpatialDimensions(g, returnCommpartmentHeadlineWithID(g, id), value);
 	}
-
+	
 	public static void addCompartmentSize(Graph g, String id, Double value) {
 		setCompartmentSize(g, returnCommpartmentHeadlineWithID(g, id), value);
 	}
-
+	
 	public static void addCompartmentUnits(Graph g, String id, String units) {
 		setCompartmentUnits(g, returnCommpartmentHeadlineWithID(g, id), units);
 	}
-
+	
 	public static void addCompartmentConstant(Graph g, String id, boolean constant) {
 		setCompartmentConstant(g, returnCommpartmentHeadlineWithID(g, id), constant);
 	}
-
+	
 	public static void deleteCompartmentID(Graph g, String id) {
 		String headline = returnCommpartmentHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -1122,7 +1122,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.COMPARTMENT_ID).toString());
 		}
 	}
-
+	
 	public static void deleteCompartmentName(Graph g, String id) {
 		String headline = returnCommpartmentHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -1131,7 +1131,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.COMPARTMENT_NAME).toString());
 		}
 	}
-
+	
 	public static void deleteCompartmentSpatialDimensions(Graph g, String id) {
 		String headline = returnCommpartmentHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -1140,7 +1140,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.SPATIAL_DIMENSIONS).toString());
 		}
 	}
-
+	
 	public static void deleteCompartmentSize(Graph g, String id) {
 		String headline = returnCommpartmentHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -1149,7 +1149,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.SIZE).toString());
 		}
 	}
-
+	
 	public static void deleteCompartmentUnits(Graph g, String id) {
 		String headline = returnCommpartmentHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -1158,7 +1158,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.UNITS).toString());
 		}
 	}
-
+	
 	public static void deleteCompartmentConstant(Graph g, String id) {
 		String headline = returnCommpartmentHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -1167,7 +1167,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.CONSTANT).toString());
 		}
 	}
-
+	
 	public static void deleteCompartment(Graph g, String id) {
 		deleteCompartmentSpatialDimensions(g, id);
 		deleteCompartmentName(g, id);
@@ -1176,7 +1176,7 @@ public class SBMLHelper {
 		deleteCompartmentConstant(g, id);
 		deleteCompartmentID(g, id);
 	}
-
+	
 	private static String returnCommpartmentHeadlineWithID(Graph g, String id) {
 		ArrayList<String> headlines = getCompartmentHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1189,7 +1189,7 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	private static String returnParameterHeadlineWithID(Graph g, String id) {
 		ArrayList<String> headlines = getParameterHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1202,7 +1202,7 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	private static String returnInitialAssignmentWithSymbol(Graph g, String symbol) {
 		ArrayList<String> headlines = getInitialAssignmentHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1215,7 +1215,7 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	private static String returnFunctionDefinitionWithID(Graph g, String id) {
 		ArrayList<String> headlines = getFunctionDefinitionHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1228,7 +1228,7 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	private static String returnUnitDefinitionWithID(Graph g, String id) {
 		ArrayList<String> headlines = getUnitDefinitionHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1242,7 +1242,7 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	private static String returnAssignmentRuleWithID(Graph g, String variable) {
 		ArrayList<String> headlines = getAssignmentRuleHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1256,7 +1256,7 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	private static String returnRateRuleWithID(Graph g, String variable) {
 		ArrayList<String> headlines = getRateRuleHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1270,7 +1270,7 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	private static String returnAlgebraicRuleWithFormula(Graph g, String formula) {
 		ArrayList<String> headlines = getAlgebraicRuleHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1284,7 +1284,7 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	private static String returnEventWithID(Graph g, String id) {
 		ArrayList<String> headlines = getEventHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -1298,14 +1298,14 @@ public class SBMLHelper {
 		}
 		return "";
 	}
-
+	
 	/**
 	 * Indicates if the compartment id is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return true if the value is set.
 	 */
 	private static Boolean isCompartmentID(Graph g, String internHeadline) {
@@ -1316,14 +1316,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the compartment name is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return true if the value is set.
 	 */
 	private static Boolean isCompartmentName(Graph g, String internHeadline) {
@@ -1334,14 +1334,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the compartment spatial dimensions is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return true if the value is set.
 	 */
 	private static Boolean isCompartmentSpatialDimensions(Graph g, String internHeadline) {
@@ -1352,14 +1352,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the compartment size is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return true if the value is set.
 	 */
 	private static Boolean isCompartmentSize(Graph g, String internHeadline) {
@@ -1370,14 +1370,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the compartment units is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return true if the value is set.
 	 */
 	private static Boolean isCompartmentUnits(Graph g, String internHeadline) {
@@ -1388,14 +1388,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the compartment constant is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return true if the value is set.
 	 */
 	private static Boolean isCompartmentConstant(Graph g, String internHeadline) {
@@ -1406,14 +1406,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the compartment id if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return the id if it is set. Else the empty string
 	 */
 	private static String getCompartmentID(Graph g, String internHeadline) {
@@ -1424,14 +1424,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the compartment name if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return the name if it is set. Else the empty string
 	 */
 	private static String getCompartmentName(Graph g, String internHeadline) {
@@ -1442,14 +1442,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the compartment spatialDimensions if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return the spatialDimensions if it is set. Else null
 	 */
 	private static Double getCompartmentSpatialDimensions(Graph g, String internHeadline) {
@@ -1460,14 +1460,14 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Returns the compartment size if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return the size if it is set. Else null the empty string
 	 */
 	private static Double getCompartmentSize(Graph g, String internHeadline) {
@@ -1478,14 +1478,14 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Returns the compartment units if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return the units if it is set. Else the empty string
 	 */
 	private static String getCompartmentUnits(Graph g, String internHeadline) {
@@ -1496,14 +1496,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the compartment attribute constant if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return constant if it is set. Else null
 	 */
 	private static Boolean getCompartmentConstant(Graph g, String internHeadline) {
@@ -1514,16 +1514,16 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Sets the id of a compartment
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @param id
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setCompartmentID(Graph g, String internHeadline, String id) {
 		if (!id.equals(SBML_Constants.EMPTY)) {
@@ -1531,16 +1531,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.COMPARTMENT_ID).toString(), id);
 		}
 	}
-
+	
 	/**
 	 * Sets the name of a compartment
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @param name
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setCompartmentName(Graph g, String internHeadline, String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
@@ -1548,16 +1548,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.COMPARTMENT_NAME).toString(), name);
 		}
 	}
-
+	
 	/**
 	 * Sets the spatial dimension of a compartment
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @param spatialDimension
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setCompartmentSpatialDimensions(Graph g, String internHeadline, Double spatialDimensions) {
 		// if (!spatialDimensions.equals(null)) {
@@ -1566,16 +1566,16 @@ public class SBMLHelper {
 				spatialDimensions);
 		// }
 	}
-
+	
 	/**
 	 * Sets the size of a compartment
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @param size
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setCompartmentSize(Graph g, String internHeadline, Double size) {
 		// if (!size.equals(null)) {
@@ -1583,16 +1583,16 @@ public class SBMLHelper {
 				new StringBuffer(internHeadline).append(SBML_Constants.SIZE).toString(), Double.toString(size));
 		// }
 	}
-
+	
 	/**
 	 * Sets the units of a compartment
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @param units
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setCompartmentUnits(Graph g, String internHeadline, String units) {
 		if (!units.equals(SBML_Constants.EMPTY)) {
@@ -1600,16 +1600,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.UNITS).toString(), units);
 		}
 	}
-
+	
 	/**
 	 * Sets the attribute constant of a compartment
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @param constant
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setCompartmentConstant(Graph g, String internHeadline, Boolean constant) {
 		// if (!constant.equals(null)) {
@@ -1617,33 +1617,33 @@ public class SBMLHelper {
 				new StringBuffer(internHeadline).append(SBML_Constants.CONSTANT).toString(), constant);
 		// }
 	}
-
+	
 	/**
 	 * Returns a list of all compartment headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	private static ArrayList<String> getCompartmentHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_COMPARTMENT);
 	}
-
+	
 	/**
 	 * Returns a filled JSBML Compartment object
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            contains the number of the current compartment
+	 *           contains the number of the current compartment
 	 * @return a filled Compartment object
 	 */
 	private static Compartment getCompartment(Graph g, String internHeadline) {
 		Compartment compartment = new Compartment();
 		compartment.setId(getCompartmentID(g, internHeadline));
 		compartment.setName(getCompartmentName(g, internHeadline));
-
+		
 		if (isCompartmentSpatialDimensions(g, internHeadline) && compartment.getLevel() == 3) {
 			compartment.setSpatialDimensions(getCompartmentSpatialDimensions(g, internHeadline));
 		}
@@ -1656,14 +1656,14 @@ public class SBMLHelper {
 		}
 		return compartment;
 	}
-
+	
 	/**
 	 * Returns a list of compartments with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current compartment
+	 *           a list which contains the number of the current compartment
 	 * @return a filled list of compartments
 	 */
 	@SuppressWarnings("unused")
@@ -1676,12 +1676,12 @@ public class SBMLHelper {
 		}
 		return compartmentList;
 	}
-
+	
 	/**
 	 * Returns a list of compartments with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @return a filled list of compartments
 	 */
 	public static List<Compartment> getAllCompartments(Graph g) {
@@ -1694,12 +1694,12 @@ public class SBMLHelper {
 		}
 		return compartmentList;
 	}
-
+	
 	/**
 	 * Indicates if the id of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if the id is set else false
 	 */
 	public static Boolean isSpeciesID(Node speciesNode) {
@@ -1709,12 +1709,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the name of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if the name is set else false
 	 */
 	public static Boolean isSpeciesName(Node speciesNode) {
@@ -1725,12 +1725,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the compartment id of a species is set
 	 * 
 	 * @param node
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if the compartment id is set else false
 	 */
 	public static Boolean isSpeciesCompartment(Node speciesNode) {
@@ -1740,12 +1740,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the initial amount of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if the initial amount is set else false
 	 */
 	public static Boolean isSpeciesInitialAmount(Node speciesNode) {
@@ -1755,12 +1755,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the initial concentration of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if the initial concentration is set else false
 	 */
 	public static Boolean isSpeciesInitialConcentration(Node speciesNode) {
@@ -1770,12 +1770,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if substance units of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if substance units is set else false
 	 */
 	public static Boolean isSpeciesSubstanceUnits(Node speciesNode) {
@@ -1785,12 +1785,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if hasOnlySubstanceUnits of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if hasOnlySubstanceUnits is set else false
 	 */
 	public static Boolean isSpeciesHasOnlySubstanceUnits(Node speciesNode) {
@@ -1800,12 +1800,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if boundary condition of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if boundary condition is set else false
 	 */
 	public static Boolean isSpeciesBoundaryCondition(Node speciesNode) {
@@ -1815,12 +1815,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if constant of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if constant is set else false
 	 */
 	public static Boolean isSpeciesConstant(Node speciesNode) {
@@ -1830,12 +1830,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if conversion factor of a species is set
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if conversion factor is set else false
 	 */
 	public static Boolean isSpeciesConversionFactor(Node speciesNode) {
@@ -1845,12 +1845,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the id of the species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return the species id if it is set else the empty string
 	 */
 	public static String getSpeciesID(Node speciesNode) {
@@ -1860,12 +1860,12 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the name of the species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return the species name if it is set else the empty string
 	 */
 	public static String getSpeciesName(Node speciesNode) {
@@ -1875,23 +1875,23 @@ public class SBMLHelper {
 		return AttributeHelper.getLabel(speciesNode,
 				(String) attWriter.getAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SPECIES_NAME));
 	}
-
+	
 	/**
 	 * Returns the compartment id of a species
 	 * 
 	 * @param Node
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return the compartment id if it is set else the empty string
 	 */
 	public static String getSpeciesCompartment(Node speciesNode) {
 		return NodeTools.getClusterID(speciesNode, SBML_Constants.EMPTY);
 	}
-
+	
 	/**
 	 * Returns the initial amount of a species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return initial amount if it is set else null
 	 */
 	public static Double getSpeciesInitialAmount(Node speciesNode) {
@@ -1901,12 +1901,12 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Returns the initial concentration of a species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return initial concentration if it is set else null
 	 */
 	public static Double getSpeciesInitialConcentration(Node speciesNode) {
@@ -1917,12 +1917,12 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Returns the substance units of a species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return substance Units if it is set else the empty string
 	 */
 	public static String getSpeciesSubstanceUnits(Node speciesNode) {
@@ -1933,12 +1933,12 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the boolean value hasOnlySubstanceUnits of the species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return a boolean value if the attribute hasOnlySubstanceUnits is set else
 	 *         null
 	 */
@@ -1950,12 +1950,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the boolean value boundaryCondition of the species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return a boolean value if the attribute boundaryCondition is set else null
 	 */
 	public static Boolean getSpeciesBoundaryCondition(Node speciesNode) {
@@ -1966,12 +1966,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the boolean value constant of the species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return a boolean value if the attribute constant is set else null
 	 */
 	public static Boolean getSpeciesConstant(Node speciesNode) {
@@ -1981,12 +1981,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the conversion factor units of a species
 	 * 
 	 * @param speciesNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return conversion factor if it is set else null
 	 */
 	public static String getSpeciesConversionFactor(Node speciesNode) {
@@ -1997,27 +1997,27 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Sets the id of a species node
 	 * 
 	 * @param speciesNode
-	 *            where the information should be read in
+	 *           where the information should be read in
 	 * @param id
-	 *            the id to set
+	 *           the id to set
 	 */
 	public static void addSpeciesID(Node speciesNode, String id) {
 		if (!id.isEmpty()) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SPECIES_ID, id);
 		}
 	}
-
+	
 	public static void addSpeciesName(Node speciesNode, String name) {
 		if (!name.isEmpty()) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SPECIES_NAME, name);
 		}
 	}
-
+	
 	public static void setSpeciesAttributes(Node sbmlNode, String niceID, Object value) {
 		if (value != null && !value.equals(SBML_Constants.EMPTY)) {
 			if (value instanceof Boolean) {
@@ -2027,14 +2027,14 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	/**
 	 * Sets the compartment of a node
 	 * 
 	 * @param speciesNode
-	 *            the compartment belongs to this node
+	 *           the compartment belongs to this node
 	 * @param compartment
-	 *            the id of the compartment that will be set
+	 *           the id of the compartment that will be set
 	 */
 	public static void addSpeciesCompartment(Node speciesNode, String compartment) {
 		if (!compartment.equals(SBML_Constants.EMPTY)) {
@@ -2042,28 +2042,28 @@ public class SBMLHelper {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.COMPARTMENT, compartment);
 		}
 	}
-
+	
 	/**
 	 * Sets the initial amount of a node
 	 * 
 	 * @param speciesNode
-	 *            the initial amount belongs to this node
+	 *           the initial amount belongs to this node
 	 * @param initialAmount
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void addSpeciesInitialAmount(Node speciesNode, Double initialAmount) {
 		// if (!initialAmount.equals(null)) {
 		AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.INITIAL_AMOUNT, initialAmount);
 		// }
 	}
-
+	
 	/**
 	 * Sets the initial concentration of a node
 	 * 
 	 * @param speciesNode
-	 *            the initial concentration belongs to this node
+	 *           the initial concentration belongs to this node
 	 * @param initialConcentration
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void addSpeciesInitialConcentration(Node speciesNode, Double initialConcentration) {
 		// if (!initialConcentration.equals(null)) {
@@ -2071,14 +2071,14 @@ public class SBMLHelper {
 				initialConcentration);
 		// }
 	}
-
+	
 	/**
 	 * Sets the substance units of a species node
 	 * 
 	 * @param speciesNode
-	 *            the substance units belong to this node
+	 *           the substance units belong to this node
 	 * @param substanceUnits
-	 *            the substance units to set
+	 *           the substance units to set
 	 */
 	public static void addSpeciesSubstanceUnits(Node speciesNode, String substanceUnits) {
 		if (!substanceUnits.equals(SBML_Constants.EMPTY)) {
@@ -2086,14 +2086,14 @@ public class SBMLHelper {
 					substanceUnits);
 		}
 	}
-
+	
 	/**
 	 * Sets the attribute hasOnlySubstanceUnits of a species node
 	 * 
 	 * @param speciesNode
-	 *            where the attribute is going to be added
+	 *           where the attribute is going to be added
 	 * @param hasOnlySubstanceUnits
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void addSpeciesHasOnlySubstanceUnits(Node speciesNode, Boolean hasOnlySubstanceUnits) {
 		// if (!hasOnlySubstanceUnits.equals(null)) {
@@ -2101,14 +2101,14 @@ public class SBMLHelper {
 				hasOnlySubstanceUnits);
 		// }
 	}
-
+	
 	/**
 	 * Sets the attribute boundary condition of a species node
 	 * 
 	 * @param speciesNode
-	 *            where the attribute is going to be added
+	 *           where the attribute is going to be added
 	 * @param boundaryCondition
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void addSpeciesBoundaryConsition(Node speciesNode, Boolean boundaryCondition) {
 		// if (!boundaryCondition.equals(null)) {
@@ -2116,28 +2116,28 @@ public class SBMLHelper {
 				boundaryCondition);
 		// }
 	}
-
+	
 	/**
 	 * Sets the attribute constant of a species node
 	 * 
 	 * @param speciesNode
-	 *            where the attribute is going to be added
+	 *           where the attribute is going to be added
 	 * @param constant
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void addSpeciesConstant(Node speciesNode, Boolean constant) {
 		if (constant != null) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SPECIES_CONSTANT, constant);
 		}
 	}
-
+	
 	/**
 	 * Sets the attribute conversion factor of a species node
 	 * 
 	 * @param speciesNode
-	 *            where the attribute is going to be added
+	 *           where the attribute is going to be added
 	 * @param conversionFactor
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void addSpeciesConversionFactor(Node speciesNode, String conversionFactor) {
 		if (!conversionFactor.equals(SBML_Constants.EMPTY)) {
@@ -2145,20 +2145,20 @@ public class SBMLHelper {
 					conversionFactor);
 		}
 	}
-
+	
 	public static void deleteSpeciesID(Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_ID)) {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_ID);
 		}
 	}
-
+	
 	public static void deleteSpeciesName(Node node) {
 		if (!AttributeHelper.getLabel(node, SBML_Constants.EMPTY).equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setLabel(node, "");
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_NAME);
 		}
 	}
-
+	
 	public static void deleteSpeciesCompartment(Node node) {
 		if (!NodeTools.getClusterID(node, SBML_Constants.EMPTY).equals(SBML_Constants.EMPTY)) {
 			NodeTools.setClusterID(node, "");
@@ -2167,49 +2167,49 @@ public class SBMLHelper {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_COMPARTMENT_NAME);
 		}
 	}
-
+	
 	public static void deleteSpeciesInitialAmount(Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.INITIAL_AMOUNT)) {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.INITIAL_AMOUNT);
 		}
 	}
-
+	
 	public static void deleteSpeciesInitialConcentration(Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.INITIAL_CONCENTRATION)) {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.INITIAL_CONCENTRATION);
 		}
 	}
-
+	
 	public static void deleteSpeciesSubstanceUnits(Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_SUBSTANCE_UNITS)) {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_SUBSTANCE_UNITS);
 		}
 	}
-
+	
 	public static void deleteSpeciesHasOnlySubstanceUnits(Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.HAS_ONLY_SUBSTANCE_UNITS)) {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.HAS_ONLY_SUBSTANCE_UNITS);
 		}
 	}
-
+	
 	public static void deleteSpeciesBoundaryCondition(Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.BOUNDARY_CONDITION)) {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.BOUNDARY_CONDITION);
 		}
 	}
-
+	
 	public static void deleteSpeciesConstant(Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_CONSTANT)) {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_CONSTANT);
 		}
 	}
-
+	
 	public static void deleteSpeciesConversionFactor(Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_CONVERSION_FACTOR)) {
 			AttributeHelper.deleteAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_CONVERSION_FACTOR);
 		}
 	}
-
+	
 	public static void deleteSpecies(Node node) {
 		deleteSpeciesID(node);
 		deleteSpeciesName(node);
@@ -2224,7 +2224,7 @@ public class SBMLHelper {
 		Graph g = node.getGraph();
 		g.deleteNode(node);
 	}
-
+	
 	/**
 	 * Returns all species nodes of the graph
 	 * 
@@ -2241,12 +2241,12 @@ public class SBMLHelper {
 		}
 		return speciesNodeList;
 	}
-
+	
 	/**
 	 * Returns the species node with a distinct id
 	 * 
 	 * @param id
-	 *            the id of the asked node
+	 *           the id of the asked node
 	 * @return the node with a certain id or null if no node has this id
 	 */
 	public static Node getSpeciesNode(Graph g, String id) {
@@ -2261,12 +2261,12 @@ public class SBMLHelper {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Returns a JSBML Species object belonging to a species node
 	 * 
 	 * @param node
-	 *            the species node
+	 *           the species node
 	 * @return a JSBML Species object
 	 */
 	public static Species getSpecies(Node node) {
@@ -2299,19 +2299,19 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Creates a new species node and sets its id
 	 * 
 	 * @param g
-	 *            the node is added to this graph
+	 *           the node is added to this graph
 	 * @param id
-	 *            the value of the id that will be set
+	 *           the value of the id that will be set
 	 * @return a node or null if the id is the empty string
 	 */
 	public static Node createSpecies(Graph g, String id, String name) {
 		if (!SBML_Constants.EMPTY.equals(id) || !SBML_Constants.EMPTY.equals(name)) {
-
+			
 			Node node = g
 					.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(new Vector2d(pgg.getNextPosition())));
 			// AttributeHelper.setDefaultGraphicsAttribute(node, pgg.getNextPosition());
@@ -2320,7 +2320,7 @@ public class SBMLHelper {
 			AttributeHelper.setFillColor(node, Color.WHITE);
 			AttributeHelper.setShapeEllipse(node);
 			AttributeHelper.setBorderWidth(node, 1);
-
+			
 			AttributeHelper.setSBMLrole(node, SBML_Constants.ROLE_SPECIES);
 			addSpeciesID(node, id);
 			if (!name.equals(SBML_Constants.EMPTY)) {
@@ -2335,12 +2335,12 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * This method converts a node into a species node
 	 * 
 	 * @param n
-	 *            the node that will be transformed
+	 *           the node that will be transformed
 	 * @return the species node that will be returned
 	 */
 	public static Node initSpeciesNode(Node n) {
@@ -2354,7 +2354,7 @@ public class SBMLHelper {
 			return n;
 		}
 	}
-
+	
 	public static Node createSpecies(Graph g, Species species) {
 		Node node = g.addNode();
 		AttributeHelper.setSBMLrole(node, SBML_Constants.ROLE_SPECIES);
@@ -2414,10 +2414,10 @@ public class SBMLHelper {
 			AttributeHelper.setAttribute(node, SBML_Constants.SBML, SBML_Constants.SPECIES_CONVERSION_FACTOR,
 					species.getConversionFactor());
 		}
-
+		
 		return node;
 	}
-
+	
 	public static Parameter createParameter(Graph g, String id) {
 		String presentedHeadline = new StringBuffer("SBML Parameter ").append(parameterCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_PARAMETER).append(parameterCount).toString();
@@ -2428,12 +2428,12 @@ public class SBMLHelper {
 		++parameterCount;
 		return para;
 	}
-
+	
 	public static void createParameter(Graph g, Parameter parameter) {
 		String presentedHeadline = new StringBuffer("SBML Parameter ").append(parameterCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_PARAMETER).append(parameterCount).toString();
 		initParameterNideIDs(internHeadline, presentedHeadline);
-
+		
 		if (parameter.isSetId()) {
 			setParameterID(g, internHeadline, parameter.getId());
 		}
@@ -2451,23 +2451,23 @@ public class SBMLHelper {
 		}
 		++parameterCount;
 	}
-
+	
 	public static void addParameterName(Graph g, String id, String name) {
 		setParameterName(g, returnParameterHeadlineWithID(g, id), name);
 	}
-
+	
 	public static void addParameterValue(Graph g, String id, Double value) {
 		setParameterValue(g, returnParameterHeadlineWithID(g, id), value);
 	}
-
+	
 	public static void addParameterUnits(Graph g, String id, String units) {
 		setParameterUnits(g, returnParameterHeadlineWithID(g, id), units);
 	}
-
+	
 	public static void addParameterConstant(Graph g, String id, boolean constant) {
 		setParameterConstant(g, returnParameterHeadlineWithID(g, id), constant);
 	}
-
+	
 	public static void deleteParameterName(Graph g, String id) {
 		String headline = returnParameterHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -2476,7 +2476,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.PARAMETER_NAME).toString());
 		}
 	}
-
+	
 	public static void deleteParameterID(Graph g, String id) {
 		String headline = returnParameterHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -2485,7 +2485,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.PARAMETER_ID).toString());
 		}
 	}
-
+	
 	public static void deleteParameterValue(Graph g, String id) {
 		String headline = returnParameterHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -2494,7 +2494,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.VALUE).toString());
 		}
 	}
-
+	
 	public static void deleteParameterUnits(Graph g, String id) {
 		String headline = returnParameterHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -2503,7 +2503,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.PARAMETER_UNITS).toString());
 		}
 	}
-
+	
 	public static void deleteParameterConstant(Graph g, String id) {
 		String headline = returnParameterHeadlineWithID(g, id);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -2512,7 +2512,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.PARAMETER_CONSTANT).toString());
 		}
 	}
-
+	
 	public static void deleteParameter(Graph g, String id) {
 		deleteParameterName(g, id);
 		deleteParameterValue(g, id);
@@ -2520,7 +2520,7 @@ public class SBMLHelper {
 		deleteParameterConstant(g, id);
 		deleteParameterID(g, id);
 	}
-
+	
 	public static boolean isSetParameterName(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnParameterHeadlineWithID(g, id),
 				new StringBuffer(returnParameterHeadlineWithID(g, id)).append(SBML_Constants.PARAMETER_NAME)
@@ -2530,7 +2530,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetParameterValue(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnParameterHeadlineWithID(g, id),
 				new StringBuffer(returnParameterHeadlineWithID(g, id)).append(SBML_Constants.VALUE).toString())) {
@@ -2539,7 +2539,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetParameterUnits(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnParameterHeadlineWithID(g, id),
 				new StringBuffer(returnParameterHeadlineWithID(g, id)).append(SBML_Constants.PARAMETER_UNITS)
@@ -2549,7 +2549,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetParameterConstant(Graph g, String id) {
 		if (AttributeHelper.hasAttribute(g, returnParameterHeadlineWithID(g, id),
 				new StringBuffer(returnParameterHeadlineWithID(g, id)).append(SBML_Constants.PARAMETER_CONSTANT)
@@ -2559,14 +2559,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the parameter id is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return true if the value is set.
 	 */
 	private static Boolean isParameterID(Graph g, String internHeadline) {
@@ -2577,14 +2577,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the parameter name is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return true if the value is set.
 	 */
 	private static Boolean isParameterName(Graph g, String internHeadline) {
@@ -2595,14 +2595,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the parameter value is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return true if the value is set.
 	 */
 	private static Boolean isParameterValue(Graph g, String internHeadline) {
@@ -2613,14 +2613,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the parameter units is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return true if the value is set.
 	 */
 	private static Boolean isParameterUnits(Graph g, String internHeadline) {
@@ -2631,14 +2631,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the attribute constant is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return true if the value is set.
 	 */
 	private static Boolean isParameterConstant(Graph g, String internHeadline) {
@@ -2649,14 +2649,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the parameter id if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return the id if it is set. Else the empty string
 	 */
 	private static String getParameterID(Graph g, String internHeadline) {
@@ -2667,14 +2667,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the parameter name if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return the name if it is set. Else the empty string
 	 */
 	private static String getParameterName(Graph g, String internHeadline) {
@@ -2685,14 +2685,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the parameter value if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return the value if it is set. Else null
 	 */
 	private static Double getParameterValue(Graph g, String internHeadline) {
@@ -2703,14 +2703,14 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Returns the parameter units if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return the units if it is set. Else the empty string
 	 */
 	private static String getParameterUnits(Graph g, String internHeadline) {
@@ -2721,14 +2721,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the attribute constant if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return constant if it is set. Else null
 	 */
 	private static Boolean getParameterConstant(Graph g, String internHeadline) {
@@ -2739,16 +2739,16 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Sets the id of a parameter
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @param ID
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setParameterID(Graph g, String internHeadline, String ID) {
 		if (!ID.equals(SBML_Constants.EMPTY)) {
@@ -2756,16 +2756,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString(), ID);
 		}
 	}
-
+	
 	/**
 	 * Sets the name of a parameter
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @param name
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setParameterName(Graph g, String internHeadline, String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
@@ -2773,16 +2773,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_NAME).toString(), name);
 		}
 	}
-
+	
 	/**
 	 * Sets the value of a parameter
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @param value
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setParameterValue(Graph g, String internHeadline, Double value) {
 		// if (!value.equals(null)) {
@@ -2790,16 +2790,16 @@ public class SBMLHelper {
 				new StringBuffer(internHeadline).append(SBML_Constants.VALUE).toString(), value);
 		// }
 	}
-
+	
 	/**
 	 * Sets the units of a parameter
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @param units
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setParameterUnits(Graph g, String internHeadline, String units) {
 		if (!units.equals(SBML_Constants.EMPTY)) {
@@ -2807,16 +2807,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_UNITS).toString(), units);
 		}
 	}
-
+	
 	/**
 	 * Sets the attribute constant of a parameter
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @param constant
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setParameterConstant(Graph g, String internHeadline, Boolean constant) {
 		// if (!constant.equals(null)) {
@@ -2824,26 +2824,26 @@ public class SBMLHelper {
 				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_CONSTANT).toString(), constant);
 		// }
 	}
-
+	
 	/**
 	 * Returns a list of all parameter headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	private static ArrayList<String> getParameterHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_PARAMETER);
 	}
-
+	
 	/**
 	 * Returns a filled JSBML Parameter object
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            contains the number of the current parameter
+	 *           contains the number of the current parameter
 	 * @return a filled Parameter object
 	 */
 	private static Parameter getParameter(Graph g, String internHeadline) {
@@ -2859,14 +2859,14 @@ public class SBMLHelper {
 		}
 		return parameter;
 	}
-
+	
 	/**
 	 * Returns a list of parameter with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current parameter
+	 *           a list which contains the number of the current parameter
 	 * @return a filled list of parameters
 	 */
 	@SuppressWarnings("unused")
@@ -2879,12 +2879,12 @@ public class SBMLHelper {
 		}
 		return parameterList;
 	}
-
+	
 	/**
 	 * Returns a list of parameter with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @return a filled list of parameters
 	 */
 	public static List<Parameter> getAllParameters(Graph g) {
@@ -2897,7 +2897,7 @@ public class SBMLHelper {
 		}
 		return parameterList;
 	}
-
+	
 	public static InitialAssignment createInitialAssignment(Graph g, String symbol) {
 		String presentedHeadline = new StringBuffer("SBML Initial Assignment ").append(initialAssignmentCount)
 				.toString();
@@ -2911,14 +2911,14 @@ public class SBMLHelper {
 		++initialAssignmentCount;
 		return ia;
 	}
-
+	
 	public static void createInitialAssignment(Graph g, InitialAssignment ia) {
 		String presentedHeadline = new StringBuffer("SBML Initial Assignment ").append(initialAssignmentCount)
 				.toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_INITIAL_ASSIGNMENT).append(initialAssignmentCount)
 				.toString();
 		initInitialAssignmentNiceIDs(internHeadline, presentedHeadline);
-
+		
 		if (ia.isSetSymbol()) {
 			setInitialAssignmentSymbol(g, internHeadline, ia.getVariable());
 		}
@@ -2935,13 +2935,13 @@ public class SBMLHelper {
 		} catch (SBMLException e) {
 		}
 		++initialAssignmentCount;
-
+		
 	}
-
+	
 	public static void addInitialAssignmentFunction(Graph g, String symbol, String function) {
 		setInitialAssignmentFunction(g, returnInitialAssignmentWithSymbol(g, symbol), function);
 	}
-
+	
 	public static void deleteInitialAssignmentSymbol(Graph g, String symbol) {
 		String headline = returnInitialAssignmentWithSymbol(g, symbol);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -2950,7 +2950,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.SYMBOL).toString());
 		}
 	}
-
+	
 	public static void deleteInitialAssignmentFunction(Graph g, String symbol) {
 		String headline = returnInitialAssignmentWithSymbol(g, symbol);
 		if (AttributeHelper.hasAttribute(g, headline,
@@ -2959,13 +2959,12 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.INITIAL_ASSIGNMENT_FUNCTION).toString());
 		}
 	}
-
+	
 	public static void deleteInitialAssignment(Graph g, String symbol) {
 		deleteInitialAssignmentFunction(g, symbol);
-		deleteInitialAssignmentSymbol(g, symbol);
-		;
+		deleteInitialAssignmentSymbol(g, symbol);;
 	}
-
+	
 	public static boolean isSetInitialAssignmentFunction(Graph g, String symbol) {
 		if (AttributeHelper.hasAttribute(g, returnInitialAssignmentWithSymbol(g, symbol),
 				new StringBuffer(returnInitialAssignmentWithSymbol(g, symbol))
@@ -2975,7 +2974,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetInitialAssignmentSymbol(Graph g, String symbol) {
 		if (AttributeHelper.hasAttribute(g, returnInitialAssignmentWithSymbol(g, symbol),
 				new StringBuffer(returnInitialAssignmentWithSymbol(g, symbol)).append(SBML_Constants.SYMBOL)
@@ -2985,14 +2984,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the attribute symbol is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current initial assignment
+	 *           contains the number of the current initial assignment
 	 * @return true if the value is set.
 	 */
 	private static Boolean isInitialAssignmentSymbol(Graph g, String internHeadline) {
@@ -3003,14 +3002,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current initial assignment
+	 *           contains the number of the current initial assignment
 	 * @return true if the value is set.
 	 */
 	private static Boolean isInitialAssignmentFunction(Graph g, String internHeadline) {
@@ -3021,16 +3020,16 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Sets the symbol of a initial assignment
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current initial assignment
+	 *           contains the number of the current initial assignment
 	 * @param symbol
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setInitialAssignmentSymbol(Graph g, String internHeadline, String symbol) {
 		if (!symbol.equals(SBML_Constants.EMPTY)) {
@@ -3038,16 +3037,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.SYMBOL).toString(), symbol);
 		}
 	}
-
+	
 	/**
 	 * Sets the function of a initial assignment
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current initial assignment
+	 *           contains the number of the current initial assignment
 	 * @param function
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setInitialAssignmentFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -3056,14 +3055,14 @@ public class SBMLHelper {
 					function);
 		}
 	}
-
+	
 	/**
 	 * Returns the initial assignment symbol if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current initial assignment
+	 *           contains the number of the current initial assignment
 	 * @return the symbol if it is set. Else the empty string
 	 */
 	private static String getInitialAssignmentSymbol(Graph g, String internHeadline) {
@@ -3074,14 +3073,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the initial assignment function if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current initial assignment
+	 *           contains the number of the current initial assignment
 	 * @return the function if it is set. Else the empty string
 	 */
 	private static String getInitialAssignmentFunction(Graph g, String internHeadline) {
@@ -3092,26 +3091,26 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns a list of all initial assignment headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	private static ArrayList<String> getInitialAssignmentHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_INITIAL_ASSIGNMENT);
 	}
-
+	
 	/**
 	 * Returns a filled JSBML initial assignment object
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            contains the number of the current initial assignment
+	 *           contains the number of the current initial assignment
 	 * @return a filled initial assignment object
 	 */
 	private static InitialAssignment getInitialAssignment(Graph g, String internHeadline) {
@@ -3130,14 +3129,14 @@ public class SBMLHelper {
 		}
 		return ia;
 	}
-
+	
 	/**
 	 * Returns a list of initial assignment with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current initial assignment
+	 *           a list which contains the number of the current initial assignment
 	 * @return a filled list of initial assignment
 	 */
 	@SuppressWarnings("unused")
@@ -3150,12 +3149,12 @@ public class SBMLHelper {
 		}
 		return iaList;
 	}
-
+	
 	/**
 	 * Returns a list of initial assignment with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @return a filled list of initial assignment
 	 */
 	public static List<InitialAssignment> getAllInitialAssignment(Graph g) {
@@ -3168,14 +3167,14 @@ public class SBMLHelper {
 		}
 		return iaList;
 	}
-
+	
 	/**
 	 * Indicates if the function is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current rate rule
+	 *           contains the number of the current rate rule
 	 * @return true if the value is set.
 	 */
 	private static Boolean isRateRuleFunction(Graph g, String internHeadline) {
@@ -3186,14 +3185,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the variable is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current rate rule
+	 *           contains the number of the current rate rule
 	 * @return true if the value is set.
 	 */
 	private static Boolean isRateRuleVariable(Graph g, String internHeadline) {
@@ -3204,14 +3203,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the rate rule variable if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current rate rule
+	 *           contains the number of the current rate rule
 	 * @return the variable if it is set. Else the empty string
 	 */
 	private static String getRateRuleVariable(Graph g, String internHeadline) {
@@ -3222,14 +3221,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the rate rule function if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current rate rule
+	 *           contains the number of the current rate rule
 	 * @return the function if it is set. Else the empty string
 	 */
 	private static String getRateRuleFunction(Graph g, String internHeadline) {
@@ -3240,16 +3239,16 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Sets the function of a rate rule
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current rate rule
+	 *           contains the number of the current rate rule
 	 * @param function
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setRateRuleFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -3257,16 +3256,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.RATE_FUNCTION).toString(), function);
 		}
 	}
-
+	
 	/**
 	 * Sets the variable of a rate rule
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current rate rule
+	 *           contains the number of the current rate rule
 	 * @param variable
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setRateRuleVariable(Graph g, String internHeadline, String variable) {
 		if (!variable.equals(SBML_Constants.EMPTY)) {
@@ -3274,26 +3273,26 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.RATE_VARIABLE).toString(), variable);
 		}
 	}
-
+	
 	/**
 	 * Returns a list of all rate rule headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	private static ArrayList<String> getRateRuleHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_RATE_RULE);
 	}
-
+	
 	/**
 	 * Returns a filled JSBML rate rule object
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            contains the number of the current rate rule
+	 *           contains the number of the current rate rule
 	 * @return a filled rate rule object
 	 */
 	private static RateRule getRateRule(Graph g, String internHeadline) {
@@ -3311,14 +3310,14 @@ public class SBMLHelper {
 		}
 		return rr;
 	}
-
+	
 	/**
 	 * Returns a list of rate rules with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current rate rule
+	 *           a list which contains the number of the current rate rule
 	 * @return a filled list of rate rules
 	 */
 	@SuppressWarnings("unused")
@@ -3331,12 +3330,12 @@ public class SBMLHelper {
 		}
 		return rrList;
 	}
-
+	
 	/**
 	 * Returns a list of rate rules with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @return a filled list of rate rules
 	 */
 	@SuppressWarnings("unused")
@@ -3350,21 +3349,21 @@ public class SBMLHelper {
 		}
 		return rrList;
 	}
-
+	
 	public static void deleteAssignmentRule(Graph g, String variable) {
 		deleteAssignmentRuleFunction(g, variable);
 		deleteAssignmentRuleVariable(g, variable);
 	}
-
+	
 	public static void deleteRateRule(Graph g, String variable) {
 		deleteRateRuleFunction(g, variable);
 		deleteRateRuleVariable(g, variable);
 	}
-
+	
 	public static void deleteAlgebraicRule(Graph g, String formula) {
 		deleteAlgebraicRuleFunction(g, formula);
 	}
-
+	
 	public static AssignmentRule createAssignmentRule(Graph g, String variable) {
 		String presentedHeadline = new StringBuffer("SBML Assignment Rule ").append(assignmentRuleCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_ASSIGNMENT_RULE).append(assignmentRuleCount)
@@ -3377,7 +3376,7 @@ public class SBMLHelper {
 		++assignmentRuleCount;
 		return ar;
 	}
-
+	
 	public static RateRule createRateRule(Graph g, String variable) {
 		String presentedHeadline = new StringBuffer("SBML Rate Rule ").append(rateRuleCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_RATE_RULE).append(rateRuleCount).toString();
@@ -3389,7 +3388,7 @@ public class SBMLHelper {
 		++rateRuleCount;
 		return rr;
 	}
-
+	
 	public static AlgebraicRule createAlgebraicRule(Graph g, String formula) {
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_ALGEBRAIC_RULE).append(algebraicRuleCount)
 				.toString();
@@ -3406,7 +3405,7 @@ public class SBMLHelper {
 		++algebraicRuleCount;
 		return ar;
 	}
-
+	
 	public static AssignmentRule createAssignmentRule(Graph g, String variable, String formula) {
 		String presentedHeadline = new StringBuffer("SBML Assignment Rule ").append(assignmentRuleCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_ASSIGNMENT_RULE).append(assignmentRuleCount)
@@ -3425,7 +3424,7 @@ public class SBMLHelper {
 		++assignmentRuleCount;
 		return ar;
 	}
-
+	
 	public static RateRule createRateRule(Graph g, String variable, String formula) {
 		String presentedHeadline = new StringBuffer("SBML Rate Rule ").append(rateRuleCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_RATE_RULE).append(rateRuleCount).toString();
@@ -3443,7 +3442,7 @@ public class SBMLHelper {
 		++rateRuleCount;
 		return rr;
 	}
-
+	
 	public static void createAssignmentRule(Graph g, AssignmentRule ar) {
 		String presentedHeadline = new StringBuffer("SBML Assignment Rule ").append(assignmentRuleCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_ASSIGNMENT_RULE).append(assignmentRuleCount)
@@ -3466,7 +3465,7 @@ public class SBMLHelper {
 		}
 		++assignmentRuleCount;
 	}
-
+	
 	public static void createRateRule(Graph g, RateRule rr) {
 		String presentedHeadline = new StringBuffer("SBML Rate Rule ").append(rateRuleCount).toString();
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_RATE_RULE).append(rateRuleCount).toString();
@@ -3488,7 +3487,7 @@ public class SBMLHelper {
 		}
 		++rateRuleCount;
 	}
-
+	
 	public static void createAlgebraicRule(Graph g, AlgebraicRule ar) {
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_ALGEBRAIC_RULE).append(algebraicRuleCount)
 				.toString();
@@ -3508,7 +3507,7 @@ public class SBMLHelper {
 		}
 		++algebraicRuleCount;
 	}
-
+	
 	public static boolean isSetAssignmentRuleFunction(Graph g, String variable) {
 		if (isAssignmentRuleFunction(g, returnAssignmentRuleWithID(g, variable))) {
 			return true;
@@ -3516,7 +3515,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetAssignmentRuleVariable(Graph g, String variable) {
 		if (isAssignmentRuleVariable(g, returnAssignmentRuleWithID(g, variable))) {
 			return true;
@@ -3524,7 +3523,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetRateRuleFunction(Graph g, String variable) {
 		if (isRateRuleFunction(g, returnRateRuleWithID(g, variable))) {
 			return true;
@@ -3532,7 +3531,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetRateRuleVariable(Graph g, String variable) {
 		if (isRateRuleVariable(g, returnRateRuleWithID(g, variable))) {
 			return true;
@@ -3540,7 +3539,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static void deleteAssignmentRuleVariable(Graph g, String variable) {
 		String headline = returnAssignmentRuleWithID(g, variable);
 		if (isAssignmentRuleVariable(g, headline)) {
@@ -3548,7 +3547,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.ASSIGNMENT_VARIABLE).toString());
 		}
 	}
-
+	
 	public static void deleteAssignmentRuleFunction(Graph g, String variable) {
 		String headline = returnAssignmentRuleWithID(g, variable);
 		if (isAssignmentRuleFunction(g, headline)) {
@@ -3556,7 +3555,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.ASSIGNMENT_FUNCTION).toString());
 		}
 	}
-
+	
 	public static void deleteRateRuleVariable(Graph g, String variable) {
 		String headline = returnRateRuleWithID(g, variable);
 		if (isRateRuleVariable(g, headline)) {
@@ -3564,7 +3563,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.RATE_VARIABLE).toString());
 		}
 	}
-
+	
 	public static void deleteRateRuleFunction(Graph g, String variable) {
 		String headline = returnRateRuleWithID(g, variable);
 		if (isRateRuleFunction(g, headline)) {
@@ -3572,7 +3571,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.RATE_FUNCTION).toString());
 		}
 	}
-
+	
 	public static void deleteAlgebraicRuleFunction(Graph g, String function) {
 		String headline = returnAlgebraicRuleWithFormula(g, function);
 		if (isAlgebraicRuleFunction(g, headline)) {
@@ -3580,34 +3579,34 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.ALGEBRAIC_FUNCTION).toString());
 		}
 	}
-
+	
 	public static void addAssignmentRuleFunction(Graph g, String variable, String function) {
 		setAssignmentRuleFunction(g, returnAssignmentRuleWithID(g, variable), function);
 	}
-
+	
 	public static void addAssignmentRuleVariable(Graph g, String variable) {
 		createAssignmentRule(g, variable);
 	}
-
+	
 	public static void addRateRuleFunction(Graph g, String variable, String function) {
 		setRateRuleFunction(g, returnRateRuleWithID(g, variable), function);
 	}
-
+	
 	public static void addRateRuleVariable(Graph g, String variable) {
 		createRateRule(g, variable);
 	}
-
+	
 	public static void addAlgebraicRule(Graph g, String function) {
 		createAlgebraicRule(g, function);
 	}
-
+	
 	/**
 	 * Indicates if the variable is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current assignment rule
+	 *           contains the number of the current assignment rule
 	 * @return true if the value is set.
 	 */
 	private static Boolean isAssignmentRuleVariable(Graph g, String internHeadline) {
@@ -3618,14 +3617,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current assignment rule
+	 *           contains the number of the current assignment rule
 	 * @return true if the value is set.
 	 */
 	private static Boolean isAssignmentRuleFunction(Graph g, String internHeadline) {
@@ -3636,14 +3635,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the assignment rule variable if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current assignment rule
+	 *           contains the number of the current assignment rule
 	 * @return the variable if it is set. Else the empty string
 	 */
 	private static String getAssignmentRuleVariable(Graph g, String internHeadline) {
@@ -3654,14 +3653,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the assignment rule function if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current assignment rule
+	 *           contains the number of the current assignment rule
 	 * @return the function if it is set. Else the empty string
 	 */
 	private static String getAssignmentRuleFunction(Graph g, String internHeadline) {
@@ -3672,16 +3671,16 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Sets the function of a assignment rule
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current assignment rule
+	 *           contains the number of the current assignment rule
 	 * @param function
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setAssignmentRuleFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -3689,16 +3688,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.ASSIGNMENT_FUNCTION).toString(), function);
 		}
 	}
-
+	
 	/**
 	 * Sets the variable of a assignment rule
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current assignment rule
+	 *           contains the number of the current assignment rule
 	 * @param variable
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setAssignmentRuleVariable(Graph g, String internHeadline, String variable) {
 		if (!variable.equals(SBML_Constants.EMPTY)) {
@@ -3706,26 +3705,26 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.ASSIGNMENT_VARIABLE).toString(), variable);
 		}
 	}
-
+	
 	/**
 	 * Returns a list of all assignment rule headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	public static ArrayList<String> getAssignmentRuleHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_ASSIGNMENT_RULE);
 	}
-
+	
 	/**
 	 * Returns a filled JSBML assignment rule object
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            contains the number of the current assignment rule
+	 *           contains the number of the current assignment rule
 	 * @return a filled assignment rule object
 	 */
 	private static AssignmentRule getAssignmentRule(Graph g, String internHeadline) {
@@ -3743,14 +3742,14 @@ public class SBMLHelper {
 		}
 		return ar;
 	}
-
+	
 	/**
 	 * Returns a list of assignment rules with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current assignment rule
+	 *           a list which contains the number of the current assignment rule
 	 * @return a filled list of assignment rules
 	 */
 	private static List<AssignmentRule> getAllAssignmentRules(Graph g, List<String> internHeadlines) {
@@ -3762,14 +3761,14 @@ public class SBMLHelper {
 		}
 		return arList;
 	}
-
+	
 	/**
 	 * Returns a list of assignment rules with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current assignment rule
+	 *           a list which contains the number of the current assignment rule
 	 * @return a filled list of assignment rules
 	 */
 	public static List<AssignmentRule> getAllAssignmentRules(Graph g) {
@@ -3782,16 +3781,16 @@ public class SBMLHelper {
 		}
 		return arList;
 	}
-
+	
 	/**
 	 * Sets the function of a algebraic rule
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current algebraic rule
+	 *           contains the number of the current algebraic rule
 	 * @param function
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setAlgebraicRuleFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -3799,14 +3798,14 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.ALGEBRAIC_FUNCTION).toString(), function);
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current algebraic rule
+	 *           contains the number of the current algebraic rule
 	 * @return true if the value is set.
 	 */
 	private static Boolean isAlgebraicRuleFunction(Graph g, String internHeadline) {
@@ -3817,14 +3816,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the algebraic rule function if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current algebraic rule
+	 *           contains the number of the current algebraic rule
 	 * @return the function if it is set. Else the empty string
 	 */
 	private static String getAlgebraicRuleFunction(Graph g, String internHeadline) {
@@ -3835,26 +3834,26 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns a list of all algebraic rule headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	private static ArrayList<String> getAlgebraicRuleHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_ALGEBRAIC_RULE);
 	}
-
+	
 	/**
 	 * Returns a filled JSBML algebraic rule object
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            contains the number of the current algebraic rule
+	 *           contains the number of the current algebraic rule
 	 * @return a filled algebraic rule object
 	 */
 	private static AlgebraicRule getAlgebraicRule(Graph g, String internHeadline) {
@@ -3869,14 +3868,14 @@ public class SBMLHelper {
 		}
 		return ar;
 	}
-
+	
 	/**
 	 * Returns a list of algebraic rules with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current algebraic rule
+	 *           a list which contains the number of the current algebraic rule
 	 * @return a filled list of algebraic rules
 	 */
 	private static List<AlgebraicRule> getAllAlgebraicRules(Graph g, List<String> internHeadlines) {
@@ -3888,12 +3887,12 @@ public class SBMLHelper {
 		}
 		return arList;
 	}
-
+	
 	/**
 	 * Returns a list of algebraic rules with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @return a filled list of algebraic rules
 	 */
 	@SuppressWarnings("unused")
@@ -3907,7 +3906,7 @@ public class SBMLHelper {
 		}
 		return arList;
 	}
-
+	
 	public static Constraint createConstraint(Graph g, String math) {
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_CONSTRAINT).append(constraintCount).toString();
 		String presentedHeadline = new StringBuffer("SBML Constraint ").append(constraintCount).toString();
@@ -3922,7 +3921,7 @@ public class SBMLHelper {
 		++constraintCount;
 		return constraint;
 	}
-
+	
 	public static void createConstraint(Graph g, Constraint constraint) {
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_CONSTRAINT).append(constraintCount).toString();
 		String presentedHeadline = new StringBuffer("SBML Constraint ").append(constraintCount).toString();
@@ -3945,7 +3944,7 @@ public class SBMLHelper {
 		}
 		++constraintCount;
 	}
-
+	
 	public static void deleteConstraint(Graph g, String formula) {
 		ArrayList<String> headlines = getConstraintHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -3962,7 +3961,7 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static void addConstraintMessage(Graph g, String formula, String message) {
 		ArrayList<String> headlines = getConstraintHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -3975,7 +3974,7 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static void addConstraintConstraint(Graph g, String formula) {
 		ArrayList<String> headlines = getConstraintHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -3988,7 +3987,7 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static void deleteConstraintMessage(Graph g, String constraint) {
 		ArrayList<String> headlines = getConstraintHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -4001,7 +4000,7 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static boolean isSetConstraintMessage(Graph g, String constraint) {
 		ArrayList<String> headlines = getConstraintHeadlines(g);
 		Iterator<String> it = headlines.iterator();
@@ -4017,7 +4016,7 @@ public class SBMLHelper {
 		}
 		return false;
 	}
-
+	
 	private static String removeTagFromString(String xhtml) {
 		String content = xhtml.replace("\n", "").replace("\t", "").trim();
 		// Replace anything between script or style tags
@@ -4032,16 +4031,16 @@ public class SBMLHelper {
 		content = m2.replaceAll("");
 		return content.trim();
 	}
-
+	
 	/**
 	 * Sets the message of a constraint
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current constraint
+	 *           contains the number of the current constraint
 	 * @param message
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	@SuppressWarnings("unused")
 	private static void setConstraintMessage(Graph g, String internHeadline, String message) {
@@ -4050,16 +4049,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.MESSAGE).toString(), message);
 		}
 	}
-
+	
 	/**
 	 * Sets the function of a constraint
 	 * 
 	 * @param g
-	 *            the graph where the information will be set
+	 *           the graph where the information will be set
 	 * @param internHeadline
-	 *            contains the number of the current constraint
+	 *           contains the number of the current constraint
 	 * @param function
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	private static void setConstraintFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -4067,14 +4066,14 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.CONSTRAINT).toString(), function);
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current constraint
+	 *           contains the number of the current constraint
 	 * @return true if the value is set.
 	 */
 	private static Boolean isConstraintFunction(Graph g, String internHeadline) {
@@ -4085,14 +4084,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the message is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current constraint
+	 *           contains the number of the current constraint
 	 * @return true if the value is set.
 	 */
 	private static Boolean isConstraintMessage(Graph g, String internHeadline) {
@@ -4103,14 +4102,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the constraint function if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current constraint
+	 *           contains the number of the current constraint
 	 * @return the function if it is set. Else the empty string
 	 */
 	private static String getConstraintFunction(Graph g, String internHeadline) {
@@ -4121,14 +4120,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the constraint message if it is set
 	 * 
 	 * @param g
-	 *            the graph where the information is read from
+	 *           the graph where the information is read from
 	 * @param internHeadline
-	 *            contains the number of the current constraint
+	 *           contains the number of the current constraint
 	 * @return the message if it is set. Else the empty string
 	 */
 	private static String getConstraintMessage(Graph g, String internHeadline) {
@@ -4139,26 +4138,26 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns a list of all constraint headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	private static ArrayList<String> getConstraintHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_CONSTRAINT);
 	}
-
+	
 	/**
 	 * Returns a filled JSBML constraint object
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            contains the number of the current constraint
+	 *           contains the number of the current constraint
 	 * @return a filled constraint object
 	 */
 	private static Constraint getConstraint(Graph g, String internHeadline) {
@@ -4183,14 +4182,14 @@ public class SBMLHelper {
 		}
 		return con;
 	}
-
+	
 	/**
 	 * Returns a list of constraint with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current constraint
+	 *           a list which contains the number of the current constraint
 	 * @return a filled list of constraint
 	 */
 	@SuppressWarnings("unused")
@@ -4203,12 +4202,12 @@ public class SBMLHelper {
 		}
 		return conList;
 	}
-
+	
 	/**
 	 * Returns a list of constraint with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @return a filled list of constraint
 	 */
 	public static List<Constraint> getAllConstraints(Graph g) {
@@ -4221,12 +4220,12 @@ public class SBMLHelper {
 		}
 		return conList;
 	}
-
+	
 	/**
 	 * Indicates if compartment of a reaction is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if compartment is set else false
 	 */
 	public static Boolean isReactionCompartment(Node reactionNode) {
@@ -4236,12 +4235,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if fast of a reaction is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if fast is set else false
 	 */
 	public static Boolean isReactionFast(Node reactionNode) {
@@ -4251,28 +4250,28 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if reversible of a reaction is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if reversible is set else false
 	 */
 	public static Boolean isReactionReversible(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REVERSIBLE)) {
-
+			
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if name of a reaction is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if name is set else false
 	 */
 	public static Boolean isReactionName(Node reactionNode) {
@@ -4282,12 +4281,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if id of a reaction is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return true if id is set else false
 	 */
 	public static Boolean isReactionID(Node reactionNode) {
@@ -4297,12 +4296,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the id of a reaction
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return id if it is set else the empty string
 	 */
 	public static String getReactionID(Node reactionNode) {
@@ -4312,23 +4311,23 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the name of a reaction
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return name if it is set else the empty string
 	 */
 	public static String getReactionName(Node reactionNode) {
 		return AttributeHelper.getLabel(reactionNode, SBML_Constants.EMPTY);
 	}
-
+	
 	/**
 	 * Returns the attribute reversible of a reaction
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return reversible if it is set else null
 	 */
 	public static Boolean getReactionReversible(Node reactionNode) {
@@ -4338,12 +4337,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the attribute fast of a reaction
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return fast if it is set else the empty string
 	 */
 	public static Boolean getReactionFast(Node reactionNode) {
@@ -4353,53 +4352,53 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the compartment of a reaction
 	 * 
 	 * @param reactionNode
-	 *            the node where the information is read from
+	 *           the node where the information is read from
 	 * @return compartment if it is set else the empty string
 	 */
 	public static String getReactionCompartment(Node reactionNode) {
 		return NodeTools.getClusterID(reactionNode, SBML_Constants.EMPTY);
 	}
-
+	
 	/**
 	 * Sets the attribute id of a node
 	 * 
 	 * @param reactionNode
-	 *            the attribute belongs to this node
+	 *           the attribute belongs to this node
 	 * @param id
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void setReactionID(Node reactionNode, String ID) {
 		if (!ID.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_ID, ID);
 		}
 	}
-
+	
 	public static void deleteReactionID(Node reactionNode) {
 		AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_ID);
 	}
-
+	
 	public static void setReactionName(Node reactionNode, String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_NAME, name);
 		}
 	}
-
+	
 	public static void deleteReactionName(Node reactionNode) {
 		AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_NAME);
 	}
-
+	
 	/**
 	 * Sets the attribute name of a node
 	 * 
 	 * @param reactionNode
-	 *            the attribute belongs to this node
+	 *           the attribute belongs to this node
 	 * @param name
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void setReactionLabel(Node reactionNode, String name, String id, PositionGridGenerator pgg) {
 		String label = null;
@@ -4412,50 +4411,50 @@ public class SBMLHelper {
 			attReader.setAttributes(reactionNode, Color.white, label, pgg.getNextPosition(), 7);
 		}
 	}
-
+	
 	/**
 	 * Sets the attribute reversible of a node
 	 * 
 	 * @param reactionNode
-	 *            the attribute belongs to this node
+	 *           the attribute belongs to this node
 	 * @param reversible
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void setReactionReversible(Node reactionNode, Boolean reversible) {
 		// if (!reversible.equals(null)) {
 		AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REVERSIBLE, reversible);
 		// }
 	}
-
+	
 	public static void deleteReactionReversible(Node reactionNode) {
 		AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REVERSIBLE);
 	}
-
+	
 	/**
 	 * Sets the attribute fast of a node
 	 * 
 	 * @param reactionNode
-	 *            the attribute belongs to this node
+	 *           the attribute belongs to this node
 	 * @param fast
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void setReactionFast(Node reactionNode, Boolean fast) {
 		// if (!fast.equals(null)) {
 		AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.FAST, fast);
 		// }
 	}
-
+	
 	public static void deleteReactionFast(Node reactionNode) {
 		AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.FAST);
 	}
-
+	
 	/**
 	 * Sets the compartment of a node
 	 * 
 	 * @param reactionNode
-	 *            the compartment belongs to this node
+	 *           the compartment belongs to this node
 	 * @param compartment
-	 *            the id of the compartment that will be set
+	 *           the id of the compartment that will be set
 	 */
 	public static void setReactionCompartment(Node reactionNode, String compartment) {
 		if (!compartment.equals(SBML_Constants.EMPTY)) {
@@ -4464,47 +4463,47 @@ public class SBMLHelper {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.COMPARTMENT, compartment);
 		}
 	}
-
+	
 	public static void deleteReactionCompartment(Node reactionNode) {
 		AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.COMPARTMENT);
 		NodeTools.setClusterID(reactionNode, "");
 	}
-
+	
 	/**
 	 * Sets the species of a reaction
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read in
+	 *           the edge where the information will be read in
 	 * @param species
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	public static void setReactionSpecies(Edge reactionEdge, String species) {
 		if (!species.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES, species);
 		}
 	}
-
+	
 	/**
 	 * The id of the species of an reaction
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read in
+	 *           the edge where the information will be read in
 	 * @param ID
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	public static void setReactionSpeciesID(Edge reactionEdge, String ID) {
 		// if (!reactionEdge.equals(SBML_Constants.EMPTY)) {
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SPECIES_REFERENCE_ID, ID);
 		// }
 	}
-
+	
 	/**
 	 * The name of the species of a reaction
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read in
+	 *           the edge where the information will be read in
 	 * @param name
-	 *            the value that will be read in
+	 *           the value that will be read in
 	 */
 	public static void setReactionSpeciesName(Edge reactionEdge, String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
@@ -4512,12 +4511,12 @@ public class SBMLHelper {
 					name);
 		}
 	}
-
+	
 	/**
 	 * Indicates if the species attribute is set
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return true if the value is set
 	 */
 	public static Boolean isReactionSpecies(Edge reactionEdge) {
@@ -4527,12 +4526,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the species id attribute is set
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return true if the value is set
 	 */
 	public static Boolean isReactionSpeciesID(Edge reactionEdge) {
@@ -4542,12 +4541,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the species name attribute is set
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return true if the value is set
 	 */
 	public static Boolean isReactionSpeciesName(Edge reactionEdge) {
@@ -4557,12 +4556,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the species
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return the value of the attribute species
 	 */
 	public static String getReactionSpecies(Edge reactionEdge) {
@@ -4572,12 +4571,12 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the species name
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return the value of the attribute name
 	 */
 	public static String getReactionSpeciesName(Edge reactionEdge) {
@@ -4588,12 +4587,12 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Return the species id
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return the value of the attribute id
 	 */
 	public static String getReactionSpeciesID(Edge reactionEdge) {
@@ -4604,12 +4603,12 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Indicates if there is set a value for stoichiometry
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return true if the attribute stoichiometry is set
 	 */
 	public static Boolean isReactionStoichiometry(Edge reactionEdge) {
@@ -4619,12 +4618,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if there is set a value for constant
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return true if the attribute constant is set
 	 */
 	public static Boolean isReactionConstant(Edge reactionEdge) {
@@ -4634,12 +4633,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the value of the attribute stoichiometry
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return the value of stoichiometry if the value is set. Else null
 	 */
 	public static String getStoichiometry(Edge reactionEdge) {
@@ -4659,12 +4658,12 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the value of the attribute constant
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read from
+	 *           the edge where the information will be read from
 	 * @return the value of constant if the value is set. Else null
 	 */
 	public static Boolean getReactionConstant(Edge reactionEdge) {
@@ -4679,14 +4678,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Sets a value for the attribute stoichiometry
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read in
+	 *           the edge where the information will be read in
 	 * @param stoichiometry
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void setStoichiometry(Edge reactionEdge, Double stoichiometry) {
 		if (!AttributeHelper.getSBMLrole(reactionEdge).equals("modifier")) {
@@ -4700,7 +4699,7 @@ public class SBMLHelper {
 			// }
 		}
 	}
-
+	
 	// todo: die set methodenfür product, reactant , modifier.
 	public static void deleteStoichiometry(Edge edge) {
 		if (isSetStoichiometry(edge)) {
@@ -4708,73 +4707,73 @@ public class SBMLHelper {
 			AttributeHelper.setLabel(edge, "");
 		}
 	}
-
+	
 	public static void deleteConstant(Edge edge) {
 		if (isSetConstant(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.REACTION_CONSTANT);
 		}
 	}
-
+	
 	public static void deleteReactionSpecies(Edge edge) {
 		if (isSetReactionSpecies(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.SPECIES);
 		}
 	}
-
+	
 	public static void deleteReactionSpeciesID(Edge edge) {
 		if (isSetReactionSpeciesID(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.SPECIES_REFERENCE_ID);
 		}
 	}
-
+	
 	public static void deleteReactionSpeciesName(Edge edge) {
 		if (isSetReactionSpeciesName(edge)) {
 			AttributeHelper.deleteAttribute(edge, SBML_Constants.SBML, SBML_Constants.SPECIES_REFERENCE_NAME);
 		}
 	}
-
+	
 	public static boolean isSetStoichiometry(Edge edge) {
 		if (isReactionStoichiometry(edge)) {
 			return true;
 		}
 		return false;
 	}
-
+	
 	public static boolean isSetConstant(Edge edge) {
 		if (isReactionConstant(edge)) {
 			return true;
 		}
 		return false;
 	}
-
+	
 	public static boolean isSetReactionSpecies(Edge edge) {
 		if (isReactionSpecies(edge)) {
 			return true;
 		}
 		return false;
 	}
-
+	
 	public static boolean isSetReactionSpeciesID(Edge edge) {
 		if (isReactionSpeciesID(edge)) {
 			return true;
 		}
 		return false;
 	}
-
+	
 	public static boolean isSetReactionSpeciesName(Edge edge) {
 		if (isReactionSpeciesName(edge)) {
 			return true;
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Sets a value for the attribute constant
 	 * 
 	 * @param reactionEdge
-	 *            the edge where the information will be read in
+	 *           the edge where the information will be read in
 	 * @param constant
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	public static void setReactionConstant(Edge reactionEdge, Boolean constant) {
 		if (!AttributeHelper.getSBMLrole(reactionEdge).equals("modifier")) {
@@ -4783,12 +4782,12 @@ public class SBMLHelper {
 			// }
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function of a kinetic law is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @return true id the value is set. Else false
 	 */
 	public static Boolean isKineticLawFunction(Node reactionNode) {
@@ -4799,12 +4798,12 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the function of a kinetic law
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @return the function string if it is set. Else the empty string
 	 */
 	public static String getKineticLawFunction(Node reactionNode) {
@@ -4815,14 +4814,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Sets the function of a kinetic law
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read in
+	 *           the node where the information will be read in
 	 * @param function
-	 *            contains the value that will be read in
+	 *           contains the value that will be read in
 	 */
 	private static void setKineticLawFunction(Node reactionNode, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -4830,7 +4829,7 @@ public class SBMLHelper {
 					SBML_Constants.KINETIC_LAW_FUNCTION, function);
 		}
 	}
-
+	
 	public static void addKineticLaw(Node reactionNode, String function) {
 		if (!isInitializedKineticLaw) {
 			initKineticLawNideIDs();
@@ -4838,7 +4837,7 @@ public class SBMLHelper {
 		}
 		setKineticLawFunction(reactionNode, function);
 	}
-
+	
 	public static void addKineticLaw(Node reactionNode, KineticLaw kineticLaw) {
 		if (!isInitializedKineticLaw) {
 			initKineticLawNideIDs();
@@ -4848,20 +4847,20 @@ public class SBMLHelper {
 			setKineticLawFunction(reactionNode, kineticLaw.getMath().toFormula());
 		}
 	}
-
+	
 	public static void deleteKineticLawFunction(Node node) {
 		AttributeHelper.deleteAttribute(node, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_FUNCTION);
 	}
-
+	
 	/**
 	 * The attribute id will be set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read in
+	 *           the node where the information will be read in
 	 * @param ID
-	 *            contains the information
+	 *           contains the information
 	 * @param internAttributeName
-	 *            contains the number of the current local parameter
+	 *           contains the number of the current local parameter
 	 */
 	private static void setLocalParameterID(Node reactionNode, String ID, String internAttributeName) {
 		if (!ID.equals(SBML_Constants.EMPTY)) {
@@ -4869,16 +4868,16 @@ public class SBMLHelper {
 					new StringBuffer(internAttributeName).append(SBML_Constants.LOCAL_PARAMETER_ID).toString(), ID);
 		}
 	}
-
+	
 	/**
 	 * The attribute name will be set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read in
+	 *           the node where the information will be read in
 	 * @param name
-	 *            contains the information
+	 *           contains the information
 	 * @param internAttributeName
-	 *            contains the number of the current local parameter
+	 *           contains the number of the current local parameter
 	 */
 	private static void setLocalParameterName(Node reactionNode, String name, String internAttributeName) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
@@ -4886,16 +4885,16 @@ public class SBMLHelper {
 					new StringBuffer(internAttributeName).append(SBML_Constants.LOCAL_PARAMETER_NAME).toString(), name);
 		}
 	}
-
+	
 	/**
 	 * The attribute value that will be set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read in
+	 *           the node where the information will be read in
 	 * @param value
-	 *            contains the information
+	 *           contains the information
 	 * @param internAttributeName
-	 *            contains the number of the current local parameter
+	 *           contains the number of the current local parameter
 	 */
 	private static void setLocalParameterValue(Node reactionNode, Double value, String internAttributeName) {
 		// if (!value.equals(null)) {
@@ -4903,16 +4902,16 @@ public class SBMLHelper {
 				new StringBuffer(internAttributeName).append(SBML_Constants.LOCAL_PARAMETER_VALUE).toString(), value);
 		// }
 	}
-
+	
 	/**
 	 * The attribute units that will be set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read in
+	 *           the node where the information will be read in
 	 * @param units
-	 *            contains the information
+	 *           contains the information
 	 * @param internAttributeName
-	 *            contains the number of the current local parameter
+	 *           contains the number of the current local parameter
 	 */
 	private static void setLocalParameterUnits(Node reactionNode, String units, String internAttributeName) {
 		if (!units.equals(SBML_Constants.EMPTY)) {
@@ -4921,14 +4920,14 @@ public class SBMLHelper {
 					units);
 		}
 	}
-
+	
 	/**
 	 * Indicates if the attribute id is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @param localParameterCount
-	 *            the number of the current local parameter
+	 *           the number of the current local parameter
 	 * @return true if the value is set
 	 */
 	public static Boolean isLocalParameterID(Node reactionNode, int localParameterCount) {
@@ -4940,14 +4939,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the attribute name is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @param localParameterCount
-	 *            the number of the current local parameter
+	 *           the number of the current local parameter
 	 * @return true if the value is set
 	 */
 	public static Boolean isLocalParameterName(Node reactionNode, int localParameterCount) {
@@ -4959,14 +4958,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the attribute value is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @param localParameterCount
-	 *            the number of the current local parameter
+	 *           the number of the current local parameter
 	 * @return true if the value is set
 	 */
 	public static Boolean isLocalParameterValue(Node reactionNode, int localParameterCount) {
@@ -4978,14 +4977,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the attribute units is set
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @param localParameterCount
-	 *            the number of the current local parameter
+	 *           the number of the current local parameter
 	 * @return true if the value is set
 	 */
 	public static Boolean isLocalParameterUnits(Node reactionNode, int localParameterCount) {
@@ -4997,14 +4996,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the value of the attribute id
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @param localParameterCount
-	 *            the number of the current local parameter
+	 *           the number of the current local parameter
 	 * @return the value if it is set. Else the empty string
 	 */
 	public static String getLocalParameterID(Node reactionNode, int localParameterCount) {
@@ -5016,14 +5015,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the value of the attribute name
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @param localParameterCount
-	 *            the number of the current local parameter
+	 *           the number of the current local parameter
 	 * @return the value if it is set. Else the empty string
 	 */
 	public static String getLocalParameterName(Node reactionNode, int localParameterCount) {
@@ -5035,14 +5034,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns the value of the attribute value
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @param localParameterCount
-	 *            the number of the current local parameter
+	 *           the number of the current local parameter
 	 * @return the value if it is set. Else the empty string
 	 */
 	public static Double getLocalParameterValue(Node reactionNode, int localParameterCount) {
@@ -5054,14 +5053,14 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Returns the value of the attribute units
 	 * 
 	 * @param reactionNode
-	 *            the node where the information will be read from
+	 *           the node where the information will be read from
 	 * @param localParameterCount
-	 *            the number of the current local parameter
+	 *           the number of the current local parameter
 	 * @return the value if it is set. Else the empty string
 	 */
 	public static String getLocalParameterUnits(Node reactionNode, int localParameterCount) {
@@ -5073,7 +5072,7 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns all reaction nodes of the graph
 	 * 
@@ -5090,12 +5089,12 @@ public class SBMLHelper {
 		}
 		return reactionNodeList;
 	}
-
+	
 	/**
 	 * Returns the reaction node with a distinct id
 	 * 
 	 * @param id
-	 *            the id of the asked node
+	 *           the id of the asked node
 	 * @return the node with a certain id or null if no node has this id
 	 */
 	public static Node getReactionNode(Graph g, String id) {
@@ -5110,12 +5109,12 @@ public class SBMLHelper {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Creates an reaction Node
 	 * 
 	 * @param g
-	 *            the graph where the node will be added
+	 *           the graph where the node will be added
 	 * @return the created reaction node
 	 */
 	private static Node createReactionNode(Graph g, String id) {
@@ -5129,7 +5128,7 @@ public class SBMLHelper {
 		AttributeHelper.setBorderWidth(node, 1);
 		return node;
 	}
-
+	
 	public static Node createReaction(Graph g, String id, String name) {
 		if (!SBML_Constants.EMPTY.equals(id) || !SBML_Constants.EMPTY.equals(name)) {
 			if (!isInitializedReaction) {
@@ -5147,7 +5146,7 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	public static Node initReactionNode(Node n) {
 		String label = AttributeHelper.getLabel(n, SBML_Constants.EMPTY);
 		if (!label.isEmpty()) {
@@ -5159,13 +5158,13 @@ public class SBMLHelper {
 			return n;
 		}
 	}
-
+	
 	public static Edge addReactant(Node node, String speciesID) {
 		Node reactantNode = SBMLSpeciesHelper.getSpeciesNode(speciesID);
 		Edge newReactionEdge = node.getGraph().addEdge(reactantNode, node, true,
 				AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 		setReactionSpecies(newReactionEdge, "speciesID");
-
+		
 		AttributeHelper.setLabel(newReactionEdge, Integer.toString(1));
 		AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.ROLE_REACTANT);
@@ -5173,13 +5172,13 @@ public class SBMLHelper {
 		AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML, SBML_Constants.STOICHIOMETRY, 1);
 		return newReactionEdge;
 	}
-
+	
 	public static Edge initReactantEdge(Edge e) {
 		Node node = e.getSource();
 		if (isSpeciesID(node)) {
 			setReactionSpecies(e, getSpeciesID(node));
 		}
-
+		
 		String label = AttributeHelper.getLabel(e, "-1");
 		if (label.equals("-1")) {
 			AttributeHelper.setLabel(e, "1");
@@ -5194,13 +5193,13 @@ public class SBMLHelper {
 		AttributeHelper.setSBMLrole(e, SBML_Constants.ROLE_REACTANT);
 		return e;
 	}
-
+	
 	public static Edge initProductEdge(Edge e) {
 		Node node = e.getTarget();
 		if (isSpeciesID(node)) {
 			setReactionSpecies(e, getSpeciesID(node));
 		}
-
+		
 		String label = AttributeHelper.getLabel(e, "-1");
 		if (label.equals("-1")) {
 			AttributeHelper.setLabel(e, "1");
@@ -5215,13 +5214,13 @@ public class SBMLHelper {
 		AttributeHelper.setSBMLrole(e, SBML_Constants.ROLE_PRODUCT);
 		return e;
 	}
-
+	
 	public static Edge addProduct(Node node, String speciesID) {
 		Node productNode = SBMLSpeciesHelper.getSpeciesNode(speciesID);
 		Edge newReactionEdge = node.getGraph().addEdge(node, productNode, true,
 				AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 		setReactionSpecies(newReactionEdge, speciesID);
-
+		
 		AttributeHelper.setLabel(newReactionEdge, Integer.toString(1));
 		AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.ROLE_PRODUCT);
@@ -5229,20 +5228,20 @@ public class SBMLHelper {
 		AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML, SBML_Constants.STOICHIOMETRY, 1);
 		return newReactionEdge;
 	}
-
+	
 	public static Edge addModifier(Node node, String speciesID) {
 		Node modifierNode = SBMLSpeciesHelper.getSpeciesNode(speciesID);
 		Edge reactionEdge = node.getGraph().addEdge(modifierNode, node, false,
 				AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.DARK_GRAY, Color.DARK_GRAY, true));
 		setReactionSpecies(reactionEdge, speciesID);
-
+		
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.ROLE_MODIFIER);
 		AttributeHelper.setDashInfo(reactionEdge, 5, 5);
 		AttributeHelper.setBorderWidth(reactionEdge, 1d);
 		return reactionEdge;
 	}
-
+	
 	public static Edge addReactant(Node node, SpeciesReference ref) {
 		if (SBMLSpeciesHelper.speciesMap == null) {
 			SBMLSpeciesHelper.speciesMap = new HashMap<String, Node>();
@@ -5272,23 +5271,23 @@ public class SBMLHelper {
 		setSimpleSpeciesReferences(ref, newReactionEdge);
 		return newReactionEdge;
 	}
-
+	
 	private static void deleteEdge(Edge edge) {
 		edge.getGraph().deleteEdge(edge);
 	}
-
+	
 	public static void deleteReactant(Edge edge) {
 		deleteEdge(edge);
 	}
-
+	
 	public static void deleteProduct(Edge edge) {
 		deleteEdge(edge);
 	}
-
+	
 	public static void deleteModifier(Edge edge) {
 		deleteEdge(edge);
 	}
-
+	
 	public static Edge addModifier(Node node, ModifierSpeciesReference ref) {
 		if (SBMLSpeciesHelper.speciesMap == null) {
 			SBMLSpeciesHelper.speciesMap = new HashMap<String, Node>();
@@ -5299,7 +5298,7 @@ public class SBMLHelper {
 		Node modifierNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 		Edge reactionEdge = node.getGraph().addEdge(modifierNode, node, false,
 				AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.DARK_GRAY, Color.DARK_GRAY, true));
-
+		
 		AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.ROLE_MODIFIER);
 		AttributeHelper.setDashInfo(reactionEdge, 5, 5);
@@ -5307,7 +5306,7 @@ public class SBMLHelper {
 		setSimpleSpeciesReferences(ref, reactionEdge);
 		return reactionEdge;
 	}
-
+	
 	public static Edge addProduct(Node node, SpeciesReference ref) {
 		if (SBMLSpeciesHelper.speciesMap == null) {
 			SBMLSpeciesHelper.speciesMap = new HashMap<String, Node>();
@@ -5315,10 +5314,10 @@ public class SBMLHelper {
 		if (!SBMLSpeciesHelper.speciesMap.containsKey(ref.getSpecies())) {
 			createSpecies(node.getGraph(), ref.getSpecies(), "");
 		}
-
+		
 		Node productNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 		String stoichiometry = Double.toString(ref.getStoichiometry());
-
+		
 		Edge newReactionEdge = node.getGraph().addEdge(node, productNode, true,
 				AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 		if (isReactionReversible(node)) {
@@ -5338,9 +5337,9 @@ public class SBMLHelper {
 				isReactionReversible(node));
 		setSimpleSpeciesReferences(ref, newReactionEdge);
 		return newReactionEdge;
-
+		
 	}
-
+	
 	public static Node createReaction(Graph g, Reaction reaction) {
 		Node node = createReactionNode(g, reaction.getId());
 		if (!isInitializedReaction) {
@@ -5365,7 +5364,7 @@ public class SBMLHelper {
 		if (reaction.isSetName()) {
 			setReactionName(node, reaction.getName());
 		}
-
+		
 		// Adds the edges between reactant node and reaction node
 		ListOf<SpeciesReference> reactants = reaction.getListOfReactants();
 		Iterator<SpeciesReference> it = reactants.iterator();
@@ -5373,7 +5372,7 @@ public class SBMLHelper {
 			SpeciesReference ref = it.next();
 			Node reactantNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			String stoichiometry = Double.toString(ref.getStoichiometry());
-
+			
 			Edge newReactionEdge = g.addEdge(reactantNode, node, true,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 			if (reaction.isReversible()) {
@@ -5393,14 +5392,14 @@ public class SBMLHelper {
 					reaction.isReversible());
 			setSimpleSpeciesReferences(ref, newReactionEdge);
 		}
-
+		
 		ListOf<SpeciesReference> products = reaction.getListOfProducts();
 		Iterator<SpeciesReference> itProduct = products.iterator();
 		while (itProduct.hasNext()) {
 			SpeciesReference ref = itProduct.next();
 			Node productNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			String stoichiometry = Double.toString(ref.getStoichiometry());
-
+			
 			Edge newReactionEdge = g.addEdge(node, productNode, true,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 			if (reaction.isReversible()) {
@@ -5420,7 +5419,7 @@ public class SBMLHelper {
 					reaction.getReversible());
 			setSimpleSpeciesReferences(ref, newReactionEdge);
 		}
-
+		
 		ListOf<ModifierSpeciesReference> modifiers = reaction.getListOfModifiers();
 		Iterator<ModifierSpeciesReference> itModifier = modifiers.iterator();
 		while (itModifier.hasNext()) {
@@ -5428,14 +5427,14 @@ public class SBMLHelper {
 			Node modifierNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			Edge reactionEdge = g.addEdge(modifierNode, node, false,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.DARK_GRAY, Color.DARK_GRAY, true));
-
+			
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 					SBML_Constants.ROLE_MODIFIER);
 			AttributeHelper.setDashInfo(reactionEdge, 5, 5);
 			AttributeHelper.setBorderWidth(reactionEdge, 1d);
 			setSimpleSpeciesReferences(ref, reactionEdge);
 		}
-
+		
 		if (reaction.isSetKineticLaw()) {
 			if (!isInitializedKineticLaw) {
 				initKineticLawNideIDs();
@@ -5452,11 +5451,11 @@ public class SBMLHelper {
 			} catch (SBMLException e) {
 				e.printStackTrace();
 			}
-
+			
 			if (kineticLaw.isSetMath()) {
 				setKineticLawFunction(node, kineticFormula);
 			}
-
+			
 			// Two ways to read in a Local Parameter. One way is deprecated.
 			if (kineticLaw.isSetListOfLocalParameters() || kineticLaw.isSetListOfParameters()) {
 				List<LocalParameter> listLocalParameter = null;
@@ -5479,18 +5478,18 @@ public class SBMLHelper {
 						String presentedAttributeName = new StringBuffer(SBML_Constants.LOCALPARAMETER_HEADLINE)
 								.append(countLocalParameter).toString();
 						initLocalParameterNideIDs(presentedAttributeName, internAttributeName, "Kinetic Law");
-
+						
 						String id = localParameter.getId();
 						String name = localParameter.getName();
 						Double value = localParameter.getValue();
 						if (Double.isNaN(value)) {
-
+							
 							SBML_Logger.addErrorMessage("Attribute value of reaction " + reaction.getId() + " "
 									+ presentedAttributeName + " is not a valid double value.");
-
+							
 						}
 						String unit = localParameter.getUnits();
-
+						
 						if (localParameter.isSetId()) {
 							setLocalParameterID(node, localParameter.getId(), internAttributeName);
 						}
@@ -5512,7 +5511,7 @@ public class SBMLHelper {
 				AlignmentSetting.HIDDEN.toGMLstring());
 		return node;
 	}
-
+	
 	public static void addLocalParameterName(Node node, String lpID, String name) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5523,10 +5522,10 @@ public class SBMLHelper {
 				setLocalParameterName(node, name, internAttributeName);
 				initLocalParameterNideIDs(presentedAttributeName, internAttributeName, "Kinetic Law");
 			}
-
+			
 		}
 	}
-
+	
 	public static boolean isSetLocalParameterName(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5540,7 +5539,7 @@ public class SBMLHelper {
 		}
 		return false;
 	}
-
+	
 	public static boolean isSetLocalParameterUnits(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5554,7 +5553,7 @@ public class SBMLHelper {
 		}
 		return false;
 	}
-
+	
 	public static boolean isSetLocalParameterValue(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5568,7 +5567,7 @@ public class SBMLHelper {
 		}
 		return false;
 	}
-
+	
 	public static void deleteLocalParameterName(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5582,7 +5581,7 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static void deleteLocalParameterValue(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5596,7 +5595,7 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static void deleteLocalParameterUnits(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5610,14 +5609,14 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static void deleteLocalParameter(Node node, String lpID) {
 		deleteLocalParameterValue(node, lpID);
 		deleteLocalParameterUnits(node, lpID);
 		deleteLocalParameterName(node, lpID);
 		deleteLocalParameterID(node, lpID);
 	}
-
+	
 	public static void deleteLocalParameterID(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5630,7 +5629,7 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static void addLocalParameterValue(Node node, String lpID, Double value) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5641,10 +5640,10 @@ public class SBMLHelper {
 				setLocalParameterValue(node, value, internAttributeName);
 				initLocalParameterNideIDs(presentedAttributeName, internAttributeName, "Kinetic Law");
 			}
-
+			
 		}
 	}
-
+	
 	public static void addLocalParameterUnits(Node node, String lpID, String units) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
@@ -5657,7 +5656,7 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	private static void setSimpleSpeciesReferences(SimpleSpeciesReference simpleRef, Edge edge) {
 		if (simpleRef instanceof org.sbml.jsbml.SpeciesReference) {
 			if (((SpeciesReference) simpleRef).isSetStoichiometry()) {
@@ -5679,12 +5678,12 @@ public class SBMLHelper {
 		if (AttributeHelper.getSBMLrole(edge).equals(SBML_Constants.ROLE_REACTANT)) {
 		}
 	}
-
+	
 	/**
 	 * The edges with the simple species references will be returned
 	 * 
 	 * @param node
-	 *            the reaction node
+	 *           the reaction node
 	 * @return all outgoing edges
 	 */
 	public static List<Edge> getProducts(Node node) {
@@ -5698,12 +5697,12 @@ public class SBMLHelper {
 		}
 		return edgeList;
 	}
-
+	
 	/**
 	 * The edges with the simple species references will be returned
 	 * 
 	 * @param node
-	 *            the reaction node
+	 *           the reaction node
 	 * @return all ingoing edges
 	 */
 	public static List<Edge> getReactants(Node node) {
@@ -5717,12 +5716,12 @@ public class SBMLHelper {
 		}
 		return edgeList;
 	}
-
+	
 	/**
 	 * Returns the modifier edges
 	 * 
 	 * @param node
-	 *            the reaction node
+	 *           the reaction node
 	 * @return all modifier edges
 	 */
 	public static List<Edge> getModifier(Node node) {
@@ -5736,12 +5735,12 @@ public class SBMLHelper {
 		}
 		return edgeList;
 	}
-
+	
 	/**
 	 * Returns a JSBML Reaction object belonging to a reaction node
 	 * 
 	 * @param node
-	 *            the reaction node
+	 *           the reaction node
 	 * @return a JSBML Reaction object
 	 */
 	public static Reaction getReaction(Node node) {
@@ -5756,7 +5755,7 @@ public class SBMLHelper {
 				reaction.setFast(getReactionFast(node));
 			}
 			reaction.setCompartment(getReactionCompartment(node));
-
+			
 			Iterator<Edge> itEdges = node.getEdgesIterator();
 			while (itEdges.hasNext()) {
 				Edge edge = itEdges.next();
@@ -5794,7 +5793,7 @@ public class SBMLHelper {
 					reaction.addModifier(modifier);
 				}
 			}
-
+			
 			if (isKineticLawFunction(node)) {
 				KineticLaw kl = new KineticLaw();
 				try {
@@ -5823,7 +5822,7 @@ public class SBMLHelper {
 			return null;
 		}
 	}
-
+	
 	public static void addLocalParameter(Node node, LocalParameter lp) {
 		int lpCount = localParameterCount(node);
 		String internAttributeName = new StringBuffer(SBML_Constants.LOCAL_PARAMETER).append(lpCount + 1).toString();
@@ -5843,7 +5842,7 @@ public class SBMLHelper {
 			setLocalParameterUnits(node, lp.getUnits(), internAttributeName);
 		}
 	}
-
+	
 	public static void addLocalParameter(Node node, String id) {
 		int lpCount = localParameterCount(node);
 		String internAttributeName = new StringBuffer(SBML_Constants.LOCAL_PARAMETER).append(lpCount + 1).toString();
@@ -5852,12 +5851,12 @@ public class SBMLHelper {
 		initLocalParameterNideIDs(presentedAttributeName, internAttributeName, "Kinetic Law");
 		setLocalParameterID(node, id, internAttributeName);
 	}
-
+	
 	/**
 	 * Returns the number of local parameter
 	 * 
 	 * @param node
-	 *            the current node
+	 *           the current node
 	 * @return the amount of local parameter
 	 */
 	public static int localParameterCount(Node node) {
@@ -5867,7 +5866,7 @@ public class SBMLHelper {
 		}
 		return lpCount;
 	}
-
+	
 	public static Event createEvent(Graph g, String id) {
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_EVENT).append(eventCount).toString();
 		String presentedHeadline = new StringBuffer("SBML Event ").append(eventCount).toString();
@@ -5879,12 +5878,12 @@ public class SBMLHelper {
 		++eventCount;
 		return event;
 	}
-
+	
 	public static void createEvent(Graph g, Event event) {
 		String internHeadline = new StringBuffer(SBML_Constants.SBML_EVENT).append(eventCount).toString();
 		String presentedHeadline = new StringBuffer("SBML Event ").append(eventCount).toString();
 		initEventNiceIDs(internHeadline, presentedHeadline);
-
+		
 		event.setLevel(3);
 		if (event.isSetId()) {
 			setEventID(g, internHeadline, event.getId());
@@ -5906,7 +5905,7 @@ public class SBMLHelper {
 		} catch (SBMLException e) {
 			e.printStackTrace();
 		}
-
+		
 		Boolean triggerInitialValue = false;
 		Boolean triggerPersistent = false;
 		try {
@@ -5964,7 +5963,7 @@ public class SBMLHelper {
 		while (itEventAssignment.hasNext()) {
 			initEventAssignmentNideIDs(eventAssignmentCount, internHeadline, presentedHeadline);
 			EventAssignment eventAssignment = itEventAssignment.next();
-
+			
 			String variable = eventAssignment.getVariable();
 			String eventAssignmentFormula = "";
 			try {
@@ -5976,7 +5975,7 @@ public class SBMLHelper {
 			} catch (SBMLException e) {
 				e.printStackTrace();
 			}
-
+			
 			if (eventAssignment.isSetVariable()) {
 				setEventAssignmentVariable(g, internHeadline, variable, eventAssignmentCount);
 			}
@@ -5985,30 +5984,30 @@ public class SBMLHelper {
 			}
 			eventAssignmentCount++;
 		}
-
+		
 		++eventCount;
 	}
-
+	
 	public static void addEventName(Graph g, String id, String name) {
 		setEventName(g, returnEventWithID(g, id), name);
 	}
-
+	
 	public static void addEventUseValuesFromTriggerTime(Graph g, String id, boolean useValuesFromTriggerTime) {
 		setEventUseValuesFromTriggerTime(g, returnEventWithID(g, id), useValuesFromTriggerTime);
 	}
-
+	
 	public static void addTriggerInitialValue(Graph g, String eventID, boolean initialValue) {
 		setTriggerInitialValue(g, returnEventWithID(g, eventID), initialValue);
 	}
-
+	
 	public static void addTriggerPersistent(Graph g, String eventID, boolean persistent) {
 		setTriggerPersistent(g, returnEventWithID(g, eventID), persistent);
 	}
-
+	
 	public static void addTriggerFunction(Graph g, String eventID, String function) {
 		setTriggerFunction(g, returnEventWithID(g, eventID), function);
 	}
-
+	
 	public static boolean isSetEventName(Graph g, String id) {
 		if (isEventName(g, returnEventWithID(g, id))) {
 			return true;
@@ -6016,7 +6015,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetEventUseValuesFromTriggerTime(Graph g, String id) {
 		if (isEventUseValuesFromTriggerTime(g, returnEventWithID(g, id))) {
 			return true;
@@ -6024,7 +6023,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetTriggerInitialValue(Graph g, String id) {
 		if (isTriggerInitialValue(g, returnEventWithID(g, id))) {
 			return true;
@@ -6032,7 +6031,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetTriggerPersistent(Graph g, String id) {
 		if (isTriggerPersistent(g, returnEventWithID(g, id))) {
 			return true;
@@ -6040,7 +6039,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetTriggerFunction(Graph g, String id) {
 		if (isTriggerFunction(g, returnEventWithID(g, id))) {
 			return true;
@@ -6048,7 +6047,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetDelayFunction(Graph g, String id) {
 		if (isDelayFunction(g, returnEventWithID(g, id))) {
 			return true;
@@ -6056,7 +6055,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetPriority(Graph g, String id) {
 		if (isPriorityFunction(g, returnEventWithID(g, id))) {
 			return true;
@@ -6064,7 +6063,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static boolean isSetDelay(Graph g, String id) {
 		if (isDelayFunction(g, returnEventWithID(g, id))) {
 			return true;
@@ -6072,7 +6071,7 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	public static void deleteEventName(Graph g, String id) {
 		String headline = returnEventWithID(g, id);
 		if (isSetEventName(g, id)) {
@@ -6080,7 +6079,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.EVENT_NAME).toString());
 		}
 	}
-
+	
 	public static void deleteEventUseValuesFromTriggerTime(Graph g, String id) {
 		String headline = returnEventWithID(g, id);
 		if (isSetEventUseValuesFromTriggerTime(g, id)) {
@@ -6088,13 +6087,13 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.USE_VALUES_FROM_TRIGGER_TIME).toString());
 		}
 	}
-
+	
 	public static void deleteEventID(Graph g, String id) {
 		String headline = returnEventWithID(g, id);
 		AttributeHelper.deleteAttribute(g, headline,
 				new StringBuffer(headline).append(SBML_Constants.EVENT_ID).toString());
 	}
-
+	
 	public static void deleteTriggeInitialValue(Graph g, String id) {
 		String headline = returnEventWithID(g, id);
 		if (isSetTriggerInitialValue(g, id)) {
@@ -6102,7 +6101,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.INITIAL_VALUE).toString());
 		}
 	}
-
+	
 	public static void deleteTriggerPersistent(Graph g, String id) {
 		String headline = returnEventWithID(g, id);
 		if (isSetTriggerPersistent(g, id)) {
@@ -6110,7 +6109,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.PERSISTENT).toString());
 		}
 	}
-
+	
 	public static void deleteTriggerFunction(Graph g, String id) {
 		String headline = returnEventWithID(g, id);
 		if (isSetTriggerFunction(g, id)) {
@@ -6118,7 +6117,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.TRIGGER_FUNCTION).toString());
 		}
 	}
-
+	
 	public static void deleteDelayFunction(Graph g, String id) {
 		String headline = returnEventWithID(g, id);
 		if (isSetDelayFunction(g, id)) {
@@ -6126,7 +6125,7 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.DELAY_FUNCTION).toString());
 		}
 	}
-
+	
 	public static void deletePriorityFunction(Graph g, String id) {
 		String headline = returnEventWithID(g, id);
 		if (isSetPriority(g, id)) {
@@ -6134,17 +6133,17 @@ public class SBMLHelper {
 					new StringBuffer(headline).append(SBML_Constants.PRIORITY_FUNCTION).toString());
 		}
 	}
-
+	
 	public static void deleteTrigger(Graph g, String id) {
 		deleteTriggeInitialValue(g, id);
 		deleteTriggerPersistent(g, id);
 		deleteTriggerFunction(g, id);
 	}
-
+	
 	public static void deletePriority(Graph g, String id) {
 		deletePriorityFunction(g, id);
 	}
-
+	
 	public static void addTriggerToEvent(Graph g, String id, Trigger trigger) {
 		String headline = returnEventWithID(g, id);
 		if (trigger.isSetInitialValue()) {
@@ -6157,7 +6156,7 @@ public class SBMLHelper {
 			setTriggerFunction(g, headline, trigger.getMath().toFormula());
 		}
 	}
-
+	
 	public static void addTriggerToEvent(Graph g, String id, boolean initialValue, boolean persistent, String formula) {
 		String headline = returnEventWithID(g, id);
 		setTriggerInitialValue(g, headline, initialValue);
@@ -6166,40 +6165,40 @@ public class SBMLHelper {
 			setTriggerFunction(g, headline, formula);
 		}
 	}
-
+	
 	public static void addPriorityToEvent(Graph g, String id, Priority priority) {
 		String headline = returnEventWithID(g, id);
 		if (priority.isSetMath()) {
 			setPriorityFunction(g, headline, priority.getMath().toFormula());
 		}
 	}
-
+	
 	public static void addDelayToEvent(Graph g, String id, Delay delay) {
 		String headline = returnEventWithID(g, id);
 		if (delay.isSetMath()) {
 			setDelayFunction(g, headline, delay.getMath().toFormula());
 		}
 	}
-
+	
 	public static void addPriorityToEvent(Graph g, String id, String function) {
 		String headline = returnEventWithID(g, id);
 		if (function != null && !function.isEmpty()) {
 			setPriorityFunction(g, headline, function);
 		}
 	}
-
+	
 	public static void addDelayToEvent(Graph g, String id, String function) {
 		String headline = returnEventWithID(g, id);
 		if (function != null && !function.isEmpty()) {
 			setDelayFunction(g, headline, function);
 		}
 	}
-
+	
 	public static void addEventAssignmentToEvent(Graph g, String id, String variable, String function) {
 		String internHeadline = returnEventWithID(g, id);
 		char index = internHeadline.charAt(internHeadline.length() - 1);
 		String presentedHeadline = new StringBuffer("SBML Event ").append(index).toString();
-
+		
 		int eventAssignmentCount = eventAssignmentCount(g, internHeadline);
 		initEventAssignmentNideIDs(eventAssignmentCount + 1, internHeadline, presentedHeadline);
 		if (variable != null) {
@@ -6209,12 +6208,12 @@ public class SBMLHelper {
 			setEventAssignmentFunction(g, internHeadline, function, eventAssignmentCount + 1);
 		}
 	}
-
+	
 	public static void addEventAssignmentToEvent(Graph g, String id, EventAssignment eventAssignment) {
 		String internHeadline = returnEventWithID(g, id);
 		char index = internHeadline.charAt(internHeadline.length() - 1);
 		String presentedHeadline = new StringBuffer("SBML Event ").append(index).toString();
-
+		
 		int eventAssignmentCount = eventAssignmentCount(g, internHeadline);
 		initEventAssignmentNideIDs(eventAssignmentCount + 1, internHeadline, presentedHeadline);
 		if (eventAssignment.isSetVariable()) {
@@ -6225,11 +6224,11 @@ public class SBMLHelper {
 					eventAssignmentCount + 1);
 		}
 	}
-
+	
 	public static void deleteEventAssignment(Graph g, String id, String variable) {
 		String internHeadline = returnEventWithID(g, id);
 		int eventAssignmentCount = eventAssignmentCount(g, internHeadline);
-
+		
 		for (int i = eventAssignmentCount; i >= 1; i--) {
 			if (isEventAssignmentVariable(g, internHeadline, i)) {
 				System.out.println("variable: " + variable);
@@ -6247,14 +6246,14 @@ public class SBMLHelper {
 			}
 		}
 	}
-
+	
 	public static void deleteEvent(Graph g, String id) {
 		deleteEventUseValuesFromTriggerTime(g, id);
 		deleteEventName(g, id);
 		deleteTrigger(g, id);
 		deleteDelayFunction(g, id);
 		deletePriority(g, id);
-
+		
 		String internHeadline = returnEventWithID(g, id);
 		int eventAssignmentCount = eventAssignmentCount(g, internHeadline);
 		for (int i = eventAssignmentCount; i >= 1; i--) {
@@ -6262,16 +6261,16 @@ public class SBMLHelper {
 		}
 		deleteEventID(g, id);
 	}
-
+	
 	/**
 	 * Set the value of the attribute UseValuesFromTriggerTime
 	 * 
 	 * @param g
-	 *            the graph where the information should be read in
+	 *           the graph where the information should be read in
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param useValuesFromTriggerTime
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	private static void setEventUseValuesFromTriggerTime(Graph g, String internHeadline,
 			Boolean useValuesFromTriggerTime) {
@@ -6281,16 +6280,16 @@ public class SBMLHelper {
 				useValuesFromTriggerTime);
 		// }
 	}
-
+	
 	/**
 	 * Set the value of the attribute id
 	 * 
 	 * @param g
-	 *            the graph where the information should be read in
+	 *           the graph where the information should be read in
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param id
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	private static void setEventID(Graph g, String internHeadline, String ID) {
 		if (!ID.equals(SBML_Constants.EMPTY)) {
@@ -6298,16 +6297,16 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ID).toString(), ID);
 		}
 	}
-
+	
 	/**
 	 * Set the value of the attribute name
 	 * 
 	 * @param g
-	 *            the graph where the information should be read in
+	 *           the graph where the information should be read in
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param name
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	private static void setEventName(Graph g, String internHeadline, String name) {
 		if (!name.equals(SBML_Constants.EMPTY)) {
@@ -6315,14 +6314,14 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_NAME).toString(), name);
 		}
 	}
-
+	
 	/**
 	 * Indicate if the attribute name is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return true if the name is set. Else false
 	 */
 	private static Boolean isEventName(Graph g, String internHeadline) {
@@ -6333,14 +6332,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicate if the attribute id is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return true if the id is set. Else false
 	 */
 	private static Boolean isEventID(Graph g, String internHeadline) {
@@ -6351,14 +6350,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicate if the attribute UseValuesFromTriggerTime is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return true if UseValuesFromTriggerTime is set. Else false
 	 */
 	private static Boolean isEventUseValuesFromTriggerTime(Graph g, String internHeadline) {
@@ -6369,14 +6368,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Return the value of the attribute id
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return the id if it is set. Else the empty string
 	 */
 	private static String getEventID(Graph g, String internHeadline) {
@@ -6387,14 +6386,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Return the value of the attribute name
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return the name if it is set. Else the empty string
 	 */
 	private static String getEventName(Graph g, String internHeadline) {
@@ -6405,14 +6404,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Return the value of the attribute UseValuesFromTriggerTime
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return UseValuesFromTriggerTime if it is set. Else the empty string
 	 */
 	private static Boolean getEventUseValuesFromTriggerTime(Graph g, String internHeadline) {
@@ -6423,16 +6422,16 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Sets the initial value
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param initialValue
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	private static void setTriggerInitialValue(Graph g, String internHeadline, Boolean initialValue) {
 		// if (!initialValue.equals(SBML_Constants.EMPTY)) {
@@ -6440,16 +6439,16 @@ public class SBMLHelper {
 				new StringBuffer(internHeadline).append(SBML_Constants.INITIAL_VALUE).toString(), initialValue);
 		// }
 	}
-
+	
 	/**
 	 * Sets the attribute persistent
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param persistent
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	private static void setTriggerPersistent(Graph g, String internHeadline, Boolean persistent) {
 		// if (!persistent.equals(null)) {
@@ -6457,16 +6456,16 @@ public class SBMLHelper {
 				new StringBuffer(internHeadline).append(SBML_Constants.PERSISTENT).toString(), persistent);
 		// }
 	}
-
+	
 	/**
 	 * Sets the function
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param function
-	 *            the String that will be set
+	 *           the String that will be set
 	 */
 	private static void setTriggerFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -6474,14 +6473,14 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.TRIGGER_FUNCTION).toString(), function);
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return true if the function is set. Else false
 	 */
 	private static Boolean isTriggerFunction(Graph g, String internHeadline) {
@@ -6492,14 +6491,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the initial value is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return true if the initial value is set. Else false
 	 */
 	private static Boolean isTriggerInitialValue(Graph g, String internHeadline) {
@@ -6510,14 +6509,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if persistent is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return true if persistent is set. Else false
 	 */
 	private static Boolean isTriggerPersistent(Graph g, String internHeadline) {
@@ -6528,14 +6527,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Return the function string
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return the function string if it is set. Else the empty string
 	 */
 	private static String getTriggerFunction(Graph g, String internHeadline) {
@@ -6546,14 +6545,14 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Return initial value
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return the initial value if it is set. Else null
 	 */
 	private static Boolean getTriggerInitialValue(Graph g, String internHeadline) {
@@ -6564,14 +6563,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Return the value of the attribute persistent
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return the value persistent if it is set. Else null
 	 */
 	private static Boolean getTriggerPersistent(Graph g, String internHeadline) {
@@ -6582,16 +6581,16 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Set the function of the current priority
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param function
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	private static void setPriorityFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -6599,14 +6598,14 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.PRIORITY_FUNCTION).toString(), function);
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return true if the function is set. Else false
 	 */
 	private static Boolean isPriorityFunction(Graph g, String internHeadline) {
@@ -6617,14 +6616,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the function string of priority
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return the function string if it is set. Else the empty string
 	 */
 	private static String getPriorityFunction(Graph g, String internHeadline) {
@@ -6635,16 +6634,16 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Sets the value of a function
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param function
-	 *            the value that will be set
+	 *           the value that will be set
 	 */
 	private static void setDelayFunction(Graph g, String internHeadline, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
@@ -6652,14 +6651,14 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(SBML_Constants.DELAY_FUNCTION).toString(), function);
 		}
 	}
-
+	
 	/**
 	 * Indicates if the value of function is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return true if the function is set. Else false
 	 */
 	private static Boolean isDelayFunction(Graph g, String internHeadline) {
@@ -6670,14 +6669,14 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Returns the value of the function
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return the value of the function if it is set. Else the empty string
 	 */
 	private static String getDelayFunction(Graph g, String internHeadline) {
@@ -6688,18 +6687,18 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Set the variable of an event assignment
 	 * 
 	 * @param g
-	 *            the graph where the information should be read in
+	 *           the graph where the information should be read in
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param variable
-	 *            the value that will be set
+	 *           the value that will be set
 	 * @param eventAssignmentCount
-	 *            the number of the current event assignment
+	 *           the number of the current event assignment
 	 */
 	private static void setEventAssignmentVariable(Graph g, String internHeadline, String variable,
 			int eventAssignmentCount) {
@@ -6710,18 +6709,18 @@ public class SBMLHelper {
 					variable);
 		}
 	}
-
+	
 	/**
 	 * Set the function of an event assignment
 	 * 
 	 * @param g
-	 *            the graph where the information should be read in
+	 *           the graph where the information should be read in
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param function
-	 *            the value that will be set
+	 *           the value that will be set
 	 * @param eventAssignmentCount
-	 *            the number of the current event assignment
+	 *           the number of the current event assignment
 	 */
 	private static void setEventAssignmentFunction(Graph g, String internHeadline, String function,
 			int eventAssignmentCount) {
@@ -6732,16 +6731,16 @@ public class SBMLHelper {
 					function);
 		}
 	}
-
+	
 	/**
 	 * Indicates if the variable of an event assignment is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param eventAssignmentCount
-	 *            the number of the current event assignment
+	 *           the number of the current event assignment
 	 * @return true if the variable is set. Else false
 	 */
 	private static Boolean isEventAssignmentVariable(Graph g, String internHeadline, int eventAssignmentCount) {
@@ -6753,16 +6752,16 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Indicates if the function of an event assignment is set
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param eventAssignmentCount
-	 *            the number of the current event assignment
+	 *           the number of the current event assignment
 	 * @return true if the function is set. Else false
 	 */
 	private static Boolean isEventAssignmentFunction(Graph g, String internHeadline, int eventAssignmentCount) {
@@ -6774,16 +6773,16 @@ public class SBMLHelper {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Return the variable of an event assignment
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param eventAssignmentCount
-	 *            the number of the current event assignment
+	 *           the number of the current event assignment
 	 * @return the variable if it is set. Else the empty string
 	 */
 	private static String getEventAssignmentVariable(Graph g, String internHeadline, int eventAssignmentCount) {
@@ -6795,16 +6794,16 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Return the function of an event assignment
 	 * 
 	 * @param g
-	 *            the graph where the information should be read from
+	 *           the graph where the information should be read from
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @param eventAssignmentCount
-	 *            the number of the current event assignment
+	 *           the number of the current event assignment
 	 * @return the function if it is set. Else the empty string
 	 */
 	private static String getEventAssignmentFunction(Graph g, String internHeadline, int eventAssignmentCount) {
@@ -6816,26 +6815,26 @@ public class SBMLHelper {
 			return SBML_Constants.EMPTY;
 		}
 	}
-
+	
 	/**
 	 * Returns a list of all event headlines in the graph
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @return list of headlines
 	 */
 	private static ArrayList<String> getEventHeadlines(Graph g) {
 		SBML_SBase_Writer writer = new SBML_SBase_Writer();
 		return writer.headlineHelper(g, SBML_Constants.SBML_EVENT);
 	}
-
+	
 	/**
 	 * Returns a JSBML Event object
 	 * 
 	 * @param g
-	 *            the graph where the information can be found
+	 *           the graph where the information can be found
 	 * @param internHeadline
-	 *            contains the number of the current event
+	 *           contains the number of the current event
 	 * @return an Event object
 	 */
 	private static Event getEvent(Graph g, String internHeadline) {
@@ -6866,7 +6865,7 @@ public class SBMLHelper {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
+		
 		event.setTrigger(trigger);
 		if (isPriorityFunction(g, internHeadline)) {
 			Priority prio = new Priority();
@@ -6887,7 +6886,7 @@ public class SBMLHelper {
 			}
 			event.setDelay(delay);
 		}
-
+		
 		int eaCount = eventAssignmentCount(g, internHeadline);
 		for (int i = 1; i <= eaCount; i++) {
 			EventAssignment ea = new EventAssignment();
@@ -6902,14 +6901,14 @@ public class SBMLHelper {
 		}
 		return event;
 	}
-
+	
 	/**
 	 * Returns the number of event assignments of an event
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadline
-	 *            a list which contains the number of the current event
+	 *           a list which contains the number of the current event
 	 * @return the number of event assignments
 	 */
 	private static int eventAssignmentCount(Graph g, String internHeadline) {
@@ -6919,14 +6918,14 @@ public class SBMLHelper {
 		}
 		return eaCount;
 	}
-
+	
 	/**
 	 * Returns a list of event with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current event
+	 *           a list which contains the number of the current event
 	 * @return a filled list of event
 	 */
 	@SuppressWarnings("unused")
@@ -6939,14 +6938,14 @@ public class SBMLHelper {
 		}
 		return eventList;
 	}
-
+	
 	/**
 	 * Returns a list of event with distinct headlines
 	 * 
 	 * @param g
-	 *            contains the information
+	 *           contains the information
 	 * @param internHeadlines
-	 *            a list which contains the number of the current event
+	 *           a list which contains the number of the current event
 	 * @return a filled list of event
 	 */
 	public static List<Event> getAllEvent(Graph g) {
@@ -6959,7 +6958,7 @@ public class SBMLHelper {
 		}
 		return eventList;
 	}
-
+	
 	private static void initCompartmentNideIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.COMPARTMENT_ID).toString(),
 				presentedHeadline + ": ID");
@@ -6981,9 +6980,9 @@ public class SBMLHelper {
 				presentedHeadline + ": Notes");
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
-
+		
 	}
-
+	
 	private static void initParameterNideIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString(),
 				presentedHeadline + ": ID");
@@ -7002,7 +7001,7 @@ public class SBMLHelper {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
 	}
-
+	
 	private static void initInitialAssignmentNiceIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SYMBOL).toString(),
 				presentedHeadline + ": Symbol");
@@ -7015,9 +7014,9 @@ public class SBMLHelper {
 				presentedHeadline + ": Notes");
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
-
+		
 	}
-
+	
 	private static void initFunctionDefinitionNiceIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.META_ID).toString(),
 				presentedHeadline + ": Meta ID");
@@ -7035,7 +7034,7 @@ public class SBMLHelper {
 				new StringBuffer(internHeadline).append(SBML_Constants.FUNCTION_DEFINITION_NAME).toString(),
 				presentedHeadline + ": Name");
 	}
-
+	
 	private static void initUnitDefinitionNideIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.UNIT_DEFINITION_ID).toString(),
 				presentedHeadline + ": ID");
@@ -7049,7 +7048,7 @@ public class SBMLHelper {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
 	}
-
+	
 	private static void initSubUnitDefinitionNideIDs(String internHeadline, String presentedHeadline,
 			int subUnitCount) {
 		AttributeHelper.setNiceId(
@@ -7074,7 +7073,7 @@ public class SBMLHelper {
 				new StringBuffer(presentedHeadline).append(": Sub Unit ").append(subUnitCount).append(" Notes")
 						.toString());
 	}
-
+	
 	private static void initConstraintNiceIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.CONSTRAINT).toString(),
 				presentedHeadline + ": Constraint");
@@ -7086,9 +7085,9 @@ public class SBMLHelper {
 				presentedHeadline + ": Notes");
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
-
+		
 	}
-
+	
 	private static void initAssignmnetRuleNiceIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(
 				new StringBuffer(internHeadline).append(SBML_Constants.ASSIGNMENT_VARIABLE).toString(),
@@ -7102,9 +7101,9 @@ public class SBMLHelper {
 				presentedHeadline + ": Notes");
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
-
+		
 	}
-
+	
 	private static void initRateRuleNiceIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.RATE_VARIABLE).toString(),
 				presentedHeadline + ": Variable");
@@ -7116,9 +7115,9 @@ public class SBMLHelper {
 				presentedHeadline + ": Notes");
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
-
+		
 	}
-
+	
 	private static void initAlgebraicRuleNiceIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.ALGEBRAIC_FUNCTION).toString(),
 				presentedHeadline + ": Function");
@@ -7128,9 +7127,9 @@ public class SBMLHelper {
 				presentedHeadline + ": Notes");
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": SBOTerm");
-
+		
 	}
-
+	
 	private static void initEventNiceIDs(String internHeadline, String presentedHeadline) {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ID).toString(),
 				presentedHeadline + ": ID");
@@ -7168,36 +7167,36 @@ public class SBMLHelper {
 		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.DELAY_FUNCTION).toString(),
 				presentedHeadline + ": Delay Function");
 	}
-
+	
 	private static void initEventAssignmentNideIDs(int eventAssignmentCount, String internHeadline,
 			String presentedHeadline) {
 		AttributeHelper.setNiceId(
 				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.VARIABLE).toString(),
 				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " Variable");
-
+		
 		AttributeHelper.setNiceId(
 				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.FUNCTION).toString(),
 				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " Function");
-
+		
 		AttributeHelper.setNiceId(
 				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.META_ID).toString(),
 				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " Meta ID");
-
+		
 		AttributeHelper.setNiceId(
 				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.SBOTERM).toString(),
 				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " SBOTerm");
-
+		
 		AttributeHelper.setNiceId(
 				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.NOTES).toString(),
 				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " Notes");
-
+		
 	}
-
+	
 	private static void initReactionNideIDs(String presentedHeadline) {
 		// AttributeHelper.setNiceId(SBML_Constants.REACTION_NAME,
 		// presentedHeadline+": Name");
@@ -7228,14 +7227,14 @@ public class SBMLHelper {
 		// AttributeHelper.setNiceId(SBML_Constants.MODIFIER_SBOTERM,
 		// presentedHeadline + ": SBOTerm");
 	}
-
+	
 	private static void initKineticLawNideIDs() {
 		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_NOTES, "SBML Kinetic Law: Notes");
 		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_META_ID, "SBML Kinetic Law: Meta ID");
 		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_SBOTERM, "SBML Kinetic Law: SBOTerm");
 		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_FUNCTION, "SBML Kinetic Law: Function");
 	}
-
+	
 	private static void initLocalParameterNideIDs(String presentedAttributeName, String internAttributeName,
 			String presentedHeadline) {
 		presentedHeadline = "SBML " + presentedHeadline;
@@ -7265,12 +7264,12 @@ public class SBMLHelper {
 				new StringBuffer(presentedHeadline).append(": ").append(presentedAttributeName).append(" Units")
 						.toString());
 	}
-
+	
 	public static boolean isSetLayoutID(Graph g, Node node) {
 		if (AttributeHelper.hasAttribute(node, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID)) {
 			return true;
 		}
 		return false;
 	}
-
+	
 }

@@ -33,7 +33,7 @@ public class SOMprintDataset extends AbstractAlgorithm {
 	double gammaParam = 2;
 	boolean returnNaN;
 	private boolean useSampleAverage;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -45,7 +45,7 @@ public class SOMprintDataset extends AbstractAlgorithm {
 		else
 			return null; // "Print Dataset as CSV to Console";
 	}
-
+	
 	@Override
 	public void reset() {
 		super.reset();
@@ -58,7 +58,7 @@ public class SOMprintDataset extends AbstractAlgorithm {
 		// betaParam=0.1;
 		// gammaParam=2;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -68,12 +68,12 @@ public class SOMprintDataset extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Analysis";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.DATA, Category.EXPORT));
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -82,13 +82,13 @@ public class SOMprintDataset extends AbstractAlgorithm {
 				new BooleanParameter(SOMplugin.getLastUseAverageSetting(), "Use Sample Average Values",
 						"If selected, the sample average values will be used, otherwise the replicate values will be used.") };
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		returnNaN = ((BooleanParameter) params[0]).getBoolean().booleanValue();
 		useSampleAverage = ((BooleanParameter) params[1]).getBoolean().booleanValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

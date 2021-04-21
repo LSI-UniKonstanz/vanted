@@ -39,26 +39,26 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @author Christian Klukas
  */
 public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
-
+	
 	private double spaceX = 10, spaceY = 10;
 	private boolean doNotAskForParameters = false;
 	private boolean considerGraphViewComponents = true;
 	private DoubleParameter spaceParamX;
 	private DoubleParameter spaceParamY;
 	private BooleanParameter considerView;
-
+	
 	public NoOverlappLayoutAlgorithmAS() {
 		super();
 		doNotAskForParameters = false;
 	}
-
+	
 	public NoOverlappLayoutAlgorithmAS(int spaceX, int spaceY) {
 		doNotAskForParameters = true;
 		considerGraphViewComponents = true;
 		this.spaceX = spaceX;
 		this.spaceY = spaceY;
 	}
-
+	
 	@Override
 	public void reset() {
 		super.reset();
@@ -66,36 +66,36 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 		spaceY = 10d;
 		considerGraphViewComponents = true;
 	}
-
+	
 	public String getName() {
 		return "Remove Node Overlaps";
 	}
-
+	
 	/**
 	 * Checks, if a graph was given and that the radius is positive.
 	 * 
 	 * @throws PreconditionException
-	 *             if no graph was given during algorithm invocation or the radius
-	 *             is negative
+	 *            if no graph was given during algorithm invocation or the radius
+	 *            is negative
 	 */
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null) {
 			errors.add("No graph available!");
 		}
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
-
+		
 		if (graph.getNumberOfNodes() <= 0) {
 			throw new PreconditionException("The graph is empty. Cannot run layouter.");
 		}
-
+		
 	}
-
+	
 	/**
 	 * Performs the layout.
 	 */
@@ -113,7 +113,7 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 		workNodesC = GraphHelper.getVisibleNodes(workNodesC);
 		Node[] workNodes = workNodesC.toArray(new Node[] {});
 		// call Tims algorithm
-
+		
 		ArrayList<Rectangle2D> myRectangles = new ArrayList<Rectangle2D>();
 		ArrayList<Vector2d> offsets = new ArrayList<Vector2d>();
 		HashSet<String> knownPositions = new HashSet<String>();
@@ -153,14 +153,14 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 		try {
 			QPRectanglePlacement rp = new QPRectanglePlacement(true, false, false, false, spaceX, spaceY, false);
 			rp.place(myRectangles);
-
+			
 			HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 			for (Node n : workNodes) {
 				Rectangle2D.Double r = (Double) myRectangles.remove(0);
-
+				
 				double xx = r.getX() + r.width / 2d;
 				double yy = r.getY() + r.height / 2d;
-
+				
 				if (considerGraphViewComponents && view != null) {
 					Vector2d correction = offsets.remove(0);
 					xx += correction.x;
@@ -173,7 +173,7 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 			ErrorMsg.addErrorMessage(err);
 		}
 	}
-
+	
 	/**
 	 * Returns the parameter object for the radius.
 	 * 
@@ -194,12 +194,12 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 		}
 		return new Parameter[] { spaceParamX, spaceParamY, considerView };
 	}
-
+	
 	/**
 	 * Sets the radius parameter to the given value.
 	 * 
 	 * @param params
-	 *            An array with exact one DoubleParameter.
+	 *           An array with exact one DoubleParameter.
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
@@ -211,7 +211,7 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 		spaceY = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 		considerGraphViewComponents = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -221,12 +221,12 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Layout";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;

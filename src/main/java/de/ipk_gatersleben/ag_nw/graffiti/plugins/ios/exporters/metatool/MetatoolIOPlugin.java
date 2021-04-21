@@ -16,10 +16,10 @@ public class MetatoolIOPlugin extends IPK_PluginAdapter {
 			// new MetatoolWriter()
 			// };
 		}
-
+		
 		inputSerializers = new InputSerializer[] {
 				// new MetaToolReader()
 		};
-
+				
 	}
 }

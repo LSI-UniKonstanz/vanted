@@ -21,7 +21,7 @@ import org.graffiti.plugin.Displayable;
  */
 public interface Parameter extends Displayable {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns an image representing the <code>Parameter</code>. May return
 	 * <code>null</code> if there is no representing image.

@@ -19,42 +19,42 @@ import org.graffiti.attributes.Attribute;
  */
 public class AttributeEvent extends AbstractEvent {
 	// ~ Instance fields ========================================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5286425769069301273L;
 	/** The path that has been assigned to the attribute by the event. */
 	private String path;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Contructor that is called when one attribute is concerned.
 	 * 
 	 * @param attribute
-	 *            the attribute, which was altered.
+	 *           the attribute, which was altered.
 	 */
 	public AttributeEvent(Attribute attribute) {
 		super(attribute);
 	}
-
+	
 	/**
 	 * Contructor that is called when one composite attribute is concerned, where it
 	 * is comfortable to pass the path of attribute, too.
 	 * 
 	 * @param path
-	 *            the path to the attribute that was altered.
+	 *           the path to the attribute that was altered.
 	 * @param attribute
-	 *            the attribute, which was altered.
+	 *           the attribute, which was altered.
 	 */
 	public AttributeEvent(String path, Attribute attribute) {
 		super(attribute);
 		this.path = path;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the attribute that has been changed by this event.
 	 * 
@@ -63,7 +63,7 @@ public class AttributeEvent extends AbstractEvent {
 	public Attribute getAttribute() {
 		return (Attribute) getSource();
 	}
-
+	
 	/**
 	 * Returns the path to the attribute that has been changed by this event.
 	 * 
@@ -72,7 +72,7 @@ public class AttributeEvent extends AbstractEvent {
 	public String getPath() {
 		return path;
 	}
-
+	
 	public Attributable getAttributeable() {
 		return getAttribute().getAttributable();
 	}

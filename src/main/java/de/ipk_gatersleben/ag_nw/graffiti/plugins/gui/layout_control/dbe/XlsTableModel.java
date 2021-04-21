@@ -13,30 +13,34 @@ import javax.swing.table.AbstractTableModel;
 import org.StringManipulationTools;
 
 public class XlsTableModel extends AbstractTableModel {
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2604053076025280513L;
+	
 	private TableData data;
-
+	
 	private int showMaxCol;
-
+	
 	private int showMaxRow;
-
+	
 	private HashMap<Integer, String> tableHeaders = null;
-
+	
 	public XlsTableModel(TableData data, int showMaxCol, int showMaxRow) {
 		this.data = data;
 		this.showMaxCol = showMaxCol;
 		this.showMaxRow = showMaxRow;
 	}
-
+	
 	public int getRowCount() {
 		return data.getMaximumRow() > showMaxRow ? showMaxRow : data.getMaximumRow();
 	}
-
+	
 	public int getColumnCount() {
 		return data.getMaximumCol() > showMaxCol ? showMaxCol : data.getMaximumCol();
 	}
-
+	
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object o = data.getCellData(columnIndex + 1, rowIndex + 1, null);
 		if (o != null && o instanceof String) {
@@ -44,11 +48,11 @@ public class XlsTableModel extends AbstractTableModel {
 		} else
 			return o;
 	}
-
+	
 	public void setColumnNames(HashMap<Integer, String> tableHeaders) {
 		this.tableHeaders = tableHeaders;
 	}
-
+	
 	@Override
 	public String getColumnName(int arg0) {
 		if (tableHeaders != null && tableHeaders.containsKey(arg0))
@@ -56,5 +60,5 @@ public class XlsTableModel extends AbstractTableModel {
 		else
 			return super.getColumnName(arg0);
 	}
-
+	
 }

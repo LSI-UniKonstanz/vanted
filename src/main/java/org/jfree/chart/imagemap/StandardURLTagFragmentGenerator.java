@@ -34,16 +34,16 @@ package org.jfree.chart.imagemap;
  * @author Richard Atkinson
  */
 public class StandardURLTagFragmentGenerator implements URLTagFragmentGenerator {
-
+	
 	/**
 	 * Generates a URL string to go in an HTML image map.
 	 * 
 	 * @param urlText
-	 *            the URL
+	 *           the URL
 	 * @return the formatted text
 	 */
 	public String generateURLFragment(String urlText) {
 		return " href=\"" + urlText + "\"";
 	}
-
+	
 }

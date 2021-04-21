@@ -22,7 +22,7 @@ import org.graffiti.graph.Graph;
  */
 public interface AnimatedAlgorithm extends Algorithm {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns <code>true</code> if the algorithm has another step (that means that
 	 * <code>nextStep()</code> will not throw an Exception).
@@ -31,29 +31,29 @@ public interface AnimatedAlgorithm extends Algorithm {
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean isFinished();
-
+	
 	/**
 	 * Starts the animation of the algorithm. Further execution steps are made
 	 * through the <code>nextStep()</code> method.
 	 * 
 	 * @param g
-	 *            the <code>Graph</code> to execute the algorithm on.
+	 *           the <code>Graph</code> to execute the algorithm on.
 	 */
 	public void animate(Graph g);
-
+	
 	/**
 	 * Executes the whole algorithm as one big step.
 	 * 
 	 * @param g
-	 *            the <code>Graph</code> to execute the algorithm on.
+	 *           the <code>Graph</code> to execute the algorithm on.
 	 */
 	public void execute(Graph g);
-
+	
 	/**
 	 * Executes the next step of the algorithm.
 	 * 
 	 * @exception NoNextStepException
-	 *                if the algorithm is already finished.
+	 *               if the algorithm is already finished.
 	 */
 	public void nextStep() throws NoNextStepException;
 }

@@ -46,30 +46,30 @@ import org.jfree.ui.RefineryUtilities;
  * chart.
  */
 public class XYBarChartDemo3 extends ApplicationFrame {
-
+	
 	/**
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYBarChartDemo3(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		final IntervalXYDataset dataset = new SimpleIntervalXYDataset();
-
+		
 		// create the chart...
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 300));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -80,40 +80,40 @@ public class XYBarChartDemo3 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a new chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final IntervalXYDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createXYBarChart("Sample", // chart title
 				"X", // domain axis label
 				false, "Y", // range axis label
 				dataset, // data
 				PlotOrientation.VERTICAL, true, // include legend
 				true, false);
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYBarChartDemo3 demo = new XYBarChartDemo3("XY Bar Chart Demo 3");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

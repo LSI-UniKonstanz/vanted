@@ -24,7 +24,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2utilit
  * the OWL file
  * 
  * @author ricardo
- * 
  */
 public class BPinteraction extends HelperClass {
 	protected Random rand;
@@ -32,19 +31,19 @@ public class BPinteraction extends HelperClass {
 	protected CollectionAttribute centerAttribute;
 	protected Graph graph;
 	protected Hashtable<String, Node> nodes;
-
+	
 	public BPinteraction(Graph Graph, Hashtable<String, Node> Nodes) {
 		super();
 		rand = new Random();
 		sW = new StoichiometryWriter();
 		graph = Graph;
 		nodes = Nodes;
-
+		
 		int posx = rand.nextInt(100);
 		int posy = rand.nextInt(100);
 		centerAttribute = AttributeHelper.getDefaultGraphicsAttributeForNode(posx, posy);
 	}
-
+	
 	/**
 	 * used for linking nodes with other nodes via edges
 	 * 
@@ -65,7 +64,7 @@ public class BPinteraction extends HelperClass {
 		}
 		return node;
 	}
-
+	
 	/**
 	 * used for linking nodes with other nodes via edges
 	 * 
@@ -86,7 +85,7 @@ public class BPinteraction extends HelperClass {
 		}
 		return processNode;
 	}
-
+	
 	/**
 	 * used for linking nodes with other nodes via edges
 	 * 
@@ -107,7 +106,7 @@ public class BPinteraction extends HelperClass {
 		}
 		return node;
 	}
-
+	
 	/**
 	 * shortcut to add an edge without calling each time such a long method
 	 * 

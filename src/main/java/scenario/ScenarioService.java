@@ -20,42 +20,42 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.parameter.Parameter;
 
 public class ScenarioService implements HelperClass {
-
+	
 	private static Scenario currentScenario;
 	private static boolean recordingActive = false;
-
+	
 	private static ScenarioGui gui;
-
+	
 	public static Scenario getCurrentScenario() {
 		return currentScenario;
 	}
-
+	
 	public static void setCurrentScenario(Scenario scenario) {
 		ScenarioService.currentScenario = scenario;
 	}
-
+	
 	public static Scenario createScenario() {
 		return new Scenario("", "");
 	}
-
+	
 	public static boolean isRecording() {
 		return recordingActive;
 	}
-
+	
 	public static void recordStop() {
 		recordingActive = false;
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	public static void recordStart() {
 		currentScenario = new Scenario("Workflow", "Recorded at " + new Date().toLocaleString());
 		recordingActive = true;
 	}
-
+	
 	public static void setGUI(ScenarioGui gui) {
 		ScenarioService.gui = gui;
 	}
-
+	
 	public static void postWorkflowStep(Algorithm algorithm, Parameter[] params) {
 		if (isRecording()) {
 			if (algorithm instanceof ScenarioServiceIgnoreAlgorithm)
@@ -66,7 +66,7 @@ public class ScenarioService implements HelperClass {
 			currentScenario.addCommands(getStartCommandsForAlgorithm(algorithm, params));
 		}
 	}
-
+	
 	public static void postWorkflowStep(Action action) {
 		if (isRecording()) {
 			if (gui != null)
@@ -75,33 +75,33 @@ public class ScenarioService implements HelperClass {
 			currentScenario.addCommands(getCommandsForAction(action));
 		}
 	}
-
+	
 	private static Collection<String> getCommandsForAction(Action action) {
 		ArrayList<String> res = new ArrayList<String>();
-
+		
 		String name = (String) action.getValue("name");
 		res.add("GraffitiAction.performAction(\"" + name + "\");");
-
+		
 		return res;
 	}
-
+	
 	private static Collection<String> getImportsForAction(Action action) {
 		ArrayList<String> res = new ArrayList<String>();
-
+		
 		res.add("import org.graffiti.plugin.actions.GraffitiAction;");
-
+		
 		return res;
 	}
-
+	
 	private static Collection<String> getImportsForAlgorithm(Algorithm algorithm, Parameter[] params) {
 		ArrayList<String> res = new ArrayList<String>();
-
+		
 		res.add("import org.graffiti.editor.GravistoService;");
 		res.add("import org.graffiti.editor.MainFrame;");
-
+		
 		Package p = algorithm.getClass().getPackage();
 		res.add("import " + p.getName() + ".*;");
-
+		
 		boolean canStoreParams = getCanStoreParams(params);
 		if (canStoreParams) {
 			for (String i : getParameterInstanciationImports(params))
@@ -109,10 +109,10 @@ public class ScenarioService implements HelperClass {
 		}
 		return res;
 	}
-
+	
 	private static Collection<String> getStartCommandsForAlgorithm(Algorithm algorithm, Parameter[] params) {
 		ArrayList<String> res = new ArrayList<String>();
-
+		
 		boolean canStoreParams = getCanStoreParams(params);
 		boolean processesStoredParamsByItself = (algorithm instanceof ScenarioServiceHandlesStoredParametersOption);
 		res.add("// Starting Algorithm " + algorithm.getName());
@@ -142,7 +142,7 @@ public class ScenarioService implements HelperClass {
 		res.add("}");
 		return res;
 	}
-
+	
 	private static Collection<String> getParameterInstanciationImports(Parameter[] params) {
 		ArrayList<String> res = new ArrayList<String>();
 		if (params == null || params.length == 0)
@@ -157,7 +157,7 @@ public class ScenarioService implements HelperClass {
 		}
 		return res;
 	}
-
+	
 	private static Collection<String> getParameterInstanciationCommands(Parameter[] params, String frontSpace) {
 		ArrayList<String> res = new ArrayList<String>();
 		if (params == null)
@@ -179,7 +179,7 @@ public class ScenarioService implements HelperClass {
 		}
 		return res;
 	}
-
+	
 	private static boolean getCanStoreParams(Parameter[] params) {
 		if (params == null || params.length == 0)
 			return true;
@@ -194,7 +194,7 @@ public class ScenarioService implements HelperClass {
 			return allOK;
 		}
 	}
-
+	
 	public static Collection<Scenario> getAvailableScnenarios() {
 		Collection<Scenario> result = new ArrayList<Scenario>();
 		String folder = ReleaseInfo.getAppFolderWithFinalSep();
@@ -206,14 +206,14 @@ public class ScenarioService implements HelperClass {
 		});
 		if (listFiles != null)
 			for (File f : listFiles) {
-
+				
 				Scenario s = new Scenario(f);
 				if (s.isValid())
 					result.add(s);
 			}
 		return result;
 	}
-
+	
 	public static void postWorkflowStep(String title, String[] imports, String[] commands) {
 		if (isRecording()) {
 			if (gui != null)

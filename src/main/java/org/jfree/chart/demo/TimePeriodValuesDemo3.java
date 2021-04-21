@@ -52,33 +52,33 @@ import org.jfree.ui.RefineryUtilities;
  * slightly irregular.
  */
 public class TimePeriodValuesDemo3 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimePeriodValuesDemo3(final String title) {
-
+		
 		super(title);
-
+		
 		final XYDataset data1 = createDataset();
 		final XYItemRenderer renderer1 = new XYBarRenderer();
-
+		
 		final DateAxis domainAxis = new DateAxis("Date");
 		final ValueAxis rangeAxis = new NumberAxis("Value");
-
+		
 		final XYPlot plot = new XYPlot(data1, domainAxis, rangeAxis, renderer1);
-
+		
 		final JFreeChart chart = new JFreeChart("Time Period Values Demo 3", plot);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		chartPanel.setMouseZoomable(true, false);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -89,16 +89,16 @@ public class TimePeriodValuesDemo3 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a dataset, consisting of two series of monthly data.
 	 * 
 	 * @return the dataset.
 	 */
 	public XYDataset createDataset() {
-
+		
 		final TimePeriodValues s1 = new TimePeriodValues("Series 1");
-
+		
 		final DateFormat df = DateFormat.getInstance();
 		try {
 			final Date d0 = df.parse("11/5/2003 0:00:00.000");
@@ -111,7 +111,7 @@ public class TimePeriodValuesDemo3 extends ApplicationFrame {
 			final Date d7 = df.parse("11/5/2003 1:45:00.000");
 			final Date d8 = df.parse("11/5/2003 2:00:00.000");
 			final Date d9 = df.parse("11/5/2003 2:15:00.000");
-
+			
 			s1.add(new SimpleTimePeriod(d0, d1), 0.39);
 			// s1.add(new SimpleTimePeriod(d1, d2), 0.338);
 			s1.add(new SimpleTimePeriod(d2, d3), 0.225);
@@ -124,28 +124,28 @@ public class TimePeriodValuesDemo3 extends ApplicationFrame {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-
+		
 		final TimePeriodValuesCollection dataset = new TimePeriodValuesCollection();
 		dataset.addSeries(s1);
 		dataset.setDomainIsPointsInTime(false);
-
+		
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimePeriodValuesDemo3 demo = new TimePeriodValuesDemo3("Time Period Values Demo 3");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

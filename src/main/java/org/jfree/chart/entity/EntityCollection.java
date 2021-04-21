@@ -40,51 +40,51 @@ import java.util.Iterator;
  * Defines the methods that a collection of entities is required to implement.
  */
 public interface EntityCollection {
-
+	
 	/**
 	 * Clears all entities.
 	 */
 	public void clear();
-
+	
 	/**
 	 * Adds an entity to the collection.
 	 * 
 	 * @param entity
-	 *            the entity.
+	 *           the entity.
 	 */
 	public void addEntity(ChartEntity entity);
-
+	
 	/**
 	 * Adds the entities from another collection to this collection.
 	 * 
 	 * @param collection
-	 *            the other collection.
+	 *           the other collection.
 	 */
 	public void addEntities(EntityCollection collection);
-
+	
 	/**
 	 * Returns an entity whose area contains the specified point.
 	 * 
 	 * @param x
-	 *            the x coordinate.
+	 *           the x coordinate.
 	 * @param y
-	 *            the y coordinate.
+	 *           the y coordinate.
 	 * @return The entity.
 	 */
 	public ChartEntity getEntity(double x, double y);
-
+	
 	/**
 	 * Returns the entities in an unmodifiable collection.
 	 * 
 	 * @return The entities.
 	 */
 	public Collection getEntities();
-
+	
 	/**
 	 * Returns an iterator for the entities in the collection.
 	 * 
 	 * @return An iterator.
 	 */
 	public Iterator iterator();
-
+	
 }

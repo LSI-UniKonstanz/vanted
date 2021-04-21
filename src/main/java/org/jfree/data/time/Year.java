@@ -56,64 +56,64 @@ import org.jfree.date.SerialDate;
  * {@link RegularTimePeriod} subclasses.
  */
 public class Year extends RegularTimePeriod implements Serializable {
-
+	
 	/** The year. */
 	private int year;
-
+	
 	/**
 	 * Creates a new <code>Year</code>, based on the current system date/time.
 	 */
 	public Year() {
 		this(new Date());
 	}
-
+	
 	/**
 	 * Creates a time period representing a single year.
 	 * 
 	 * @param year
-	 *            the year.
+	 *           the year.
 	 */
 	public Year(final int year) {
-
+		
 		// check arguments...
 		if ((year < SerialDate.MINIMUM_YEAR_SUPPORTED) || (year > SerialDate.MAXIMUM_YEAR_SUPPORTED)) {
-
+			
 			throw new IllegalArgumentException("Year constructor: year (" + year + ") outside valid range.");
-
+			
 		}
-
+		
 		// initialise...
 		this.year = year;
-
+		
 	}
-
+	
 	/**
 	 * Creates a new <code>Year</code>, based on a particular instant in time, using
 	 * the default time zone.
 	 * 
 	 * @param time
-	 *            the time.
+	 *           the time.
 	 */
 	public Year(final Date time) {
 		this(time, RegularTimePeriod.DEFAULT_TIME_ZONE);
 	}
-
+	
 	/**
 	 * Constructs a year, based on a particular instant in time and a time zone.
 	 * 
 	 * @param time
-	 *            the time.
+	 *           the time.
 	 * @param zone
-	 *            the time zone.
+	 *           the time zone.
 	 */
 	public Year(final Date time, final TimeZone zone) {
-
+		
 		final Calendar calendar = Calendar.getInstance(zone);
 		calendar.setTime(time);
 		this.year = calendar.get(Calendar.YEAR);
-
+		
 	}
-
+	
 	/**
 	 * Returns the year.
 	 * 
@@ -122,37 +122,37 @@ public class Year extends RegularTimePeriod implements Serializable {
 	public int getYear() {
 		return this.year;
 	}
-
+	
 	/**
 	 * Returns the year preceding this one.
 	 * 
 	 * @return the year preceding this one (or null if the current year is 1900).
 	 */
 	public RegularTimePeriod previous() {
-
+		
 		if (this.year > SerialDate.MINIMUM_YEAR_SUPPORTED) {
 			return new Year(this.year - 1);
 		} else {
 			return null;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the year following this one.
 	 * 
 	 * @return The year following this one (or null if the current year is 9999).
 	 */
 	public RegularTimePeriod next() {
-
+		
 		if (this.year < SerialDate.MAXIMUM_YEAR_SUPPORTED) {
 			return new Year(this.year + 1);
 		} else {
 			return null;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a serial index number for the year.
 	 * <P>
@@ -163,37 +163,37 @@ public class Year extends RegularTimePeriod implements Serializable {
 	public long getSerialIndex() {
 		return this.year;
 	}
-
+	
 	/**
 	 * Returns the first millisecond of the year, evaluated using the supplied
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the first millisecond of the year.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
-
+		
 		final Day jan1 = new Day(1, SerialDate.JANUARY, this.year);
 		return jan1.getFirstMillisecond(calendar);
-
+		
 	}
-
+	
 	/**
 	 * Returns the last millisecond of the year, evaluated using the supplied
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the last millisecond of the year.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
-
+		
 		final Day dec31 = new Day(31, SerialDate.DECEMBER, this.year);
 		return dec31.getLastMillisecond(calendar);
-
+		
 	}
-
+	
 	/**
 	 * Tests the equality of this <code>Year</code> object to an arbitrary object.
 	 * Returns <code>true</code> if the target is a <code>Year</code> instance
@@ -201,11 +201,11 @@ public class Year extends RegularTimePeriod implements Serializable {
 	 * <code>false</code>.
 	 * 
 	 * @param object
-	 *            the object.
+	 *           the object.
 	 * @return <code>true</code> if the year of this and the object are the same.
 	 */
 	public boolean equals(final Object object) {
-
+		
 		if (object != null) {
 			if (object instanceof Year) {
 				final Year target = (Year) object;
@@ -216,9 +216,9 @@ public class Year extends RegularTimePeriod implements Serializable {
 		} else {
 			return false;
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
@@ -235,45 +235,45 @@ public class Year extends RegularTimePeriod implements Serializable {
 		result = 37 * result + c;
 		return result;
 	}
-
+	
 	/**
 	 * Returns an integer indicating the order of this <code>Year</code> object
 	 * relative to the specified object: negative == before, zero == same, positive
 	 * == after.
 	 * 
 	 * @param o1
-	 *            the object to compare.
+	 *           the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
-
+		
 		final int result;
-
+		
 		// CASE 1 : Comparing to another Year object
 		// -----------------------------------------
 		if (o1 instanceof Year) {
 			final Year y = (Year) o1;
 			result = this.year - y.getYear();
 		}
-
+		
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
 		else if (o1 instanceof RegularTimePeriod) {
 			// more difficult case - evaluate later...
 			result = 0;
 		}
-
+		
 		// CASE 3 : Comparing to a non-TimePeriod object
 		// ---------------------------------------------
 		else {
 			// consider time periods to be ordered after general objects
 			result = 1;
 		}
-
+		
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a string representing the year..
 	 * 
@@ -282,18 +282,18 @@ public class Year extends RegularTimePeriod implements Serializable {
 	public String toString() {
 		return Integer.toString(this.year);
 	}
-
+	
 	/**
 	 * Parses the string argument as a year.
 	 * <P>
 	 * The string format is YYYY.
 	 * 
 	 * @param s
-	 *            a string representing the year.
+	 *           a string representing the year.
 	 * @return <code>null</code> if the string is not parseable, the year otherwise.
 	 */
 	public static Year parseYear(final String s) {
-
+		
 		// parse the string...
 		final int y;
 		try {
@@ -301,7 +301,7 @@ public class Year extends RegularTimePeriod implements Serializable {
 		} catch (NumberFormatException e) {
 			throw new TimePeriodFormatException("Year.parseYear(string): cannot parse string.");
 		}
-
+		
 		// create the year...
 		try {
 			return new Year(y);
@@ -309,5 +309,5 @@ public class Year extends RegularTimePeriod implements Serializable {
 			throw new TimePeriodFormatException("Year.parseYear(string): year outside valid range.");
 		}
 	}
-
+	
 }

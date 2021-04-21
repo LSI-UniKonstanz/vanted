@@ -32,7 +32,7 @@ public class PNTReader extends AbstractInputSerializer {
 	public void read(InputStream in, Graph g) throws IOException {
 		read(new InputStreamReader(in), g);
 	}
-
+	
 	private double getViewHeight(String line) {
 		double res = 0;
 		String bb = getEntry("bb=", line, "0,0,0,0");
@@ -48,7 +48,7 @@ public class PNTReader extends AbstractInputSerializer {
 		}
 		return res;
 	}
-
+	
 	private void processEdgeDesign(Edge e, String line, double viewHeight) {
 		try {
 			String pos = getEntry("pos=", line, null);
@@ -78,7 +78,7 @@ public class PNTReader extends AbstractInputSerializer {
 			ErrorMsg.addErrorMessage(err);
 		}
 	}
-
+	
 	private String getNextEdgeId(String line) {
 		if (line.indexOf("->") <= 0 && line.indexOf("--") <= 0)
 			return null;
@@ -91,7 +91,7 @@ public class PNTReader extends AbstractInputSerializer {
 		String id = getFirstId(rol);
 		return id;
 	}
-
+	
 	private void processNodeDesign(Node n, String line, String defaultFontSize, double viewHeight) {
 		try {
 			String label = getEntry("label=", line, null);
@@ -136,7 +136,7 @@ public class PNTReader extends AbstractInputSerializer {
 			ErrorMsg.addErrorMessage("Invalid node settings: " + line);
 		}
 	}
-
+	
 	private String getFirstId(String line) {
 		try {
 			if (line.indexOf("[") > 0) {
@@ -151,7 +151,7 @@ public class PNTReader extends AbstractInputSerializer {
 			return null;
 		}
 	}
-
+	
 	private String getEntry(String setting, String line, String defaultReturn) {
 		String r1 = getEntryImpl(setting, line, defaultReturn);
 		if (r1 == null) {
@@ -161,7 +161,7 @@ public class PNTReader extends AbstractInputSerializer {
 		} else
 			return r1;
 	}
-
+	
 	private String getEntryImpl(String setting, String line, String defaultReturn) {
 		if (line.indexOf(setting) < 0)
 			return defaultReturn;
@@ -186,15 +186,15 @@ public class PNTReader extends AbstractInputSerializer {
 			}
 		}
 	}
-
+	
 	public String[] getExtensions() {
 		return new String[] { ".pnt" };
 	}
-
+	
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "INA PNT" };
 	}
-
+	
 	public void read(Reader in, Graph g) throws IOException {
 		ArrayList<String> lines = new ArrayList<String>();
 		BufferedReader br = new BufferedReader(in);

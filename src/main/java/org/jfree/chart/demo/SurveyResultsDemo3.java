@@ -59,52 +59,52 @@ import org.jfree.ui.TextAnchor;
  * A chart showing...
  */
 public class SurveyResultsDemo3 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public SurveyResultsDemo3(final String title) {
-
+		
 		super(title);
-
+		
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(300, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a dataset.
 	 * 
 	 * @return The dataset.
 	 */
 	private CategoryDataset createDataset() {
-
+		
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(2.61, "Results", "Sm.");
 		dataset.addValue(2.70, "Results", "Med.");
 		dataset.addValue(2.90, "Results", "Lg.");
 		dataset.addValue(2.74, "Results", "All");
 		return dataset;
-
+		
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createBarChart(null, // chart title
 				null, // domain axis label
 				null, // range axis label
@@ -112,21 +112,21 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 				PlotOrientation.HORIZONTAL, // orientation
 				false, // include legend
 				true, false);
-
+		
 		chart.setBackgroundPaint(Color.white);
 		chart.getPlot().setOutlinePaint(null);
 		final TextTitle title = new TextTitle("Figure 6 | Overall SEO Rating");
 		title.setHorizontalAlignment(HorizontalAlignment.LEFT);
 		title.setBackgroundPaint(Color.red);
 		title.setPaint(Color.white);
-
+		
 		chart.setTitle(title);
 		final CategoryPlot plot = chart.getCategoryPlot();
-
+		
 		final ValueAxis rangeAxis = plot.getRangeAxis();
 		rangeAxis.setRange(0.0, 4.0);
 		rangeAxis.setVisible(false);
-
+		
 		final ExtendedCategoryAxis domainAxis = new ExtendedCategoryAxis(null);
 		domainAxis.setTickLabelFont(new Font("SansSerif", Font.BOLD, 12));
 		domainAxis.setCategoryMargin(0.30);
@@ -138,11 +138,11 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 		final CategoryLabelPosition left = new CategoryLabelPosition(RectangleAnchor.LEFT, TextBlockAnchor.CENTER_LEFT);
 		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.replaceLeftPosition(p, left));
 		plot.setDomainAxis(domainAxis);
-
+		
 		final BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setSeriesPaint(0, new Color(0x9C, 0xA4, 0x4A));
 		renderer.setBaseOutlineStroke(null);
-
+		
 		final StandardCategoryLabelGenerator generator = new StandardCategoryLabelGenerator("{2}",
 				new DecimalFormat("0.00"));
 		renderer.setLabelGenerator(generator);
@@ -151,11 +151,11 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 		final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.INSIDE3, TextAnchor.CENTER_RIGHT);
 		renderer.setPositiveItemLabelPosition(position);
 		renderer.setPositiveItemLabelPositionFallback(new ItemLabelPosition());
-
+		
 		return chart;
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -166,20 +166,20 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final SurveyResultsDemo3 demo = new SurveyResultsDemo3("Survey Results Demo 3");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

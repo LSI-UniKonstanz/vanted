@@ -53,17 +53,17 @@ import org.jfree.ui.RefineryUtilities;
  * date axis for the domain values.
  */
 public class XYAreaChartDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYAreaChartDemo2(final String title) {
-
+		
 		super(title);
-
+		
 		final TimeSeries series1 = new TimeSeries("Random 1");
 		double value = 0.0;
 		Day day = new Day();
@@ -72,17 +72,17 @@ public class XYAreaChartDemo2 extends ApplicationFrame {
 			series1.add(day, value);
 			day = (Day) day.next();
 		}
-
+		
 		final TimeSeriesCollection dataset = new TimeSeriesCollection(series1);
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -93,12 +93,12 @@ public class XYAreaChartDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
@@ -108,32 +108,32 @@ public class XYAreaChartDemo2 extends ApplicationFrame {
 				false // URLs
 		);
 		final XYPlot plot = chart.getXYPlot();
-
+		
 		final ValueAxis domainAxis = new DateAxis("Time");
 		domainAxis.setLowerMargin(0.0);
 		domainAxis.setUpperMargin(0.0);
 		plot.setDomainAxis(domainAxis);
 		plot.setForegroundAlpha(0.5f);
-
+		
 		final XYItemRenderer renderer = plot.getRenderer();
 		renderer.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
 				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("#,##0.00")));
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYAreaChartDemo2 demo = new XYAreaChartDemo2("XY Area Chart Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

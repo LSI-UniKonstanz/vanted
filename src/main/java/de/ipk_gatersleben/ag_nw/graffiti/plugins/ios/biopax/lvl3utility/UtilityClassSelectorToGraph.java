@@ -35,7 +35,7 @@ import org.graffiti.graph.GraphElement;
  * @author ricardo
  */
 public class UtilityClassSelectorToGraph {
-
+	
 	public static void chooseClassToPutAttributesToNodes(GraphElement elem, Object i) {
 		try {
 			if (i instanceof BiochemicalReaction && !(i instanceof TransportWithBiochemicalReaction)) {
@@ -92,7 +92,7 @@ public class UtilityClassSelectorToGraph {
 			} else {
 				System.out.println("Object wasn't found while reading OWL-File. It was a: " + i.getClass());
 			}
-
+			
 		} catch (IllegalArgumentException e) {
 			ErrorMsg.addErrorMessage(e);
 		} catch (IllegalAccessException e) {
@@ -101,5 +101,5 @@ public class UtilityClassSelectorToGraph {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-
+	
 }

@@ -12,9 +12,8 @@ import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.DistributionFactoryImpl;
-import org.apache.commons.math.distribution.TDistribution;
+import org.apache.commons.math3.distribution.TDistribution;
+import org.apache.commons.math3.exception.MathRuntimeException;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.editor.MainFrame;
@@ -38,45 +37,45 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 /**
  * Executes the Grubbs' statistical test to detect outliers.
  * 
- * @version 2.6.5
+ * @vanted.revision 2.8 Update Apache Commons Math3 references.
  */
 public class GrubbsTestAlgorithm extends AbstractAlgorithm {
-
+	
 	private double alphavalue = 0.05d;
 	private boolean doRemoveOutliers = false;
-
+	
 	public String getName() {
 		return "Grubbs' Test (detect outliers)";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Mapping.Statistical Analysis";
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "Grubbs' Test for the identification of outliers";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.DATA, Category.ANALYSIS, Category.STATISTICS));
 	}
-
+	
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
-
+		
 		Selection sel = new Selection("id",
 				doGrubbsTest(GraphHelper.getSelectedOrAllNodes(selection, graph), graph, alphavalue, doRemoveOutliers));
-
+		
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
-
+		
 		graph.getListenerManager().transactionFinished(this, true);
 		if (doRemoveOutliers)
 			GraphHelper.issueCompleteRedrawForGraph(graph);
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		if (alphavalue < 0 || alphavalue > 1)
@@ -85,10 +84,9 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 				new BooleanParameter(doRemoveOutliers, "Remove Outliers",
 						"If selected, all identified outliers will be removed from the dataset.") };
 	}
-
-	private static DistributionFactoryImpl distFact = new DistributionFactoryImpl();
-	private static TDistribution td = distFact.createTDistribution(10);
-
+	
+	private static TDistribution td = new TDistribution(null, 10);
+	
 	public static List<Node> doGrubbsTest(List<Node> nodes, Graph g, double alpha, boolean removeOutliers) {
 		ArrayList<Node> result = new ArrayList<Node>();
 		for (Node node : nodes) {
@@ -102,15 +100,15 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 			}
 			if (xa == null)
 				continue;
-
+			
 			for (SubstanceInterface xmldata : xa.getMappedData()) {
 				List<MyComparableDataPoint> allvalues = NodeTools.getSortedDataSetValues(xmldata);
-
+				
 				HashSet<String> knownSeries = new HashSet<String>();
 				for (MyComparableDataPoint value : allvalues) {
 					knownSeries.add(value.serie);
 				}
-
+				
 				for (String serie : knownSeries) {
 					List<MyComparableDataPoint> valuesForSeries = new ArrayList<MyComparableDataPoint>();
 					HashSet<String> knownTimePoints = new HashSet<String>();
@@ -165,7 +163,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 							// )^0.5
 							if (n - 2 > 0) {
 								try {
-									td.setDegreesOfFreedom(n - 2);
+									td = new TDistribution(null, n - 2);
 									double t1 = td.inverseCumulativeProbability(1 - (1 - alpha) / (2 * n));
 									double testG = (n - 1) / Math.sqrt(n) * Math.sqrt(t1 * t1 / (n - 2 + t1));
 									if (G > testG) {
@@ -176,7 +174,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 										removedPoints++;
 										outlierIdentified = true;
 									}
-								} catch (MathException e) {
+								} catch (MathRuntimeException e) {
 									ErrorMsg.addErrorMessage(e);
 								}
 							}
@@ -193,7 +191,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 		}
 		return result;
 	}
-
+	
 	private static List<MyComparableDataPoint> getValidValues(List<MyComparableDataPoint> valuesForSeries,
 			String timePoint) {
 		List<MyComparableDataPoint> values = new ArrayList<MyComparableDataPoint>();
@@ -203,12 +201,12 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 		}
 		return values;
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		DoubleParameter ip = (DoubleParameter) params[0];
@@ -216,17 +214,17 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 		BooleanParameter bp = (BooleanParameter) params[1];
 		doRemoveOutliers = bp.getBoolean().booleanValue();
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 		if (graph == null || graph.getNodes().size() <= 0)
 			throw new PreconditionException("No graph available or graph empty!");
 	}
-
+	
 	@Override
 	public void reset() {
 		super.reset();
 	}
-
+	
 }

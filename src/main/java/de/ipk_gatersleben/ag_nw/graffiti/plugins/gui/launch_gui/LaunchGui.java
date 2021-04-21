@@ -27,7 +27,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 
 public abstract class LaunchGui extends AbstractEditorAlgorithm
 		implements ScenarioServiceIgnoreAlgorithm, ProvidesAccessToOtherAlgorithms {
-
+	
 	/**
 	 * All returned algorithms with getName()==null will be converted into free
 	 * space to be able to visually cluster buttons.
@@ -35,21 +35,21 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 	 * @return A Collection of buttons for the execution of algorithms.
 	 */
 	protected abstract Collection<Algorithm> getAlgorithms();
-
+	
 	@Override
 	public void execute() {
 		String desc = getLaunchGuiDescription();
 		if (desc.equals("Select the command to be executed:") && !isModal())
 			desc = null;
-
+		
 		Object[] commands = getLaunchCommands();
 		// if(getRealAlgorithmsSize()==1)
 		// ((JButton)commands[1]).doClick();
-
+		
 		MyInputHelper.getInput("[" + (isModal() ? "" : "nonmodal") + "]<html>"
 				+ (desc == null ? "" : "<br>" + getLaunchGuiDescription() + "<br><br>"), getName(), commands);
 	}
-
+	
 	public String getLaunchGuiDescription() {
 		return "Select the command to be executed:";
 	}
@@ -58,12 +58,12 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 	public String getName() {
 		return null;
 	}
-
+	
 	@Override
 	public Collection<Algorithm> getAlgorithmList() {
 		return getAlgorithms();
 	}
-
+	
 	private Object[] getLaunchCommands() {
 		Collection<Algorithm> algorithms = getAlgorithms();
 		Object[] res = new Object[algorithms.size() * 2];
@@ -79,21 +79,21 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 		}
 		return res;
 	}
-
+	
 	private JComponent getLaunchButton(final Algorithm alg) {
 		JButton res = new JButton();
 		String sizetags = null;
-
+		
 		switch (getButtonSize()) {
-		case DYNAMIC:
-			sizetags = (getRealAlgorithmsSize() > 5 ? "" : "<br>");
-			break;
-		case LARGE:
-			sizetags = "<br>";
-			break;
-		case SMALL:
-			sizetags = "";
-			break;
+			case DYNAMIC:
+				sizetags = (getRealAlgorithmsSize() > 5 ? "" : "<br>");
+				break;
+			case LARGE:
+				sizetags = "<br>";
+				break;
+			case SMALL:
+				sizetags = "";
+				break;
 		}
 		if (alg.getName() == null) {
 			res.setText(
@@ -106,7 +106,7 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 			public void actionPerformed(ActionEvent e) {
 				if (closeDialogBeforeExecution(alg))
 					FolderPanel.closeParentDialog((JButton) e.getSource());
-
+				
 				// fix for the special case when an algorithm called by the launch-gui does not
 				// need an active graph (e.g. random graph generators
 				EditorSession es = MainFrame.getInstance().getActiveEditorSession();
@@ -123,7 +123,7 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 				+ (closeDialogBeforeExecution(alg) ? "" : "<b>not</b> ") + "be closed afterwards.");
 		return TableLayout.getSplitVertical(res, null, TableLayout.PREFERRED, 5);
 	}
-
+	
 	private int getRealAlgorithmsSize() {
 		int cnt = 0;
 		for (Algorithm alg : getAlgorithms())
@@ -131,21 +131,21 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 				cnt++;
 		return cnt;
 	}
-
+	
 	protected enum ButtonSize {
 		SMALL, LARGE, DYNAMIC
 	}
-
+	
 	@Override
 	public boolean closeDialogBeforeExecution(Algorithm algorithm) {
 		return true;
 	}
-
+	
 	@Override
 	public boolean activeForView(View v) {
 		return v != null;
 	}
-
+	
 	/**
 	 * By default all LaunchGui Windows are modal. Override to change.
 	 * 

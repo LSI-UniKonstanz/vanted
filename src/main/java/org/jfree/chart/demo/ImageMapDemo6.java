@@ -53,22 +53,22 @@ import org.jfree.util.TableOrder;
  * Creates an HTML image map for a multiple pie chart.
  */
 public class ImageMapDemo6 {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public ImageMapDemo6() {
 		super();
 	}
-
+	
 	/**
 	 * Saves the chart image and HTML.
 	 */
 	public void saveImageAndHTML() {
-
+		
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -79,13 +79,13 @@ public class ImageMapDemo6 {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// save it to an image
 		try {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File file1 = new File("multipiechart100.png");
 			ChartUtilities.saveChartAsPNG(file1, chart, 600, 400, info);
-
+			
 			// write an HTML page incorporating the image with an image map
 			final File file2 = new File("multipiechart100.html");
 			final OutputStream out = new BufferedOutputStream(new FileOutputStream(file2));
@@ -99,12 +99,12 @@ public class ImageMapDemo6 {
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();
-
+			
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -116,12 +116,12 @@ public class ImageMapDemo6 {
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Region ", "Sales/Q", data);
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample chart with the given dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
@@ -135,19 +135,19 @@ public class ImageMapDemo6 {
 		p.setLabelGenerator(new StandardPieItemLabelGenerator("{0}"));
 		p.setLabelFont(new Font("SansSerif", Font.PLAIN, 8));
 		p.setInteriorGap(0.30);
-
+		
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final ImageMapDemo6 demo = new ImageMapDemo6();
 		demo.saveImageAndHTML();
 	}
-
+	
 }

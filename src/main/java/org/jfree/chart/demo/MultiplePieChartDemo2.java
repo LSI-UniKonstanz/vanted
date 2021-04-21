@@ -53,24 +53,24 @@ import org.jfree.util.TableOrder;
  * dataset by column rather than by row.
  */
 public class MultiplePieChartDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MultiplePieChartDemo2(final String title) {
-
+		
 		super(title);
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart, true, true, true, false, true);
 		chartPanel.setPreferredSize(new java.awt.Dimension(600, 380));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -81,7 +81,7 @@ public class MultiplePieChartDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -93,12 +93,12 @@ public class MultiplePieChartDemo2 extends ApplicationFrame {
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Region ", "Sales/Q", data);
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a sample chart with the given dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
@@ -120,20 +120,20 @@ public class MultiplePieChartDemo2 extends ApplicationFrame {
 		p.setInteriorGap(0.30);
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final MultiplePieChartDemo2 demo = new MultiplePieChartDemo2("Multiple Pie Chart Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

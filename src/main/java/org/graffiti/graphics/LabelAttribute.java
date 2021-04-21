@@ -40,75 +40,75 @@ import org.graffiti.graph.Node;
 public abstract class LabelAttribute extends HashMapAttribute implements GraphicAttributeConstants {
 	// ~ Instance fields
 	// ========================================================
-
+	
 	private int lastComponentHeight = -1;
-
+	
 	public void setLastComponentHeight(int height) {
 		lastComponentHeight = height;
 	}
-
+	
 	public int getLastComponentHeight() {
 		if (lastComponentHeight >= 0)
 			return lastComponentHeight;
 		else
 			return (new JLabel(getLabel())).getPreferredSize().height;
 	}
-
+	
 	private int lastComponentWidth = -1;
-
+	
 	public void setLastComponentWidth(int width) {
 		lastComponentWidth = width;
 	}
-
+	
 	public int getLastComponentWidth() {
 		if (lastComponentWidth >= 0)
 			return lastComponentWidth;
 		else
 			return (new JLabel(getLabel())).getPreferredSize().width;
 	}
-
+	
 	// private JLabel lastLabel = null;
-
+	
 	private static final int defaultSize = 12; // new
 	// JLabel().getFont().getSize();
 	private static final String defaultFont = getDefaultFont();
-
+	
 	public void setLastLabel(JLabel lastLabel) {
 		// this.lastLabel = lastLabel;
 	}
-
+	
 	private static final String defaultFontName = "Arial";
-
+	
 	private static String getDefaultFont() {
 		return defaultFontName;
 		// String name = "Arial"; // new JLabel().getFont().getFamily();
 		// return name;
 	}
-
+	
 	// ~ Constructors
 	// ===========================================================
 	public LabelAttribute() {
 		this(LABELGRAPHICS);
 		ErrorMsg.addErrorMessage("INTERNAL ERROR, Label Attribute Created, with no ID!");
 	}
-
+	
 	/**
 	 * Constructor for Label.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 */
 	public LabelAttribute(String id) {
 		this(id, "");
 	}
-
+	
 	/**
 	 * Constructor for Label.
 	 * 
 	 * @param id
-	 *            the id of the attribute.
+	 *           the id of the attribute.
 	 * @param l
-	 *            the label-value of the attribute.
+	 *           the label-value of the attribute.
 	 */
 	public LabelAttribute(String id, String l) {
 		super(id);
@@ -118,19 +118,19 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		add(StringAttribute.getTypedStringAttribute(LABEL, l), false);
 		add(StringAttribute.getTypedStringAttribute(FONTNAME, defaultFont), false);
 		add(StringAttribute.getTypedStringAttribute(ALIGNMENT, "center"/*
-																		 * "left" right,center
-																		 */), false);
+																							* "left" right,center
+																							*/), false);
 		add(new IntegerAttribute(FONTSIZE, defaultSize), false);
 		add(StringAttribute.getTypedStringAttribute(FONTSTYLE, "plain"/*
-																		 * italic,bold
-																		 */), false);
+																							* italic,bold
+																							*/), false);
 		add(StringAttribute.getTypedStringAttribute(TEXTCOLOR, ColorUtil.getHexFromColor(java.awt.Color.BLACK)), false);
 		add(new StringAttribute("type", "text"), false);
 		add(new CoordinateAttribute(LABELOFFSET, 0, 0), false); // add coordinate attribute for relative offset of label
-																// position from center of a node
+		// position from center of a node
 		// set default offset (0, 0)
 	}
-
+	
 	@Override
 	public void add(Attribute a, boolean inform) throws AttributeExistsException, FieldAlreadySetException {
 		if (attributes.containsKey(a.getId())) {
@@ -138,15 +138,15 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		} else
 			super.add(a, inform);
 	}
-
+	
 	private void cacheSet(Attribute attribute, Object value) {
 		attribute.setValue(value);
 	}
-
+	
 	private void cacheSetS(StringAttribute stringAttribute, String sv) {
 		stringAttribute.setValue(sv);
 	}
-
+	
 	@Override
 	public void add(Attribute a) throws AttributeExistsException, FieldAlreadySetException {
 		if (attributes.containsKey(a.getId())) {
@@ -154,47 +154,47 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		} else
 			super.add(a);
 	}
-
+	
 	// ~ Methods
 	// ================================================================
-
+	
 	public void setAlignment(String a) {
 		cacheSetS((StringAttribute) attributes.get(ANCHOR), a);
 	}
-
+	
 	public String getAlignment() {
 		if (attributes.get(ANCHOR) != null)
 			return ((StringAttribute) attributes.get(ANCHOR)).getString();
 		else
 			return GraphicAttributeConstants.CENTERED;
 	}
-
+	
 	public String getAlignmentText() {
 		return ((StringAttribute) attributes.get(ALIGNMENT)).getString();
 	}
-
+	
 	public void setFontName(String f) {
 		cacheSetS((StringAttribute) attributes.get(FONTNAME), f);
 	}
-
+	
 	public String getFontName() {
 		if (attributes.get(FONTNAME) != null)
 			return ((StringAttribute) attributes.get(FONTNAME)).getString();
 		else
 			return defaultFont;
 	}
-
+	
 	public void setFontStyle(String fs) {
 		cacheSetS((StringAttribute) attributes.get(FONTSTYLE), fs);
 	}
-
+	
 	public String getFontStyle() {
 		if (attributes.get(FONTSTYLE) != null)
 			return ((StringAttribute) attributes.get(FONTSTYLE)).getString();
 		else
 			return "plain";
 	}
-
+	
 	public int getFontStyleJava() {
 		int fontStyleInt = 0;
 		String fontStyle = getFontStyle();
@@ -204,23 +204,23 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 			fontStyleInt += Font.ITALIC;
 		return fontStyleInt;
 	}
-
+	
 	public void setFontSize(int fs) {
 		((IntegerAttribute) attributes.get(FONTSIZE)).setInteger(fs);
 	}
-
+	
 	public int getFontSize() {
 		if (attributes.get(FONTSIZE) != null)
 			return ((IntegerAttribute) attributes.get(FONTSIZE)).getInteger();
 		else
 			return defaultSize;
 	}
-
+	
 	/**
 	 * Sets the 'label'-value.
 	 * 
 	 * @param l
-	 *            the 'label'-value to be set.
+	 *           the 'label'-value to be set.
 	 */
 	public void setLabel(String l) {
 		if (attributes.get(LABEL) == null)
@@ -228,7 +228,7 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		else
 			((StringAttribute) attributes.get(LABEL)).setString(l);
 	}
-
+	
 	/**
 	 * Returns the 'label'-value of the encapsulated label.
 	 * 
@@ -240,21 +240,21 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		else
 			return null;
 	}
-
+	
 	/**
 	 * Set the 'textcolor'-value.
 	 * 
 	 * @param tc
-	 *            the 'textcolor'-value to be set.
+	 *           the 'textcolor'-value to be set.
 	 */
 	public void setTextcolor(String tc) {
 		cacheSetS((StringAttribute) attributes.get(TEXTCOLOR), tc);
 	}
-
+	
 	public void setTextcolor(Color c) {
 		cacheSetS((StringAttribute) attributes.get(TEXTCOLOR), ColorUtil.getHexFromColor(c));
 	}
-
+	
 	/**
 	 * Returns the 'textcolor'-value of the encapsulated label.
 	 * 
@@ -266,7 +266,7 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		else
 			return Color.black;
 	}
-
+	
 	// public void wordWrap() {
 	// if (!(getAttributable() instanceof Node))
 	// return;
@@ -316,7 +316,7 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 	// }
 	// setLabel(result);
 	// }
-
+	
 	private String getLabel(boolean stripHTML) {
 		String result = getLabel();
 		if (stripHTML) {
@@ -324,12 +324,12 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		}
 		return result;
 	}
-
+	
 	public boolean getUseDropShadow() {
 		String s = getFontStyle().toUpperCase();
 		return s.contains("SHADOW");
 	}
-
+	
 	public LabelFrameSetting getLabelFrameSetting() {
 		String s = getFontStyle();
 		for (LabelFrameSetting lfs : LabelFrameSetting.values())
@@ -337,19 +337,19 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 				return lfs;
 		return LabelFrameSetting.NO_FRAME;
 	}
-
+	
 	public int getShadowOffX() {
 		if (!attributes.containsKey(GraphicAttributeConstants.SHADOWOFFSET))
 			add(new IntegerAttribute(GraphicAttributeConstants.SHADOWOFFSET, 1));
 		return ((IntegerAttribute) attributes.get(GraphicAttributeConstants.SHADOWOFFSET)).getInteger();
 	}
-
+	
 	public int getShadowOffY() {
 		if (!attributes.containsKey(GraphicAttributeConstants.SHADOWOFFSET))
 			add(new IntegerAttribute(GraphicAttributeConstants.SHADOWOFFSET, 1));
 		return ((IntegerAttribute) attributes.get(GraphicAttributeConstants.SHADOWOFFSET)).getInteger();
 	}
-
+	
 	public Color getShadowTextColor() {
 		if (!attributes.containsKey(GraphicAttributeConstants.SHADOWCOLOR)) {
 			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.SHADOWCOLOR,
@@ -361,27 +361,26 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		Color resultCol = colorAtt.getColor();
 		return resultCol;
 	}
-
+	
 	public void wordWrap() {
 		if (!(getAttributable() instanceof Node))
 			return;
 		JLabel lastLabel = new JLabel(getLabel());
 		String fontName = getFontName();
-		int fontStyleInt = getFontStyleJava();
-		;
+		int fontStyleInt = getFontStyleJava();;
 		int fontSize = getFontSize();
 		lastLabel.setFont(new Font(fontName, fontStyleInt, fontSize));
-
+		
 		FontMetrics fm = lastLabel.getFontMetrics(lastLabel.getFont());
 		int containerWidth = (int) AttributeHelper.getSize((Node) getAttributable()).x;
-
+		
 		BreakIterator boundary = BreakIterator.getWordInstance();
-
+		
 		boundary.setText(getLabel(true));
-
+		
 		StringBuffer trial = new StringBuffer();
 		StringBuffer real = new StringBuffer("<html>");
-
+		
 		int start = boundary.first();
 		for (int end = boundary.next(); end != BreakIterator.DONE; start = end, end = boundary.next()) {
 			String word = getLabel(true).substring(start, end);
@@ -394,7 +393,7 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 			}
 			real.append(word);
 		}
-
+		
 		String result = real.toString();
 		result = StringManipulationTools.stringReplace(result, "<html><br>", "<html>");
 		result = StringManipulationTools.stringReplace(result, "<br> <br>", " <br>");
@@ -405,7 +404,7 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 		}
 		setLabel(result);
 	}
-
+	
 	/**
 	 * Get the relative offset of label position from center of a node. Offset is
 	 * relative to node width/height; (0, 0) center of node, (-1, -1) top-left
@@ -415,7 +414,7 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 	 * @return relative offset of label position from center of a node
 	 */
 	public Vector2d getLabelOffset() {
-
+		
 		CoordinateAttribute ca = (CoordinateAttribute) this.attributes.get(LABELOFFSET);
 		/*
 		 * it will be null, if an older VANTED GML is opened without the labeloffset
@@ -428,9 +427,9 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 			add(ca, false);
 		}
 		return new Vector2d(ca.getX(), ca.getY());
-
+		
 	}
-
+	
 	/**
 	 * Set the relative offset of label position from center of a node. Offset is
 	 * relative to node width/height; (0, 0) center of node, (-1, -1) top-left
@@ -438,12 +437,12 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 	 * of node, (-1, 1) bottom-left corner of node.
 	 * 
 	 * @param offsetX
-	 *            horizontal offset of label position from center of a node
+	 *           horizontal offset of label position from center of a node
 	 * @param offsetY
-	 *            vertical offset of label position from center of a node
+	 *           vertical offset of label position from center of a node
 	 */
 	public void setLabelOffset(double offsetX, double offsetY) {
-
+		
 		// set new attribute
 		if (!this.attributes.containsKey(GraphicAttributeConstants.LABELOFFSET)) {
 			Attribute attribute = new CoordinateAttribute(LABELOFFSET, offsetX, offsetY);
@@ -456,9 +455,9 @@ public abstract class LabelAttribute extends HashMapAttribute implements Graphic
 			coordinateAttribute.setX(offsetX);
 			coordinateAttribute.setY(offsetY);
 		}
-
+		
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

@@ -6,7 +6,7 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.ComboBoxEditComponent;
 
 public class NodePathwayLinkVisualizationAttributeEditor extends ComboBoxEditComponent {
-
+	
 	public NodePathwayLinkVisualizationAttributeEditor(Displayable disp) {
 		super(disp);
 		this.comboText = new String[] { "Off", "Segments", "Dots" };

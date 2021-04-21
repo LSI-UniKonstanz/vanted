@@ -16,8 +16,7 @@ package org.graffiti.plugin.parameter;
  * @version $Revision: 1.3 $
  * @see ParameterList
  */
-public interface SingleParameter extends Parameter {
-}
+public interface SingleParameter extends Parameter {}
 
 // ------------------------------------------------------------------------------
 // end of file

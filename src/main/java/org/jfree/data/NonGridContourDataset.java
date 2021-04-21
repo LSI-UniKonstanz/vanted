@@ -34,66 +34,66 @@ package org.jfree.data;
  * acommadate non-grid data.
  */
 public class NonGridContourDataset extends DefaultContourDataset {
-
+	
 	/** Default number of x values. */
 	final int DEFAULT_NUM_X = 50;
-
+	
 	/** Default number of y values. */
 	final int DEFAULT_NUM_Y = 50;
-
+	
 	/** Default power. */
 	final int DEFAULT_POWER = 4;
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public NonGridContourDataset() {
 		super();
 	}
-
+	
 	/**
 	 * Constructor for NonGridContourDataset. Uses default values for grid
 	 * dimensions and weighting.
 	 * 
 	 * @param seriesName
-	 *            the series name.
+	 *           the series name.
 	 * @param xData
-	 *            the x values.
+	 *           the x values.
 	 * @param yData
-	 *            the y values.
+	 *           the y values.
 	 * @param zData
-	 *            the z values.
+	 *           the z values.
 	 */
 	public NonGridContourDataset(final String seriesName, final Object[] xData, final Object[] yData,
 			final Object[] zData) {
 		super(seriesName, xData, yData, zData);
 		buildGrid(DEFAULT_NUM_X, DEFAULT_NUM_Y, DEFAULT_POWER);
 	}
-
+	
 	/**
 	 * Constructor for NonGridContourDataset.
 	 * 
 	 * @param seriesName
-	 *            the series name.
+	 *           the series name.
 	 * @param xData
-	 *            the x values.
+	 *           the x values.
 	 * @param yData
-	 *            the y values.
+	 *           the y values.
 	 * @param zData
-	 *            the z values.
+	 *           the z values.
 	 * @param numX
-	 *            number grid cells in along the x-axis
+	 *           number grid cells in along the x-axis
 	 * @param numY
-	 *            number grid cells in along the y-axis
+	 *           number grid cells in along the y-axis
 	 * @param power
-	 *            exponent for inverse distance weighting
+	 *           exponent for inverse distance weighting
 	 */
 	public NonGridContourDataset(final String seriesName, final Object[] xData, final Object[] yData,
 			final Object[] zData, final int numX, final int numY, final int power) {
 		super(seriesName, xData, yData, zData);
 		buildGrid(numX, numY, power);
 	}
-
+	
 	/**
 	 * Builds a regular grid. Maps the non-grid data into the regular grid using an
 	 * inverse distance between grid and non-grid points. Weighting of distance can
@@ -101,50 +101,50 @@ public class NonGridContourDataset extends DefaultContourDataset {
 	 * exponent used on the distance weighting (e.g., distance^power).
 	 * 
 	 * @param numX
-	 *            number grid points in along the x-axis
+	 *           number grid points in along the x-axis
 	 * @param numY
-	 *            number grid points in along the y-axis
+	 *           number grid points in along the y-axis
 	 * @param power
-	 *            exponent for inverse distance weighting
+	 *           exponent for inverse distance weighting
 	 */
 	protected void buildGrid(final int numX, final int numY, final int power) {
-
+		
 		final int numValues = numX * numY;
 		double[] xGrid = new double[numValues];
 		double[] yGrid = new double[numValues];
 		double[] zGrid = new double[numValues];
-
+		
 		// Find min, max for the x and y axes
 		double xMin = 1.e20;
 		for (int k = 0; k < this.xValues.length; k++) {
 			xMin = Math.min(xMin, this.xValues[k].doubleValue());
 		}
-
+		
 		double xMax = -1.e20;
 		for (int k = 0; k < this.xValues.length; k++) {
 			xMax = Math.max(xMax, this.xValues[k].doubleValue());
 		}
-
+		
 		double yMin = 1.e20;
 		for (int k = 0; k < this.yValues.length; k++) {
 			yMin = Math.min(yMin, this.yValues[k].doubleValue());
 		}
-
+		
 		double yMax = -1.e20;
 		for (int k = 0; k < this.yValues.length; k++) {
 			yMax = Math.max(yMax, this.yValues[k].doubleValue());
 		}
-
+		
 		final Range xRange = new Range(xMin, xMax);
 		final Range yRange = new Range(yMin, yMax);
-
+		
 		xRange.getLength();
 		yRange.getLength();
-
+		
 		// Determine the cell size
 		final double dxGrid = xRange.getLength() / (numX - 1);
 		final double dyGrid = yRange.getLength() / (numY - 1);
-
+		
 		// Generate the grid
 		double x = 0.0;
 		for (int i = 0; i < numX; i++) {
@@ -165,7 +165,7 @@ public class NonGridContourDataset extends DefaultContourDataset {
 				yGrid[k] = y;
 			}
 		}
-
+		
 		// Map the nongrid data into the new regular grid
 		for (int kGrid = 0; kGrid < xGrid.length; kGrid++) {
 			double dTotal = 0.0;
@@ -191,23 +191,23 @@ public class NonGridContourDataset extends DefaultContourDataset {
 			}
 			zGrid[kGrid] = zGrid[kGrid] / dTotal; // remove distance of the sum
 		}
-
+		
 		// initalize xValues, yValues, and zValues arrays.
 		initialize(formObjectArray(xGrid), formObjectArray(yGrid), formObjectArray(zGrid));
-
+		
 	}
-
+	
 	/**
 	 * Calculates the distance between two points.
 	 * 
 	 * @param xDataPt
-	 *            the x coordinate.
+	 *           the x coordinate.
 	 * @param yDataPt
-	 *            the y coordinate.
+	 *           the y coordinate.
 	 * @param xGrdPt
-	 *            the x grid coordinate.
+	 *           the x grid coordinate.
 	 * @param yGrdPt
-	 *            the y grid coordinate.
+	 *           the y grid coordinate.
 	 * @return The distance between two points.
 	 */
 	protected double distance(final double xDataPt, final double yDataPt, final double xGrdPt, final double yGrdPt) {
@@ -215,5 +215,5 @@ public class NonGridContourDataset extends DefaultContourDataset {
 		final double dy = yDataPt - yGrdPt;
 		return Math.sqrt(dx * dx + dy * dy);
 	}
-
+	
 }

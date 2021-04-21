@@ -22,16 +22,16 @@ import org.graffiti.plugin.io.resources.IOurl;
 import org.graffiti.plugin.parameter.MultiFileSelectionParameter;
 
 public class MultiFileSelectionEditComponent extends AbstractValueEditComponent {
-
+	
 	private JButton selectFiles = null;
 	// private JLabel indicator = null;
 	private ArrayList<IOurl> urls;
 	protected String oldText = "";
-
+	
 	public MultiFileSelectionEditComponent(Displayable disp) {
 		super(disp);
 	}
-
+	
 	@Override
 	public JComponent getComponent() {
 		if (selectFiles == null) {
@@ -45,7 +45,7 @@ public class MultiFileSelectionEditComponent extends AbstractValueEditComponent 
 						for (String ext : extensions)
 							if (f.getName().toLowerCase().endsWith(ext.toLowerCase()))
 								goodFiles.add(f);
-
+							
 					urls = new ArrayList<IOurl>();
 					if (!((MultiFileSelectionParameter) getDisplayable()).selectMultipleFile()
 							&& goodFiles.size() > 1) {
@@ -55,14 +55,14 @@ public class MultiFileSelectionEditComponent extends AbstractValueEditComponent 
 					} else
 						for (File f : goodFiles)
 							urls.add(FileSystemHandler.getURL(f));
-
+						
 					setValue();
 					setEditFieldValue();
-
+					
 				}
 			});
 			selectFiles.addActionListener(new ActionListener() {
-
+				
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String[] extensions = ((MultiFileSelectionParameter) getDisplayable()).getExtensions();
@@ -81,16 +81,16 @@ public class MultiFileSelectionEditComponent extends AbstractValueEditComponent 
 					urls = new ArrayList<IOurl>();
 					for (File f : files)
 						urls.add(FileSystemHandler.getURL(f));
-
+					
 					setValue();
 					setEditFieldValue();
 				}
 			});
 		}
-
+		
 		return selectFiles;
 	}
-
+	
 	@Override
 	public void setEditFieldValue() {
 		if (showEmpty)
@@ -100,10 +100,10 @@ public class MultiFileSelectionEditComponent extends AbstractValueEditComponent 
 			selectFiles.setText(size + " file" + (size == 1 ? "" : "s") + " selected");
 		}
 	}
-
+	
 	@Override
 	public void setValue() {
 		displayable.setValue(MultiFileSelectionParameter.convertToString(urls));
 	}
-
+	
 }

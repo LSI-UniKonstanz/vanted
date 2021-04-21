@@ -35,22 +35,22 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 	/*************************************************************/
 	/* Member variables */
 	/*************************************************************/
-
+	
 	/**
 	 * Horizontal distance between nodes
 	 */
 	private double xDistance = 10;
-
+	
 	/**
 	 * Vertical distance between nodes
 	 */
 	private double yDistance = 10;
-
+	
 	/**
 	 * width/height ratio
 	 */
 	private double widthHeightRatio = 1;
-
+	
 	/**
 	 * Returns the name of the algorithm.
 	 * 
@@ -59,56 +59,56 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Grid (no node resize)";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Layout";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-
+	
 	/**
 	 * Checks parameters
 	 * 
 	 * @throws PreconditionException
-	 *             if xDistance, yDistance or widthHeightRatio is smaller than 0 or
-	 *             the graph does not exists
+	 *            if xDistance, yDistance or widthHeightRatio is smaller than 0 or
+	 *            the graph does not exists
 	 */
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-
+		
 		if (graph == null) {
 			errors.add("No graph available!");
 		}
-
+		
 		if ((xDistance < 0) | (yDistance < 0)) {
 			errors.add("The distance (x or y) may not be negative.");
 		}
-
+		
 		if (widthHeightRatio <= 0) {
 			errors.add("The widht/height ratio may not be negative.");
 		}
-
+		
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
-
+		
 		if (graph.getNumberOfNodes() <= 0) {
 			throw new PreconditionException("The graph is empty. Cannot run layouter.");
 		}
-
+		
 	}
-
+	
 	/**
 	 * Computes node coordinates and sets these coordinates
 	 */
 	public void execute() {
 		Collection<Node> workNodes = getSelectedOrAllNodes();
-
+		
 		try {
 			graph.getListenerManager().transactionStarted(this);
 			layoutOnGrid(workNodes, widthHeightRatio, xDistance, yDistance);
@@ -116,7 +116,7 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-
+	
 	public static void layoutOnGrid(Collection<Node> workNodes, double widthHeightRatio, double xDistance,
 			double yDistance) {
 		workNodes = GraphHelper.getVisibleNodes(workNodes);
@@ -125,9 +125,9 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 			return;
 		int nodesOnLine = (int) (Math.sqrt(--numberOfNodes));
 		GridLayouterAlgorithm.layoutOnGrid(workNodes, widthHeightRatio, xDistance, yDistance, nodesOnLine, null);
-
+		
 	}
-
+	
 	public static void layoutOnGrid(Collection<Node> workNodes, double widthHeightRatio, double xDistance,
 			double yDistance, int nodesOnLine, Point location) {
 		/*
@@ -136,18 +136,18 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 		 */
 		int numberOfNodes = workNodes.size();
 		int nodeLines = (int) (Math.sqrt(numberOfNodes));
-
+		
 		nodesOnLine *= widthHeightRatio;
 		if (nodesOnLine == 0) {
 			nodesOnLine = 1;
 		}
 		int i = 0;
 		int j = 0;
-
+		
 		Vector2d ctr = NodeTools.getCenter(workNodes);
-
+		
 		double xStart;
-
+		
 		double yStart;
 		if (location == null) {
 			xStart = ctr.x - (nodesOnLine * xDistance / 2d);
@@ -157,33 +157,33 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 			yStart = location.getY();
 		}
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
-
+		
 		HashMap<Integer, Double> maxWidthInColumn = new HashMap<Integer, Double>();
 		HashMap<Integer, Double> maxHeightInRow = new HashMap<Integer, Double>();
-
+		
 		for (Node n : workNodes) {
 			Vector2d sz = AttributeHelper.getSize(n);
 			if (!maxWidthInColumn.containsKey(i))
 				maxWidthInColumn.put(i, sz.x);
 			if (!maxHeightInRow.containsKey(j))
 				maxHeightInRow.put(j, sz.y);
-
+			
 			if (maxWidthInColumn.get(i) < sz.x)
 				maxWidthInColumn.put(i, sz.x);
-
+			
 			if (maxHeightInRow.get(j) < sz.y)
 				maxHeightInRow.put(j, sz.y);
-
+			
 			i++;
 			if (i > nodesOnLine) {
 				j++;
 				i = 0;
 			}
 		}
-
+		
 		i = 0;
 		j = 0;
-
+		
 		for (Node n : workNodes) {
 			/* Compute the new node coordinates */
 			double wid = 0;
@@ -192,25 +192,25 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 			double hei = 0;
 			for (int k = 0; k < j; k++)
 				hei += maxHeightInRow.get(k);
-
+			
 			wid += maxWidthInColumn.get(i) / 2;
 			hei += maxHeightInRow.get(j) / 2;
-
+			
 			double newX = xStart + xDistance * i + wid;
 			double newY = yStart + yDistance * j + hei;
-
+			
 			nodes2newPositions.put(n, new Vector2d(newX, newY));
-
+			
 			i++;
 			if (i > nodesOnLine) {
 				j++;
 				i = 0;
 			}
 		}
-
+		
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, "Grid Layout");
 	}
-
+	
 	/**
 	 * Parameters
 	 * 
@@ -220,22 +220,22 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		DoubleParameter xDistanceParam = new DoubleParameter("x distance",
 				"The distance between nodes in horizontal direction.");
-
+		
 		DoubleParameter yDistanceParam = new DoubleParameter("y distance",
 				"The distance between nodes in vertical direction.");
-
+		
 		DoubleParameter widthHeightRatioParam = new DoubleParameter("width/heigt ratio",
 				"The ratio between the width and the height of the layout.");
-
+		
 		xDistanceParam.setDouble(xDistance);
 		yDistanceParam.setDouble(yDistance);
-
+		
 		widthHeightRatioParam.setDouble(widthHeightRatio);
-
+		
 		return new Parameter[] { xDistanceParam, yDistanceParam, // xStartParam, yStartParam,
 				widthHeightRatioParam };
 	}
-
+	
 	/**
 	 * Sets parameters
 	 * 
@@ -249,7 +249,7 @@ public class GridLayouterAlgorithm extends AbstractAlgorithm {
 		yDistance = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 		widthHeightRatio = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;

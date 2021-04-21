@@ -35,15 +35,15 @@ public class UPathway extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-
+		
 	}
-
+	
 	public static void readAttributesFromNode(GraphElement node, Graph g, Model model)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		Pathway interaction = model.addNew(Pathway.class, RDFID);
-
+		
 		UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 		UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 		UtilitySuperClassFromGraph.getComment(elem, interaction);
@@ -52,7 +52,7 @@ public class UPathway extends UtilitySuperClassToGraph {
 		UtilitySuperClassFromGraph.getName(elem, interaction);
 		UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
-
+		
 	}
-
+	
 }

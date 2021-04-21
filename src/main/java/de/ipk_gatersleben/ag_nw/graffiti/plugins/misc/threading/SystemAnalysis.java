@@ -12,9 +12,9 @@ import org.HelperClass;
 import org.junit.Test;
 
 public class SystemAnalysis implements HelperClass {
-
+	
 	private static boolean fullPower = false;
-
+	
 	/**
 	 * Use getNumberOfCPUs to determine the number of CPUs to be used for parallel
 	 * computing. This method may be used for analysis of host system.
@@ -24,11 +24,11 @@ public class SystemAnalysis implements HelperClass {
 	public static int getRealNumberOfCPUs() {
 		return Runtime.getRuntime().availableProcessors();
 	}
-
+	
 	public static void setUseFullCpuPower(boolean b) {
 		SystemAnalysis.fullPower = true;
 	}
-
+	
 	public static int getNumberOfCPUs() {
 		boolean useHalfCPUpower = Runtime.getRuntime().availableProcessors() > 8;
 		if (fullPower)
@@ -39,7 +39,7 @@ public class SystemAnalysis implements HelperClass {
 		else
 			return cpus;
 	}
-
+	
 	public static int getNumberOfCPUs(int minimumCPUcountBeforeMultipleCPUsAreUsed) {
 		int cpus = getNumberOfCPUs();
 		if (cpus >= minimumCPUcountBeforeMultipleCPUsAreUsed)
@@ -47,14 +47,14 @@ public class SystemAnalysis implements HelperClass {
 		else
 			return 1;
 	}
-
+	
 	public static String getUserName() {
 		if (AttributeHelper.windowsRunning())
 			return System.getenv("USERNAME");
 		else
 			return System.getenv("USER");
 	}
-
+	
 	public static int getNumberOfCPUsMax(int maximum) {
 		int res = getNumberOfCPUs();
 		if (res < maximum)
@@ -62,23 +62,23 @@ public class SystemAnalysis implements HelperClass {
 		else
 			return maximum;
 	}
-
+	
 	public static String getHostName() throws UnknownHostException {
 		String hostName = InetAddress.getLocalHost().getHostName();
 		String ip = InetAddress.getLocalHost().getHostAddress();
-
+		
 		boolean retIP = true;
 		if (retIP)
 			return ip;
 		else
 			return hostName;
-
+		
 	}
-
+	
 	public static boolean isWindowsRunning() {
 		return AttributeHelper.windowsRunning();
 	}
-
+	
 	@Test
 	public static void analyzeSystem() {
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
@@ -95,7 +95,7 @@ public class SystemAnalysis implements HelperClass {
 			} // if
 		} // for
 	}
-
+	
 	public static long getRealSystemMemoryInByte() {
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
 		for (Method method : operatingSystemMXBean.getClass().getDeclaredMethods()) {
@@ -115,7 +115,7 @@ public class SystemAnalysis implements HelperClass {
 		} // for
 		return -1;
 	}
-
+	
 	/**
 	 * The option -Xmx5g will not result in a result of 5 GB. it seems the java
 	 * parameter does not use base of 1024 values but base of 1000 values.
@@ -125,13 +125,13 @@ public class SystemAnalysis implements HelperClass {
 	public static long getMemoryMB() {
 		return Runtime.getRuntime().maxMemory() / 1024 / 1024;
 	}
-
+	
 	public static long getUsedMemoryInMB() {
 		Runtime r = Runtime.getRuntime();
 		long used = r.totalMemory() - r.freeMemory();
 		return used / 1024 / 1024;
 	}
-
+	
 	/**
 	 * @return windows/linux/mac/other
 	 */

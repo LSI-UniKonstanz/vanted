@@ -16,27 +16,27 @@ package org.graffiti.util;
  */
 public class InstanceCreationException extends Exception {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 5052589819208279218L;
+	
 	/**
 	 * Creates a new InstanceCreationException object.
 	 * 
 	 * @param msg
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public InstanceCreationException(String msg) {
 		super(msg);
 	}
-
+	
 	/**
 	 * Creates a new InstanceCreationException object.
 	 * 
 	 * @param ex
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public InstanceCreationException(Exception ex) {
 		super(ex);

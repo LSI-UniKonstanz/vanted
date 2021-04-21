@@ -35,27 +35,27 @@ package org.jfree.data;
  * {@link IntervalXYDataset} suitable for use in creating XY bar charts.
  */
 public class XYBarDataset extends AbstractIntervalXYDataset implements IntervalXYDataset, DatasetChangeListener {
-
+	
 	/** The underlying dataset. */
 	private XYDataset underlying;
-
+	
 	/** The bar width. */
 	private double barWidth;
-
+	
 	/**
 	 * Creates a new dataset.
 	 * 
 	 * @param underlying
-	 *            the underlying dataset.
+	 *           the underlying dataset.
 	 * @param barWidth
-	 *            the width of the bars.
+	 *           the width of the bars.
 	 */
 	public XYBarDataset(final XYDataset underlying, final double barWidth) {
 		this.underlying = underlying;
 		this.underlying.addChangeListener(this);
 		this.barWidth = barWidth;
 	}
-
+	
 	/**
 	 * Returns the number of series in the dataset.
 	 * 
@@ -64,64 +64,64 @@ public class XYBarDataset extends AbstractIntervalXYDataset implements IntervalX
 	public int getSeriesCount() {
 		return this.underlying.getSeriesCount();
 	}
-
+	
 	/**
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return The series name.
 	 */
 	public String getSeriesName(final int series) {
 		return this.underlying.getSeriesName(series);
 	}
-
+	
 	/**
 	 * Returns the number of items in a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @return The item count.
 	 */
 	public int getItemCount(final int series) {
 		return this.underlying.getItemCount(series);
 	}
-
+	
 	/**
 	 * Returns the x-value for an item within a series. The x-values may or may not
 	 * be returned in ascending order, that is up to the class implementing the
 	 * interface.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
 		return this.underlying.getXValue(series, item);
 	}
-
+	
 	/**
 	 * Returns the y-value for an item within a series.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item (zero-based index).
+	 *           the item (zero-based index).
 	 * @return The y-value (possibly <code>null</code>).
 	 */
 	public Number getYValue(final int series, final int item) {
 		return this.underlying.getYValue(series, item);
 	}
-
+	
 	/**
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return The starting X value for the specified series and item.
 	 */
 	public Number getStartXValue(final int series, final int item) {
@@ -132,14 +132,14 @@ public class XYBarDataset extends AbstractIntervalXYDataset implements IntervalX
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return The ending X value for the specified series and item.
 	 */
 	public Number getEndXValue(final int series, final int item) {
@@ -150,41 +150,41 @@ public class XYBarDataset extends AbstractIntervalXYDataset implements IntervalX
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return The starting Y value for the specified series and item.
 	 */
 	public Number getStartYValue(final int series, final int item) {
 		return this.underlying.getYValue(series, item);
 	}
-
+	
 	/**
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *            the series (zero-based index).
+	 *           the series (zero-based index).
 	 * @param item
-	 *            the item within a series (zero-based index).
+	 *           the item within a series (zero-based index).
 	 * @return The ending Y value for the specified series and item.
 	 */
 	public Number getEndYValue(final int series, final int item) {
 		return this.underlying.getYValue(series, item);
 	}
-
+	
 	/**
 	 * Receives notification of an dataset change event.
 	 * 
 	 * @param event
-	 *            information about the event.
+	 *           information about the event.
 	 */
 	public void datasetChanged(final DatasetChangeEvent event) {
 		this.notifyListeners(event);
 	}
-
+	
 }

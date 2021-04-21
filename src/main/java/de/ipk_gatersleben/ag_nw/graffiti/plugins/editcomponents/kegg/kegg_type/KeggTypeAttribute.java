@@ -8,61 +8,61 @@ import org.graffiti.event.AttributeEvent;
 
 public class KeggTypeAttribute extends StringAttribute {
 	private String myValue;
-
+	
 	public KeggTypeAttribute() {
 		super();
 	}
-
+	
 	public KeggTypeAttribute(String id) {
 		super(id);
 		setDescription("KEGG Type"); // tooltip
 	}
-
+	
 	public KeggTypeAttribute(String id, String value) {
 		super(id);
 		setString(value);
 	}
-
+	
 	@Override
 	public void setDefaultValue() {
 		myValue = null;
 	}
-
+	
 	@Override
 	public void setString(String value) {
 		assert value != null;
-
+		
 		AttributeEvent ae = new AttributeEvent(this);
 		callPreAttributeChanged(ae);
 		myValue = value;
 		callPostAttributeChanged(ae);
 	}
-
+	
 	@Override
 	public String getString() {
 		return myValue;
 	}
-
+	
 	@Override
 	public Object getValue() {
 		return getString();
 	}
-
+	
 	@Override
 	public Object copy() {
 		return new KeggTypeAttribute(this.getId(), this.getString());
 	}
-
+	
 	@Override
 	public String toString(int n) {
 		return getSpaces(n) + getId() + " = \"" + getString() + "\"";
 	}
-
+	
 	@Override
 	public String toXMLString() {
 		return getStandardXML(getString());
 	}
-
+	
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
 		try {

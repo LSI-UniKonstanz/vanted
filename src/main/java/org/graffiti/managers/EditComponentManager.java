@@ -31,21 +31,21 @@ import org.graffiti.util.InstanceLoader;
  */
 public class EditComponentManager implements PluginManagerListener {
 	// ~ Instance fields ========================================================
-
+	
 	/** Maps displayable classes to ValueEditComponent classes. */
 	private Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs an EditComponentManager.
 	 */
 	public EditComponentManager() {
 		this.valueEditComponents = new HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>>();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the map of value edit components.
 	 * 
@@ -54,25 +54,25 @@ public class EditComponentManager implements PluginManagerListener {
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getEditComponents() {
 		return valueEditComponents;
 	}
-
+	
 	/**
 	 * Returns an instance of the ValueEditComponent that is capable of providing a
 	 * possibility to alter the value of the displayable with type
 	 * <code>aType</code>.
 	 * 
 	 * @param aType
-	 *            the class of the displayable to retrieve a component for.
+	 *           the class of the displayable to retrieve a component for.
 	 * @return an instance of an ValueEditComponent.
 	 * @throws EditComponentNotFoundException
-	 *             DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ValueEditComponent getValueEditComponent(Displayable aType) throws EditComponentNotFoundException {
 		if (!(valueEditComponents.containsKey(aType.getClass()))) {
 			throw new EditComponentNotFoundException("No registered ValueEditComponent for displayable type " + aType);
 		}
-
+		
 		Class<? extends ValueEditComponent> ac = valueEditComponents.get(aType.getClass());
-
+		
 		// ValueEditComponent component = ac.newInstance();
 		ValueEditComponent component;
 		try {
@@ -82,23 +82,23 @@ public class EditComponentManager implements PluginManagerListener {
 			// aType);
 			component.setDisplayable(aType);
 			component.setEditFieldValue();
-
+			
 			return component;
 		} catch (InstanceCreationException e) {
 			
 			e.printStackTrace();
 		}
-
+		
 		throw new EditComponentNotFoundException("No registered ValueEditComponent for displayable type " + aType);
 	}
-
+	
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
 	 * 
 	 * @param plugin
-	 *            the added plugin.
+	 *           the added plugin.
 	 * @param desc
-	 *            the description of the new plugin.
+	 *           the description of the new plugin.
 	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		// System.out.println("putting: " + plugin.getAttributeComponents());

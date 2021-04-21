@@ -43,12 +43,12 @@ import javax.swing.filechooser.FileFilter;
 
 class BlocksFileFilter extends FileFilter {
 	public File lastSelectedFile = null;
-
+	
 	@Override
 	public boolean accept(File file) {
 		return file.isDirectory() || file.getName().endsWith(".blocks") || file.getName().endsWith(".dot");
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "Blocks and Dot graph files";
@@ -56,31 +56,32 @@ class BlocksFileFilter extends FileFilter {
 }
 
 public class RectangleDrawerPanel extends JPanel implements Printable, MouseInputListener, Observer {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -4170710907119480165L;
+	
 	private int prevX, prevY;
-
+	
 	private boolean dragging;
-
+	
 	private Graphics2D g;
-
+	
 	private Rectangle2D rect;
-
+	
 	private ArrayList<Rectangle2D> rectangles = new ArrayList<Rectangle2D>();
-
+	
 	private Graph graph = null;
-
+	
 	private ArrayList<Rectangle2D> undoRectangles = new ArrayList<Rectangle2D>();;
-
+	
 	private Constraints constraints;
-
+	
 	BlocksFileFilter fileFilter = new BlocksFileFilter();
-
+	
 	protected Hashtable<Rectangle2D, Color> rectangleColourMap = new Hashtable<Rectangle2D, Color>();
-
+	
 	protected void generateRandom() {
 		clear();
 		Dimension dim = getSize();
@@ -105,7 +106,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		fitToScreen();
 		repaint();
 	}
-
+	
 	void fitToScreen() {
 		ArrayList<Rectangle2D> rectangles = getRectangles();
 		int xmax = 0;
@@ -144,7 +145,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			r.setRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
 		}
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	protected void load(File f) {
 		clear();
@@ -178,7 +179,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		fitToScreen();
 		repaint();
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -190,18 +191,18 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			undoRectangles.add(nr);
 		}
 	}
-
+	
 	protected void undo() {
 		rectangles = new ArrayList<Rectangle2D>(undoRectangles);
 	}
-
+	
 	/**
 	 * @return
 	 */
 	protected BlocksFileFilter getFileFilter() {
 		return fileFilter;
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -209,14 +210,14 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
-
+	
 	public void clear() {
 		rectangles = new ArrayList<Rectangle2D>();
 		constraints = null;
 		graph = null;
 		repaint();
 	}
-
+	
 	public void render(int width, int height, Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		Color original = g.getColor();
@@ -244,28 +245,28 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			g.draw(r);
 		}
 		drawConstraints();
-
+		
 	}
-
+	
 	@Override
 	public void paintComponent(Graphics gOld) {
 		Graphics2D g = (Graphics2D) gOld;
 		Dimension size = getSize();
 		render(size.width, size.height, g);
 	}
-
+	
 	ArrayList<Rectangle2D> getRectangles() {
 		if (graph != null) {
 			return graph.getRectangles();
 		}
 		return rectangles;
 	}
-
+	
 	private void setUpDrawingGraphics() {
 		g = (Graphics2D) getGraphics();
 		g.setColor(Color.black);
 	}
-
+	
 	public void mousePressed(MouseEvent evt) {
 		int x = evt.getX();
 		int y = evt.getY();
@@ -278,9 +279,9 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			dragging = true;
 			setUpDrawingGraphics();
 		}
-
+		
 	}
-
+	
 	public void drawConstraints() {
 		if (constraints == null)
 			return;
@@ -305,7 +306,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		}
 		g.setColor(originalColour);
 	}
-
+	
 	public void mouseReleased(MouseEvent evt) {
 		if (dragging == false)
 			return;
@@ -315,7 +316,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		rectangles.add(rect);
 		rect = null;
 	}
-
+	
 	public void mouseDragged(MouseEvent evt) {
 		if (dragging == false)
 			return;
@@ -328,19 +329,19 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		g.drawRect(r.x, r.y, r.width, r.height);
 		rect = r;
 	}
-
+	
 	public void mouseEntered(MouseEvent evt) {
 	}
-
+	
 	public void mouseExited(MouseEvent evt) {
 	}
-
+	
 	public void mouseClicked(MouseEvent evt) {
 	}
-
+	
 	public void mouseMoved(MouseEvent evt) {
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -350,7 +351,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		constraints = ((QPRectanglePlacement) p).constraints;
 		paintComponent(getGraphics());
 	}
-
+	
 	public int print(Graphics g, PageFormat pf, int pi) throws PrinterException {
 		if (pi >= 1) {
 			return Printable.NO_SUCH_PAGE;

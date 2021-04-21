@@ -54,20 +54,20 @@ import org.jfree.ui.RefineryUtilities;
  * A demo application showing how to display category data against a date axis.
  */
 public class EventFrequencyDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public EventFrequencyDemo(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
+		
 		// initialise the data...
 		final Day d1 = new Day(12, SerialDate.JUNE, 2002);
 		final Day d2 = new Day(14, SerialDate.JUNE, 2002);
@@ -75,7 +75,7 @@ public class EventFrequencyDemo extends ApplicationFrame {
 		final Day d4 = new Day(10, SerialDate.JULY, 2002);
 		final Day d5 = new Day(20, SerialDate.JULY, 2002);
 		final Day d6 = new Day(22, SerialDate.AUGUST, 2002);
-
+		
 		dataset.setValue(Long.valueOf(d1.getMiddleMillisecond()), "Series 1", "Requirement 1");
 		dataset.setValue(Long.valueOf(d1.getMiddleMillisecond()), "Series 1", "Requirement 2");
 		dataset.setValue(Long.valueOf(d2.getMiddleMillisecond()), "Series 1", "Requirement 3");
@@ -83,7 +83,7 @@ public class EventFrequencyDemo extends ApplicationFrame {
 		dataset.setValue(Long.valueOf(d4.getMiddleMillisecond()), "Series 2", "Requirement 3");
 		dataset.setValue(Long.valueOf(d5.getMiddleMillisecond()), "Series 3", "Requirement 2");
 		dataset.setValue(Long.valueOf(d6.getMiddleMillisecond()), "Series 1", "Requirement 4");
-
+		
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart("Event Frequency Demo", // title
 				"Category", // domain axis label
@@ -94,15 +94,15 @@ public class EventFrequencyDemo extends ApplicationFrame {
 				true, // tooltips
 				false // URLs
 		);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
+		
 		// set the background color for the chart...
 		chart.setBackgroundPaint(new Color(0xFF, 0xFF, 0xCC));
-
+		
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setDisplaySeriesShapes(true);
-
+		
 		// get a reference to the plot for further customisation...
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.getDomainAxis().setMaxCategoryLabelWidthRatio(10.0f);
@@ -112,7 +112,7 @@ public class EventFrequencyDemo extends ApplicationFrame {
 		final CategoryItemRenderer renderer = new LineAndShapeRenderer(LineAndShapeRenderer.SHAPES);
 		renderer.setToolTipGenerator(toolTipGenerator);
 		plot.setRenderer(renderer);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -123,29 +123,29 @@ public class EventFrequencyDemo extends ApplicationFrame {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// OPTIONAL CUSTOMISATION COMPLETED.
-
+		
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final EventFrequencyDemo demo = new EventFrequencyDemo("Event Frequency Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

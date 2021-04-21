@@ -51,22 +51,22 @@ import org.jfree.data.XYDataset;
  * A demo showing how to create an HTML image map for a scatter plot.
  */
 public class ImageMapDemo7 {
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public ImageMapDemo7() {
 		super();
 	}
-
+	
 	/**
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYDataset data = new SampleXYDataset2();
 		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot Demo", "X", "Y", data,
 				PlotOrientation.VERTICAL, true, true, false);
@@ -78,7 +78,7 @@ public class ImageMapDemo7 {
 		final NumberAxis domainAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
 		domainAxis.setAutoRangeIncludesZero(false);
 		chart.setBackgroundPaint(java.awt.Color.white);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -89,13 +89,13 @@ public class ImageMapDemo7 {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// save it to an image
 		try {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File file1 = new File("scatter100.png");
 			ChartUtilities.saveChartAsPNG(file1, chart, 600, 400, info);
-
+			
 			// write an HTML page incorporating the image with an image map
 			final File file2 = new File("scatter100.html");
 			final OutputStream out = new BufferedOutputStream(new FileOutputStream(file2));
@@ -109,11 +109,11 @@ public class ImageMapDemo7 {
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();
-
+			
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
-
+		
 	}
-
+	
 }

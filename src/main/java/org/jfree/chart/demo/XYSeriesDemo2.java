@@ -44,16 +44,16 @@ import org.jfree.ui.RefineryUtilities;
  * Demo for {@link XYSeries}, where all the y values are the same.
  */
 public class XYSeriesDemo2 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing an {@link XYSeries} where all the
 	 * y-values are the same.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public XYSeriesDemo2(final String title) {
-
+		
 		super(title);
 		final XYSeries series = new XYSeries("Flat Data");
 		series.add(1.0, 100.0);
@@ -68,7 +68,7 @@ public class XYSeriesDemo2 extends ApplicationFrame {
 		final XYSeriesCollection data = new XYSeriesCollection(series);
 		final JFreeChart chart = ChartFactory.createXYLineChart("XY Series Demo 2", "X", "Y", data,
 				PlotOrientation.VERTICAL, true, true, false);
-
+		
 		final XYPlot plot = (XYPlot) chart.getPlot();
 		final NumberAxis axis = (NumberAxis) plot.getRangeAxis();
 		axis.setAutoRangeIncludesZero(false);
@@ -76,9 +76,9 @@ public class XYSeriesDemo2 extends ApplicationFrame {
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -89,20 +89,20 @@ public class XYSeriesDemo2 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final XYSeriesDemo2 demo = new XYSeriesDemo2("XY Series Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

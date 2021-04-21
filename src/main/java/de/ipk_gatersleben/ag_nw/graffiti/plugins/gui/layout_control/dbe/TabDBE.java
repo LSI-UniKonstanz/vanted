@@ -51,25 +51,28 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.ExperimentDataDrag
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.GravistoMainHelper;
 
 public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2465423490381876076L;
+	
 	private List<String> projectList = new ArrayList<String>();
-
+	
 	private List<ExperimentDataInfoPane> shownExpPanes = new ArrayList<ExperimentDataInfoPane>();
-
+	
 	private JTabbedPane jTabbedPaneExperimentPanels;
-
+	
 	final String noNode = "no node is selected.";
-
+	
 	final static String NO_EXPERIMENT = "";
-
+	
 	private boolean initPerformed = false;
-
+	
 	private JScrollPane scrollpane;
-
+	
 	private static TabDBE instance = null;
-
+	
 	/**
 	 * Initialize GUI
 	 */
@@ -79,75 +82,75 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			return;
 		}
 		initPerformed = true;
-
+		
 		instance = this;
-
+		
 		JPanel contentpane = new JPanel();
 		scrollpane = new JScrollPane(contentpane);
 		scrollpane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(20);
-
+		
 		this.setBorder(new EmptyBorder(0, 0, 0, 0));
 		this.setLayout(new BorderLayout());
 		this.add(scrollpane, BorderLayout.CENTER);
-
+		
 		jTabbedPaneExperimentPanels = new javax.swing.JTabbedPane();
 		jTabbedPaneExperimentPanels.setOpaque(false);
 		jTabbedPaneExperimentPanels.setBackground(null);
-
+		
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayout.PREFERRED, // buttonPanelDBE
 						5, TableLayout.PREFERRED, // buttonPanelFile
 						3, TableLayoutConstants.FILL, // experimentInfoPane
 						border } }; // Rows
-
+		
 		size[1][1] = TableLayout.PREFERRED;
-
+		
 		contentpane.setLayout(new TableLayout(size));
 		contentpane.add(jTabbedPaneExperimentPanels, "1,5");
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
-
+		
 		URL templatefile1 = cl.getResource(path + "/templates/" + "template1.xls");
 		TemplateFileManager.getInstance().addTemplate("Experiment Data", templatefile1, null);
-
+		
 		URL templatefile2 = cl.getResource(path + "/templates/" + "template1t.xls");
 		TemplateFileManager.getInstance().addTemplate("Experiment Data (transposed)", templatefile2, null);
-
+		
 		// JButton loadProjectData = new JMButton("<html>Load Selected Experiment");
-
+		
 		ActionListener o1 = JLabelJavaHelpLink.getHelpActionListener("inputformats");
-
+		
 		if (!ReleaseInfo.getIsAllowedFeature(FeatureSet.DBE_ACCESS)) {
 			o1 = null;
 		}
-
+		
 		FolderPanel buttonPanelFile = new FolderPanel("Load Input File", false, true, false, o1);
 		buttonPanelFile.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 5);
 		buttonPanelFile.setBackground(null);
-
+		
 		JButton loadInputForm = new JMButton("Load Dataset");
-
+		
 		loadInputForm.setOpaque(false);
 		loadInputForm.addActionListener(getLoadInputFormListener());
-
+		
 		installDragNDrop(loadInputForm);
-
+		
 		JButton loadMAGE = new JMButton("MAGE-ML");
-
+		
 		loadMAGE.setOpaque(false);
 		loadMAGE.addActionListener(getLoadMAGElistener());
-
+		
 		buttonPanelFile.addGuiComponentRow(null, loadInputForm, false);
 		buttonPanelFile
 				.addGuiComponentRow(null,
 						new JLabel("<html><font color=\"gray\"><small>Supported formats: "
 								+ "templates 1 and 2, <br/> VANTED binary (xml), KEGG Expression, text/csv files"),
 						false);
-
+		
 		/*
 		 * buttonPanelFile.addGuiComponentRow(null,
 		 * TableLayout.getSplitVertical(loadInputForm, loadMAGE, TableLayout.PREFERRED,
@@ -156,7 +159,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		// buttonPanelFile.addGuiComponentRow(new JLabel(""), loadGeneExprButton,
 		// false);
 		buttonPanelFile.layoutRows();
-
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DBE_ACCESS)
 				|| ReleaseInfo.getIsAllowedFeature(FeatureSet.FLAREX_ACCESS)
 				|| ReleaseInfo.getIsAllowedFeature(FeatureSet.METHOUSE_ACCESS)) {
@@ -164,10 +167,10 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		} else
 			contentpane.add(TemplateFileManager.getInstance().getTemplateFolderPanel(), "1,1");
 		contentpane.add(buttonPanelFile, "1,3");
-
+		
 		// this.validate();
 	}
-
+	
 	private ActionListener getLoadMAGElistener() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -181,7 +184,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			}
 		};
 	}
-
+	
 	private ActionListener getLoadInputFormListener() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -196,7 +199,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			}
 		};
 	}
-
+	
 	protected void loadMAGEfile() {
 		File mageFile = OpenMageFileDialogService.getXMLfile();
 		if (mageFile != null) {
@@ -205,8 +208,8 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			processReceivedData(null, mageFile.getName(), md, null);
 		}
 	}
-
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void loadExcelOrBinaryFiles() {
 		final Collection<File> fileList = OpenExcelFileDialogService.getExcelOrBinaryFiles();
 		if (fileList != null) {
@@ -215,22 +218,22 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			// ExperimentLoader.loadFile(fileList, this);
 		}
 	}
-
+	
 	/**
 	 * @param projects
 	 */
 	void loadProjectList(JComboBox<String> projects) {
-
+		
 		projects.removeAllItems();
 		projectList.clear();
-
+		
 		projects.addItem(NO_EXPERIMENT);
 	}
-
+	
 	public static List<String> getProjectList() {
 		return new ArrayList<String>(instance.projectList);
 	}
-
+	
 	/**
 	 * Constructs a <code>PatternTab</code> and sets the title.
 	 */
@@ -239,42 +242,42 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		this.title = "Experiments";
 		initComponents();
 	}
-
+	
 	public void installDragNDrop(final JButton target) {
-
+		
 		// install global experiment data loader
 		GravistoMainHelper.addDragAndDropHandler(new ExperimentDataDragAndDropHandler() {
 			private ExperimentDataPresenter receiver;
-
+			
 			@Override
 			public String toString() {
 				return "VANTED Dataset";
 			}
-
+			
 			public boolean process(List<File> files) {
 				// GravistoMainHelper.processDroppedFiles(files.toArray(new File[]{}), false,
 				// (Class)PutIntoSidePanel.class);
 				ExperimentLoader.loadFile(files, receiver != null ? receiver : instance);
 				return true;
 			}
-
+			
 			public boolean canProcess(File f) {
 				return ExperimentLoader.canLoadFile(f);
 			}
-
+			
 			public void setExperimentDataReceiver(ExperimentDataPresenter receiver) {
 				this.receiver = receiver;
 			}
-
+			
 			public boolean hasPriority() {
 				return false;
 			}
 		});
-
+		
 		// add handler for load dataset button
 		final String title = target.getText();
 		FileDrop.Listener fdl = new FileDrop.Listener() {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public void filesDropped(File[] files) {
 				if (files != null && files.length > 0) {
 					ArrayList<File> mfiles = new ArrayList<File>();
@@ -285,7 +288,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 				}
 			}
 		};
-
+		
 		Runnable dragdetected = new Runnable() {
 			public void run() {
 				MainFrame.showMessage(
@@ -296,7 +299,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 				// 2));
 			}
 		};
-
+		
 		Runnable dragenddetected = new Runnable() {
 			public void run() {
 				// MainFrame.showMessage("Drag & Drop action canceled", MessageType.INFO);
@@ -307,7 +310,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		target.setToolTipText("Drag & Drop supported");
 		new FileDrop(target, fdl, dragdetected, dragenddetected);
 	}
-
+	
 	// /**
 	// * @return The Filename of the DBE-Last-Experiment-File
 	// */
@@ -317,7 +320,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	// + "dbe_lastexperiment.xml";
 	// return fn;
 	// }
-
+	
 	// /**
 	// * @param dbe2xmlService
 	// * @return
@@ -329,7 +332,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	// doc = XMLHelper.getDocumentFromXMLstring(lastExp);
 	// return doc;
 	// }
-
+	
 	public static String getExperimentNameFromGUIselection(String tempName) {
 		if (tempName == null || tempName.equals(NO_EXPERIMENT))
 			return null;
@@ -338,7 +341,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		final String experimentName = tempName.substring(ll);
 		return experimentName;
 	}
-
+	
 	public synchronized static List<ProjectEntity> getLoadedProjectEntities() {
 		List<ProjectEntity> loadedProjects = new ArrayList<ProjectEntity>();
 		for (ExperimentDataInfoPane edip : instance.shownExpPanes) {
@@ -346,7 +349,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		}
 		return loadedProjects;
 	}
-
+	
 	public synchronized static void addOrUpdateExperimentPane(ProjectEntity pe) {
 		for (ExperimentDataInfoPane expPane : instance.shownExpPanes) {
 			if (
@@ -358,19 +361,19 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		}
 		instance.processReceivedData(null, pe.getExperimentName(), pe.getDocumentData(), pe.getGUI());
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		return v == null || v instanceof GraphView;
 	}
-
+	
 	public synchronized void processReceivedData(TableData td, String experimentName, ExperimentInterface doc,
 			JComponent gui) {
 		ExperimentDataInfoPane expPane = new ExperimentDataInfoPane(td, doc, jTabbedPaneExperimentPanels, shownExpPanes,
 				gui);
 		expPane.setOpaque(false);
 		shownExpPanes.add(expPane);
-
+		
 		Component c = jTabbedPaneExperimentPanels.add("<html>&nbsp;&nbsp;" + experimentName, expPane);
 		MainFrame.getInstance().getInspectorPlugin().setSelectedTab(this);
 		try {
@@ -381,7 +384,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		MainFrame.showMessage("Load project data: Finished", MessageType.INFO, 3000);
 		MainFrame.getInstance().updateActions();
 	}
-
+	
 	@Override
 	public ImageIcon getIcon() {
 		URL url = getClass().getResource("Database-Table-icon.png");
@@ -390,5 +393,5 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		else
 			return super.getIcon();
 	}
-
+	
 }

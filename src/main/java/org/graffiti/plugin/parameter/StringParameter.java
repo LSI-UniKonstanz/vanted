@@ -21,29 +21,29 @@ import scenario.ProvidesScenarioSupportCommand;
  */
 public class StringParameter extends AbstractSingleParameter implements ProvidesScenarioSupportCommand {
 	// ~ Instance fields ========================================================
-
+	
 	/** The value of this parameter. */
 	private String value = null;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new integer parameter.
 	 * 
 	 * @param value
-	 *            the new integer value. May be null.
+	 *           the new integer value. May be null.
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public StringParameter(String value, String name, String description) {
 		super(name, description);
 		this.value = value;
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the value of this parameter as an <code>String</code>.
 	 * 
@@ -52,14 +52,14 @@ public class StringParameter extends AbstractSingleParameter implements Provides
 	public String getString() {
 		return value;
 	}
-
+	
 	/**
 	 * Sets the value of the <code>AttributeParameter</code>.
 	 * 
 	 * @param value
-	 *            the new value of the <code>AttributeParameter</code>.
+	 *           the new value of the <code>AttributeParameter</code>.
 	 * @exception IllegalArgumentException
-	 *                thrown if <code>value</code> is not of the correct type.
+	 *               thrown if <code>value</code> is not of the correct type.
 	 */
 	@Override
 	public void setValue(Object value) {
@@ -69,7 +69,7 @@ public class StringParameter extends AbstractSingleParameter implements Provides
 			throw new IllegalArgumentException(e.getMessage());
 		}
 	}
-
+	
 	/**
 	 * Returns the value of this parameter.
 	 * 
@@ -79,7 +79,7 @@ public class StringParameter extends AbstractSingleParameter implements Provides
 	public Object getValue() {
 		return value;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.parameter.Parameter#toXMLString()
 	 */
@@ -87,11 +87,11 @@ public class StringParameter extends AbstractSingleParameter implements Provides
 	public String toXMLString() {
 		return getStandardXML(value.toString());
 	}
-
+	
 	public String getScenarioCommand() {
 		return "new StringParameter(\"" + getString() + "\", \"" + getName() + "\", \"" + getDescription() + "\")";
 	}
-
+	
 	public Collection<String> getScenarioImports() {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add("import org.graffiti.plugin.parameter.StringParameter;");

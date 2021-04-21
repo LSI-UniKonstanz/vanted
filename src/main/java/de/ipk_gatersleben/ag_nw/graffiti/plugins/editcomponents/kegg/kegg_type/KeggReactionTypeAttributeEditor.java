@@ -40,7 +40,7 @@ public class KeggReactionTypeAttributeEditor extends AbstractValueEditComponent 
 	// protected JComboBox keggReactionTypeSelection = new JComboBox();
 	protected JLabel reactionTypeDisplay = new JLabel();
 	protected JButton selectOfThisType = new JButton("Select");
-
+	
 	public KeggReactionTypeAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggReactionTypeAttribute) getDisplayable()).getString();
@@ -55,13 +55,15 @@ public class KeggReactionTypeAttributeEditor extends AbstractValueEditComponent 
 		reactionTypeDisplay.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 		selectOfThisType.setOpaque(false);
 	}
-
+	
+	@Override
 	public JComponent getComponent() {
 		return TableLayout.getSplit(
 				// keggReactionTypeSelection,
 				reactionTypeDisplay, selectOfThisType, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
 	}
-
+	
+	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -76,12 +78,14 @@ public class KeggReactionTypeAttributeEditor extends AbstractValueEditComponent 
 			reactionTypeDisplay.setText(curVal);
 		}
 	}
-
+	
+	@Override
 	public void setValue() {
 		// if (!keggReactionTypeSelection.getSelectedItem().equals(EMPTY_STRING))
 		// ((KeggReactionTypeAttribute)displayable).setString(keggReactionTypeSelection.getSelectedItem().toString());
 	}
-
+	
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// String currentReactionTypeString = (String)
 		// keggReactionTypeSelection.getSelectedItem();
@@ -128,7 +132,7 @@ public class KeggReactionTypeAttributeEditor extends AbstractValueEditComponent 
 			}
 		}
 		selection.addAll(edges);
-
+		
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
 			ArrayList<IndexAndString> reacTypeInfos = KeggGmlHelper.getKeggReactionTypes(n);
@@ -145,7 +149,7 @@ public class KeggReactionTypeAttributeEditor extends AbstractValueEditComponent 
 			}
 		}
 		selection.addAll(nodes);
-
+		
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(nodes.size() + " nodes and " + edges.size() + " edges added to selection",
 				MessageType.INFO);

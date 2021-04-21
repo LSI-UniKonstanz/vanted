@@ -20,7 +20,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class CountCircularCrossingsAlgorithm extends AbstractAlgorithm {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -29,7 +29,7 @@ public class CountCircularCrossingsAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Count Circular Edge Crossings";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -39,12 +39,12 @@ public class CountCircularCrossingsAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Analysis";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -58,5 +58,5 @@ public class CountCircularCrossingsAlgorithm extends AbstractAlgorithm {
 				"Number of edge-crossings (in case of a circular layout of the selection) is " + crossings + ".",
 				"Edge-crossings of selected or all nodes");
 	}
-
+	
 }

@@ -40,26 +40,26 @@ import java.io.Serializable;
  * interface.
  */
 public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
-
+	
 	/** The key. */
 	private Comparable key;
-
+	
 	/** The value. */
 	private Number value;
-
+	
 	/**
 	 * Creates a new (key, value) pair.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param value
-	 *            the value (<code>null</code> permitted).
+	 *           the value (<code>null</code> permitted).
 	 */
 	public DefaultKeyedValue(final Comparable key, final Number value) {
 		this.key = key;
 		this.value = value;
 	}
-
+	
 	/**
 	 * Returns the key.
 	 * 
@@ -68,7 +68,7 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 	public Comparable getKey() {
 		return this.key;
 	}
-
+	
 	/**
 	 * Returns the value.
 	 * 
@@ -77,22 +77,22 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 	public Number getValue() {
 		return this.value;
 	}
-
+	
 	/**
 	 * Sets the value.
 	 * 
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public synchronized void setValue(final Number value) {
 		this.value = value;
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -102,19 +102,19 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 		if (!(o instanceof DefaultKeyedValue)) {
 			return false;
 		}
-
+		
 		final DefaultKeyedValue defaultKeyedValue = (DefaultKeyedValue) o;
-
+		
 		if (this.key != null ? !this.key.equals(defaultKeyedValue.key) : defaultKeyedValue.key != null) {
 			return false;
 		}
 		if (this.value != null ? !this.value.equals(defaultKeyedValue.value) : defaultKeyedValue.value != null) {
 			return false;
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -126,14 +126,14 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 		result = 29 * result + (this.value != null ? this.value.hashCode() : 0);
 		return result;
 	}
-
+	
 	/**
 	 * Returns a clone. It is assumed that both the key and value are immutable
 	 * objects, so only the references are cloned, not the objects themselves.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             Not thrown by this class, but subclasses (if any) might.
+	 *            Not thrown by this class, but subclasses (if any) might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final DefaultKeyedValue clone = (DefaultKeyedValue) super.clone();

@@ -21,13 +21,13 @@ package org.graffiti.session;
  */
 public interface ConstraintCheckerListener {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Handles the message received by the constraint checker indicating an
 	 * unsatisfied constraint.
 	 * 
 	 * @param msg
-	 *            the message telling about the unsatisfied constraint.
+	 *           the message telling about the unsatisfied constraint.
 	 */
 	public void checkFailed(String msg);
 }

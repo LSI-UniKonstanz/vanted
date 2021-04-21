@@ -32,47 +32,47 @@ import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.util.InstanceLoader;
 
 public class PreferenceManager implements PluginManagerListener {
-
+	
 	private static final String SETTINGSFILENAME = "settings.xml";
-
+	
 	static Logger logger = Logger.getLogger(PreferenceManager.class);
-
+	
 	static {
 		logger.setLevel(Level.INFO);
 		getInstance();
 	}
-
+	
 	/**
 	 * holds the list of all objects/classes that implement the
 	 * PreferencingInterface (can be Algorithms, Views, etc)
 	 */
 	private Set<Class<? extends PreferencesInterface>> setPreferencingObjects;
-
+	
 	private static PreferenceManager instance;
-
+	
 	private PreferenceManager() {
 		Path prefs = Paths.get(ReleaseInfo.getAppFolder(), SETTINGSFILENAME);
-
+		
 		try (InputStream fis = new BufferedInputStream(Files.newInputStream(prefs))) {
 			logger.debug("loading preferences from settings.xml file");
 			Preferences.importPreferences(fis);
 		} catch (IOException | InvalidPreferencesFormatException e) {
 			logger.error(e.getMessage());
 		}
-
+		
 		setPreferencingObjects = new HashSet<>();
 	}
-
+	
 	public static PreferenceManager getInstance() {
 		if (instance == null)
 			instance = new PreferenceManager();
 		return instance;
 	}
-
+	
 	public Set<Class<? extends PreferencesInterface>> getPreferencingClasses() {
 		return setPreferencingObjects;
 	}
-
+	
 	/**
 	 * Another way of adding custom classes that implement the PreferencesInterface
 	 * which will be added to the list of preferencing classes. Use this method if
@@ -92,7 +92,7 @@ public class PreferenceManager implements PluginManagerListener {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * called each time a plugin gets loaded Checks the Plugins entries (Views,
 	 * Algorithms, Tabs, ViewComponents, Tools) if they implement the
@@ -112,36 +112,36 @@ public class PreferenceManager implements PluginManagerListener {
 				checkAddAndSetClassesPreferences((PreferencesInterface) algo);
 			}
 		}
-
+		
 		for (String viewname : plugin.getViews()) {
 			try {
-
+				
 				Class<?> forName = InstanceLoader.getCurrentLoader().loadClass(viewname);
-
+				
 				logger.debug("view name: " + forName.getName());
-
+				
 				Class<?>[] interfaces = forName.getInterfaces();
 				for (Class<?> curInterface : interfaces) {
 					if (curInterface.getName().equals(PreferencesInterface.class.getName())) {
 						try {
-
+							
 							Object viewobject = forName.newInstance();
 							checkAddAndSetClassesPreferences((PreferencesInterface) viewobject);
-
+							
 						} catch (InstantiationException e) {
 							e.printStackTrace();
 						} catch (IllegalAccessException e) {
 							e.printStackTrace();
 						}
 					}
-
+					
 				}
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
-
+			
 		}
 		if (plugin instanceof EditorPlugin) {
 			EditorPlugin editorPlugin = (EditorPlugin) plugin;
@@ -152,7 +152,7 @@ public class PreferenceManager implements PluginManagerListener {
 					}
 				}
 			}
-
+			
 			if (editorPlugin.getTools() != null) {
 				for (Tool tool : editorPlugin.getTools()) {
 					if (tool instanceof PreferencesInterface) {
@@ -176,7 +176,7 @@ public class PreferenceManager implements PluginManagerListener {
 			}
 		}
 	}
-
+	
 	/**
 	 * if no preferences found, create a new preferences object from default
 	 * parameters. if parameters in already present preferences that are not anymore
@@ -191,13 +191,13 @@ public class PreferenceManager implements PluginManagerListener {
 		 */
 		if (defaultPreferences == null)
 			return null;
-
+		
 		Preferences defaultPrefs = null;
 		try {
 			defaultPrefs = getPreferenceForClass(clazz);
 			// keys that will be deleted, if they have been removed from this class
 			Set<String> prefKeysToDelete = new HashSet<>(Arrays.asList(defaultPrefs.keys()));
-
+			
 			for (Parameter defaultParameter : defaultPreferences) {
 				logger.debug("\tdefault-param: " + defaultParameter.getName() + " : "
 						+ defaultParameter.getValue().toString());
@@ -206,7 +206,7 @@ public class PreferenceManager implements PluginManagerListener {
 				if (!prefKeysToDelete.remove(defaultParameter.getName()))
 					defaultPrefs.put(defaultParameter.getName(), defaultParameter.getValue().toString());
 			}
-
+			
 			for (String key : prefKeysToDelete) {
 				logger.debug("\tremoving obsolete paramter: " + key);
 				defaultPrefs.remove(key); // removes key from preferences object
@@ -216,7 +216,7 @@ public class PreferenceManager implements PluginManagerListener {
 		}
 		return defaultPrefs;
 	}
-
+	
 	/**
 	 * This method will do several things, that are repeatedly done to get possibly
 	 * existing Preferences and add the class to the list of Preferencing Classes
@@ -228,14 +228,14 @@ public class PreferenceManager implements PluginManagerListener {
 	public void checkAddAndSetClassesPreferences(PreferencesInterface prefInterface) {
 		Preferences defaultPrefs = checkExistingPreferences(prefInterface.getClass(),
 				((PreferencesInterface) prefInterface).getDefaultParameters());
-
+		
 		if (defaultPrefs != null) {
 			setPreferencingObjects.add((Class<? extends PreferencesInterface>) prefInterface.getClass());
-
+			
 			prefInterface.updatePreferences(defaultPrefs);
 		}
 	}
-
+	
 	/**
 	 * This method should be used when getting Preferences for a specific
 	 * class/object. It'll supply a method that supports easy creation of Preference
@@ -243,22 +243,22 @@ public class PreferenceManager implements PluginManagerListener {
 	 * objects but then the Preference relates to the package.
 	 */
 	public static Preferences getPreferenceForClass(Class<?> clazz) {
-
+		
 		String pathName = clazz.getName().replace(".", "/");
 		return Preferences.userRoot().node(pathName);
 	}
-
+	
 	/**
 	 * This method should be used when getting Preferences for a specific category
 	 * (folder) for a class/object. This can be used to structure paramters in
 	 * categories (folders)
 	 */
 	public static Preferences getPreferenceCategoryForClass(Class<?> clazz, String category) {
-
+		
 		String pathName = clazz.getName().replace(".", "/");
 		return Preferences.userRoot().node(pathName + "/" + category);
 	}
-
+	
 	/**
 	 * This method will instantiate an Object from the given class and call the
 	 * updatePreferences method, which must be implemented by any
@@ -281,17 +281,16 @@ public class PreferenceManager implements PluginManagerListener {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Stores the preferences in 'settings.xml' in the Vanted program directory.
 	 * <p>
-	 * 
 	 * Improved to allow faster operations, also now closing the stream
 	 * automatically, not waiting until GC.
 	 */
 	public static void storePreferences() {
 		Path prefs = Paths.get(ReleaseInfo.getAppFolder(), SETTINGSFILENAME);
-
+		
 		try (OutputStream fos = new BufferedOutputStream(Files.newOutputStream(prefs))) {
 			Preferences.userRoot().exportSubtree(fos);
 		} catch (IOException | BackingStoreException e) {

@@ -32,7 +32,7 @@ public class PNTSerializer extends AbstractOutputSerializer {
 	public String[] getExtensions() {
 		return new String[] { ".pnt" };
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -41,19 +41,19 @@ public class PNTSerializer extends AbstractOutputSerializer {
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "INA PNT" };
 	}
-
+	
 	@Override
 	public boolean validFor(Graph g) {
 		return true;
 	}
-
+	
 	/*
 	 * @see org.graffiti.plugin.io.OutputSerializer#write(java.io.OutputStream,
 	 * org.graffiti.graph.Graph)
 	 */
 	public synchronized void write(OutputStream out, Graph g) {
 		PrintStream stream = new PrintStream(out);
-
+		
 		stream.print("P   M    PRE,POST  NETZ 1:" + encodeName(g.getName()) + "\r\n");
 		int i = 0;
 		HashMap<Node, Integer> node2placeNo = new HashMap<Node, Integer>();
@@ -106,13 +106,13 @@ public class PNTSerializer extends AbstractOutputSerializer {
 			}
 		}
 		stream.println("@\r\n");
-
+		
 		// finished
 		stream.close();
-
+		
 		reversibeErrorCheck(g);
 	}
-
+	
 	private boolean definesReversibleTransitionWithoutReferingToModifiers(Node n) {
 		boolean foundReversible = false;
 		for (Edge e : n.getEdges()) {
@@ -126,7 +126,7 @@ public class PNTSerializer extends AbstractOutputSerializer {
 		}
 		return foundReversible;
 	}
-
+	
 	private void reversibeErrorCheck(Graph g) {
 		Collection<Node> invalidNodes = new ArrayList<Node>();
 		for (Node n : g.getNodes()) {
@@ -158,7 +158,7 @@ public class PNTSerializer extends AbstractOutputSerializer {
 			GraphHelper.selectNodes(invalidNodes);
 		}
 	}
-
+	
 	private String encodeName(String name) {
 		String res = "";
 		if (name != null)
@@ -170,7 +170,7 @@ public class PNTSerializer extends AbstractOutputSerializer {
 		res = res.substring(0, 16);
 		return res;
 	}
-
+	
 	private void writePlaceConnectionInfo(int i, Node n, Graph g, PrintStream stream,
 			HashMap<Node, ArrayList<Integer>> node2transNo) {
 		String a = getPreOrPostTransitionInfo(true, n, node2transNo);
@@ -182,7 +182,7 @@ public class PNTSerializer extends AbstractOutputSerializer {
 		stream.print(
 				getSpace(i + "", " ", 3) + " " + getSpace(getMarkierung(n) + "", " ", 1) + "      " + a + b + "\r\n");
 	}
-
+	
 	private int getMarkierung(Node n) {
 		String lbl = AttributeHelper.getLabel(n, "");
 		if (lbl.indexOf(":") > 0) {
@@ -195,7 +195,7 @@ public class PNTSerializer extends AbstractOutputSerializer {
 		} else
 			return 0;
 	}
-
+	
 	private String getPreOrPostTransitionInfo(boolean pre, Node nodePlace,
 			HashMap<Node, ArrayList<Integer>> node2transNo) {
 		TreeSet<String> tt = new TreeSet<String>();
@@ -218,7 +218,7 @@ public class PNTSerializer extends AbstractOutputSerializer {
 					ErrorMsg.addErrorMessage(nfe);
 				}
 			}
-
+			
 			boolean isModifier = false;
 			boolean isSubstrateEdge = false;
 			String role = AttributeHelper.getSBMLrole(e);
@@ -228,9 +228,9 @@ public class PNTSerializer extends AbstractOutputSerializer {
 			if (role != null && role.equals("reactant")) {
 				isSubstrateEdge = true;
 			}
-
+			
 			boolean reversible = AttributeHelper.isSBMLreversibleReaction(e);
-
+			
 			if (isModifier || reversible
 					|| (!reversible && ((pre && e.getTarget() == nodePlace) || (!pre && e.getSource() == nodePlace)))) {
 				ArrayList<Integer> tidxlist = node2transNo.get(otherNode);
@@ -250,10 +250,10 @@ public class PNTSerializer extends AbstractOutputSerializer {
 							transIdx = tidxlist.get(0);
 						else
 							transIdx = tidxlist.get(1);
-
+						
 					}
 				}
-
+				
 				String t;
 				if (freq != 1) {
 					t = transIdx + ": " + freq;
@@ -269,30 +269,30 @@ public class PNTSerializer extends AbstractOutputSerializer {
 		}
 		return res.toString().trim();
 	}
-
+	
 	private void writeTransInfo(int idx, Node n, Graph g, PrintStream stream, String preLbl) {
 		NodeHelper nh = new NodeHelper(n);
 		stream.print(getSpace(idx + "", " ", 8) + ": " + encodeName(preLbl + nh.getLabel()) + "        0    0\r\n");
 	}
-
+	
 	private void writePlaceInfo(int idx, Node n, Graph g, PrintStream stream) {
 		NodeHelper nh = new NodeHelper(n);
 		stream.print(getSpace(idx + "", " ", 8) + ": " + encodeName(nh.getLabel()) + "       oo    0\r\n");
 	}
-
+	
 	private String getSpace(String value, String spaceString, int len) {
 		String res = value;
 		while (res.length() < len)
 			res = spaceString + res;
 		return res;
 	}
-
+	
 	private boolean isTrans(Node n) {
 		NodeHelper nh = new NodeHelper(n);
 		String shape = nh.getShape();
 		return shape != null && shape.indexOf("Rectangle") >= 0 && nh.getDegree() > 0;
 	}
-
+	
 	private boolean isPlace(Node n) {
 		NodeHelper nh = new NodeHelper(n);
 		String shape = nh.getShape();

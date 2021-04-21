@@ -7,7 +7,7 @@ public class SqlMeasurementData {
 	public int sampleId, substanceId, measurementId;
 	public double measurementValue;
 	int replicateId;
-
+	
 	public SqlMeasurementData(int sampleId, int substanceId, int measurementId, double measurementValue,
 			int replicateId) {
 		this.sampleId = sampleId;

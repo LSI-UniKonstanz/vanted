@@ -20,12 +20,12 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  */
 public class ShortEditComponent extends NumberEditComponent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new ShortEditComponent object.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ShortEditComponent(Displayable disp) {
 		super(disp);

@@ -40,24 +40,24 @@ public class TableData {
 	private static final String ENTREZ_GENE_AGI = "EntrezGeneID";
 	private static final String PROBE_SET_ID_AFY = "Probe Set ID";
 	private static final String PROBE_SET_ID_AGI = "ProbeID";
-
+	
 	public static final int MAX_COLUMN = 1024 * 1024; // 255;
-
+	
 	private final HashMap<Integer, Hashtable<Integer, Object>> worksheetData = new HashMap<Integer, Hashtable<Integer, Object>>();
 	private final Hashtable<Integer, Integer> maxRowForColumn = new Hashtable<Integer, Integer>();
-
+	
 	private SSTRecord stringRec;
-
+	
 	private int maxRow = Integer.MIN_VALUE;
 	private int maxCol = Integer.MIN_VALUE;
-
+	
 	// private long getIndex(long col, long row) {
 	// return row * MAX_COLUMN + col;
 	// }
-
+	
 	public TableData() {
 	}
-
+	
 	public TableData(TableData copyData, boolean transposedWrote, int fromRow) {
 		final int mCol = copyData.getMaximumCol();
 		final int mRow = copyData.getMaximumRow();
@@ -89,12 +89,12 @@ public class TableData {
 		// System.out.println("Transposed Data from row "+fromRow+". Source ["+mCol+" x
 		// "+mRow+"] -> Target ["+tCol+" x "+tRow+"]");
 	}
-
+	
 	public int processAdditionaldentifiers(boolean processAllIDs, boolean processAllNewIDs,
 			final ExperimentInterface substanceNodes, BackgroundTaskStatusProviderSupportingExternalCall optStatus,
 			double optStartProgress, double optEndProgress, StringBuilder statusMessage, boolean skipFirstRow,
 			HashSet<Integer> ignoreColumns) {
-
+		
 		// first row description of columns
 		// ArrayList<org.w3c.dom.Node> substanceNodes =
 		// XPathHelper.getSubstanceNodes(substancenodes);
@@ -178,7 +178,7 @@ public class TableData {
 				if (optStatus.wantsToStop())
 					break;
 			}
-
+			
 			String name = xmlSubstanceNode.getName();
 			if (name != null) {
 				if (optStatus != null)
@@ -187,7 +187,7 @@ public class TableData {
 									+ (processAllIDs ? "match all current IDs" : "match current main ID") + ")...");
 				if (name.endsWith(".0"))
 					name = name.substring(0, name.length() - 2);
-
+				
 				ArrayList<String> alternativeIds = mainId2alternativeIDs.get(name);
 				String matchName = name;
 				if (processAllIDs) {
@@ -237,7 +237,7 @@ public class TableData {
 						+ "Matches: " + matches + ", overall alternative ID count (empty values omitted): " + idCnt);
 		return idCnt;
 	}
-
+	
 	public synchronized boolean isDBEinputForm() {
 		String v = getUnicodeStringCellData(10, 4);
 		String v2 = getUnicodeStringCellData(11, 4);
@@ -268,9 +268,9 @@ public class TableData {
 		} else
 			return false;
 	}
-
+	
 	private static String[] knownHeaders = new String[] { "spot", "info", "score", "EST clust-ID", "Unique funcat" };
-
+	
 	public synchronized boolean isGeneExpressionFileFormatForm() {
 		HashSet<String> headers = new HashSet<String>();
 		for (int col = 1; col < 5; col++) {
@@ -285,7 +285,7 @@ public class TableData {
 		}
 		return hitCount > 1;
 	}
-
+	
 	public synchronized boolean isDBEtransposedInputForm() {
 		String v = getUnicodeStringCellData(10, 4);
 		String v2 = getUnicodeStringCellData(11, 4);
@@ -321,7 +321,7 @@ public class TableData {
 		} else
 			return false;
 	}
-
+	
 	public synchronized String getTableStringData(int startRow, int endRow, int startCol, int endCol, String rowDivider,
 			String colDivider) {
 		StringBuilder res = new StringBuilder();
@@ -336,12 +336,12 @@ public class TableData {
 		}
 		return res.toString();
 	}
-
+	
 	/**
 	 * @param col
-	 *            Column 0..n (different from getCellData)
+	 *           Column 0..n (different from getCellData)
 	 * @param row
-	 *            Row 0..n (different from getCellData)
+	 *           Row 0..n (different from getCellData)
 	 * @param data
 	 */
 	public synchronized void addCellData(int col, int row, Object data) {
@@ -372,14 +372,14 @@ public class TableData {
 		} else
 			maxRowForColumn.put(col, row);
 	}
-
+	
 	/**
 	 * @param col
-	 *            Column (1...n)
+	 *           Column (1...n)
 	 * @param row
-	 *            Row (1..n)
+	 *           Row (1..n)
 	 * @param expectIfNULL
-	 *            Return value in case cell is empty
+	 *           Return value in case cell is empty
 	 * @return
 	 */
 	public synchronized Object getCellData(int col, Integer row, Object expectIfNULL) {
@@ -391,7 +391,7 @@ public class TableData {
 		else
 			return expectIfNULL;
 	}
-
+	
 	public synchronized String getCellDataDate(int col, int row, String expectIfNULL) {
 		try {
 			Object o = getCellData(col, row, expectIfNULL);
@@ -409,7 +409,7 @@ public class TableData {
 		}
 		return expectIfNULL;
 	}
-
+	
 	public synchronized Date getCellDataDateObject(int col, int row, Date expectIfNULL) {
 		try {
 			Object o = getCellData(col, row, expectIfNULL);
@@ -428,9 +428,10 @@ public class TableData {
 		}
 		return expectIfNULL;
 	}
-
+	
 	/**
 	 * Converts cell data to unicode strings.
+	 * 
 	 * @param col
 	 * @param row
 	 * @return
@@ -446,23 +447,23 @@ public class TableData {
 		} else
 			return null;
 	}
-
+	
 	public void setStringRec(SSTRecord stringRec) {
 		this.stringRec = stringRec;
 	}
-
+	
 	public SSTRecord getStringRec() {
 		return stringRec;
 	}
-
+	
 	public int getMaximumRow() {
 		return maxRow + 1;
 	}
-
+	
 	public int getMaximumCol() {
 		return maxCol + 1;
 	}
-
+	
 	public ArrayList<SampleEntry> getSamples(SubstanceColumnInformation sci, int plantOrGenotypeColumnRefID) {
 		HashMap<String, ArrayList<ReplicateDouble>> plant_time_timeunit = new HashMap<String, ArrayList<ReplicateDouble>>();
 		HashMap<String, Double> plant_time_timeunit2time = new HashMap<String, Double>();
@@ -514,7 +515,7 @@ public class TableData {
 		}
 		return result;
 	}
-
+	
 	private Object getDoubleCellData(int column, Integer row, Object espectIfNull, boolean warnNonNumeric) {
 		Object o = getCellData(column, row, espectIfNull);
 		if (o != null && o instanceof String) {
@@ -533,7 +534,7 @@ public class TableData {
 		}
 		return o;
 	}
-
+	
 	private void processData(HashMap<String, ArrayList<ReplicateDouble>> plant_time_timeunit,
 			HashMap<String, Double> plant_time_timeunit2time, HashMap<String, String> plant_time_timeunit2timeunit,
 			HashMap<String, String> plant_time_timeunit2mesunit, int column, int row, Object val, Double plantID) {
@@ -547,11 +548,11 @@ public class TableData {
 		if (replObj != null && replObj instanceof Double)
 			replicateNum = ((Double) replObj).toString();
 		ReplicateDouble measureValue = new ReplicateDouble(val, replicateNum, null);
-
+		
 		String timeUnit = getUnicodeStringCellData(col("D"), row);
 		if (timeUnit == null)
 			timeUnit = "-1";
-
+		
 		String plantIDandTime = plant + "$" + time + "$" + timeUnit;
 		if (!plant_time_timeunit.containsKey(plantIDandTime)) {
 			plant_time_timeunit.put(plantIDandTime, new ArrayList<ReplicateDouble>());
@@ -568,7 +569,7 @@ public class TableData {
 		ArrayList<ReplicateDouble> measurementValues = plant_time_timeunit.get(plantIDandTime);
 		measurementValues.add(measureValue);
 	}
-
+	
 	/**
 	 * converts the column from an integer to Excel column notation
 	 * <p>
@@ -586,7 +587,7 @@ public class TableData {
 		}
 		return excelCol;
 	}
-
+	
 	private static int col(String col) {
 		if (col.length() == 1) {
 			char c1 = col.charAt(0);
@@ -596,11 +597,11 @@ public class TableData {
 			return -1;
 		}
 	}
-
+	
 	public Collection<SubstanceColumnInformation> getSubstanceColumnInformation(String firstCol) {
 		return getSubstanceColumnInformation(firstCol, false);
 	}
-
+	
 	public Collection<SubstanceColumnInformation> getSubstanceColumnInformation(String firstCol,
 			boolean keepDoubleSubstancenames) {
 		HashMap<String, SubstanceColumnInformation> res = new HashMap<String, SubstanceColumnInformation>();
@@ -613,7 +614,7 @@ public class TableData {
 					sci.addDataColumn(colSubst);
 					resWithDoublettes.add(sci);
 				} else {
-
+					
 					if (!res.keySet().contains(substName)) {
 						SubstanceColumnInformation sci = new SubstanceColumnInformation();
 						res.put(substName, sci);
@@ -625,16 +626,16 @@ public class TableData {
 		}
 		return keepDoubleSubstancenames ? resWithDoublettes : res.values();
 	}
-
+	
 	public void showDataDialog() {
 		showDataDialog(null);
 	}
-
+	
 	// show a dialog with the table data
 	public void showDataDialog(HashMap<Integer, String> optHeaders) {
 		MainFrame.showMessageDialog("Table Data", getDataInScrollbars(optHeaders));
 	}
-
+	
 	public JScrollPane getDataInScrollbars(HashMap<Integer, String> optHeaders) {
 		XlsTableModel xtm = new XlsTableModel(this, Integer.MAX_VALUE, Integer.MAX_VALUE);
 		// if (optHeaders != null)
@@ -646,23 +647,23 @@ public class TableData {
 		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		return jsp;
 	}
-
+	
 	public int getMaximumRow(int column) {
 		if (maxRowForColumn.containsKey(column))
 			return maxRowForColumn.get(column);
 		else
 			return 0;
 	}
-
+	
 	public TableData getTransposedDataset() {
 		return new TableData(this, true, 0);
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Table Data (col/rows " + maxCol + " x " + maxRow + ")";
 	}
-
+	
 	public void splitCells(String splitChar) {
 		for (int row = 1; row <= getMaximumRow(); row++) {
 			ArrayList<Object> valuesInRow = new ArrayList<Object>();
@@ -690,9 +691,9 @@ public class TableData {
 			}
 		}
 	}
-
+	
 	public void processGOanno(String splitChar, String preString, int minNumericLength) {
-
+		
 		for (int row = 1; row <= getMaximumRow(); row++) {
 			ArrayList<Object> valuesInRow = new ArrayList<Object>();
 			for (int col = 1; col <= getMaximumCol(); col++) {
@@ -754,7 +755,7 @@ public class TableData {
 			}
 		}
 	}
-
+	
 	private void clearRow(int row) {
 		int maxCol = getMaximumCol();
 		for (int col = 1; col <= maxCol; col++) {
@@ -764,7 +765,7 @@ public class TableData {
 			}
 		}
 	}
-
+	
 	public void processCellContentRemoveStringTags(String start, String end) {
 		if (start == null)
 			start = "";
@@ -813,7 +814,7 @@ public class TableData {
 		}
 		System.out.println("AAA " + aaa);
 	}
-
+	
 	public static ArrayList<String> getRelevantAffymetrixAnnotationColumnHeaders() {
 		ArrayList<String> result = new ArrayList<String>();
 		// result.add(SPECIES_SCIENTIFIC_NAME);
@@ -823,18 +824,18 @@ public class TableData {
 		result.add(ENTREZ_GENE_AGI);
 		return result;
 	}
-
+	
 	/**
 	 * @return set of processed columns which should be ignored by other annotation
 	 *         column processing
 	 */
 	public HashSet<Integer> processAffymetrixAnnotationColumns(boolean processAffyGO, boolean processAffyEntrez) {
 		HashSet<Integer> columnsToIgnoreColumns = new HashSet<Integer>();
-
+		
 		for (int col = 1; col <= getMaximumCol(); col++) {
 			columnsToIgnoreColumns.add(col);
 		}
-
+		
 		// int species_scientific_name_column = -1;
 		// for (int col = 1; col<=getMaximumCol(); col++) {
 		// String header = getUnicodeStringCellData(col, 1);
@@ -847,7 +848,7 @@ public class TableData {
 		// ErrorMsg.addErrorMessage("Could not find 'Species Scientific Name'-column.");
 		// return columnsToIgnoreColumns;
 		// }
-
+		
 		int probe_set_id_column = -1;
 		for (int col = 1; col <= getMaximumCol(); col++) {
 			String header = getUnicodeStringCellData(col, 1);
@@ -867,7 +868,7 @@ public class TableData {
 					"Could not find 'Probe Set ID' (Affymetrix Annotation) or 'ProbeID' (Agilent Annotation) column.");
 			return columnsToIgnoreColumns;
 		}
-
+		
 		int entrez_gene_column = -1;
 		for (int col = 1; col <= getMaximumCol(); col++) {
 			String header = getUnicodeStringCellData(col, 1);
@@ -886,7 +887,7 @@ public class TableData {
 			ErrorMsg.addErrorMessage("Could not find 'Entrez Gene'-column.");
 			return columnsToIgnoreColumns;
 		}
-
+		
 		// process data
 		// probe_set_id_column
 		// species_scientific_name_column
@@ -898,7 +899,7 @@ public class TableData {
 		clearRow(1);
 		addCellData(0, 0, headerA);
 		addCellData(1, 0, headerB);
-
+		
 		for (int row = 2; row <= getMaximumRow(); row++) {
 			String probeID = getUnicodeStringCellData(probe_set_id_column, row);
 			if (probeID == null || probeID.length() == 0 || probeID.equals("---")) {
@@ -918,7 +919,7 @@ public class TableData {
 		}
 		return columnsToIgnoreColumns;
 	}
-
+	
 	public String getSampleValues(boolean headerRow, int col, int maxValues, String div, String ifNoValues) {
 		LinkedHashSet<String> values = new LinkedHashSet<>();
 		int startRow = headerRow ? 2 : 1;
@@ -927,7 +928,7 @@ public class TableData {
 				break;
 			values.add(getUnicodeStringCellData(col, row));
 		}
-
+		
 		if (values.size() == 0)
 			return ifNoValues;
 		else {

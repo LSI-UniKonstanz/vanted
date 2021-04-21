@@ -16,22 +16,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityClassSelectorToGraph;
 
 public class BPBiochemicalReaction extends BPInteraction {
-
+	
 	public BPBiochemicalReaction(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super(Graph, Nodes);
 	}
-
+	
 	public void read(Interaction i) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		BiochemicalReaction br = (BiochemicalReaction) i;
-
+		
 		Set<PhysicalEntity> left = br.getLeft();
 		Set<PhysicalEntity> right = br.getRight();
-
+		
 		// set center node of the reaction
 		Node center = graph.addNode(centerAttribute);
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, br);
 		nodes.put(br, center);
-
+		
 		for (PhysicalEntity l : left) {
 			Node node = findORcreateNode(l);
 			Edge e = addEdge(node, center);
@@ -39,7 +39,7 @@ public class BPBiochemicalReaction extends BPInteraction {
 					Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$
 			sW.writeParticipantStoichiometry(node, center, e, br.getParticipantStoichiometry());
 		}
-
+		
 		for (PhysicalEntity r : right) {
 			Node node = findORcreateNode(r);
 			Edge e = addEdge(center, node);
@@ -48,5 +48,5 @@ public class BPBiochemicalReaction extends BPInteraction {
 			sW.writeParticipantStoichiometry(node, center, e, br.getParticipantStoichiometry());
 		}
 	}
-
+	
 }

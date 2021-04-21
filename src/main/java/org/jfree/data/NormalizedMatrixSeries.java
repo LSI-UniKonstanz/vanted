@@ -39,32 +39,32 @@ package org.jfree.data;
  * @since Jun 18, 2003
  */
 public class NormalizedMatrixSeries extends MatrixSeries {
-
+	
 	/** The default scale factor. */
 	public static final double DEFAULT_SCALE_FACTOR = 1.0;
-
+	
 	/**
 	 * A factor that multiplies each item in this series when observed using getItem
 	 * method.
 	 */
 	private double m_scaleFactor = DEFAULT_SCALE_FACTOR;
-
+	
 	/** The sum of all items in this matrix */
 	private double m_totalSum;
-
+	
 	/**
 	 * Constructor for NormalizedMatrixSeries.
 	 * 
 	 * @param name
-	 *            the series name.
+	 *           the series name.
 	 * @param rows
-	 *            the number of rows.
+	 *           the number of rows.
 	 * @param columns
-	 *            the number of columns.
+	 *           the number of columns.
 	 */
 	public NormalizedMatrixSeries(final String name, final int rows, final int columns) {
 		super(name, rows, columns);
-
+		
 		/*
 		 * we assum super is always initialized to all-zero matrix, so the total sum
 		 * should be 0 upon initialization. However, we set it to Double.MIN_VALUE to
@@ -72,37 +72,37 @@ public class NormalizedMatrixSeries extends MatrixSeries {
 		 */
 		this.m_totalSum = Double.MIN_VALUE;
 	}
-
+	
 	/**
 	 * Returns an item.
 	 * 
 	 * @param itemIndex
-	 *            the index.
+	 *           the index.
 	 * @return The value.
 	 * @see org.jfree.data.MatrixSeries#getItem(int)
 	 */
 	public Number getItem(final int itemIndex) {
 		final int i = getItemRow(itemIndex);
 		final int j = getItemColumn(itemIndex);
-
+		
 		final double mij = get(i, j) * this.m_scaleFactor;
 		final Number n = Double.valueOf(mij / this.m_totalSum);
-
+		
 		return n;
 	}
-
+	
 	/**
 	 * Sets the factor that multiplies each item in this series when observed using
 	 * getItem mehtod.
 	 * 
 	 * @param factor
-	 *            new factor to set.
+	 *           new factor to set.
 	 * @see #DEFAULT_SCALE_FACTOR
 	 */
 	public void setScaleFactor(final double factor) {
 		this.m_scaleFactor = factor;
 	}
-
+	
 	/**
 	 * Returns the factor that multiplies each item in this series when observed
 	 * using getItem mehtod.
@@ -112,17 +112,17 @@ public class NormalizedMatrixSeries extends MatrixSeries {
 	public double getScaleFactor() {
 		return this.m_scaleFactor;
 	}
-
+	
 	/**
 	 * @see org.jfree.data.MatrixSeries#update(int, int, double)
 	 */
 	public void update(final int i, final int j, final double mij) {
 		this.m_totalSum -= get(i, j);
 		this.m_totalSum += mij;
-
+		
 		super.update(i, j, mij);
 	}
-
+	
 	/**
 	 * @see org.jfree.data.MatrixSeries#zeroAll()
 	 */

@@ -33,14 +33,14 @@ package org.jfree.data;
  * A function of the form y = f(x).
  */
 public interface Function2D {
-
+	
 	/**
 	 * Returns the value of the function ('y') for a given input ('x').
 	 * 
 	 * @param x
-	 *            the x-value.
+	 *           the x-value.
 	 * @return the function value.
 	 */
 	public double getValue(double x);
-
+	
 }

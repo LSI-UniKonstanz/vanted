@@ -21,20 +21,20 @@ import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
-//import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundEntry;
-//import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
+// import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundEntry;
+// import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectCompoundsAlgorithm extends AbstractAlgorithm {
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-
+	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS_ENH))
 			return null;
@@ -43,17 +43,17 @@ public class SelectCompoundsAlgorithm extends AbstractAlgorithm {
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
-
+	
 	public void execute() {
 		ArrayList<Node> compounds = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
@@ -80,7 +80,7 @@ public class SelectCompoundsAlgorithm extends AbstractAlgorithm {
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(compounds.size() + " compound-nodes added to selection", MessageType.INFO);
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

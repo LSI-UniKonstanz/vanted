@@ -81,7 +81,7 @@ import org.jfree.util.PublicCloneable;
  * @author Serge V. Grachov
  */
 public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, PublicCloneable, Serializable {
-
+	
 	/**
 	 * Creates a new renderer with no tool tip generator and no URL generator.
 	 * <P>
@@ -92,47 +92,47 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 	public StackedBarRenderer3D() {
 		super();
 	}
-
+	
 	/**
 	 * Constructs a new renderer with the specified '3D effect'.
 	 * 
 	 * @param xOffset
-	 *            the x-offset for the 3D effect.
+	 *           the x-offset for the 3D effect.
 	 * @param yOffset
-	 *            the y-offset for the 3D effect.
+	 *           the y-offset for the 3D effect.
 	 */
 	public StackedBarRenderer3D(double xOffset, double yOffset) {
 		super(xOffset, yOffset);
 	}
-
+	
 	/**
 	 * Returns the range of values the renderer requires to display all the items
 	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset (<code>null</code> permitted).
+	 *           the dataset (<code>null</code> permitted).
 	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
 	 *         or empty).
 	 */
 	public Range getRangeExtent(CategoryDataset dataset) {
 		return DatasetUtilities.getStackedRangeExtent(dataset);
 	}
-
+	
 	/**
 	 * Calculates the bar width and stores it in the renderer state.
 	 * 
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param dataArea
-	 *            the data area.
+	 *           the data area.
 	 * @param rendererIndex
-	 *            the renderer index.
+	 *           the renderer index.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 */
 	protected void calculateBarWidth(CategoryPlot plot, Rectangle2D dataArea, int rendererIndex,
 			CategoryItemRendererState state) {
-
+		
 		// calculate the bar width
 		CategoryAxis domainAxis = getDomainAxis(plot, rendererIndex);
 		CategoryDataset data = plot.getDataset(rendererIndex);
@@ -150,7 +150,7 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 			if (columns > 1) {
 				categoryMargin = domainAxis.getCategoryMargin();
 			}
-
+			
 			double used = space * (1 - domainAxis.getLowerMargin() - domainAxis.getUpperMargin() - categoryMargin);
 			if (columns > 0) {
 				state.setBarWidth(Math.min(used / columns, maxWidth));
@@ -158,50 +158,50 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 				state.setBarWidth(Math.min(used, maxWidth));
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * Draws a stacked bar (with 3D-effect) for a specific item.
 	 * 
 	 * @param g2
-	 *            the graphics device.
+	 *           the graphics device.
 	 * @param state
-	 *            the renderer state.
+	 *           the renderer state.
 	 * @param dataArea
-	 *            the plot area.
+	 *           the plot area.
 	 * @param plot
-	 *            the plot.
+	 *           the plot.
 	 * @param domainAxis
-	 *            the domain (category) axis.
+	 *           the domain (category) axis.
 	 * @param rangeAxis
-	 *            the range (value) axis.
+	 *           the range (value) axis.
 	 * @param dataset
-	 *            the data.
+	 *           the data.
 	 * @param row
-	 *            the row index (zero-based).
+	 *           the row index (zero-based).
 	 * @param column
-	 *            the column index (zero-based).
+	 *           the column index (zero-based).
 	 */
 	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
 			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
-
+		
 		// check the value we are plotting...
 		Number dataValue = dataset.getValue(row, column);
 		if (dataValue == null) {
 			return;
 		}
-
+		
 		double value = dataValue.doubleValue();
-
+		
 		Rectangle2D adjusted = new Rectangle2D.Double(dataArea.getX(), dataArea.getY() + getYOffset(),
 				dataArea.getWidth() - getXOffset(), dataArea.getHeight() - getYOffset());
-
+		
 		PlotOrientation orientation = plot.getOrientation();
-
+		
 		double barW0 = domainAxis.getCategoryMiddle(column, getColumnCount(), adjusted, plot.getDomainAxisEdge())
 				- state.getBarWidth() / 2.0;
-
+		
 		double positiveBase = 0.0;
 		double negativeBase = 0.0;
 		for (int i = 0; i < row; i++) {
@@ -215,7 +215,7 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 				}
 			}
 		}
-
+		
 		double translatedBase;
 		double translatedValue;
 		RectangleEdge location = plot.getRangeAxisEdge();
@@ -228,7 +228,7 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 		}
 		double barL0 = Math.min(translatedBase, translatedValue);
 		double barLength = Math.max(Math.abs(translatedValue - translatedBase), getMinimumBarLength());
-
+		
 		Rectangle2D bar = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			bar = new Rectangle2D.Double(barL0, barW0, barLength, state.getBarWidth());
@@ -238,17 +238,17 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 		Paint itemPaint = getItemPaint(row, column);
 		g2.setPaint(itemPaint);
 		g2.fill(bar);
-
+		
 		double x0 = bar.getMinX();
 		double x1 = x0 + getXOffset();
 		double x2 = bar.getMaxX();
 		double x3 = x2 + getXOffset();
-
+		
 		double y0 = bar.getMinY() - getYOffset();
 		double y1 = bar.getMinY();
 		double y2 = bar.getMaxY() - getYOffset();
 		double y3 = bar.getMaxY();
-
+		
 		GeneralPath bar3dRight = null;
 		GeneralPath bar3dTop = null;
 		if (value > 0.0 || orientation == PlotOrientation.VERTICAL) {
@@ -258,13 +258,13 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 			bar3dRight.lineTo((float) x3, (float) y0);
 			bar3dRight.lineTo((float) x3, (float) y2);
 			bar3dRight.closePath();
-
+			
 			if (itemPaint instanceof Color) {
 				g2.setPaint(((Color) itemPaint).darker());
 			}
 			g2.fill(bar3dRight);
 		}
-
+		
 		if (value > 0.0 || orientation == PlotOrientation.HORIZONTAL) {
 			bar3dTop = new GeneralPath();
 			bar3dTop.moveTo((float) x0, (float) y1);
@@ -274,7 +274,7 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 			bar3dTop.closePath();
 			g2.fill(bar3dTop);
 		}
-
+		
 		if (state.getBarWidth() > 3) {
 			g2.setStroke(getItemOutlineStroke(row, column));
 			g2.setPaint(getItemOutlinePaint(row, column));
@@ -286,12 +286,12 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 				g2.draw(bar3dTop);
 			}
 		}
-
+		
 		CategoryLabelGenerator generator = getLabelGenerator(row, column);
 		if (generator != null && isItemLabelVisible(row, column)) {
 			drawItemLabel(g2, dataset, row, column, plot, generator, bar, (value < 0.0));
 		}
-
+		
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
@@ -310,7 +310,7 @@ public class StackedBarRenderer3D extends BarRenderer3D implements Cloneable, Pu
 				entities.addEntity(entity);
 			}
 		}
-
+		
 	}
-
+	
 }

@@ -20,12 +20,12 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  */
 public class ByteEditComponent extends NumberEditComponent {
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Creates a new ByteEditComponent object.
 	 * 
 	 * @param disp
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ByteEditComponent(Displayable disp) {
 		super(disp);

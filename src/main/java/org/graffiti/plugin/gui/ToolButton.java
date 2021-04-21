@@ -30,26 +30,25 @@ import org.graffiti.plugin.tool.Tool;
  * @version $Revision: 1.11 $ $Date: 2010/12/22 13:05:54 $
  */
 public class ToolButton extends GraffitiToggleButton implements GraffitiToolComponent, ActionListener {
-	// ~ Instance fields ========================================================
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -3017277902303429061L;
+	
+	// ~ Instance fields ========================================================
 	/** The tool this button is identified with. */
 	private Tool tool;
-
+	
 	private static List<ToolButton> knownTools = new LinkedList<ToolButton>();
 	private static List<ModeToolbar> knownToolBars = new LinkedList<ModeToolbar>();
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructor that sets the buttons tool to the given <code>Tool</code>.
 	 * 
 	 * @param t
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ToolButton(Tool t) {
 		this.tool = t;
@@ -58,7 +57,7 @@ public class ToolButton extends GraffitiToggleButton implements GraffitiToolComp
 			knownTools.add(this);
 		}
 	}
-
+	
 	public static void checkStatusForAllToolButtons() {
 		if (ErrorMsg.getAppLoadingStatus() == ApplicationStatus.INITIALIZATION)
 			return;
@@ -68,7 +67,7 @@ public class ToolButton extends GraffitiToggleButton implements GraffitiToolComp
 			t.setSelected(t.tool.isActive());
 		}
 	}
-
+	
 	public static void requestToolButtonFocus() {
 		for (Iterator<ToolButton> it = knownTools.iterator(); it.hasNext();) {
 			ToolButton t = (ToolButton) it.next();
@@ -76,14 +75,14 @@ public class ToolButton extends GraffitiToggleButton implements GraffitiToolComp
 				t.requestFocusInWindow();
 		}
 	}
-
+	
 	/**
 	 * Creates a new ToolButton object.
 	 * 
 	 * @param t
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param preferredComponent
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ToolButton(Tool t, String preferredComponent) {
 		super(preferredComponent);
@@ -93,16 +92,16 @@ public class ToolButton extends GraffitiToggleButton implements GraffitiToolComp
 			knownTools.add(this);
 		}
 	}
-
+	
 	/**
 	 * Creates a new ToolButton object.
 	 * 
 	 * @param t
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param preferredComponent
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param icon
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ToolButton(Tool t, String preferredComponent, ImageIcon icon) {
 		super(preferredComponent, icon);
@@ -113,16 +112,16 @@ public class ToolButton extends GraffitiToggleButton implements GraffitiToolComp
 		}
 		setMargin(new Insets(1, 1, 1, 1));
 	}
-
+	
 	/**
 	 * Creates a new ToolButton object.
 	 * 
 	 * @param t
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param preferredComponent
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param text
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public ToolButton(Tool t, String preferredComponent, String text) {
 		super(text);
@@ -130,16 +129,16 @@ public class ToolButton extends GraffitiToggleButton implements GraffitiToolComp
 		addActionListener(this);
 		setMargin(new Insets(1, 1, 1, 1));
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * @see org.graffiti.plugin.gui.GraffitiContainer#getId()
 	 */
 	public String getId() {
 		return getClass().getName();
 	}
-
+	
 	/**
 	 * Returns the tool this button is identified with.
 	 * 
@@ -148,7 +147,7 @@ public class ToolButton extends GraffitiToggleButton implements GraffitiToolComp
 	public Tool getTool() {
 		return tool;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -160,7 +159,7 @@ public class ToolButton extends GraffitiToggleButton implements GraffitiToolComp
 		tool.activate();
 		checkStatusForAllToolButtons();
 	}
-
+	
 	/**
 	 * @param toolbar
 	 */

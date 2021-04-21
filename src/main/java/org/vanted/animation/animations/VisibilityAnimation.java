@@ -10,17 +10,15 @@ import org.vanted.animation.data.BooleanTimePoint;
 import org.vanted.animation.loopers.Looper;
 
 /**
- * 
  * Animates the visibility of an Attributable object.<br>
  * BooleanTimePoint data values: <br>
  * True = Hidden <br>
  * False = Visible <br>
  * 
  * @author - Patrick Shaw
- * 
  */
 public class VisibilityAnimation extends Animation<BooleanTimePoint> {
-
+	
 	/**
 	 * @param attributable
 	 * @param dataPoints
@@ -34,7 +32,7 @@ public class VisibilityAnimation extends Animation<BooleanTimePoint> {
 		super(attributable, dataPoints, loopDuration, startTime, noLoops, looper);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	/**
 	 * @param attributable
 	 * @param dataPoints
@@ -47,7 +45,7 @@ public class VisibilityAnimation extends Animation<BooleanTimePoint> {
 		super(attributable, dataPoints, loopDuration, startTime, noLoops);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	/**
 	 * @param attributable
 	 * @param dataPoints
@@ -59,7 +57,7 @@ public class VisibilityAnimation extends Animation<BooleanTimePoint> {
 		super(attributable, dataPoints, loopDuration, startTime);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	/**
 	 * @param attributable
 	 * @param dataPoints
@@ -69,10 +67,10 @@ public class VisibilityAnimation extends Animation<BooleanTimePoint> {
 		super(attributable, dataPoints, loopDuration);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public void animate(double time) {
 		AttributeHelper.setHidden(dataPoints.get(previousIndex).getDataValue(), (GraphElement) attributable);
 	}
-
+	
 }

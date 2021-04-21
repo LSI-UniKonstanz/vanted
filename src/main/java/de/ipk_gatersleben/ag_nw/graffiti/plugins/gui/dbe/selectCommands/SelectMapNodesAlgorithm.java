@@ -26,13 +26,13 @@ import org.graffiti.plugin.algorithm.PreconditionException;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectMapNodesAlgorithm extends AbstractAlgorithm implements Algorithm {
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -44,17 +44,17 @@ public class SelectMapNodesAlgorithm extends AbstractAlgorithm implements Algori
 		else
 			return "Select Map Nodes";
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -94,7 +94,7 @@ public class SelectMapNodesAlgorithm extends AbstractAlgorithm implements Algori
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(mapNodes.size() + " map-nodes added to selection", MessageType.INFO);
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

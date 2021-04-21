@@ -53,33 +53,33 @@ import org.jfree.ui.Spacer;
  * data from a {@link CategoryDataset}.
  */
 public class CategoryStepChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public CategoryStepChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		// create a dataset...
 		final double[][] data = new double[][] { { 1.0, 4.0, 3.0, 5.0, 5.0, 7.0, 7.0, 8.0 },
 				{ 5.0, 7.0, 6.0, 8.0, 4.0, 4.0, 2.0, 1.0 }, { 4.0, 3.0, 2.0, 3.0, 6.0, 3.0, 4.0, 3.0 } };
-
+		
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Type ", data);
-
+		
 		// create the chart...
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(500, 270));
 		chartPanel.setEnforceFileExtensions(false);
-
+		
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -90,65 +90,65 @@ public class CategoryStepChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-
+		
 		final CategoryItemRenderer renderer = new CategoryStepRenderer(true);
 		final CategoryAxis domainAxis = new CategoryAxis("Category");
 		final ValueAxis rangeAxis = new NumberAxis("Value");
 		final CategoryPlot plot = new CategoryPlot(dataset, domainAxis, rangeAxis, renderer);
 		final JFreeChart chart = new JFreeChart("Category Step Chart", plot);
-
+		
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-
+		
 		// set the background color for the chart...
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setAnchor(StandardLegend.SOUTH);
-
+		
 		chart.setBackgroundPaint(Color.white);
-
+		
 		plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinesVisible(true);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setRangeGridlinesVisible(true);
 		plot.setRangeGridlinePaint(Color.white);
-
+		
 		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		domainAxis.setLowerMargin(0.0);
 		domainAxis.setUpperMargin(0.0);
 		domainAxis.addCategoryLabelToolTip("Type 1", "The first type.");
 		domainAxis.addCategoryLabelToolTip("Type 2", "The second type.");
 		domainAxis.addCategoryLabelToolTip("Type 3", "The third type.");
-
+		
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		rangeAxis.setLabelAngle(0 * Math.PI / 2.0);
 		// OPTIONAL CUSTOMISATION COMPLETED.
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final CategoryStepChartDemo demo = new CategoryStepChartDemo("Category Step Renderer Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

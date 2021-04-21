@@ -15,16 +15,15 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
  * 
  * @author D. Garkov
  * @since 2.7.0
- *
  */
 public class TransactionAdapter implements TransactionListener {
-
+	
 	@Override
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 	}
-
+	
 	@Override
 	public void transactionStarted(TransactionEvent e) {
 	}
-
+	
 }

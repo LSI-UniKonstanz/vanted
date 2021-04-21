@@ -29,11 +29,9 @@ import org.vanted.scaling.Toolbox;
  * A JSlider that remains unchanged regardless of the scaling. To change, you
  * have to re-instantiate it.
  * <p>
- * 
  * Used for the HighDPISupport pane, where it is vital to preserve state, so
  * that the user can continue to work with its components.
  * <p>
- * 
  * The LookAndFeel immutable JSlider has two skins, one plain and one
  * color-coded.
  * 
@@ -41,55 +39,55 @@ import org.vanted.scaling.Toolbox;
  * @since 2.6.4
  */
 public class ImmutableSlider extends JSlider {
-
+	
 	private static final long serialVersionUID = -5190816962285639529L;
-
+	
 	private FontUIResource font;
-
+	
 	public ImmutableSlider() {
 		saveDefaults();
 	}
-
+	
 	public ImmutableSlider(int orientation) {
 		super(orientation);
 		saveDefaults();
 	}
-
+	
 	public ImmutableSlider(BoundedRangeModel brm) {
 		super(brm);
 		saveDefaults();
 	}
-
+	
 	public ImmutableSlider(int min, int max) {
 		super(min, max);
 		saveDefaults();
 	}
-
+	
 	public ImmutableSlider(int min, int max, int value) {
 		super(min, max, value);
 		saveDefaults();
 	}
-
+	
 	public ImmutableSlider(int orientation, int min, int max, int value) {
 		super(orientation, min, max, value);
 		saveDefaults();
 	}
-
+	
 	@Override
 	public Font getFont() {
 		return font;
 	}
-
+	
 	private void saveDefaults() {
 		font = (FontUIResource) UIManager.get("Slider.font");
 		correctUI();
 	}
-
+	
 	private void correctUI() {
 		ColoredImmutableSliderUI iUI = new ColoredImmutableSliderUI(this);
 		this.setUI(iUI);
 	}
-
+	
 	/**
 	 * By saving and loading certain LAF Defaults, we deactivate any LAF influences
 	 * from then on, that might be brought through a LAF change. Thus, we turn it
@@ -97,18 +95,17 @@ public class ImmutableSlider extends JSlider {
 	 * 
 	 * @author D. Garkov
 	 * @since 2.6.4
-	 *
 	 */
 	protected static class PlainImmutableSliderUI extends BasicSliderUI {
-
+		
 		protected final float factor = Toolbox.getDPIScalingRatio();
-
+		
 		private Dimension hsize;
 		private Dimension vsize;
 		private Dimension minHor;
 		private Dimension minVert;
 		private int tickLength = 8;
-
+		
 		public PlainImmutableSliderUI(JSlider b) {
 			super(b);
 			hsize = (Dimension) UIManager.get("Slider.horizontalSize");
@@ -123,7 +120,7 @@ public class ImmutableSlider extends JSlider {
 			 */
 			setNullFields();
 		}
-
+		
 		private void setNullFields() {
 			if (hsize == null)
 				hsize = new Dimension(200, 21);
@@ -134,34 +131,34 @@ public class ImmutableSlider extends JSlider {
 			if (minVert == null)
 				minVert = new Dimension(21, 36);
 		}
-
+		
 		@Override
 		public Dimension getPreferredHorizontalSize() {
 			hsize.height *= factor;
 			return hsize;
 		}
-
+		
 		@Override
 		public Dimension getPreferredVerticalSize() {
 			return vsize;
 		}
-
+		
 		@Override
 		public Dimension getMinimumHorizontalSize() {
 			return minHor;
 		}
-
+		
 		@Override
 		public Dimension getMinimumVerticalSize() {
 			return minVert;
 		}
-
+		
 		@Override
 		protected int getTickLength() {
 			return tickLength;
 		}
 	}
-
+	
 	/**
 	 * This serves a couple of purposes, among those are - visually color-maps
 	 * scaling regions to stimulate better mental representation and leave stronger
@@ -173,32 +170,31 @@ public class ImmutableSlider extends JSlider {
 	 * @author D. Garkov
 	 * @since 2.6.4
 	 * @vanted.revision 2.7.0 Monochromatic look
-	 *
 	 */
 	protected static class ColoredImmutableSliderUI extends PlainImmutableSliderUI {
-
+		
 		private static float[] fracs = { 0.1f, 0.66f, 1f };
 		private LinearGradientPaint p;
-
+		
 		public ColoredImmutableSliderUI(JSlider slider) {
 			super(slider);
 		}
-
+		
 		@Override
 		protected void calculateTrackRect() {
 			super.calculateTrackRect();
-
+			
 			if (slider.getOrientation() == JSlider.HORIZONTAL)
 				trackRect.height *= factor;
 			else
 				trackRect.width *= factor;
-
+			
 			// Here, before calculateThumbLocation(), to not distort the
 			// additional to-value placing that is calculated there
 			thumbRect.width *= factor;
 			thumbRect.height *= factor;
 		}
-
+		
 		@Override
 		protected void calculateLabelRect() {
 			super.calculateLabelRect();
@@ -207,7 +203,7 @@ public class ImmutableSlider extends JSlider {
 			else
 				labelRect.width *= factor;
 		}
-
+		
 		@Override
 		public void paintTrack(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g;
@@ -222,7 +218,7 @@ public class ImmutableSlider extends JSlider {
 			else
 				g2d.fillRoundRect(t.x, t.y, t.width, t.height, t.width / 2, t.width / 2);
 		}
-
+		
 		@Override
 		public void paintThumb(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g;

@@ -15,36 +15,35 @@ import org.vanted.animation.data.TimePoint;
  * 
  * @author D. Garkov
  * @since 2.7.0
- *
  */
 public class AnimatorAdapter<T> implements AnimatorListener<T> {
-
+	
 	@Override
 	public void onAnimationFinished(AnimatorData data, Animation<TimePoint<T>> anim) {
 	}
-
+	
 	@Override
 	public void onNewAnimatorLoop(AnimatorData data) {
 	}
-
+	
 	@Override
 	public void onAnimatorStart(AnimatorData data) {
 	}
-
+	
 	@Override
 	public void onAnimatorStop(AnimatorData data) {
 	}
-
+	
 	@Override
 	public void onAnimatorReset(AnimatorData data) {
 	}
-
+	
 	@Override
 	public void onAnimatorRestart(AnimatorData data) {
 	}
-
+	
 	@Override
 	public void onAnimatorFinished(AnimatorData data) {
 	}
-
+	
 }

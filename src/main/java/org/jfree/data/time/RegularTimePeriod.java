@@ -55,7 +55,7 @@ import org.jfree.date.MonthConstants;
  * This class is immutable, and all subclasses should be immutable also.
  */
 public abstract class RegularTimePeriod implements TimePeriod, Comparable, MonthConstants {
-
+	
 	/**
 	 * Returns the time period preceding this one, or null if some lower limit has
 	 * been reached.
@@ -63,7 +63,7 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 	 * @return the previous time period.
 	 */
 	public abstract RegularTimePeriod previous();
-
+	
 	/**
 	 * Returns the time period following this one, or null if some limit has been
 	 * reached.
@@ -71,22 +71,22 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 	 * @return the next time period.
 	 */
 	public abstract RegularTimePeriod next();
-
+	
 	/**
 	 * Returns a serial index number for the time unit.
 	 * 
 	 * @return the serial index number.
 	 */
 	public abstract long getSerialIndex();
-
+	
 	// ////////////////////////////////////////////////////////////////////////
-
+	
 	/** The default time zone. */
 	public static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getDefault();
-
+	
 	/** A working calendar (recycle to avoid unnecessary object creation). */
 	public static final Calendar WORKING_CALENDAR = Calendar.getInstance(DEFAULT_TIME_ZONE);
-
+	
 	/**
 	 * Returns the date/time that marks the start of the time period.
 	 * 
@@ -95,7 +95,7 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 	public Date getStart() {
 		return new Date(getFirstMillisecond());
 	}
-
+	
 	/**
 	 * Returns the date/time that marks the end of the time period.
 	 * 
@@ -104,7 +104,7 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 	public Date getEnd() {
 		return new Date(getLastMillisecond());
 	}
-
+	
 	/**
 	 * Returns the first millisecond of the time period, evaluated in the default
 	 * time zone.
@@ -114,30 +114,30 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 	public long getFirstMillisecond() {
 		return getFirstMillisecond(DEFAULT_TIME_ZONE);
 	}
-
+	
 	/**
 	 * Returns the first millisecond of the time period, evaluated within a specific
 	 * time zone.
 	 * 
 	 * @param zone
-	 *            the time zone.
+	 *           the time zone.
 	 * @return the first millisecond of the time period.
 	 */
 	public long getFirstMillisecond(final TimeZone zone) {
 		WORKING_CALENDAR.setTimeZone(zone);
 		return getFirstMillisecond(WORKING_CALENDAR);
 	}
-
+	
 	/**
 	 * Returns the first millisecond of the time period, evaluated using the
 	 * supplied calendar (which incorporates a timezone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the first millisecond of the time period.
 	 */
 	public abstract long getFirstMillisecond(Calendar calendar);
-
+	
 	/**
 	 * Returns the last millisecond of the time period, evaluated in the default
 	 * time zone.
@@ -147,32 +147,32 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 	public long getLastMillisecond() {
 		return getLastMillisecond(DEFAULT_TIME_ZONE);
 	}
-
+	
 	/**
 	 * Returns the last millisecond of the time period, evaluated within a specific
 	 * time zone.
 	 * 
 	 * @param zone
-	 *            the time zone.
+	 *           the time zone.
 	 * @return the last millisecond of the time period.
 	 */
 	public long getLastMillisecond(final TimeZone zone) {
-
+		
 		WORKING_CALENDAR.setTimeZone(zone);
 		return getLastMillisecond(WORKING_CALENDAR);
-
+		
 	}
-
+	
 	/**
 	 * Returns the last millisecond of the time period, evaluated using the supplied
 	 * calendar (which incorporates a timezone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return the last millisecond of the time period.
 	 */
 	public abstract long getLastMillisecond(Calendar calendar);
-
+	
 	/**
 	 * Returns the millisecond closest to the middle of the time period, evaluated
 	 * in the default time zone.
@@ -184,13 +184,13 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 		final long m2 = getLastMillisecond();
 		return m1 + (m2 - m1) / 2;
 	}
-
+	
 	/**
 	 * Returns the millisecond closest to the middle of the time period, evaluated
 	 * within a specific time zone.
 	 * 
 	 * @param zone
-	 *            the time zone.
+	 *           the time zone.
 	 * @return The middle millisecond.
 	 */
 	public long getMiddleMillisecond(final TimeZone zone) {
@@ -198,13 +198,13 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 		final long m2 = getLastMillisecond(zone);
 		return m1 + (m2 - m1) / 2;
 	}
-
+	
 	/**
 	 * Returns the millisecond closest to the middle of the time period, evaluated
 	 * using the supplied calendar (which incorporates a timezone).
 	 * 
 	 * @param calendar
-	 *            the calendar.
+	 *           the calendar.
 	 * @return The middle millisecond.
 	 */
 	public long getMiddleMillisecond(final Calendar calendar) {
@@ -212,7 +212,7 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 		final long m2 = getLastMillisecond(calendar);
 		return m1 + (m2 - m1) / 2;
 	}
-
+	
 	/**
 	 * Returns a string representation of the time period.
 	 * 
@@ -221,5 +221,5 @@ public abstract class RegularTimePeriod implements TimePeriod, Comparable, Month
 	public String toString() {
 		return String.valueOf(getStart());
 	}
-
+	
 }

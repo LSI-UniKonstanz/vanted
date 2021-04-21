@@ -6,7 +6,7 @@ import org.graffiti.graph.GraphElement;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
 public class Umodulation extends UtilitySuperClassToGraph {
-
+	
 	public static void addAttributesToNode(GraphElement elem, modulation i) {
 		// first set label to node
 		setLabels(elem, i);
@@ -23,7 +23,7 @@ public class Umodulation extends UtilitySuperClassToGraph {
 		setRDFId(elem, i.getRDFId());
 		setSynonyms(elem, i.getSYNONYMS());
 		setXRef(elem, i.getXREF());
-
+		
 		setControlType(elem, i.getCONTROL_TYPE());
 	}
 }

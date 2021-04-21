@@ -39,33 +39,33 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class AddInterestingAttributes extends AbstractAlgorithm {
-
+	
 	private boolean doSetDegree, doSetInDegree, doSetOutDegree, doSetClusteringCoeffUndir, doSetClusteringCoeffDir,
 			doSetDataMappingCnt, doSetSampleCnt, doSetNumberOfSignificantDifferences,
 			doSetNumberOfInSignificantDifferences, doSetAvgDataMappingValue, doSetMinimumSampleValue,
 			doSetMaximumSampleValue, doSetAvgSampleStdDev, doSetMinimumSampleReplicateValue,
 			doSetMaximumSampleReplicateValue, doSetMinimumValue, doSetMaximumValue, doSetTimePointCount, doSetLineCount,
 			doCalcAlpha, doCalcBeta, doCalcRatio, doCalcLineCorr;
-
+	
 	private String seriesA, seriesB;
-
+	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			return "Predefined Attributes";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Network.Compute Attributes";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION, Category.COMPUTATION));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return "<html>" + "With this command new attributes are added to the graph nodes and<br>"
@@ -75,7 +75,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				+ "Do not forget to perform this command again, as soon as new information<br>"
 				+ "should be processed.<br><br>";
 	}
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		// degree, in- and out-degree
@@ -84,7 +84,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		// sample statistics (cnt, min, max, avg)
 		// data values statistics (min, max)
 		// time series statistics (timepoint-count, (alpha, beta) - min, max, avg)
-
+		
 		ArrayList<String> allLines = new ArrayList<String>();
 		HashSet<String> knownLines = new HashSet<String>();
 		boolean hasMappingData = false;
@@ -114,9 +114,9 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				seriesB = null;
 			}
 		}
-
+		
 		// allLines.clear();
-
+		
 		return new Parameter[] {
 				new BooleanParameter(true, "<html>" + "Node Centralities<small><ul><li>degree, clustering coeff.", ""),
 				hasMappingData ? new BooleanParameter(true,
@@ -166,12 +166,12 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 						? new ObjectListParameter(seriesB, "<html><small><ul><li>Line Selection: Line B", "", allLines)
 						: null };
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int degree = 0;
@@ -180,7 +180,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		int samplestat = 3;
 		int valuestat = 4;
 		int timestat = 5;
-
+		
 		doSetDegree = ((BooleanParameter) params[degree]).getBoolean();
 		doSetInDegree = ((BooleanParameter) params[degree]).getBoolean();
 		doSetOutDegree = ((BooleanParameter) params[degree]).getBoolean();
@@ -234,7 +234,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			}
 		}
 	}
-
+	
 	public void execute() {
 		final Graph graph2 = graph;
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
@@ -292,7 +292,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			}
 		}, null, status);
 	}
-
+	
 	private void processDegreeAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "degree");
@@ -310,7 +310,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			setAttribute(ge, folder, "degree", Integer.valueOf(n.getDegree()));
 		}
 	}
-
+	
 	private void processInDegreeAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "degree_in");
@@ -321,7 +321,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			setAttribute(ge, folder, "degree_in", Integer.valueOf(n.getInDegree()));
 		}
 	}
-
+	
 	private void processOutDegreeAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "degree_out");
@@ -332,7 +332,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			setAttribute(ge, folder, "degree_out", Integer.valueOf(n.getOutDegree()));
 		}
 	}
-
+	
 	private void processClusteringCoeffUndirAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "clustering_coeff_undir");
@@ -345,7 +345,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				setAttribute(ge, folder, "clustering_coeff_undir", res);
 		}
 	}
-
+	
 	private void processClusteringCoeffDirAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "clustering_coeff_dir");
@@ -358,7 +358,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				setAttribute(ge, folder, "clustering_coeff_dir", res);
 		}
 	}
-
+	
 	private void processDataMappingCountAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "datamapping_cnt");
@@ -367,7 +367,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		GraphElementHelper geh = new GraphElementHelper(ge);
 		setAttribute(ge, folder, "datamapping_cnt", Integer.valueOf(geh.getDataMappings().size()));
 	}
-
+	
 	private void processSampleCountAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_cnt");
@@ -377,7 +377,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		int samples = geh.getMappedSampleData().size();
 		setAttribute(ge, folder, "sample_cnt", Integer.valueOf(samples));
 	}
-
+	
 	private void processSignificantDifferencesCountAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "significant_different_cnt");
@@ -396,7 +396,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		setAttribute(ge, folder, "significant_different_cnt", Integer.valueOf(cnt));
 	}
-
+	
 	private void processInSignificantDifferencesCountAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "significant_not_different_cnt");
@@ -415,7 +415,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		setAttribute(ge, folder, "significant_not_different_cnt", Integer.valueOf(cnt));
 	}
-
+	
 	private void processSampleMinimumValueAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_values_min");
@@ -435,7 +435,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			min = Double.NaN;
 		setAttribute(ge, folder, "sample_values_min", Double.valueOf(min));
 	}
-
+	
 	private void processSampleAvgAndSumValueAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_values_avg");
@@ -461,7 +461,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		setAttribute(ge, folder, "sample_values_avg", Double.valueOf(avg));
 		setAttribute(ge, folder, "sample_values_sum", Double.valueOf(sum));
 	}
-
+	
 	private void processSampleMaximumValueAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_values_max");
@@ -481,7 +481,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			max = Double.NaN;
 		setAttribute(ge, folder, "sample_values_max", Double.valueOf(max));
 	}
-
+	
 	private void processSampleAvgStdDevValueAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_stddev_avg");
@@ -503,7 +503,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			avg = sum / cnt;
 		setAttribute(ge, folder, "sample_stddev_avg", Double.valueOf(avg));
 	}
-
+	
 	private void processSampleMinimumReplicateCountValueAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_replicate_cnt_min");
@@ -523,7 +523,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			minReplCnt = 0;
 		setAttribute(ge, folder, "sample_replicate_cnt_min", Integer.valueOf(minReplCnt));
 	}
-
+	
 	private void processSampleMaximumReplicateCountValueAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_replicate_cnt_max");
@@ -543,7 +543,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			maxReplCnt = 0;
 		setAttribute(ge, folder, "sample_replicate_cnt_max", Integer.valueOf(maxReplCnt));
 	}
-
+	
 	private void processReplicatesMinimumValueAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_replicate_values_min");
@@ -565,7 +565,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			min = Double.NaN;
 		setAttribute(ge, folder, "sample_replicate_values_min", Double.valueOf(min));
 	}
-
+	
 	private void processReplicatesMaximumValueAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "sample_replicate_values_max");
@@ -587,7 +587,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			max = Double.NaN;
 		setAttribute(ge, folder, "sample_replicate_values_max", Double.valueOf(max));
 	}
-
+	
 	private void processDifferentTimpointsCountAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "samples_different_timepoints_cnt");
@@ -604,7 +604,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		setAttribute(ge, folder, "samples_different_timepoints_cnt", Integer.valueOf(timePoints.size()));
 	}
-
+	
 	private void processDifferentLinesCountAttribute(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "lines_cnt");
@@ -617,7 +617,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		setAttribute(ge, folder, "lines_cnt", Integer.valueOf(cnt));
 	}
-
+	
 	private void calculateAlpha(String folder, GraphElement ge, boolean calc) {
 		if (!calc) {
 			AttributeHelper.deleteAttribute(ge, folder, "series_alpha_*");
@@ -654,7 +654,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				AttributeHelper.setAttribute(ge, folder, "series_alpha_max", Double.valueOf(maxAlpha));
 		}
 	}
-
+	
 	private void calculateBeta(String folder, GraphElement ge, boolean calc) {
 		AttributeHelper.deleteAttribute(ge, folder, "series_beta_*");
 		if (!calc) {
@@ -691,7 +691,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				AttributeHelper.setAttribute(ge, folder, "series_beta_max", Double.valueOf(maxBeta));
 		}
 	}
-
+	
 	private void calculateRatio(String folder, GraphElement ge, boolean calc) {
 		AttributeHelper.deleteAttribute(ge, folder, "sample_ratio_*");
 		if (!calc) {
@@ -749,10 +749,10 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				AttributeHelper.setAttribute(ge, folder, "sample_ratio_min", Double.valueOf(minRatio));
 			if ((maxRatio > Double.NEGATIVE_INFINITY))
 				AttributeHelper.setAttribute(ge, folder, "sample_ratio_max", Double.valueOf(maxRatio));
-
+			
 		}
 	}
-
+	
 	private void calculateLineCorr(String folder, GraphElement ge, boolean calc) {
 		AttributeHelper.deleteAttribute(ge, folder, "corr_*");
 		if (!calc) {
@@ -760,7 +760,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		MyXML_XYDataset datasetAvg = new MyXML_XYDataset();
 		MyXML_XYDataset datasetVal = new MyXML_XYDataset();
-
+		
 		Iterable<SubstanceInterface> mappedDataList = Experiment2GraphHelper.getMappedDataListFromGraphElement(ge);
 		if (mappedDataList != null) {
 			SubstanceInterface xmldata1 = null;
@@ -802,27 +802,27 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		setAttribute(ge, folder, "corr_rank_sample_avg_over_time_r", cr3.getMaxR());
 		setAttribute(ge, folder, "corr_rank_repl_values_r", cr4.getMaxR());
 	}
-
+	
 	private void setAttribute(GraphElement ge, String folder, String name, Double value) {
 		if (value != null && !Double.isNaN(value))
 			AttributeHelper.setAttribute(ge, folder, name, value);
 	}
-
+	
 	private void setAttribute(GraphElement ge, String folder, String name, Float value) {
 		if (value != null && !Float.isNaN(value))
 			AttributeHelper.setAttribute(ge, folder, name, value);
 	}
-
+	
 	private void setAttribute(GraphElement ge, String folder, String name, String value) {
 		if (value != null)
 			AttributeHelper.setAttribute(ge, folder, name, value);
 	}
-
+	
 	private void setAttribute(GraphElement ge, String folder, String name, Integer value) {
 		if (value != null)
 			AttributeHelper.setAttribute(ge, folder, name, value);
 	}
-
+	
 	private String getZeros(int value, int len) {
 		String res = value + "";
 		if (value >= 0) {
@@ -831,7 +831,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		return res;
 	}
-
+	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

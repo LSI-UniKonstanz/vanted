@@ -49,17 +49,17 @@ import org.jfree.util.SortOrder;
  * implementation of the {@link KeyedValues} interface.
  */
 public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable {
-
+	
 	/** Storage for the data. */
 	private List data;
-
+	
 	/**
 	 * Creates a new collection (initially empty).
 	 */
 	public DefaultKeyedValues() {
 		this.data = new java.util.ArrayList();
 	}
-
+	
 	/**
 	 * Returns the number of items (values) in the collection.
 	 * 
@@ -68,52 +68,52 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	public int getItemCount() {
 		return this.data.size();
 	}
-
+	
 	/**
 	 * Returns a value.
 	 * 
 	 * @param item
-	 *            the item of interest (zero-based index).
+	 *           the item of interest (zero-based index).
 	 * @return the value.
 	 */
 	public Number getValue(final int item) {
-
+		
 		Number result = null;
 		final KeyedValue kval = (KeyedValue) this.data.get(item);
 		if (kval != null) {
 			result = kval.getValue();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a key.
 	 * 
 	 * @param index
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getKey(final int index) {
-
+		
 		Comparable result = null;
 		final KeyedValue item = (KeyedValue) this.data.get(index);
 		if (item != null) {
 			result = item.getKey();
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the index for a given key or -1 if the key is not found.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return the index.
 	 */
 	public int getIndex(final Comparable key) {
-
+		
 		int i = 0;
 		final Iterator iterator = this.data.iterator();
 		while (iterator.hasNext()) {
@@ -124,16 +124,16 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 			i++;
 		}
 		return -1; // key not found
-
+		
 	}
-
+	
 	/**
 	 * Returns the keys for the values in the collection.
 	 * 
 	 * @return The keys (never <code>null</code>).
 	 */
 	public List getKeys() {
-
+		
 		final List result = new java.util.ArrayList();
 		final Iterator iterator = this.data.iterator();
 		while (iterator.hasNext()) {
@@ -141,51 +141,51 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 			result.add(kv.getKey());
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the value (possibly <code>null</code>) for a given key. If the key is
 	 * not recognised, the method returns <code>null</code>.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return the value.
 	 */
 	public Number getValue(final Comparable key) {
-
+		
 		Number result = null;
 		final int index = getIndex(key);
 		if (index >= 0) {
 			result = getValue(index);
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Adds a new value to the collection, or updates an existing value.
 	 * <P>
 	 * This is the same as the setValue(...) method.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void addValue(final Comparable key, final Number value) {
 		setValue(key, value);
 	}
-
+	
 	/**
 	 * Updates an existing value, or adds a new value to the collection.
 	 * <P>
 	 * This is the same as the addValue(...) method.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void setValue(final Comparable key, final Number value) {
 		final int keyIndex = getIndex(key);
@@ -197,23 +197,23 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 			this.data.add(kv);
 		}
 	}
-
+	
 	/**
 	 * Removes a value from the collection.
 	 * 
 	 * @param index
-	 *            the index of the item to remove.
+	 *           the index of the item to remove.
 	 */
 	public void removeValue(final int index) {
 		this.data.remove(index);
 	}
-
+	
 	/**
 	 * Removes a value from the collection. If there is no value with the specified
 	 * key, then this method does nothing.
 	 * 
 	 * @param key
-	 *            the key of the item to remove.
+	 *           the key of the item to remove.
 	 */
 	public void removeValue(final Comparable key) {
 		final int index = getIndex(key);
@@ -221,58 +221,58 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 			removeValue(index);
 		}
 	}
-
+	
 	/**
 	 * Sorts the items in the list by key.
 	 * 
 	 * @param order
-	 *            the sort order (ascending or descending).
+	 *           the sort order (ascending or descending).
 	 */
 	public void sortByKeys(final SortOrder order) {
-
+		
 		final Comparator comparator = new KeyedValueComparator(KeyedValueComparatorType.BY_KEY, order);
 		Collections.sort(this.data, comparator);
 	}
-
+	
 	/**
 	 * Sorts the items in the list by value. If the list contains <code>null</code>
 	 * values, they will sort to the end of the list, irrespective of the sort
 	 * order.
 	 * 
 	 * @param order
-	 *            the sort order (ascending or descending).
+	 *           the sort order (ascending or descending).
 	 */
 	public void sortByValues(final SortOrder order) {
 		final Comparator comparator = new KeyedValueComparator(KeyedValueComparatorType.BY_VALUE, order);
 		Collections.sort(this.data, comparator);
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if (!(o instanceof KeyedValues)) {
 			return false;
 		}
-
+		
 		final KeyedValues kvs = (KeyedValues) o;
 		final int count = getItemCount();
 		if (count != kvs.getItemCount()) {
 			return false;
 		}
-
+		
 		for (int i = 0; i < count; i++) {
 			final Comparable k1 = getKey(i);
 			final Comparable k2 = kvs.getKey(i);
@@ -293,7 +293,7 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 		}
 		return true;
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -302,13 +302,13 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	public int hashCode() {
 		return (this.data != null ? this.data.hashCode() : 0);
 	}
-
+	
 	/**
 	 * Returns a clone.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             this class will not throw this exception, but subclasses might.
+	 *            this class will not throw this exception, but subclasses might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final DefaultKeyedValues clone = (DefaultKeyedValues) super.clone();
@@ -320,5 +320,5 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 		}
 		return clone;
 	}
-
+	
 }

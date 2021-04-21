@@ -43,12 +43,12 @@ import org.jfree.ui.RefineryUtilities;
  * A pie chart with a custom label generator.
  */
 public class PieChartDemo6 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public PieChartDemo6(final String title) {
 		super(title);
@@ -58,7 +58,7 @@ public class PieChartDemo6 extends ApplicationFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -74,7 +74,7 @@ public class PieChartDemo6 extends ApplicationFrame {
 		dataset.setValue("Six", Double.valueOf(19.4));
 		return dataset;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -85,54 +85,54 @@ public class PieChartDemo6 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
-
+		
 		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 6", // chart title
 				dataset, // data
 				false, // include legend
 				true, false);
-
+		
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setLabelGenerator(new CustomLabelGenerator());
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final PieChartDemo6 demo = new PieChartDemo6("Pie Chart Demo 6");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 	/**
 	 * A custom label generator (returns null for one item as a test).
 	 */
 	static class CustomLabelGenerator implements PieSectionLabelGenerator {
-
+		
 		/**
 		 * Generates a label for a pie section.
 		 * 
 		 * @param dataset
-		 *            the dataset (<code>null</code> not permitted).
+		 *           the dataset (<code>null</code> not permitted).
 		 * @param key
-		 *            the section key (<code>null</code> not permitted).
+		 *           the section key (<code>null</code> not permitted).
 		 * @return the label (possibly <code>null</code>).
 		 */
 		public String generateSectionLabel(final PieDataset dataset, final Comparable key) {
@@ -144,7 +144,7 @@ public class PieChartDemo6 extends ApplicationFrame {
 			}
 			return result;
 		}
-
+		
 	}
-
+	
 }

@@ -12,19 +12,20 @@ import java.util.Collections;
  * @author dwyer_2
  */
 class Constraints extends ArrayList<Constraint> {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -1022027768719353703L;
+	
 	public Constraints(Constraints inConstraints) {
 		super(inConstraints);
 	}
-
+	
 	public Constraints() {
 		super();
 	}
-
+	
 	Constraints getActive(Variable a, Variable b) {
 		Constraints active = new Constraints();
 		for (Constraint c : this) {
@@ -34,7 +35,7 @@ class Constraints extends ArrayList<Constraint> {
 		}
 		return active;
 	}
-
+	
 	/**
 	 * Currently O(|Constraints|).
 	 * 
@@ -59,7 +60,7 @@ class Constraints extends ArrayList<Constraint> {
 		}
 		return vs;
 	}
-
+	
 	// Constraints getActive(Block a, Block b) {
 	// Constraints active = new Constraints();
 	// for (Variable va : a.variables) {
@@ -69,7 +70,7 @@ class Constraints extends ArrayList<Constraint> {
 	// }
 	// return active;
 	// }
-
+	
 	Constraint max() {
 		double m = 0;
 		Constraint mc = null;
@@ -82,7 +83,7 @@ class Constraints extends ArrayList<Constraint> {
 		}
 		return mc;
 	}
-
+	
 	Constraints violated() {
 		Constraints vs = new Constraints();
 		for (Constraint c : this) {
@@ -93,7 +94,7 @@ class Constraints extends ArrayList<Constraint> {
 		Collections.sort(vs);
 		return vs;
 	}
-
+	
 	/**
 	 * @return subset of constraints which are active
 	 */
@@ -105,5 +106,5 @@ class Constraints extends ArrayList<Constraint> {
 		}
 		return active;
 	}
-
+	
 };

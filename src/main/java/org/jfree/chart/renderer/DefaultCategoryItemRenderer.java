@@ -33,7 +33,7 @@ package org.jfree.chart.renderer;
  * A default renderer for the {@link org.jfree.chart.plot.CategoryPlot} class.
  */
 public class DefaultCategoryItemRenderer extends LineAndShapeRenderer {
-
+	
 	// no code required
-
+	
 }

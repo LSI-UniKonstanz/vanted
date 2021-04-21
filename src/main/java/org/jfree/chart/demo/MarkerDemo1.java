@@ -62,15 +62,15 @@ import org.jfree.ui.TextAnchor;
  * A demo application.
  */
 public class MarkerDemo1 extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new instance.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public MarkerDemo1(final String title) {
-
+		
 		super(title);
 		final XYDataset data = createDataset();
 		final JFreeChart chart = createChart(data);
@@ -79,35 +79,35 @@ public class MarkerDemo1 extends ApplicationFrame {
 		chartPanel.setVerticalZoom(true);
 		chartPanel.setHorizontalZoom(true);
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param data
-	 *            the sample data.
+	 *           the sample data.
 	 * @return A configured chart.
 	 */
 	private JFreeChart createChart(final XYDataset data) {
-
+		
 		final JFreeChart chart = ChartFactory.createScatterPlot("Marker Demo 1", "X", "Y", data,
 				PlotOrientation.VERTICAL, true, true, false);
 		chart.getLegend().setAnchor(Legend.EAST);
-
+		
 		// customise...
 		final XYPlot plot = chart.getXYPlot();
 		plot.getRenderer().setToolTipGenerator(StandardXYToolTipGenerator.getTimeSeriesInstance());
-
+		
 		// set axis margins to allow space for marker labels...
 		final DateAxis domainAxis = new DateAxis("Time");
 		domainAxis.setUpperMargin(0.50);
 		plot.setDomainAxis(domainAxis);
-
+		
 		final ValueAxis rangeAxis = plot.getRangeAxis();
 		rangeAxis.setUpperMargin(0.30);
 		rangeAxis.setLowerMargin(0.50);
-
+		
 		// add a labelled marker for the bid start price...
 		final Marker start = new ValueMarker(200.0);
 		start.setPaint(Color.green);
@@ -115,7 +115,7 @@ public class MarkerDemo1 extends ApplicationFrame {
 		start.setLabelAnchor(RectangleAnchor.BOTTOM_RIGHT);
 		start.setLabelTextAnchor(TextAnchor.TOP_RIGHT);
 		plot.addRangeMarker(start);
-
+		
 		// add a labelled marker for the target price...
 		final Marker target = new ValueMarker(175.0);
 		target.setPaint(Color.red);
@@ -123,7 +123,7 @@ public class MarkerDemo1 extends ApplicationFrame {
 		target.setLabelAnchor(RectangleAnchor.TOP_RIGHT);
 		target.setLabelTextAnchor(TextAnchor.BOTTOM_RIGHT);
 		plot.addRangeMarker(target);
-
+		
 		// add a labelled marker for the original closing time...
 		final Hour hour = new Hour(2, new Day(22, 5, 2003));
 		double millis = hour.getFirstMillisecond();
@@ -133,7 +133,7 @@ public class MarkerDemo1 extends ApplicationFrame {
 		originalEnd.setLabelAnchor(RectangleAnchor.TOP_LEFT);
 		originalEnd.setLabelTextAnchor(TextAnchor.TOP_RIGHT);
 		plot.addDomainMarker(originalEnd);
-
+		
 		// add a labelled marker for the current closing time...
 		final Minute min = new Minute(15, hour);
 		millis = min.getFirstMillisecond();
@@ -143,7 +143,7 @@ public class MarkerDemo1 extends ApplicationFrame {
 		currentEnd.setLabelAnchor(RectangleAnchor.TOP_RIGHT);
 		currentEnd.setLabelTextAnchor(TextAnchor.TOP_LEFT);
 		plot.addDomainMarker(currentEnd);
-
+		
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *
 		// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -154,7 +154,7 @@ public class MarkerDemo1 extends ApplicationFrame {
 		// * Sales are used to provide funding for the JFreeChart project - please *
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
-
+		
 		// label the best bid with an arrow and label...
 		final Hour h = new Hour(2, new Day(22, 5, 2003));
 		final Minute m = new Minute(10, h);
@@ -169,34 +169,34 @@ public class MarkerDemo1 extends ApplicationFrame {
 		pointer.setPaint(Color.blue);
 		pointer.setTextAnchor(TextAnchor.HALF_ASCENT_RIGHT);
 		plot.addAnnotation(pointer);
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Returns a sample dataset.
 	 * 
 	 * @return A sample dataset.
 	 */
 	private XYDataset createDataset() {
-
+		
 		final TimeSeriesCollection result = new TimeSeriesCollection();
 		result.addSeries(createSupplier1Bids());
 		result.addSeries(createSupplier2Bids());
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns a sample data series (for supplier 1).
 	 * 
 	 * @return A sample data series.
 	 */
 	private TimeSeries createSupplier1Bids() {
-
+		
 		final Hour hour = new Hour(1, new Day(22, 5, 2003));
-
+		
 		final TimeSeries series1 = new TimeSeries("Supplier 1", Minute.class);
 		series1.add(new Minute(13, hour), 200.0);
 		series1.add(new Minute(14, hour), 195.0);
@@ -204,21 +204,21 @@ public class MarkerDemo1 extends ApplicationFrame {
 		series1.add(new Minute(46, hour), 188.0);
 		series1.add(new Minute(47, hour), 185.0);
 		series1.add(new Minute(52, hour), 180.0);
-
+		
 		return series1;
-
+		
 	}
-
+	
 	/**
 	 * Returns a sample data series (for supplier 2).
 	 * 
 	 * @return A sample data series.
 	 */
 	private TimeSeries createSupplier2Bids() {
-
+		
 		final Hour hour1 = new Hour(1, new Day(22, 5, 2003));
 		final Hour hour2 = (Hour) hour1.next();
-
+		
 		final TimeSeries series2 = new TimeSeries("Supplier 2", Minute.class);
 		series2.add(new Minute(25, hour1), 185.0);
 		series2.add(new Minute(0, hour2), 175.0);
@@ -226,24 +226,24 @@ public class MarkerDemo1 extends ApplicationFrame {
 		series2.add(new Minute(6, hour2), 168.0);
 		series2.add(new Minute(9, hour2), 165.0);
 		series2.add(new Minute(10, hour2), 163.0);
-
+		
 		return series2;
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demo application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final MarkerDemo1 demo = new MarkerDemo1("Marker Demo 1");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

@@ -46,33 +46,33 @@ import java.util.List;
  * A default implementation of the {@link PieDataset} interface.
  */
 public class DefaultPieDataset extends AbstractDataset implements PieDataset, Cloneable, Serializable {
-
+	
 	/** Storage for the data. */
 	private DefaultKeyedValues data;
-
+	
 	/**
 	 * Constructs a new dataset, initially empty.
 	 */
 	public DefaultPieDataset() {
-
+		
 		this.data = new DefaultKeyedValues();
-
+		
 	}
-
+	
 	/**
 	 * Creates a new dataset that uses the data from a {@link KeyedValues} instance.
 	 * 
 	 * @param data
-	 *            the data.
+	 *           the data.
 	 */
 	public DefaultPieDataset(final KeyedValues data) {
-
+		
 		this.data = new DefaultKeyedValues();
 		for (int i = 0; i < data.getItemCount(); i++) {
 			this.data.addValue(data.getKey(i), data.getValue(i));
 		}
 	}
-
+	
 	/**
 	 * Returns the number of items in the dataset.
 	 * 
@@ -81,7 +81,7 @@ public class DefaultPieDataset extends AbstractDataset implements PieDataset, Cl
 	public int getItemCount() {
 		return this.data.getItemCount();
 	}
-
+	
 	/**
 	 * Returns the categories in the dataset. The returned list is unmodifiable.
 	 * 
@@ -90,118 +90,118 @@ public class DefaultPieDataset extends AbstractDataset implements PieDataset, Cl
 	public List getKeys() {
 		return Collections.unmodifiableList(this.data.getKeys());
 	}
-
+	
 	/**
 	 * Returns the key for an item.
 	 * 
 	 * @param item
-	 *            the item index (zero-based).
+	 *           the item index (zero-based).
 	 * @return the category.
 	 */
 	public Comparable getKey(final int item) {
-
+		
 		Comparable result = null;
 		if (getItemCount() > item) {
 			result = this.data.getKey(item);
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the index for a key.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @return the key index.
 	 */
 	public int getIndex(final Comparable key) {
-
+		
 		return this.data.getIndex(key);
-
+		
 	}
-
+	
 	/**
 	 * Returns a value.
 	 * 
 	 * @param item
-	 *            the value index.
+	 *           the value index.
 	 * @return the value (possibly <code>null</code>).
 	 */
 	public Number getValue(final int item) {
-
+		
 		Number result = null;
 		if (getItemCount() > item) {
 			result = this.data.getValue(item);
 		}
 		return result;
-
+		
 	}
-
+	
 	/**
 	 * Returns the data value associated with a key.
 	 * 
 	 * @param key
-	 *            the key (<code>null</code> not permitted).
+	 *           the key (<code>null</code> not permitted).
 	 * @return the value (possibly <code>null</code>).
 	 */
 	public Number getValue(final Comparable key) {
-
+		
 		// check arguments...
 		if (key == null) {
 			throw new IllegalArgumentException("PieDataset: null key not allowed.");
 		}
-
+		
 		// fetch the value...
 		return this.data.getValue(key);
-
+		
 	}
-
+	
 	/**
 	 * Sets the data value for a key.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void setValue(final Comparable key, final Number value) {
-
+		
 		this.data.setValue(key, value);
 		fireDatasetChanged();
-
+		
 	}
-
+	
 	/**
 	 * Sets the data value for a key.
 	 * 
 	 * @param key
-	 *            the key.
+	 *           the key.
 	 * @param value
-	 *            the value.
+	 *           the value.
 	 */
 	public void setValue(final Comparable key, final double value) {
-
+		
 		setValue(key, Double.valueOf(value));
-
+		
 	}
-
+	
 	/**
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *            the other object.
+	 *           the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
-
+		
 		if (o == null) {
 			return false;
 		}
 		if (o == this) {
 			return true;
 		}
-
+		
 		if (!(o instanceof PieDataset)) {
 			return false;
 		}
@@ -210,14 +210,14 @@ public class DefaultPieDataset extends AbstractDataset implements PieDataset, Cl
 		if (pd.getItemCount() != count) {
 			return false;
 		}
-
+		
 		for (int i = 0; i < count; i++) {
 			final Comparable k1 = getKey(i);
 			final Comparable k2 = pd.getKey(i);
 			if (!k1.equals(k2)) {
 				return false;
 			}
-
+			
 			final Number v1 = getValue(i);
 			final Number v2 = pd.getValue(i);
 			if (v1 == null) {
@@ -231,9 +231,9 @@ public class DefaultPieDataset extends AbstractDataset implements PieDataset, Cl
 			}
 		}
 		return true;
-
+		
 	}
-
+	
 	/**
 	 * Returns a hash code.
 	 * 
@@ -242,19 +242,19 @@ public class DefaultPieDataset extends AbstractDataset implements PieDataset, Cl
 	public int hashCode() {
 		return this.data.hashCode();
 	}
-
+	
 	/**
 	 * Returns a clone.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             This class will not throw this exception, but subclasses (if any)
-	 *             might.
+	 *            This class will not throw this exception, but subclasses (if any)
+	 *            might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final DefaultPieDataset clone = (DefaultPieDataset) super.clone();
 		clone.data = (DefaultKeyedValues) this.data.clone();
 		return clone;
 	}
-
+	
 }

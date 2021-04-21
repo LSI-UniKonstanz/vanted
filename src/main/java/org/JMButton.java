@@ -8,11 +8,11 @@ import javax.swing.UIManager;
  */
 public class JMButton extends JButton {
 	private static final long serialVersionUID = 4853578108818002186L;
-
+	
 	public JMButton(String text) {
 		super(text);
 	}
-
+	
 	private void mySetText(String text) {
 		boolean nativeLookAndFeelActive = UIManager.getLookAndFeel().isNativeLookAndFeel();
 		boolean mac = SystemInfo.isMac();
@@ -29,20 +29,20 @@ public class JMButton extends JButton {
 				super.setText(text);
 			} else
 				super.setText(text);
-
+			
 			putClientProperty("JButton.buttonType", "textured");
 			// putClientProperty("JButton.buttonType", "gradient");
 		} else
 			super.setText(text);
 	}
-
+	
 	@Override
 	public void setText(String text) {
 		mySetText(text);
 	}
-
+	
 	public JMButton() {
 		super();
 	}
-
+	
 }

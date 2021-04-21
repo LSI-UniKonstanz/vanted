@@ -18,18 +18,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLConstraintHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_Constraint_Writer extends SBML_SBase_Writer {
-
+	
 	/**
 	 * Adds a constraint and its variables to the model
 	 * 
 	 * @param g
-	 *            contains the values for the export
+	 *           contains the values for the export
 	 * @param model
-	 *            the constraint will be added to this model
+	 *           the constraint will be added to this model
 	 * @param headline
-	 *            indicates where the information should be read from
+	 *           indicates where the information should be read from
 	 * @param niceID
-	 *            intern representation of headline
+	 *           intern representation of headline
 	 */
 	public void addConstraint(Graph g, Model model, String internHeadline,
 			SBMLConstraintHelper constraintHelperObject) {

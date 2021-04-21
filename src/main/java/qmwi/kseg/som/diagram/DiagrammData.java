@@ -13,14 +13,14 @@ public class DiagrammData {
 	public int column;
 	public double value;
 	public String seriesLabel;
-
+	
 	/**
 	 * DiagrammData constructor comment.
 	 */
 	public DiagrammData() {
 		super();
 	}
-
+	
 	/**
 	 * DiagrammData constructor comment.
 	 */

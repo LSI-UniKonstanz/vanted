@@ -23,30 +23,30 @@ import org.graffiti.graphics.NodeGraphicAttribute;
  */
 public interface NodeShape extends GraphElementShape {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Calculates the intersection point between this node shape and a line. For
 	 * irregularly shaped objects, the intersection that is nearest to the <b>end
 	 * point</b> of the line is returned.
 	 * 
 	 * @param line
-	 *            the line with which the intersection should be calculated.
+	 *           the line with which the intersection should be calculated.
 	 * @return the intersection point between this node shape and the line.
 	 */
 	public Point2D getIntersection(Line2D line);
-
+	
 	/**
 	 * Shapes itself according to the graphics attribute found in the
 	 * CollectionAttribute <code>graphics</code>
 	 * 
 	 * @param graphics
-	 *            the <code>CollectionAttribute</code> according to which this shape
-	 *            is constructed.
+	 *           the <code>CollectionAttribute</code> according to which this shape
+	 *           is constructed.
 	 */
 	public void buildShape(NodeGraphicAttribute graphics) throws ShapeNotFoundException;
-
+	
 	public int shapeWidthCorrection();
-
+	
 	public int shapeHeightCorrection();
 }
 

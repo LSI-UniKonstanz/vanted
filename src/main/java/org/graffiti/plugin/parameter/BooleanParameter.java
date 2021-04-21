@@ -21,45 +21,45 @@ import scenario.ProvidesScenarioSupportCommand;
  */
 public class BooleanParameter extends AbstractSingleParameter implements ProvidesScenarioSupportCommand {
 	// ~ Instance fields ========================================================
-
+	
 	/** The value of this parameter. */
 	private Boolean value = null;
 	private BooleanParameter[] dependentParameters;
-
+	
 	// ~ Constructors ===========================================================
-
+	
 	/**
 	 * Constructs a new boolean parameter.
 	 * 
 	 * @param value
-	 *            the new Boolean value. May be null.
+	 *           the new Boolean value. May be null.
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public BooleanParameter(Boolean value, String name, String description) {
 		super(name, description);
 		this.value = value;
 	}
-
+	
 	/**
 	 * Constructs a new boolean parameter.
 	 * 
 	 * @param value
-	 *            the new boolean value..
+	 *           the new boolean value..
 	 * @param name
-	 *            the name of the parameter.
+	 *           the name of the parameter.
 	 * @param description
-	 *            the description of the parameter.
+	 *           the description of the parameter.
 	 */
 	public BooleanParameter(boolean value, String name, String description) {
 		super(name, description);
 		this.value = Boolean.valueOf(value);
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Returns the value of this parameter as a <code>Boolean</code>.
 	 * 
@@ -68,7 +68,7 @@ public class BooleanParameter extends AbstractSingleParameter implements Provide
 	public Boolean getBoolean() {
 		return value;
 	}
-
+	
 	/**
 	 * Returns <code>true</code>, if the current value is valid.
 	 * 
@@ -78,17 +78,17 @@ public class BooleanParameter extends AbstractSingleParameter implements Provide
 		if (value == null) {
 			return false;
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Sets the value of the <code>AttributeParameter</code>.
 	 * 
 	 * @param value
-	 *            the new value of the <code>AttributeParameter</code>.
+	 *           the new value of the <code>AttributeParameter</code>.
 	 * @exception IllegalArgumentException
-	 *                thrown if <code>value</code> is not of the correct type.
+	 *               thrown if <code>value</code> is not of the correct type.
 	 */
 	@Override
 	public void setValue(Object value) {
@@ -99,7 +99,7 @@ public class BooleanParameter extends AbstractSingleParameter implements Provide
 		else
 			throw new IllegalArgumentException("Invalid parameter");
 	}
-
+	
 	/**
 	 * Returns the value of this parameter.
 	 * 
@@ -109,7 +109,7 @@ public class BooleanParameter extends AbstractSingleParameter implements Provide
 	public Object getValue() {
 		return value;
 	}
-
+	
 	/**
 	 * @see org.graffiti.plugin.parameter.Parameter#toXMLString()
 	 */
@@ -117,25 +117,25 @@ public class BooleanParameter extends AbstractSingleParameter implements Provide
 	public String toXMLString() {
 		return getStandardXML(value.booleanValue() ? "true" : "false");
 	}
-
+	
 	public String getScenarioCommand() {
 		return "new BooleanParameter(" + (getBoolean() ? "true" : "false") + ", \"" + getName() + "\", \""
 				+ getDescription() + "\")";
 	}
-
+	
 	public Collection<String> getScenarioImports() {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add("import org.graffiti.plugin.parameter.BooleanParameter;");
 		return res;
 	}
-
+	
 	/**
 	 * @param booleanParameters
 	 */
 	public void addDependentParameters(BooleanParameter[] booleanParameters) {
 		this.dependentParameters = booleanParameters;
 	}
-
+	
 	public BooleanParameter[] getDependentParameters() {
 		return dependentParameters;
 	}

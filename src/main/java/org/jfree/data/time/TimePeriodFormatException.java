@@ -35,15 +35,15 @@ package org.jfree.data.time;
  * period.
  */
 public class TimePeriodFormatException extends IllegalArgumentException {
-
+	
 	/**
 	 * Creates a new exception.
 	 * 
 	 * @param message
-	 *            a message describing the exception.
+	 *           a message describing the exception.
 	 */
 	public TimePeriodFormatException(final String message) {
 		super(message);
 	}
-
+	
 }

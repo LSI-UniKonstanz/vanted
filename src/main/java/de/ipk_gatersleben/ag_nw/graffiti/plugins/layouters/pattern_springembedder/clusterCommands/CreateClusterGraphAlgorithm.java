@@ -36,40 +36,39 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.NullLayoutAlgo
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
- * 
- * @vanted.revision 2.7.0 Default layout of overview graph, based on source graph. 
+ * @vanted.revision 2.7.0 Default layout of overview graph, based on source graph.
  */
 public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
-
+	
 	boolean resizeNodes = true;
-
+	
 	int minNodeSize = 50;
-
+	
 	int maxNodeSize = 150;
-
+	
 	boolean resizeEdges = true;
-
+	
 	int minEdgeSize = 1;
-
+	
 	int maxEdgeSize = 10;
-
+	
 	boolean colorCode = true;
 	
 	private ClusterColorAttribute clusterColorAttribute;
-
+	
 	@Override
 	public Parameter[] getParameters() {
 		Collection<String> clusters = GraphHelper.getClusters(graph.getNodes());
-
+		
 		clusterColorAttribute = (ClusterColorAttribute) AttributeHelper.getAttributeValue(graph,
 				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
 				ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
-
+		
 		// cca.ensureMinimumColorSelection(clusters.size());
 		clusterColorAttribute.updateClusterList(clusters);
 		ClusterColorAttribute cca_new = new ClusterColorAttribute(ClusterColorAttribute.attributeName, clusterColorAttribute.getString());
 		ClusterColorParameter op = new ClusterColorParameter(cca_new, "Cluster-Colors", ClusterColorAttribute.desc);
-
+		
 		Parameter[] result = new Parameter[] {
 				new BooleanParameter(resizeNodes, "Resize Nodes",
 						"Resize Nodes depending on number of nodes related to the cluster-node"),
@@ -85,7 +84,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 				op };
 		return result;
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -96,48 +95,47 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		minEdgeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		maxEdgeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		colorCode = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
-
+		
 		clusterColorAttribute = (ClusterColorAttribute) ((ClusterColorParameter) params[i++]).getValue();
 		if (graph.getAttributes().getCollection().containsKey(clusterColorAttribute.getPath()))
 			graph.removeAttribute(clusterColorAttribute.getPath());
 		graph.addAttribute(clusterColorAttribute, ClusterColorAttribute.attributeFolder);
-
+		
 	}
-
+	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			return "Create Overview Graph";
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "Cluster";
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		return "Network.Cluster.Process Cluster Overview-Graph";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
-
+	
 	@Override
 	public void execute() {
 		HashMap<String, Integer> clusterNodeIDandNumberOfContainingNodes = new HashMap<String, Integer>();
 		Graph clusterReferenceGraph = GraphHelper.createClusterReferenceGraph(graph,
 				clusterNodeIDandNumberOfContainingNodes);
 		AttributeHelper.setAttribute(graph, "cluster", "clustergraph", clusterReferenceGraph);
-
+		
 		if (colorCode) {
 			PajekClusterColor.executeClusterColoringOnGraph(graph, clusterColorAttribute);
 			PajekClusterColor.executeClusterColoringOnGraph(clusterReferenceGraph, clusterColorAttribute);
-		}
-		else {
+		} else {
 			
 			PajekClusterColor.removeClusterColoringOnGraph(graph);
 			//clusterReferenceGraph is not coloured by default, when created
@@ -146,7 +144,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 			processEdgeWidth(clusterReferenceGraph, minEdgeSize, maxEdgeSize);
 		if (resizeNodes)
 			processNodeSize(clusterReferenceGraph, clusterNodeIDandNumberOfContainingNodes, minNodeSize, maxNodeSize);
-
+		
 		boolean found = false;
 		for (Session s : MainFrame.getSessions())
 			if (s.getGraph() == clusterReferenceGraph) {
@@ -157,14 +155,14 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 			clusterReferenceGraph.setName("overview-graph for " + graph.getName());
 			MainFrame.getInstance().showGraph(clusterReferenceGraph, null);
 		}
-
+		
 		MyClusterGraphBasedReLayoutService clusterLayoutService = new MyClusterGraphBasedReLayoutService(false, graph);
 		clusterLayoutService.setAlgorithm(new NullLayoutAlgorithm(), null);
 		clusterLayoutService.run();
-
+		
 		clusterReferenceGraph.setModified(false);
 	}
-
+	
 	private static void processNodeSize(Graph clusterReferenceGraph,
 			HashMap<String, Integer> clusterNodeIDandNumberOfContainingNodes, double minNodeSize, double maxNodeSize) {
 		// search minimum and maximum of cluster/node size
@@ -198,14 +196,14 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 						+ minNodeSize;
 			} else
 				nodeSize = (minNodeSize + maxNodeSize) / 2;
-
+			
 			if (Double.valueOf(nodeSize).isNaN() || Double.valueOf(nodeSize).isInfinite()) {
 				AttributeHelper.setSize(n, minNodeSize, minNodeSize);
 			} else
 				AttributeHelper.setSize(n, nodeSize, nodeSize);
 		}
 	}
-
+	
 	private static void processEdgeWidth(Graph clusterReferenceGraph, double minWidth, double maxWidth) {
 		// search min and max edgecount
 		int minCnt = Integer.MAX_VALUE;

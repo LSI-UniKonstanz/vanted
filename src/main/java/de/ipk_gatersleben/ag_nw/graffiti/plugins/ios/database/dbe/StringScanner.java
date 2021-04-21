@@ -16,10 +16,10 @@ import org.StringManipulationTools;
  * @author klukas
  */
 public class StringScanner implements HelperClass {
-
+	
 	private String del1, del2, del3;
 	private String work;
-
+	
 	/**
 	 * @param val
 	 * @param string
@@ -32,7 +32,7 @@ public class StringScanner implements HelperClass {
 		this.del3 = del3;
 		work = input;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -52,7 +52,7 @@ public class StringScanner implements HelperClass {
 			return val;
 		}
 	}
-
+	
 	/**
 	 * Returns the next String value, must be enclosed by a given start and end
 	 * character e.g. " for the input "test" will result in _test_ the " will be
@@ -78,7 +78,7 @@ public class StringScanner implements HelperClass {
 		} else
 			return null;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -90,7 +90,7 @@ public class StringScanner implements HelperClass {
 			return false;
 		return true;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -124,7 +124,7 @@ public class StringScanner implements HelperClass {
 			return Double.NaN;
 		}
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -143,11 +143,11 @@ public class StringScanner implements HelperClass {
 						work = work.substring(del3.length());
 			}
 	}
-
+	
 	public boolean contains(String string) {
 		return work.contains(string);
 	}
-
+	
 	public String nextNotQuotedString() {
 		work = "§" + StringManipulationTools.stringReplace(work, " ", "§");
 		String result = nextString("§");

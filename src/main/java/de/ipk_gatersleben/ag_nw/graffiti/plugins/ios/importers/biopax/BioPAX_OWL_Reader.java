@@ -53,7 +53,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		else
 			return "some";
 	}
-
+	
 	/**
 	 * opens a Dialog for choosing Pathways out of level 2 OWL Files
 	 * 
@@ -75,12 +75,12 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 				Sub = new DefaultMutableTreeNode(pathRDFId);
 				myMap.put(pathRDFId, pathRDFId);
 			}
-
+			
 			top.add(Sub);
 			findSubPathsLvL2(Sub, myPath);
 		}
 		// makes your tree as CheckTree
-
+		
 		JTree myTree = new JTree(top);
 		CheckTreeManager checkTreeManager = new CheckTreeManager(myTree);
 		JScrollPane myScroll = new JScrollPane(myTree);
@@ -89,7 +89,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		myScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		JOptionPane.showConfirmDialog(JOptionPane.getRootFrame(), myScroll, "Which BioPax-Pathways do you want?",
 				JOptionPane.OK_OPTION);
-
+		
 		// to get the paths that were checked
 		TreePath checkedPaths[] = checkTreeManager.getSelectionModel().getSelectionPaths();
 		ArrayList<de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2interactions.MyPathWay> selectedPaths = new ArrayList<de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2interactions.MyPathWay>();
@@ -100,9 +100,9 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		if (checkedPaths.length == 1 && checkedPaths[0].getLastPathComponent().toString().matches("All"))
 			return arrayList;
 		return selectedPaths;
-
+		
 	}
-
+	
 	/**
 	 * opens a Dialog for choosing Pathways out of level 3 OWL Files
 	 * 
@@ -123,12 +123,12 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 				Sub = new DefaultMutableTreeNode(pathRDFId);
 				myMap.put(pathRDFId, pathRDFId);
 			}
-
+			
 			top.add(Sub);
 			findSubPathsLvL3(Sub, myPath);
 		}
 		// makes your tree as CheckTree
-
+		
 		JTree myTree = new JTree(top);
 		CheckTreeManager checkTreeManager = new CheckTreeManager(myTree);
 		JScrollPane myScroll = new JScrollPane(myTree);
@@ -137,24 +137,24 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		myScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		JOptionPane.showConfirmDialog(JOptionPane.getRootFrame(), myScroll, "Which BioPax-Pathways do you want?",
 				JOptionPane.OK_OPTION);
-
+		
 		// to get the paths that were checked
 		TreePath checkedPaths[] = checkTreeManager.getSelectionModel().getSelectionPaths();
 		ArrayList<de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3interactions.MyPathWay> selectedPaths = new ArrayList<de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3interactions.MyPathWay>();
-
+		
 		if (checkedPaths == null || checkedPaths.length == 0)
 			return selectedPaths;
-
+		
 		for (TreePath P : checkedPaths) {
 			String RDFId = myMap.get(P.getLastPathComponent().toString());
-
+			
 			selectedPaths.add(findMyPathWaylvl3(RDFId, arrayList));
 		}
 		if (checkedPaths.length == 1 && checkedPaths[0].getLastPathComponent().toString().matches("All"))
 			return arrayList;
 		return selectedPaths;
 	}
-
+	
 	/**
 	 * finds level2 to pathways and all of its children and adds them to the OWL
 	 * file
@@ -176,7 +176,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * finds level2 to pathways and all of its children and adds them to the OWL
 	 * file
@@ -198,7 +198,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * finds level3 to pathways and all of its children and adds them to the OWL
 	 * file
@@ -218,7 +218,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * finds level3 to pathways and all of its children and adds them to the OWL
 	 * file
@@ -240,7 +240,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * function for filling the view of pathways
 	 * 
@@ -261,9 +261,9 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 			top.add(Sub);
 			findSubPathsLvL2(Sub, comps);
 		}
-
+		
 	}
-
+	
 	/**
 	 * function for filling the view of pathways
 	 * 
@@ -272,7 +272,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 	 */
 	private void findSubPathsLvL3(DefaultMutableTreeNode top,
 			de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3interactions.MyPathWay myPath) {
-
+		
 		for (MyPathWay comps : myPath.getSubPathWays()) {
 			String showName = myPath.getRDFId();
 			DefaultMutableTreeNode Sub;
@@ -284,19 +284,19 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 			top.add(Sub);
 			findSubPathsLvL3(Sub, comps);
 		}
-
+		
 	}
-
+	
 	@Override
 	public String[] getExtensions() {
 		return new String[] { ".owl" }; //$NON-NLS-1$
 	}
-
+	
 	@Override
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "BioPax" }; //$NON-NLS-1$
 	}
-
+	
 	/**
 	 * main read method
 	 */
@@ -305,19 +305,19 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 		Model model = null;
 		try {
 			// TODO: Validator doesn't work right
-
+			
 			/*
 			 * TODO: FileName as attribute on the graph System.out.println(g.getName());
 			 */
-
+			
 			// convert model into graph
 			BioPAXIOHandler handler = new SimpleIOHandler();
-
+			
 			// This will auto-detect the level.
 			handler.fixReusedPEPs(false);
-
+			
 			model = handler.convertFromOWL(in);
-
+			
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
@@ -339,7 +339,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 				g.setString(Messages.getString("UtilitySuperClassToGraph.114"), BioPAXLevel.L3.name()); //$NON-NLS-1$
 			}
 			if (model.getLevel() == BioPAXLevel.L2) {
-
+				
 				// initialize hand-written ModelConverter
 				LVL2ModelConverter mc = new LVL2ModelConverter();
 				try {
@@ -382,7 +382,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 						mc.readInteractionsFromPathway(model, selectedPaths);
 						PathWayLoaderLvL3 pwl = new PathWayLoaderLvL3(model, g);
 					}
-
+					
 					// return graph to vanted
 					g = mc.getGraph();
 					g.setString(Messages.getString("UtilitySuperClassToGraph.114"), BioPAXLevel.L3.name()); //$NON-NLS-1$
@@ -418,7 +418,7 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 						mc.readInteractionsFromPathway(model, selectedPaths);
 						PathWayLoaderLvL2 pwl = new PathWayLoaderLvL2(model, g);
 					}
-
+					
 					// return graph to vanted
 					g = mc.getGraph();
 					g.setString(Messages.getString("UtilitySuperClassToGraph.114"), BioPAXLevel.L3.name()); //$NON-NLS-1$
@@ -428,9 +428,9 @@ public class BioPAX_OWL_Reader extends AbstractInputSerializer {
 			}
 		}
 	}
-
+	
 	@Override
 	public void read(Reader reader, Graph newGraph) throws Exception {
 	}
-
+	
 }

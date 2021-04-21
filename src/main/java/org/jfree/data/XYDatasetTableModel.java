@@ -45,40 +45,40 @@ import javax.swing.table.TableModel;
  */
 
 public class XYDatasetTableModel extends AbstractTableModel implements TableModel, DatasetChangeListener {
-
+	
 	/** The dataset. */
 	XYDataset model = null;
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public XYDatasetTableModel() {
 		super();
 	}
-
+	
 	/**
 	 * Creates a new table model based on the specified dataset.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 */
 	public XYDatasetTableModel(final XYDataset dataset) {
 		this();
 		setModel(dataset);
 	}
-
+	
 	/**
 	 * Sets the model (dataset).
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 */
 	public void setModel(final XYDataset dataset) {
 		this.model = dataset;
 		this.model.addChangeListener(this);
 		fireTableDataChanged();
 	}
-
+	
 	/**
 	 * Returns the number of rows.
 	 * 
@@ -90,7 +90,7 @@ public class XYDatasetTableModel extends AbstractTableModel implements TableMode
 		}
 		return this.model.getItemCount(0);
 	}
-
+	
 	/**
 	 * Gets the number of columns in the model.
 	 * 
@@ -102,12 +102,12 @@ public class XYDatasetTableModel extends AbstractTableModel implements TableMode
 		}
 		return this.model.getSeriesCount() + 1;
 	}
-
+	
 	/**
 	 * Returns the column name.
 	 * 
 	 * @param column
-	 *            the column index.
+	 *           the column index.
 	 * @return The column name.
 	 */
 	public String getColumnName(final int column) {
@@ -120,15 +120,15 @@ public class XYDatasetTableModel extends AbstractTableModel implements TableMode
 			return this.model.getSeriesName(column - 1);
 		}
 	}
-
+	
 	/**
 	 * Returns a value of the specified cell. Column 0 is the X axis, Columns 1 and
 	 * over are the Y axis
 	 * 
 	 * @param row
-	 *            the row number.
+	 *           the row number.
 	 * @param column
-	 *            the column number.
+	 *           the column number.
 	 * @return the value of the specified cell.
 	 */
 	public Object getValueAt(final int row, final int column) {
@@ -141,47 +141,47 @@ public class XYDatasetTableModel extends AbstractTableModel implements TableMode
 			return this.model.getYValue(row, column - 1);
 		}
 	}
-
+	
 	/**
 	 * Notify listeners that the underlying dataset has changed.
 	 * 
 	 * @param datasetChangeEvent
-	 *            the event
+	 *           the event
 	 * @see DatasetChangeListener
 	 */
 	public void datasetChanged(final DatasetChangeEvent datasetChangeEvent) {
 		fireTableDataChanged();
 	}
-
+	
 	/**
 	 * Returns a flag indicating whether or not the specified cell is editable.
 	 * 
 	 * @param row
-	 *            the row number.
+	 *           the row number.
 	 * @param column
-	 *            the column number.
+	 *           the column number.
 	 * @return <code>true</code> if the specified cell is editable.
 	 */
 	public boolean isCellEditable(final int row, final int column) {
 		return false;
 	}
-
+	
 	/**
 	 * Updates the {@link XYDataset} if allowed.
 	 * 
 	 * @param value
-	 *            the new value.
+	 *           the new value.
 	 * @param row
-	 *            the row.
+	 *           the row.
 	 * @param column
-	 *            the column.
+	 *           the column.
 	 */
 	public void setValueAt(final Object value, final int row, final int column) {
 		if (this.isCellEditable(row, column)) {
 			// XYDataset only provides methods for reading a dataset...
 		}
 	}
-
+	
 	// /**
 	// * Run a demonstration of the table model interface.
 	// *
@@ -222,5 +222,5 @@ public class XYDatasetTableModel extends AbstractTableModel implements TableMode
 	// frame.show();
 	// RefineryUtilities.centerFrameOnScreen(frame);
 	// }
-
+	
 }

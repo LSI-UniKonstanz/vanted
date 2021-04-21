@@ -17,17 +17,20 @@ import javax.swing.table.TableCellRenderer;
 import org.jfree.ui.DateCellRenderer;
 
 public class MyDataJTable extends JTable {
-
-	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 142228804436116144L;
+	
 	public MyDataJTable(XlsTableModel xtm) {
 		super(xtm);
 	}
-
+	
 	@Override
 	public TableCellRenderer getCellRenderer(int row, int column) {
 		TableCellRenderer tcr = null;
-
+		
 		Object value = getValueAt(row, column);
 		if (value instanceof String) {
 			tcr = new DefaultTableCellRenderer();
@@ -53,5 +56,5 @@ public class MyDataJTable extends JTable {
 			tcr = new DefaultTableCellRenderer();
 		return tcr;
 	}
-
+	
 }

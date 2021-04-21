@@ -44,7 +44,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -56,23 +56,23 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 		else
 			return null;
 	}
-
+	
 	@Override
 	public String getCategory() {
 		return "KEGG";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(
 				Arrays.asList(Category.GRAPH, Category.LAYOUT, Category.COMPUTATION, Category.HIDDEN));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -89,7 +89,7 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 						ArrayList<Entry> entries = new ArrayList<Entry>();
 						ArrayList<Reaction> reactions = new ArrayList<Reaction>();
 						ArrayList<Relation> relations = new ArrayList<Relation>();
-
+						
 						createReactionNetwork(sp, entries, reactions);
 						if (sp.wantsToStop())
 							sp.setCurrentStatusText2("Processing aborted");
@@ -110,12 +110,12 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 						sp.setCurrentStatusValue(100);
 					}
 				}, new Runnable() {
-
+					
 					public void run() {
 					}
 				}, sp);
 	}
-
+	
 	private static Collection<Entry> getCompoundEntries(HashMap<String, Entry> compoundId2entry,
 			Collection<String> compIds) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
@@ -131,7 +131,7 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 		}
 		return result;
 	}
-
+	
 	// private void connectNodeWithNodes(Node goNode, Node newGoNode) {
 	// if (goNode==null || newGoNode==null)
 	// return;
@@ -142,7 +142,7 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 	// AttributeHelper.setBorderWidth(e, 3d);
 	// }
 	// }
-
+	
 	private static void createReactionNetwork(final BackgroundTaskStatusProviderSupportingExternalCallImpl sp,
 			ArrayList<Entry> entries, ArrayList<Reaction> reactions) {
 		HashMap<String, Entry> compoundId2entry = new HashMap<String, Entry>();
@@ -155,7 +155,7 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 			Collection<String> enz = re.getEnzymeNames();
 			Collection<String> prod = re.getProductNames();
 			KeggId rref = new KeggId(rid);
-
+			
 			if (enz != null && enz.size() > 0)
 				for (String enzymeId : enz) {
 					KeggId kid = new KeggId(enzymeId);
@@ -165,11 +165,11 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 					enzymeEntry.addReaction(rref);
 					entries.add(enzymeEntry);
 				}
-
+			
 			Collection<Entry> subEntries, prodEntries;
 			subEntries = new ArrayList<Entry>();
 			prodEntries = new ArrayList<Entry>();
-
+			
 			if (sub != null && sub.size() > 0)
 				subEntries.addAll(getCompoundEntries(compoundId2entry, sub));
 			if (prod != null && prod.size() > 0)
@@ -190,14 +190,14 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 		if (sp != null)
 			sp.setCurrentStatusText1("Finish transaction (update view, please wait)...");
 	}
-
+	
 	public static Graph getReactionNetwork() {
 		Pathway.resetIdGen();
 		// PositionGridGenerator pgg = new PositionGridGenerator(250, 30, 250);
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<Reaction> reactions = new ArrayList<Reaction>();
 		ArrayList<Relation> relations = new ArrayList<Relation>();
-
+		
 		createReactionNetwork(null, entries, reactions);
 		Pathway p = new Pathway(new KeggId("map00000"), new MapOrg("map"), new MapNumber("00000"), "Reaction Network",
 				null, null, entries, reactions, relations);

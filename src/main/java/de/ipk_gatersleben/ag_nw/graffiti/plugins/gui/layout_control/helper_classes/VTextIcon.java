@@ -24,23 +24,23 @@ import javax.swing.Icon;
 public class VTextIcon implements Icon, PropertyChangeListener {
 	String fLabel;
 	String[] fCharStrings; // for efficiency, break the fLabel into one-char strings to be passed to
-							// drawString
+	// drawString
 	int[] fCharWidths; // Roman characters should be centered when not rotated (Japanese fonts are
-						// monospaced)
+	// monospaced)
 	int[] fPosition; // Japanese half-height characters need to be shifted when drawn vertically
 	int fWidth, fHeight, fCharHeight, fDescent; // Cached for speed
 	int fRotation;
 	Component fComponent;
-
+	
 	static final int POSITION_NORMAL = 0;
 	static final int POSITION_TOP_RIGHT = 1;
 	static final int POSITION_FAR_TOP_RIGHT = 2;
-
+	
 	public static final int ROTATE_DEFAULT = 0x00;
 	public static final int ROTATE_NONE = 0x01;
 	public static final int ROTATE_LEFT = 0x02;
 	public static final int ROTATE_RIGHT = 0x04;
-
+	
 	/**
 	 * Creates a <code>VTextIcon</code> for the specified <code>component</code>
 	 * with the specified <code>label</code>. It sets the orientation to the default
@@ -51,7 +51,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 	public VTextIcon(Component component, String label) {
 		this(component, label, ROTATE_DEFAULT);
 	}
-
+	
 	/**
 	 * Creates a <code>VTextIcon</code> for the specified <code>component</code>
 	 * with the specified <code>label</code>. It sets the orientation to the
@@ -66,7 +66,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 		calcDimensions();
 		fComponent.addPropertyChangeListener(this);
 	}
-
+	
 	/**
 	 * sets the label to the given string, updating the orientation as needed and
 	 * invalidating the layout if the size changes
@@ -78,7 +78,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 		fRotation = verifyRotation(label, fRotation); // Make sure the current rotation is still legal
 		recalcDimensions();
 	}
-
+	
 	/**
 	 * Checks for changes to the font on the fComponent so that it can invalidate
 	 * the layout if the size changes
@@ -89,7 +89,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 			recalcDimensions();
 		}
 	}
-
+	
 	/**
 	 * Calculates the dimensions. If they've changed, invalidates the component
 	 */
@@ -100,7 +100,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 		if (wOld != getIconWidth() || hOld != getIconHeight())
 			fComponent.invalidate();
 	}
-
+	
 	void calcDimensions() {
 		FontMetrics fm = fComponent.getFontMetrics(fComponent.getFont());
 		fCharHeight = fm.getAscent() + fm.getDescent();
@@ -140,7 +140,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 			fHeight = fm.stringWidth(fLabel) + 2 * kBufferSpace;
 		}
 	}
-
+	
 	/**
 	 * Draw the icon at the specified location. Icon implementations may use the
 	 * Component argument to get properties useful for painting, e.g. the foreground
@@ -159,18 +159,18 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 				// - they draw in the bottom-left normally
 				int tweak;
 				switch (fPosition[i]) {
-				case POSITION_NORMAL:
-					// Roman fonts should be centered. Japanese fonts are always monospaced.
-					g.drawString(fCharStrings[i], x + ((fWidth - fCharWidths[i]) / 2), yPos);
-					break;
-				case POSITION_TOP_RIGHT:
-					tweak = fCharHeight / 3; // Should be 2, but they aren't actually half-height
-					g.drawString(fCharStrings[i], x + (tweak / 2), yPos - tweak);
-					break;
-				case POSITION_FAR_TOP_RIGHT:
-					tweak = fCharHeight - fCharHeight / 3;
-					g.drawString(fCharStrings[i], x + (tweak / 2), yPos - tweak);
-					break;
+					case POSITION_NORMAL:
+						// Roman fonts should be centered. Japanese fonts are always monospaced.
+						g.drawString(fCharStrings[i], x + ((fWidth - fCharWidths[i]) / 2), yPos);
+						break;
+					case POSITION_TOP_RIGHT:
+						tweak = fCharHeight / 3; // Should be 2, but they aren't actually half-height
+						g.drawString(fCharStrings[i], x + (tweak / 2), yPos - tweak);
+						break;
+					case POSITION_FAR_TOP_RIGHT:
+						tweak = fCharHeight - fCharHeight / 3;
+						g.drawString(fCharStrings[i], x + (tweak / 2), yPos - tweak);
+						break;
 				}
 				yPos += fCharHeight;
 			}
@@ -187,9 +187,9 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 			((Graphics2D) g).rotate(-NINETY_DEGREES);
 			g.translate(-x, -y);
 		}
-
+		
 	}
-
+	
 	/**
 	 * Returns the icon's width.
 	 * 
@@ -198,7 +198,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 	public int getIconWidth() {
 		return fWidth;
 	}
-
+	
 	/**
 	 * Returns the icon's height.
 	 * 
@@ -207,7 +207,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 	public int getIconHeight() {
 		return fHeight;
 	}
-
+	
 	/**
 	 * verifyRotation returns the best rotation for the string (ROTATE_NONE,
 	 * ROTATE_LEFT, ROTATE_RIGHT) This is public static so you can use it to test a
@@ -240,7 +240,7 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 	public static int verifyRotation(String label, int rotateHint) {
 		boolean hasCJK = false;
 		boolean hasMustRotate = false; // Arabic, etc
-
+		
 		int len = label.length();
 		char data[] = new char[len];
 		char ch;
@@ -259,28 +259,28 @@ public class VTextIcon implements Icon, PropertyChangeListener {
 		// If you mix Arabic with Chinese, you're on your own
 		if (hasCJK)
 			return DEFAULT_CJK;
-
+		
 		int legal = hasMustRotate ? LEGAL_MUST_ROTATE : LEGAL_ROMAN;
 		if ((rotateHint & legal) > 0)
 			return rotateHint;
-
+		
 		// The hint wasn't legal, or it was zero
 		return hasMustRotate ? DEFAULT_MUST_ROTATE : DEFAULT_ROMAN;
 	}
-
+	
 	// The small kana characters and Japanese punctuation that draw in the top right
 	// quadrant:
 	// small a, i, u, e, o, tsu, ya, yu, yo, wa (katakana only) ka ke
 	static final String sDrawsInTopRight = "\u3041\u3043\u3045\u3047\u3049\u3063\u3083\u3085\u3087\u308E" + // hiragana
 			"\u30A1\u30A3\u30A5\u30A7\u30A9\u30C3\u30E3\u30E5\u30E7\u30EE\u30F5\u30F6"; // katakana
 	static final String sDrawsInFarTopRight = "\u3001\u3002"; // comma, full stop
-
+	
 	static final int DEFAULT_CJK = ROTATE_NONE;
 	static final int LEGAL_ROMAN = ROTATE_NONE | ROTATE_LEFT | ROTATE_RIGHT;
 	static final int DEFAULT_ROMAN = ROTATE_RIGHT;
 	static final int LEGAL_MUST_ROTATE = ROTATE_LEFT | ROTATE_RIGHT;
 	static final int DEFAULT_MUST_ROTATE = ROTATE_LEFT;
-
+	
 	static final double NINETY_DEGREES = Math.toRadians(90.0);
 	static final int kBufferSpace = 5;
 }

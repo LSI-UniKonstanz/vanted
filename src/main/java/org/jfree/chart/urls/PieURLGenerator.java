@@ -40,19 +40,19 @@ import org.jfree.data.PieDataset;
  * @author Richard Atkinson
  */
 public interface PieURLGenerator {
-
+	
 	/**
 	 * Generates a URL for one item in a {@link PieDataset}.
 	 * 
 	 * @param data
-	 *            the dataset.
+	 *           the dataset.
 	 * @param key
-	 *            the item key.
+	 *           the item key.
 	 * @param pieIndex
-	 *            the pie index (differentiates between pies in a 'multi' pie
-	 *            chart).
+	 *           the pie index (differentiates between pies in a 'multi' pie
+	 *           chart).
 	 * @return a string containing the URL.
 	 */
 	public String generateURL(PieDataset data, Comparable key, int pieIndex);
-
+	
 }

@@ -11,39 +11,39 @@ import java.awt.geom.Point2D;
 public class PointPair {
 	/** DOCUMENT ME! */
 	private Point2D fst = null;
-
+	
 	/** DOCUMENT ME! */
 	private Point2D snd = null;
-
+	
 	/**
 	 * Creates a new PointPair object.
 	 */
 	public PointPair() {
 	}
-
+	
 	/**
 	 * Creates a new PointPair object.
 	 * 
 	 * @param f
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 * @param s
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	PointPair(Point2D f, Point2D s) {
 		fst = f;
 		snd = s;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param f
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void setFst(Point2D f) {
 		fst = f;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -52,17 +52,17 @@ public class PointPair {
 	public Point2D getFst() {
 		return fst;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param s
-	 *            DOCUMENT ME!
+	 *           DOCUMENT ME!
 	 */
 	public void setSnd(Point2D s) {
 		snd = s;
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 

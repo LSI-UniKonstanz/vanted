@@ -19,21 +19,25 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  */
 public class ChartAttributeEditor extends AbstractValueEditComponent {
 	protected JComboBox<Object> jComboBoxChartType;
-
+	
 	public ChartAttributeEditor(Displayable disp) {
 		super(disp);
-
+		
 		//TODO Add Dummy ChartComponent, instead of EMPTY_STRING, to avoid mixing
 		jComboBoxChartType = new JComboBox<Object>() {
-			private static final long serialVersionUID = 1L;
-
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5572901436148215483L;
+			
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-
+			
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();
@@ -55,7 +59,7 @@ public class ChartAttributeEditor extends AbstractValueEditComponent {
 		// // jComboBoxChartType.addItem(IPKnodeComponent.nodeTypeChart_legend_only);
 		// jComboBoxChartType.addItem(GraffitiCharts.HIDDEN);
 		// jComboBoxChartType.addItem(GraffitiCharts.AUTOMATIC);
-
+		
 		// if (disp.getValue().equals(XMLAttribute.nodeTypeChart2D_type1_line))
 		jComboBoxChartType.setSelectedItem(disp.getValue());
 		// if (disp.getValue().equals(XMLAttribute.nodeTypeChart2D_type2_bar))
@@ -75,12 +79,12 @@ public class ChartAttributeEditor extends AbstractValueEditComponent {
 		// if (disp.getValue().equals(XMLAttribute.nodeTypeChart_auto))
 		// jComboBoxChartType.setSelectedIndex(8);
 	}
-
+	
 	public JComponent getComponent() {
 		jComboBoxChartType.setMinimumSize(new Dimension(0, jComboBoxChartType.getMinimumSize().height));
 		return jComboBoxChartType;
 	}
-
+	
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			jComboBoxChartType.setSelectedItem(EMPTY_STRING);
@@ -114,10 +118,10 @@ public class ChartAttributeEditor extends AbstractValueEditComponent {
 			// jComboBoxChartType.setSelectedIndex(8);
 		}
 	}
-
+	
 	public void setValue() {
 		Object text = jComboBoxChartType.getSelectedItem();
-
+		
 		// if(!text.toString().equals(EMPTY_STRING) &&
 		// !this.displayable.getValue().equals(text))
 		// {

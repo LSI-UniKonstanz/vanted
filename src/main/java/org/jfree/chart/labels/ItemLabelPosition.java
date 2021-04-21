@@ -40,55 +40,55 @@ import org.jfree.ui.TextAnchor;
  * chart. Instances of this class are immutable.
  */
 public class ItemLabelPosition implements Serializable {
-
+	
 	/** The item label anchor point. */
 	private ItemLabelAnchor itemLabelAnchor;
-
+	
 	/** The text anchor. */
 	private TextAnchor textAnchor;
-
+	
 	/** The rotation anchor. */
 	private TextAnchor rotationAnchor;
-
+	
 	/** The rotation angle. */
 	private double angle;
-
+	
 	/**
 	 * Creates a new position record with default settings.
 	 */
 	public ItemLabelPosition() {
 		this(ItemLabelAnchor.OUTSIDE12, TextAnchor.BOTTOM_CENTER, TextAnchor.CENTER, 0.0);
 	}
-
+	
 	/**
 	 * Creates a new position record (with zero rotation).
 	 * 
 	 * @param itemLabelAnchor
-	 *            the item label anchor (<code>null</code> not permitted).
+	 *           the item label anchor (<code>null</code> not permitted).
 	 * @param textAnchor
-	 *            the text anchor (<code>null</code> not permitted).
+	 *           the text anchor (<code>null</code> not permitted).
 	 */
 	public ItemLabelPosition(ItemLabelAnchor itemLabelAnchor, TextAnchor textAnchor) {
 		this(itemLabelAnchor, textAnchor, TextAnchor.CENTER, 0.0);
 	}
-
+	
 	/**
 	 * Creates a new position record. The item label anchor is a point relative to
 	 * the data item (dot, bar or other visual item) on a chart. The item label is
 	 * aligned by aligning the text anchor with the item label anchor.
 	 * 
 	 * @param itemLabelAnchor
-	 *            the item label anchor (<code>null</code> not permitted).
+	 *           the item label anchor (<code>null</code> not permitted).
 	 * @param textAnchor
-	 *            the text anchor (<code>null</code> not permitted).
+	 *           the text anchor (<code>null</code> not permitted).
 	 * @param rotationAnchor
-	 *            the rotation anchor (<code>null</code> not permitted).
+	 *           the rotation anchor (<code>null</code> not permitted).
 	 * @param angle
-	 *            the rotation angle (in radians).
+	 *           the rotation angle (in radians).
 	 */
 	public ItemLabelPosition(ItemLabelAnchor itemLabelAnchor, TextAnchor textAnchor, TextAnchor rotationAnchor,
 			double angle) {
-
+		
 		if (itemLabelAnchor == null) {
 			throw new IllegalArgumentException("Null 'itemLabelAnchor' argument.");
 		}
@@ -98,14 +98,14 @@ public class ItemLabelPosition implements Serializable {
 		if (rotationAnchor == null) {
 			throw new IllegalArgumentException("Null 'rotationAnchor' argument.");
 		}
-
+		
 		this.itemLabelAnchor = itemLabelAnchor;
 		this.textAnchor = textAnchor;
 		this.rotationAnchor = rotationAnchor;
 		this.angle = angle;
-
+		
 	}
-
+	
 	/**
 	 * Returns the item label anchor.
 	 * 
@@ -114,7 +114,7 @@ public class ItemLabelPosition implements Serializable {
 	public ItemLabelAnchor getItemLabelAnchor() {
 		return this.itemLabelAnchor;
 	}
-
+	
 	/**
 	 * Returns the text anchor.
 	 * 
@@ -123,7 +123,7 @@ public class ItemLabelPosition implements Serializable {
 	public TextAnchor getTextAnchor() {
 		return this.textAnchor;
 	}
-
+	
 	/**
 	 * Returns the rotation anchor point.
 	 * 
@@ -132,7 +132,7 @@ public class ItemLabelPosition implements Serializable {
 	public TextAnchor getRotationAnchor() {
 		return this.rotationAnchor;
 	}
-
+	
 	/**
 	 * Returns the angle of rotation for the label.
 	 * 
@@ -141,24 +141,24 @@ public class ItemLabelPosition implements Serializable {
 	public double getAngle() {
 		return this.angle;
 	}
-
+	
 	/**
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *            the object (<code>null</code> permitted).
+	 *           the object (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(Object object) {
-
+		
 		if (object == null) {
 			return false;
 		}
-
+		
 		if (object == this) {
 			return true;
 		}
-
+		
 		if (object instanceof ItemLabelPosition) {
 			ItemLabelPosition p = (ItemLabelPosition) object;
 			boolean b0 = (this.itemLabelAnchor.equals(p.itemLabelAnchor));
@@ -167,9 +167,9 @@ public class ItemLabelPosition implements Serializable {
 			boolean b3 = (this.angle == p.angle);
 			return b0 && b1 && b2 && b3;
 		}
-
+		
 		return false;
-
+		
 	}
-
+	
 }

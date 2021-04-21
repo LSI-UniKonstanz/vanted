@@ -57,17 +57,17 @@ import org.jfree.ui.RefineryUtilities;
  * chart.
  */
 public class StackedXYAreaChartDemo extends ApplicationFrame {
-
+	
 	/**
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public StackedXYAreaChartDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.UK);
 		final XYSeries series1 = new XYSeries("Series 1", true, false);
 		final XYSeries series2 = new XYSeries("Series 2", true, false);
@@ -85,7 +85,7 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 			series1.add(sdf.parse("16-Jul-2003").getTime(), 160);
 			series1.add(sdf.parse("17-Jul-2003").getTime(), 165);
 			series1.add(sdf.parse("18-Jul-2003").getTime(), 170);
-
+			
 			series2.add(sdf.parse("30-Jun-2003").getTime(), 50);
 			series2.add(sdf.parse("01-Jul-2003").getTime(), 60);
 			series2.add(sdf.parse("02-Jul-2003").getTime(), 70);
@@ -101,7 +101,7 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 			series2.add(sdf.parse("16-Jul-2003").getTime(), 170);
 			series2.add(sdf.parse("17-Jul-2003").getTime(), 180);
 			series2.add(sdf.parse("18-Jul-2003").getTime(), 190);
-
+			
 			series3.add(sdf.parse("30-Jun-2003").getTime(), 100);
 			series3.add(sdf.parse("01-Jul-2003").getTime(), 120);
 			series3.add(sdf.parse("02-Jul-2003").getTime(), 110);
@@ -125,15 +125,15 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 		dataset.addSeries(series1);
 		dataset.addSeries(series2);
 		dataset.addSeries(series3);
-
+		
 		final JFreeChart chart = createChart(dataset);
-
+		
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -144,23 +144,23 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final TableXYDataset dataset) {
-
+		
 		final StandardXYToolTipGenerator toolTipGenerator = new StandardXYToolTipGenerator(
 				StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT, new SimpleDateFormat("dd-MMM-yyyy", Locale.UK),
 				NumberFormat.getInstance());
 		final DateAxis xAxis = new DateAxis("Domain (X)");
 		xAxis.setLowerMargin(0.0);
 		xAxis.setUpperMargin(0.0);
-
+		
 		final NumberAxis yAxis = new NumberAxis("Range (Y)");
 		yAxis.setAutoRangeIncludesZero(true);
 		final StackedXYAreaRenderer renderer = new StackedXYAreaRenderer(XYAreaRenderer.AREA_AND_SHAPES,
@@ -173,17 +173,17 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 		renderer.setShapeStroke(new BasicStroke(0.5f));
 		renderer.setShape(new Ellipse2D.Double(-3, -3, 6, 6));
 		final XYPlot plot = new XYPlot(dataset, xAxis, yAxis, renderer);
-
+		
 		final JFreeChart chart = new JFreeChart(null, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-
+		
 		return chart;
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
 		final StackedXYAreaChartDemo demo = new StackedXYAreaChartDemo("Stacked Area XY Chart Demo");
@@ -191,5 +191,5 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 	}
-
+	
 }

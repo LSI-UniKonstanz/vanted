@@ -22,11 +22,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 
 public class SOMservice
 		implements BackgroundTaskStatusProvider, BackgroundTaskStatusProviderSupportingExternalCall, Runnable {
-
+	
 	double statusDouble = -1;
 	boolean pleaseStop = false;
 	String status1, status2;
-
+	
 	int numberOfNeuronsParm = 6;
 	int widthOfSOMparm = 0; // 0=quadratic
 	double maxNeighbourHoodParm = 100;
@@ -40,12 +40,12 @@ public class SOMservice
 	private final boolean useSampleAverageValues;
 	private final boolean showCentroidNodes;
 	private final Graph optSrcGraph;
-
+	
 	SOMservice(int numberOfNeuronsParm, int widthOfSOMparm, double maxNeighbourHoodParm,
 			int decreaseNeighbourhoodAfterXiterationsParam, int typeOfNeighbourhoodFunctionParam,
 			int numberLearnIterationsParam, double betaParam, double gammaParam, Collection<GraphElement> selection,
 			boolean returnNaN, boolean useSampleAverageValues, boolean showCentroidNodes, Graph optSrcGraph) {
-
+		
 		this.numberOfNeuronsParm = numberOfNeuronsParm;
 		this.widthOfSOMparm = widthOfSOMparm;
 		this.maxNeighbourHoodParm = maxNeighbourHoodParm;
@@ -60,7 +60,7 @@ public class SOMservice
 		this.showCentroidNodes = showCentroidNodes;
 		this.optSrcGraph = optSrcGraph;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -70,7 +70,7 @@ public class SOMservice
 	public int getCurrentStatusValue() {
 		return (int) statusDouble;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -80,11 +80,11 @@ public class SOMservice
 	public double getCurrentStatusValueFine() {
 		return statusDouble;
 	}
-
+	
 	public void setCurrentStatusValue(int value) {
 		this.statusDouble = value;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -94,7 +94,7 @@ public class SOMservice
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -104,7 +104,7 @@ public class SOMservice
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -114,7 +114,7 @@ public class SOMservice
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -125,10 +125,10 @@ public class SOMservice
 			return;
 		status1 = "Initialize...";
 		status2 = "Prepare Train-Dataset...";
-
+		
 		DataSet mydataset = SOMplugin.getDataSet(true);
 		String[] groups = SOMplugin.initDataSetWithSelection(mydataset, selection, returnNaN, useSampleAverageValues);
-
+		
 		if (groups.length <= 0) {
 			MainFrame.showMessageDialog(
 					"<html>" + "Can not start SOM processing.<br>" + "No experimental data available.", "Missing Data");
@@ -136,7 +136,7 @@ public class SOMservice
 			status2 = "No data available!";
 			return;
 		}
-
+		
 		int w = widthOfSOMparm;
 		if (w <= 0) {
 			w = Tools.getBreite(numberOfNeuronsParm);
@@ -177,7 +177,7 @@ public class SOMservice
 			}
 		}
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -189,7 +189,7 @@ public class SOMservice
 		}
 		return pleaseStop;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -200,7 +200,7 @@ public class SOMservice
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -211,23 +211,23 @@ public class SOMservice
 	public void pleaseContinueRun() {
 		// empty
 	}
-
+	
 	public void setCurrentStatusValueFine(double value) {
 		statusDouble = value;
 	}
-
+	
 	public boolean wantsToStop() {
 		return checkStop();
 	}
-
+	
 	public void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
-
+	
 	public void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -20,7 +20,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.kgmlGraphics
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.kgmlNumber;
 
 public class Graphics {
-
+	
 	private String name;
 	private kgmlNumber x;
 	private kgmlNumber y;
@@ -29,9 +29,9 @@ public class Graphics {
 	private kgmlNumber height;
 	private kgmlColor fgcolor;
 	private kgmlColor bgcolor;
-
+	
 	public static int missingEntryGraphicsSize = 8;
-
+	
 	public Graphics(String name, kgmlNumber x, kgmlNumber y, kgmlGraphicsType type, kgmlNumber width, kgmlNumber height,
 			kgmlColor fgcolor, kgmlColor bgcolor, boolean isGeneProduct) {
 		this.name = name;
@@ -42,7 +42,7 @@ public class Graphics {
 		this.height = height;
 		this.fgcolor = fgcolor;
 		this.bgcolor = bgcolor;
-
+		
 		if (this.width == null)
 			this.width = new kgmlNumber(45);
 		if (this.height == null)
@@ -56,7 +56,7 @@ public class Graphics {
 				this.bgcolor = new kgmlColor("#FFFFFF");
 		}
 	}
-
+	
 	public static Graphics getGraphicsFromKgmlElement(Element graphicsElement) {
 		if (graphicsElement == null)
 			return null;
@@ -70,7 +70,7 @@ public class Graphics {
 			String widthValue = KGMLhelper.getAttributeValue(graphicsElement, "width", null);
 			String heightValue = KGMLhelper.getAttributeValue(graphicsElement, "height", null);
 			String coordsForLine = KGMLhelper.getAttributeValue(graphicsElement, "coords", null);
-
+			
 			String name = nameValue;
 			kgmlNumber x = xValue != null ? kgmlNumber.getNumber(xValue) : null;
 			kgmlNumber y = yValue != null ? kgmlNumber.getNumber(yValue) : null;
@@ -79,7 +79,7 @@ public class Graphics {
 			kgmlNumber height = kgmlNumber.getNumber(heightValue);
 			kgmlColor fgcolor = kgmlColor.getKgmlColor(fgcolorValue);
 			kgmlColor bgcolor = kgmlColor.getKgmlColor(bgcolorValue);
-
+			
 			if (type == kgmlGraphicsType.line) {
 				// for lines the coords value specify the location of the graphical element
 				// example: ko01040.xml
@@ -110,25 +110,25 @@ public class Graphics {
 						height = kgmlNumber.getNumber(Math.abs(height.getValue() - y.getValue()) + "");
 					}
 				}
-
+				
 			}
-
+			
 			// TODO: check if it is possible to easily find out if this is a gene product
 			// this value is eventually not important
 			boolean isGeneProduct = false;
-
+			
 			return new Graphics(name, x, y, type, width, height, fgcolor, bgcolor, isGeneProduct);
 		}
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public Element getKgmlGraphicsElement() {
 		Element graphicsElement = new Element("graphics");
 		if (name != null)
@@ -149,7 +149,7 @@ public class Graphics {
 			KGMLhelper.addNewAttribute(graphicsElement, "height", height.toString());
 		return graphicsElement;
 	}
-
+	
 	public void processNodeDesign(Node n, boolean hasComponents) {
 		if (name != null)
 			KeggGmlHelper.setKeggGraphicsTitle(n, name);
@@ -172,10 +172,10 @@ public class Graphics {
 		} else if (hasComponents) {
 			KeggGmlHelper.setKeggGraphicsBgColor(n, new Color(255, 255, 255, 120));
 		}
-
+		
 		if (type != null)
 			KeggGmlHelper.setKeggGraphicsType(n, type);
-
+		
 		AttributeHelper.setBorderWidth(n, 1);
 		if (name != null) {
 			if (name.contains("TITLE:")) {
@@ -188,16 +188,16 @@ public class Graphics {
 		if (la != null) {
 			la.setFontSize(10);
 			la.wordWrap();
-
+			
 			if (type != null && type == kgmlGraphicsType.circle)
 				la.setAlignment(GraphicAttributeConstants.AUTO_OUTSIDE);
 		}
 	}
-
+	
 	public static void processDefaultNodeDesign(Node n, Entry entry) {
 		// the attribute needs to be processed while creating a graphics or entry
 		// element from a GML graph node
-
+		
 		// set position, style, title from default or generated
 		KeggGmlHelper.setKeggGraphicsWidth(n, missingEntryGraphicsSize);
 		KeggGmlHelper.setKeggGraphicsHeight(n, missingEntryGraphicsSize);
@@ -211,7 +211,7 @@ public class Graphics {
 		// KeggGmlHelper.setKeggGraphicsTitle(n, "<html>" + id + "<br> (" +
 		// entry.getType() + ")");
 		KeggGmlHelper.setKeggGraphicsTitle(n, id);
-
+		
 		LabelAttribute la = AttributeHelper.getLabel(-1, n);
 		if (la != null) {
 			// font size 10 is the default font size for all other nodes
@@ -219,10 +219,10 @@ public class Graphics {
 			la.setFontSize(10);
 			la.setAlignment(GraphicAttributeConstants.AUTO_OUTSIDE);
 		}
-
+		
 		AttributeHelper.setBorderWidth(n, 1);
 	}
-
+	
 	public static Graphics getGraphicsFromGraphNode(Node graphNode, Collection<Gml2PathwayWarningInformation> warnings,
 			Collection<Gml2PathwayErrorInformation> errors) {
 		String name = KeggGmlHelper.getKeggGraphicsTitle(graphNode);
@@ -252,41 +252,41 @@ public class Graphics {
 		Color fgc = KeggGmlHelper.getKeggGraphicsFgColor(graphNode);
 		if (fgc == null)
 			errors.add(new Gml2PathwayErrorInformation(Gml2PathwayError.INVALID_FOREGROUNDCOLOR, graphNode));
-
+		
 		kgmlColor fgcolor = new kgmlColor(fgc);
 		Color bgc = KeggGmlHelper.getKeggGraphicsBgColor(graphNode);
 		if (bgc == null)
 			errors.add(new Gml2PathwayErrorInformation(Gml2PathwayError.INVALID_BACKGROUNDCOLOR, graphNode));
 		kgmlColor bgcolor = new kgmlColor(bgc);
-
+		
 		boolean isGeneProduct = false; // this value is not used for Pathway to KGML conversion
 		return new Graphics(name, x, y, type, width, height, fgcolor, bgcolor, isGeneProduct);
 	}
-
+	
 	public Color getBGcolor() {
 		return bgcolor.getColor();
 	}
-
+	
 	public Color getFGcolor() {
 		return fgcolor.getColor();
 	}
-
+	
 	public void setBGcolor(Color bgc) {
 		this.bgcolor = new kgmlColor(bgc);
 	}
-
+	
 	public void setFGcolor(Color fgc) {
 		this.fgcolor = new kgmlColor(fgc);
 	}
-
+	
 	public void setGraphicsType(kgmlGraphicsType graphicsType) {
 		this.type = graphicsType;
 	}
-
+	
 	public void setWidth(int width) {
 		this.width = new kgmlNumber(width);
 	}
-
+	
 	public void setHeight(int height) {
 		this.height = new kgmlNumber(height);
 	}

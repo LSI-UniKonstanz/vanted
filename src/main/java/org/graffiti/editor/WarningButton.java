@@ -8,11 +8,11 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 
 public class WarningButton extends JComponent {
-
+	
 	private static final long serialVersionUID = 2065431156615737768L;
-
+	
 	private final JButton bt;
-
+	
 	public WarningButton(String btText, final Runnable doOnClick) {
 		bt = new JButton(btText);
 		bt.setBackground(new Color(255, 255, 220));
@@ -22,11 +22,11 @@ public class WarningButton extends JComponent {
 				doOnClick.run();
 			}
 		});
-
+		
 	}
-
+	
 	public JButton getButton() {
 		return bt;
 	}
-
+	
 }

@@ -55,65 +55,65 @@ import org.jfree.ui.RefineryUtilities;
  * @author David M. O'Donnell
  */
 public class ContourPlotDemo extends ApplicationFrame {
-
+	
 	/** The x-axis. */
 	private ValueAxis xAxis = null;
-
+	
 	/** The y-axis. */
 	private NumberAxis yAxis = null;
-
+	
 	/** The z-axis. */
 	private ColorBar zColorBar = null;
-
+	
 	/** Flag for vertical z-axis. */
 	// private static boolean zIsVertical = false;
-
+	
 	/** Flag for x is date axis. */
 	private static boolean xIsDate = false;
-
+	
 	/** Flag for x is log. */
 	private static boolean xIsLog = false;
-
+	
 	/** Flag for y is log. */
 	private static boolean yIsLog = false;
-
+	
 	/** Flag for z is log. */
 	private static boolean zIsLog = false;
-
+	
 	/** Flag for x is inverted. */
 	private static boolean xIsInverted = false;
-
+	
 	/** Flag for y is inverted. */
 	private static boolean yIsInverted = false;
-
+	
 	/** Flag for z is inverted. */
 	private static boolean zIsInverted = false;
-
+	
 	/** Flag for make holes. */
 	private static boolean makeHoles = false;
-
+	
 	/** The number of x values in the dataset. */
 	private static int numX = 10;
-
+	
 	/** The number of y values in the dataset. */
 	private static int numY = 20;
-
+	
 	/** The ratio. */
 	private static double ratio = 0.0;
-
+	
 	/** The panel. */
 	public ChartPanel panel = null;
-
+	
 	/**
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public ContourPlotDemo(final String title) {
-
+		
 		super(title);
-
+		
 		final JFreeChart chart = createContourPlot();
 		this.panel = new ChartPanel(chart, true, true, true, true, true);
 		this.panel.setPreferredSize(new java.awt.Dimension(500, 270));
@@ -122,9 +122,9 @@ public class ContourPlotDemo extends ApplicationFrame {
 		this.panel.setHorizontalZoom(true);
 		this.panel.setVerticalZoom(true);
 		this.panel.setFillZoomRectangle(true);
-
+		
 	}
-
+	
 	// ****************************************************************************
 	// * COMMERCIAL SUPPORT / JFREECHART DEVELOPER GUIDE *
 	// * Please note that commercial support and documentation is available from: *
@@ -135,19 +135,19 @@ public class ContourPlotDemo extends ApplicationFrame {
 	// * source of funding for the JFreeChart project. Please support us so that *
 	// * we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Creates a ContourPlot chart.
 	 * 
 	 * @return the chart.
 	 */
 	private JFreeChart createContourPlot() {
-
+		
 		final String title = "Contour Plot";
 		final String xAxisLabel = "X Values";
 		final String yAxisLabel = "Y Values";
 		final String zAxisLabel = "Color Values";
-
+		
 		if (xIsDate) {
 			this.xAxis = new DateAxis(xAxisLabel);
 			xIsLog = false; // force axis to be linear when displaying dates
@@ -158,71 +158,71 @@ public class ContourPlotDemo extends ApplicationFrame {
 				this.xAxis = new NumberAxis(xAxisLabel);
 			}
 		}
-
+		
 		if (yIsLog) {
 			this.yAxis = new LogarithmicAxis(yAxisLabel);
 		} else {
 			this.yAxis = new NumberAxis(yAxisLabel);
 		}
-
+		
 		if (zIsLog) {
 			this.zColorBar = new ColorBar(zAxisLabel);
 		} else {
 			this.zColorBar = new ColorBar(zAxisLabel);
 		}
-
+		
 		if (this.xAxis instanceof NumberAxis) {
 			((NumberAxis) this.xAxis).setAutoRangeIncludesZero(false);
 			((NumberAxis) this.xAxis).setInverted(xIsInverted);
 		}
-
+		
 		this.yAxis.setAutoRangeIncludesZero(false);
-
+		
 		this.yAxis.setInverted(yIsInverted);
-
+		
 		if (!xIsDate) {
 			((NumberAxis) this.xAxis).setLowerMargin(0.0);
 			((NumberAxis) this.xAxis).setUpperMargin(0.0);
 		}
-
+		
 		this.yAxis.setLowerMargin(0.0);
 		this.yAxis.setUpperMargin(0.0);
-
+		
 		this.zColorBar.getAxis().setInverted(zIsInverted);
 		this.zColorBar.getAxis().setTickMarksVisible(true);
-
+		
 		final ContourDataset data = createDataset();
-
+		
 		final ContourPlot plot = new ContourPlot(data, this.xAxis, this.yAxis, this.zColorBar);
-
+		
 		if (xIsDate) {
 			ratio = Math.abs(ratio); // don't use plot units for ratios when x axis is date
 		}
 		plot.setDataAreaRatio(ratio);
-
+		
 		final JFreeChart chart = new JFreeChart(title, null, plot, false);
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.green));
-
+		
 		return chart;
-
+		
 	}
-
+	
 	/**
 	 * Creates a ContourDataset.
 	 * 
 	 * @return ContourDataset.
 	 */
 	private ContourDataset createDataset() {
-
+		
 		final int numValues = numX * numY;
 		final Date[] tmpDateX = new Date[numValues];
 		final double[] tmpDoubleX = new double[numValues];
 		final double[] tmpDoubleY = new double[numValues];
-
+		
 		final Double[] oDoubleX = new Double[numValues];
 		final Double[] oDoubleY = new Double[numValues];
 		final Double[] oDoubleZ = new Double[numValues];
-
+		
 		int j = 0;
 		int z = 0;
 		int i = 0;
@@ -250,28 +250,28 @@ public class ContourPlotDemo extends ApplicationFrame {
 			j++;
 		}
 		ContourDataset data = null;
-
+		
 		if (xIsDate) {
 			data = new DefaultContourDataset("Contouring", tmpDateX, oDoubleY, oDoubleZ);
 		} else {
 			data = new DefaultContourDataset("Contouring", oDoubleX, oDoubleY, oDoubleZ);
 		}
 		return data;
-
+		
 	}
-
+	
 	/**
 	 * Sets options passed via the command line
 	 * 
 	 * @param args
-	 *            the command line arguments.
+	 *           the command line arguments.
 	 * @return Flag indicating whether program should continue.
 	 */
 	protected static boolean processArgs(final String[] args) {
-
+		
 		final String[] options = { "-?", "-invert", "-log", "-date", "-vertical", "-holes", "-ratio:", "-numX:",
 				"-numY:" };
-
+		
 		for (int i = 0; i < args.length; i++) {
 			boolean foundOption = false;
 			for (int j = 0; j < options.length; j++) {
@@ -280,45 +280,45 @@ public class ContourPlotDemo extends ApplicationFrame {
 					int index = 0;
 					String tmpStr = null;
 					switch (j) {
-					case 0: // -?
-						usage();
-						return false;
-					case 1:
-						xIsInverted = true;
-						yIsInverted = true;
-						zIsInverted = true;
-						break;
-					case 2:
-						xIsLog = true;
-						yIsLog = true;
-						zIsLog = true;
-						break;
-					case 3:
-						xIsDate = true;
-						break;
-					case 4:
-						// zIsVertical = true;
-						break;
-					case 5:
-						makeHoles = true;
-						break;
-					case 6:
-						index = args[i].indexOf(':');
-						tmpStr = args[i].substring(index + 1);
-						ratio = Double.parseDouble(tmpStr);
-						break;
-					case 7:
-						index = args[i].indexOf(':');
-						tmpStr = args[i].substring(index + 1);
-						numX = Integer.parseInt(tmpStr);
-						break;
-					case 8:
-						index = args[i].indexOf(':');
-						tmpStr = args[i].substring(index + 1);
-						numY = Integer.parseInt(tmpStr);
-						break;
-					default:
-						System.out.println("Only 9 options available, update options array");
+						case 0: // -?
+							usage();
+							return false;
+						case 1:
+							xIsInverted = true;
+							yIsInverted = true;
+							zIsInverted = true;
+							break;
+						case 2:
+							xIsLog = true;
+							yIsLog = true;
+							zIsLog = true;
+							break;
+						case 3:
+							xIsDate = true;
+							break;
+						case 4:
+							// zIsVertical = true;
+							break;
+						case 5:
+							makeHoles = true;
+							break;
+						case 6:
+							index = args[i].indexOf(':');
+							tmpStr = args[i].substring(index + 1);
+							ratio = Double.parseDouble(tmpStr);
+							break;
+						case 7:
+							index = args[i].indexOf(':');
+							tmpStr = args[i].substring(index + 1);
+							numX = Integer.parseInt(tmpStr);
+							break;
+						case 8:
+							index = args[i].indexOf(':');
+							tmpStr = args[i].substring(index + 1);
+							numY = Integer.parseInt(tmpStr);
+							break;
+						default:
+							System.out.println("Only 9 options available, update options array");
 					}
 				}
 			}
@@ -328,10 +328,10 @@ public class ContourPlotDemo extends ApplicationFrame {
 				return false;
 			}
 		}
-
+		
 		return true; // continue running application
 	}
-
+	
 	/**
 	 * Prints usage information.
 	 */
@@ -350,18 +350,18 @@ public class ContourPlotDemo extends ApplicationFrame {
 		System.out.println("       positive values are in pixels, while negative is in plot units");
 		System.out.println("-numX number of values to generate along the X axis");
 		System.out.println("-numY number of values to generate along the X axis");
-
+		
 	}
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            command line options, launch ContourDemoPlot -? for listing of
-	 *            options.
+	 *           command line options, launch ContourDemoPlot -? for listing of
+	 *           options.
 	 */
 	public static void main(final String[] args) {
-
+		
 		if (!processArgs(args)) {
 			System.exit(1);
 		}
@@ -370,7 +370,7 @@ public class ContourPlotDemo extends ApplicationFrame {
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

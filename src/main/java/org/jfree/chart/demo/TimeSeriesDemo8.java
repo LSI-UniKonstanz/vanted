@@ -48,12 +48,12 @@ import org.jfree.ui.RefineryUtilities;
  * A time series chart.
  */
 public class TimeSeriesDemo8 extends ApplicationFrame {
-
+	
 	/**
 	 * A demonstration application showing how to create a simple time series chart.
 	 * 
 	 * @param title
-	 *            the frame title.
+	 *           the frame title.
 	 */
 	public TimeSeriesDemo8(final String title) {
 		super(title);
@@ -64,7 +64,7 @@ public class TimeSeriesDemo8 extends ApplicationFrame {
 		chartPanel.setMouseZoomable(true, false);
 		setContentPane(chartPanel);
 	}
-
+	
 	/**
 	 * Creates a sample dataset.
 	 * 
@@ -78,12 +78,12 @@ public class TimeSeriesDemo8 extends ApplicationFrame {
 		dataset.addSeries(mav);
 		return dataset;
 	}
-
+	
 	/**
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *            the dataset.
+	 *           the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
@@ -96,7 +96,7 @@ public class TimeSeriesDemo8 extends ApplicationFrame {
 		renderer.setToolTipGenerator(g);
 		return chart;
 	}
-
+	
 	// ****************************************************************************
 	// * JFREECHART DEVELOPER GUIDE *
 	// * The JFreeChart Developer Guide, written by David Gilbert, is available *
@@ -107,20 +107,20 @@ public class TimeSeriesDemo8 extends ApplicationFrame {
 	// * Sales are used to provide funding for the JFreeChart project - please *
 	// * support us so that we can continue developing free software. *
 	// ****************************************************************************
-
+	
 	/**
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *            ignored.
+	 *           ignored.
 	 */
 	public static void main(final String[] args) {
-
+		
 		final TimeSeriesDemo8 demo = new TimeSeriesDemo8("Time Series Demo 8");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
-
+		
 	}
-
+	
 }

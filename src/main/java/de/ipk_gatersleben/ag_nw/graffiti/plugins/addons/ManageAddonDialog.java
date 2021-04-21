@@ -60,24 +60,27 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.RSS
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class ManageAddonDialog extends JDialog {
-
-	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 540547664381497229L;
 	final static int iconcolumn = 0;
 	final static int namecolumn = 1;
 	final static int checkcolumn = 2;
-
+	
 	// private KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true);
 	// private KeyStroke escape = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0,
 	// true);
-
+	
 	private JTextArea textVersion;
 	private JButton buttonclose;
 	private JButton buttonopenplugindir;
 	// private JLabel labelwarning;
 	private JButton buttoninstall;
-
+	
 	private MarkComponent findUpdatesMarker;
-
+	
 	private JButton buttondownload;
 	private JTextArea textDescription;
 	private JTable tableaddons;
@@ -89,7 +92,7 @@ public class ManageAddonDialog extends JDialog {
 	private JComponent descriptionJC;
 	private JComponent contactJC;
 	private JComponent tableaddonsJC;
-
+	
 	public ManageAddonDialog(Window parent, String msg) {
 		super(parent);
 		parent.setEnabled(false);
@@ -100,7 +103,7 @@ public class ManageAddonDialog extends JDialog {
 		setVisible(true);
 		installDragNDrop(jb);
 	}
-
+	
 	private void installDragNDrop(final JButton result) {
 		final String oldText = result.getText();
 		FileDrop.Listener fdl = new FileDrop.Listener() {
@@ -119,13 +122,13 @@ public class ManageAddonDialog extends JDialog {
 							process(f);
 			}
 		};
-
+		
 		Runnable dragdetected = new Runnable() {
 			public void run() {
 				result.setText("<html><br><b>Drop file to install Add-on<br><br>");
 			}
 		};
-
+		
 		Runnable dragenddetected = new Runnable() {
 			public void run() {
 				if (!result.getText().contains("!"))
@@ -135,7 +138,7 @@ public class ManageAddonDialog extends JDialog {
 		// result
 		new FileDrop(null, this, null, true, fdl, dragdetected, dragenddetected);
 	}
-
+	
 	@Override
 	public void setVisible(boolean visible) {
 		AddonManagerPlugin.getInstance().dialog = null;
@@ -143,23 +146,23 @@ public class ManageAddonDialog extends JDialog {
 			getParent().setEnabled(true);
 		super.setVisible(visible);
 	}
-
+	
 	public void close() {
 		setVisible(false);
 		getParent().setEnabled(true);
 		dispose();
 	}
-
+	
 	/**
 	 * @vanted.revision 2.7.0
 	 */
 	private JButton initGUI() {
 		try {
-
+			
 			addKeys();
-
+			
 			getContentPane().removeAll();
-
+			
 			TableLayout thisLayout = new TableLayout(new double[][] {
 					// columns
 					{ 5.0, TableLayoutConstants.FILL, 80, 10.0, 85.0, 80, 0.0, 10.0, TableLayoutConstants.FILL,
@@ -173,15 +176,15 @@ public class ManageAddonDialog extends JDialog {
 			this.setTitle("Add-on Manager");
 			setModalityType(DEFAULT_MODALITY_TYPE);
 			setLocationRelativeTo(getParent());
-
+			
 			initAddonTable();
-
+			
 			{
 				buttoninstall = new JButton();
 				buttoninstall.setText("Install Add-on");
 				buttoninstall.setOpaque(false);
 				buttoninstall.addActionListener(new ActionListener() {
-
+					
 					public void actionPerformed(ActionEvent e) {
 						JFileChooser fc = new JFileChooser();
 						fc.setAcceptAllFileFilterUsed(false);
@@ -190,7 +193,7 @@ public class ManageAddonDialog extends JDialog {
 							public boolean accept(File pathname) {
 								return pathname.getName().toLowerCase().endsWith(".jar") || pathname.isDirectory();
 							}
-
+							
 							@Override
 							public String getDescription() {
 								return "Add-on Files (*.jar)";
@@ -214,10 +217,10 @@ public class ManageAddonDialog extends JDialog {
 			}
 			{
 				buttondownload = new JButton();
-
+				
 				findUpdatesMarker = new MarkComponent(buttondownload, false, TableLayout.PREFERRED, false,
 						TableLayout.FILL);
-
+				
 				buttondownload.setText("Find Add-ons/Updates");
 				buttondownload.setOpaque(false);
 				buttondownload.addActionListener(new ActionListener() {
@@ -228,16 +231,16 @@ public class ManageAddonDialog extends JDialog {
 						 */
 						final WaitAnimationButton waitAnimationButton = new WaitAnimationButton(buttondownload);
 						new Thread(waitAnimationButton).start();
-
+						
 						final RSSFeedManager rfm = RSSFeedManager.getInstance();
 						rfm.loadRegisteredFeeds();
 						rfm.setWordWrap(60);
 						NewsHelper.refreshNews(rfm, new Runnable() {
 							public void run() {
-
+								
 								waitAnimationButton.stop();
 								buttondownload.setEnabled(true);
-
+								
 								ArrayList<Object> res = new ArrayList<Object>();
 								boolean found = false;
 								for (JComponent jc : rfm.getNewsComponents()) {
@@ -263,13 +266,13 @@ public class ManageAddonDialog extends JDialog {
 									res.add(new JLabel("<html>" + "Currently, there is no new or additional "
 											+ "Add-on available for direct download."));
 								}
-
+								
 								@SuppressWarnings("unused")
 								Object[] input = MyInputHelper.getInput("[OK]", "Direct Add-on Download",
 										res.toArray());
 								initAddonTable();
 							}
-
+							
 							private SearchFilter getSearchFilter() {
 								return new SearchFilter() {
 									public boolean accept(GuiRow gr, String searchText) {
@@ -348,7 +351,7 @@ public class ManageAddonDialog extends JDialog {
 		pack();
 		return buttoninstall;
 	}
-
+	
 	/**
 	 * Initializes the Add-on table and accompanying information in the Add-on
 	 * Manager.
@@ -356,8 +359,12 @@ public class ManageAddonDialog extends JDialog {
 	private void initAddonTable() {
 		{
 			textContact = new JLabelHTMLlink("", "", null, true) {
-				private static final long serialVersionUID = 1L;
-
+				
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -8282671400507985589L;
+				
 				@Override
 				public String getToolTipText() {
 					if (getText().length() > 0)
@@ -365,7 +372,7 @@ public class ManageAddonDialog extends JDialog {
 					else
 						return null;
 				}
-
+				
 				@Override
 				public Cursor getCursor() {
 					if (getText().length() > 0)
@@ -374,7 +381,7 @@ public class ManageAddonDialog extends JDialog {
 						return Cursor.getDefaultCursor();
 				}
 			};
-
+			
 			textContact.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 			textContact.setOpaque(true);
 			if (contactJC != null)
@@ -385,8 +392,11 @@ public class ManageAddonDialog extends JDialog {
 		}
 		{
 			textDescription = new JTextArea() {
-				private static final long serialVersionUID = 1L;
-
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -3682656712848493595L;
+				
 				@Override
 				public String getToolTipText() {
 					if (getText().length() > 0)
@@ -394,7 +404,7 @@ public class ManageAddonDialog extends JDialog {
 					else
 						return null;
 				}
-
+				
 				@Override
 				public Cursor getCursor() {
 					if (getText().length() > 0)
@@ -437,10 +447,10 @@ public class ManageAddonDialog extends JDialog {
 						}
 					}
 				}
-
+				
 				Color oldColor;
 				boolean oldOpaque;
-
+				
 				public void mouseEntered(MouseEvent e) {
 					if (textDescription.getText().length() <= 0)
 						return;
@@ -449,7 +459,7 @@ public class ManageAddonDialog extends JDialog {
 					oldColor = textDescription.getBackground();
 					textDescription.setBackground(new Color(240, 240, 255));
 				}
-
+				
 				public void mouseExited(MouseEvent e) {
 					textDescription.setOpaque(oldOpaque);
 					textDescription.setBackground(oldColor);
@@ -538,14 +548,14 @@ public class ManageAddonDialog extends JDialog {
 								mmm = "s ";
 							else
 								mmm = " ";
-
+							
 							textVersion
 									.setText(" " + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT + " Version" + mmm + vvv);
 						}
-
+						
 					}
 				}
-
+				
 				private String pretifyAddonDesc(String d) {
 					if (d == null || d.trim().length() <= 0)
 						return "- no plugin description defined -";
@@ -556,13 +566,13 @@ public class ManageAddonDialog extends JDialog {
 			});
 			if (tableaddons.getRowCount() > 0)
 				tableaddons.getSelectionModel().setSelectionInterval(0, 0);
-
+			
 			tableaddons.addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent e) {
 					Point p = e.getPoint();
 					int rowNumber = tableaddons.rowAtPoint(p);
 					tableaddons.getSelectionModel().setSelectionInterval(rowNumber, rowNumber);
-
+					
 					if (tableaddons.getSelectedRow() > -1
 							&& (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
 						final Addon addon = AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow());
@@ -573,7 +583,7 @@ public class ManageAddonDialog extends JDialog {
 							public void actionPerformed(ActionEvent arg0) {
 								try {
 									AddonManagerPlugin.getInstance().removeAddon(addon.getJarFile());
-
+									
 									String msg = "<html><b>\"" + addon.getDescription().getName()
 											+ "\" has been uninstalled."
 											+ (wasActive ? "<br>Deactivation requires restart of the program." : "");
@@ -583,7 +593,7 @@ public class ManageAddonDialog extends JDialog {
 												+ (wasActive
 														? "<br>Deactivation and complete uninstallation requires restart of the program."
 														: "Completion of the deinstallation requires restart of the program.");
-
+									
 									rebuild(msg, false);
 								} catch (Exception e) {
 									ErrorMsg.addErrorMessage(e);
@@ -594,7 +604,7 @@ public class ManageAddonDialog extends JDialog {
 						menu.show(tableaddons, e.getX(), e.getY());
 					}
 				}
-
+				
 			});
 			if (tableaddonsJC != null)
 				getContentPane().remove(tableaddonsJC);
@@ -604,7 +614,7 @@ public class ManageAddonDialog extends JDialog {
 			getContentPane().add(tableaddonsJC, "1, 4, 6, 15");
 		}
 	}
-
+	
 	private void addKeys() {
 		// GravistoService.addActionOnKeystroke(this,new ActionListener() {
 		// public void actionPerformed(ActionEvent arg0) {
@@ -618,12 +628,12 @@ public class ManageAddonDialog extends JDialog {
 		// }
 		// },enter);
 	}
-
+	
 	private static Component getButtonPanel(JComponent a, JComponent b, JComponent c, JComponent d) {
 		return TableLayout.get4Split(a, b, c, d, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
 				TableLayout.PREFERRED, 10, 0);
 	}
-
+	
 	public boolean process(File f) {
 		if (f.getAbsolutePath().toLowerCase().endsWith(".jar")) {
 			try {
@@ -636,7 +646,7 @@ public class ManageAddonDialog extends JDialog {
 		}
 		return false;
 	}
-
+	
 	public void setTopText(final String msg) {
 		if (msgPanel != null)
 			remove(msgPanel);
@@ -660,29 +670,29 @@ public class ManageAddonDialog extends JDialog {
 		});
 		repaint();
 	}
-
+	
 	public void highlightFindUpdatesButton() {
 		findUpdatesMarker.setRequestFocus(true);
 		findUpdatesMarker.setMark(true);
 	}
-
+	
 	private void rebuild(String msg, boolean highlightfind) {
 		setVisible(false);
 		AddonManagerPlugin p = AddonManagerPlugin.getInstance();
 		p.showManageAddonDialog(msg, highlightfind);
 	}
-
+	
 }
 
 class WaitAnimationButton implements Runnable {
-
+	
 	JButton waitButton;
 	private boolean exit = false;
-
+	
 	public WaitAnimationButton(JButton waitButton) {
 		this.waitButton = waitButton;
 	}
-
+	
 	@Override
 	public void run() {
 		String saveText = waitButton.getText();
@@ -700,9 +710,9 @@ class WaitAnimationButton implements Runnable {
 		}
 		waitButton.setText(saveText);
 	}
-
+	
 	public void stop() {
 		exit = true;
 	}
-
+	
 }

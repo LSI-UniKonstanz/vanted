@@ -7,7 +7,7 @@ package unit_test_support;
  * @author klukas
  */
 public @interface TestValueRequired {
-
+	
 	String value();
-
+	
 }

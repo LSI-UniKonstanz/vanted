@@ -40,53 +40,53 @@ import java.util.Date;
  * Instances of this class are immutable.
  */
 public class DateRange extends Range implements Serializable {
-
+	
 	/** The lower bound for the range. */
 	private Date lowerDate;
-
+	
 	/** The upper bound for the range. */
 	private Date upperDate;
-
+	
 	/**
 	 * Default constructor.
 	 */
 	public DateRange() {
 		this(new Date(0), new Date(1));
 	}
-
+	
 	/**
 	 * Constructs a new range.
 	 * 
 	 * @param lower
-	 *            the lower bound (<code>null</code> not permitted).
+	 *           the lower bound (<code>null</code> not permitted).
 	 * @param upper
-	 *            the upper bound (<code>null</code> not permitted).
+	 *           the upper bound (<code>null</code> not permitted).
 	 */
 	public DateRange(final Date lower, final Date upper) {
-
+		
 		super(lower.getTime(), upper.getTime());
 		this.lowerDate = lower;
 		this.upperDate = upper;
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new range using two values that will be interpreted as
 	 * "milliseconds since midnight GMT, 1-Jan-1970".
 	 * 
 	 * @param lower
-	 *            the lower (oldest) date.
+	 *           the lower (oldest) date.
 	 * @param upper
-	 *            the upper (most recent) date.
+	 *           the upper (most recent) date.
 	 */
 	public DateRange(final double lower, final double upper) {
-
+		
 		super(lower, upper);
 		this.lowerDate = new Date((long) lower);
 		this.upperDate = new Date((long) upper);
-
+		
 	}
-
+	
 	/**
 	 * Constructs a new range that is based on another {@link Range}.
 	 * <P>
@@ -95,12 +95,12 @@ public class DateRange extends Range implements Serializable {
 	 * 1-Jan-1970.
 	 * 
 	 * @param other
-	 *            the other range (<code>null</code> not permitted).
+	 *           the other range (<code>null</code> not permitted).
 	 */
 	public DateRange(final Range other) {
 		this(other.getLowerBound(), other.getUpperBound());
 	}
-
+	
 	/**
 	 * Returns the lower (earlier) date for the range.
 	 * 
@@ -109,7 +109,7 @@ public class DateRange extends Range implements Serializable {
 	public Date getLowerDate() {
 		return this.lowerDate;
 	}
-
+	
 	/**
 	 * Returns the upper (later) date for the range.
 	 * 
@@ -118,7 +118,7 @@ public class DateRange extends Range implements Serializable {
 	public Date getUpperDate() {
 		return this.upperDate;
 	}
-
+	
 	/**
 	 * Returns a string representing the date range (useful for debugging).
 	 * 
@@ -128,5 +128,5 @@ public class DateRange extends Range implements Serializable {
 		final DateFormat df = DateFormat.getDateTimeInstance();
 		return "[" + df.format(this.lowerDate) + " --> " + df.format(this.upperDate) + "]";
 	}
-
+	
 }

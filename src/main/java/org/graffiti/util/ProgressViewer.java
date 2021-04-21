@@ -17,34 +17,34 @@ package org.graffiti.util;
  */
 public interface ProgressViewer {
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Sets the progress viewer's maximum value to n. By default, the maximum value
 	 * is 100.
 	 * 
 	 * @param n
-	 *            the new maximum
+	 *           the new maximum
 	 */
 	void setMaximum(int n);
-
+	
 	/**
 	 * Sets the value of the progress text. By default, this string is null. If you
 	 * have provided a custom progress string and want to revert to the built-in
 	 * behavior, set the string back to null.
 	 * 
 	 * @param text
-	 *            the value of the progress string
+	 *           the value of the progress string
 	 */
 	void setText(String text);
-
+	
 	/**
 	 * Sets the progress viewer's current value to n.
 	 * 
 	 * @param n
-	 *            the new value
+	 *           the new value
 	 */
 	void setValue(int n);
-
+	
 	/**
 	 * Returns the progress viewer's current value. The value is always between the
 	 * zero and the maximum values, inclusive. By default, the value is initialized
@@ -53,7 +53,7 @@ public interface ProgressViewer {
 	 * @return DOCUMENT ME!
 	 */
 	int getValue();
-
+	
 	int getMaximum();
 }
 

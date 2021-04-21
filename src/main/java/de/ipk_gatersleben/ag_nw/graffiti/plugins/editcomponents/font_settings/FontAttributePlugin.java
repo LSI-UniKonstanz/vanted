@@ -26,43 +26,43 @@ public class FontAttributePlugin extends IPK_PluginAdapter implements EditorPlug
 	 * <code>LabelValueRow</code>-instance.
 	 */
 	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-
+	
 	/** The mapping between attribute classes and attributeComponent classes. */
 	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
-
+	
 	public FontAttributePlugin() {
 		this.attributes = new Class[1];
 		this.attributes[0] = FontAttribute.class;
-
+		
 		StringAttribute.putAttributeType("nodefont", FontAttribute.class);
 		StringAttribute.putAttributeType("charttitlefont", FontAttribute.class);
-
+		
 		valueEditComponents = new HashMap<>();
 		attributeComponents = new HashMap<>();
-
+		
 		valueEditComponents.put(FontAttribute.class, FontAttributeEditor.class);
 	}
-
+	
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
-
+	
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-
+	
 	public Mode[] getModes() {
 		return null;
 	}
-
+	
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-
+	
 	public Tool[] getTools() {
 		return null;
 	}
-
+	
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}

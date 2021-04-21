@@ -26,24 +26,29 @@ import org.graffiti.session.EditorSession;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class AlignNodesCommand extends AbstractUndoableEdit {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -141421295248365712L;
+	
 	public enum Command {
 		jbHorB, jbHorC, jbHorT, jbVertC, jbVertL, jbVertR
 	};
-
+	
 	private Command cmd;
 	private EditorSession session;
 	private String desc;
-
+	
 	private LinkedHashMap<Node, Vector2d> oldPositions = new LinkedHashMap<Node, Vector2d>();
-
+	
 	/**
 	 * Creates a Alignment Command, used for aligning nodes.
 	 * 
 	 * @param cmd
-	 *            The command to be carried out
+	 *           The command to be carried out
 	 * @param nodes
-	 *            The node list to operate on, at least two nodes must be in the
-	 *            list.
+	 *           The node list to operate on, at least two nodes must be in the
+	 *           list.
 	 */
 	public AlignNodesCommand(Command cmd, EditorSession session) {
 		this.cmd = cmd;
@@ -62,29 +67,27 @@ public class AlignNodesCommand extends AbstractUndoableEdit {
 		if (cmd == Command.jbVertC)
 			desc += "vertical - center";
 	}
-
-	private static final long serialVersionUID = 1L;
-
+	
 	@Override
 	public String getPresentationName() {
 		return desc;
 	}
-
+	
 	@Override
 	public String getRedoPresentationName() {
 		return "redo " + desc;
 	}
-
+	
 	@Override
 	public String getUndoPresentationName() {
 		return "undo " + desc;
 	}
-
+	
 	@Override
 	public void redo() throws CannotRedoException {
-
+		
 		Graph graph = session.getGraph();
-
+		
 		Selection selection = session.getSelectionModel().getActiveSelection();
 		Collection<Node> nodes;
 		if (selection == null || selection.isEmpty()) {
@@ -92,13 +95,13 @@ public class AlignNodesCommand extends AbstractUndoableEdit {
 		} else {
 			nodes = selection.getNodes();
 		}
-
+		
 		if (nodes.size() < 2) {
 			MainFrame.showMessageDialog("Selection or graph must contain more than one node. Can not proceed.",
 					"Error");
 			return;
 		}
-
+		
 		double smallestX = Double.MAX_VALUE;
 		double smallestY = Double.MAX_VALUE;
 		double greatestX = Double.NEGATIVE_INFINITY;
@@ -106,9 +109,9 @@ public class AlignNodesCommand extends AbstractUndoableEdit {
 		double sumX = 0;
 		double sumY = 0;
 		int nodeCnt = 0;
-
+		
 		double avgX, avgY;
-
+		
 		nodeCnt = nodes.size();
 		for (Iterator<Node> nodeIterator = nodes.iterator(); nodeIterator.hasNext();) {
 			Node currentNode = (Node) nodeIterator.next();
@@ -122,42 +125,42 @@ public class AlignNodesCommand extends AbstractUndoableEdit {
 			sumX += cx;
 			sumY += cy;
 		}
-
+		
 		avgX = sumX / nodeCnt;
 		avgY = sumY / nodeCnt;
-
+		
 		(nodes.iterator().next()).getGraph().getListenerManager().transactionStarted(this);
-
+		
 		// undoSupport.postEdit(new Undoa)
-
+		
 		for (Iterator<Node> it = nodes.iterator(); it.hasNext();) {
 			Node currentNode = (Node) it.next();
 			Vector2d size = AttributeHelper.getSize(currentNode);
 			Vector2d pos = AttributeHelper.getPositionVec2d(currentNode);
-
+			
 			oldPositions.put(currentNode, pos);
-
+			
 			if (cmd == Command.jbHorT)
 				AttributeHelper.setPosition(currentNode, pos.x, smallestY + size.y / 2d);
-
+			
 			if (cmd == Command.jbHorC)
 				AttributeHelper.setPosition(currentNode, pos.x, avgY);
-
+			
 			if (cmd == Command.jbHorB)
 				AttributeHelper.setPosition(currentNode, pos.x, greatestY - size.y / 2d);
-
+			
 			if (cmd == Command.jbVertL)
 				AttributeHelper.setPosition(currentNode, smallestX + size.x / 2d, pos.y);
-
+			
 			if (cmd == Command.jbVertC)
 				AttributeHelper.setPosition(currentNode, avgX, pos.y);
-
+			
 			if (cmd == Command.jbVertR)
 				AttributeHelper.setPosition(currentNode, greatestX - size.x / 2d, pos.y);
 		}
 		(nodes.iterator().next()).getGraph().getListenerManager().transactionFinished(this);
 	}
-
+	
 	@Override
 	public void undo() throws CannotUndoException {
 		session.getGraph().getNodes().get(0).getGraph().getListenerManager().transactionStarted(this);
@@ -171,23 +174,23 @@ public class AlignNodesCommand extends AbstractUndoableEdit {
 		}
 		session.getGraph().getNodes().get(0).getGraph().getListenerManager().transactionFinished(this);
 	}
-
+	
 	/**
 	 * @param greatestX
-	 *            Value 1
+	 *           Value 1
 	 * @param cx
-	 *            Value 2
+	 *           Value 2
 	 * @return Value 1 if it is greater than Value 2, otherwise Value2
 	 */
 	private double max2(double greatestX, double cx) {
 		return greatestX > cx ? greatestX : cx;
 	}
-
+	
 	/**
 	 * @param smallestX
-	 *            Value 1
+	 *           Value 1
 	 * @param cx
-	 *            Value 2
+	 *           Value 2
 	 * @return The smaller one of the parameters
 	 */
 	private double min2(double smallestX, double cx) {

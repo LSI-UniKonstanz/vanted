@@ -33,7 +33,7 @@ package org.jfree.chart.renderer;
  * A default renderer for the {@link org.jfree.chart.plot.XYPlot} class.
  */
 public class DefaultXYItemRenderer extends StandardXYItemRenderer {
-
+	
 	// no changes required
-
+	
 }

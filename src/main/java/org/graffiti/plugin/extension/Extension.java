@@ -21,8 +21,8 @@ public interface Extension {
 	 *         <code>JMenuItems</code>
 	 */
 	List<JMenuItem> getMenuItems();
-
+	
 	public String getName();
-
+	
 	public String getCategory();
 }

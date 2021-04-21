@@ -24,72 +24,72 @@ import org.Vector2d;
  */
 public class KeggPathwayEntry implements Comparable<Object> {
 	private URL pathwayURL;
-
+	
 	private String pathwayName;
 	private String mapName;
-
+	
 	private boolean stripOrganismName;
 	private boolean colorEnzymesAndUseReferencePathway;
 	private String mappingCount = "";
-
+	
 	private String[] group;
-
+	
 	private InputStream openInputStream = null;
-
+	
 	private Vector2d targetPosition;
-
+	
 	public KeggPathwayEntry(String name, boolean stripOrganismName, String mapName, String[] group) {
 		setPathwayName(name.trim());
 		setStripOrganismName(stripOrganismName);
 		setMapName(mapName);
 		setGroupName(group);
 	}
-
+	
 	public KeggPathwayEntry(InputStream inputStream) {
 		this.openInputStream = inputStream;
 	}
-
+	
 	public KeggPathwayEntry(KeggPathwayEntry copyThisEntry, boolean colorEnzymesAndUseReferencePathway) {
 		this(copyThisEntry.getPathwayName(), copyThisEntry.isStripOrganismName(), copyThisEntry.getMapName(),
 				copyThisEntry.getGroupName());
 		setColorEnzymesAndUseReferencePathway(colorEnzymesAndUseReferencePathway);
 	}
-
+	
 	public String[] getGroupName() {
 		return group;
 	}
-
+	
 	public void setGroupName(String[] group) {
 		this.group = group;
 	}
-
+	
 	public String getPathwayURLstring() {
 		if (pathwayURL == null)
 			return null;
 		// if (!FileDownloadCache.isCacheURL(pathwayURL))
 		// pathwayURL = FileDownloadCache.getCacheURL(pathwayURL, mapName);
-
+		
 		if (pathwayURL == null)
 			return null;
 		else
 			return pathwayURL.toString();
 	}
-
+	
 	public URL getPathwayURL() {
 		return getPathwayURL(false);
 	}
-
+	
 	public URL getPathwayURL(boolean useReferencePathwayURL) {
 		if (useReferencePathwayURL)
 			return getReferencePathwayURLfromURL(pathwayURL);
 		else {
 			if (!FileDownloadCache.isCacheURL(pathwayURL))
 				pathwayURL = FileDownloadCache.getCacheURL(pathwayURL, mapName);
-
+			
 			return pathwayURL;
 		}
 	}
-
+	
 	// public Object getPathwayURLstring(boolean returnOrganismSpecificURL) {
 	// if (returnOrganismSpecificURL) {
 	// if (!FileDownloadCache.isCacheURL(pathwayURL))
@@ -99,7 +99,7 @@ public class KeggPathwayEntry implements Comparable<Object> {
 	// else
 	// return getPathwayURL();
 	// }
-
+	
 	private URL getReferencePathwayURLfromURL(URL pathwayURL) {
 		try {
 			String organismName3letters = mapName.substring(0, 3);
@@ -115,7 +115,7 @@ public class KeggPathwayEntry implements Comparable<Object> {
 			return null;
 		}
 	}
-
+	
 	@Override
 	public String toString() {
 		String tempPathwayName = getPathwayName();
@@ -126,11 +126,11 @@ public class KeggPathwayEntry implements Comparable<Object> {
 		else
 			return tempPathwayName + " (" + mappingCount + ")";
 	}
-
+	
 	public void setMappingCount(String mappingCount) {
 		this.mappingCount = mappingCount;
 	}
-
+	
 	public InputStream getOpenInputStream() throws IOException {
 		if (openInputStream != null)
 			return openInputStream;
@@ -145,7 +145,7 @@ public class KeggPathwayEntry implements Comparable<Object> {
 				return getPathwayURL(true).openStream();
 		}
 	}
-
+	
 	/**
 	 * @param string
 	 * @return
@@ -156,48 +156,48 @@ public class KeggPathwayEntry implements Comparable<Object> {
 		else
 			return "";
 	}
-
+	
 	public void setPathwayName(String pathwayName) {
 		this.pathwayName = pathwayName;
 	}
-
+	
 	public String getPathwayName() {
 		return pathwayName;
 	}
-
+	
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
 	}
-
+	
 	public String getMapName() {
 		return mapName;
 	}
-
+	
 	private void setStripOrganismName(boolean stripOrganismName) {
 		this.stripOrganismName = stripOrganismName;
 	}
-
+	
 	private boolean isStripOrganismName() {
 		return stripOrganismName;
 	}
-
+	
 	public void setColorEnzymesAndUseReferencePathway(boolean colorEnzymesAndUseReferencePathway) {
 		this.colorEnzymesAndUseReferencePathway = colorEnzymesAndUseReferencePathway;
 	}
-
+	
 	public boolean isColorEnzymesAndUseReferencePathway() {
 		return colorEnzymesAndUseReferencePathway;
 	}
-
+	
 	public boolean isReferencePathway() {
 		String organismName3letters = getOrganismLetters();
 		return organismName3letters.equalsIgnoreCase("map") || organismName3letters.equalsIgnoreCase("ko");
 	}
-
+	
 	public String getOrganismLetters() {
 		return getOrganismLettersFromMapId(mapName);
 	}
-
+	
 	public static String getOrganismLettersFromMapId(String mapName) {
 		String id = mapName;
 		if (id.length() >= 2) {
@@ -214,15 +214,15 @@ public class KeggPathwayEntry implements Comparable<Object> {
 		}
 		return id;
 	}
-
+	
 	public Vector2d getTargetPosition() {
 		return targetPosition;
 	}
-
+	
 	public void setTargetPosition(Vector2d targetPosition) {
 		this.targetPosition = targetPosition;
 	}
-
+	
 	public int compareTo(Object o) {
 		KeggPathwayEntry kpe = (KeggPathwayEntry) o;
 		if (getOrganismLetters().equals("map") && kpe.getOrganismLetters().equals("ko"))

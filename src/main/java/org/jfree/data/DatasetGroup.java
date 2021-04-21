@@ -38,23 +38,23 @@ import java.io.Serializable;
  * implement a shared reader-writer lock among all datasets in the group.
  */
 public class DatasetGroup implements Cloneable, Serializable {
-
+	
 	/**
 	 * Constructs a new DatasetGroup.
 	 */
 	public DatasetGroup() {
 		super();
 	}
-
+	
 	/**
 	 * Clones the group.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *             not by this class.
+	 *            not by this class.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
+	
 }

@@ -19,14 +19,13 @@ import javax.swing.JMenuItem;
  * An {@linkplain AbstractButton}-specific extension of {@link ComponentScaler}.
  * 
  * @author D. Garkov
- *
  */
 public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler {
-
+	
 	public AbstractButtonScaler(float scaleFactor) {
 		super(scaleFactor);
 	}
-
+	
 	/**
 	 * A method to be called when this {@linkplain AbstractButtonScaler} has been
 	 * dispatched to some immediate Component to be scaled. This tackles the problem
@@ -35,7 +34,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 * a scaler and call this method upon initialization.
 	 * 
 	 * @param immediateComponent
-	 *            to be scaled
+	 *           to be scaled
 	 */
 	@Override
 	public void scaleComponent(JComponent immediateComponent) {
@@ -43,14 +42,14 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 		coscaleInsets(immediateComponent);
 		this.coscaleIcon(immediateComponent);
 	}
-
+	
 	@Override
 	public void coscaleFont(JComponent component) {
 		super.coscaleFont(component);
-
+		
 		coscaleHTML(component);
 	}
-
+	
 	@Override
 	public void coscaleIcon(JComponent component) {
 		if (component instanceof JMenu) {
@@ -63,13 +62,12 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 		} else
 			modifyIcon((AbstractButton) component);
 	}
-
+	
 	/**
 	 * Interface method for
 	 * {@link AbstractButtonScaler#modifyHTML(String, AbstractButton)}. Part of the
 	 * HTML-supporting interface contract.
 	 * <p>
-	 * 
 	 * Be careful to update the font too, because this is taken as basis and thus
 	 * the end HTML scaling depends on it.
 	 *
@@ -85,69 +83,68 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 		/**
 		 * The order of the HTML texts is preserved and acts as second implicit key to
 		 * allow mapping of multiple texts to a single component.
-		 * 
 		 * Just implement and add your HTML-modification method below following the
 		 * template.
 		 */
 		modifyHTML(button.getText(), button);
 		modifyHTMLTooltip(button.getToolTipText(), button);
 	}
-
+	
 	/**
 	 * Scales the already set icon(s) and icon-related attributes of the given
 	 * AbstractButton.
 	 * 
 	 * @param button
-	 *            AbstractButton
+	 *           AbstractButton
 	 */
 	private void modifyIcon(AbstractButton button) {
 		Icon i; // any icon
 		Icon disabled = null;
 		Icon disabledSelected = null;
 		Icon pressed = null;
-
+		
 		if ((i = button.getDisabledIcon()) != null && !i.equals(button.getIcon()))
 			// save it (setIcon nullifies disabledIcon)
 			disabled = i;
-
+		
 		if ((i = button.getDisabledSelectedIcon()) != null && !i.equals(button.getIcon()))
 			// again save it!
 			disabledSelected = i;
-
+		
 		if ((i = button.getPressedIcon()) != null && !i.equals(button.getIcon()))
 			// again save it!
 			pressed = i;
-
+		
 		if ((i = button.getIcon()) != null)
 			button.setIcon(modifyIcon(null, i));
-
+		
 		if ((i = button.getRolloverIcon()) != null && !i.equals(button.getIcon()))
 			button.setRolloverIcon(modifyIcon(null, i));
-
+		
 		if ((i = button.getRolloverSelectedIcon()) != null && !i.equals(button.getIcon()))
 			button.setRolloverSelectedIcon(modifyIcon(null, i));
-
+		
 		if ((i = button.getSelectedIcon()) != null && !i.equals(button.getIcon()))
 			button.setSelectedIcon(modifyIcon(null, i));
-
+		
 		if (disabled != null)
 			button.setDisabledIcon(modifyIcon(null, disabled));
-
+		
 		if (disabledSelected != null)
 			button.setDisabledSelectedIcon(modifyIcon(null, disabledSelected));
-
+		
 		if (pressed != null)
 			button.setPressedIcon(modifyIcon(null, pressed));
-
+		
 		if (button instanceof JMenuItem) {
 			// JMenuItem specifics come here
 		} else
 			// we do not scale menu gaps (some are unset)
 			button.setIconTextGap((int) (button.getIconTextGap() * scaleFactor));
-
+		
 		button.validate();
 	}
-
+	
 	/**
 	 * Worker method processing the text, given it is HTML-styled, see
 	 * {@link HTMLScaleSupport#isHTMLStyled(String)}, by performing parsing,
@@ -155,50 +152,50 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 * setting, if necessary.
 	 * 
 	 * @param t
-	 *            text
+	 *           text
 	 * @param button
-	 *            AbstractButton
+	 *           AbstractButton
 	 */
 	private static void modifyHTML(String t, AbstractButton button) {
 		if (!HTMLScaleSupport.isHTMLStyled(t))
 			return;
-
+		
 		// save the initial tags for later
 		HTMLScaleSupport.storeTags(button, t);
 		// convert tags to font size
 		t = HTMLScaleSupport.parseHTMLtoFontSize(t, button);
-
+		
 		if (t.equals(button.getText()))
 			return;
-
+		
 		// remove listener to avoid looping
 		HTMLScaleSupport.handleTextListener(button, true);
-
+		
 		button.setText(t);
-
+		
 		// install listener for subsequent dynamic changes
 		HTMLScaleSupport.handleTextListener(button, false);
 	}
-
+	
 	/**
 	 * Similar to {@link AbstractButtonScaler#modifyHTML(String, AbstractButton)},
 	 * but for Tooltip texts.
 	 * 
 	 * @param tooltip
-	 *            text of the tooltip
+	 *           text of the tooltip
 	 * @param button
-	 *            AbstractButton
+	 *           AbstractButton
 	 */
 	private static void modifyHTMLTooltip(String tooltip, AbstractButton button) {
 		if (!HTMLScaleSupport.isHTMLStyled(tooltip))
 			return;
-
+		
 		HTMLScaleSupport.storeTags(button, tooltip);
-
+		
 		tooltip = HTMLScaleSupport.parseHTMLtoFontSize(tooltip, button);
 		if (tooltip.equals(button.getToolTipText()))
 			return;
-
+		
 		HTMLScaleSupport.handleTextListener(button, true);
 		button.setToolTipText(tooltip);
 		HTMLScaleSupport.handleTextListener(button, false);

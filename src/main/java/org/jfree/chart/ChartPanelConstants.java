@@ -34,65 +34,65 @@ package org.jfree.chart;
  * Useful constants for the {@link ChartPanel} class.
  */
 public interface ChartPanelConstants {
-
+	
 	/** Default setting for buffer usage. */
 	boolean DEFAULT_BUFFER_USED = false;
-
+	
 	/** The default panel width. */
 	int DEFAULT_WIDTH = 680;
-
+	
 	/** The default panel height. */
 	int DEFAULT_HEIGHT = 420;
-
+	
 	/** The default limit below which chart scaling kicks in. */
 	int DEFAULT_MINIMUM_DRAW_WIDTH = 300;
-
+	
 	/** The default limit below which chart scaling kicks in. */
 	int DEFAULT_MINIMUM_DRAW_HEIGHT = 200;
-
+	
 	/** The default limit below which chart scaling kicks in. */
 	int DEFAULT_MAXIMUM_DRAW_WIDTH = 800;
-
+	
 	/** The default limit below which chart scaling kicks in. */
 	int DEFAULT_MAXIMUM_DRAW_HEIGHT = 600;
-
+	
 	/** The minimum size required to perform a zoom on a rectangle */
 	int DEFAULT_ZOOM_TRIGGER_DISTANCE = 10;
-
+	
 	/** Properties action command. */
 	String PROPERTIES_ACTION_COMMAND = "PROPERTIES";
-
+	
 	/** Save action command. */
 	String SAVE_ACTION_COMMAND = "SAVE";
-
+	
 	/** Print action command. */
 	String PRINT_ACTION_COMMAND = "PRINT";
-
+	
 	/** Zoom in (both axes) action command. */
 	String ZOOM_IN_BOTH_ACTION_COMMAND = "ZOOM_IN_BOTH";
-
+	
 	/** Zoom in (horizontal axis only) action command. */
 	String ZOOM_IN_HORIZONTAL_ACTION_COMMAND = "ZOOM_IN_HORIZONTAL";
-
+	
 	/** Zoom in (vertical axis only) action command. */
 	String ZOOM_IN_VERTICAL_ACTION_COMMAND = "ZOOM_IN_VERTICAL";
-
+	
 	/** Zoom out (both axes) action command. */
 	String ZOOM_OUT_BOTH_ACTION_COMMAND = "ZOOM_OUT_BOTH";
-
+	
 	/** Zoom out (horizontal axis only) action command. */
 	String ZOOM_OUT_HORIZONTAL_ACTION_COMMAND = "ZOOM_HORIZONTAL_BOTH";
-
+	
 	/** Zoom out (vertical axis only) action command. */
 	String ZOOM_OUT_VERTICAL_ACTION_COMMAND = "ZOOM_VERTICAL_BOTH";
-
+	
 	/** Zoom reset (both axes) action command. */
 	String AUTO_RANGE_BOTH_ACTION_COMMAND = "AUTO_RANGE_BOTH";
-
+	
 	/** Zoom reset (horizontal axis only) action command. */
 	String AUTO_RANGE_HORIZONTAL_ACTION_COMMAND = "AUTO_RANGE_HORIZONTAL";
-
+	
 	/** Zoom reset (vertical axis only) action command. */
 	String AUTO_RANGE_VERTICAL_ACTION_COMMAND = "AUTO_RANGE_VERTICAL";
-
+	
 }
