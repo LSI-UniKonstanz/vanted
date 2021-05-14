@@ -65,6 +65,7 @@ import org.graffiti.util.MultipleIterator;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.RemoveBendsAlgorithm;
 
 /**
  * Graph Helper Class - A Collection of Helper routines for the work with graphs
@@ -345,12 +346,21 @@ public class GraphHelper implements HelperClass {
 	}
 	
 	/**
-	 * Remove all bends from a graph
+	 * Remove all bends from a graph. Please use {@linkplain RemoveBendsAlgorithm}.
+	 * @vanted.revision 2.8.1 Deprecated.
 	 */
+	@Deprecated
 	public static void removeAllBends(Graph g, boolean enableUndo) {
 		removeBends(g, g.getEdges(), enableUndo);
 	}
 	
+	/**
+	 * Please use {@linkplain RemoveBendsAlgorithm}.
+	 * @param nodes
+	 * @param enableUndo
+	 * @vanted.revision 2.8.1 Deprecated.
+	 */
+	@Deprecated
 	public static void removeBendsBetweenSelectedNodes(Collection<Node> nodes, boolean enableUndo) {
 		if (nodes == null || nodes.isEmpty())
 			return;
@@ -362,23 +372,33 @@ public class GraphHelper implements HelperClass {
 				if (setNodes.contains(outEdge.getSource()) && setNodes.contains(outEdge.getTarget()))
 					setEdges.add(outEdge);
 		}
-		removeBends(g, setEdges, enableUndo);
+		removeBends(g, setEdges, enableUndo);		
+	}
+	
+	/**
+	 * Does the given collection contain edges with bends?
+	 * 
+	 * @param edges a collection of edges
+	 * @return true, if the collection of edges contains edges with bends
+	 * @since 2.8.1
+	 */
+	public static boolean hasBends(final Collection<Edge> edges) {
+		if (edges == null || edges.size() <= 0)
+			return false;
 		
+		for (Edge e : edges) {
+			if (AttributeHelper.getEdgeBends(e).size() > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static void removeBends(final Graph graph, final Collection<Edge> edges, boolean enableUndo) {
 		if (graph == null || edges == null || edges.size() <= 0)
 			return;
 		
-		boolean hasBends = false;
-		for (Edge e : edges) {
-			Collection<Vector2d> positions = AttributeHelper.getEdgeBends(e);
-			if (positions.size() > 0) {
-				hasBends = true;
-				break;
-			}
-		}
-		if (!hasBends)
+		if (!hasBends(edges))
 			return;
 		
 		if (!enableUndo) {

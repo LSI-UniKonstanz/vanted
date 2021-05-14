@@ -23,6 +23,12 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### VANTED v2.8.1 release (14/05/2021) ###
+    Bugfixes and internal improvements: Algorithms
+    Bugfixes and internal improvements: Default graph format
+
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.1).
+
 ### VANTED v2.8.0 release (19/04/2021) ###
     New layout: Stress Minimisation
     New layout: Multilevel Framework
@@ -36,7 +42,7 @@ You can download and install this version [here](http://kim25.wwwdns.kim.uni-kon
 
 ### VANTED v2.7.2 release (20/07/2020) ###
     Resolve OS and compatibility issue
-    
+
 You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.7.2).
 
 ### VANTED v2.7.1 release (13/07/2020) ###

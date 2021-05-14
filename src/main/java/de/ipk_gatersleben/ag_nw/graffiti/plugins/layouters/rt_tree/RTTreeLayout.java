@@ -32,6 +32,7 @@ import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.RemoveBendsAlgorithm;
 
 /**
  * An implementation of a tree layout algorithm.
@@ -209,9 +210,6 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	public RTTreeLayout() {
 	}
 	
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#check()
-	 */
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -539,14 +537,6 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		try {
 			graph.getListenerManager().transactionStarted(this);
 			
-			// if (isRemoveBends) {
-			// for (Edge edge : graph.getEdges())
-			// AttributeHelper.removeEdgeBends(edge);
-			// }
-			//
-			if (isRemoveBends)
-				GraphHelper.removeBendsBetweenSelectedNodes(selNodes, false);
-			
 			for (Node sourceNode : sourceNodes.keySet()) {
 				treeMap = sourceNodes.get(sourceNode).getTreeMap();
 				depthOffsets = sourceNodes.get(sourceNode).getDepthOffset();
@@ -611,6 +601,12 @@ public class RTTreeLayout extends AbstractAlgorithm {
 			}
 		} finally {
 			graph.getListenerManager().transactionFinished(this);
+			
+			if (isRemoveBends) {
+				RemoveBendsAlgorithm rba = new RemoveBendsAlgorithm();
+				rba.attach(graph, selection, true);
+				rba.execute();
+			}
 		}
 		
 	}
@@ -1055,9 +1051,6 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		}
 	}
 	
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		// return null;
 		return "Tree Layout (RT)";

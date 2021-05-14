@@ -29,6 +29,7 @@ import org.vanted.plugins.layout.stressminimization.parameters.SliderParameter;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.RemoveBendsAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import info.clearthought.layout.SingleFiledLayout;
 
@@ -119,7 +120,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		
 		final FolderPanel preprocessingFolder = new FolderPanel("Preprocessing", false,
 				true, false, null);
-		preprocessingFolder.addComp(paramUIElems.initialLayoutRadioGroup);
+		preprocessingFolder.addComp(paramUIElems.preprocessingGroup);
 		preprocessingFolder.layoutRows();
 		mainPanel.add(preprocessingFolder);
 		
@@ -240,6 +241,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	
 	/**
 	 * {@inheritDoc}
+	 * @vanted.revision 2.8.1 Add removal of bends setting
 	 */
 	@Override
 	public void execute() {
@@ -249,7 +251,13 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		
 		StressMinParamModel params = this.parameterModel;
 		
-		if (params.initialLayoutRadioGroup.getSelected() == StressMinParamModel.InitialLayoutOption.useRandom) {
+		if (params.preprocessingGroup.isRemoveBendsSelected()) {
+			RemoveBendsAlgorithm rba = new RemoveBendsAlgorithm();
+			rba.attach(graph, selection);
+			rba.execute();
+		}
+		
+		if (params.preprocessingGroup.getSelectedInitialLayout() == StressMinParamModel.InitialLayoutOption.useRandom) {
 			setStatusDescription("Stress Minimization: randomizing input layout");
 			RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
 			rla.attach(graph, selection);

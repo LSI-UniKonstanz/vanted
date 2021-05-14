@@ -20,6 +20,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.managers.DefaultIOManager;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.parameter.BooleanParameter;
@@ -94,10 +95,10 @@ public class VantedPreferences implements PreferencesInterface {
 		if (MainFrame.getInstance() != null) {
 			Set<String> graphFileExtensions = MainFrame.getInstance().getIoManager().getGraphFileExtensions();
 			String[] possibleValues = graphFileExtensions.toArray(new String[graphFileExtensions.size()]);
-			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "", possibleValues));
+			params.add(new ObjectListParameter(DefaultIOManager.STANDARD_SAVE_FORMAT, PREFERENCE_STANDARD_SAVE_FILEFORMAT, "", possibleValues));
 		} else {
 			String[] possibleValues = new String[] { "" };
-			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "", possibleValues));
+			params.add(new ObjectListParameter(DefaultIOManager.STANDARD_SAVE_FORMAT, PREFERENCE_STANDARD_SAVE_FILEFORMAT, "", possibleValues));
 			
 		}
 		

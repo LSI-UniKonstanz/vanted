@@ -108,12 +108,8 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 	}
 	
 	public Parameter[] getParameters() {
-		DoubleParameter degreeParam = new DoubleParameter(degree, "Degree", "Degree to rotate network clockwise");
-		
-		// BooleanParameter useSelectionParam = new BooleanParameter(useSelection,
-		// "Work on Selection", "Rotate only selected Nodes");
-		
-		return new Parameter[] { degreeParam /* , useSelectionParam */ };
+		DoubleParameter degreeParam = new DoubleParameter(degree, "Degree", "Degree to rotate network clockwise");		
+		return new Parameter[] { degreeParam};
 	}
 	
 	public ActionEvent getActionEvent() {
@@ -124,16 +120,8 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		// empty
 	}
 	
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param params
-	 *           DOCUMENT ME!
-	 */
 	public void setParameters(Parameter[] params) {
 		degree = ((DoubleParameter) params[0]).getDouble().doubleValue();
-		
-		// useSelection = ((BooleanParameter) params[1]).getBoolean().booleanValue();
 	}
 	
 	public void check() {
@@ -310,11 +298,6 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		}
 	}
 	
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
 		JMenuItem menuItem = new JMenuItem(getName());
 		
@@ -322,12 +305,6 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		return new JMenuItem[] { menuItem };
 	}
 	
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param e
-	 *           DOCUMENT ME!
-	 */
 	public void actionPerformed(ActionEvent e) {
 		// executeThreadSafe(null);
 		GravistoService.getInstance().algorithmAttachData(this);

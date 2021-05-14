@@ -32,7 +32,7 @@ public class PutIntoSidePanel extends AbstractExperimentDataProcessor {
 		} catch (Exception e) {
 			tabtitle = null;
 		}
-		if (tabtitle == null || tabtitle.equals(""))
+		if (tabtitle == null || tabtitle.isEmpty())
 			tabtitle = ExperimentInterface.UNSPECIFIED_EXPERIMENTNAME;
 		
 		TabDBE.addOrUpdateExperimentPane(new ProjectEntity(tabtitle, md, optGui));

@@ -37,7 +37,7 @@ import info.clearthought.layout.SingleFiledLayout;
  */
 public class StressMinParamModel {
 	
-	public InitialLayoutRadioGroup initialLayoutRadioGroup = new InitialLayoutRadioGroup();
+	public PreprocessingGroup preprocessingGroup = new PreprocessingGroup();
 	public MethodRadioGroup methodRadioGroup = new MethodRadioGroup();
 	MethodAlphaGroup methodAlphaGroup = new MethodAlphaGroup();
 	MethodEdgeScaleGroup methodEdgeScaleGroup = new MethodEdgeScaleGroup();
@@ -97,23 +97,43 @@ public class StressMinParamModel {
 		}
 	}
 	
-	public class InitialLayoutRadioGroup extends JPanel {
+	/**
+	 * 
+	 * @vanted.revision 2.8.1 Refactoring, add removal of bends checkbox
+	 *
+	 */
+	public class PreprocessingGroup extends JPanel {
 		/**
 		* 
 		*/
 		private static final long serialVersionUID = 3451205769834506374L;
 		RadiosOFEnum<InitialLayoutOption> radios = new RadiosOFEnum<>(InitialLayoutOption.class);
+		private JCheckBox removeBends = new JCheckBox("Remove bends?");
 		
-		InitialLayoutRadioGroup() {
+		PreprocessingGroup() {
 			this.setLayout(new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 0));
 			this.setBackground(null);
 			for (JRadioButton radio : radios.enumRadioMap.values()) {
 				this.add(radio);
 			}
+			
+			this.add(Box.createVerticalStrut(10));
+			removeBends.setBackground(null);
+			removeBends.setToolTipText("Has no effect for edges without bends.");
+			this.add(removeBends);
+			// By default all bends are removed; Has no effect for no bends
+			removeBends.setSelected(true);
 		}
 		
-		public InitialLayoutOption getSelected() {
+		public InitialLayoutOption getSelectedInitialLayout() {
 			return radios.getSelected();
+		}
+		
+		/**
+		 * @since 2.8.1
+		 */
+		public boolean isRemoveBendsSelected() {
+			return removeBends.isSelected();
 		}
 	}
 	

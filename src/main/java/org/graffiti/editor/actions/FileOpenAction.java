@@ -25,6 +25,7 @@ import org.graffiti.core.GenericFileFilter;
 import org.graffiti.core.StringBundle;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.help.HelpContext;
+import org.graffiti.managers.DefaultIOManager;
 import org.graffiti.managers.IOManager;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.ViewManager;
@@ -103,7 +104,7 @@ public class FileOpenAction extends GraffitiAction {
 		 * set preferred file extension for opening dialog
 		 */
 		String prefExtension = PreferenceManager.getPreferenceForClass(VantedPreferences.class)
-				.get(VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT, "");
+				.get(VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT, DefaultIOManager.STANDARD_SAVE_FORMAT);
 		for (FileFilter filterFilter : fc.getChoosableFileFilters()) {
 			// System.out.println(filterFilter.toString());
 			if (filterFilter instanceof GenericFileFilter

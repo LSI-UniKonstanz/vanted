@@ -1,5 +1,11 @@
 <h3>Changelog</h3>
 
+<h4>VANTED v2.8.1 release (14/05/2021)</h4>
+<ul>
+<li>Bugfixes and internal improvements: Algorithms</li>
+<li>Bugfixes and internal improvements: Default graph format</li>
+</ul>
+
 <h4>VANTED v2.8.0 release (19/04/2021)</h4>
 <ul>
 <li>New layout: Stress Minimisation</li>

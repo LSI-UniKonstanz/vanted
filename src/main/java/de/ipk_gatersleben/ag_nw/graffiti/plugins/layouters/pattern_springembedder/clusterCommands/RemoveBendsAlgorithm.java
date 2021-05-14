@@ -9,20 +9,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.graffiti.graph.Edge;
+import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Remove Bends";
 	}
@@ -64,23 +61,36 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 			throw new PreconditionException("Graph contains no edges!");
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		ArrayList<Edge> workEdges = new ArrayList<Edge>();
 		if (selection == null || selection.getEdges().size() == 0)
 			workEdges.addAll(graph.getEdges());
 		else
 			workEdges.addAll(selection.getEdges());
-		GraphHelper.removeBends(graph, workEdges, true);
+		GraphHelper.removeBends(graph, workEdges, doesUndo());
 	}
 	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
+
+	@Override
+	public boolean doesUndo() {
+		return doesUndo;
+	}
+	
+	/**
+	 * See {@linkplain RemoveBendsAlgorithm#attach(Graph, Selection)}. This extends with optional setting of undo support.
+	 * @param graph
+	 * @param selection
+	 * @param attachUndo default is true
+	 */
+	public void attach(Graph graph, Selection selection, boolean attachUndo) {
+		super.attach(graph, selection);
+		doesUndo = attachUndo;
+	}
+	
+	private boolean doesUndo = true;
 	
 }
