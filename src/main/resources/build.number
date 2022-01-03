@@ -1,5 +1,5 @@
 #Vanted version and build information. ONLY EDIT THE VANTED VERSION PROPERTY!
-build.number=13
-build.date=20201222
-vanted.version.number=2.8.1
+build.number=14
+build.date=20220103
+vanted.version.number=2.8.2
 vanted.min.compatibility=2.5.0

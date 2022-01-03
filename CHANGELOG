@@ -1,5 +1,10 @@
 <h3>Changelog</h3>
 
+<h4>VANTED v2.8.2 release (03/01/2022)</h4>
+<ul>
+<li>Fix Log4j vulnerability</li>
+</ul>
+
 <h4>VANTED v2.8.1 release (14/05/2021)</h4>
 <ul>
 <li>Bugfixes and internal improvements: Algorithms</li>
