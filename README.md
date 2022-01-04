@@ -23,6 +23,9 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### VANTED v2.8.2 release (03/01/2022) ###
+    Fix Log4j vulnerability
+
 ### VANTED v2.8.1 release (14/05/2021) ###
     Bugfixes and internal improvements: Algorithms
     Bugfixes and internal improvements: Default graph format
