@@ -3,28 +3,20 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.prefs.Preferences;
-
 import org.apache.log4j.Logger;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
-
-import uk.ac.ebi.biomodels.ws.BioModelsWSClient;
 import uk.ac.ebi.biomodels.ws.BioModelsWSException;
-import uk.ac.ebi.biomodels.ws.SimpleModel;
+
 
 /**
  * Access adapter for the Biomodels Webservice client.
  * 
  * @author matthiak
- * @vanted.revision 2.7.0
+ * @vanted.revision 2.8.3
  */
 public class BiomodelsAccessAdapter implements PreferencesInterface {
 	
@@ -35,9 +27,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	private static String WEBSERVICE_ENDPOINT_VALUE = "";
 	
 	private static Logger logger = Logger.getLogger(BiomodelsAccessAdapter.class);
-	
-	private BioModelsWSClient biomodelsClient;
-	
+
 	/**
 	 * Types of models to be queried.
 	 * 
@@ -49,7 +39,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 		
 		private String name;
 		
-		private QueryType(String name) {
+		QueryType(String name) {
 			this.name = name;
 		}
 		
@@ -96,161 +86,59 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	 *            unable to establish connection
 	 * @vanted.revision 2.7.0 Handle SAXParseException
 	 */
-	public List<SimpleModel> queryForSimpleModel(QueryType type, String query) throws BioModelsWSException {
+	public List<SimpleModel> queryForSimpleModel(QueryType type, String query) {
 		abort = false;
-		BioModelsWSClient client = createClient();
 		String[] resultIds = null;
 		List<SimpleModel> resultSimpleModels = null;
-		try {
 			switch (type) {
-				case NAME:
-					resultIds = client.getModelsIdByName(query);
-					break;
-				case TAXONOMY:
-					resultIds = client.getModelsIdByTaxonomy(query);
-					break;
-				case CHEBI:
-					resultIds = client.getModelsIdByChEBI(query);
-					break;
-				case PERSON:
-					resultIds = client.getModelsIdByPerson(query);
-					break;
-				case GO:
-					resultIds = client.getModelsIdByGO(query);
-					break;
-				case PUBLICATION:
-					resultIds = client.getModelsIdByPublication(query);
-					break;
-				case UNIPROT:
-					resultIds = client.getModelsIdByUniprotIds(query.split("[ ;:\t]"));
-					break;
-				case BIOMODELID:
-					resultIds = query.toUpperCase().split("[ ;:\t]");
-					break;
-				default:
+				case NAME -> resultIds = BioModelsRestAPI.getModelsIdByName(query);
+				case TAXONOMY -> resultIds = BioModelsRestAPI.getModelsIdByTaxonomy(query);
+				case CHEBI -> resultIds = BioModelsRestAPI.getModelsIdByChEBI(query);
+				case PERSON -> resultIds = BioModelsRestAPI.getModelsIdByPerson(query);
+				case GO -> resultIds = BioModelsRestAPI.getModelsIdByGO(query);
+				case PUBLICATION -> resultIds = BioModelsRestAPI.getModelsIdByPublication(query);
+				case UNIPROT -> resultIds = BioModelsRestAPI.getModelsIdByUniprotIds(query.split("[ ;:\t]"));
+				case BIOMODELID -> resultIds = query.toUpperCase().split("[ ;:\t]");
+				default -> {
+				}
 			}
-			
 			if (resultIds != null) {
-				resultSimpleModels = getSimpleModels(client, resultIds);
+				resultSimpleModels = BioModelsRestAPI.getSimpleModelsByIds(resultIds);
 			}
 			if (!isAbort())
 				notifyResultSimpleModelListeners(type, resultSimpleModels);
-		} catch (BioModelsWSException e) {
-			e.printStackTrace();
-			notifyErrorListener(e);
-			throw e;
-		}
 		
 		return resultSimpleModels;
 	}
 	
-	/**
-	 * Get simple models by IDs. Because for some models in large queries an
-	 * exception is thrown, and building a query for each ID is too slow, the list
-	 * of queries is split as long as a valid range is found. Worst case is each ID
-	 * should be queried on its own.
-	 * 
-	 * @param client
-	 * @param ids
-	 * @return a list of simple models
-	 * @since 2.7.0
-	 */
-	private List<SimpleModel> getSimpleModels(BioModelsWSClient client, String[] ids) {
-		try {
-			return client.getSimpleModelsByIds(ids);
-		} catch (BioModelsWSException e) {
-			String[] ids1 = Arrays.copyOfRange(ids, 0, ids.length / 2);
-			String[] ids2 = Arrays.copyOfRange(ids, ids.length / 2, ids.length);
-			List<SimpleModel> resultSimpleModels = new LinkedList<SimpleModel>();
-			if (ids1.length > 1)
-				resultSimpleModels = getSimpleModels(client, ids1);
-			else if (ids1.length == 1) {
-				try {
-					resultSimpleModels.add(client.getSimpleModelById(ids1[0]));
-				} catch (BioModelsWSException e1) {
-					System.err.print("BioModels " + ids1[0] + ": ");
-					System.err.println(e1.getMessage());
-				}
-			}
-			
-			if (ids2.length > 1)
-				resultSimpleModels.addAll(getSimpleModels(client, ids2));
-			else if (ids2.length == 1) {
-				try {
-					resultSimpleModels.add(client.getSimpleModelById(ids2[0]));
-				} catch (BioModelsWSException e1) {
-					System.err.print("BioModels " + ids2[0] + ": ");
-					System.err.println(e1.getMessage());
-				}
-			}
-			
-			return resultSimpleModels;
-		}
-	}
-	
-	public String getSBMLModel(SimpleModel simpleModel) throws BioModelsWSException {
+	public String getSBMLModel(SimpleModel simpleModel) {
 		abort = false;
 		String result = null;
-		
-		try {
-			result = createClient().getModelSBMLById(simpleModel.getId());
-			
-			if (!isAbort())
-				notifyResultSBMLListeners(simpleModel, result);
-		} catch (BioModelsWSException e) {
-			
-			e.printStackTrace();
-			notifyErrorListener(e);
-			throw e;
-		}
-		
-		return result;
-	}
-	
-	public String getSBMLModel(String modelId) throws BioModelsWSException {
-		SimpleModel simpleModel = null;
-		
-		String result = null;
-		try {
-			simpleModel = createClient().getSimpleModelById(modelId);
-			result = getSBMLModel(simpleModel);
-		} catch (BioModelsWSException e) {
-			
-			e.printStackTrace();
-			notifyErrorListener(e);
-			throw e;
-		}
-		return result;
-	}
-	
-	public boolean isAvailable() throws BioModelsWSException {
-		return createClient().helloBioModels().equals("Hello BioModels");
-		
-	}
-	
-	private BioModelsWSClient createClient() throws BioModelsWSException {
-		if (biomodelsClient == null) {
-			biomodelsClient = new BioModelsWSClient();
-			
-			/*
-			 * check preferences for custom webservice endpoint This has priority above the
-			 * backup endpoint (see below)
-			 */
-			if (!WEBSERVICE_ENDPOINT_VALUE.equals(""))
-				biomodelsClient.setEndPoint(WEBSERVICE_ENDPOINT_VALUE);
-			else {
-				/*
-				 * if standard webservice endpoint doesn't work automatically go to the known
-				 * backup endpoint
-				 */
-				if (!isAvailable())
-					biomodelsClient.setEndPoint("http://biomodels.caltech.edu/services/BioModelsWebServices");
-				
+		try{
+			result = BioModelsRestAPI.getModelSBMLById(simpleModel.getId());
+		} catch (Exception e) {
+			try {
+				result = BioModelsRestAPI.getModelSBMLById(simpleModel.getSubmissionId());
+			} catch (Exception f){
 			}
 		}
+		//if (!isAbort())
+			notifyResultSBMLListeners(simpleModel, result);
 		
-		return biomodelsClient;
+		return result;
 	}
+	
+	public String getSBMLModel(String modelId) {
+		String result = null;
+			result = BioModelsRestAPI.getModelSBMLById(modelId);
+		return result;
+	}
+	
+	public boolean isAvailable() throws BioModelsWSException{
+		return Objects.equals(BioModelsRestAPI.helloBioModels(), "Hello BioModels");
+		
+	}
+
 	
 	/**
 	 * @param resultSimpleModels
@@ -260,21 +148,11 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 			for (BiomodelsLoaderCallback callback : listeners)
 				callback.resultForSimpleModelQuery(type, resultSimpleModels);
 	}
-	
-	/**
-	 * @param simpleModel
-	 * @param result
-	 */
+
 	private void notifyResultSBMLListeners(SimpleModel simpleModel, String result) {
 		if (listeners != null)
 			for (BiomodelsLoaderCallback callback : listeners)
 				callback.resultForSBML(simpleModel, result);
-	}
-	
-	private void notifyErrorListener(Exception e) {
-		if (listeners != null)
-			for (BiomodelsLoaderCallback callback : listeners)
-				callback.resultError(e);
 	}
 	
 	public boolean isAbort() {
@@ -293,10 +171,8 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	 * @throws BioModelsWSException
 	 */
 	@SuppressWarnings("unused")
-	private void initSetStructures() throws BioModelsWSException {
-		
-		final BioModelsWSClient client = createClient();
-		
+	private void initSetStructures(){
+
 		setCuratedModelIds = new HashSet<String>();
 		
 		setNonCuratedModelIds = new HashSet<String>();
@@ -305,26 +181,12 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 			
 			@Override
 			public void run() {
-				try {
-					String[] allCuratedModelsId = client.getAllCuratedModelsId();
-					if (allCuratedModelsId != null) {
-						for (String modelId : allCuratedModelsId)
-							setCuratedModelIds.add(modelId);
-						logger.debug("loaded curated model ids");
-					}
-				} catch (BioModelsWSException e) {
-					e.printStackTrace();
-				}
-				try {
-					String[] allNonCuratedModelsId = client.getAllNonCuratedModelsId();
-					if (allNonCuratedModelsId != null) {
-						for (String modelId : allNonCuratedModelsId)
-							setNonCuratedModelIds.add(modelId);
-						logger.debug("loaded non curated model ids");
-					}
-				} catch (BioModelsWSException e) {
-					e.printStackTrace();
-				}
+					String[] allCuratedModelsId = BioModelsRestAPI.getAllCuratedModelsId();
+					Collections.addAll(setCuratedModelIds, allCuratedModelsId);
+					logger.debug("loaded curated model ids");
+					String[] allNonCuratedModelsId = BioModelsRestAPI.getAllNonCuratedModelsId();
+					Collections.addAll(setNonCuratedModelIds, allNonCuratedModelsId);
+					logger.debug("loaded non curated model ids");
 				
 			}
 		}).start();
@@ -341,11 +203,11 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	}
 	
 	public interface BiomodelsLoaderCallback {
-		public void resultForSimpleModelQuery(QueryType type, List<SimpleModel> simpleModel);
+		void resultForSimpleModelQuery(QueryType type, List<SimpleModel> simpleModel);
 		
-		public void resultForSBML(SimpleModel model, String modelstring);
+		void resultForSBML(SimpleModel model, String modelstring);
 		
-		public void resultError(Exception e);
+		void resultError(Exception e);
 	}
 	
 	@Override
@@ -359,11 +221,10 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 		
 		return list;
 	}
-	
+
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		WEBSERVICE_ENDPOINT_VALUE = preferences.get(WEBSERVICE_ENDPOINT_PARAMETER, "");
-		biomodelsClient = null;
 	}
 	
 	@Override

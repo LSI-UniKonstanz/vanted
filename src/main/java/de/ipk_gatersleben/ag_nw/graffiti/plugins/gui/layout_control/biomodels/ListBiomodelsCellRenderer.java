@@ -5,13 +5,13 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.Objects;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
-import uk.ac.ebi.biomodels.ws.SimpleModel;
 
 /**
  * @author matthiak
@@ -42,9 +42,14 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 			entry.setBackground(new Color(200, 255, 200));
 		else
 			entry.setBackground(Color.WHITE);
-		
-		entry.setText(
-				"<html>" + "<strong>Model Name: " + value.getName() + "</strong><br/>" + "Model ID: " + value.getId());
+		if (!Objects.equals(value.getId(), "")){
+			entry.setText(
+					"<html>" + "<strong>Model Name: " + value.getName() + "</strong><br/>" + "Model ID: " + value.getId());
+		} else {
+			entry.setText(
+					"<html>" + "<strong>Model Name: " + value.getName() + "</strong><br/>" + "Model ID: " + value.getSubmissionId());
+		}
+
 		entry.setToolTipText(getTooltipText(value));
 		
 		return entry;
@@ -53,14 +58,14 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 	private static String getTooltipText(SimpleModel text) {
 		StringBuilder str = new StringBuilder();
 		
-		str.append("Identifier: " + text.getId() + "\n");
-		str.append("Name: " + text.getName() + "\n");
-		str.append("Publication: " + text.getPublicationId() + "\n");
+		str.append("<html>"  + "Identifier: " + text.getId() + "<br />" + "\n");
+		str.append("Name: " + text.getName() + "<br />" + "\n");
+		str.append("Publication: " + text.getPublicationId() + "<br />" + "\n");
 		str.append("Authors:\n");
 		for (String author : text.getAuthors()) {
 			str.append("\t- " + author + "\n");
 		}
-		str.append("Last modified: " + text.getLastModificationDateStr() + "\n");
+		str.append("<br />" + "Last modified: " + text.getLastModificationDateStr() + "\n");
 		
 		return str.toString();
 	}

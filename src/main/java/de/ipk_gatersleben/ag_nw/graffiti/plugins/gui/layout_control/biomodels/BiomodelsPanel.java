@@ -3,37 +3,20 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstraints;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-import org.apache.log4j.Logger;
-
-import uk.ac.ebi.biomodels.ws.BioModelsWSException;
-import uk.ac.ebi.biomodels.ws.SimpleModel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.BiomodelsLoaderCallback;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.QueryType;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
+import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstraints;
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import uk.ac.ebi.biomodels.ws.BioModelsWSException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the Biomodels tab panel.
@@ -250,7 +233,8 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		listResults.setEnabled(true);
 		loadSelectedModels.setEnabled(true);
 	}
-	
+
+
 	@Override
 	public void resultError(Exception e) {
 	}
@@ -267,7 +251,6 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 			loadSelectedModels.setEnabled(false);
 			for (SimpleModel model : selectedValuesList)
 				triggerLoadSBML(model);
-			
 		}
 		if (e.getSource().equals(searchButton)) {
 			listResults.setEnabled(false);
@@ -327,13 +310,8 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		
 		@Override
 		public void run() {
-			try {
 				logger.debug("calling adapter for query");
 				adapter.queryForSimpleModel(selItem, query);
-			} catch (BioModelsWSException e) {
-				
-				e.printStackTrace();
-			}
 		}
 		
 		public void cancelRequest() {
@@ -353,14 +331,20 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		
 		@Override
 		public void run() {
-			try {
-				logger.debug("calling adapter for sbml model");
+			logger.debug("calling adapter for sbml model");
+
+			try{
+				TabBiomodels.resultForSBML(model,BioModelsRestAPI.getModelSBMLById(model.getId()));
 				adapter.getSBMLModel(model);
-			} catch (BioModelsWSException e) {
-				e.printStackTrace();
+			} catch (JSONException e){
+				try {
+					TabBiomodels.resultForSBML(model,BioModelsRestAPI.getModelSBMLById(model.getSubmissionId()));
+					adapter.getSBMLModel(model);
+				} catch (JSONException f){
+
+				}
 			}
 		}
-		
 		public void cancelRequest() {
 			adapter.setAbort(true);
 		}

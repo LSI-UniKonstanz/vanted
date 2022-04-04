@@ -22,7 +22,6 @@ import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.io.InputSerializer;
 import org.graffiti.plugin.view.View;
 
-import uk.ac.ebi.biomodels.ws.SimpleModel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.BiomodelsLoaderCallback;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.QueryType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_XML_Reader;
@@ -30,7 +29,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_XML_Rea
 /**
  * @author matthiak
  */
-public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallback {
+public class TabBiomodels extends InspectorTab {
 	
 	/**
 	 * 
@@ -48,17 +47,15 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 	 */
 	public TabBiomodels() {
 		panel = new BiomodelsPanel();
-		panel.getAdapter().addListener(this);
 		setLayout(new BorderLayout());
 		add(panel, BorderLayout.CENTER);
 	}
 	
-	@Override
+
 	public void resultForSimpleModelQuery(QueryType type, List<SimpleModel> simpleModel) {
 	}
-	
-	@Override
-	public void resultForSBML(SimpleModel model, String modelstring) {
+
+	public static void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("creating network from sbml model");
 		final InputSerializer is;
 		final SimpleModel finalModel = model;
@@ -101,8 +98,7 @@ public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallbac
 		}
 		
 	}
-	
-	@Override
+
 	public void resultError(Exception e) {
 		JOptionPane.showMessageDialog(MainFrame.getInstance(),
 				"Unable to communicate with Biomodels Webservice\n" + e.getMessage(), "Communication Error",
