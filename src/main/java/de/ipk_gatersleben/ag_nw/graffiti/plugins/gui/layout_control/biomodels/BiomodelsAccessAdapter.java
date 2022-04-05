@@ -16,7 +16,6 @@ import uk.ac.ebi.biomodels.ws.BioModelsWSException;
  * Access adapter for the Biomodels Webservice client.
  * 
  * @author matthiak
- * @vanted.revision 2.8.3
  */
 public class BiomodelsAccessAdapter implements PreferencesInterface {
 	
@@ -91,16 +90,31 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 		String[] resultIds = null;
 		List<SimpleModel> resultSimpleModels = null;
 			switch (type) {
-				case NAME -> resultIds = BioModelsRestAPI.getModelsIdByName(query);
-				case TAXONOMY -> resultIds = BioModelsRestAPI.getModelsIdByTaxonomy(query);
-				case CHEBI -> resultIds = BioModelsRestAPI.getModelsIdByChEBI(query);
-				case PERSON -> resultIds = BioModelsRestAPI.getModelsIdByPerson(query);
-				case GO -> resultIds = BioModelsRestAPI.getModelsIdByGO(query);
-				case PUBLICATION -> resultIds = BioModelsRestAPI.getModelsIdByPublication(query);
-				case UNIPROT -> resultIds = BioModelsRestAPI.getModelsIdByUniprotIds(query.split("[ ;:\t]"));
-				case BIOMODELID -> resultIds = query.toUpperCase().split("[ ;:\t]");
-				default -> {
-				}
+				case NAME:
+					resultIds = BioModelsRestAPI.getModelsIdByName(query);
+					break;
+				case TAXONOMY:
+					resultIds = BioModelsRestAPI.getModelsIdByTaxonomy(query);
+					break;
+				case CHEBI:
+					resultIds = BioModelsRestAPI.getModelsIdByChEBI(query);
+					break;
+				case PERSON:
+					resultIds = BioModelsRestAPI.getModelsIdByPerson(query);
+					break;
+				case GO:
+					resultIds = BioModelsRestAPI.getModelsIdByGO(query);
+					break;
+				case PUBLICATION:
+					resultIds = BioModelsRestAPI.getModelsIdByPublication(query);
+					break;
+				case UNIPROT:
+					resultIds = BioModelsRestAPI.getModelsIdByUniprotIds(query.split("[ ;:\t]"));
+					break;
+				case BIOMODELID:
+					resultIds = query.toUpperCase().split("[ ;:\t]");
+					break;
+				default:
 			}
 			if (resultIds != null) {
 				resultSimpleModels = BioModelsRestAPI.getSimpleModelsByIds(resultIds);
