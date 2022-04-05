@@ -8,8 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -22,8 +21,6 @@ import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.io.InputSerializer;
 import org.graffiti.plugin.view.View;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.BiomodelsLoaderCallback;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.QueryType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_XML_Reader;
 
 /**
@@ -40,7 +37,7 @@ public class TabBiomodels extends InspectorTab {
 	
 	static final String NAME = "BioModels";
 	
-	BiomodelsPanel panel;
+	final BiomodelsPanel panel;
 	
 	/**
 	 * 
@@ -50,53 +47,40 @@ public class TabBiomodels extends InspectorTab {
 		setLayout(new BorderLayout());
 		add(panel, BorderLayout.CENTER);
 	}
-	
 
-	public void resultForSimpleModelQuery(QueryType type, List<SimpleModel> simpleModel) {
-	}
 
 	public static void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("creating network from sbml model");
 		final InputSerializer is;
 		final SimpleModel finalModel = model;
 		try {
-			final InputStream bis = new ByteArrayInputStream(modelstring.getBytes("UTF-8"));
+			final InputStream bis = new ByteArrayInputStream(modelstring.getBytes(StandardCharsets.UTF_8));
 			is = MainFrame.getInstance().getIoManager().createInputSerializer(null, ".sbml");
 			
-			SwingUtilities.invokeLater(new Runnable() {
-				
-				@Override
-				public void run() {
-					try {
-						Graph g = new AdjListGraph();
-						g.setName(finalModel.getName());
-						boolean saveReaderstate = true;
-						if (is instanceof SBML_XML_Reader) {
-							saveReaderstate = SBML_XML_Reader.isValidatingSBMLOnLoad();
-							SBML_XML_Reader.doValidateSBMLOnLoad(false);
-						}
-						is.read(bis, g);
-						if (is instanceof SBML_XML_Reader) {
-							SBML_XML_Reader.doValidateSBMLOnLoad(saveReaderstate);
-						}
-						MainFrame.getInstance().showGraph(g, null);
-					} catch (IOException e) {
-						e.printStackTrace();
+			SwingUtilities.invokeLater(() -> {
+				try {
+					Graph g = new AdjListGraph();
+					g.setName(finalModel.getName());
+					boolean saveReaderstate = true;
+					if (is instanceof SBML_XML_Reader) {
+						saveReaderstate = SBML_XML_Reader.isValidatingSBMLOnLoad();
+						SBML_XML_Reader.doValidateSBMLOnLoad(false);
 					}
-					
+					is.read(bis, g);
+					if (is instanceof SBML_XML_Reader) {
+						SBML_XML_Reader.doValidateSBMLOnLoad(saveReaderstate);
+					}
+					MainFrame.getInstance().showGraph(g, null);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+
 			});
 			
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedEncodingException e1) {
+		} catch (IllegalAccessException | FileNotFoundException | InstantiationException e1) {
 			e1.printStackTrace();
 		}
-		
+
 	}
 
 	public void resultError(Exception e) {

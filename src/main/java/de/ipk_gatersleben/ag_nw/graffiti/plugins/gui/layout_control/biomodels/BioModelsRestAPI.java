@@ -123,19 +123,18 @@ public class BioModelsRestAPI {
      * Retrieves the main information (identifier, name, publication identifier and date of last modification) about a given model.
      * @param id model identifier (e.g. BIOMD0000000408 or MODEL1201250000)
      * @return a <code>SimpleModel</code>, or 'null' if the provided identifier is not valid or the model does not exist
-     * @throws BioModelsWSException
      */
     public static SimpleModel getSimpleModelById(String id)
         {
-            SimpleModel model = null;
+            SimpleModel model;
             RestApiBiomodels call = new RestApiBiomodels();
             call.setFormat("json");
             call.setPath(id);
             String respondsbody = call.fetchData();
             JSONObject data = new JSONObject(respondsbody);
 
-            List<String> encoders = new ArrayList<String>();
-            List<String> authors = new ArrayList<String>();
+            List<String> encoders = new ArrayList<>();
+            List<String> authors = new ArrayList<>();
             String iD = "";
             String submissionId = "";
             String name = "";
@@ -159,25 +158,25 @@ public class BioModelsRestAPI {
             try{
                 iD = data.getString("publicationId");
             }
-            catch (Exception e){
+            catch (Exception ignored){
             }
             try {
                 submissionId = data.getString("submissionId");
             }
-            catch (Exception e){
+            catch (Exception ignored){
             }
             try{
                 name = data.getString("name");
             }
-            catch (Exception e){
+            catch (Exception ignored){
             }
             try {
                 JSONObject pub = data.getJSONObject("publication");
                 publicationId = pub.getString("orcid");
             }
-            catch (Exception e){
+            catch (Exception ignored){
             }
-            String searchForDate = "";
+            String searchForDate;
             if (submissionId != null){
                 searchForDate = submissionId;
             } else if (iD != null){
@@ -204,7 +203,6 @@ public class BioModelsRestAPI {
      * Retrieves the main information (identifier, name, publication identifier and date of last modification, ...) about given models.
      * @param ids list of model identifiers (e.g. BIOMD0000000408 or MODEL1201250000)
      * @return list of <code>SimpleModel</code>
-     * @throws BioModelsWSException
      */
     public static List<SimpleModel> getSimpleModelsByIds(String[] ids) {
         List<SimpleModel> models = new ArrayList<>();
@@ -221,7 +219,6 @@ public class BioModelsRestAPI {
      * Retrieves the name of a model name given its identifier.
      * @param id model identifier (e.g. BIOMD0000000408 or MODEL1201250000)
      * @return model name, or 'null' if the provided identifier is not valid or the model does not exist
-     * @throws BioModelsWSException
      */
     public static String getModelNameById(String id)
     {
@@ -238,7 +235,6 @@ public class BioModelsRestAPI {
     /**
      * Retrieves the identifiers of all the published curated models.
      * @return list of model identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getAllCuratedModelsId()
     {
@@ -248,7 +244,6 @@ public class BioModelsRestAPI {
     /**
      * Retrieves the identifiers of all the published non-curated models.
      * @return list of model identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getAllNonCuratedModelsId()
     {
@@ -259,7 +254,6 @@ public class BioModelsRestAPI {
      * Retrieves the models' identifiers which name includes the given keyword.
      * @param modelName part of a model name
      * @return list of models identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getModelsIdByName(String modelName)
     {
@@ -270,7 +264,6 @@ public class BioModelsRestAPI {
      * Retrieves the identifiers of all models which have a given person as author or encoder.
      * @param personName author's or encoder's name
      * @return list of models identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getModelsIdByPerson(String personName)
     {
@@ -281,7 +274,6 @@ public class BioModelsRestAPI {
      * Retrieves the identifiers of all models related to one (or more) publication(s).
      * @param publicationIdOrText publication identifier (PMID or DOI) or text which occurs in the publication's title or abstract
      * @return list of model identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getModelsIdByPublication(String publicationIdOrText)
     {
@@ -293,12 +285,11 @@ public class BioModelsRestAPI {
      * Retrieves the models which are annotated with the given ChEBI terms.
      * @param ChEBIIds identifiers of a ChEBI terms (e.g. CHEBI:4991)
      * @return all models annotated with the provided ChEBI identifiers, as a TreeMap (which uses ChEBI identifiers as keys)
-     * @throws BioModelsWSException
      */
     public static Map<String, List<SimpleModel>> getSimpleModelsByChEBIIds(String[] ChEBIIds)
     {
-        Map<String, List<SimpleModel>> modelsMap = null;
-            modelsMap = new TreeMap<String, List<SimpleModel>>();
+        Map<String, List<SimpleModel>> modelsMap;
+            modelsMap = new TreeMap<>();
             for (String s : ChEBIIds) {
                 ArrayList<SimpleModel> models = new ArrayList<>();
                 String cleaned = s.replaceAll(":", "%3A");
@@ -319,7 +310,6 @@ public class BioModelsRestAPI {
      * This relies on the method 'getLiteEntity' of the ChEBI Web Services (cf. http://www.ebi.ac.uk/chebi/webServices.do).
      * @param text ChEBI identifier (e.g. CHEBI:4991) or name or synonym
      * @return list of models identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getModelsIdByChEBI(String text)
     {
@@ -332,7 +322,6 @@ public class BioModelsRestAPI {
      * Retrieves all the models which are annotated with the given UniProt records.
      * @param UniProtIds list of UniProt identifiers (e.g. P12345)
      * @return list of models identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getModelsIdByUniprotIds(String[] UniProtIds)
     {
@@ -341,7 +330,7 @@ public class BioModelsRestAPI {
             {
                 String[] ids = searchForIDs("UNIPROT:"+s);
                 allIds = Stream.of(allIds, ids).flatMap(Stream::of)
-                    .toArray(String[]::new);;
+                    .toArray(String[]::new);
             }
             return allIds;
     }
@@ -350,7 +339,6 @@ public class BioModelsRestAPI {
      * Retrieves the models which are associated to the provided Gene Ontology text.
      * @param text free (GO based) text
      * @return list of models identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getModelsIdByGO(String text)
     {
@@ -361,7 +349,6 @@ public class BioModelsRestAPI {
      * Retrieves the models which are associated to the provided Taxonomy text.
      * @param text free (Taxonomy based) text
      * @return list of models identifiers
-     * @throws BioModelsWSException
      */
     public static String[] getModelsIdByTaxonomy(String text)
     {

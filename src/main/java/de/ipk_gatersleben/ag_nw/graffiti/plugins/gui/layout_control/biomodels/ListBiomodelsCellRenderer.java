@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
  */
 public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> {
 	
-	JLabel entry;
+	final JLabel entry;
 	
 	/**
 	 * 
@@ -58,14 +58,14 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 	private static String getTooltipText(SimpleModel text) {
 		StringBuilder str = new StringBuilder();
 		
-		str.append("<html>"  + "Identifier: " + text.getId() + "<br />" + "\n");
-		str.append("Name: " + text.getName() + "<br />" + "\n");
-		str.append("Publication: " + text.getPublicationId() + "<br />" + "\n");
+		str.append("<html>" + "Identifier: ").append(text.getId()).append("<br />").append("\n");
+		str.append("Name: ").append(text.getName()).append("<br />").append("\n");
+		str.append("Publication: ").append(text.getPublicationId()).append("<br />").append("\n");
 		str.append("Authors:\n");
 		for (String author : text.getAuthors()) {
-			str.append("\t- " + author + "\n");
+			str.append("\t- ").append(author).append("\n");
 		}
-		str.append("<br />" + "Last modified: " + text.getLastModificationDateStr() + "\n");
+		str.append("<br />" + "Last modified: ").append(text.getLastModificationDateStr()).append("\n");
 		
 		return str.toString();
 	}

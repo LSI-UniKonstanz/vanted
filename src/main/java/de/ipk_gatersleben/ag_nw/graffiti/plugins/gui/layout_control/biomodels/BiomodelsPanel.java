@@ -2,21 +2,18 @@
  * 
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
-
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.BiomodelsLoaderCallback;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.QueryType;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
-import uk.ac.ebi.biomodels.ws.BioModelsWSException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This is the Biomodels tab panel.
@@ -31,7 +28,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	 */
 	private static final long serialVersionUID = -5772252664151135872L;
 	
-	Logger logger = Logger.getLogger(BiomodelsPanel.class);
+	final Logger logger = Logger.getLogger(BiomodelsPanel.class);
 	
 	JScrollPane scrollpane;
 	
@@ -71,43 +68,35 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	 * Checks connection and updates availability status.
 	 */
 	private void checkConnection() {
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				
-				try {
-					isServiceAvailable = adapter.isAvailable();
-				} catch (BioModelsWSException e) {
-					e.printStackTrace();
-				}
-				
-				SwingUtilities.invokeLater(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						if (isServiceAvailable) {
-							connectivityString = "OK";
-							labelServiceAvailable.setForeground(Color.GREEN.darker());
-							labelServiceAvailable.setText(connectivityString);
-						} else {
-							connectivityString = "<html>Offline?<br/><br/>"
-									+ "No, then change the webservice endpoint from Edit &rarr; Preferences.";
-							labelServiceAvailable.setForeground(Color.RED.darker());
-							labelServiceAvailable.setText(connectivityString);
-							
-						}
-						
-					}
-				});
+		new Thread(() -> {
+
+			try {
+				isServiceAvailable = adapter.isAvailable();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+
+			SwingUtilities.invokeLater(() -> {
+
+				if (isServiceAvailable) {
+					connectivityString = "OK";
+					labelServiceAvailable.setForeground(Color.GREEN.darker());
+					labelServiceAvailable.setText(connectivityString);
+				} else {
+					connectivityString = "<html>Offline?<br/><br/>"
+							+ "No, then change the webservice endpoint from Edit &rarr; Preferences.";
+					labelServiceAvailable.setForeground(Color.RED.darker());
+					labelServiceAvailable.setText(connectivityString);
+
+				}
+
+			});
 		}).start();
 	}
-	
+
 	/**
 	 * Get the {@linkplain BiomodelsAccessAdapter}.
-	 * 
+	 *
 	 * @return the active {@linkplain BiomodelsAccessAdapter}
 	 */
 	public BiomodelsAccessAdapter getAdapter() {
@@ -149,7 +138,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		rootpanel.add(labelServiceAvailable, "3,1");
 		
 		BiomodelsAccessAdapter.QueryType[] items = BiomodelsAccessAdapter.QueryType.values();
-		comboQueryType = new JComboBox<BiomodelsAccessAdapter.QueryType>(items);
+		comboQueryType = new JComboBox<>(items);
 		
 		rootpanel.add(comboQueryType, "1,3");
 		
@@ -158,11 +147,11 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		rootpanel.add(queryField, "3,3");
 		
 		searchButton = new JButton();
-		searchButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("org/images/lupe.png")));
+		searchButton.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("org/images/lupe.png"))));
 		searchButton.addActionListener(this);
 		rootpanel.add(searchButton, "5,3");
 		
-		listResults = new JList<SimpleModel>();
+		listResults = new JList<>();
 		listResults.addMouseListener(new ListMouseAdapapter());
 		listResults.setCellRenderer(new ListBiomodelsCellRenderer());
 		
@@ -203,31 +192,25 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	}
 	
 	@Override
-	public void resultForSimpleModelQuery(QueryType type, List<SimpleModel> simpleModel) {
+	public void resultForSimpleModelQuery(List<SimpleModel> simpleModel) {
 		
 		if (simpleModel == null) {
 			logger.debug("no results");
-			simpleModel = new ArrayList<SimpleModel>();
+			simpleModel = new ArrayList<>();
 		}
 		if (SwingUtilities.isEventDispatchThread())
-			listResults.setListData(simpleModel.toArray(new SimpleModel[simpleModel.size()]));
+			listResults.setListData(simpleModel.toArray(new SimpleModel[0]));
 		else {
 			final List<SimpleModel> simpleModelSwingThread = simpleModel;
-			SwingUtilities.invokeLater(new Runnable() {
-				
-				@Override
-				public void run() {
-					listResults.setListData(
-							simpleModelSwingThread.toArray(new SimpleModel[simpleModelSwingThread.size()]));
-				}
-			});
+			SwingUtilities.invokeLater(() -> listResults.setListData(
+					simpleModelSwingThread.toArray(new SimpleModel[0])));
 		}
 		listResults.setEnabled(true);
 		loadSelectedModels.setEnabled(true);
 	}
 	
 	@Override
-	public void resultForSBML(SimpleModel model, String modelstring) {
+	public void resultForSBML() {
 		logger.debug("having result for SBML");
 		
 		listResults.setEnabled(true);
@@ -235,10 +218,6 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	}
 
 
-	@Override
-	public void resultError(Exception e) {
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(loadSelectedModels)) {
@@ -297,8 +276,8 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	}
 	
 	class CallerThreadForSimpleModel extends Thread {
-		BiomodelsAccessAdapter.QueryType selItem;
-		String query;
+		final BiomodelsAccessAdapter.QueryType selItem;
+		final String query;
 		
 		/**
 		 * 
@@ -320,7 +299,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	}
 	
 	class CallerThreadForSBMLModel extends Thread {
-		SimpleModel model;
+		final SimpleModel model;
 		
 		/**
 		 * 
@@ -335,12 +314,12 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 
 			try{
 				TabBiomodels.resultForSBML(model,BioModelsRestAPI.getModelSBMLById(model.getId()));
-				adapter.getSBMLModel(model);
+				adapter.notifySBML();
 			} catch (JSONException e){
 				try {
 					TabBiomodels.resultForSBML(model,BioModelsRestAPI.getModelSBMLById(model.getSubmissionId()));
-					adapter.getSBMLModel(model);
-				} catch (JSONException f){
+					adapter.notifySBML();
+				} catch (JSONException ignored){
 
 				}
 			}

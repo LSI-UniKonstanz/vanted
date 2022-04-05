@@ -18,11 +18,11 @@ public class RestApiBiomodels {
 
     public String fetchData() {
 
-        StringBuffer responseContent = null;
+        StringBuilder responseContent = null;
         try {
             BufferedReader reader;
             String line;
-            responseContent = new StringBuffer();
+            responseContent = new StringBuilder();
             URL url = new URL("https://www.ebi.ac.uk/biomodels/" + path);
             connection = (HttpURLConnection) url.openConnection();
 

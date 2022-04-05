@@ -20,7 +20,6 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -28,9 +27,9 @@ import java.util.TimeZone;
 
 public class SimpleModel
 {
-    private String id;
+    private final String id;
     private String submissionId;
-    private String name;
+    private final String name;
     private String publicationId;
     private List<String> authors;
     private List<String> encoders;
@@ -230,21 +229,21 @@ public class SimpleModel
     {
         StringBuilder str = new StringBuilder();
 
-        str.append("Identifier: " + this.id + "\n");
-        str.append("Submission identifier: " + this.submissionId + "\n");
-        str.append("Name: " + this.name + "\n");
+        str.append("Identifier: ").append(this.id).append("\n");
+        str.append("Submission identifier: ").append(this.submissionId).append("\n");
+        str.append("Name: ").append(this.name).append("\n");
         str.append("Encoders:\n");
         for (String encoder: this.encoders)
         {
-            str.append("\t- " + encoder + "\n");
+            str.append("\t- ").append(encoder).append("\n");
         }
-        str.append("Publication: " + this.publicationId + "\n");
+        str.append("Publication: ").append(this.publicationId).append("\n");
         str.append("Authors:\n");
         for (String author: this.authors)
         {
-            str.append("\t- " + author + "\n");
+            str.append("\t- ").append(author).append("\n");
         }
-        str.append("Last modified: " + this.getLastModificationDateStr() + "\n");
+        str.append("Last modified: ").append(this.getLastModificationDateStr()).append("\n");
 
         return str.toString();
     }
