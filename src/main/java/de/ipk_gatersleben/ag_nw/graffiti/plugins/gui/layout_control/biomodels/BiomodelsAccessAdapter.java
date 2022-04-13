@@ -114,12 +114,10 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 			}
 			if (!isAbort())
 				notifyResultSimpleModelListeners(resultSimpleModels);
-
 	}
 	
 	public void notifySBML() {
 			notifyResultSBMLListeners();
-
 	}
 	
 	public String getSBMLModel(String modelId) {
@@ -128,10 +126,8 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	
 	public boolean isAvailable() {
 		return Objects.equals(BioModelsRestAPI.helloBioModels(), "Hello BioModels");
-		
 	}
 
-	
 	/**
 	 */
 	private void notifyResultSimpleModelListeners(List<SimpleModel> resultSimpleModels) {
@@ -168,13 +164,6 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 		setNonCuratedModelIds = new HashSet<>();
 		
 		new Thread(() -> {
-				String[] allCuratedModelsId = BioModelsRestAPI.getAllCuratedModelsId();
-				Collections.addAll(setCuratedModelIds, allCuratedModelsId);
-				logger.debug("loaded curated model ids");
-				String[] allNonCuratedModelsId = BioModelsRestAPI.getAllNonCuratedModelsId();
-				Collections.addAll(setNonCuratedModelIds, allNonCuratedModelsId);
-				logger.debug("loaded non curated model ids");
-
 		}).start();
 	}
 	
@@ -190,9 +179,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	
 	public interface BiomodelsLoaderCallback {
 		void resultForSimpleModelQuery(List<SimpleModel> simpleModel);
-		
 		void resultForSBML();
-
 	}
 	
 	@Override

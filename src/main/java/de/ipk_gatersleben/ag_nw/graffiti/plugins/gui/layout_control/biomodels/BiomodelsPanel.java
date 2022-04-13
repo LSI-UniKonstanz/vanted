@@ -47,8 +47,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	BiomodelsAccessAdapter adapter;
 	
 	CallerThreadForSimpleModel callerThreadForSimpleModel;
-	
-	CallerThreadForSBMLModel callerThreadForSBML;
+
 	
 	private JLabel labelServiceAvailable;
 	private boolean isServiceAvailable;
@@ -129,8 +128,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 				// columns
 				{ 5, TableLayout.PREFERRED, 5, TableLayout.FILL, 5, TableLayout.PREFERRED },
 				// rows
-				{ 5, TableLayout.PREFERRED, 5, TableLayout.PREFERRED, 5, TableLayout.PREFERRED, 5, TableLayout.FILL, 5,
-						TableLayout.PREFERRED } }));
+				{ 5, TableLayout.PREFERRED, 5, TableLayout.PREFERRED, 5, TableLayout.FILL,4} }));
 		
 		rootpanel.add(new JLabel("Availability: "), "1,1");
 		labelServiceAvailable = new JLabel("availability");
@@ -162,7 +160,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		
 		loadSelectedModels = new JButton("Load Models");
 		loadSelectedModels.addActionListener(this);
-		rootpanel.add(loadSelectedModels, "7,3");
+		rootpanel.add(loadSelectedModels, "6,3");
 		
 		add(rootpanel, BorderLayout.CENTER);
 		

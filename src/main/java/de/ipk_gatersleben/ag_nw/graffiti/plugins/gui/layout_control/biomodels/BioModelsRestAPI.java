@@ -52,8 +52,6 @@ public class BioModelsRestAPI {
             call.setPath("model/download/"+id+"?filename="+filename);
             call.setFormat("octet-stream");
             return call.fetchData();
-
-
     }
 
     /**
@@ -69,7 +67,6 @@ public class BioModelsRestAPI {
             String responds = call.fetchData();
             JSONObject data = new JSONObject(responds);
             JSONObject pub = data.getJSONObject("publication");
-            ArrayList<String> authorArrayList = new ArrayList<>();
             JSONArray authorsJ = pub.getJSONArray("authors");
             String[] authors = new String[authorsJ.length()];
             for (int i = 0; i < authorsJ.length(); i++) {
@@ -131,6 +128,7 @@ public class BioModelsRestAPI {
             call.setFormat("json");
             call.setPath(id);
             String respondsbody = call.fetchData();
+
             JSONObject data = new JSONObject(respondsbody);
 
             List<String> encoders = new ArrayList<>();
@@ -195,8 +193,8 @@ public class BioModelsRestAPI {
                     getLastModifiedDateByModelId(searchForDate)
 
             );
-
             return model;
+
         }
 
     /**
@@ -228,7 +226,6 @@ public class BioModelsRestAPI {
             String responds = call.fetchData();
             JSONObject data = new JSONObject(responds);
             return data.getString("name");
-
     }
 
 
@@ -356,12 +353,9 @@ public class BioModelsRestAPI {
     }
 
 
-
-
     /*
      * ###################################### private methods ###########################
      */
-
 
     public static String[] searchForIDs(String searchParameter){
         RestApiBiomodels call = new RestApiBiomodels();
