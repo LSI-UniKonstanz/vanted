@@ -104,7 +104,6 @@ public class BioModelsRestAPI {
             call.setPath(id);
             String respondsbody = call.fetchData();
 
-            System.out.println(System.currentTimeMillis());
             JSONObject data = new JSONObject(respondsbody);
 
             List<String> encoders = new ArrayList<>();
@@ -169,7 +168,6 @@ public class BioModelsRestAPI {
                     authors,
                     String.valueOf(lastDate)
             );
-            System.out.println(System.currentTimeMillis());
 
             return model;
 
