@@ -69,8 +69,6 @@ public class SimpleModel
 
         try
         {
-            // removes the ':' from the time zone section (in order to be able to use SimpleDateFormat)
-            //lastModificationDate = lastModificationDate.substring(0, 22) + lastModificationDate.substring(23);
             long unix_seconds = Long.parseLong(lastModificationDate);
             this.lastModificationDate = new Date(unix_seconds);
         }

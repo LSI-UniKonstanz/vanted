@@ -1,14 +1,15 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import uk.ac.ebi.biomodels.ws.BioModelsWSException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Stream;
+
 
 public class BioModelsRestAPI {
 
@@ -230,7 +231,7 @@ public class BioModelsRestAPI {
      */
     public static String[] getModelsIdByName(String modelName)
     {
-            return searchForIDs(modelName);
+            return searchForIDs("name%3A%22"+modelName+"%22");
     }
 
     /**
@@ -240,7 +241,14 @@ public class BioModelsRestAPI {
      */
     public static String[] getModelsIdByPerson(String personName)
     {
-            return searchForIDs(personName);
+        String cleaned = personName.replaceAll(" ", "%20");
+        String[] submitter = searchForIDs("submitter%3A%22"+cleaned+"%22");
+        String[] pubAuthor = searchForIDs("publication_authors%3A%22"+cleaned+"%22");
+        String[] result = new String[submitter.length + pubAuthor.length];
+        System.arraycopy(submitter, 0, result, 0, submitter.length);
+        System.arraycopy(pubAuthor, 0, result, submitter.length, pubAuthor.length);
+
+        return result;
     }
 
     /**
@@ -250,7 +258,6 @@ public class BioModelsRestAPI {
      */
     public static String[] getModelsIdByPublication(String publicationIdOrText)
     {
-
             return searchForIDs(publicationIdOrText);
     }
 
