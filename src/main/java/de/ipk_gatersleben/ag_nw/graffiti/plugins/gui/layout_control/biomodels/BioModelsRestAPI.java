@@ -92,31 +92,6 @@ public class BioModelsRestAPI {
     }
 
     /**
-     * Retrieves the date of last modification of a given model.
-     * @param modelId model identifier (e.g. BIOMD0000000408 or MODEL1201250000)
-     * @return date of last modification (expressed according to ISO 8601), or 'null' if the provided identifier is not valid or the model does not exist
-     */
-    public static String getLastModifiedDateByModelId(String modelId)
-    {
-            RestApiBiomodels call = new RestApiBiomodels();
-            call.setFormat("json");
-            call.setPath(modelId);
-            String responds = call.fetchData();
-            JSONObject data = new JSONObject(responds);
-            JSONObject history = data.getJSONObject("history");
-            JSONArray revisions = history.getJSONArray("revisions");
-
-            long lastDate = 0;
-            for (int i=0; i<revisions.length(); i++){
-                JSONObject revision = new JSONObject(revisions.get(i).toString());
-                if (revision.getLong("submitted") > lastDate){
-                    lastDate = revision.getLong("submitted");
-                }
-            }
-            return String.valueOf(lastDate);
-    }
-
-    /**
      * Retrieves the main information (identifier, name, publication identifier and date of last modification) about a given model.
      * @param id model identifier (e.g. BIOMD0000000408 or MODEL1201250000)
      * @return a <code>SimpleModel</code>, or 'null' if the provided identifier is not valid or the model does not exist
@@ -129,6 +104,7 @@ public class BioModelsRestAPI {
             call.setPath(id);
             String respondsbody = call.fetchData();
 
+            System.out.println(System.currentTimeMillis());
             JSONObject data = new JSONObject(respondsbody);
 
             List<String> encoders = new ArrayList<>();
@@ -138,8 +114,8 @@ public class BioModelsRestAPI {
             String name = "";
             String publicationId = "";
 
+            JSONObject pub = data.getJSONObject("publication");
             try {
-                JSONObject pub = data.getJSONObject("publication");
                 JSONArray authorsJ = pub.getJSONArray("authors");
                 for (int i = 0; i < authorsJ.length(); i++) {
                     JSONObject authorS = (JSONObject) authorsJ.get(i);
@@ -150,8 +126,7 @@ public class BioModelsRestAPI {
                     }
                 }
             }
-            catch (Exception e){
-                System.out.println("No Publication");
+            catch (Exception ignored){
             }
             try{
                 iD = data.getString("publicationId");
@@ -169,18 +144,20 @@ public class BioModelsRestAPI {
             catch (Exception ignored){
             }
             try {
-                JSONObject pub = data.getJSONObject("publication");
                 publicationId = pub.getString("orcid");
             }
             catch (Exception ignored){
             }
-            String searchForDate;
-            if (submissionId != null){
-                searchForDate = submissionId;
-            } else if (iD != null){
-                searchForDate = iD;
-            } else {
-                searchForDate = publicationId;
+
+            JSONObject history = data.getJSONObject("history");
+            JSONArray revisions = history.getJSONArray("revisions");
+
+            long lastDate = 0;
+            for (int i=0; i<revisions.length(); i++){
+                JSONObject revision = new JSONObject(revisions.get(i).toString());
+                if (revision.getLong("submitted") > lastDate){
+                    lastDate = revision.getLong("submitted");
+                }
             }
 
             model = new SimpleModel(
@@ -190,9 +167,10 @@ public class BioModelsRestAPI {
                     encoders,
                     publicationId,
                     authors,
-                    getLastModifiedDateByModelId(searchForDate)
-
+                    String.valueOf(lastDate)
             );
+            System.out.println(System.currentTimeMillis());
+
             return model;
 
         }
