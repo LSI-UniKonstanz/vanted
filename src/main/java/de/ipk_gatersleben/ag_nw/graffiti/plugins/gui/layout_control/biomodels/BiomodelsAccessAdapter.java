@@ -16,7 +16,7 @@ import org.graffiti.plugin.parameter.StringParameter;
  * 
  * @author matthiak
  */
-public class BiomodelsAccessAdapter implements PreferencesInterface {
+public class BiomodelsAccessAdapter {
 	
 	/**
 	 * 
@@ -30,9 +30,14 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	 * 
 	 * @author matthiak
 	 */
+
+	//ENSEMBL
+		//changelog .3
 	public enum QueryType {
-		CHEBI("ChEBI"), NAME("Model Name"), TAXONOMY("Taxonomy"), PERSON("Person"), PUBLICATION("Publication (Name/Id)"), GO("GO Term"), UNIPROT(
-				"Uniprot Ids"), BIOMODELID("Biomodels Id");
+		CHEBI("ChEBI"), NAME("Model Name"), TAXONOMY("Taxonomy"), PERSON("Person"),
+		PUBLICATION("Publication (Name/Id)"), GO("GO Term"), UNIPROT("Uniprot Ids"),
+		BIOMODELID("Biomodels Id"), PUBMED("PUBMED"), DESCRIPTION("Description"),
+		DISEASE("Disease"), ENSEMBL("Ensembl");
 		
 		private final String name;
 		
@@ -73,44 +78,74 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	
 	/**
 	 * Queries simple models, {@linkplain SimpleModel}, by type
-	 * {@linkplain QueryType} and
+	 * {@linkplain QueryType} and loads the corresponding Simple Models
 	 * 
 	 * @param type
 	 *           of models
 	 */
 	public void queryForSimpleModel(QueryType type, String query) {
 		abort = false;
-		String[] resultIds = null;
 		List<SimpleModel> resultSimpleModels = null;
 			switch (type) {
 				case NAME:
-					resultIds = BioModelsRestAPI.getModelsIdByName(query);
+					resultSimpleModels = BioModelsRestAPI.searchForModels("name%3A%22"+query+
+							"%22"+"&numResults=100");
 					break;
 				case TAXONOMY:
-					resultIds = BioModelsRestAPI.getModelsIdByTaxonomy(query);
+					String cleanedTAXONOMY = query.toUpperCase().replaceAll("TAXONOMY:","");
+					resultSimpleModels = BioModelsRestAPI.searchForModels("TAXONOMY%3A"+cleanedTAXONOMY
+							+"&numResults=100");
 					break;
 				case CHEBI:
-					resultIds = BioModelsRestAPI.getModelsIdByChEBI(query);
+					String cleanedCHEBI = query.toUpperCase().replaceAll("CHEBI:","");
+					resultSimpleModels = BioModelsRestAPI.searchForModels("CHEBI%3ACHEBI%3A" + cleanedCHEBI
+							+"&numResults=100");
 					break;
 				case PERSON:
-					resultIds = BioModelsRestAPI.getModelsIdByPerson(query);
+					String cleaned = query.replaceAll(" ", "%20");
+					List<SimpleModel> submitter = BioModelsRestAPI.searchForModels("submitter%3A%22"
+							+ cleaned+"%22" +"&numResults=100");
+					List<SimpleModel> pubAuthor = BioModelsRestAPI.searchForModels("publication_authors%3A%22"
+							+cleaned+"%22" +"&numResults=100");
+					List<SimpleModel> results = new ArrayList<>(submitter);
+					results.addAll(pubAuthor);
+					resultSimpleModels = results;
 					break;
 				case GO:
-					resultIds = BioModelsRestAPI.getModelsIdByGO(query);
+					String queryCleaned = query.toUpperCase().replaceAll("GO:","");
+					resultSimpleModels = BioModelsRestAPI.searchForModels("GO%3AGO%3A"+queryCleaned
+							+"&numResults=100");
 					break;
 				case PUBLICATION:
-					resultIds = BioModelsRestAPI.getModelsIdByPublication(query);
+					resultSimpleModels = BioModelsRestAPI.searchForModels("publication%3A("
+							+ query + ")&numResults=100");
 					break;
 				case UNIPROT:
-					resultIds = BioModelsRestAPI.getModelsIdByUniprotIds(query.split("[ ;:\t]"));
+					String queryCleanedU = query.toUpperCase().replaceAll("UNIPROT:","");
+					resultSimpleModels = BioModelsRestAPI.searchForModels("UNIPROT%3A"+queryCleanedU
+							+ "&numResults=100");
 					break;
 				case BIOMODELID:
-					resultIds = query.toUpperCase().split("[ ;:\t]");
+					resultSimpleModels = BioModelsRestAPI.searchForModels(query +"&numResults=100");
 					break;
+				case PUBMED:
+					resultSimpleModels = BioModelsRestAPI.searchForModels("PUBMED%3A%22" + query
+							+ "%22&numResults=100");
+					break;
+				case DESCRIPTION:
+					resultSimpleModels = BioModelsRestAPI.searchForModels("description%3A%22" + query
+							+ "%22&numResults=100");
+					break;
+				case DISEASE:
+					String cleanedDisease = query.replaceAll(" ","%20");
+					resultSimpleModels = BioModelsRestAPI.searchForModels("disease%3A%22"
+							+ cleanedDisease + "%22&numResults=100");
+					break;
+				case ENSEMBL:
+					String cleanedEn = query.toUpperCase().replaceAll("ENSEMBL","");
+					resultSimpleModels = BioModelsRestAPI.searchForModels("ENSEMBL%3A"+cleanedEn
+							+ "&numResults=100");
 				default:
-			}
-			if (resultIds != null) {
-				resultSimpleModels = BioModelsRestAPI.getSimpleModelsByIds(resultIds);
 			}
 			if (!isAbort())
 				notifyResultSimpleModelListeners(resultSimpleModels);
@@ -180,28 +215,6 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 	public interface BiomodelsLoaderCallback {
 		void resultForSimpleModelQuery(List<SimpleModel> simpleModel);
 		void resultForSBML();
-	}
-	
-	@Override
-	public List<Parameter> getDefaultParameters() {
-		List<Parameter> list = new ArrayList<>();
-		list.add(new StringParameter("", WEBSERVICE_ENDPOINT_PARAMETER,
-				"<html>Specify an alternative endpoint in case the standard endpoint is not available"
-						+ "<br/>The endpoint needs to be in URL form like:"
-						+ "<br/>&nbsp &nbsp &nbsp http://biomodels.caltech.edu/services/BioModelsWebServices" + "<br/>"
-						+ "<br/>Leave empty for the standard webservice endpoint"));
-		
-		return list;
-	}
-
-	@Override
-	public void updatePreferences(Preferences preferences) {
-		String WEBSERVICE_ENDPOINT_VALUE = preferences.get(WEBSERVICE_ENDPOINT_PARAMETER, "");
-	}
-	
-	@Override
-	public String getPreferencesAlternativeName() {
-		return "BioModels Webservice Endpoint";
 	}
 	
 }

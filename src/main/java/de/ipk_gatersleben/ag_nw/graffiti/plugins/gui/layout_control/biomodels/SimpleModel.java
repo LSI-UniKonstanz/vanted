@@ -33,7 +33,7 @@ public class SimpleModel
     private String publicationId;
     private List<String> authors;
     private List<String> encoders;
-    private Date lastModificationDate;
+    private String lastModificationDate;
 
 
     /**
@@ -69,8 +69,8 @@ public class SimpleModel
 
         try
         {
-            long unix_seconds = Long.parseLong(lastModificationDate);
-            this.lastModificationDate = new Date(unix_seconds);
+            lastModificationDate = lastModificationDate.replace("Z","");
+            this.lastModificationDate = lastModificationDate.replace("T", " ");
         }
         catch (Exception e)
         {
@@ -236,11 +236,7 @@ public class SimpleModel
             str.append("\t- ").append(encoder).append("\n");
         }
         str.append("Publication: ").append(this.publicationId).append("\n");
-        str.append("Authors:\n");
-        for (String author: this.authors)
-        {
-            str.append("\t- ").append(author).append("\n");
-        }
+        str.append("Submitter: ").append(this.authors.get(0));
         str.append("Last modified: ").append(this.getLastModificationDateStr()).append("\n");
 
         return str.toString();
@@ -278,30 +274,10 @@ public class SimpleModel
 
 
     /**
-     * Get the date of last modification
-     * @return date of last modification
-     */
-    public Date getLastModificationDate()
-    {
-        return this.lastModificationDate;
-    }
-
-    /**
      * Get the date of last modification, in a human readable form.
      * @return date of last modification
      */
-    public String getLastModificationDateStr()
-    {
-        String date = null;
-        SimpleDateFormat humanDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");   // set date format
-        humanDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));   // set timezone to UTC
-        if (null != this.lastModificationDate)
-        {
-            date = humanDateFormat.format(this.lastModificationDate);
-        }
-
-        return date;
-    }
+    public String getLastModificationDateStr() { return this.lastModificationDate; }
 
     /**
      * Get submission identifier

@@ -56,17 +56,10 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 	}
 	
 	private static String getTooltipText(SimpleModel text) {
-		StringBuilder str = new StringBuilder();
-		
-		str.append("<html>" + "Identifier: ").append(text.getId()).append("<br />").append("\n");
-		str.append("Name: ").append(text.getName()).append("<br />").append("\n");
-		str.append("Publication: ").append(text.getPublicationId()).append("<br />").append("\n");
-		str.append("Authors:\n");
-		for (String author : text.getAuthors()) {
-			str.append("\t- ").append(author).append("\n");
-		}
-		str.append("<br />" + "Last modified: ").append(text.getLastModificationDateStr()).append("\n");
-		
-		return str.toString();
+
+		return "<html>" + "Identifier: " + text.getId() + "<br />" + "\n" +
+				"Name: " + text.getName() + "<br />" + "\n" +
+				"Submitter: " + text.getAuthors().get(0) + "<br />" + "\n" +
+				"Last modified: " + text.getLastModificationDateStr() + "\n";
 	}
 }

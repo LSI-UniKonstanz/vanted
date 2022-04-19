@@ -318,7 +318,6 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 					TabBiomodels.resultForSBML(model,BioModelsRestAPI.getModelSBMLById(model.getSubmissionId()));
 					adapter.notifySBML();
 				} catch (JSONException ignored){
-
 				}
 			}
 		}
