@@ -30,9 +30,6 @@ public class BiomodelsAccessAdapter {
 	 * 
 	 * @author matthiak
 	 */
-
-	//ENSEMBL
-		//changelog .3
 	public enum QueryType {
 		CHEBI("ChEBI"), NAME("Model Name"), TAXONOMY("Taxonomy"), PERSON("Person"),
 		PUBLICATION("Publication (Name/Id)"), GO("GO Term"), UNIPROT("Uniprot Ids"),
