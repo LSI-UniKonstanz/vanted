@@ -3,12 +3,12 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
-import java.util.*;
-import java.util.prefs.Preferences;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import org.apache.log4j.Logger;
-import org.graffiti.options.PreferencesInterface;
-import org.graffiti.plugin.parameter.Parameter;
-import org.graffiti.plugin.parameter.StringParameter;
 
 
 /**
@@ -21,7 +21,7 @@ public class BiomodelsAccessAdapter {
 	/**
 	 * 
 	 */
-	private static final String WEBSERVICE_ENDPOINT_PARAMETER = "Alternative Webservice Endpoint";
+//	private static final String WEBSERVICE_ENDPOINT_PARAMETER = "Alternative Webservice Endpoint";
 
 	private static final Logger logger = Logger.getLogger(BiomodelsAccessAdapter.class);
 
@@ -31,10 +31,10 @@ public class BiomodelsAccessAdapter {
 	 * @author matthiak
 	 */
 	public enum QueryType {
-		CHEBI("ChEBI"), NAME("Model Name"), TAXONOMY("Taxonomy"), PERSON("Person"),
-		PUBLICATION("Publication (Name/Id)"), GO("GO Term"), UNIPROT("Uniprot Ids"),
-		BIOMODELID("Biomodels Id"), PUBMED("PUBMED"), DESCRIPTION("Description"),
-		DISEASE("Disease"), ENSEMBL("Ensembl");
+		CHEBI("CHEBI"), NAME("Model Name"), TAXONOMY("TAXONOMY"), PERSON("Person"),
+		PUBLICATION("Publication (Name/ID)"), GO("GO Term"), UNIPROT("UNIPROT IDs"),
+		BIOMODELID("BioModels ID"), PUBMED("PUBMED"), DESCRIPTION("Description"),
+		DISEASE("Disease"), ENSEMBL("ENSEMBL");
 		
 		private final String name;
 		

@@ -1,14 +1,19 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.*;
-
-
+/**
+ * TODO
+ * @author TODO
+ * @since 2.8.3 
+ *
+ */
 public class BioModelsRestAPI {
-
-
 
     public BioModelsRestAPI() {
     }

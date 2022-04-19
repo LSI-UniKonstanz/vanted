@@ -20,10 +20,7 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class SimpleModel
 {
