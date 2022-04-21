@@ -20,16 +20,17 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 
-import java.util.List;
+/**
+ * Simple Model of a model from the Biomodels database, used to collect important meta-data for later
+ * use.
+ * @vanted.revision 2.8.3
+ */
 
 public class SimpleModel
 {
     private final String id;
-    private String submissionId;
     private final String name;
-    private String publicationId;
-    private List<String> authors;
-    private List<String> encoders;
+    private String submitter;
     private String lastModificationDate;
 
 
@@ -48,21 +49,15 @@ public class SimpleModel
     /**
      * Constructor (builds a complete object).
      * @param id model identifier (e.g. BIOMD0000000300)
-     * @param submissionId submission identifier (e.g. MODEL1008170000)
      * @param name model name
-     * @param encoders list of the model's encoders
-     * @param publicationId identifier of the associated publication (PMID, DOI or URL)
-     * @param authors list of the publication's authors
+     * @param submitter name of the submitter
      * @param lastModificationDate date of last modification (expressed according to ISO 8601, e.g. "2012-01-19T19:22:15+00:00")
      */
-    public SimpleModel(String id, String submissionId, String name, List<String> encoders, String publicationId, List<String> authors, String lastModificationDate)
+    public SimpleModel(String id, String name, String submitter, String lastModificationDate)
     {
         this.id = id;
-        this.submissionId = submissionId;
         this.name = name;
-        this.encoders = encoders;
-        this.publicationId = publicationId;
-        this.authors = authors;
+        this.submitter = submitter;
 
         try
         {
@@ -89,7 +84,6 @@ public class SimpleModel
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((lastModificationDate == null) ? 0 : lastModificationDate.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((publicationId == null) ? 0 : publicationId.hashCode());
 
         return result;
     }
@@ -101,117 +95,44 @@ public class SimpleModel
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
 
-        if (getClass() != obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
 
         SimpleModel other = (SimpleModel) obj;
-        if (id == null)
-        {
-            if (other.id != null)
-            {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        }
-        else if (!id.equals(other.id))
-        {
+        } else if (!id.equals(other.id)) {
             return false;
         }
 
-        if (lastModificationDate == null)
-        {
-            if (other.lastModificationDate != null)
-            {
+        if (lastModificationDate == null) {
+            if (other.lastModificationDate != null) {
                 return false;
             }
-        }
-        else if (!lastModificationDate.equals(other.lastModificationDate))
-        {
+        } else if (!lastModificationDate.equals(other.lastModificationDate)) {
             return false;
         }
 
-        if (name == null)
-        {
-            if (other.name != null)
-            {
+        if (name == null) {
+            if (other.name != null) {
                 return false;
             }
-        }
-        else if (!name.equals(other.name))
-        {
+        } else if (!name.equals(other.name)) {
             return false;
         }
-
-        if (publicationId == null)
-        {
-            if (other.publicationId != null)
-            {
-                return false;
-            }
-        }
-        else if (!publicationId.equals(other.publicationId))
-        {
-            return false;
-        }
-
-        if (((null == authors) && (null != other.authors)) || ((null != authors) && (null == other.authors)))
-        {
-            return false;
-        }
-        else if (null != authors)
-        {
-            if (authors.size() != other.authors.size())
-            {
-                return false;
-            }
-            else
-            {
-                for (int i=0; i<authors.size(); ++i)
-                {
-                    if (!authors.get(i).equals(other.authors.get(i)))
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        if (((null == encoders) && (null != other.encoders)) || ((null != encoders) && (null == other.encoders)))
-        {
-            return false;
-        }
-        else if (null != encoders)
-        {
-            if (encoders.size() != other.encoders.size())
-            {
-                return false;
-            }
-            else
-            {
-                for (int i=0; i<encoders.size(); ++i)
-                {
-                    if (!encoders.get(i).equals(other.encoders.get(i)))
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
+        return false;
     }
 
 
@@ -222,21 +143,12 @@ public class SimpleModel
     @Override
     public String toString()
     {
-        StringBuilder str = new StringBuilder();
 
-        str.append("Identifier: ").append(this.id).append("\n");
-        str.append("Submission identifier: ").append(this.submissionId).append("\n");
-        str.append("Name: ").append(this.name).append("\n");
-        str.append("Encoders:\n");
-        for (String encoder: this.encoders)
-        {
-            str.append("\t- ").append(encoder).append("\n");
-        }
-        str.append("Publication: ").append(this.publicationId).append("\n");
-        str.append("Submitter: ").append(this.authors.get(0));
-        str.append("Last modified: ").append(this.getLastModificationDateStr()).append("\n");
-
-        return str.toString();
+        return "Identifier: " + this.id + "\n" +
+                "Name: " + this.name + "\n" +
+                "Encoders:\n" +
+                "Submitter: " + this.submitter +
+                "Last modified: " + this.getLastModificationDateStr() + "\n";
     }
 
 
@@ -261,48 +173,19 @@ public class SimpleModel
 
 
     /**
-     * Get the publication identifier
-     * @return publication identifier
-     */
-    public String getPublicationId()
-    {
-        return this.publicationId;
-    }
-
-
-    /**
      * Get the date of last modification, in a human readable form.
      * @return date of last modification
      */
     public String getLastModificationDateStr() { return this.lastModificationDate; }
-
-    /**
-     * Get submission identifier
-     * @return the submissionId
-     */
-    public String getSubmissionId()
-    {
-        return this.submissionId;
-    }
 
 
     /**
      * Get names of the authors of the publication
      * @return the authors
      */
-    public List<String> getAuthors()
+    public String getSubmitter()
     {
-        return this.authors;
-    }
-
-
-    /**
-     * Get the names of the encoders of the model.
-     * @return the encoders
-     */
-    public List<String> getEncoders()
-    {
-        return this.encoders;
+        return this.submitter;
     }
 }
 

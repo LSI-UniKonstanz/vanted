@@ -19,7 +19,7 @@ import java.util.Objects;
  * This is the Biomodels tab panel.
  * 
  * @author matthiak
- * @vanted.revision 2.6.5
+ * @vanted.revision 2.8.3
  */
 public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsLoaderCallback, KeyListener {
 	
@@ -311,14 +311,9 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 			logger.debug("calling adapter for sbml model");
 
 			try{
-				TabBiomodels.resultForSBML(model,BioModelsRestAPI.getModelSBMLById(model.getId()));
+				TabBiomodels.resultForSBML(model,RestApiBiomodels.getModelSBMLById(model.getId()));
 				adapter.notifySBML();
-			} catch (JSONException e){
-				try {
-					TabBiomodels.resultForSBML(model,BioModelsRestAPI.getModelSBMLById(model.getSubmissionId()));
-					adapter.notifySBML();
-				} catch (JSONException ignored){
-				}
+			} catch (JSONException ignored){
 			}
 		}
 		public void cancelRequest() {

@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * @author matthiak
+ * @vanted.revision 2.8.3
  */
 public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> {
 	
@@ -42,13 +43,9 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 			entry.setBackground(new Color(200, 255, 200));
 		else
 			entry.setBackground(Color.WHITE);
-		if (!Objects.equals(value.getId(), "")){
-			entry.setText(
-					"<html>" + "<strong>Model Name: " + value.getName() + "</strong><br/>" + "Model ID: " + value.getId());
-		} else {
-			entry.setText(
-					"<html>" + "<strong>Model Name: " + value.getName() + "</strong><br/>" + "Model ID: " + value.getSubmissionId());
-		}
+
+			entry.setText("<html>" + "<strong>Model Name: " + value.getName()
+					+ "</strong><br/>" + "Model ID: " + value.getId());
 
 		entry.setToolTipText(getTooltipText(value));
 		
@@ -59,7 +56,7 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 
 		return "<html>" + "Identifier: " + text.getId() + "<br />" + "\n" +
 				"Name: " + text.getName() + "<br />" + "\n" +
-				"Submitter: " + text.getAuthors().get(0) + "<br />" + "\n" +
+				"Submitter: " + text.getSubmitter() + "<br />" + "\n" +
 				"Last modified: " + text.getLastModificationDateStr() + "\n";
 	}
 }
