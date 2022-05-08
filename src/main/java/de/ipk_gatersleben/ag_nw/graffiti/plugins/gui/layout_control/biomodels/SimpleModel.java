@@ -146,8 +146,7 @@ public class SimpleModel
 
         return "Identifier: " + this.id + "\n" +
                 "Name: " + this.name + "\n" +
-                "Encoders:\n" +
-                "Submitter: " + this.submitter +
+                "Submitter: " + this.submitter + "\n" +
                 "Last modified: " + this.getLastModificationDateStr() + "\n";
     }
 

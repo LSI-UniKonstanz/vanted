@@ -8,6 +8,8 @@ import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
+import org.junit.Ignore;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -33,10 +35,34 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	JScrollPane scrollpane;
 	
 	JTextField queryField;
+
+	JTextField queryField2;
+
+	JTextField queryField3;
+
+	JTextField queryField4;
+
+	JTextField queryField5;
 	
-	JButton searchButton;
-	
+	JButton extend;
+
+	JButton extend2;
+
+	JButton extend3;
+
+	JButton extend4;
+
+	JButton minus;
+
 	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType;
+
+	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType2;
+
+	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType3;
+
+	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType4;
+
+	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType5;
 	
 	JList<SimpleModel> listResults;
 	
@@ -48,10 +74,13 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	
 	CallerThreadForSimpleModel callerThreadForSimpleModel;
 
+	JScrollPane resultscrollpane;
+
 	
 	private JLabel labelServiceAvailable;
 	private boolean isServiceAvailable;
 	private String connectivityString;
+
 	
 	/**
 	 * Populates the Biomodels tab panel.
@@ -117,66 +146,105 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	 */
 	private void initGUI() {
 		TableLayoutConstraints constraint;
-		
+
 		setLayout(new BorderLayout());
-		
+
 		rootpanel = new JPanel();
-		
+
 		scrollpane = new JScrollPane(rootpanel);
-		
+
 		rootpanel.setLayout(new TableLayout(new double[][] {
 				// columns
 				{ 5, TableLayout.PREFERRED, 5, TableLayout.FILL, 5, TableLayout.PREFERRED },
 				// rows
-				{ 5, TableLayout.PREFERRED, 5, TableLayout.PREFERRED, 5, TableLayout.FILL,4} }));
-		
+				{ 5, TableLayout.PREFERRED, 5, TableLayout.PREFERRED,TableLayout.PREFERRED
+						,TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, 5, TableLayout.FILL} }));
+
 		rootpanel.add(new JLabel("Availability: "), "1,1");
+
 		labelServiceAvailable = new JLabel("availability");
-		
+
 		rootpanel.add(labelServiceAvailable, "3,1");
-		
+
 		BiomodelsAccessAdapter.QueryType[] items = BiomodelsAccessAdapter.QueryType.values();
 		comboQueryType = new JComboBox<>(items);
-		
+
 		rootpanel.add(comboQueryType, "1,3");
-		
+
 		queryField = new JTextField(20);
 		queryField.addKeyListener(this);
 		rootpanel.add(queryField, "3,3");
-		
-		searchButton = new JButton();
-		searchButton.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("org/images/lupe.png"))));
-		searchButton.addActionListener(this);
-		rootpanel.add(searchButton, "5,3");
-		
+
+		queryField2 = new JTextField(20);
+		queryField2.addKeyListener(this);
+
+		queryField3 = new JTextField(20);
+		queryField3.addKeyListener(this);
+
+		queryField4 = new JTextField(20);
+		queryField4.addKeyListener(this);
+
+		queryField5 = new JTextField(20);
+		queryField5.addKeyListener(this);
+
+		extend = new JButton();
+		extend.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("org/images/icons8-plus-15.png"))));
+		extend.addActionListener(this);
+		rootpanel.add(extend, "5,3");
+
+		extend2 = new JButton();
+		extend2.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("org/images/icons8-plus-15.png"))));
+		extend2.addActionListener(this);
+
+		extend3 = new JButton();
+		extend3.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("org/images/icons8-plus-15.png"))));
+		extend3.addActionListener(this);
+
+		extend4 = new JButton();
+		extend4.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("org/images/icons8-plus-15.png"))));
+		extend4.addActionListener(this);
+
+		minus = new JButton();
+		minus.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("org/images/icons8-minus-16.png"))));
+		minus.addActionListener(this);
+
 		listResults = new JList<>();
 		listResults.addMouseListener(new ListMouseAdapapter());
 		listResults.setCellRenderer(new ListBiomodelsCellRenderer());
-		
-		JScrollPane resultscrollpane = new JScrollPane(listResults);
-		constraint = new TableLayoutConstraints(1, 5, 5, 5, TableLayoutConstraints.CENTER,
+
+		resultscrollpane = new JScrollPane(listResults);
+		constraint = new TableLayoutConstraints(1, 9, 5, 9, TableLayoutConstraints.CENTER,
 				TableLayoutConstraints.CENTER);
 		rootpanel.add(resultscrollpane, constraint);
-		
+
+
 		loadSelectedModels = new JButton("Load Models");
 		loadSelectedModels.addActionListener(this);
 		rootpanel.add(loadSelectedModels, "6,3");
-		
+
 		add(rootpanel, BorderLayout.CENTER);
-		
+
 		listResults.setEnabled(false);
 		loadSelectedModels.setEnabled(false);
 	}
-	
-	private void triggerQuery(String query) {
-		BiomodelsAccessAdapter.QueryType selItem = (BiomodelsAccessAdapter.QueryType) comboQueryType.getSelectedItem();
-		
-		if (query == null || query.isEmpty())
+
+	private void triggerQuery(String[] query) {
+		BiomodelsAccessAdapter.QueryType[] selItem = new BiomodelsAccessAdapter.QueryType[5];
+		selItem[0] = (BiomodelsAccessAdapter.QueryType) comboQueryType.getSelectedItem();
+		try{
+			selItem[1] = (BiomodelsAccessAdapter.QueryType) comboQueryType2.getSelectedItem();
+			selItem[2] = (BiomodelsAccessAdapter.QueryType) comboQueryType3.getSelectedItem();
+			selItem[3] = (BiomodelsAccessAdapter.QueryType) comboQueryType4.getSelectedItem();
+			selItem[4] = (BiomodelsAccessAdapter.QueryType) comboQueryType5.getSelectedItem();
+
+		}catch (Exception ignored) { }
+
+		if (query == null)
 			return;
-		
+
 		if (callerThreadForSimpleModel != null && callerThreadForSimpleModel.isAlive())
 			callerThreadForSimpleModel.cancelRequest();
-		
+
 		BackgroundTaskHelper.issueSimpleTask("BioModels Query", "Processing results...",
 				new CallerThreadForSimpleModel(selItem, query), null);
 	}
@@ -196,9 +264,9 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 			logger.debug("no results");
 			simpleModel = new ArrayList<>();
 		}
-		if (SwingUtilities.isEventDispatchThread())
+		if (SwingUtilities.isEventDispatchThread()) {
 			listResults.setListData(simpleModel.toArray(new SimpleModel[0]));
-		else {
+		} else {
 			final List<SimpleModel> simpleModelSwingThread = simpleModel;
 			SwingUtilities.invokeLater(() -> listResults.setListData(
 					simpleModelSwingThread.toArray(new SimpleModel[0])));
@@ -218,25 +286,90 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		BiomodelsAccessAdapter.QueryType[] items = BiomodelsAccessAdapter.QueryType.values();
+
 		if (e.getSource().equals(loadSelectedModels)) {
-			
+
 			List<SimpleModel> selectedValuesList = listResults.getSelectedValuesList();
 			if (selectedValuesList == null || selectedValuesList.isEmpty())
 				return;
-			
+
 			listResults.setEnabled(false);
 			loadSelectedModels.setEnabled(false);
 			for (SimpleModel model : selectedValuesList)
 				triggerLoadSBML(model);
 		}
-		if (e.getSource().equals(searchButton)) {
-			listResults.setEnabled(false);
-			loadSelectedModels.setEnabled(false);
-			triggerQuery(queryField.getText().trim());
+
+
+		if (e.getSource().equals(extend)) {
+			comboQueryType2 = new JComboBox<>(items);
+			rootpanel.add(comboQueryType2, "1,4");
+
+			rootpanel.add(queryField2, "3,4");
+
+			rootpanel.add(extend2, "5,4");
+
+			extend.removeActionListener(this);
+			rootpanel.remove(extend);
+
+			rootpanel.repaint();
 		}
-		
+
+		if (e.getSource().equals(extend2)){
+			comboQueryType3 = new JComboBox<>(items);
+			rootpanel.add(comboQueryType3, "1,5");
+
+			rootpanel.add(queryField3, "3,5");
+
+			extend2.removeActionListener(this);
+			rootpanel.remove(extend2);
+
+			rootpanel.add(extend3, "5,5");
+
+			rootpanel.repaint();
+
+		}
+
+		if (e.getSource().equals(extend3)){
+			comboQueryType4 = new JComboBox<>(items);
+			rootpanel.add(comboQueryType4, "1,6");
+
+			rootpanel.add(queryField4, "3,6");
+
+			extend3.removeActionListener(this);
+			rootpanel.remove(extend3);
+
+			rootpanel.add(extend4, "5,6");
+
+			rootpanel.repaint();
+
+
+		}
+
+		if (e.getSource().equals(extend4)){
+			comboQueryType5 = new JComboBox<>(items);
+			rootpanel.add(comboQueryType5, "1,7");
+
+			rootpanel.add(queryField5, "3,7");
+
+			extend4.removeActionListener(this);
+			rootpanel.remove(extend4);
+
+			//TODO: Minus Button implementieren
+			//rootpanel.add(minus,"5,7");
+
+			rootpanel.repaint();
+		}
+		if (e.getSource().equals(minus)){
+			rootpanel.remove(comboQueryType5);
+			rootpanel.remove(queryField5);
+			rootpanel.remove(minus);
+			rootpanel.revalidate();
+			rootpanel.repaint();
+		}
 	}
-	
+
+
 	/*
 	 * for input field
 	 */
@@ -255,7 +388,22 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			listResults.setEnabled(false);
 			loadSelectedModels.setEnabled(false);
-			triggerQuery(queryField.getText().trim());
+			//TODO: important
+			String[] querys = new String[5];
+			querys[0] = queryField.getText().trim();
+			try{
+				querys[1] = queryField2.getText().trim();
+			} catch (Exception ignored){ }
+			try {
+				querys[2] = queryField3.getText().trim();
+			} catch (Exception ignored) { }
+			try {
+				querys[3] = queryField4.getText().trim();
+			} catch (Exception ignored) { }
+			try {
+				querys[4] = queryField5.getText().trim();
+			} catch (Exception ignored) { }
+			triggerQuery(querys);
 		}
 	}
 	
@@ -274,17 +422,16 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	}
 	
 	class CallerThreadForSimpleModel extends Thread {
-		final BiomodelsAccessAdapter.QueryType selItem;
-		final String query;
-		
+		final BiomodelsAccessAdapter.QueryType[] selItem;
+		final String[] query;
 		/**
 		 * 
 		 */
-		public CallerThreadForSimpleModel(BiomodelsAccessAdapter.QueryType selItem, String query) {
+		public CallerThreadForSimpleModel(BiomodelsAccessAdapter.QueryType[] selItem, String[] query) {
 			this.selItem = selItem;
 			this.query = query;
 		}
-		
+
 		@Override
 		public void run() {
 				logger.debug("calling adapter for query");
@@ -295,6 +442,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 			adapter.setAbort(true);
 		}
 	}
+
 	
 	class CallerThreadForSBMLModel extends Thread {
 		final SimpleModel model;

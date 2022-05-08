@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * API for establishing a connection to the Biomodels database with the functionality of retrieving Simple Models
- * and SBML Models
+ * and SBML Models.
  * @author niklas-groene
  * @since 2.8.3
  *
@@ -44,8 +44,8 @@ public class RestApiBiomodels
             //Request setup
             connection.setRequestMethod("GET");
             connection.setRequestProperty("accept", "application/"+format);
-            connection.setConnectTimeout(5000); //in ms
-            connection.setReadTimeout(5000); //in ms
+            connection.setConnectTimeout(10000); //in ms
+            connection.setReadTimeout(10000); //in ms
             if (filename != null)
             {
                 connection.setRequestProperty("filename",filename);
@@ -130,7 +130,11 @@ public class RestApiBiomodels
         call.setFormat("octet-stream");
         return call.fetchData();
     }
-
+    /**
+     * Calls to the database, for a given HTTP request and creates a Simple Model of all models found in the Database.
+     * @param searchParameter part of the HTTP request for searching the right Models
+     * @return Returns a List of all Simple Models associated with the request.
+     */
     public static List<SimpleModel> searchForModels(String searchParameter){
         RestApiBiomodels call = new RestApiBiomodels();
         call.setFormat("json");
