@@ -42,6 +42,11 @@ public class BiomodelsAccessAdapter {
 			return name;
 		}
 	}
+
+	public enum QueryAdvanced {
+		AND, OR, NOT
+
+	}
 	
 	List<BiomodelsLoaderCallback> listeners;
 	
@@ -78,7 +83,7 @@ public class BiomodelsAccessAdapter {
 				}
 				switch (type[i]) {
 					case NAME:
-						queryRequestString.append("name%3A%22").append(query[i]).append("%22");
+						queryRequestString.append("name%3A%22").append("*").append(query[i]).append("*").append("%22");
 						break;
 					case TAXONOMY:
 						String cleanedTAXONOMY = query[i].toUpperCase().replaceAll("TAXONOMY:","");
@@ -104,7 +109,8 @@ public class BiomodelsAccessAdapter {
 						queryRequestString.append("UNIPROT%3A").append(queryCleanedU);
 						break;
 					case BIOMODELID:
-						queryRequestString.append(query[i]).append(param);
+						String queriCleanedB = query[i].toUpperCase().replaceAll("BIOMD","");
+						queryRequestString.append("BIOMD*").append(queriCleanedB).append("*").append(param);
 						break;
 					case PUBMED:
 						queryRequestString.append("PUBMED%3A%22").append(query[i]).append("%22");

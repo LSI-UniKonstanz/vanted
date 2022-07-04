@@ -44,8 +44,8 @@ public class RestApiBiomodels
             //Request setup
             connection.setRequestMethod("GET");
             connection.setRequestProperty("accept", "application/"+format);
-            connection.setConnectTimeout(10000); //in ms
-            connection.setReadTimeout(10000); //in ms
+            connection.setConnectTimeout(100000); //in ms
+            connection.setReadTimeout(100000); //in ms
             if (filename != null)
             {
                 connection.setRequestProperty("filename",filename);
@@ -142,6 +142,7 @@ public class RestApiBiomodels
         String responds = call.fetchData();
         JSONObject data = new JSONObject(responds);
         int range = data.getInt("matches");
+        System.out.println(range);
         ArrayList<SimpleModel> simpleModels = new ArrayList<>();
         for (int i = 0; i < range; i+=100){
             if (i != 0)

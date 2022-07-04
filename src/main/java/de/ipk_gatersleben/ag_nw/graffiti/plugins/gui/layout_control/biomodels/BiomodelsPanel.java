@@ -63,6 +63,8 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType4;
 
 	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType5;
+
+	JComboBox<BiomodelsAccessAdapter.QueryAdvanced> comboQueryAdvanced;
 	
 	JList<SimpleModel> listResults;
 	
@@ -167,7 +169,9 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		rootpanel.add(labelServiceAvailable, "3,1");
 
 		BiomodelsAccessAdapter.QueryType[] items = BiomodelsAccessAdapter.QueryType.values();
+		BiomodelsAccessAdapter.QueryAdvanced[] items2 = BiomodelsAccessAdapter.QueryAdvanced.values();
 		comboQueryType = new JComboBox<>(items);
+		comboQueryAdvanced = new JComboBox<>(items2);
 
 		rootpanel.add(comboQueryType, "1,3");
 
@@ -304,6 +308,8 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 		if (e.getSource().equals(extend)) {
 			comboQueryType2 = new JComboBox<>(items);
 			rootpanel.add(comboQueryType2, "1,4");
+
+			//rootpanel.add(comboQueryAdvanced, "5,3");
 
 			rootpanel.add(queryField2, "3,4");
 
