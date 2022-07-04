@@ -91,7 +91,7 @@ public class CachedWebDownload {
 	}
 	
 	public static boolean isCacheURL(URL url) {
-		return (!url.toExternalForm().contains("http:/"));
+		return (!url.toExternalForm().contains("http"));
 	}
 	
 	public static String getFileIdFromUrl(String url) {

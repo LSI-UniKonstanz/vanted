@@ -50,7 +50,7 @@ public class RestService {
 	
 	/**
 	 * @param baseUrl
-	 *           Absoluter Pfad zu einer Webresource (Bsp.: "http://rest.kegg.jp/")
+	 *           Absoluter Pfad zu einer Webresource (Bsp.: "https://rest.kegg.jp/")
 	 */
 	public void setBaseUrl(String baseUrl) {
 		this.baseURL = baseUrl;
@@ -148,7 +148,7 @@ public class RestService {
 	 * sinnvoll.
 	 * 
 	 * @param baseUrl
-	 *           Absoluter Pfad zu einer Webresource (Bsp.: "http://rest.kegg.jp/")
+	 *           Absoluter Pfad zu einer Webresource (Bsp.: "https://rest.kegg.jp/")
 	 * @param mediaType
 	 *           MediaType der beim Download akzeptiert wird (Bsp.:
 	 *           MediaType.TEXT_PLAIN)
@@ -166,7 +166,7 @@ public class RestService {
 	 * Anfragen sinnvoll.
 	 * 
 	 * @param baseUrl
-	 *           Absoluter Pfad zu einer Webresource (Bsp.: "http://rest.kegg.jp/")
+	 *           Absoluter Pfad zu einer Webresource (Bsp.: "https://rest.kegg.jp/")
 	 * @param path
 	 *           Pfad ab der baseUrl (Bsp.: "list/" ). Kann auch l�nger als ein
 	 *           Verzeichnis sein.
