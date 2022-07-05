@@ -81,50 +81,49 @@ public class BiomodelsAccessAdapter {
 				if (i > 0){
 					queryRequestString.append(and);
 				}
+
+				String queryNoLetter = query[i].toUpperCase().replaceAll("[A-Z]*:*","");
 				switch (type[i]) {
 					case NAME:
 						queryRequestString.append("name%3A%22").append("*").append(query[i]).append("*").append("%22");
 						break;
 					case TAXONOMY:
 						String cleanedTAXONOMY = query[i].toUpperCase().replaceAll("TAXONOMY:","");
-						queryRequestString.append("TAXONOMY%3A").append(cleanedTAXONOMY);
+						queryRequestString.append("TAXONOMY%3A").append("*").append(cleanedTAXONOMY).append("*");
 						break;
 					case CHEBI:
-						String cleanedCHEBI = query[i].toUpperCase().replaceAll("CHEBI:","");
-						queryRequestString.append("CHEBI%3ACHEBI%3A").append(cleanedCHEBI);
+						queryRequestString.append("CHEBI%3ACHEBI%3A").append("*").append(queryNoLetter).append("*");
 						break;
 					case PERSON:
 						String cleaned = query[i].replaceAll(" ", "%20");
-						queryRequestString.append("publication_authors%3A%22").append(cleaned).append("%22");
+						queryRequestString.append("publication_authors%3A%22").append("*").append(cleaned).append("*").append("%22");
 						break;
 					case GO:
-						String queryCleaned = query[i].toUpperCase().replaceAll("GO:","");
-						queryRequestString.append("GO%3AGO%3A").append(queryCleaned);
+						queryRequestString.append("GO%3AGO%3A").append("*").append(queryNoLetter).append("*");
 						break;
 					case PUBLICATION:
-						queryRequestString.append("publication%3A(").append(query[i]).append(")");
+						queryRequestString.append("publication%3A(").append("*").append(query[i]).append("*").append(")");
 						break;
 					case UNIPROT:
 						String queryCleanedU = query[i].toUpperCase().replaceAll("UNIPROT:","");
-						queryRequestString.append("UNIPROT%3A").append(queryCleanedU);
+						queryRequestString.append("UNIPROT%3A*").append(queryCleanedU).append("*");
 						break;
 					case BIOMODELID:
-						String queriCleanedB = query[i].toUpperCase().replaceAll("BIOMD","");
-						queryRequestString.append("BIOMD*").append(queriCleanedB).append("*").append(param);
+						queryRequestString.append("BIOMD*").append(queryNoLetter).append("*").append(param);
 						break;
 					case PUBMED:
-						queryRequestString.append("PUBMED%3A%22").append(query[i]).append("%22");
+						queryRequestString.append("PUBMED%3A%22").append("*").append(query[i]).append("*").append("%22");
 						break;
 					case DESCRIPTION:
-						queryRequestString.append("description%3A%22").append(query[i]).append("%22");
+						queryRequestString.append("description%3A%22").append("*").append(query[i]).append("*").append("%22");
 						break;
 					case DISEASE:
 						String cleanedDisease = query[i].replaceAll(" ","%20");
-						queryRequestString.append("disease%3A%22").append(cleanedDisease).append("%22");
+						queryRequestString.append("disease%3A%22").append("*").append(cleanedDisease).append("*").append("%22");
 						break;
 					case ENSEMBL:
 						String cleanedEn = query[i].toUpperCase().replaceAll("ENSEMBL","");
-						queryRequestString.append("ENSEMBL%3A").append(cleanedEn);
+						queryRequestString.append("ENSEMBL%3A*").append(cleanedEn).append("*");
 						break;
 					default:
 				}
