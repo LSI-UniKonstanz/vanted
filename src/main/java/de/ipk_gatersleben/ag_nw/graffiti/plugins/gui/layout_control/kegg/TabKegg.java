@@ -87,7 +87,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 	Logger logger = Logger.getLogger(TabKegg.class);
 	private static JCheckBox prettifyLabels = null;
 	
-	private static final String restURL = "http://rest.kegg.jp/";
+	private static final String restURL = "https://rest.kegg.jp/";
 	private static final String initialUserInfo = "Please download the list of organisms!";
 	
 	Client client;

@@ -40,9 +40,9 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 	
 	static Logger logger = Logger.getLogger(KeggAPIServiceHelper.class);
 	
-	static String URL_REST_GET_DB_ENTRY = "http://rest.kegg.jp/get/";
+	static String URL_REST_GET_DB_ENTRY = "https://rest.kegg.jp/get/";
 	// translation URL to get KO entries from other IDs
-	static String URL_REST_LINK_ID = "http://rest.kegg.jp/link/ko/";
+	static String URL_REST_LINK_ID = "https://rest.kegg.jp/link/ko/";
 	
 	static int MAX_QUERY_SIZE = 10;
 	
@@ -205,7 +205,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 	
 	/**
 	 * Retrieves results from KEGG REST service, using the link functionality see:
-	 * http://www.kegg.jp/kegg/rest/keggapi.html [Linked entries]
+	 * https://www.kegg.jp/kegg/rest/keggapi.html [Linked entries]
 	 * The result set will be KO entries. The source must be valid identifiers: *
 	 * 
 	 * @author matthiak
