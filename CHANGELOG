@@ -2,8 +2,13 @@
 
 <h4>Vanted v2.8.3 release (05/07/2022)<h4>
 <ul>
-<li>REST implementation of the Biomodels Database</li>
-<li>New multi-parameter queries for Biomodels Database</li>
+    <li>Update for Biomodels Database:</br>
+    <ul>
+        <li>REST implementation</li>
+        <li>New multi-parameter queries</li>
+        <li>New part-string matching for more search results</li>
+    <ul>
+</li>
 <li>Fix redirecting for KEGG Database</li>
 </ul>
 
