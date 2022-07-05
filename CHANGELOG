@@ -2,7 +2,7 @@
 
 <h4>Vanted v2.8.3 release (05/07/2022)<h4>
 <ul>
-    <li>Update for Biomodels Database:</br>
+<li>Update for Biomodels Database:</br>
     <ul>
         <li>REST implementation</li>
         <li>New multi-parameter queries</li>
