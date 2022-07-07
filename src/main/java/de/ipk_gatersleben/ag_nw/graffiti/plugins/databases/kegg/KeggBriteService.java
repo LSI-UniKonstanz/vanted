@@ -32,7 +32,7 @@ public class KeggBriteService {
 	
 	static String KEGG_CACHE_DIR = "keggcache";
 	
-	static String URL_REST_BRITE = "http://rest.kegg.jp/get/br:";
+	static String URL_REST_BRITE = "https://rest.kegg.jp/get/br:";
 	
 	static KeggBriteService instance;
 	

@@ -1,5 +1,17 @@
 <h3>Changelog</h3>
 
+<h4>Vanted v2.8.3 release (07/07/2022)<h4>
+<ul>
+<li>Update for Biomodels Database:</br>
+    <ul>
+        <li>REST implementation</li>
+        <li>New multi-parameter queries</li>
+        <li>New part-string matching for more search results</li>
+    <ul>
+</li>
+<li>Fix redirecting for KEGG Database</li>
+</ul>
+
 <h4>VANTED v2.8.2 release (03/01/2022)</h4>
 <ul>
 <li>Fix Log4j vulnerability</li>
