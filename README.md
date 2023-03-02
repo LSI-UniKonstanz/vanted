@@ -23,8 +23,19 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### Vanted v2.8.3 release (07/07/2022) ###
+    Update for Biomodels Database:
+        REST implementation
+        New multi-parameter queries
+        New part-string matching for more search results
+    Fix redirecting for KEGG Database
+
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.3).
+
 ### VANTED v2.8.2 release (03/01/2022) ###
     Fix Log4j vulnerability
+    
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.2).
 
 ### VANTED v2.8.1 release (14/05/2021) ###
     Bugfixes and internal improvements: Algorithms
