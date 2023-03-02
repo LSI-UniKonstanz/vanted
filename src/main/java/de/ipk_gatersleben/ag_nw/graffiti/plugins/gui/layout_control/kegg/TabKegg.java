@@ -436,10 +436,9 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 							pathwayRootNode.removeAllChildren();
 							pathwayRootNode.setUserObject("Pathways");
 							while (true) {
-								if (response.length() <= 1 || response.indexOf(":") == -1)
+								if (response.length() <= 1)
 									break;
 								String[] tmp = new String[2];
-								response = response.substring(response.indexOf(":") + 1);
 								tmp[0] = response.substring(0, response.indexOf("\t"));
 								response = response.substring(response.indexOf("\t") + 1);
 								if (response.indexOf("\n") == -1) {
