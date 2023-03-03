@@ -1,5 +1,10 @@
 <h3>Changelog</h3>
 
+<h4>Vanted v2.8.4 release (03/03/2023)<h4>
+<ul>
+<li>Update list connection in KEGG API, as per Release 104</li>
+</ul>
+
 <h4>Vanted v2.8.3 release (07/07/2022)<h4>
 <ul>
 <li>Update for Biomodels Database:</br>

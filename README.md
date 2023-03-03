@@ -23,6 +23,11 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### Vanted v2.8.4 release (03/03/2023) ###
+    Update list connection in KEGG API, as per Release 104
+
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.4).
+
 ### Vanted v2.8.3 release (07/07/2022) ###
     Update for Biomodels Database:
         REST implementation
