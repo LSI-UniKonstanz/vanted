@@ -16,6 +16,7 @@ import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -227,7 +228,8 @@ public class OptionsDialog extends JDialog implements ActionListener, TreeSelect
 		
 		for (Class<? extends PreferencesInterface> preferencesClass : preferencingClasses) {
 			try {
-				PreferencesInterface instance = (PreferencesInterface) preferencesClass.newInstance();
+				PreferencesInterface instance = 
+						(PreferencesInterface) preferencesClass.getDeclaredConstructor().newInstance();
 				List<Parameter> defaultParameters = instance.getDefaultParameters();
 				if (defaultParameters == null)
 					continue;
@@ -277,6 +279,14 @@ public class OptionsDialog extends JDialog implements ActionListener, TreeSelect
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
 				e.printStackTrace();
 			}
 		}

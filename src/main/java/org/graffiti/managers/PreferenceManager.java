@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -84,11 +85,20 @@ public class PreferenceManager implements PluginManagerListener {
 	public void addPreferencingClass(Class<? extends PreferencesInterface> preferencingClass) {
 		logger.debug("checking general preferencing class '" + preferencingClass.getName() + "'");
 		try {
-			PreferencesInterface piClass = (PreferencesInterface) preferencingClass.newInstance();
+			PreferencesInterface piClass = 
+					(PreferencesInterface) preferencingClass.getDeclaredConstructor().newInstance();
 			checkAddAndSetClassesPreferences(piClass);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
 			e.printStackTrace();
 		}
 	}
@@ -125,12 +135,18 @@ public class PreferenceManager implements PluginManagerListener {
 					if (curInterface.getName().equals(PreferencesInterface.class.getName())) {
 						try {
 							
-							Object viewobject = forName.newInstance();
+							Object viewobject = forName.getDeclaredConstructor().newInstance();
 							checkAddAndSetClassesPreferences((PreferencesInterface) viewobject);
 							
 						} catch (InstantiationException e) {
 							e.printStackTrace();
 						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							e.printStackTrace();
+						} catch (NoSuchMethodException e) {
 							e.printStackTrace();
 						}
 					}
@@ -164,12 +180,21 @@ public class PreferenceManager implements PluginManagerListener {
 				for (Class<? extends AttributeComponent> attrComponent : editorPlugin.getAttributeComponents()
 						.values()) {
 					try {
-						AttributeComponent attrCompInstance = (AttributeComponent) attrComponent.newInstance();
+						AttributeComponent attrCompInstance = 
+								(AttributeComponent) attrComponent.getDeclaredConstructor().newInstance();
 						if (attrCompInstance instanceof PreferencesInterface)
 							checkAddAndSetClassesPreferences((PreferencesInterface) attrCompInstance);
 					} catch (InstantiationException e) {
 						e.printStackTrace();
 					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (SecurityException e) {
 						e.printStackTrace();
 					}
 				}
@@ -272,12 +297,18 @@ public class PreferenceManager implements PluginManagerListener {
 	 */
 	public static void updatePreferencesForClass(Class<? extends PreferencesInterface> clazz, Preferences preferences) {
 		try {
-			((PreferencesInterface) clazz.newInstance()).updatePreferences(preferences);
-		} catch (InstantiationException e) {
-			
+			((PreferencesInterface) clazz.getDeclaredConstructor().newInstance()).updatePreferences(preferences);
+		} catch (InstantiationException e) {			
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			
+		} catch (IllegalAccessException e) {			
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
 			e.printStackTrace();
 		}
 	}
