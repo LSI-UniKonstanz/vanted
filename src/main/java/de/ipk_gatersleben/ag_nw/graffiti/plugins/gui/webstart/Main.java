@@ -43,7 +43,6 @@ import org.vanted.osx.OpenFileAction;
 import org.vanted.updater.ScanForUpdate;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter;
 
 /**
  * Starts Vanted.
