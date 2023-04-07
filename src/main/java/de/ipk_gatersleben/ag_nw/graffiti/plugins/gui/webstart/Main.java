@@ -165,8 +165,9 @@ public class Main {
 	public static void startVantedExt(String[] args, String[] developerAddon) {
 		System.out.println("Welcome! About to start the application...");
 		
-
+		PreferenceManager.getInstance().addPreferencingClass(VantedPreferences.class);
 		
+		PreferenceManager.getInstance().addPreferencingClass(ScanForUpdate.class);		
 		ScanForUpdate.issueScan(false); // only check, if current date is after update-date
 		
 		if (SystemInfo.isMac()) {
