@@ -23,6 +23,12 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### Vanted v2.8.5 release (16/04/2023) ###
+    Update certificate, code signing JAR files
+    Fix regression concerning Vanted preferences
+
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.5).
+
 ### Vanted v2.8.4 release (03/03/2023) ###
     Update list connection in KEGG API, as per Release 104
 
@@ -39,7 +45,7 @@ You can download and install this version [here](http://kim25.wwwdns.kim.uni-kon
 
 ### VANTED v2.8.2 release (03/01/2022) ###
     Fix Log4j vulnerability
-    
+
 You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.2).
 
 ### VANTED v2.8.1 release (14/05/2021) ###
