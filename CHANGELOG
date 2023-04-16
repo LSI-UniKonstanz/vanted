@@ -1,5 +1,11 @@
 <h3>Changelog</h3>
 
+<h4>Vanted v2.8.5 release (16/04/2023)<h4>
+<ul>
+<li>Update certificate, code signing JAR files</li>
+<li>Fix regression concerning Vanted preferences</li>
+</ul>
+
 <h4>Vanted v2.8.4 release (03/03/2023)<h4>
 <ul>
 <li>Update list connection in KEGG API, as per Release 104</li>
