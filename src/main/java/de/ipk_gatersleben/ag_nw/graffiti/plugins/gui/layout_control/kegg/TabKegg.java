@@ -63,6 +63,8 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
+import org.graffiti.session.Session;
+import org.graffiti.session.SessionAdapter;
 import org.vanted.KeggAccess;
 
 import com.sun.jersey.api.client.Client;
@@ -86,6 +88,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 	
 	Logger logger = Logger.getLogger(TabKegg.class);
 	private static JCheckBox prettifyLabels = null;
+	private static JButton replaceLabels = null;
 	
 	private static final String restURL = "https://rest.kegg.jp/";
 	private static final String initialUserInfo = "Please download the list of organisms!";
@@ -215,8 +218,22 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		prettifyLabels.setOpaque(false);
 		prettifyLabels.setToolTipText(
 				"Replaces KEGG compound IDs with compound names from the KEGG database during pathway download.");
-		JButton replaceLabels = new JMButton("Modify Labels");
+		replaceLabels = new JMButton("Modify Labels");
 		replaceLabels.setOpaque(false);
+		replaceLabels.setEnabled(false);
+		MainFrame.getInstance().addSessionListener(new SessionAdapter() {
+			
+			@Override
+			public void sessionChanged(Session s) {
+				if (s== null || s.getGraph() == null) {
+					replaceLabels.setEnabled(false);
+					return;
+				}
+					
+				String referenceKegg = (String) AttributeHelper.getAttributeValue(s.getGraph(), "", "kegg_link", "", "");
+				replaceLabels.setEnabled(referenceKegg.startsWith("https://www.kegg.jp"));
+			}
+		});
 		replaceLabels.setToolTipText("Click to modify node labels of the shown KEGG pathway.");
 		replaceLabels.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -632,6 +649,8 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 							MainFrame.getInstance().showGraph(graph, null);
 							if (prettifyLabels.isSelected())
 								renameNodes(1);
+							
+							
 						}
 					});
 		}
@@ -958,7 +977,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 	public String getTabParentPath() {
 		return "Pathways";
 	}
-	
+
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
