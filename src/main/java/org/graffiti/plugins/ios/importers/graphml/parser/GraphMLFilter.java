@@ -467,7 +467,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 			
 			n.addAttribute(nodeAttributeCreator.getDefaultAttributes(), "");
 			AttributeHelper.setPosition(n, positionGen.getNextPosition());
-			AttributeHelper.setLabel(n, "");
+			AttributeHelper.setLabel(n, id); // id as default label
 			addDefaultAttributeValues(n, nodeAttributeCreator.getDefaults());
 			
 			// set current attributable to add attributes

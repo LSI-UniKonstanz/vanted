@@ -46,25 +46,14 @@ public class GraphMLReader extends AbstractInputSerializer implements InputSeria
 	
 	// ~ Methods ================================================================
 	
-	/*
-	 *
-	 */
 	public String[] getExtensions() {
 		return this.extensions;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "GraphML" /* , "GraphXML" */ };
 	}
 	
-	/*
-	 *
-	 */
 	@Override
 	public void read(InputStream in, Graph g) throws IOException {
 		this.graphmlParser.parse(in, g);
