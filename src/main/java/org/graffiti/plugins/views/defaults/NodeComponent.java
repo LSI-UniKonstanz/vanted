@@ -311,9 +311,8 @@ public class NodeComponent extends AbstractGraphElementComponent implements Node
 			n.removeAttribute(GRAPHICS);
 			AttributeHelper.setDefaultGraphicsAttribute(n, 100, 100);
 		}
-		Object obj = graphElement.getAttribute(GRAPHICS);
 		
-		NodeGraphicAttribute geAttr = (NodeGraphicAttribute) obj;
+		NodeGraphicAttribute geAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
 		
 		if (nodeAttr == null)
 			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
