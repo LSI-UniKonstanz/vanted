@@ -23,6 +23,12 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### Vanted v2.8.6 release (17/07/2023) ###
+    Update for Biomodels Database:
+        - Resolve issues replacing ID with name
+        - Modify Labels KEGG: disable for non-KEGG graphs
+    Improve GraphML import compatibility
+
 ### Vanted v2.8.5 release (16/04/2023) ###
     Update certificate, code signing JAR files
     Fix regression concerning Vanted preferences
