@@ -13,9 +13,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -25,6 +27,7 @@ import org.AttributeHelper;
 import org.ErrorMsg;
 import org.PositionGridGenerator;
 import org.graffiti.attributes.Attributable;
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeExistsException;
 import org.graffiti.attributes.LinkedHashMapAttribute;
 import org.graffiti.attributes.SortedCollectionAttribute;
@@ -35,6 +38,7 @@ import org.graffiti.graphics.AWTImageAttribute;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.EdgeGraphicAttribute;
 import org.graffiti.graphics.EdgeLabelAttribute;
+import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.LabelAttribute;
 import org.graffiti.graphics.LineModeAttribute;
 import org.graffiti.graphics.NodeLabelAttribute;
@@ -102,6 +106,12 @@ public class GraphMLFilter extends XMLFilterImpl {
 	
 	PositionGridGenerator positionGen = new PositionGridGenerator(150, 150, 1000);
 	
+	/**
+	 * Provide compatibility mapping GraphML names to built-in Attribute paths.
+	 */
+	private static HashMap<String, String> CompatPathMapping = null;
+	private static HashMap<String, String> CompatValueMapping = null;
+	
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -121,6 +131,31 @@ public class GraphMLFilter extends XMLFilterImpl {
 		this.edgeAttributeCreator = new EdgeAttributeCreator();
 		this.attrCache = new AttributeCache();
 		this.defaultDecl = false;
+		
+		if (CompatPathMapping == null) {
+			CompatPathMapping = new HashMap<String, String>();
+			//Position
+			CompatPathMapping.put("x", GraphicAttributeConstants.COORDX_PATH);
+			CompatPathMapping.put("y", GraphicAttributeConstants.COORDY_PATH);
+			//Size
+			CompatPathMapping.put("width", GraphicAttributeConstants.DIMW_PATH);
+			CompatPathMapping.put("height", GraphicAttributeConstants.DIMH_PATH);
+			//Colour
+			CompatPathMapping.put("r", GraphicAttributeConstants.FILLCOLOR_PATH + Attribute.SEPARATOR + GraphicAttributeConstants.RED);
+			CompatPathMapping.put("red", GraphicAttributeConstants.FILLCOLOR_PATH + Attribute.SEPARATOR + GraphicAttributeConstants.RED);
+			CompatPathMapping.put("g", GraphicAttributeConstants.FILLCOLOR_PATH + Attribute.SEPARATOR + GraphicAttributeConstants.GREEN);
+			CompatPathMapping.put("green", GraphicAttributeConstants.FILLCOLOR_PATH + Attribute.SEPARATOR + GraphicAttributeConstants.GREEN);
+			CompatPathMapping.put("b", GraphicAttributeConstants.FILLCOLOR_PATH + Attribute.SEPARATOR + GraphicAttributeConstants.BLUE);
+			CompatPathMapping.put("blue", GraphicAttributeConstants.FILLCOLOR_PATH + Attribute.SEPARATOR + GraphicAttributeConstants.BLUE);
+			//Shape
+			CompatPathMapping.put("shape", GraphicAttributeConstants.SHAPE_PATH);
+		}
+		
+		if (CompatValueMapping == null) {
+			CompatValueMapping = new HashMap<String, String>();
+			//Rect shape
+			CompatValueMapping.put("rect", GraphicAttributeConstants.RECTANGLE_CLASSNAME);
+		}
 	}
 	
 	// ~ Methods ================================================================
@@ -246,13 +281,14 @@ public class GraphMLFilter extends XMLFilterImpl {
 				}
 			} else {
 				logger.fine("writing attribute with value " + value + "\n\tat path " + path + ".");
-				
+				String compath = CompatPathMapping.get(path.toLowerCase());
+				String compatValue = CompatValueMapping.get(value.toLowerCase());
 				switch (attrCache.getType()) {
 					case AttributeCache.BOOLEAN:
 						
 						boolean booleanValue = Boolean.valueOf(value).booleanValue();
 						logger.fine("writing boolean value " + booleanValue + " at path " + path + ".");
-						currentAttributable.setBoolean(path, booleanValue);
+						currentAttributable.setBoolean(compath == null ? path : compath, booleanValue);
 						
 						break;
 					
@@ -260,7 +296,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 						
 						int intValue = Integer.parseInt(value);
 						logger.fine("writing integer value " + intValue + " at path " + path + ".");
-						currentAttributable.setInteger(path, intValue);
+						currentAttributable.setInteger(compath == null ? path : compath, intValue);
 						
 						break;
 					
@@ -268,7 +304,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 						
 						long longValue = Long.parseLong(value);
 						logger.fine("writing long value " + longValue + " at path " + path + ".");
-						currentAttributable.setLong(path, longValue);
+						currentAttributable.setLong(compath == null ? path : compath, longValue);
 						
 						break;
 					
@@ -276,7 +312,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 						
 						float floatValue = Float.parseFloat(value);
 						logger.fine("writing float value " + floatValue + " at path " + path + ".");
-						currentAttributable.setFloat(path, floatValue);
+						currentAttributable.setFloat(compath == null ? path : compath, floatValue);
 						
 						break;
 					
@@ -284,13 +320,13 @@ public class GraphMLFilter extends XMLFilterImpl {
 						
 						double doubleValue = Double.parseDouble(value);
 						logger.fine("writing double value " + doubleValue + " at path " + path + ".");
-						currentAttributable.setDouble(path, doubleValue);
-						
+						currentAttributable.setDouble(compath == null ? path : compath, doubleValue);
 						break;
 					
 					case AttributeCache.STRING:
 						logger.fine("writing string value " + value + " at path " + path + ".");
-						currentAttributable.setString(path, value);
+						currentAttributable.setString(compath == null ? path : compath, 
+								compatValue == null ? value : compatValue);
 						
 						break;
 					
@@ -467,7 +503,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 			
 			n.addAttribute(nodeAttributeCreator.getDefaultAttributes(), "");
 			AttributeHelper.setPosition(n, positionGen.getNextPosition());
-			AttributeHelper.setLabel(n, "");
+			AttributeHelper.setLabel(n, id); // id as default label
 			addDefaultAttributeValues(n, nodeAttributeCreator.getDefaults());
 			
 			// set current attributable to add attributes

@@ -1,5 +1,15 @@
 <h3>Changelog</h3>
 
+<h4>Vanted v2.8.6 release (17/07/2023)<h4>
+<ul>
+<li>Update for Biomodels Database:</br>
+    <ul>
+        <li>Resolve issues replacing ID with name</li>
+	<li>Modify Labels KEGG: disable for non-KEGG graphs</li>
+    </ul>
+<li>Improve GraphML import compatibility</li>
+</ul>
+
 <h4>Vanted v2.8.5 release (16/04/2023)<h4>
 <ul>
 <li>Update certificate, code signing JAR files</li>

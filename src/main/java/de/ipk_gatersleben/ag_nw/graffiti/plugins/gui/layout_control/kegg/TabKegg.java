@@ -63,6 +63,8 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
+import org.graffiti.session.Session;
+import org.graffiti.session.SessionAdapter;
 import org.vanted.KeggAccess;
 
 import com.sun.jersey.api.client.Client;
@@ -86,6 +88,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 	
 	Logger logger = Logger.getLogger(TabKegg.class);
 	private static JCheckBox prettifyLabels = null;
+	private static JButton replaceLabels = null;
 	
 	private static final String restURL = "https://rest.kegg.jp/";
 	private static final String initialUserInfo = "Please download the list of organisms!";
@@ -211,12 +214,26 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		pathwayTree.addMouseListener(pathwayml);
 		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, organismTreeScroll, pathwayTreeScroll);
 		splitPane.setOneTouchExpandable(true);
-		prettifyLabels = new JCheckBox("Replace compound IDs by compound names", false);
+		prettifyLabels = new JCheckBox("Replace compound IDs with compound names", false);
 		prettifyLabels.setOpaque(false);
 		prettifyLabels.setToolTipText(
-				"Replaces KEGG compound IDs by compound names from the KEGG database during pathway download.");
-		JButton replaceLabels = new JMButton("Modify Labels");
+				"Replaces KEGG compound IDs with compound names from the KEGG database during pathway download.");
+		replaceLabels = new JMButton("Modify Labels");
 		replaceLabels.setOpaque(false);
+		replaceLabels.setEnabled(false);
+		MainFrame.getInstance().addSessionListener(new SessionAdapter() {
+			
+			@Override
+			public void sessionChanged(Session s) {
+				if (s== null || s.getGraph() == null) {
+					replaceLabels.setEnabled(false);
+					return;
+				}
+					
+				String referenceKegg = (String) AttributeHelper.getAttributeValue(s.getGraph(), "", "kegg_link", "", "");
+				replaceLabels.setEnabled(referenceKegg.startsWith("https://www.kegg.jp"));
+			}
+		});
 		replaceLabels.setToolTipText("Click to modify node labels of the shown KEGG pathway.");
 		replaceLabels.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -533,7 +550,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 									return;
 								}
 								ArrayList<Node> nodeList = (ArrayList<Node>) graph.getNodes();
-								HashMap<String, String> keggIDToEntry = new HashMap<String, String>();
+								HashMap<String, String> keggIDNameToEntry = new HashMap<String, String>();
 								String labels = "";
 								ArrayList<String> labelList = new ArrayList<String>();
 								int count = 0;
@@ -559,14 +576,15 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 									labels += restService.makeRequest(l, MediaType.TEXT_PLAIN_TYPE, String.class);
 								do {
 									String entry = "";
-									String id = labels.substring(0, labels.indexOf("\t"));
+									String idname = labels.substring(0, labels.indexOf("\t")); //id name: id w/o path/rc/rp/cpd
 									String currNode;
 									if (labels.contains("\n"))
 										currNode = labels.substring(labels.indexOf("\t") + 1, labels.indexOf("\n"))
 												.trim();
 									else
 										currNode = labels.substring(labels.indexOf("\t") + 1).trim();
-									if (labels.startsWith("ec") && !currNode.startsWith("Deleted entry")) {
+									if (//labels.startsWith("ec") && <- since newer KEGG releases, list labels lack ec ID, ...
+											!currNode.startsWith("Deleted entry")) {
 										if (currNode.toLowerCase().startsWith("Transferred to ")) {
 											currNode = currNode.replace("Transferred to ", "");
 											currNode = currNode.replace(" and", ";");
@@ -575,7 +593,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 									} else
 										entry = currNode;
 									if (entry.length() > 0)
-										keggIDToEntry.put(id, entry);
+										keggIDNameToEntry.put(idname, entry);
 									if (labels.contains("\n"))
 										labels = labels.substring(labels.indexOf("\n") + 1);
 								} while (labels.contains("\n"));
@@ -584,7 +602,8 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 											AlignmentSetting.HIDDEN.toGMLstring());
 									ArrayList<String> ids = getKeggIDsFromNode(n);
 									for (int i = 0; i < ids.size(); i++) {
-										String entry = keggIDToEntry.get(ids.get(i));
+										String idname = ids.get(i).substring(ids.get(i).indexOf(':') + 1);
+										String entry = keggIDNameToEntry.get(idname);
 										// for EC numbers like 1.1.1.- KEGG can't provide information, entry is null
 										// some EC numbers have been removed from KEGG ("Deleted entry"), entry is null
 										// as well
@@ -630,6 +649,8 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 							MainFrame.getInstance().showGraph(graph, null);
 							if (prettifyLabels.isSelected())
 								renameNodes(1);
+							
+							
 						}
 					});
 		}
@@ -863,7 +884,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		
 		switch (mode) {
 			case 0:
-				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
+				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes()) 
 					if (KeggGmlHelper.getKeggId(n).startsWith("cpd"))
 						AttributeHelper.setLabel(n, AttributeHelper.getLabel(1, n, ""));
 				break;
@@ -956,7 +977,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 	public String getTabParentPath() {
 		return "Pathways";
 	}
-	
+
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
