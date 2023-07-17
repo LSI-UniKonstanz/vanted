@@ -6,6 +6,7 @@
     <ul>
         <li>Resolve issues replacing ID with name</li>
 	<li>Modify Labels KEGG: disable for non-KEGG graphs</li>
+    </ul>
 <li>Improve GraphML import compatibility</li>
 </ul>
 
