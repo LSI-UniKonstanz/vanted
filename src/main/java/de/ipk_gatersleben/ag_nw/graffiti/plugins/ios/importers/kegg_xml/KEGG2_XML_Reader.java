@@ -33,12 +33,6 @@ public class KEGG2_XML_Reader extends AbstractInputSerializer {
 		super.read(filename, g);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.AbstractInputSerializer#read(java.io.InputStream,
-	 * org.graffiti.graph.Graph)
-	 */
 	@Override
 	public void read(InputStream in, Graph g) throws IOException {
 		Pathway p = Pathway.getPathwayFromKGML(in);
@@ -46,21 +40,11 @@ public class KEGG2_XML_Reader extends AbstractInputSerializer {
 		p.getGraph(g);
 		in.close();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
-	 */
+
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-	 */
+
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "KGML File" };
 	}

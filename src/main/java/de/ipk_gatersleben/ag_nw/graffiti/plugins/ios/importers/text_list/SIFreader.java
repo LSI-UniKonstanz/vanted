@@ -48,12 +48,6 @@ public class SIFreader extends AbstractInputSerializer {
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.AbstractInputSerializer#read(java.io.InputStream,
-	 * org.graffiti.graph.Graph)
-	 */
 	@Override
 	public void read(InputStream in, Graph g) throws IOException {
 		InputStreamReader isr = new InputStreamReader(in);
@@ -126,20 +120,10 @@ public class SIFreader extends AbstractInputSerializer {
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
-	 */
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-	 */
+
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "SIF (src interac. tgt)" };
 	}

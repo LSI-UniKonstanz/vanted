@@ -53,11 +53,6 @@ public class GMLReader extends AbstractInputSerializer {
 		return this.extensions;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "GML" };
 	}

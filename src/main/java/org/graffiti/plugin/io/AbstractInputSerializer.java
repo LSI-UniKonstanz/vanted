@@ -38,6 +38,7 @@ public abstract class AbstractInputSerializer implements InputSerializer {
 	 */
 	public void read(String filename, Graph g) throws IOException {
 		read(new FileInputStream(filename), g);
+		new DefaultLabelPostProcessor().processNewGraph(g);
 	}
 	
 	public boolean validFor(InputStream reader) {
@@ -56,6 +57,7 @@ public abstract class AbstractInputSerializer implements InputSerializer {
 	 */
 	public void read(URL url, Graph g) throws IOException {
 		read(url.openStream(), g);
+		new DefaultLabelPostProcessor().processNewGraph(g);
 	}
 	
 	/**
@@ -82,6 +84,7 @@ public abstract class AbstractInputSerializer implements InputSerializer {
 	public Graph read(InputStream in) throws IOException {
 		Graph g = new AdjListGraph();
 		read(in, g);
+		new DefaultLabelPostProcessor().processNewGraph(g);
 		return g;
 	}
 }
