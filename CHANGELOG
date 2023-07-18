@@ -1,8 +1,16 @@
 <h3>Changelog</h3>
 
+<h4>Vanted v2.8.7 release (18/07/2023)<h4>
+<ul>
+<li>Bugfixes for v2.8.6 and improvements in add-ons compatibility</li>
+<li>Node ID as fallback label where suitable</li>
+<li>Improve GraphML import compatibility</li>
+<li>Change network view icon to Vanted logo</li>
+</ul>
+
 <h4>Vanted v2.8.6 release (17/07/2023)<h4>
 <ul>
-<li>Update for Biomodels Database:</br>
+<li>Update for KEGG Database:</br>
     <ul>
         <li>Resolve issues replacing ID with name</li>
 	<li>Modify Labels KEGG: disable for non-KEGG graphs</li>

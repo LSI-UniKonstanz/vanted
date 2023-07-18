@@ -34,23 +34,12 @@ public class KEGG_XML_Reader extends AbstractInputSerializer {
 		super.read(filename, g);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.AbstractInputSerializer#read(java.io.InputStream,
-	 * org.graffiti.graph.Graph)
-	 */
 	@Override
 	public void read(InputStream in, Graph g) throws IOException {
 		KeggService.loadKeggPathwayIntoGraph(in, g, KeggService.getDefaultEnzymeColor());
 		in.close();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
-	 */
+
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
@@ -72,12 +61,7 @@ public class KEGG_XML_Reader extends AbstractInputSerializer {
 		}
 		return false;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-	 */
+
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "KEGG XML Pathway" };
 	}

@@ -23,11 +23,21 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### Vanted v2.8.7 release (18/07/2023) ###
+    Bugfixes for v2.8.6 and improvements in add-ons compatibility
+    Node ID as fallback label where suitable
+    Improve GraphML import compatibility
+    Change network view icon to Vanted logo
+
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.7).
+
 ### Vanted v2.8.6 release (17/07/2023) ###
-    Update for Biomodels Database:
+    Update for KEGG Database:
         - Resolve issues replacing ID with name
         - Modify Labels KEGG: disable for non-KEGG graphs
     Improve GraphML import compatibility
+
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.6).
 
 ### Vanted v2.8.5 release (16/04/2023) ###
     Update certificate, code signing JAR files

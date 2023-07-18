@@ -16,6 +16,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.OptAdjListGraph;
 import org.graffiti.plugin.io.AbstractIOSerializer;
 import org.graffiti.plugin.io.AbstractInputSerializer;
+import org.graffiti.plugin.io.DefaultLabelPostProcessor;
 import org.graffiti.plugin.io.ParserException;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -49,12 +50,7 @@ public class XGMMLReader extends AbstractInputSerializer {
 	public String[] getExtensions() {
 		return this.extensions;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-	 */
+
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "XGMML", "XGMML" };
 	}
@@ -111,7 +107,7 @@ public class XGMMLReader extends AbstractInputSerializer {
 	public Graph read(InputStream in_Stream) throws ParserException {
 		Graph graph = new OptAdjListGraph();
 		read(in_Stream, graph);
-		
+		new DefaultLabelPostProcessor().processNewGraph(graph);
 		return graph;
 	}
 	

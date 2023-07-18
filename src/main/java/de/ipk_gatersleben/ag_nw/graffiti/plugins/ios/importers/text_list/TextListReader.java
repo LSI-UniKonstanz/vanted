@@ -56,12 +56,6 @@ public class TextListReader extends AbstractInputSerializer {
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.AbstractInputSerializer#read(java.io.InputStream,
-	 * org.graffiti.graph.Graph)
-	 */
 	@Override
 	public void read(InputStream in, Graph g) throws IOException {
 		InputStreamReader isr = new InputStreamReader(in);
@@ -210,20 +204,10 @@ public class TextListReader extends AbstractInputSerializer {
 			AttributeHelper.setAttribute(newEdge, "pajek", "weight", weight);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
-	 */
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-	 */
+
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "Simple Graph Format (src tgt [weight]/GD format)" };
 	}
