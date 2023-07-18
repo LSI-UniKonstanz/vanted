@@ -335,6 +335,14 @@ public class GraphMLFilter extends XMLFilterImpl {
 
 					break;
 				}
+				// Readability of external/custom attributes
+				if (compath == null)
+					if (currentAttributable instanceof Node)
+						AttributeHelper.setNiceId(path, "Node Attributes:" + path);
+					else if (currentAttributable instanceof Edge)
+						AttributeHelper.setNiceId(path, "Edge Attributes:" + path);
+					else if (currentAttributable instanceof Graph)
+						AttributeHelper.setNiceId(path, "Network Attributes:" + path);
 			}
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage("Could not add attribute to path: " + path + ", value: " + value
