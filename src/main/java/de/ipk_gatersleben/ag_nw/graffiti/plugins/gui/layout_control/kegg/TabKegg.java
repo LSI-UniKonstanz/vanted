@@ -229,8 +229,12 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 					replaceLabels.setEnabled(false);
 					return;
 				}
-					
-				String referenceKegg = (String) AttributeHelper.getAttributeValue(s.getGraph(), "", "kegg_link", "", "");
+				if (!AttributeHelper.hasAttribute(s.getGraph(), "kegg_link")) {
+					replaceLabels.setEnabled(false);
+					return;
+				}
+				
+				String referenceKegg = (String) AttributeHelper.getAttribute(s.getGraph(), "kegg_link").getValue();				
 				replaceLabels.setEnabled(referenceKegg.startsWith("https://www.kegg.jp"));
 			}
 		});
