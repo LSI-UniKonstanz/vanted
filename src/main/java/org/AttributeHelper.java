@@ -1898,6 +1898,10 @@ public class AttributeHelper implements HelperClass {
 		setAttribute(atta, "", "tooltip", statusText);
 	}
 	
+	public static String getToolTipText(Node atta) {
+		return getToolTipText((Attributable) atta);
+	}
+	
 	public static String getToolTipText(Attributable atta) {
 		String res = (String) getAttributeValue(atta, "", "tooltip", null, new String(""));
 		if (res != null && res.length() == 0)
