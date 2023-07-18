@@ -52,6 +52,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * class is the heart of the graphML reading library.
  *
  * @author ruediger
+ * @vanted.revision Recent changes in 2.8.7
  */
 public class GraphMLFilter extends XMLFilterImpl {
 	// ~ Static fields/initializers =============================================
