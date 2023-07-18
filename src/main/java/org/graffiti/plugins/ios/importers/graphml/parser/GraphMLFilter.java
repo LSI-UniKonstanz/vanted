@@ -284,6 +284,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 				logger.fine("writing attribute with value " + value + "\n\tat path " + path + ".");
 				String compath = CompatPathMapping.get(path.toLowerCase());
 				String compatValue = CompatValueMapping.get(value.toLowerCase());
+				
 				switch (attrCache.getType()) {
 				case AttributeCache.BOOLEAN:
 
@@ -313,7 +314,12 @@ public class GraphMLFilter extends XMLFilterImpl {
 
 					float floatValue = Float.parseFloat(value);
 					logger.fine("writing float value " + floatValue + " at path " + path + ".");
-					currentAttributable.setFloat(compath == null ? path : compath, floatValue);
+					try {
+						currentAttributable.setFloat(compath == null ? path : compath, floatValue);
+					} catch(Exception e) {
+						logger.fine("trying again, writing double value " + floatValue + " at path " + path + ".");
+						currentAttributable.setDouble(compath == null ? path : compath, floatValue);
+					}					
 
 					break;
 
@@ -349,7 +355,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 			ErrorMsg.addErrorMessage("Could not add attribute to path: " + path + ", value: " + value
 					+ ", graphelement: "
 					+ (currentAttributable == null ? "null" : currentAttributable.getClass().getSimpleName()) + "<br>"
-					+ "Eventually this attribute is pre-defined with a different attribute type. Try changing the attribute name and/or path.");
+					+ "This attribute is pre-defined with a different attribute type. Try changing the attribute name and/or path.");
 		}
 	}
 
