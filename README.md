@@ -23,6 +23,15 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+## Vanted v2.8.8 release (31/07/2023) ##
+    Bugfix in Open-File dialog after exporting to a website
+    Improve KEGG search with organisms and pathways labelling
+    New feature: Modify the drawn grid (Edit > Preferences > Views > Network View)
+    Fix regression in 2.8.6+ concerning attribute labels (GraphML)
+    Improve GraphML import compatibility: recognize certain top-level tags as node/edge labels
+
+You can download and install this version [here](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/2.8.8).
+
 ### Vanted v2.8.7 release (18/07/2023) ###
     Bugfixes for v2.8.6 and improvements in add-ons compatibility
     Node ID as fallback label where suitable
