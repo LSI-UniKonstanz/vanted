@@ -85,55 +85,61 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.web.RestService;
  */
 @SuppressWarnings("serial")
 public class TabKegg extends InspectorTab implements ActionListener, BackgroundTaskStatusProvider {
-	
+
 	Logger logger = Logger.getLogger(TabKegg.class);
 	private static JCheckBox prettifyLabels = null;
 	private static JButton replaceLabels = null;
-	
+
 	private static final String restURL = "https://rest.kegg.jp/";
 	private static final String initialUserInfo = "Please download the list of organisms!";
-	
+
+	private static final String SEARCH_ORGANISMS = "Search organisms ";
+	private static final String SEARCH_PATHWAYS = "Search pathways ";
+
 	Client client;
-	
+
 	JButton getOrganismListFromKegg;
-	
+
 	JTree organismTree;
 	DefaultMutableTreeNode organismRootNode;
 	DefaultTreeModel organismTreeModel;
 	JScrollPane organismTreeScroll;
 	DefaultMutableTreeNode selectedOrganismNode;
 	HashMap<String, String> treeNodeToKeggCode = new HashMap<String, String>(); // name | id
-	
+
 	JTree allPathwayTree;
 	DefaultMutableTreeNode allPathwayRootNode;
-	
+
 	JTree pathwayTree;
 	DefaultMutableTreeNode pathwayRootNode;
 	DefaultTreeModel pathwayTreeModel;
 	JScrollPane pathwayTreeScroll;
 	DefaultMutableTreeNode selectedPathwayNode;
 	HashMap<String, String> pathwayNameToPathway = new HashMap<String, String>(); // name | id
-	
+
 	JSplitPane splitPane;
 	boolean isSetDividerLocation = false;
-	
+
 	Graph graph = null;
-	
+
 	RestService restService;
-	
+
 	String status1 = "";
 	String status2 = "";
 	double statusValue = 0;
 	boolean stopTask = false;
 	
+	private final JLabel searchLabel = new JLabel(SEARCH_ORGANISMS);
+	private final JTextField searchBox = new JTextField("");
+
 	public TabKegg() {
-		
+
 		super();
 		this.title = "KEGG";
 		initComponents();
-		
+
 	}
-	
+
 	/**
 	 * KEGG Tab
 	 */
@@ -144,65 +150,72 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 				{ border, TableLayout.PREFERRED, TableLayoutConstants.FILL, TableLayout.PREFERRED,
 						TableLayout.PREFERRED, border } }; // rows
 		this.setLayout(new TableLayout(size));
-		
+
 		getOrganismListFromKegg = new JMButton("<html>Download List of Organisms");
-		
+
 		getOrganismListFromKegg.addActionListener(this);
 		getOrganismListFromKegg.setOpaque(false);
 		getOrganismListFromKegg.setToolTipText("Downloads list of organisms from KEGG (needs internet connection).");
-		
+
 		organismRootNode = new DefaultMutableTreeNode(initialUserInfo);
 		allPathwayRootNode = new DefaultMutableTreeNode("Pathways");
 		pathwayRootNode = new DefaultMutableTreeNode(initialUserInfo);
-		
+
 		organismTreeModel = new DefaultTreeModel(organismRootNode);
 		organismTree = new JTree(organismTreeModel);
 		organismTreeScroll = new JScrollPane(organismTree);
 		selectedOrganismNode = null;
-		
+
+		searchLabel.setEnabled(false);
+		searchBox.setEnabled(false);
+
 		MouseListener organismml = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if (e.getClickCount() == 2) {
+				if (e.getClickCount() == 2 && selectedOrganismNode != null) {
 					downloadPathwayList();
+					searchLabel.setText(SEARCH_PATHWAYS);
+					searchBox.setText("");
 				}
 			}
 		};
 		organismTree.addMouseListener(organismml);
-		
+
 		TreeSelectionListener tsl = new TreeSelectionListener() {
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 				if (node == null)
 					return;
-				if (node.isLeaf()) {
+				if (node.isLeaf())
 					selectedOrganismNode = node;
-				} else
+				else
 					selectedOrganismNode = null;
+				searchLabel.setText(SEARCH_ORGANISMS);
 			}
 		};
 		organismTree.addTreeSelectionListener(tsl);
-		
+
 		pathwayTreeModel = new DefaultTreeModel(pathwayRootNode);
 		pathwayTree = new JTree(pathwayTreeModel);
 		pathwayTreeScroll = new JScrollPane(pathwayTree);
 		selectedPathwayNode = null;
-		
+
 		TreeSelectionListener tsl2 = new TreeSelectionListener() {
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 				if (node == null)
 					return;
-				if (node.isLeaf()) {
+				if (node.isLeaf())
 					selectedPathwayNode = node;
-				} else
+				else
 					selectedPathwayNode = null;
+				searchLabel.setText(SEARCH_PATHWAYS);
 			}
 		};
 		pathwayTree.addTreeSelectionListener(tsl2);
-		
+
 		MouseListener pathwayml = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -222,10 +235,10 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		replaceLabels.setOpaque(false);
 		replaceLabels.setEnabled(false);
 		MainFrame.getInstance().addSessionListener(new SessionAdapter() {
-			
+
 			@Override
 			public void sessionChanged(Session s) {
-				if (s== null || s.getGraph() == null) {
+				if (s == null || s.getGraph() == null) {
 					replaceLabels.setEnabled(false);
 					return;
 				}
@@ -233,8 +246,8 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 					replaceLabels.setEnabled(false);
 					return;
 				}
-				
-				String referenceKegg = (String) AttributeHelper.getAttribute(s.getGraph(), "kegg_link").getValue();				
+
+				String referenceKegg = (String) AttributeHelper.getAttribute(s.getGraph(), "kegg_link").getValue();
 				replaceLabels.setEnabled(referenceKegg.startsWith("https://www.kegg.jp"));
 			}
 		});
@@ -244,19 +257,21 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 				replaceLabelDialog();
 			}
 		});
-		final JTextField searchBox = new JTextField("");
+
+
 		searchBox.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						String searchText = searchBox.getText();
 						if (searchText.length() > 0) {
-							breadthFirstSearch(pathwayRootNode, searchText, pathwayTree);
-							breadthFirstSearch(organismRootNode, searchText, organismTree);
+							if (searchLabel.getText().equals(SEARCH_PATHWAYS))
+								breadthFirstSearch(pathwayRootNode, searchText, pathwayTree);
+							else if (searchLabel.getText().equals(SEARCH_ORGANISMS))
+								breadthFirstSearch(organismRootNode, searchText, organismTree);
 						}
-						
 					}
-					
+
 					private boolean breadthFirstSearch(DefaultMutableTreeNode node, String searchText, JTree tree) {
 						for (int i = 0; i < node.getChildCount(); i++) {
 							DefaultMutableTreeNode innerNode = (DefaultMutableTreeNode) node.getChildAt(i);
@@ -280,18 +295,18 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 						}
 						return false;
 					}
-					
+
 				});
 			}
-			
+
 			public void keyPressed(KeyEvent e) {
 			}
-			
+
 			public void keyReleased(KeyEvent e) {
 			}
 		});
-		JComponent searchPathway = TableLayout.get3Split(new JLabel("Search"), null, searchBox, TableLayout.PREFERRED,
-				2, TableLayout.FILL);
+		JComponent searchPathway = TableLayout.get3Split(searchLabel, null, searchBox, TableLayout.PREFERRED, 2,
+				TableLayout.FILL);
 		this.add(getOrganismListFromKegg, "1,1");
 		this.add(splitPane, "1,2");
 		splitPane.setDividerLocation((int) organismTreeScroll.getPreferredSize().getHeight());
@@ -299,7 +314,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 				TableLayout.PREFERRED, TableLayout.PREFERRED, 2, 2), "1,3");
 		this.validate();
 	}
-	
+
 	protected void downloadOrganismList() {
 		BackgroundTaskHelper.issueSimpleTask("Downloading List of Organisms", "Please wait ...", new Runnable() {
 			public void run() {
@@ -332,9 +347,9 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 						response = response.substring(response.indexOf("\t") + 1);
 						tmp[1] = response.substring(0, response.indexOf("\t"));
 						response = response.substring(response.indexOf("\t") + 1);
-						
+
 						treeNodeToKeggCode.put(tmp[1], tmp[0]);
-						
+
 						if (response.indexOf("\n") == -1) {
 							tmp[2] = response;
 							stop = true;
@@ -342,7 +357,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 							tmp[2] = response.substring(0, response.indexOf("\n"));
 							response = response.substring(response.indexOf("\n") + 1);
 						}
-						
+
 						DefaultMutableTreeNode currNode = organismRootNode;
 						String tmp2 = tmp[2];
 						boolean cont = true;
@@ -397,13 +412,13 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 					allPathwayRootNode.removeAllChildren();
 					allPathwayRootNode.setUserObject("Pathways");
 					DefaultMutableTreeNode nodeA = null, nodeB = null;
-					
+
 					while (true) {
 						response = response.substring(response.indexOf("\n") + 1);
 						if (response.startsWith("A"))
 							break;
 					}
-					
+
 					while (true) {
 						if (response.startsWith("!") || response.length() == 0 || response.indexOf("\n") == -1)
 							break;
@@ -413,7 +428,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 							nextLine = nextLine.substring(1);
 							nodeA = new DefaultMutableTreeNode(nextLine.trim());
 							allPathwayRootNode.add(nodeA);
-							
+
 						} else if (nextLine.startsWith("B")) {
 							nextLine = nextLine.substring(1);
 							nextLine = nextLine.trim();
@@ -438,7 +453,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 			}
 		});
 	}
-	
+
 	protected void downloadPathwayList() {
 		if (selectedOrganismNode != null && !selectedOrganismNode.getUserObject().toString().equals(initialUserInfo)) {
 			BackgroundTaskHelper.issueSimpleTask("Downloading List of Pathways", "Please wait ...", new Runnable() {
@@ -501,7 +516,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 																	.toString());
 													activeNode.add(newNode);
 													activeNode = newNode;
-													
+
 												}
 											}
 											activeNode.add(new DefaultMutableTreeNode("[" + tmp[0] + "] " + tmp[1]));
@@ -524,7 +539,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 			});
 		}
 	}
-	
+
 	/**
 	 * Wird aufgerufen, wenn ein Pathway aus der Liste ausgewaehlt wird. Veranlasst
 	 * den Download der entsprechenden Datei. Speichert Informationen ueber
@@ -532,10 +547,10 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 	 * Knoten.
 	 */
 	protected void downloadPathway() {
-		
+
 		if (selectedPathwayNode != null && !selectedPathwayNode.getUserObject().toString().equals(initialUserInfo)) {
 			final String keggPathwayID = pathwayNameToPathway.get(selectedPathwayNode.getUserObject().toString());
-			
+
 			if (keggPathwayID == null) {
 				logger.error("No mapping from selected pathway to KEGG pathway ID found");
 				return;
@@ -580,15 +595,17 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 									labels += restService.makeRequest(l, MediaType.TEXT_PLAIN_TYPE, String.class);
 								do {
 									String entry = "";
-									String idname = labels.substring(0, labels.indexOf("\t")); //id name: id w/o path/rc/rp/cpd
+									String idname = labels.substring(0, labels.indexOf("\t")); // id name: id w/o
+																								// path/rc/rp/cpd
 									String currNode;
 									if (labels.contains("\n"))
 										currNode = labels.substring(labels.indexOf("\t") + 1, labels.indexOf("\n"))
 												.trim();
 									else
 										currNode = labels.substring(labels.indexOf("\t") + 1).trim();
-									if (//labels.startsWith("ec") && <- since newer KEGG releases, list labels lack ec ID, ...
-											!currNode.startsWith("Deleted entry")) {
+									if (// labels.startsWith("ec") && <- since newer KEGG releases, list labels lack ec
+										// ID, ...
+									!currNode.startsWith("Deleted entry")) {
 										if (currNode.toLowerCase().startsWith("Transferred to ")) {
 											currNode = currNode.replace("Transferred to ", "");
 											currNode = currNode.replace(" and", ";");
@@ -653,16 +670,15 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 							MainFrame.getInstance().showGraph(graph, null);
 							if (prettifyLabels.isSelected())
 								renameNodes(1);
-							
-							
+
 						}
 					});
 		}
-		
+
 	}
-	
+
 	private ArrayList<String> getKeggIDsFromNode(Node node) {
-		
+
 		ArrayList<String> ids = new ArrayList<String>();
 		String id = KeggGmlHelper.getKeggId(node);
 		while (id.trim().contains(" ")) {
@@ -671,23 +687,26 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		}
 		ids.add(id.trim());
 		return ids;
-		
+
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
-		
-		if (e.getSource() == getOrganismListFromKegg)
+
+		if (e.getSource() == getOrganismListFromKegg) {
 			downloadOrganismList();
-		
+			searchLabel.setEnabled(true);
+			searchBox.setEnabled(true);
+		}
+
 	}
-	
+
 	public static OrganismEntry[] getKEGGorganismFromUser(final List<OrganismEntry> organisms) {
 		final MutableList<Object> organismSelection = new MutableList<Object>(new DefaultListModel<Object>());
-		
+
 		organismSelection.setPrototypeCellValue("<html>ÄÖyz");
 		organismSelection.setFixedCellWidth(580);
 		organismSelection.setFixedCellHeight(new JLabel("<html>AyÖÄ").getPreferredSize().height);
-		
+
 		Collections.sort(organisms, new Comparator<OrganismEntry>() {
 			public int compare(final OrganismEntry arg0, OrganismEntry arg1) {
 				if (arg0.toString().contains("Reference"))
@@ -699,28 +718,28 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 			organismSelection.getContents().addElement(oe);
 		}
 		organismSelection.setSelectedIndex(0);
-		
+
 		final JLabel searchResult = new JLabel("<html><small><font color='gray'>" + organisms.size() + " entries");
-		
+
 		JScrollPane organismSelectionScrollPane = new JScrollPane(organismSelection);
-		
+
 		organismSelectionScrollPane.setPreferredSize(new Dimension(600, 300));
-		
+
 		final JTextField filter = new JTextField("");
-		
+
 		filter.addKeyListener(new KeyListener() {
-			
+
 			public void keyPressed(KeyEvent e) {
 			}
-			
+
 			public void keyReleased(KeyEvent e) {
 			}
-			
+
 			public void keyTyped(KeyEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						String filterText = filter.getText().toUpperCase();
-						
+
 						organismSelection.getContents().clear();
 						for (OrganismEntry oe : organisms) {
 							if (oe.toString().toUpperCase().contains(filterText) || oe.getShortName().equals("map")
@@ -747,14 +766,14 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		}
 		return null;
 	}
-	
+
 	private void replaceLabelDialog() {
-		
+
 		Graph g = null;
 		if (MainFrame.getInstance().getActiveEditorSession() != null)
 			g = MainFrame.getInstance().getActiveEditorSession().getGraph();
 		final String organism = KeggGmlHelper.getKeggOrg(g);
-		
+
 		final JDialog frame = new JDialog(MainFrame.getInstance(), "Modify Labels");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setModal(true);
@@ -762,13 +781,13 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 			frame.setPreferredSize(new Dimension(465, 285));
 		else
 			frame.setPreferredSize(new Dimension(400, 230));
-		
+
 		frame.setLocationRelativeTo(MainFrame.getInstance());
-		
+
 		JPanel panel = new JPanel(new GridBagLayout());
 		panel.setOpaque(true);
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		
+
 		int y;
 		y = 0;
 		JLabel label = new JLabel("Set compound labels to");
@@ -777,44 +796,44 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		gridBagConstraints.gridy = y++;
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		panel.add(label, gridBagConstraints);
-		
+
 		final JRadioButton rbCID = new JRadioButton("IDs");
 		gridBagConstraints.insets = new Insets(0, 10, 0, 0);
 		gridBagConstraints.gridy = y++;
 		panel.add(rbCID, gridBagConstraints);
-		
+
 		final JRadioButton rbCName = new JRadioButton("Names");
 		gridBagConstraints.gridy = y++;
 		panel.add(rbCName, gridBagConstraints);
-		
+
 		ButtonGroup bgCompounds = new ButtonGroup();
 		bgCompounds.add(rbCID);
 		bgCompounds.add(rbCName);
-		
+
 		y = 0;
 		label = new JLabel("Set reaction labels to");
 		gridBagConstraints.insets = new Insets(10, 10, 10, 10);
 		gridBagConstraints.gridx = 1;
 		gridBagConstraints.gridy = y++;
 		panel.add(label, gridBagConstraints);
-		
+
 		final JRadioButton rbRID = new JRadioButton("IDs");
 		gridBagConstraints.insets = new Insets(0, 10, 0, 10);
 		gridBagConstraints.gridy = y++;
 		panel.add(rbRID, gridBagConstraints);
-		
+
 		final JRadioButton rbRName1 = new JRadioButton("Names (Set 1)");
 		gridBagConstraints.gridy = y++;
 		panel.add(rbRName1, gridBagConstraints);
-		
+
 		final JRadioButton rbRName2 = new JRadioButton("Names (Set 2)");
 		gridBagConstraints.gridy = y++;
 		panel.add(rbRName2, gridBagConstraints);
-		
+
 		final JRadioButton rbRReactionID = new JRadioButton("Reaction IDs");
 		gridBagConstraints.gridy = y++;
 		panel.add(rbRReactionID, gridBagConstraints);
-		
+
 		final JRadioButton rbRECSib = new JRadioButton("IDs (SIB Enzyme Database)");
 		final JRadioButton rbRNameSib = new JRadioButton("Names (SIB Enzyme Database)");
 		if (organism != null && organism.toLowerCase().equals("ec")) {
@@ -823,7 +842,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 			gridBagConstraints.gridy = y++;
 			panel.add(rbRNameSib, gridBagConstraints);
 		}
-		
+
 		ButtonGroup bgReactions = new ButtonGroup();
 		bgReactions.add(rbRID);
 		bgReactions.add(rbRName1);
@@ -833,7 +852,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 			bgReactions.add(rbRECSib);
 			bgReactions.add(rbRNameSib);
 		}
-		
+
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		JButton buttonOK = new JButton("OK");
 		buttonOK.addActionListener(new ActionListener() {
@@ -875,108 +894,108 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		gridBagConstraints.gridwidth = 2;
 		gridBagConstraints.anchor = GridBagConstraints.CENTER;
 		panel.add(buttonPanel, gridBagConstraints);
-		
+
 		frame.pack();
 		JScrollPane scrollBar = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		frame.add(scrollBar);
 		frame.setVisible(true);
-		
+
 	}
-	
+
 	private void renameNodes(int mode) {
-		
+
 		switch (mode) {
-			case 0:
-				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes()) 
-					if (KeggGmlHelper.getKeggId(n).startsWith("cpd"))
-						AttributeHelper.setLabel(n, AttributeHelper.getLabel(1, n, ""));
-				break;
-			case 1:
-				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
-					if (KeggGmlHelper.getKeggId(n).startsWith("cpd"))
+		case 0:
+			for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
+				if (KeggGmlHelper.getKeggId(n).startsWith("cpd"))
+					AttributeHelper.setLabel(n, AttributeHelper.getLabel(1, n, ""));
+			break;
+		case 1:
+			for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
+				if (KeggGmlHelper.getKeggId(n).startsWith("cpd"))
+					AttributeHelper.setLabel(n, AttributeHelper.getLabel(2, n, ""));
+			break;
+		case 2:
+			for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
+				if (!KeggGmlHelper.getKeggId(n).startsWith("cpd") && !KeggGmlHelper.getKeggId(n).startsWith("path"))
+					AttributeHelper.setLabel(n, AttributeHelper.getLabel(1, n, ""));
+			break;
+		case 3:
+			for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
+				if (!KeggGmlHelper.getKeggId(n).startsWith("cpd") && !KeggGmlHelper.getKeggId(n).startsWith("path"))
+					AttributeHelper.setLabel(n, AttributeHelper.getLabel(2, n, ""));
+			break;
+		case 4:
+			for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
+				if (!KeggGmlHelper.getKeggId(n).startsWith("cpd") && !KeggGmlHelper.getKeggId(n).startsWith("path")) {
+					if (AttributeHelper.getLabel(3, n, "").length() > 0)
+						AttributeHelper.setLabel(n, AttributeHelper.getLabel(3, n, ""));
+					else
 						AttributeHelper.setLabel(n, AttributeHelper.getLabel(2, n, ""));
-				break;
-			case 2:
-				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
-					if (!KeggGmlHelper.getKeggId(n).startsWith("cpd") && !KeggGmlHelper.getKeggId(n).startsWith("path"))
-						AttributeHelper.setLabel(n, AttributeHelper.getLabel(1, n, ""));
-				break;
-			case 3:
-				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
-					if (!KeggGmlHelper.getKeggId(n).startsWith("cpd") && !KeggGmlHelper.getKeggId(n).startsWith("path"))
-						AttributeHelper.setLabel(n, AttributeHelper.getLabel(2, n, ""));
-				break;
-			case 4:
-				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
-					if (!KeggGmlHelper.getKeggId(n).startsWith("cpd") && !KeggGmlHelper.getKeggId(n).startsWith("path")) {
-						if (AttributeHelper.getLabel(3, n, "").length() > 0)
-							AttributeHelper.setLabel(n, AttributeHelper.getLabel(3, n, ""));
-						else
-							AttributeHelper.setLabel(n, AttributeHelper.getLabel(2, n, ""));
-					}
-				break;
-			case 5:
-				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
-					if (!KeggGmlHelper.getKeggId(n).startsWith("cpd") && !KeggGmlHelper.getKeggId(n).startsWith("path")) {
-						String reactionID = KeggGmlHelper.getKeggReactions(n).get(0).getValue();
-						AttributeHelper.setLabel(n, reactionID.substring(reactionID.indexOf(":") + 1));
-					}
-				break;
-			case 6:
-			case 7:
-				for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes()) {
-					String label = AttributeHelper.getLabel(1, n, "");
-					EnzymeEntry ee = EnzymeService.getEnzymeInformation(label, false);
-					if (ee != null) {
-						if (mode == 7)
-							AttributeHelper.setLabel(n, ee.getDE());
-						else
-							AttributeHelper.setLabel(n, ee.getID());
-					}
 				}
-				break;
-			default:
-				break;
+			break;
+		case 5:
+			for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes())
+				if (!KeggGmlHelper.getKeggId(n).startsWith("cpd") && !KeggGmlHelper.getKeggId(n).startsWith("path")) {
+					String reactionID = KeggGmlHelper.getKeggReactions(n).get(0).getValue();
+					AttributeHelper.setLabel(n, reactionID.substring(reactionID.indexOf(":") + 1));
+				}
+			break;
+		case 6:
+		case 7:
+			for (Node n : MainFrame.getInstance().getActiveSession().getGraph().getNodes()) {
+				String label = AttributeHelper.getLabel(1, n, "");
+				EnzymeEntry ee = EnzymeService.getEnzymeInformation(label, false);
+				if (ee != null) {
+					if (mode == 7)
+						AttributeHelper.setLabel(n, ee.getDE());
+					else
+						AttributeHelper.setLabel(n, ee.getID());
+				}
+			}
+			break;
+		default:
+			break;
 		}
 	}
-	
+
 	@Override
 	public boolean visibleForView(View v) {
 		return (v == null || v instanceof GraphView) && KeggAccess.isKEGGAccepted();
 	}
-	
+
 	public int getCurrentStatusValue() {
 		return (int) statusValue;
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		statusValue = value;
 	}
-	
+
 	public double getCurrentStatusValueFine() {
 		return statusValue;
 	}
-	
+
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-	
+
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-	
+
 	public void pleaseStop() {
 		stopTask = true;
 	}
-	
+
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	public void pleaseContinueRun() {
 	}
-	
+
 	@Override
 	public String getTabParentPath() {
 		return "Pathways";

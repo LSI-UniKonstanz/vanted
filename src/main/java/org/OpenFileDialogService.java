@@ -55,6 +55,7 @@ public class OpenFileDialogService implements HelperClass {
 		if (openDialog == null) {
 			openDialog = new JFileChooser();
 		}
+		openDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		openDialog.setMultiSelectionEnabled(false);
 		openDialog.resetChoosableFileFilters();
 		openDialog.setFileFilter(new FileFilter() {
@@ -88,6 +89,7 @@ public class OpenFileDialogService implements HelperClass {
 		if (openDialog == null) {
 			openDialog = new JFileChooser();
 		}
+		openDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		openDialog.resetChoosableFileFilters();
 		openDialog.setMultiSelectionEnabled(false);
 		openDialog.setFileFilter(new FileFilter() {

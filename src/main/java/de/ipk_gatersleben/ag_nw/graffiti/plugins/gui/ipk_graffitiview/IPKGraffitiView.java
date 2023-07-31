@@ -105,6 +105,10 @@ public class IPKGraffitiView extends GraffitiView
 	private static boolean PARAMDEFVAL_DRAW_GRID = false;
 	private static boolean DRAW_GRID;
 	
+	public static String PARAM_GRID_SIZE = "Grid Size";
+	private static int PARAMDEFVAL_GRID_STEP = 50;
+	private static int GRID_STEP;
+	
 	public IPKGraffitiView() {
 		super();
 		// GravistoService.getInstance().addKnownOptionPane(IPKGraffitiView.class,
@@ -121,6 +125,7 @@ public class IPKGraffitiView extends GraffitiView
 		arrayList.add(new IntegerParameter(PARAMDEFVAL_MAX_EDGES, PARAM_MAX_EDGES,
 				"Maximum Edges until antialiasing is turned off"));
 		arrayList.add(new BooleanParameter(PARAMDEFVAL_DRAW_GRID, PARAM_DRAW_GRID, "Enable / Disable grid drawing"));
+		arrayList.add(new IntegerParameter(PARAMDEFVAL_GRID_STEP, 5, 500, PARAM_GRID_SIZE, ""));
 		return arrayList;
 		
 	}
@@ -131,6 +136,7 @@ public class IPKGraffitiView extends GraffitiView
 		MAX_NODES = preferences.getInt(PARAM_MAX_NODES, PARAMDEFVAL_MAX_NODES);
 		MAX_EDGES = preferences.getInt(PARAM_MAX_EDGES, PARAMDEFVAL_MAX_EDGES);
 		DRAW_GRID = preferences.getBoolean(PARAM_DRAW_GRID, PARAMDEFVAL_DRAW_GRID);
+		GRID_STEP = preferences.getInt(PARAM_GRID_SIZE, PARAMDEFVAL_GRID_STEP);
 		
 		/*
 		 * Show changed of preferences immediately Since the method usually is called by
@@ -254,9 +260,9 @@ public class IPKGraffitiView extends GraffitiView
 		logger.debug("physical pixel area visible x: " + visibleRect.getX() + " y: " + visibleRect.getY() + " w: "
 				+ visibleRect.getWidth() + " h: " + visibleRect.getHeight());
 		/*
-		 * create grid every 50 pixles
+		 * expose step parameter, default is 50 pixels
 		 */
-		int STEP = 50;
+		int STEP = GRID_STEP;
 		int startx = 0;// (int) (visibleRect.getX() % STEP);
 		int starty = 0;// (int) (visibleRect.getY() % STEP);
 		int curX = startx;
@@ -271,8 +277,8 @@ public class IPKGraffitiView extends GraffitiView
 			
 			g.drawLine(curX, 0, curX, zoomedheight);
 			
-			if (curX % 100 == 0) {
-				g.drawString("" + curX, curX + 5, (int) ((visibleRect.getY() + 20) / zoom.getScaleX()));
+			if (curX % (2 * STEP) == 0) {
+				g.drawString("" + curX, curX + g.getFontMetrics().charWidth(' '), (int) ((visibleRect.getY() + (int)(STEP * 0.4f)) / (1 / zoom.getScaleY())));
 			}
 			
 			curX += STEP;
@@ -281,8 +287,8 @@ public class IPKGraffitiView extends GraffitiView
 			
 			g.drawLine(0, curY, zoomedwidth, curY);
 			
-			if (curY % 100 == 0) {
-				g.drawString("" + curY, (int) ((visibleRect.getX() + 5) / zoom.getScaleX()), curY + 10);
+			if (curY % (2 * STEP) == 0) {
+				g.drawString("" + curY, (int) ((visibleRect.getX() + (int)(STEP * 0.1f)) / zoom.getScaleX()), curY + g.getFontMetrics().getHeight()); 
 			}
 			
 			curY += STEP;

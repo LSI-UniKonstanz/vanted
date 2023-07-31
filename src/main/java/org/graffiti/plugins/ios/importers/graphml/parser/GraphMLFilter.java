@@ -201,12 +201,12 @@ public class GraphMLFilter extends XMLFilterImpl {
 			// the view will expect a LabelAttribute which requires some hacking
 			// TODO see bug #111 for details.
 			// this if branch should be removable once the bug is resolved.
-			String[] labels = { ".label", ".capacity", ".weight" };
+			String[] labels = { ".label", "label", ".capacity", "capacity", ".weight", "weight" };
 
 			for (int i = 0; i < labels.length; ++i) {
 				if (path.startsWith(labels[i])) {
 					try {
-						String id = labels[i].substring(1);
+						String id = labels[i].replaceFirst(".", "");
 						if (currentAttributable instanceof Node) {
 							LabelAttribute lattr = new NodeLabelAttribute(id);
 							currentAttributable.addAttribute(lattr, "");
@@ -282,15 +282,18 @@ public class GraphMLFilter extends XMLFilterImpl {
 				}
 			} else {
 				logger.fine("writing attribute with value " + value + "\n\tat path " + path + ".");
-				String compath = CompatPathMapping.get(path.toLowerCase());
+				{
+					String compath = CompatPathMapping.get(path.toLowerCase());
+					path = (compath == null) ? path : compath;
+				}
 				String compatValue = CompatValueMapping.get(value.toLowerCase());
-				
+
 				switch (attrCache.getType()) {
 				case AttributeCache.BOOLEAN:
 
 					boolean booleanValue = Boolean.valueOf(value).booleanValue();
 					logger.fine("writing boolean value " + booleanValue + " at path " + path + ".");
-					currentAttributable.setBoolean(compath == null ? path : compath, booleanValue);
+					currentAttributable.setBoolean(path, booleanValue);
 
 					break;
 
@@ -298,7 +301,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 
 					int intValue = Integer.parseInt(value);
 					logger.fine("writing integer value " + intValue + " at path " + path + ".");
-					currentAttributable.setInteger(compath == null ? path : compath, intValue);
+					currentAttributable.setInteger(path, intValue);
 
 					break;
 
@@ -306,7 +309,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 
 					long longValue = Long.parseLong(value);
 					logger.fine("writing long value " + longValue + " at path " + path + ".");
-					currentAttributable.setLong(compath == null ? path : compath, longValue);
+					currentAttributable.setLong(path, longValue);
 
 					break;
 
@@ -315,11 +318,11 @@ public class GraphMLFilter extends XMLFilterImpl {
 					float floatValue = Float.parseFloat(value);
 					logger.fine("writing float value " + floatValue + " at path " + path + ".");
 					try {
-						currentAttributable.setFloat(compath == null ? path : compath, floatValue);
-					} catch(Exception e) {
+						currentAttributable.setFloat(path, floatValue);
+					} catch (Exception e) {
 						logger.fine("trying again, writing double value " + floatValue + " at path " + path + ".");
-						currentAttributable.setDouble(compath == null ? path : compath, floatValue);
-					}					
+						currentAttributable.setDouble(path, floatValue);
+					}
 
 					break;
 
@@ -327,14 +330,12 @@ public class GraphMLFilter extends XMLFilterImpl {
 
 					double doubleValue = Double.parseDouble(value);
 					logger.fine("writing double value " + doubleValue + " at path " + path + ".");
-					currentAttributable.setDouble(compath == null ? path : compath, doubleValue);
+					currentAttributable.setDouble(path, doubleValue);
 					break;
 
 				case AttributeCache.STRING:
 					logger.fine("writing string value " + value + " at path " + path + ".");
-					currentAttributable.setString(compath == null ? path : compath,
-							compatValue == null ? value : compatValue);
-
+					currentAttributable.setString(path, compatValue == null ? value : compatValue);
 					break;
 
 				default:
@@ -342,17 +343,25 @@ public class GraphMLFilter extends XMLFilterImpl {
 
 					break;
 				}
-				// Readability of external/custom attributes
-				if (compath == null)
+				// Readability of (only!) new/unprocessed, top-level attributes: place under resp. type attributes
+				if (!path.contains(AttributeHelper.attributeSeparator)) {
 					if (currentAttributable instanceof Node)
 						AttributeHelper.setNiceId(path, "Node Attributes:" + path);
 					else if (currentAttributable instanceof Edge)
 						AttributeHelper.setNiceId(path, "Edge Attributes:" + path);
 					else if (currentAttributable instanceof Graph)
 						AttributeHelper.setNiceId(path, "Network Attributes:" + path);
+				}
 			}
 		} catch (Exception e) {
+			try {
+				if (path.equals(".weight") || path.equals("weight"))
+					AttributeHelper.setLabel((Edge)currentAttributable, value);
+				return;
+			} catch (Exception e1) { ErrorMsg.addErrorMessage("Failed setting edge label at path: " + path + "."); }
+			
 			ErrorMsg.addErrorMessage("Could not add attribute to path: " + path + ", value: " + value
+					+ " (existing " + AttributeHelper.getAttribute(currentAttributable, path).getValue().getClass().getSimpleName() + ")"
 					+ ", graphelement: "
 					+ (currentAttributable == null ? "null" : currentAttributable.getClass().getSimpleName()) + "<br>"
 					+ "This attribute is pre-defined with a different attribute type. Try changing the attribute name and/or path.");
