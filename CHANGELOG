@@ -1,5 +1,14 @@
 <h3>Changelog</h3>
 
+<h4>Vanted v2.8.8 release (31/07/2023)<h4>
+<ul>
+<li>Bugfix in Open-File dialog after exporting to a website</li>
+<li>Improve KEGG search with organisms and pathways labelling</li>
+<li>New feature: Modify the drawn grid</br>(Edit > Preferences > Views > Network View)</li>
+<li>Fix regression in 2.8.6+ concerning attribute labels (GraphML)</li>
+<li>Improve GraphML import compatibility: recognize certain top-level tags as node/edge labels</li>
+</ul>
+
 <h4>Vanted v2.8.7 release (18/07/2023)<h4>
 <ul>
 <li>Bugfixes for v2.8.6 and improvements in add-ons compatibility</li>
