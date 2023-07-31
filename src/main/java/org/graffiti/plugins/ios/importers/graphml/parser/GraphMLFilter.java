@@ -206,7 +206,7 @@ public class GraphMLFilter extends XMLFilterImpl {
 			for (int i = 0; i < labels.length; ++i) {
 				if (path.startsWith(labels[i])) {
 					try {
-						String id = labels[i].replace(".", "");
+						String id = labels[i].replaceFirst(".", "");
 						if (currentAttributable instanceof Node) {
 							LabelAttribute lattr = new NodeLabelAttribute(id);
 							currentAttributable.addAttribute(lattr, "");
