@@ -201,12 +201,12 @@ public class GraphMLFilter extends XMLFilterImpl {
 			// the view will expect a LabelAttribute which requires some hacking
 			// TODO see bug #111 for details.
 			// this if branch should be removable once the bug is resolved.
-			String[] labels = { ".label", ".capacity", ".weight" };
+			String[] labels = { ".label", "label", ".capacity", "capacity", ".weight", "weight" };
 
 			for (int i = 0; i < labels.length; ++i) {
 				if (path.startsWith(labels[i])) {
 					try {
-						String id = labels[i].substring(1);
+						String id = labels[i].replace(".", "");
 						if (currentAttributable instanceof Node) {
 							LabelAttribute lattr = new NodeLabelAttribute(id);
 							currentAttributable.addAttribute(lattr, "");
@@ -282,9 +282,11 @@ public class GraphMLFilter extends XMLFilterImpl {
 				}
 			} else {
 				logger.fine("writing attribute with value " + value + "\n\tat path " + path + ".");
-				String compath = CompatPathMapping.get(path.toLowerCase());
+				{
+					String compath = CompatPathMapping.get(path.toLowerCase());
+					path = (compath == null) ? path : compath;
+				}
 				String compatValue = CompatValueMapping.get(value.toLowerCase());
-				path = (compath == null) ? path : compath;
 
 				switch (attrCache.getType()) {
 				case AttributeCache.BOOLEAN:
@@ -352,7 +354,14 @@ public class GraphMLFilter extends XMLFilterImpl {
 				}
 			}
 		} catch (Exception e) {
+			try {
+				if (path.equals(".weight") || path.equals("weight"))
+					AttributeHelper.setLabel((Edge)currentAttributable, value);
+				return;
+			} catch (Exception e1) { ErrorMsg.addErrorMessage("Failed setting edge label at path: " + path + "."); }
+			
 			ErrorMsg.addErrorMessage("Could not add attribute to path: " + path + ", value: " + value
+					+ " (existing " + AttributeHelper.getAttribute(currentAttributable, path).getValue().getClass().getSimpleName() + ")"
 					+ ", graphelement: "
 					+ (currentAttributable == null ? "null" : currentAttributable.getClass().getSimpleName()) + "<br>"
 					+ "This attribute is pre-defined with a different attribute type. Try changing the attribute name and/or path.");
