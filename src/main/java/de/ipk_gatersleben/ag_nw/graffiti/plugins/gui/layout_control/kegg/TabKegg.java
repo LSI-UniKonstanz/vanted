@@ -289,11 +289,11 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		});
 		JComponent searchPathway = TableLayout.get3Split(searchLabel, null, searchBox, TableLayout.PREFERRED, 2,
 				TableLayout.FILL);
-		this.add(getOrganismListFromKegg, "1,1");
+		this.add(getOrganismListFromKegg, "1,2");
 		this.add(splitPane, "1,3");
 		splitPane.setDividerLocation((int) organismTreeScroll.getPreferredSize().getHeight());
-		this.add(new JLabel("<html>Data retrieved from the KEGG API is  provided for academic use only by academic users " +
-				"belonging to academic institutions!&emsp;&emsp;<br> "), "1,2");
+		this.add(new JLabel("<html><font size=\"-2\">For academic use by academic users " +
+				"belonging to academic institutions!&emsp;&emsp;<br> "), "1,1");
 		this.add(TableLayout.get3SplitVertical(searchPathway, prettifyLabels, replaceLabels, TableLayout.PREFERRED,
 				TableLayout.PREFERRED, TableLayout.PREFERRED, 2, 2), "1,4");
 		this.validate();
