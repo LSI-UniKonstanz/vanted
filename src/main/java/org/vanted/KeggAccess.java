@@ -45,10 +45,11 @@ public final class KeggAccess {
 				+ "need to also be aware of the remaining license information, listed at VANTED's About (F1) and on the&emsp;&emsp;<br>"
 				+ "VANTED website (www.vanted.org).&emsp;&emsp;<br><br>"
 				+ "VANTED does not distribute information from KEGG, however, it contains functionality for the online-access&emsp;&emsp;<br>"
-				+ "of information from the KEGG website.&emsp;&emsp;<br><br>"
+				+ "of information from the KEGG website.The data from the KEGG API is provided for academic use only by academic users belonging "
+				+ "to academic institutions.&emsp;&emsp;<br><br>"
 				+ "<b>Before these functions can be enabled, you should carefully read the following license information and&emsp;&emsp;<br>"
 				+ "decide for you on using the KEGG-related functions in VANTED. If you choose not to, all other features&emsp;&emsp;<br>"
-				+ "of VANTED are still fully available to you.&emsp;&emsp;<br><br>", TITLE,
+				+ "of VANTED are still fully available to you.  &emsp;&emsp;<br><br>", TITLE,
 				JOptionPane.INFORMATION_MESSAGE);
 		
 		JOptionPane.showMessageDialog(null, "<html><h3>KEGG License Status Evaluation</h3>" + getKEGGLicense(), TITLE,
@@ -135,7 +136,7 @@ public final class KeggAccess {
 	/**
 	 * For compatibility reasons, please do not use!
 	 * 
-	 * @return See {@linkplain askForEnablingKEGG}
+	 * @return See {@linkplain }
 	 */
 	@Deprecated
 	public static int _askForEnablingKEGG() {
