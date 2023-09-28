@@ -7,11 +7,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,21 +23,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -147,7 +129,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		client = Client.create();
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // columns
-				{ border, TableLayout.PREFERRED, TableLayoutConstants.FILL, TableLayout.PREFERRED,
+				{ border, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayoutConstants.FILL, TableLayout.PREFERRED,
 						TableLayout.PREFERRED, border } }; // rows
 		this.setLayout(new TableLayout(size));
 
@@ -308,10 +290,12 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		JComponent searchPathway = TableLayout.get3Split(searchLabel, null, searchBox, TableLayout.PREFERRED, 2,
 				TableLayout.FILL);
 		this.add(getOrganismListFromKegg, "1,1");
-		this.add(splitPane, "1,2");
+		this.add(splitPane, "1,3");
 		splitPane.setDividerLocation((int) organismTreeScroll.getPreferredSize().getHeight());
+		this.add(new JLabel("<html>Data retrieved from the KEGG API is  provided for academic use only by academic users " +
+				"belonging to academic institutions!&emsp;&emsp;<br> "), "1,2");
 		this.add(TableLayout.get3SplitVertical(searchPathway, prettifyLabels, replaceLabels, TableLayout.PREFERRED,
-				TableLayout.PREFERRED, TableLayout.PREFERRED, 2, 2), "1,3");
+				TableLayout.PREFERRED, TableLayout.PREFERRED, 2, 2), "1,4");
 		this.validate();
 	}
 
