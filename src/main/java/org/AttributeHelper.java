@@ -3062,6 +3062,7 @@ public class AttributeHelper implements HelperClass {
 			for (String knownShape : edge_shapes.values()) {
 				if (knownShape.toUpperCase().indexOf(shape.toUpperCase()) >= 0) {
 					ega.setShape(knownShape);
+					System.out.println("Set shape to: " + knownShape);
 					found = true;
 					break;
 				}
