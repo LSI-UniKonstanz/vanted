@@ -91,7 +91,7 @@ public class AdaptagramsLibrary {
 		}
 		// on Mac OS only one fat native library exists for each architecture type
 		if (osName.toLowerCase().contains(availableOSs[2])){
-			ext = macExt;
+			ext = oldMacExt;
 		}
 		
 		// check whether the library can be found
