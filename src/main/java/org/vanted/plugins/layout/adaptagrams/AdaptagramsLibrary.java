@@ -93,10 +93,10 @@ public class AdaptagramsLibrary {
 		if (osName.toLowerCase().contains(availableOSs[2])){
 			if (osArch.toLowerCase().contains("aarch"))
 			{
-				ext = oldMacExt;
+				ext = macExt;
 			} else
 			{
-				ext = macExt;
+				ext = oldMacExt;
 			}
 		}
 		
