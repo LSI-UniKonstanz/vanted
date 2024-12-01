@@ -68,10 +68,12 @@ public class AdaptagramsLibrary {
 		String linuxExt32 = "32.so";
 		String linuxExt64 = "64.so";
 		String macExt = ".dylib";
+		String oldMacExt ="x86.dylib";
 		String osName = System.getProperty("os.name");
 		String ext32 = "";
 		String ext64 = "";
 		String ext = "";
+		String osArch = System.getProperty("os.arch");
 		
 		if (!osName.toLowerCase().contains(availableOSs[0]) && !osName.toLowerCase().contains(availableOSs[1])
 				&& !osName.toLowerCase().contains(availableOSs[2]))
@@ -87,9 +89,16 @@ public class AdaptagramsLibrary {
 			ext32 = linuxExt32;
 			ext64 = linuxExt64;
 		}
-		// on Mac OS only one fat native library exists (for both 32 bit and 64 bit)
-		if (osName.toLowerCase().contains(availableOSs[2]))
-			ext = macExt;
+		// on Mac OS only one fat native library exists for each architecture type
+		if (osName.toLowerCase().contains(availableOSs[2])){
+			if (osArch.toLowerCase().contains("aarch"))
+			{
+				ext = oldMacExt;
+			} else
+			{
+				ext = macExt;
+			}
+		}
 		
 		// check whether the library can be found
 		if (!ext32.isEmpty() && !ext64.isEmpty() && !(new File(libraryPath + libraryName + ext32)).exists()
