@@ -12,7 +12,8 @@ import java.util.Objects;
  * Access adapter for the Biomodels Webservice client.
  * 
  * @author matthiak
- * @vanted.revision 2.8.3
+ * @vanted.revision 2.8.3 @author niklas-groene
+ *
  */
 public class BiomodelsAccessAdapter {
 
@@ -75,10 +76,9 @@ public class BiomodelsAccessAdapter {
 		List<SimpleModel> resultSimpleModels;
 		StringBuilder queryRequestString = new StringBuilder();
 		String and = "%20AND%20";
-		String param = "&numResults=100";
-		for (int i = 0; i < type.length; i++){
-			if (query[i] != null && !Objects.equals(query[i], "")){
-				if (i > 0){
+		for (int i = 0; i < type.length && i < query.length; i++){
+			if (query[i] != null && !Objects.equals(query[i].trim(), "")){
+				if (queryRequestString.length() > 0){
 					queryRequestString.append(and);
 				}
 
@@ -89,10 +89,10 @@ public class BiomodelsAccessAdapter {
 						break;
 					case TAXONOMY:
 						String cleanedTAXONOMY = query[i].toUpperCase().replaceAll("TAXONOMY:","");
-						queryRequestString.append("TAXONOMY%3A").append("*").append(cleanedTAXONOMY).append("*");
+						queryRequestString.append("TAXONOMY%3A").append(cleanedTAXONOMY);
 						break;
 					case CHEBI:
-						queryRequestString.append("CHEBI%3ACHEBI%3A").append("*").append(queryNoLetter).append("*");
+						queryRequestString.append("CHEBI%3ACHEBI%3A").append(queryNoLetter);
 						break;
 					case PERSON:
 						String cleaned = query[i].replaceAll(" ", "%20");
@@ -103,14 +103,15 @@ public class BiomodelsAccessAdapter {
 						queryRequestString.append("GO%3AGO%3A").append(queryNoLetter).append("*");
 						break;
 					case PUBLICATION:
-						queryRequestString.append("publication%3A(").append("*").append(query[i]).append("*").append(")");
+						String cleanedPub = query[i].replaceAll(" ", "%20");
+						queryRequestString.append("publication%3A%22").append("*").append(cleanedPub).append("*").append("%22");
 						break;
 					case UNIPROT:
 						String queryCleanedU = query[i].toUpperCase().replaceAll("UNIPROT:*P*","");
 						queryRequestString.append("UNIPROT%3AP*").append(queryCleanedU).append("*");
 						break;
 					case BIOMODELID:
-						queryRequestString.append("BIOMD*").append(queryNoLetter).append("*").append(param);
+						queryRequestString.append("BIOMD*").append(queryNoLetter).append("*");
 						break;
 					case PUBMED:
 						queryRequestString.append("PUBMED%3A%22").append(queryNoLetter).append("%22");
@@ -124,16 +125,17 @@ public class BiomodelsAccessAdapter {
 						break;
 					case ENSEMBL:
 						String cleanedEn = query[i].toUpperCase().replaceAll("ENSEMBL","");
-						queryRequestString.append("ENSEMBL%3A*").append(cleanedEn).append("*");
+						queryRequestString.append("ENSEMBL%3A").append(cleanedEn);
 						break;
 					default:
 				}
 			}
 		}
-		//Testing of the HTML Request String
-		System.out.println(queryRequestString);
+		if (queryRequestString.length() == 0) {
+			notifyResultSimpleModelListeners(new ArrayList<>());
+			return;
+		}
 
-		queryRequestString.append(param);
 		resultSimpleModels = RestApiBiomodels.searchForModels(String.valueOf(queryRequestString));
 		notifyResultSimpleModelListeners(resultSimpleModels);
 
@@ -148,7 +150,7 @@ public class BiomodelsAccessAdapter {
 	}
 	
 	public boolean isAvailable() {
-		return Objects.equals(RestApiBiomodels.helloBioModels(), "Hello BioModels");
+		return RestApiBiomodels.isServiceAvailable();
 	}
 
 	/**

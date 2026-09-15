@@ -23,6 +23,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 /**
  * Simple Model of a model from the Biomodels database, used to collect important meta-data for later
  * use.
+ * @author niklas-groene
  * @vanted.revision 2.8.3
  */
 
@@ -32,6 +33,7 @@ public class SimpleModel
     private final String name;
     private String submitter;
     private String lastModificationDate;
+    private String format;
 
 
     /**
@@ -55,9 +57,24 @@ public class SimpleModel
      */
     public SimpleModel(String id, String name, String submitter, String lastModificationDate)
     {
+        this(id, name, submitter, lastModificationDate, null);
+    }
+
+
+    /**
+     * Constructor (builds a complete object including the model format).
+     * @param id model identifier (e.g. BIOMD0000000300)
+     * @param name model name
+     * @param submitter name of the submitter
+     * @param lastModificationDate date of last modification (expressed according to ISO 8601, e.g. "2012-01-19T19:22:15+00:00")
+     * @param format the model format (e.g. "SBML")
+     */
+    public SimpleModel(String id, String name, String submitter, String lastModificationDate, String format)
+    {
         this.id = id;
         this.name = name;
         this.submitter = submitter;
+        this.format = format;
 
         try
         {
@@ -132,7 +149,7 @@ public class SimpleModel
         } else if (!name.equals(other.name)) {
             return false;
         }
-        return false;
+        return true;
     }
 
 
@@ -185,6 +202,37 @@ public class SimpleModel
     public String getSubmitter()
     {
         return this.submitter;
+    }
+
+
+    /**
+     * Get the model format (e.g. "SBML").
+     * @return the format, or {@code null} if unknown
+     */
+    public String getFormat()
+    {
+        return this.format;
+    }
+
+
+    /**
+     * Whether the model is manually curated. BioModels uses the {@code BIOMD} identifier prefix
+     * for curated models and {@code MODEL} for non-curated ones.
+     * @return {@code true} if the model is manually curated
+     */
+    public boolean isCurated()
+    {
+        return this.id != null && this.id.startsWith("BIOMD");
+    }
+
+
+    /**
+     * Readable curation status.
+     * @return "Curated" or "Non-curated"
+     */
+    public String getCurationStatus()
+    {
+        return isCurated() ? "Curated" : "Non-curated";
     }
 }
 

@@ -5,172 +5,192 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * API for establishing a connection to the Biomodels database with the functionality of retrieving Simple Models
+ * API for establishing a connection to the BioModels database with the functionality of retrieving Simple Models
  * and SBML Models.
+ *
  * @author niklas-groene
  * @since 2.8.3
- *
  */
+public class RestApiBiomodels {
 
-public class RestApiBiomodels
-{
+	/** Base URL of the BioModels web service. */
+	private static final String BASE_URL = "https://www.biomodels.org/";
 
-    private static HttpURLConnection connection;
-    public String path;
-    public String format;
-    public int status;
-    public String filename;
+	/** Page size used when paginating through search results. */
+	private static final int PAGE_SIZE = 100;
 
-    public String fetchData()
-    {
+	/** Connection timeout in milliseconds. */
+	private static final int TIMEOUT_MS = 30000;
 
-        StringBuilder responseContent = null;
-        try
-        {
-            BufferedReader reader;
-            String line;
-            responseContent = new StringBuilder();
-            URL url = new URL("https://www.ebi.ac.uk/biomodels/" + path);
-            connection = (HttpURLConnection) url.openConnection();
+	private HttpURLConnection connection;
+	private String path;
+	private String format;
+	private int status;
+	private String filename;
 
-            //Request setup
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("accept", "application/"+format);
-            connection.setConnectTimeout(100000); //in ms
-            connection.setReadTimeout(100000); //in ms
-            if (filename != null)
-            {
-                connection.setRequestProperty("filename",filename);
-            }
+	/**
+	 * Performs the HTTP GET request configured via {@link #setPath(String)} and
+	 * {@link #setFormat(String)} and returns the response body.
+	 *
+	 * @return the response body, or an empty string if the request could not be completed
+	 */
+	public String fetchData() {
+		StringBuilder responseContent = new StringBuilder();
+		try {
+			URL url = new URL(BASE_URL + (path == null ? "" : path));
+			connection = (HttpURLConnection) url.openConnection();
 
-            status = connection.getResponseCode();
+			connection.setRequestMethod("GET");
+			if (format != null) {
+				connection.setRequestProperty("accept", "application/" + format);
+			}
+			connection.setConnectTimeout(TIMEOUT_MS);
+			connection.setReadTimeout(TIMEOUT_MS);
+			connection.setInstanceFollowRedirects(true);
+			if (filename != null) {
+				connection.setRequestProperty("filename", filename);
+			}
 
-            if (status > 299)
-            {
-                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-                while ((line = reader.readLine()) != null)
-                {
-                    responseContent.append(line);
-                }
-                reader.close();
-            } else {
-                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                while ((line = reader.readLine()) != null)
-                {
-                    responseContent.append(line);
-                }
-            }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        } finally
-        {
-            connection.disconnect();
-        }
-        return responseContent.toString();
-    }
+			status = connection.getResponseCode();
 
-    public void setPath(String path)
-    {
-        this.path = path;
-    }
+			InputStream stream = (status > 299) ? connection.getErrorStream() : connection.getInputStream();
+			if (stream != null) {
+				try (BufferedReader reader = new BufferedReader(
+						new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+					String line;
+					while ((line = reader.readLine()) != null) {
+						responseContent.append(line);
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+		return responseContent.toString();
+	}
 
-    public void setFormat(String format)
-    {
-        this.format = format;
-    }
+	public void setPath(String path) {
+		this.path = path;
+	}
 
-    public void setFilename(String filename)
-    {
-        this.filename = filename;
-    }
+	public void setFormat(String format) {
+		this.format = format;
+	}
 
-    /**
-     * Checks if the web services are working properly.
-     * @return "Hello BioModels", if the call is a success
-     */
-    public static String helloBioModels()
-    {
-        RestApiBiomodels call = new RestApiBiomodels();
-        call.fetchData();
-        if (call.status < 299){
-            return "Hello BioModels";
-        } else {
-            return null;
-        }
-    }
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 
-    /**
-     * Retrieves the SBML form of a model (in a string) given its identifier.
-     * @param id model identifier (e.g. BIOMD0000000408 or MODEL1201250000)
-     * @return SBML model in a string, or 'null' if the provided identifier is not valid or the model does not exist
-     */
-    public static String getModelSBMLById(String id)
-    {
-        RestApiBiomodels call = new RestApiBiomodels();
-        call.setPath(id);
-        call.setFormat("json");
-        String responds = call.fetchData();
-        JSONObject data = new JSONObject(responds);
-        JSONObject files = data.getJSONObject("files");
-        JSONArray main = files.getJSONArray("main");
-        JSONObject fileNameJ = new JSONObject(main.get(0).toString());
-        String filename = fileNameJ.getString("name");
+	/**
+	 * Checks whether the BioModels web service is reachable by issuing a lightweight search request.
+	 *
+	 * @return {@code true} if the service responds with a success status code
+	 */
+	public static boolean isServiceAvailable() {
+		RestApiBiomodels call = new RestApiBiomodels();
+		call.setFormat("json");
+		call.setPath("search?query=*&numResults=1");
+		call.fetchData();
+		return call.status >= 200 && call.status < 300;
+	}
 
+	/**
+	 * Retrieves the SBML form of a model (as a string) given its identifier.
+	 *
+	 * @param id model identifier (e.g. BIOMD0000000408 or MODEL1201250000)
+	 * @return SBML model as a string, or {@code null} if the provided identifier is not valid or the model does not exist
+	 */
+	public static String getModelSBMLById(String id) {
+		RestApiBiomodels call = new RestApiBiomodels();
+		call.setPath(id);
+		call.setFormat("json");
+		String response = call.fetchData();
+		if (response.isEmpty() || call.status > 299) {
+			return null;
+		}
 
-        call.setPath("model/download/"+id+"?filename="+filename);
-        call.setFormat("octet-stream");
-        return call.fetchData();
-    }
-    /**
-     * Calls to the database, for a given HTTP request and creates a Simple Model of all models found in the Database.
-     * @param searchParameter part of the HTTP request for searching the right Models
-     * @return Returns a List of all Simple Models associated with the request.
-     */
-    public static List<SimpleModel> searchForModels(String searchParameter){
-        RestApiBiomodels call = new RestApiBiomodels();
-        call.setFormat("json");
-        call.setPath("search?query="+searchParameter);
-        String responds = call.fetchData();
-        JSONObject data = new JSONObject(responds);
-        int range = data.getInt("matches");
-        System.out.println(range);
-        ArrayList<SimpleModel> simpleModels = new ArrayList<>();
-        for (int i = 0; i < range; i+=100){
-            if (i != 0)
-            {
-                String offset = "&offset=" + i;
-                call.setPath("search?query="+searchParameter+offset);
-                responds = call.fetchData();
-                data = new JSONObject(responds);
-            }
-            JSONArray models = data.getJSONArray("models");
-            for (int j = i; j < models.length()+i; j++)
-            {
-                SimpleModel model;
-                JSONObject getInformation = new JSONObject(models.get(j-i).toString());
-                String iD = getInformation.getString("id");
-                String lastModified = getInformation.getString("lastModified");
-                String name = getInformation.getString("name");
-                String submitter = getInformation.getString("submitter");
+		JSONObject data = new JSONObject(response);
+		JSONObject files = data.optJSONObject("files");
+		if (files == null) {
+			return null;
+		}
+		JSONArray main = files.optJSONArray("main");
+		if (main == null || main.isEmpty()) {
+			return null;
+		}
+		String filename = main.getJSONObject(0).optString("name", null);
+		if (filename == null) {
+			return null;
+		}
 
-                model = new SimpleModel(
-                        iD,
-                        name,
-                        submitter,
-                        lastModified
-                );
-                simpleModels.add(model);
-            }
-        }
-        return simpleModels;
-    }
+		call.setPath("model/download/" + id + "?filename=" + filename);
+		call.setFormat("octet-stream");
+		String sbml = call.fetchData();
+		return (call.status > 299 || sbml.isEmpty()) ? null : sbml;
+	}
+
+	/**
+	 * Queries the database for a given search expression and builds a {@link SimpleModel} for every match,
+	 * transparently paginating through all result pages.
+	 *
+	 * @param searchParameter the (already URL-encoded) value of the {@code query} parameter
+	 * @return a list of all simple models matching the request (never {@code null})
+	 */
+	public static List<SimpleModel> searchForModels(String searchParameter) {
+		ArrayList<SimpleModel> simpleModels = new ArrayList<>();
+
+		RestApiBiomodels call = new RestApiBiomodels();
+		call.setFormat("json");
+
+		int offset = 0;
+		int matches = Integer.MAX_VALUE;
+		while (offset < matches) {
+			call.setPath("search?query=" + searchParameter + "&numResults=" + PAGE_SIZE + "&offset=" + offset);
+			String response = call.fetchData();
+			if (response.isEmpty() || call.status > 299) {
+				break;
+			}
+
+			JSONObject data = new JSONObject(response);
+			matches = data.optInt("matches", 0);
+			JSONArray models = data.optJSONArray("models");
+			if (models == null || models.isEmpty()) {
+				break;
+			}
+
+			for (int i = 0; i < models.length(); i++) {
+				JSONObject info = models.getJSONObject(i);
+				String id = info.optString("id", null);
+				if (id == null) {
+					continue;
+				}
+				String name = info.optString("name", "(unnamed model)");
+				String submitter = info.optString("submitter", "");
+				// search results expose submissionDate; lastModified is often null
+				String modified = info.optString("lastModified", null);
+				if (modified == null || modified.isEmpty()) {
+					modified = info.optString("submissionDate", null);
+				}
+				String format = info.optString("format", "");
+
+				simpleModels.add(new SimpleModel(id, name, submitter, modified, format));
+			}
+
+			offset += models.length();
+		}
+		return simpleModels;
+	}
 }
