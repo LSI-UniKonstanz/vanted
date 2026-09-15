@@ -13,7 +13,6 @@ import java.util.HashMap;
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
-import org.ReleaseInfo;
 import org.Vector2d;
 import org.adaptagrams.ConnRef;
 import org.adaptagrams.ConnType;
@@ -46,8 +45,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 public class EdgeRoutingAlgorithm extends AbstractAlgorithm {
 	
 	private static boolean isLayoutLibraryLoaded = false;
-	// the native Adaptagrams libraries are expected in the Vanted home directory
-	private static String libraryPath = ReleaseInfo.getAppSubdirFolderWithFinalSep("plugins", "Adaptagrams");
 	
 	private final static String[] phaseDescriptions = new String[] { // descriptions for the different routing phases
 			"Building orthogonal visibility graph in x-dimension ...",
@@ -84,7 +81,7 @@ public class EdgeRoutingAlgorithm extends AbstractAlgorithm {
 		if (this.graph == null || this.graph.getNumberOfEdges() == 0)
 			preconditionException.add("No graph available or graph doesn't contain any edges!");
 		if (!isLayoutLibraryLoaded) {
-			String errorMessage = AdaptagramsLibrary.loadLibrary("adaptagrams", libraryPath);
+			String errorMessage = AdaptagramsLibrary.loadLibrary();
 			if (errorMessage.isEmpty())
 				isLayoutLibraryLoaded = true;
 			else

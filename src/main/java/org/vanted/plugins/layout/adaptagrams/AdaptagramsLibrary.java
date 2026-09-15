@@ -5,17 +5,43 @@
  */
 package org.vanted.plugins.layout.adaptagrams;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+import org.ReleaseInfo;
 
 /**
+ * Loads the native Adaptagrams JNI library shipped inside adaptagrams.jar.
+ * <p>
+ * The jar carries one shared library per platform below
+ * <code>native/&lt;os&gt;-&lt;arch&gt;/</code>, named the way
+ * {@link System#mapLibraryName(String)} expects it. A shared library cannot be
+ * loaded out of a jar, so the matching file is unpacked into the Vanted user
+ * folder once and loaded from there.
+ *
  * @author Tobias Czauderna
  */
 public class AdaptagramsLibrary {
-
+	
 	/**
 	 * Version of the Adaptagrams library in Vanted
 	 */
 	public static final String VERSION = "1.1";
+	
+	private static final String LIBRARY_NAME = "adaptagrams";
+	
+	/**
+	 * Layout used by adaptagrams.jar before 2026, kept so that an older jar keeps
+	 * working.
+	 */
+	private static final String LEGACY_FOLDER = "libs";
+	
+	private static boolean loaded = false;
 	
 	/**
 	 * Return the version of the Adaptagrams library in Vanted.
@@ -29,124 +55,143 @@ public class AdaptagramsLibrary {
 	}
 	
 	/**
-	 * Return the names of the native Adaptagrams libraries for the different
-	 * operating systems. There is one library for Windows and one library 
-	 * for Linux. There are two libraries for for MacOS (x64 and arm64).
-	 * 
-	 * @return library names for the different operating systems
+	 * Unpack and load the native Adaptagrams layout library for the current
+	 * platform. Repeated calls are cheap, the library is loaded once per JVM.
+	 *
+	 * @return empty string on success, otherwise a message describing what failed
 	 */
-	public static String[] getLibraryNames() {
+	public static synchronized String loadLibrary() {
 		
-		// the layout library is available on Windows, Linux, and Mac OS (x64 and arm64)
-		String[] availableOSs = new String[] { "windows", "linux", "mac" };
-		String osName = System.getProperty("os.name");
-		String[] libraryNames = null;
-		if (osName.toLowerCase().contains(availableOSs[0]))
-			libraryNames = new String[] { "adaptagrams.dll" };
-		else if (osName.toLowerCase().contains(availableOSs[1]))
-			libraryNames = new String[] { "adaptagrams.so" };
-		else if (osName.toLowerCase().contains(availableOSs[2]))
-			libraryNames = new String[] { "adaptagramsx64.dylib", "adaptagramsaarch64.dylib" };
-		return libraryNames;
+		if (loaded)
+			return "";
+		
+		String platform = getPlatform();
+		if (platform == null)
+			return "Layout library not available for " + System.getProperty("os.name") + " ("
+					+ System.getProperty("os.arch") + ")!";
+		
+		String fileName = System.mapLibraryName(LIBRARY_NAME);
+		String resource = "native/" + platform + "/" + fileName;
+		ClassLoader classLoader = AdaptagramsLibrary.class.getClassLoader();
+		if (classLoader.getResource(resource) == null) {
+			// older adaptagrams.jar
+			String legacyResource = getLegacyResource(platform);
+			if (legacyResource == null || classLoader.getResource(legacyResource) == null)
+				return "Could not find " + resource + " in adaptagrams.jar!";
+			resource = legacyResource;
+			fileName = legacyResource.substring(legacyResource.lastIndexOf('/') + 1);
+		}
+		
+		try {
+			Path libraryFile = unpack(classLoader, resource, platform, fileName);
+			String path = libraryFile.toAbsolutePath().toString();
+			// The jar carries its own loader (org.adaptagrams.NativeLoader), which runs
+			// from the static initializer of the SWIG class and would otherwise unpack a
+			// second copy into a temp folder. This property points it at the file
+			// unpacked here; its System.load on the same path is then a no-op.
+			System.setProperty("adaptagrams.library.path", path);
+			System.load(path);
+			loaded = true;
+			return "";
+		} catch (IOException ioException) {
+			return "Could not unpack the layout library:<br>" + ioException.getMessage();
+		} catch (UnsatisfiedLinkError unsatisfiedLinkError) {
+			return "Could not load the layout library:<br>" + unsatisfiedLinkError.getMessage();
+		}
 		
 	}
 	
 	/**
-	 * Load native Adaptagrams layout library. Tries to load the layout library from
-	 * the working directory.
-	 * 
-	 * @param libraryName
-	 *           name of the library
-	 * @return error message
+	 * Copy the library out of the jar into the Vanted user folder, into a
+	 * per-platform subfolder so that a home directory shared between machines
+	 * doesn't mix up architectures. Copies only if the file is missing or differs
+	 * in size, unpacking tens of megabytes on every start would be wasteful.
+	 *
+	 * @param classLoader
+	 *           class loader holding the jar
+	 * @param resource
+	 *           path of the library within the jar
+	 * @param platform
+	 *           platform key, e.g. linux-x86_64
+	 * @param fileName
+	 *           name of the library file
+	 * @return path of the unpacked library
+	 * @throws IOException
+	 *            if the library cannot be read or written
 	 */
-	public static String loadLibrary(String libraryName) {
+	private static Path unpack(ClassLoader classLoader, String resource, String platform, String fileName)
+			throws IOException {
 		
-		String libraryPath = System.getProperty("user.dir").replace("\\", "/") + "/";
-		return loadLibrary(libraryName, libraryPath);
+		Path folder = Paths.get(ReleaseInfo.getAppSubdirFolderWithFinalSep("plugins", "Adaptagrams"), platform);
+		Files.createDirectories(folder);
+		Path libraryFile = folder.resolve(fileName);
+		
+		URL url = classLoader.getResource(resource);
+		long size = url.openConnection().getContentLengthLong();
+		if (Files.exists(libraryFile) && size >= 0 && Files.size(libraryFile) == size)
+			return libraryFile;
+		
+		try (InputStream inputStream = classLoader.getResourceAsStream(resource)) {
+			if (inputStream == null)
+				throw new IOException("Could not read " + resource + " from adaptagrams.jar!");
+			Files.copy(inputStream, libraryFile, StandardCopyOption.REPLACE_EXISTING);
+		}
+		return libraryFile;
 		
 	}
 	
 	/**
-	 * Load native Adaptagrams layout library.
-	 * 
-	 * @param libraryName
-	 *           name of the library
-	 * @param libraryPath
-	 *           path to the library
-	 * @return error message
+	 * Return the platform key for the running JVM, matching the folder names in
+	 * adaptagrams.jar.
+	 *
+	 * @return platform key, e.g. mac-aarch64, or null if the platform is not
+	 *         supported
 	 */
-	public static String loadLibrary(String libraryName, String libraryPath) {
+	private static String getPlatform() {
 		
-		// the layout library is available on x64 (Windows, Linux, MacOS) and arm64 architectures (MacOS)
-		String[] availableArchitectures = new String[] { "amd64", "x64", "x86_64", "aarch64" };
-		String osArch = System.getProperty("os.arch");
-		// the layout library is available on Windows, Linux, and Mac OS
-		String[] availableOSs = new String[] { "windows", "linux", "mac" };
-		String windowsExt = ".dll";
-		String linuxExt = ".so";
-		// two libraries are available for MacOS (x64 and arm64)
-		String macExtx64 = "x64.dylib";
-		String macExtaarch64 = "aarch64.dylib";
-		String ext = "";
-		String extx64 = "";
-		String extaarch64 = "";
-		String osName = System.getProperty("os.name");
+		String osName = System.getProperty("os.name", "").toLowerCase();
+		String osArch = System.getProperty("os.arch", "").toLowerCase();
 		
-		// for debugging
-		// System.out.println("Current architecture: \"" + osArch + "\"");
-		// System.out.println("Current OS: \"" + osName + "\"");
+		String os;
+		if (osName.contains("windows"))
+			os = "windows";
+		else if (osName.contains("linux"))
+			os = "linux";
+		else if (osName.contains("mac"))
+			os = "mac";
+		else
+			return null;
 		
-		// check whether the library is available for OS
-		if (!osName.toLowerCase().contains(availableOSs[0]) && !osName.toLowerCase().contains(availableOSs[1]) && !osName.toLowerCase().contains(availableOSs[2]))
-			return "Layout library not available for " + osName + "!";
+		String arch;
+		if (osArch.equals("amd64") || osArch.equals("x86_64") || osArch.equals("x64"))
+			arch = "x86_64";
+		else if (osArch.equals("aarch64") || osArch.equals("arm64"))
+			arch = "aarch64";
+		else
+			return null;
 		
-		// check whether the library is available for architecture
-		if (!osArch.toLowerCase().contains(availableArchitectures[0]) && !osArch.toLowerCase().contains(availableArchitectures[1]) && !osArch.toLowerCase().contains(availableArchitectures[2]))
-			return "Layout library not available for " + osName + "!";
+		return os + "-" + arch;
 		
-		if (osName.toLowerCase().contains(availableOSs[0]))
-			ext = windowsExt;
-		else if (osName.toLowerCase().contains(availableOSs[1]))
-			ext = linuxExt;
-		else if (osName.toLowerCase().contains(availableOSs[2])) {
-			extx64 = macExtx64;
-			extaarch64 = macExtaarch64;
-		}
+	}
+	
+	/**
+	 * Return the library path within an older adaptagrams.jar.
+	 *
+	 * @param platform
+	 *           platform key
+	 * @return path within the jar, or null if that jar never carried the platform
+	 */
+	private static String getLegacyResource(String platform) {
 		
-		// check whether the library can be found
-		if (!ext.isEmpty() && !(new File(libraryPath + libraryName + ext)).exists())
-			return "Could not find " + libraryName + ext + " in<br>" + libraryPath;
-		else if (!extx64.isEmpty() && !extaarch64.isEmpty() && !(new File(libraryPath + libraryName + extx64)).exists() && !(new File(libraryPath + libraryName + extaarch64)).exists())
-			return "Could not find " + libraryName + extx64 + " or " + libraryName + extaarch64 + " in<br>" + libraryPath;
-		
-		String errorMessage = "";
-		// try to load library
-		if (!ext.isEmpty())
-			try {
-				System.load(libraryPath + libraryName + ext);
-			} catch (UnsatisfiedLinkError unsatisfiedLinkError) {
-				errorMessage = unsatisfiedLinkError.getMessage();
-			}
-		// try to load both versions of the library on MacOS if necessary
-		else if (!extx64.isEmpty() && !extaarch64.isEmpty()) {
-			boolean tryaarch64 = true;
-			if ((new File(libraryPath + libraryName + extx64)).exists())
-				try {
-					System.load(libraryPath + libraryName + extx64);
-					tryaarch64 = false;
-				} catch (UnsatisfiedLinkError unsatisfiedLinkError) {
-					errorMessage = unsatisfiedLinkError.getMessage();
-				}
-			if (tryaarch64 && (new File(libraryPath + libraryName + extaarch64)).exists())
-				try {
-					System.load(libraryPath + libraryName + extaarch64);
-					errorMessage = "";
-				} catch (UnsatisfiedLinkError unsatisfiedLinkError) {
-					errorMessage = errorMessage + "<br>" + unsatisfiedLinkError.getMessage();
-				}
-		}
-		
-		return errorMessage;
+		if (platform.startsWith("windows"))
+			return LEGACY_FOLDER + "/" + LIBRARY_NAME + ".dll";
+		if (platform.startsWith("linux"))
+			return LEGACY_FOLDER + "/" + LIBRARY_NAME + ".so";
+		if (platform.equals("mac-x86_64"))
+			return LEGACY_FOLDER + "/" + LIBRARY_NAME + "x64.dylib";
+		if (platform.equals("mac-aarch64"))
+			return LEGACY_FOLDER + "/" + LIBRARY_NAME + "aarch64.dylib";
+		return null;
 		
 	}
 	
