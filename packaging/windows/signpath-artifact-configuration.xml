@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Artifact configuration of the SignPath project "vanted". SignPath does not
+  read it from the repository; it is entered in the SignPath project.
+
+  release.yml uploads vanted-install.exe as a GitHub artifact (zipped), hence
+  <zip-file>. Product name and version are set by launch4j
+  (packaging/launch4j/vanted-l4j.xml) and verified here; release.yml passes
+  the version as parameter "version". launch4j writes the version both as
+  text (2.9.0) and numeric (2.9.0.0); if SignPath rejects the first request,
+  use "${version}.0".
+-->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <parameters>
+    <parameter name="version" />
+  </parameters>
+  <zip-file>
+    <pe-file path="vanted-install.exe"
+             product-name="VANTED"
+             product-version="${version}"
+             company-name="University of Konstanz">
+      <authenticode-sign />
+    </pe-file>
+  </zip-file>
+</artifact-configuration>

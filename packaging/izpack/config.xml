@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<izpack:installation version="5.0"
+                     xmlns:izpack="http://izpack.org/schema/installation"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
+          <!-- @{name} is substituted by Maven when staging; ${...} are
+               IzPack variables resolved at install time. -->
+          <info>
+            <appname>@{product.name}</appname>
+            <appversion>@{vanted.version}</appversion>
+	    <authors>
+	    	<author name="Life Science Informatics, University of Konstanz" email="feedback@vanted.org"/>
+	    </authors>
+	    <url>@{app.website}</url>
+            <run-privileged condition="izpack.windowsinstall"/>
+			<uninstaller name="uninstaller.jar" path="${INSTALL_PATH}/uninstaller" write="yes"/>
+	    <uninstaller condition="izpack.linuxinstall" name="uninstaller.jar" path="${INSTALL_PATH}/uninstaller" write="yes"/>
+        
+          </info>
+
+
+          <guiprefs width="600" height="480" resizable="no">
+          </guiprefs>
+          <locale>
+            <langpack iso3="eng"/>
+          </locale>
+
+          <!-- Need to define ant properties we want to use during install as variables -->
+          <variables>
+          	<variable name="app.name" value="@{product.name}"/>
+          </variables>
+	  <natives>
+	  	<native type="izpack" name="ShellLink.dll"/>
+	  	<native type="izpack" name="ShellLink_x64.dll"/>
+	  	<native type="3rdparty" name="COIOSHelper.dll" stage="both">
+			<os family="windows"/>
+		</native>
+	  	<native type="3rdparty" name="COIOSHelper_x64.dll" stage="both">
+			<os family="windows"/>
+		</native>
+	  </natives>
+
+	  <resources>
+		  <res id="shortcutSpec.xml" src="shortcutSpec.xml"/>
+		  <res id="CustomLangPack.xml_eng" src="CustomLangPack.xml_eng"/>
+		  <res id="packsLang.xml_eng" src="packsLang.xml_eng"/>
+	  </resources>
+	  
+	  <listeners>
+	  	<listener classname="RegistryInstallerListener" stage="install">
+          		<os family="windows"/>
+		</listener>
+	  	<listener classname="RegistryUninstallerListener" stage="uninstall">
+          		<os family="windows"/>
+	  	</listener>
+    	  </listeners>
+
+          <panels>
+            <panel classname="HelloPanel"/>
+            <panel classname="TargetPanel"/>
+            <!-- <panel classname="org.vanted.installer.izpack.panel.UninstallPanel"/>  in IzPack5: InvocationTargetException-->
+            <panel classname="PacksPanel"/>
+            <panel classname="InstallPanel"/>
+            <panel classname="ShortcutPanel"/>
+            <panel classname="SimpleFinishPanel"/>
+          </panels>
+
+	  <!-- <jar src="../tools/IzPack/lib/bin/panels/UninstallPanel.jar"/> -->
+
+          <packs>
+            <pack name="Main Application Linux" required="yes" preselected="yes" installGroups="New Application" os="unix">
+              <description>Vanted is an open-source Java-based extendable network visualisation and analysis tool with focus on applications in the life sciences.</description>
+		<fileset dir="vanted-package" targetdir="$INSTALL_PATH">              
+			<include name="**/*"/>
+	        </fileset>      
+              <file src="files-for-installer/vanted_logo.ico" targetdir="$INSTALL_PATH"/>
+	      <file src="files-for-installer/starter.sh" targetdir="$INSTALL_PATH"/>
+              <file src="files-for-installer/vanted.desktop" targetdir="$INSTALL_PATH"/>
+	      <file src="files-for-installer/oninstall.sh" targetdir="$INSTALL_PATH"/>
+	      
+		<parsable targetfile="$INSTALL_PATH/vanted.desktop"/>
+		<parsable targetfile="$INSTALL_PATH/oninstall.sh"/>
+              <executable
+                targetfile="$INSTALL_PATH/oninstall.sh"
+                stage="postinstall"
+                keep="true"
+              >
+              </executable>
+
+	      <updatecheck>
+  		<include name="core-libs/**"/>
+	      </updatecheck>
+            </pack>
+            
+	    <pack name="Main Application Windows" required="yes" preselected="yes" installGroups="New Application" os="windows">
+              <description>Vanted is an open-source Java-based extendable network visualisation and analysis tool with focus on applications in the life sciences.</description>
+              
+              <file src="files-for-installer/vanted_logo.ico" targetdir="$INSTALL_PATH"/>
+              <file src="files-for-installer/starter.cmd" targetdir="$INSTALL_PATH"/>
+	      <fileset dir="vanted-package" targetdir="$INSTALL_PATH"> 
+                        <include name="**/*"/>
+                </fileset> 
+              <!-- Java runtime to runtime\, filled in by the Maven profile
+                   windows-runtime, empty otherwise. -->
+              @{windows.runtime.fileset}
+		</pack>	
+
+          </packs>
+</izpack:installation>
+

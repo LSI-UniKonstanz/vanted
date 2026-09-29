@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.vanted</groupId>
+  <artifactId>vanted-packaging</artifactId>
+  <version>1</version>
+  <packaging>pom</packaging>
+  <name>VANTED packaging</name>
+  <description>
+    Builds the IzPack installer and the Windows launcher from an assembled
+    VANTED directory. Compiles nothing itself.
+  </description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <izpack.version>5.1.3</izpack.version>
+    <launch4j.plugin.version>2.6.0</launch4j.plugin.version>
+
+    <!-- Set on the command line, see README.md -->
+    <vanted.version>0.0.0</vanted.version>
+    <vanted.build>0</vanted.build>
+    <vanted.package.dir>${project.basedir}/../dist</vanted.package.dir>
+
+    <product.name>VANTED</product.name>
+    <app.website>http://vanted.org</app.website>
+
+    <staging.dir>${project.build.directory}/staging</staging.dir>
+    <installer.jar>${project.build.directory}/vanted-${vanted.version}-install.jar</installer.jar>
+    <installer.exe>${project.build.directory}/vanted-${vanted.version}-install.exe</installer.exe>
+    <icon.file>${staging.dir}/vanted_logo.ico</icon.file>
+    <splash.file>${staging.dir}/vanted_splash.bmp</splash.file>
+
+    <!-- Empty: installer without runtime. The windows-runtime profile below
+         fills in the fileset for the bundled Java runtime. -->
+    <windows.runtime.fileset></windows.runtime.fileset>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <!-- 1. Staging: configuration with placeholders substituted, plus the
+              VANTED directory as installer payload. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <!-- Only @{...} is substituted, IzPack's own ${...} variables stay. -->
+          <useDefaultDelimiters>false</useDefaultDelimiters>
+          <delimiters><delimiter>@{*}</delimiter></delimiters>
+          <!-- Otherwise a second run with other values keeps stale files. -->
+          <overwrite>true</overwrite>
+          <nonFilteredFileExtensions>
+            <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+            <nonFilteredFileExtension>bmp</nonFilteredFileExtension>
+            <nonFilteredFileExtension>png</nonFilteredFileExtension>
+            <nonFilteredFileExtension>icns</nonFilteredFileExtension>
+            <nonFilteredFileExtension>jar</nonFilteredFileExtension>
+          </nonFilteredFileExtensions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>staging</id>
+            <phase>process-resources</phase>
+            <goals><goal>copy-resources</goal></goals>
+            <configuration>
+              <outputDirectory>${staging.dir}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>izpack</directory>
+                  <filtering>true</filtering>
+                </resource>
+                <resource>
+                  <directory>launch4j</directory>
+                  <filtering>true</filtering>
+                </resource>
+                <resource>
+                  <directory>${vanted.package.dir}</directory>
+                  <targetPath>vanted-package</targetPath>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 2. IzPack: platform-independent installer jar, also the EXE payload. -->
+      <plugin>
+        <groupId>org.codehaus.izpack</groupId>
+        <artifactId>izpack-maven-plugin</artifactId>
+        <version>${izpack.version}</version>
+        <executions>
+          <execution>
+            <id>installer-jar</id>
+            <phase>package</phase>
+            <goals><goal>izpack</goal></goals>
+            <configuration>
+              <baseDir>${staging.dir}</baseDir>
+              <installFile>${staging.dir}/config.xml</installFile>
+              <output>${installer.jar}</output>
+              <mkdirs>true</mkdirs>
+              <enableAttachArtifact>false</enableAttachArtifact>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <!-- standard panels -->
+          <dependency>
+            <groupId>org.codehaus.izpack</groupId>
+            <artifactId>izpack-panel</artifactId>
+            <version>${izpack.version}</version>
+          </dependency>
+          <!-- RegistryInstallerListener / RegistryUninstallerListener -->
+          <dependency>
+            <groupId>org.codehaus.izpack</groupId>
+            <artifactId>izpack-event</artifactId>
+            <version>${izpack.version}</version>
+          </dependency>
+          <!-- ShellLink.dll, COIOSHelper.dll from <natives> in config.xml -->
+          <dependency>
+            <groupId>org.codehaus.izpack</groupId>
+            <artifactId>izpack-native</artifactId>
+            <version>${izpack.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <!-- 3. launch4j: wraps the installer jar in a Windows EXE. The plugin
+              fetches launch4j including the tools to build on Linux. -->
+      <plugin>
+        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+        <artifactId>launch4j-maven-plugin</artifactId>
+        <version>${launch4j.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>installer-exe</id>
+            <phase>package</phase>
+            <goals><goal>launch4j</goal></goals>
+            <configuration>
+              <!-- plain launch4j configuration, usable without Maven -->
+              <infile>${staging.dir}/vanted-l4j.xml</infile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <profiles>
+    <!-- Windows installer with bundled Java runtime, active when
+         -Dvanted.runtime.windows=<JRE directory> is set. Builds a second
+         installer jar in its own staging directory whose Windows pack installs
+         the runtime to runtime\, and wraps it in the EXE. A separate run keeps
+         the runtime out of vanted-install.jar: IzPack stores every pack in the
+         jar, including packs that only install on Windows. -->
+    <profile>
+      <id>windows-runtime</id>
+      <activation>
+        <property><name>vanted.runtime.windows</name></property>
+      </activation>
+      <properties>
+        <staging.dir>${project.build.directory}/staging-windows</staging.dir>
+        <installer.jar>${project.build.directory}/vanted-${vanted.version}-install-windows.jar</installer.jar>
+        <windows.runtime.fileset><![CDATA[<fileset dir="runtime-windows" targetdir="$INSTALL_PATH/runtime"><include name="**/*"/></fileset>]]></windows.runtime.fileset>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>staging-runtime-windows</id>
+                <phase>process-resources</phase>
+                <goals><goal>copy-resources</goal></goals>
+                <configuration>
+                  <outputDirectory>${staging.dir}/runtime-windows</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${vanted.runtime.windows}</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

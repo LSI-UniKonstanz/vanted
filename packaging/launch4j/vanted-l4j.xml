@@ -1,0 +1,47 @@
+<!-- @{...} is substituted by Maven when staging. -->
+<launch4jConfig>
+  <headerType>gui</headerType>
+  <jar>@{installer.jar}</jar>
+  <outfile>@{installer.exe}</outfile>
+  <errTitle>VANTED</errTitle>
+  <chdir>.</chdir>
+  <icon>@{icon.file}</icon>
+  <restartOnCrash>true</restartOnCrash>
+  <!-- Classpath mode is required for a signed EXE. Without <classPath> the
+       header runs "java -jar <exe>", and the Java launcher rejects the jar
+       because the Authenticode signature follows it ("Invalid or corrupt
+       jarfile"). The main class must match the installer's Main-Class;
+       build.yml checks this. -->
+  <classPath>
+    <mainClass>com.izforge.izpack.installer.bootstrap.Installer</mainClass>
+  </classPath>
+  <jre>
+    <!-- Applies to the installer only, not to the installed VANTED.
+         The IzPack 5.1.3 installer crashes on Java 21
+         (ArrayIndexOutOfBoundsException in PicoContainer's
+         BytecodeReadingParanamer); Java 17 works, 18-20 are untested.
+         Raise the limit only with a newer IzPack. -->
+    <minVersion>1.8.0</minVersion>
+    <maxVersion>17.999.999</maxVersion>
+  </jre>
+  <splash>
+    <file>@{splash.file}</file>
+    <!-- launch4j requires a timeout in [1..900] -->
+    <waitForWindow>true</waitForWindow>
+    <timeout>60</timeout>
+    <timeoutErr>true</timeoutErr>
+  </splash>
+  <versionInfo>
+    <fileVersion>@{vanted.version}.0</fileVersion>
+    <txtFileVersion>@{vanted.version}</txtFileVersion>
+    <fileDescription>VANTED Installer</fileDescription>
+    <copyright>2016-2026 University of Konstanz, Germany</copyright>
+    <productVersion>@{vanted.version}.0</productVersion>
+    <txtProductVersion>@{vanted.version}</txtProductVersion>
+    <companyName>University of Konstanz</companyName>
+    <productName>VANTED</productName>
+    <internalName>vanted</internalName>
+    <!-- Release assets carry no version, see release.yml -->
+    <originalFilename>vanted-install.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>
