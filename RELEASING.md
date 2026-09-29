@@ -26,7 +26,7 @@ set by the build from the date of the tagged commit.
 ## Making a release
 
 1. Open a pull request that sets `vanted.version.number` and updates
-   `CHANGELOG`. It needs two approvals and a green `build` workflow.
+   `CHANGELOG`. It needs an approval and a green `build` workflow.
 2. After the merge, a release manager tags the merge commit:
    ```sh
    git switch master && git pull
@@ -94,7 +94,7 @@ it contains credentials); keep the tag, and rotate any exposed credentials.
 ## Hotfix
 
 A hotfix is a patch release from `master` and takes the normal path. There are
-no maintenance branches. If a fix cannot wait for two reviews, release managers
+no maintenance branches. If a fix cannot wait for a review, release managers
 can merge the pull request by bypassing the branch ruleset; GitHub records every
 bypass. Tagging, approval and signing are never bypassed.
 
@@ -117,7 +117,7 @@ GitHub's Dependabot alerts report known vulnerabilities in these dependencies.
 One-time settings in `LSI-UniKonstanz/vanted`:
 
 - **Team** `vanted-release` with write access, at least two members.
-- **Ruleset for `master`**: require a pull request with 2 approvals, dismiss
+- **Ruleset for `master`**: require a pull request with 1 approval, dismiss
   stale approvals, require review from code owners, require the status checks
   `build`, `package-installer` and `package-linux`, block force pushes and
   deletion. Bypass: `vanted-release`, for pull requests only.
