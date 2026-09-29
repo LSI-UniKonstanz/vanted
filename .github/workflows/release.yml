@@ -2,7 +2,7 @@
 # workflow that publishes anything. See RELEASING.md.
 #
 #   preflight     annotated tag, on master, matches build.number, not yet released
-#   build         build.yml, including the DMG
+#   build         build.yml
 #   sign-windows  vanted-install.exe via SignPath         } environment 'release':
 #   sign-macos    app and DMG with Developer ID, notarized } approval first, then secrets
 #   release       draft, upload assets, publish
@@ -79,8 +79,6 @@ jobs:
   build:
     needs: preflight
     uses: ./.github/workflows/build.yml
-    with:
-      build-macos: true
 
   sign-windows:
     needs: build
