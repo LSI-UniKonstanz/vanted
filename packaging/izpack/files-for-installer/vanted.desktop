@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Vanted
+Icon=$INSTALL_PATH/vanted_logo.ico
+Exec=$INSTALL_PATH/starter.sh
+NoDisplay=false
+Categories=Tools;
+StartupNotify=false
+Terminal=false

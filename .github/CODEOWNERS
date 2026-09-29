@@ -1,0 +1,6 @@
+# Changes to the build and release process need a review by a release manager.
+/.github/                         @LSI-UniKonstanz/vanted-release
+/packaging/                       @LSI-UniKonstanz/vanted-release
+/build.xml                        @LSI-UniKonstanz/vanted-release
+/RELEASING.md                     @LSI-UniKonstanz/vanted-release
+/src/main/resources/build.number  @LSI-UniKonstanz/vanted-release

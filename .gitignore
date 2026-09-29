@@ -1,11 +1,42 @@
 /target/
-.classpath
-.idea/
-vanted.iml
-.DS_Store
+/out/
 bin/
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+*.bak
+stack_trace.txt
 
-# latex side products
+# Holds the DMG window layout
+!packaging/macos/.DS_Store
+
+# Build output and downloaded tools (/target/ above only matches the root)
+/packaging/target/
+/dist/
+/.tools/
+__pycache__/
+
+# Installers and archives
+*.dmg
+*.tar
+*.tar.gz
+
+# Certificates and keys belong in the 'release' environment
+*.p12
+*.p8
+*.pem
+*.jks
+*.keychain-db
+
+# App bundle skeleton: only the empty structure is tracked
+/packaging/macos/Vanted.app/Contents/Java/*
+!/packaging/macos/Vanted.app/Contents/Java/.gitkeep
+/packaging/macos/Vanted.app/Contents/_CodeSignature/
+
+# LaTeX build output (user manuals)
 **/*.aux
 **/*.log
 **/*.dvi

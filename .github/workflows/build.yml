@@ -1,0 +1,408 @@
+# Builds VANTED from source and packages it. Unsigned, no access to secrets;
+# signing and publishing happen only in release.yml.
+#
+#   build              dist/ (vanted-boot.jar, vanted-core/, core-libs/)
+#   package-installer  vanted-install.jar (needs Java 8) and vanted-install.exe
+#                      (Windows, bundled Corretto 8)
+#   package-linux      tar.gz for x64 and arm64, bundled Corretto 8
+#   package-macos      DMG for Apple silicon, bundled Corretto 8 (on request)
+#
+# Packages are kept as workflow artifacts only for release tags, pushes to
+# master and manual runs. Pull requests and develop are build-and-check only.
+name: build
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      build-macos:
+        description: Also build the macOS DMG (macOS runners cost ten times as much)
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      build-macos:
+        description: Also build the macOS DMG
+        type: boolean
+        default: false
+    outputs:
+      version:
+        description: vanted.version.number from build.number
+        value: ${{ jobs.build.outputs.version }}
+      build:
+        description: build.number from build.number
+        value: ${{ jobs.build.outputs.build }}
+      artifact:
+        description: Name of the dist artifact
+        value: ${{ jobs.build.outputs.artifact }}
+      libraries-ref:
+        description: vanted-libraries commit used for the build
+        value: ${{ jobs.build.outputs.libraries-ref }}
+      bootstrap-ref:
+        description: vanted-bootstrap commit used for the build
+        value: ${{ jobs.build.outputs.bootstrap-ref }}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # A release is built from three repositories. The other two are pinned so that
+  # a tag always builds the same sources and nothing reaches a release without a
+  # pull request here. To update, change the SHA in a pull request.
+  VANTED_LIBRARIES_REF: 03faed7f69a8b051772680dea06730faa3690300
+  VANTED_BOOTSTRAP_REF: db4b504889b113d88ac64f23662b2db03b518e81
+
+  KEEP_PACKAGES: ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      build: ${{ steps.version.outputs.build }}
+      artifact: ${{ steps.version.outputs.artifact }}
+      libraries-ref: ${{ steps.version.outputs.libraries-ref }}
+      bootstrap-ref: ${{ steps.version.outputs.bootstrap-ref }}
+
+    steps:
+      # build.xml expects the libraries in ../vanted-libraries
+      - name: Checkout vanted
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: vanted
+
+      - name: Checkout vanted-libraries
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: LSI-UniKonstanz/vanted-libraries
+          ref: ${{ env.VANTED_LIBRARIES_REF }}
+          path: vanted-libraries
+
+      - name: Checkout vanted-bootstrap
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: LSI-UniKonstanz/vanted-bootstrap
+          ref: ${{ env.VANTED_BOOTSTRAP_REF }}
+          path: vanted-bootstrap
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Ensure Ant is available
+        run: command -v ant || sudo apt-get install -y ant
+
+      # build.xml does not regenerate plugins.txt, so the committed file is what
+      # ships. Fail if it is out of date instead of shipping a stale list.
+      - name: Check plugin list is up to date
+        working-directory: vanted
+        run: |
+          bash updatePluginsList.sh
+          git diff --exit-code src/main/resources/plugins.txt \
+            || { echo "::error::plugins.txt is out of date - run updatePluginsList.sh and commit the result"; exit 1; }
+
+      - name: Build vanted-core
+        working-directory: vanted
+        run: ant create-vanted-core-jar
+
+      - name: Build vanted-bootstrap
+        working-directory: vanted-bootstrap
+        run: ant
+
+      - name: Read version
+        id: version
+        run: |
+          set -eu
+          f=vanted/src/main/resources/build.number
+          v=$(sed -n 's/^vanted\.version\.number=//p' "$f" | tr -d '\r')
+          b=$(sed -n 's/^build\.number=//p' "$f" | tr -d '\r')
+          if [ -z "$v" ] || [ -z "$b" ]; then echo "::error::Cannot read version or build number from $f"; exit 1; fi
+          {
+            echo "version=$v"
+            echo "build=$b"
+            echo "artifact=vanted-$v-build-$b"
+            echo "libraries-ref=$VANTED_LIBRARIES_REF"
+            echo "bootstrap-ref=$VANTED_BOOTSTRAP_REF"
+          } >> "$GITHUB_OUTPUT"
+
+      # The layout the bootstrap expects next to vanted-boot.jar. dist/ is also
+      # the installer payload: everything here ends up on the user's machine.
+      - name: Assemble package
+        run: |
+          set -eu
+          mkdir -p dist/vanted-core dist/core-libs
+          cp vanted/target/jar/vanted-core-ver*.jar dist/vanted-core/vanted-core.jar
+          cp vanted-libraries/*.jar dist/core-libs/
+          cp vanted-bootstrap/jar/vanted-boot.jar dist/
+          cp vanted/target/classes/build.number dist/
+          ls -lR dist
+
+      # Only passed to the packaging jobs of this run.
+      - name: Upload package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ steps.version.outputs.artifact }}
+          path: dist/
+          retention-days: 1
+          overwrite: true
+
+  package-installer:
+    needs: build
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout vanted
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download package
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.build.outputs.artifact }}
+          path: dist
+
+      # IzPack 5.1.3 needs a JDK with a security manager (removed in JDK 24).
+      - name: Set up JDK 8
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: maven
+
+      - name: Fetch Corretto 8 JRE (Windows x64)
+        run: |
+          set -eu
+          sh packaging/fetch-tools.sh .tools windows-x64
+          file .tools/runtime-windows-x64/bin/java.exe
+          file .tools/runtime-windows-x64/bin/java.exe | grep -q 'x86-64' || {
+            echo "::error::The Windows runtime is not x64"
+            exit 1
+          }
+
+      # Run 1: vanted-<version>-install.jar without a runtime.
+      # Run 2 (profile windows-runtime): vanted-<version>-install.exe with the
+      # runtime; it overwrites the EXE from run 1. The intermediate
+      # vanted-<version>-install-windows.jar is not shipped.
+      - name: Build installer (all platforms, system Java)
+        run: |
+          mvn -B -f packaging/pom.xml package \
+              -Dvanted.version=${{ needs.build.outputs.version }} \
+              -Dvanted.build=${{ needs.build.outputs.build }} \
+              -Dvanted.package.dir=${{ github.workspace }}/dist
+
+      - name: Build Windows installer (bundled runtime)
+        run: |
+          mvn -B -f packaging/pom.xml package \
+              -Dvanted.version=${{ needs.build.outputs.version }} \
+              -Dvanted.build=${{ needs.build.outputs.build }} \
+              -Dvanted.package.dir=${{ github.workspace }}/dist \
+              -Dvanted.runtime.windows=${{ github.workspace }}/.tools/runtime-windows-x64
+
+      - name: Verify placeholders were substituted
+        run: |
+          set -eu
+          for cfg in packaging/target/staging/config.xml packaging/target/staging-windows/config.xml; do
+            if grep -q '@{' "$cfg"; then
+              echo "::error::Unsubstituted placeholders in $cfg"
+              grep -n '@{' "$cfg"
+              exit 1
+            fi
+          done
+          ls -lh packaging/target/vanted-*-install*.jar packaging/target/vanted-*-install.exe
+
+      - name: Verify runtime only in the Windows installer
+        run: |
+          set -eu
+          test -f packaging/target/staging-windows/runtime-windows/bin/java.exe
+          grep -q 'dir="runtime-windows"' packaging/target/staging-windows/config.xml || {
+            echo "::error::The Windows installer does not contain the runtime"
+            exit 1
+          }
+          if grep -q 'runtime-windows' packaging/target/staging/config.xml; then
+            echo "::error::The jar installer contains the Windows runtime"
+            exit 1
+          fi
+          v=${{ needs.build.outputs.version }}
+          jar=$(stat -c %s "packaging/target/vanted-$v-install.jar")
+          win=$(stat -c %s "packaging/target/vanted-$v-install-windows.jar")
+          exe=$(stat -c %s "packaging/target/vanted-$v-install.exe")
+          echo "jar installer $((jar / 1048576)) MiB, Windows jar $((win / 1048576)) MiB, EXE $((exe / 1048576)) MiB"
+          if [ "$exe" -le "$win" ] || [ "$win" -le "$jar" ]; then
+            echo "::error::The EXE does not wrap the Windows jar with the runtime"
+            exit 1
+          fi
+
+      # In "java -jar" mode a signed launch4j EXE fails with "Invalid or corrupt
+      # jarfile". Unsigned builds do not show this, so check it here.
+      - name: Verify launch4j uses classpath mode
+        run: |
+          set -eu
+          l4j=packaging/target/staging-windows/vanted-l4j.xml
+          main=$(sed -n 's|.*<mainClass>\(.*\)</mainClass>.*|\1|p' "$l4j")
+          if [ -z "$main" ]; then
+            echo "::error::vanted-l4j.xml has no <classPath><mainClass>; a signed EXE would not start"
+            exit 1
+          fi
+          manifest_main=$(unzip -p packaging/target/vanted-*-install-windows.jar META-INF/MANIFEST.MF \
+                          | sed -n 's/^Main-Class: *//p' | tr -d '\r')
+          if [ "$main" != "$manifest_main" ]; then
+            echo "::error::launch4j starts $main, the installer expects $manifest_main"
+            exit 1
+          fi
+          echo "launch4j starts $main in classpath mode"
+
+      - name: Upload installers
+        if: env.KEEP_PACKAGES == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ needs.build.outputs.artifact }}-installers
+          path: |
+            packaging/target/vanted-*-install.jar
+            packaging/target/vanted-*-install.exe
+          retention-days: 3
+          overwrite: true
+
+  # Archives with their own runtime: unpack and run vanted/starter.sh.
+  package-linux:
+    needs: build
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout vanted
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download package
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.build.outputs.artifact }}
+          path: dist
+
+      - name: Fetch Corretto 8 (Linux x64 and aarch64)
+        run: sh packaging/fetch-tools.sh .tools linux-x64 linux-aarch64
+
+      - name: Verify runtime architectures
+        run: |
+          set -eu
+          file .tools/runtime-linux-x64/bin/java
+          file .tools/runtime-linux-x64/bin/java | grep -q 'x86-64'
+          file .tools/runtime-linux-aarch64/bin/java
+          file .tools/runtime-linux-aarch64/bin/java | grep -q 'aarch64'
+          .tools/runtime-linux-x64/bin/java -version
+
+      - name: Assemble archives
+        run: |
+          set -eu
+          v=${{ needs.build.outputs.version }}
+          for arch in x64 aarch64; do
+            case $arch in x64) label=x64 ;; aarch64) label=arm64 ;; esac
+            root="$RUNNER_TEMP/linux-$label"
+            rm -rf "$root"
+            mkdir -p "$root/vanted"
+            cp -a dist/. "$root/vanted/"
+            cp -a ".tools/runtime-linux-$arch" "$root/vanted/runtime"
+            cp packaging/izpack/files-for-installer/starter.sh "$root/vanted/"
+            cp packaging/izpack/files-for-installer/vanted_logo.ico "$root/vanted/"
+            chmod 755 "$root/vanted/starter.sh"
+            tar -C "$root" -czf "vanted-$v-linux-$label.tar.gz" vanted
+          done
+          ls -lh vanted-*-linux-*.tar.gz
+
+      - name: Verify archives
+        run: |
+          set -eu
+          v=${{ needs.build.outputs.version }}
+          for label in x64 arm64; do
+            tar -tzf "vanted-$v-linux-$label.tar.gz" > "$RUNNER_TEMP/list-$label"
+            for f in vanted/starter.sh vanted/vanted-boot.jar vanted/runtime/bin/java vanted/runtime/lib/rt.jar; do
+              grep -qx "$f" "$RUNNER_TEMP/list-$label" || { echo "::error::$f missing in linux-$label"; exit 1; }
+            done
+          done
+          check="$RUNNER_TEMP/check-x64"
+          mkdir -p "$check"
+          tar -C "$check" -xzf "vanted-$v-linux-x64.tar.gz"
+          test -x "$check/vanted/starter.sh"
+          "$check/vanted/runtime/bin/java" -version
+
+      - name: Upload Linux archives
+        if: env.KEEP_PACKAGES == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ needs.build.outputs.artifact }}-linux
+          path: vanted-*-linux-*.tar.gz
+          retention-days: 3
+          overwrite: true
+
+  # Runs for releases and manual runs with build-macos only.
+  package-macos:
+    needs: build
+    if: inputs.build-macos
+    runs-on: macos-15   # arm64 image
+
+    steps:
+      - name: Checkout vanted
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download package
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.build.outputs.artifact }}
+          path: dist
+
+      - name: Fetch Corretto 8 (aarch64)
+        run: |
+          chmod +x packaging/fetch-tools.sh
+          packaging/fetch-tools.sh .tools
+
+      - name: Assemble app bundle
+        run: |
+          set -eu
+          app=packaging/macos/Vanted.app
+          cp -a dist/. "$app/Contents/Java/"
+          cp -a .tools/corretto "$app/Contents/Java/runtime"
+          chmod +x "$app/Contents/MacOS/starter.sh"
+
+          # Maven only stages izpack/ and launch4j/, so Info.plist is filled here.
+          sed -i '' \
+            -e "s|@VANTED_VERSION@|${{ needs.build.outputs.version }}|g" \
+            -e "s|@VANTED_BUILD@|${{ needs.build.outputs.build }}|g" \
+            "$app/Contents/Info.plist"
+          if grep -q '@VANTED' "$app/Contents/Info.plist"; then
+            echo "::error::Unsubstituted placeholders in Info.plist"
+            exit 1
+          fi
+
+      # An x86_64 runtime would still start (through Rosetta), so check explicitly.
+      - name: Verify bundled runtime is arm64
+        run: |
+          set -eu
+          java_bin=packaging/macos/Vanted.app/Contents/Java/runtime/Contents/Home/bin/java
+          file "$java_bin"
+          file "$java_bin" | grep -q 'arm64' || {
+            echo "::error::The bundled runtime is not arm64"
+            exit 1
+          }
+
+      # Unsigned. release.yml (sign-macos) unpacks the app from this DMG.
+      - name: Build DMG
+        run: |
+          chmod +x packaging/macos/createdmg.sh
+          packaging/macos/createdmg.sh \
+            packaging/macos/Vanted.app \
+            vanted-${{ needs.build.outputs.version }}.dmg
+
+      - name: Upload DMG
+        if: env.KEEP_PACKAGES == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ needs.build.outputs.artifact }}-macos
+          path: vanted-*.dmg
+          retention-days: 3
+          overwrite: true

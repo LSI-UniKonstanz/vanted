@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+This is the shortcut specification for windows. Its considered default so on
+Systems that are not shortcut compatible the information is taken from here.
+-->
+<shortcuts>
+<programGroup defaultName="Vanted" location="applications"/>
+<shortcut
+    name = "Vanted"
+    target = "$INSTALL_PATH\starter.cmd"
+    commandLine = ""
+    workingDirectory = "$INSTALL_PATH"
+    description="Vanted"
+    initialState="noShow"
+    programGroup="yes"
+    desktop="yes"
+    applications="yes"
+    startMenu="yes"
+	iconFile="$INSTALL_PATH\vanted_logo.ico"
+	iconIndex="0"
+    startup="no"/>
+</shortcuts>
