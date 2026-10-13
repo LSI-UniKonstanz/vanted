@@ -1,5 +1,14 @@
 <h3>Changelog</h3>
 
+<h4>Vanted v2.10.0 release (29/09/2026)<h4>
+<ul>
+<li>Native support for Macs with Apple silicon (no Rosetta needed)</li>
+<li>Installers for Windows, macOS and Linux (x64 and arm64) now include Java; no separate Java installation required</li>
+<li>Downloads are now published on GitHub: https://github.com/LSI-UniKonstanz/vanted/releases</li>
+<li>Adaptagrams layouts load the native library matching the operating system and architecture</li>
+<li>Fix BioModels API access</li>
+</ul>
+
 <h4>Vanted v2.8.8 release (31/07/2023)<h4>
 <ul>
 <li>Bugfix in Open-File dialog after exporting to a website</li>
