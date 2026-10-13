@@ -93,9 +93,10 @@ it contains credentials); keep the tag, and rotate any exposed credentials.
 
 ## Hotfix
 
-A hotfix is a patch release from `master` and takes the normal path, including
-the review. There are no maintenance branches and no way to bypass the rules;
-ask a second release manager to review and approve promptly.
+A hotfix is a patch release from `master` and takes the normal path. There are
+no maintenance branches. If a fix cannot wait for a review, release managers
+can merge the pull request by bypassing the branch ruleset; GitHub records every
+bypass. Tagging, approval and signing are never bypassed.
 
 ## Updating pinned versions
 
@@ -119,7 +120,7 @@ One-time settings in `LSI-UniKonstanz/vanted`:
 - **Ruleset for `master`**: require a pull request with 1 approval, dismiss
   stale approvals, require review from code owners, require the status checks
   `build`, `package-installer`, `package-linux` and `package-macos`, block
-  force pushes and deletion. No bypass.
+  force pushes and deletion. Bypass: `vanted-release`, for pull requests only.
 - **Ruleset for tags `v*`**: restrict creation, update and deletion. Bypass:
   `vanted-release`.
 - **Environment `release`**: required reviewers `vanted-release`, prevent
