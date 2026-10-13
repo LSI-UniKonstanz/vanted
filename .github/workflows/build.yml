@@ -5,7 +5,7 @@
 #   package-installer  vanted-install.jar (needs Java 8) and vanted-install.exe
 #                      (Windows, bundled Corretto 8)
 #   package-linux      tar.gz for x64 and arm64, bundled Corretto 8
-#   package-macos      DMG for Apple silicon, bundled Corretto 8 (on request)
+#   package-macos      DMG for Apple silicon, bundled Corretto 8
 #
 # Packages are kept as workflow artifacts only for release tags, pushes to
 # master and manual runs. Pull requests and develop are build-and-check only.
@@ -16,17 +16,7 @@ on:
     branches: [master, develop]
   pull_request:
   workflow_dispatch:
-    inputs:
-      build-macos:
-        description: Also build the macOS DMG (macOS runners cost ten times as much)
-        type: boolean
-        default: false
   workflow_call:
-    inputs:
-      build-macos:
-        description: Also build the macOS DMG
-        type: boolean
-        default: false
     outputs:
       version:
         description: vanted.version.number from build.number
@@ -340,10 +330,8 @@ jobs:
           retention-days: 3
           overwrite: true
 
-  # Runs for releases and manual runs with build-macos only.
   package-macos:
     needs: build
-    if: inputs.build-macos
     runs-on: macos-15   # arm64 image
 
     steps:

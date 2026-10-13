@@ -56,7 +56,7 @@ this process.
 
 | When | What |
 |---|---|
-| Every pull request | `build`, `package-installer`, `package-linux`: compile, plugin list, installers, Linux archives |
+| Every pull request | `build`, `package-installer`, `package-linux`, `package-macos`: compile, plugin list, installers, Linux archives, macOS DMG |
 | Before the approval | tag is annotated, on `master`, matches `build.number`, not yet released |
 | Before publishing | the EXE is readable after signing; the macOS runtime starts under the hardened runtime; notarization and Gatekeeper assessment (once signing is configured) |
 
@@ -93,10 +93,9 @@ it contains credentials); keep the tag, and rotate any exposed credentials.
 
 ## Hotfix
 
-A hotfix is a patch release from `master` and takes the normal path. There are
-no maintenance branches. If a fix cannot wait for a review, release managers
-can merge the pull request by bypassing the branch ruleset; GitHub records every
-bypass. Tagging, approval and signing are never bypassed.
+A hotfix is a patch release from `master` and takes the normal path, including
+the review. There are no maintenance branches and no way to bypass the rules;
+ask a second release manager to review and approve promptly.
 
 ## Updating pinned versions
 
@@ -119,8 +118,8 @@ One-time settings in `LSI-UniKonstanz/vanted`:
 - **Team** `vanted-release` with write access, at least two members.
 - **Ruleset for `master`**: require a pull request with 1 approval, dismiss
   stale approvals, require review from code owners, require the status checks
-  `build`, `package-installer` and `package-linux`, block force pushes and
-  deletion. Bypass: `vanted-release`, for pull requests only.
+  `build`, `package-installer`, `package-linux` and `package-macos`, block
+  force pushes and deletion. No bypass.
 - **Ruleset for tags `v*`**: restrict creation, update and deletion. Bypass:
   `vanted-release`.
 - **Environment `release`**: required reviewers `vanted-release`, prevent
