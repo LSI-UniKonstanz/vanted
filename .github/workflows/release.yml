@@ -223,23 +223,33 @@ jobs:
       - name: Check signing configuration
         id: cfg
         env:
-          P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
-          P12_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          P12: ${{ secrets.CERTIFICAT }}
+          P12_PASSWORD: ${{ secrets.P12 }}
           NOTARY_KEY: ${{ secrets.APPLE_NOTARY_KEY }}
           NOTARY_KEY_ID: ${{ vars.APPLE_NOTARY_KEY_ID }}
           NOTARY_ISSUER_ID: ${{ vars.APPLE_NOTARY_ISSUER_ID }}
+          APPLE_ID: ${{ vars.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
           REQUIRED: ${{ vars.MACOS_SIGNING_REQUIRED }}
         run: |
           set -eu
-          n=0
-          for v in "$P12" "$P12_PASSWORD" "$NOTARY_KEY" "$NOTARY_KEY_ID" "$NOTARY_ISSUER_ID"; do
-            if [ -n "$v" ]; then n=$((n + 1)); fi
-          done
-          if [ "$n" -eq 5 ]; then
+          count() { c=0; for v in "$@"; do if [ -n "$v" ]; then c=$((c + 1)); fi; done; echo "$c"; }
+          cert=$(count "$P12" "$P12_PASSWORD")
+          key=$(count "$NOTARY_KEY" "$NOTARY_KEY_ID" "$NOTARY_ISSUER_ID")
+          aid=$(count "$APPLE_ID" "$APPLE_ID_PASSWORD" "$APPLE_TEAM_ID")
+
+          # Notarization: either the API key or the Apple ID, complete and not mixed.
+          notary=none
+          if [ "$key" -eq 3 ] && [ "$aid" -eq 0 ]; then notary=key; fi
+          if [ "$aid" -eq 3 ] && [ "$key" -eq 0 ]; then notary=appleid; fi
+
+          if [ "$cert" -eq 2 ] && [ "$notary" != none ]; then
             echo "mode=release" >> "$GITHUB_OUTPUT"
-            echo "Developer ID and notary key are configured - signing and notarizing"
-          elif [ "$n" -gt 0 ]; then
-            echo "::error::Apple signing is half configured ($n of 5 values). Required: MACOS_CERTIFICATE_P12, MACOS_CERTIFICATE_PASSWORD, APPLE_NOTARY_KEY (secrets), APPLE_NOTARY_KEY_ID, APPLE_NOTARY_ISSUER_ID (variables)"
+            echo "notary=$notary" >> "$GITHUB_OUTPUT"
+            echo "Developer ID configured, notarizing via $notary - signing and notarizing"
+          elif [ $((cert + key + aid)) -gt 0 ]; then
+            echo "::error::Apple signing is half configured (certificate $cert/2, API key $key/3, Apple ID $aid/3). Required: CERTIFICAT and P12 (secrets), plus EITHER APPLE_NOTARY_KEY (secret), APPLE_NOTARY_KEY_ID, APPLE_NOTARY_ISSUER_ID (variables) OR APPLE_ID (variable), APPLE_ID_PASSWORD (secret), APPLE_TEAM_ID (variable)"
             exit 1
           elif [ "$REQUIRED" = "true" ]; then
             echo "::error::MACOS_SIGNING_REQUIRED is true but Apple signing is not configured"
@@ -263,8 +273,8 @@ jobs:
       - name: Import Developer ID certificate
         if: steps.cfg.outputs.mode == 'release'
         env:
-          P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
-          P12_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          P12: ${{ secrets.CERTIFICAT }}
+          P12_PASSWORD: ${{ secrets.P12 }}
         run: |
           set -eu
           kc="$RUNNER_TEMP/vanted-signing.keychain-db"
@@ -331,9 +341,13 @@ jobs:
       - name: Build, sign and notarize DMG
         if: steps.cfg.outputs.mode == 'release'
         env:
+          NOTARY_MODE: ${{ steps.cfg.outputs.notary }}
           NOTARY_KEY: ${{ secrets.APPLE_NOTARY_KEY }}
           NOTARY_KEY_ID: ${{ vars.APPLE_NOTARY_KEY_ID }}
           NOTARY_ISSUER_ID: ${{ vars.APPLE_NOTARY_ISSUER_ID }}
+          APPLE_ID: ${{ vars.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
         run: |
           set -eu
           mkdir -p final
@@ -341,8 +355,13 @@ jobs:
           sh packaging/macos/createdmg.sh "$APP" "$dmg"
           codesign --force --timestamp --sign "$MACOS_SIGN_IDENTITY" "$dmg"
 
-          printf '%s\n' "$NOTARY_KEY" > "$RUNNER_TEMP/notary-key.p8"
-          NOTARY_KEY_FILE="$RUNNER_TEMP/notary-key.p8" sh packaging/macos/notarize.sh "$dmg"
+          if [ "$NOTARY_MODE" = key ]; then
+            printf '%s\n' "$NOTARY_KEY" > "$RUNNER_TEMP/notary-key.p8"
+            NOTARY_KEY_FILE="$RUNNER_TEMP/notary-key.p8" sh packaging/macos/notarize.sh "$dmg"
+          else
+            NOTARY_APPLE_ID="$APPLE_ID" NOTARY_PASSWORD="$APPLE_ID_PASSWORD" NOTARY_TEAM_ID="$APPLE_TEAM_ID" \
+              sh packaging/macos/notarize.sh "$dmg"
+          fi
 
           # Assess DMG and app the way Gatekeeper does on the user's machine.
           spctl --assess --type open --context context:primary-signature --verbose=2 "$dmg"
