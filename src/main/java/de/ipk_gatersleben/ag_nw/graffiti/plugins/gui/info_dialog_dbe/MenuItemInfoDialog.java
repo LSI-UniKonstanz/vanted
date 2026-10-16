@@ -64,7 +64,7 @@ import org.graffiti.plugin.gui.GraffitiMenu;
 import org.vanted.KeggAccess;
 import org.vanted.osx.OSXSupport;
 import org.vanted.scaling.scalers.component.HTMLScaleSupport;
-import org.vanted.updater.ScanForUpdate;
+import org.vanted.updater.UpdateCheck;
 
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
@@ -584,12 +584,12 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 //			}
 //		});
 		
-		JMenuItem scanUpdate = new JMenuItem("Scan for updates");
+		JMenuItem scanUpdate = new JMenuItem("Check for updates");
 		scanUpdate.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ScanForUpdate.issueScan(true); // issue scan and ignore date. so we always want to scan
+				UpdateCheck.issueCheck(true); // check now and always report the result
 			}
 		});
 		int pos = 1;

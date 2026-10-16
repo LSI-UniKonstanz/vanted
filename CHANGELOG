@@ -1,5 +1,11 @@
 <h3>Changelog</h3>
 
+<h4>Vanted v2.10.1 release (16/10/2026)<h4>
+<ul>
+<li>macOS: the app is signed and notarized by Apple and opens without security warnings</li>
+<li>"Check for updates" now looks for new releases on GitHub and links to the download page; the old automatic updater has been removed</li>
+</ul>
+
 <h4>Vanted v2.10.0 release (29/09/2026)<h4>
 <ul>
 <li>Native support for Macs with Apple silicon (no Rosetta needed)</li>

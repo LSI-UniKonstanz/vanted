@@ -40,7 +40,7 @@ import org.vanted.KeggAccess;
 import org.vanted.VantedPreferences;
 import org.vanted.osx.OSXSupport;
 import org.vanted.osx.OpenFileAction;
-import org.vanted.updater.ScanForUpdate;
+import org.vanted.updater.UpdateCheck;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 
@@ -166,8 +166,8 @@ public class Main {
 		
 		PreferenceManager.getInstance().addPreferencingClass(VantedPreferences.class);
 		
-		PreferenceManager.getInstance().addPreferencingClass(ScanForUpdate.class);		
-		ScanForUpdate.issueScan(false); // only check, if current date is after update-date
+		PreferenceManager.getInstance().addPreferencingClass(UpdateCheck.class);
+		UpdateCheck.issueCheck(false); // at most once a week, after start-up
 		
 		if (SystemInfo.isMac()) {
 			try {
