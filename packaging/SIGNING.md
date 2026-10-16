@@ -27,11 +27,14 @@ environment, after approval.
 | `SIGNPATH_SIGNING_POLICY_SLUG` | variable | optional, default `release-signing` |
 | `SIGNPATH_ARTIFACT_CONFIGURATION_SLUG` | variable | optional, default configuration otherwise |
 | `WINDOWS_SIGNING_REQUIRED` | variable | `true`: fail without SignPath |
-| `MACOS_CERTIFICATE_P12` | secret | *Developer ID Application* certificate with private key, `.p12`, base64 |
-| `MACOS_CERTIFICATE_PASSWORD` | secret | password of the `.p12` |
+| `CERTIFICAT` | secret | *Developer ID Application* certificate with private key, `.p12`, base64 |
+| `P12` | secret | password of the `.p12` |
 | `APPLE_NOTARY_KEY` | secret | content of `AuthKey_XXXXXXXXXX.p8` (App Store Connect API) |
 | `APPLE_NOTARY_KEY_ID` | variable | key ID |
 | `APPLE_NOTARY_ISSUER_ID` | variable | issuer ID |
+| `APPLE_ID` | variable | alternative to the API key: Apple ID of a team member (role *Developer*) |
+| `APPLE_ID_PASSWORD` | secret | app-specific password of that Apple ID |
+| `APPLE_TEAM_ID` | variable | team ID (10 characters, in the certificate name) |
 | `MACOS_SIGNING_REQUIRED` | variable | `true`: fail without Developer ID |
 
 ## Windows: SignPath Foundation
@@ -71,10 +74,14 @@ builds, signs and notarizes the DMG and checks it with `spctl`.
 1. Create a *Developer ID Application* certificate in the university's Apple
    Developer account (account holder or admin).
 2. Export certificate and private key as `.p12` with a password;
-   `base64 -i developer-id.p12 | pbcopy` gives `MACOS_CERTIFICATE_P12`. Delete
+   `base64 -i developer-id.p12 | pbcopy` gives `CERTIFICAT`. Delete
    the `.p12` afterwards.
-3. Create an App Store Connect API key (*Users and Access → Integrations →
-   Team Keys*, role *Developer*). The `.p8` can be downloaded only once.
+3. Notarization needs one of two credentials, complete and not mixed:
+   - an App Store Connect API key (*Users and Access → Integrations →
+     Team Keys*, role *Developer*); the `.p8` can be downloaded only once; or
+   - the Apple ID of a team member with role *Developer* plus an app-specific
+     password (account.apple.com → *Sign-In and Security → App-Specific
+     Passwords*), and the team ID.
 4. Run a test release, then set `MACOS_SIGNING_REQUIRED` to `true`.
 
 To try signing locally, on a copy of the app from a CI DMG:
@@ -88,6 +95,14 @@ MACOS_SIGN_IDENTITY=<SHA-1> sh packaging/macos/sign-app.sh /tmp/Vanted.app   # D
 ```
 
 `security find-identity -v -p codesigning` lists the SHA-1 of installed identities.
+
+To notarize locally, store the credentials once in the login keychain, then
+use the profile:
+
+```sh
+xcrun notarytool store-credentials vanted --apple-id <apple-id> --team-id <team-id>
+NOTARY_KEYCHAIN_PROFILE=vanted sh packaging/macos/notarize.sh vanted-macos-arm64.dmg
+```
 
 Troubleshooting:
 
